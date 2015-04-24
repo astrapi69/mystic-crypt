@@ -1,0 +1,12 @@
+# mystic-crypt .travis.yml
+
+language: java
+
+jdk:
+    - openjdk7
+
+notifications:
+    email:
+        recipients:
+            - asterios.raptis@web.code
+        on_failure: always
