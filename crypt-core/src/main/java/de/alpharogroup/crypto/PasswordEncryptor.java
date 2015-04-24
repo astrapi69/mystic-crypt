@@ -26,7 +26,7 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import net.sourceforge.jaulp.random.RandomObjectsUtils;
+import de.alpharogroup.random.RandomObjectsUtils;
 import de.alpharogroup.crypto.algorithm.HashAlgorithm;
 import de.alpharogroup.crypto.sha.Hasher;
 

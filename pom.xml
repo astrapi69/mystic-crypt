@@ -9,7 +9,7 @@
 	<name>mystic-crypt</name>
 
 	<url>https://github.com/astrapi69/mystic-crypt</url>
-	
+
 	<description>
 		Cpyptograhic library parent project.
 	</description>
@@ -59,7 +59,7 @@
 		<lombok.version>1.16.2</lombok.version>
 		<!-- PARENT PROJECT versions -->
 		<jaulp.core.version>3.10.0</jaulp.core.version>
-		<jaulp.random.version>${jaulp.core.version}</jaulp.random.version>
+		<randomizer.version>${jaulp.core.version}</randomizer.version>
 		<jaulp.time.version>${jaulp.core.version}</jaulp.time.version>
 		<jaulp.lang.version>${jaulp.core.version}</jaulp.lang.version>
 		<jaulp.test.objects.version>${jaulp.core.version}</jaulp.test.objects.version>
@@ -143,12 +143,6 @@
 
 			<dependency>
 				<groupId>de.alpharogroup</groupId>
-				<artifactId>jaulp.random</artifactId>
-				<version>${jaulp.random.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>de.alpharogroup</groupId>
 				<artifactId>jaulp.time</artifactId>
 				<version>${jaulp.time.version}</version>
 			</dependency>
@@ -164,9 +158,15 @@
 				<artifactId>jaulp.test.objects</artifactId>
 				<version>${jaulp.test.objects.version}</version>
 			</dependency>
-			
+
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>randomizer</artifactId>
+				<version>${randomizer.version}</version>
+			</dependency>
+
 		</dependencies>
-		
+
 	</dependencyManagement>
 
 	<dependencies>
@@ -188,8 +188,8 @@
 		</dependency>
 
 	</dependencies>
-	
-	
+
+
 	<build>
 
 		<resources>
@@ -632,6 +632,6 @@
 	<issueManagement>
 		<url>https://github.com/astrapi69/mystic-crypt/issues</url>
 		<system>github.com</system>
-	</issueManagement>	
+	</issueManagement>
 
 </project>

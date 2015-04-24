@@ -28,8 +28,8 @@ import javax.crypto.NoSuchPaddingException;
 
 import de.alpharogroup.crypto.aes.HexEncryptor;
 import de.alpharogroup.crypto.algorithm.HashAlgorithm;
-import net.sourceforge.jaulp.random.Constants;
-import net.sourceforge.jaulp.random.RandomUtils;
+import de.alpharogroup.random.Constants;
+import de.alpharogroup.random.RandomUtils;
 
 import org.apache.commons.codec.binary.Base64;
 
