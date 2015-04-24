@@ -114,7 +114,7 @@ public class HexEncryptor implements Encryptor
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
 	 * @throws BadPaddingException
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @see net.sourceforge.jaulp.crypto.interfaces.Encryptor#encrypt(java.lang.String)
+	 * @see de.alpharogroup.crypto.interfaces.Encryptor#encrypt(java.lang.String)
 	 */
 	public String encrypt(final String string) throws InvalidKeyException,
 		UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException,

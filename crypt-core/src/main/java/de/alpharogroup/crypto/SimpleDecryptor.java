@@ -101,7 +101,7 @@ public class SimpleDecryptor implements Decryptor
 	 * @throws InvalidKeyException
 	 *             is thrown if initialization of the cypher object fails.
 	 *
-	 * @see net.sourceforge.jaulp.crypto.interfaces.Decryptor#decrypt(java.lang.String)
+	 * @see de.alpharogroup.crypto.interfaces.Decryptor#decrypt(java.lang.String)
 	 */
 	public String decrypt(final String encypted) throws IllegalBlockSizeException,
 		BadPaddingException, UnsupportedEncodingException, InvalidKeyException,

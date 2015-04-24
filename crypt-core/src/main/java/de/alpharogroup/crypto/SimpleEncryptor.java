@@ -102,7 +102,7 @@ public class SimpleEncryptor implements Encryptor
 	 * @throws InvalidKeyException
 	 *             is thrown if initialization of the cypher object fails.
 	 *
-	 * @see net.sourceforge.jaulp.crypto.interfaces.Encryptor#encrypt(java.lang.String)
+	 * @see de.alpharogroup.crypto.interfaces.Encryptor#encrypt(java.lang.String)
 	 */
 	public String encrypt(final String string) throws UnsupportedEncodingException,
 		IllegalBlockSizeException, BadPaddingException, InvalidKeyException,

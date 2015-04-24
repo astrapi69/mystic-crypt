@@ -9,6 +9,10 @@
 	<name>mystic-crypt</name>
 
 	<url>https://github.com/astrapi69/mystic-crypt</url>
+	
+	<description>
+		Cpyptograhic library parent project.
+	</description>
 
 	<scm>
 		<connection>scm:git:git:@github.com:astrapi69/mystic-crypt.git</connection>
