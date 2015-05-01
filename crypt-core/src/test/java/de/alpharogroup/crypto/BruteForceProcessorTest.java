@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.Set;
 
-import net.sourceforge.jaulp.lang.PackageUtils;
+import de.alpharogroup.lang.PackageUtils;
 
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;

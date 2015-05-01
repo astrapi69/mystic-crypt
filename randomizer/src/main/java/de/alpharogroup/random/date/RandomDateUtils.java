@@ -24,7 +24,7 @@ import java.util.GregorianCalendar;
 import java.util.Random;
 
 import de.alpharogroup.random.RandomUtils;
-import net.sourceforge.jaulp.date.CalculateDateUtils;
+import de.alpharogroup.date.CalculateDateUtils;
 
 /**
  * This util class gets random dates.

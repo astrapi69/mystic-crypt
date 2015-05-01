@@ -17,7 +17,7 @@ package de.alpharogroup.crypto.keyrules;
 
 import java.util.Map;
 
-import net.sourceforge.jaulp.check.Check;
+import de.alpharogroup.check.Check;
 import lombok.Getter;
 import de.alpharogroup.crypto.interfaces.KeyRule;
 

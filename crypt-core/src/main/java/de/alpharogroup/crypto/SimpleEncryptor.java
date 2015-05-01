@@ -35,7 +35,7 @@ import javax.crypto.spec.PBEParameterSpec;
 import lombok.AccessLevel;
 import lombok.Getter;
 import de.alpharogroup.crypto.interfaces.Encryptor;
-import net.sourceforge.jaulp.check.Check;
+import de.alpharogroup.check.Check;
 
 import org.apache.commons.codec.binary.Base64;
 

@@ -18,7 +18,7 @@ package de.alpharogroup.random;
 
 import java.nio.CharBuffer;
 
-import net.sourceforge.jaulp.BaseTestCase;
+import de.alpharogroup.BaseTestCase;
 
 import org.testng.AssertJUnit;
 import org.testng.annotations.AfterMethod;

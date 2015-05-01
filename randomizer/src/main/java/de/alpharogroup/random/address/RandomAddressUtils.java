@@ -20,7 +20,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import de.alpharogroup.random.RandomUtils;
-import net.sourceforge.jaulp.lang.PropertiesUtils;
+import de.alpharogroup.lang.PropertiesUtils;
 
 /**
  * Utility class to create random addresses.

@@ -20,8 +20,8 @@ package de.alpharogroup.random.date;
 
 import java.util.Date;
 
-import net.sourceforge.jaulp.BaseTestCase;
-import net.sourceforge.jaulp.date.CalculateDateUtils;
+import de.alpharogroup.BaseTestCase;
+import de.alpharogroup.date.CalculateDateUtils;
 
 import org.testng.AssertJUnit;
 import org.testng.annotations.AfterMethod;

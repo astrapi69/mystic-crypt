@@ -25,9 +25,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.sourceforge.jaulp.BaseTestCase;
+import de.alpharogroup.BaseTestCase;
 
-import org.jaulp.test.objects.Gender;
+import de.alpharogroup.test.objects.Gender;
 import org.testng.AssertJUnit;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
