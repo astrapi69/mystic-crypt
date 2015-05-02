@@ -65,7 +65,7 @@ public class RandomUtilsTest extends BaseTestCase
 
 	/**
 	 * Test method for
-	 * {@link net.sourceforge.jaulp.random.RandomUtils#getRandomEntry(java.util.List)} .
+	 * {@link de.alpharogroup.random.RandomUtils#getRandomEntry(java.util.List)} .
 	 */
 	@Test
 	public void testGetRandomEntryList()
@@ -87,7 +87,7 @@ public class RandomUtilsTest extends BaseTestCase
 
 	/**
 	 * Test method for
-	 * {@link net.sourceforge.jaulp.random.RandomUtils#getRandomEntry(java.util.Map)} .
+	 * {@link de.alpharogroup.random.RandomUtils#getRandomEntry(java.util.Map)} .
 	 */
 	@Test
 	public void testGetRandomEntryMap()
@@ -108,7 +108,7 @@ public class RandomUtilsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for {@link net.sourceforge.jaulp.random.RandomUtils#getRandomFloat(int, int)} .
+	 * Test method for {@link de.alpharogroup.random.RandomUtils#getRandomFloat(int, int)} .
 	 */
 	@Test
 	public void testGetRandomFloat()
@@ -124,7 +124,7 @@ public class RandomUtilsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for {@link net.sourceforge.jaulp.random.RandomUtils#getRandomKey(java.util.Map)}
+	 * Test method for {@link de.alpharogroup.random.RandomUtils#getRandomKey(java.util.Map)}
 	 * .
 	 */
 	@Test
@@ -146,7 +146,7 @@ public class RandomUtilsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for {@link net.sourceforge.jaulp.random.RandomUtils#randomBoolean()}.
+	 * Test method for {@link de.alpharogroup.random.RandomUtils#randomBoolean()}.
 	 */
 	@Test
 	public void testRandomBoolean()
@@ -155,7 +155,7 @@ public class RandomUtilsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for {@link net.sourceforge.jaulp.random.RandomUtils#randomChar(java.lang.String)}
+	 * Test method for {@link de.alpharogroup.random.RandomUtils#randomChar(java.lang.String)}
 	 * .
 	 */
 	@Test
@@ -173,7 +173,7 @@ public class RandomUtilsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for {@link net.sourceforge.jaulp.random.RandomUtils#randomInt(int)}.
+	 * Test method for {@link de.alpharogroup.random.RandomUtils#randomInt(int)}.
 	 */
 	@Test
 	public void testRandomInt()
@@ -188,7 +188,7 @@ public class RandomUtilsTest extends BaseTestCase
 
 	/**
 	 * Test method for
-	 * {@link net.sourceforge.jaulp.random.RandomUtils#getRandomString(java.lang.String[])} .
+	 * {@link de.alpharogroup.random.RandomUtils#getRandomString(java.lang.String[])} .
 	 */
 	@Test
 	public void testRandomStringStringArray()
@@ -205,7 +205,7 @@ public class RandomUtilsTest extends BaseTestCase
 
 	/**
 	 * Test method for
-	 * {@link net.sourceforge.jaulp.random.RandomUtils#getRandomString(java.lang.String, int)} .
+	 * {@link de.alpharogroup.random.RandomUtils#getRandomString(java.lang.String, int)} .
 	 */
 	@Test
 	public void testRandomStringStringInt()

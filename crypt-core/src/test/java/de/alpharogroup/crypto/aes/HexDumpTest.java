@@ -28,7 +28,7 @@ public class HexDumpTest
 {
 
 	/**
-	 * Test method for {@link net.sourceforge.jaulp.crypto.aes.HexDump#encodeHex(String)}
+	 * Test method for {@link de.alpharogroup.crypto.aes.HexDump#encodeHex(String)}
 	 */
 	@Test
 	public void testEncodeString()
@@ -41,7 +41,7 @@ public class HexDumpTest
 	}
 
 	/**
-	 * Test method for {@link net.sourceforge.jaulp.crypto.aes.HexDump#encodeHex(byte[])}
+	 * Test method for {@link de.alpharogroup.crypto.aes.HexDump#encodeHex(byte[])}
 	 */
 	@Test
 	public void testEncodeHex()
@@ -54,7 +54,7 @@ public class HexDumpTest
 	}
 
 	/**
-	 * Test method for {@link net.sourceforge.jaulp.crypto.aes.HexDump#encodeHex(byte[], boolean)}
+	 * Test method for {@link de.alpharogroup.crypto.aes.HexDump#encodeHex(byte[], boolean)}
 	 */
 	@Test
 	public void testEncodeHexBoolean()
@@ -70,7 +70,7 @@ public class HexDumpTest
 	}
 
 	/**
-	 * Test method for {@link net.sourceforge.jaulp.crypto.aes.HexDump#decodeHex(char[])}
+	 * Test method for {@link de.alpharogroup.crypto.aes.HexDump#decodeHex(char[])}
 	 *
 	 * @throws DecoderException
 	 *             the decoder exception
@@ -86,7 +86,7 @@ public class HexDumpTest
 	}
 
 	/**
-	 * Test method for {@link net.sourceforge.jaulp.crypto.aes.HexDump#decodeHex(byte[])}
+	 * Test method for {@link de.alpharogroup.crypto.aes.HexDump#decodeHex(byte[])}
 	 *
 	 * @throws DecoderException
 	 *             the decoder exception
@@ -102,7 +102,7 @@ public class HexDumpTest
 	}
 
 	/**
-	 * Test method for {@link net.sourceforge.jaulp.crypto.aes.HexDump#decodeHexToString(char[])}
+	 * Test method for {@link de.alpharogroup.crypto.aes.HexDump#decodeHexToString(char[])}
 	 *
 	 * @throws DecoderException
 	 *             the decoder exception
@@ -117,7 +117,7 @@ public class HexDumpTest
 	}
 
 	/**
-	 * Test method for {@link net.sourceforge.jaulp.crypto.aes.HexDump#toHex(int)}
+	 * Test method for {@link de.alpharogroup.crypto.aes.HexDump#toHex(int)}
 	 */
 	@Test
 	public void testToHex()

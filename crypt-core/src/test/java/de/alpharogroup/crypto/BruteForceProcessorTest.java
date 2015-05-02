@@ -33,7 +33,7 @@ public class BruteForceProcessorTest
 	{
 
 
-		Set<String> list = PackageUtils.scanClassNames("net.sourceforge.jaulp", true, true);
+		Set<String> list = PackageUtils.scanClassNames("de.alpharogroup", true, true);
 		for (String string : list)
 		{
 			if (string.endsWith("Test"))
