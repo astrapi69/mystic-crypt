@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.alpharogroup</groupId>
 	<artifactId>mystic-crypt</artifactId>
-	<version>3.11.0</version>
+	<version>3.12.0</version>
 	<packaging>pom</packaging>
 	<inceptionYear>2015</inceptionYear>
 	<name>mystic-crypt</name>
@@ -58,11 +58,12 @@
 		<!-- LOMBOK version -->
 		<lombok.version>1.16.4</lombok.version>
 		<!-- PARENT PROJECT versions -->
-		<jaulp.core.version>3.11.0</jaulp.core.version>
-		<randomizer.version>${jaulp.core.version}</randomizer.version>
+		<jaulp.core.version>3.12.0</jaulp.core.version>		
 		<jaulp.time.version>${jaulp.core.version}</jaulp.time.version>
 		<jaulp.lang.version>${jaulp.core.version}</jaulp.lang.version>
-		<jaulp.test.objects.version>${jaulp.core.version}</jaulp.test.objects.version>
+		<jaulp.test.objects.version>${jaulp.core.version}</jaulp.test.objects.version>			
+		<!-- PARENT PROJECT versions -->		
+		<randomizer.version>${project.version}</randomizer.version>		
 		<!-- EXTERNAL LIBRARIES versions -->
 		<commons-codec.version>1.10</commons-codec.version>
 		<!-- LOGGING versions -->
