@@ -28,16 +28,45 @@ public class HexDump
 			'9', 'A', 'B', 'C', 'D', 'E', 'F' };
 
 	/**
-	 * Transform the given String into an array of characters representing the hexadecimal values of
-	 * each byte in order.
+	 * Transform the given byte array that contains the binary data decoded to a String object. The
+	 * given byte array comes usually from the {@link HexDump#decodeHex(char[])} method.
+	 *
+	 * @param data
+	 *            the given byte array that contains the binary data decoded
+	 * @return the decoded string
+	 */
+	public static String decodeHex(final byte[] data)
+	{
+		return new String(data);
+	}
+
+	/**
+	 * Transform the given array of characters representing hexadecimal values into an array of
+	 * bytes.
 	 * 
 	 * @param data
-	 *            the byte array
-	 * @return the resulted char array of the transformation.
+	 *            the array of characters
+	 * @return A byte array that contains the binary data decoded from the given char array.
+	 * @throws DecoderException
+	 *             is thrown if an odd number or illegal of characters is supplied
 	 */
-	public static char[] encodeHex(String data)
+	public static byte[] decodeHex(final char[] data) throws DecoderException
 	{
-		return encodeHex(data.getBytes());
+		return Hex.decodeHex(data);
+	}
+
+	/**
+	 * Transform the given array of characters representing hexadecimal values into a String object.
+	 *
+	 * @param data
+	 *            the array of characters
+	 * @return the decoded string
+	 * @throws DecoderException
+	 *             is thrown if an odd number or illegal of characters is supplied
+	 */
+	public static String decodeHexToString(final char[] data) throws DecoderException
+	{
+		return new String(Hex.decodeHex(data));
 	}
 
 	/**
@@ -48,7 +77,7 @@ public class HexDump
 	 *            the byte array
 	 * @return the resulted char array of the transformation.
 	 */
-	public static char[] encodeHex(byte[] data)
+	public static char[] encodeHex(final byte[] data)
 	{
 		return encodeHex(data, true);
 	}
@@ -70,45 +99,16 @@ public class HexDump
 	}
 
 	/**
-	 * Transform the given array of characters representing hexadecimal values into an array of
-	 * bytes.
+	 * Transform the given String into an array of characters representing the hexadecimal values of
+	 * each byte in order.
 	 * 
 	 * @param data
-	 *            the array of characters
-	 * @return A byte array that contains the binary data decoded from the given char array.
-	 * @throws DecoderException
-	 *             is thrown if an odd number or illegal of characters is supplied
+	 *            the byte array
+	 * @return the resulted char array of the transformation.
 	 */
-	public static byte[] decodeHex(char[] data) throws DecoderException
+	public static char[] encodeHex(final String data)
 	{
-		return Hex.decodeHex(data);
-	}
-
-	/**
-	 * Transform the given byte array that contains the binary data decoded to a String object. The
-	 * given byte array comes usually from the {@link HexDump#decodeHex(char[])} method.
-	 *
-	 * @param data
-	 *            the given byte array that contains the binary data decoded
-	 * @return the decoded string
-	 */
-	public static String decodeHex(byte[] data)
-	{
-		return new String(data);
-	}
-
-	/**
-	 * Transform the given array of characters representing hexadecimal values into a String object.
-	 *
-	 * @param data
-	 *            the array of characters
-	 * @return the decoded string
-	 * @throws DecoderException
-	 *             is thrown if an odd number or illegal of characters is supplied
-	 */
-	public static String decodeHexToString(char[] data) throws DecoderException
-	{
-		return new String(Hex.decodeHex(data));
+		return encodeHex(data.getBytes());
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class HexDump
 	 *            the integer value to transform
 	 * @return the char as a hexadecimal value.
 	 */
-	public static char toHex(int i)
+	public static char toHex(final int i)
 	{
 		return HEXADECIMAL_DIGITS[i & 0xF];
 	}

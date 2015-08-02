@@ -41,11 +41,21 @@ public class BruteForceProcessor
 	 * @param attemptLength
 	 *            the attempt length
 	 */
-	public BruteForceProcessor(char[] possiblesCharacters, int attemptLength)
+	public BruteForceProcessor(final char[] possiblesCharacters, final int attemptLength)
 	{
 		this.possiblesCharacters = possiblesCharacters;
 		this.currentAttempt = new char[attemptLength];
 		Arrays.fill(currentAttempt, possiblesCharacters[0]);
+	}
+
+	/**
+	 * Gets the current attempt.
+	 *
+	 * @return the current attempt
+	 */
+	public String getCurrentAttempt()
+	{
+		return new String(currentAttempt);
 	}
 
 	/**
@@ -77,15 +87,5 @@ public class BruteForceProcessor
 				break;
 			}
 		}
-	}
-
-	/**
-	 * Gets the current attempt.
-	 *
-	 * @return the current attempt
-	 */
-	public String getCurrentAttempt()
-	{
-		return new String(currentAttempt);
 	}
 }

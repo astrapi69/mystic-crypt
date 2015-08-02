@@ -57,7 +57,7 @@ public enum Algorithm
 	 * @param algorithm
 	 *            the algorithm.
 	 */
-	Algorithm(String algorithm)
+	Algorithm(final String algorithm)
 	{
 		this.algorithm = algorithm;
 	}

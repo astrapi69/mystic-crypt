@@ -116,22 +116,22 @@ public class AWTLottoTip extends Frame implements ActionListener
 
 			/**
 			 * (non-Javadoc)
-			 *
-			 * @see java.awt.event.WindowAdapter#windowClosing(java.awt.event.WindowEvent)
+			 * 
+			 * @see java.awt.event.WindowAdapter#windowClosed(java.awt.event.WindowEvent)
 			 */
 			@Override
-			public void windowClosing(WindowEvent we)
+			public void windowClosed(final WindowEvent we)
 			{
 				System.exit(0);
 			}
 
 			/**
 			 * (non-Javadoc)
-			 * 
-			 * @see java.awt.event.WindowAdapter#windowClosed(java.awt.event.WindowEvent)
+			 *
+			 * @see java.awt.event.WindowAdapter#windowClosing(java.awt.event.WindowEvent)
 			 */
 			@Override
-			public void windowClosed(WindowEvent we)
+			public void windowClosing(final WindowEvent we)
 			{
 				System.exit(0);
 			}

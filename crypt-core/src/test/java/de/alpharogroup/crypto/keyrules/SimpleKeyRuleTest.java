@@ -29,20 +29,20 @@ public class SimpleKeyRuleTest
 	public void test()
 	{
 		// a key for encryption
-		String key = "XnQ6eyTmK_ca-rLE_6U4";
+		final String key = "XnQ6eyTmK_ca-rLE_6U4";
 		// create a rule for obfuscate the key
-		Map<String, String> keymap = new HashMap<>();
+		final Map<String, String> keymap = new HashMap<>();
 		keymap.put("6", "666");
 		keymap.put("T", "t");
 		keymap.put("L", "777");
 		// create the rule
-		SimpleKeyRule replaceKeyRule = new SimpleKeyRule(keymap);
+		final SimpleKeyRule replaceKeyRule = new SimpleKeyRule(keymap);
 		// obfuscate the key
-		Obfuscator obfuscator = new Obfuscator(replaceKeyRule, key);
-		String obfuscatedKey = obfuscator.obfuscate();
+		final Obfuscator obfuscator = new Obfuscator(replaceKeyRule, key);
+		final String obfuscatedKey = obfuscator.obfuscate();
 		AssertJUnit.assertEquals("XnQ666eytmK_ca-r777E_666U4", obfuscatedKey);
 		// disentangledKey the key
-		String disentangledKey = obfuscator.disentangle();
+		final String disentangledKey = obfuscator.disentangle();
 		AssertJUnit.assertEquals(key, disentangledKey);
 
 	}

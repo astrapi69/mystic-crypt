@@ -25,13 +25,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import de.alpharogroup.BaseTestCase;
-
-import de.alpharogroup.test.objects.Gender;
 import org.testng.AssertJUnit;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import de.alpharogroup.BaseTestCase;
+import de.alpharogroup.test.objects.Gender;
 
 /**
  * Test class for the class RandomUtils.
@@ -64,8 +64,7 @@ public class RandomUtilsTest extends BaseTestCase
 
 
 	/**
-	 * Test method for
-	 * {@link de.alpharogroup.random.RandomUtils#getRandomEntry(java.util.List)} .
+	 * Test method for {@link de.alpharogroup.random.RandomUtils#getRandomEntry(java.util.List)} .
 	 */
 	@Test
 	public void testGetRandomEntryList()
@@ -86,8 +85,7 @@ public class RandomUtilsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for
-	 * {@link de.alpharogroup.random.RandomUtils#getRandomEntry(java.util.Map)} .
+	 * Test method for {@link de.alpharogroup.random.RandomUtils#getRandomEntry(java.util.Map)} .
 	 */
 	@Test
 	public void testGetRandomEntryMap()
@@ -107,6 +105,20 @@ public class RandomUtilsTest extends BaseTestCase
 		}
 	}
 
+	@Test
+	public void testGetRandomEnum()
+	{
+		final Gender[] genders = Gender.values();
+		Gender randomEnumEntry = RandomUtils.getRandomEnum(genders);
+		System.out.println(randomEnumEntry.name());
+
+		randomEnumEntry = RandomUtils.getRandomEnum(randomEnumEntry);
+		System.out.println(randomEnumEntry.name());
+
+		randomEnumEntry = RandomUtils.getRandomEnum(Gender.class);
+		System.out.println(randomEnumEntry.name());
+	}
+
 	/**
 	 * Test method for {@link de.alpharogroup.random.RandomUtils#getRandomFloat(int, int)} .
 	 */
@@ -124,8 +136,7 @@ public class RandomUtilsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomUtils#getRandomKey(java.util.Map)}
-	 * .
+	 * Test method for {@link de.alpharogroup.random.RandomUtils#getRandomKey(java.util.Map)} .
 	 */
 	@Test
 	public void testGetRandomKey()
@@ -154,9 +165,15 @@ public class RandomUtilsTest extends BaseTestCase
 
 	}
 
+	@Test
+	public void testRandomByteArray()
+	{
+		final byte[] randomByteArray = RandomUtils.randomByteArray(8);
+		System.out.println(new String(randomByteArray, Charset.forName("UTF-8")));
+	}
+
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomUtils#randomChar(java.lang.String)}
-	 * .
+	 * Test method for {@link de.alpharogroup.random.RandomUtils#randomChar(java.lang.String)} .
 	 */
 	@Test
 	public void testRandomChar()
@@ -181,7 +198,7 @@ public class RandomUtilsTest extends BaseTestCase
 		System.out.println("Generate 100 secure random numbers:");
 		for (int i = 0; i < 100; i++)
 		{
-			int randomInt = RandomUtils.randomInt(5);
+			final int randomInt = RandomUtils.randomInt(5);
 			System.out.println(randomInt);
 		}
 	}
@@ -220,27 +237,6 @@ public class RandomUtilsTest extends BaseTestCase
 			this.result = randomString.contains(charBuffer);
 			AssertJUnit.assertTrue("", this.result);
 		}
-	}
-
-	@Test
-	public void testRandomByteArray()
-	{
-		byte[] randomByteArray = RandomUtils.randomByteArray(8);
-		System.out.println(new String(randomByteArray, Charset.forName("UTF-8")));
-	}
-
-	@Test
-	public void testGetRandomEnum()
-	{
-		Gender[] genders = Gender.values();
-		Gender randomEnumEntry = RandomUtils.getRandomEnum(genders);
-		System.out.println(randomEnumEntry.name());
-
-		randomEnumEntry = RandomUtils.getRandomEnum(randomEnumEntry);
-		System.out.println(randomEnumEntry.name());
-
-		randomEnumEntry = RandomUtils.getRandomEnum(Gender.class);
-		System.out.println(randomEnumEntry.name());
 	}
 
 }

@@ -48,16 +48,16 @@ public class HexEncryptDecryptorTest
 		UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException,
 		BadPaddingException, DecoderException
 	{
-		String test = "I'm an hellenic boy and will be encrypted with the HexEncryptor;-)";
+		final String test = "I'm an hellenic boy and will be encrypted with the HexEncryptor;-)";
 		System.out.println("String before encryption:");
 		System.out.println(test);
-		String key = "1234567890123456";
-		HexEncryptor encryptor = new HexEncryptor(key);
-		String encrypted = encryptor.encrypt(test);
+		final String key = "1234567890123456";
+		final HexEncryptor encryptor = new HexEncryptor(key);
+		final String encrypted = encryptor.encrypt(test);
 		System.out.println("String after encryption:");
 		System.out.println(encrypted);
-		HexDecryptor decryptor = new HexDecryptor(key);
-		String decryted = decryptor.decrypt(encrypted);
+		final HexDecryptor decryptor = new HexDecryptor(key);
+		final String decryted = decryptor.decrypt(encrypted);
 		System.out.println("String after decryption:");
 		System.out.println(decryted);
 		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",

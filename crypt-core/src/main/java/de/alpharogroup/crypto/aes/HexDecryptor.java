@@ -29,12 +29,13 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import org.apache.commons.codec.DecoderException;
+
 import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.SimpleDecryptor;
 import de.alpharogroup.crypto.algorithm.Algorithm;
 import de.alpharogroup.crypto.interfaces.Decryptor;
-
-import org.apache.commons.codec.DecoderException;
 
 /**
  * Instantiates a new hex decryptor.
@@ -98,6 +99,7 @@ public class HexDecryptor implements Decryptor
 	 * @throws BadPaddingException
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
 	 */
+	@Override
 	public String decrypt(final String encypted) throws InvalidKeyException,
 		UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException,
 		DecoderException, IllegalBlockSizeException, BadPaddingException
@@ -134,7 +136,7 @@ public class HexDecryptor implements Decryptor
 			{
 				key = CryptConst.PRIVATE_KEY.getBytes("UTF-8");
 			}
-			SecretKeySpec skeySpec = new SecretKeySpec(key, Algorithm.AES.getAlgorithm());
+			final SecretKeySpec skeySpec = new SecretKeySpec(key, Algorithm.AES.getAlgorithm());
 			this.cipher = Cipher.getInstance(Algorithm.AES.getAlgorithm());
 			cipher.init(Cipher.DECRYPT_MODE, skeySpec);
 		}

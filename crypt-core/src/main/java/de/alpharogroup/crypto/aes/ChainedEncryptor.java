@@ -51,10 +51,11 @@ public class ChainedEncryptor implements Encryptor
 	 * @throws Exception
 	 *             is thrown if encryption fails.
 	 */
-	public String encrypt(String string) throws Exception
+	@Override
+	public String encrypt(final String string) throws Exception
 	{
 		String result = string;
-		for (Encryptor encryptor : encryptors)
+		for (final Encryptor encryptor : encryptors)
 		{
 			result = encryptor.encrypt(result);
 		}

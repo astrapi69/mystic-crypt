@@ -45,7 +45,7 @@ public enum HashAlgorithm
 	 * @param algorithm
 	 *            the algorithm.
 	 */
-	HashAlgorithm(String algorithm)
+	HashAlgorithm(final String algorithm)
 	{
 		this.algorithm = algorithm;
 	}

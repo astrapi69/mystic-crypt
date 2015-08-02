@@ -26,12 +26,12 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import org.apache.commons.codec.binary.Base64;
+
 import de.alpharogroup.crypto.aes.HexEncryptor;
 import de.alpharogroup.crypto.algorithm.HashAlgorithm;
 import de.alpharogroup.random.Constants;
 import de.alpharogroup.random.RandomUtils;
-
-import org.apache.commons.codec.binary.Base64;
 
 /**
  * The Class Hasher.
@@ -40,6 +40,20 @@ import org.apache.commons.codec.binary.Base64;
  */
 public class Hasher
 {
+
+	/**
+	 * Gets the random salt.
+	 *
+	 * @param length
+	 *            the length
+	 * @param charset
+	 *            the charset
+	 * @return the random salt
+	 */
+	public static byte[] getRandomSalt(final int length, final Charset charset)
+	{
+		return RandomUtils.getRandomString(Constants.LCUCCHARSWN, length).getBytes(charset);
+	}
 
 	/**
 	 * Hash.
@@ -56,13 +70,21 @@ public class Hasher
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the MessageDigest object fails.
 	 */
-	public static String hash(String hashIt, String salt, HashAlgorithm hashAlgorithm,
-		Charset charset) throws NoSuchAlgorithmException
+	public static String hash(final String hashIt, final String salt,
+		final HashAlgorithm hashAlgorithm, final Charset charset) throws NoSuchAlgorithmException
 	{
-		MessageDigest messageDigest = MessageDigest.getInstance(hashAlgorithm.getAlgorithm());
+		final MessageDigest messageDigest = MessageDigest.getInstance(hashAlgorithm.getAlgorithm());
 		messageDigest.reset();
 		messageDigest.update(salt.getBytes(charset));
 		return new String(messageDigest.digest(hashIt.getBytes(charset)), charset);
+	}
+
+	public static String hashAndBase64(final String hashIt, final String salt,
+		final HashAlgorithm hashAlgorithm, final Charset charset) throws NoSuchAlgorithmException
+	{
+		final String hashedAndBase64 = new Base64().encodeToString(hash(hashIt, salt,
+			hashAlgorithm, charset).getBytes(charset));
+		return hashedAndBase64;
 	}
 
 	/**
@@ -90,35 +112,13 @@ public class Hasher
 	 * @throws IllegalBlockSizeException
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
 	 */
-	public static String hashAndHex(String hashIt, String salt, HashAlgorithm hashAlgorithm,
-		Charset charset) throws NoSuchAlgorithmException, InvalidKeyException,
-		UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException,
-		BadPaddingException
+	public static String hashAndHex(final String hashIt, final String salt,
+		final HashAlgorithm hashAlgorithm, final Charset charset) throws NoSuchAlgorithmException,
+		InvalidKeyException, UnsupportedEncodingException, NoSuchPaddingException,
+		IllegalBlockSizeException, BadPaddingException
 	{
-		HexEncryptor hexEncryptor = new HexEncryptor();
+		final HexEncryptor hexEncryptor = new HexEncryptor();
 		return hexEncryptor.encrypt(hash(hashIt, salt, hashAlgorithm, charset));
-	}
-
-	public static String hashAndBase64(String hashIt, String salt, HashAlgorithm hashAlgorithm,
-		Charset charset) throws NoSuchAlgorithmException
-	{
-		String hashedAndBase64 = new Base64().encodeToString(hash(hashIt, salt, hashAlgorithm,
-			charset).getBytes(charset));
-		return hashedAndBase64;
-	}
-
-	/**
-	 * Gets the random salt.
-	 *
-	 * @param length
-	 *            the length
-	 * @param charset
-	 *            the charset
-	 * @return the random salt
-	 */
-	public static byte[] getRandomSalt(int length, Charset charset)
-	{
-		return RandomUtils.getRandomString(Constants.LCUCCHARSWN, length).getBytes(charset);
 	}
 
 }

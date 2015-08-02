@@ -28,15 +28,49 @@ public class HexDumpTest
 {
 
 	/**
-	 * Test method for {@link de.alpharogroup.crypto.aes.HexDump#encodeHex(String)}
+	 * Test method for {@link de.alpharogroup.crypto.aes.HexDump#decodeHex(char[])}
+	 *
+	 * @throws DecoderException
+	 *             the decoder exception
 	 */
 	@Test
-	public void testEncodeString()
+	public void testDecodeHex() throws DecoderException
 	{
-		final String secretMessage = "Secret message";
-		final String expected = "536563726574206d657373616765";
-		char[] actualCharArray = HexDump.encodeHex(secretMessage);
-		String actual = new String(actualCharArray);
+		final String expected = "Secret message";
+		final char[] actualCharArray = HexDump.encodeHex(StringUtils.getBytesUtf8(expected));
+		final byte[] decoded = HexDump.decodeHex(actualCharArray);
+		final String actual = new String(decoded);
+		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test method for {@link de.alpharogroup.crypto.aes.HexDump#decodeHex(byte[])}
+	 *
+	 * @throws DecoderException
+	 *             the decoder exception
+	 */
+	@Test
+	public void testDecodeHexCharacterArray() throws DecoderException
+	{
+		final String expected = "Secret message";
+		final char[] actualCharArray = HexDump.encodeHex(StringUtils.getBytesUtf8(expected));
+		final byte[] decoded = HexDump.decodeHex(actualCharArray);
+		final String actual = HexDump.decodeHex(decoded);
+		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test method for {@link de.alpharogroup.crypto.aes.HexDump#decodeHexToString(char[])}
+	 *
+	 * @throws DecoderException
+	 *             the decoder exception
+	 */
+	@Test
+	public void testDecodeHexToString() throws DecoderException
+	{
+		final String expected = "Secret message";
+		final char[] actualCharArray = HexDump.encodeHex(StringUtils.getBytesUtf8(expected));
+		final String actual = HexDump.decodeHexToString(actualCharArray);
 		assertEquals(expected, actual);
 	}
 
@@ -48,8 +82,8 @@ public class HexDumpTest
 	{
 		final String secretMessage = "Secret message";
 		final String expected = "536563726574206d657373616765";
-		char[] actualCharArray = HexDump.encodeHex(StringUtils.getBytesUtf8(secretMessage));
-		String actual = new String(actualCharArray);
+		final char[] actualCharArray = HexDump.encodeHex(StringUtils.getBytesUtf8(secretMessage));
+		final String actual = new String(actualCharArray);
 		assertEquals(expected, actual);
 	}
 
@@ -70,49 +104,15 @@ public class HexDumpTest
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.crypto.aes.HexDump#decodeHex(char[])}
-	 *
-	 * @throws DecoderException
-	 *             the decoder exception
+	 * Test method for {@link de.alpharogroup.crypto.aes.HexDump#encodeHex(String)}
 	 */
 	@Test
-	public void testDecodeHex() throws DecoderException
+	public void testEncodeString()
 	{
-		final String expected = "Secret message";
-		char[] actualCharArray = HexDump.encodeHex(StringUtils.getBytesUtf8(expected));
-		byte[] decoded = HexDump.decodeHex(actualCharArray);
-		String actual = new String(decoded);
-		assertEquals(expected, actual);
-	}
-
-	/**
-	 * Test method for {@link de.alpharogroup.crypto.aes.HexDump#decodeHex(byte[])}
-	 *
-	 * @throws DecoderException
-	 *             the decoder exception
-	 */
-	@Test
-	public void testDecodeHexCharacterArray() throws DecoderException
-	{
-		final String expected = "Secret message";
-		char[] actualCharArray = HexDump.encodeHex(StringUtils.getBytesUtf8(expected));
-		byte[] decoded = HexDump.decodeHex(actualCharArray);
-		String actual = HexDump.decodeHex(decoded);
-		assertEquals(expected, actual);
-	}
-
-	/**
-	 * Test method for {@link de.alpharogroup.crypto.aes.HexDump#decodeHexToString(char[])}
-	 *
-	 * @throws DecoderException
-	 *             the decoder exception
-	 */
-	@Test
-	public void testDecodeHexToString() throws DecoderException
-	{
-		final String expected = "Secret message";
-		char[] actualCharArray = HexDump.encodeHex(StringUtils.getBytesUtf8(expected));
-		String actual = HexDump.decodeHexToString(actualCharArray);
+		final String secretMessage = "Secret message";
+		final String expected = "536563726574206d657373616765";
+		final char[] actualCharArray = HexDump.encodeHex(secretMessage);
+		final String actual = new String(actualCharArray);
 		assertEquals(expected, actual);
 	}
 

@@ -46,12 +46,26 @@ public class RandomUtils
 		{
 			secureRandom = SecureRandom.getInstance("SHA1PRNG");
 		}
-		catch (NoSuchAlgorithmException e)
+		catch (final NoSuchAlgorithmException e)
 		{
 			// ignore...
 		}
 	}
 
+
+	/**
+	 * The Method getRandomBigDecimal(int,int) gets an random BigDecimal.
+	 *
+	 * @param afterComma
+	 *            How many decimal places after the comma.
+	 * @param beforeComma
+	 *            How many decimal places before the comma.
+	 * @return The produced BigDecimal.
+	 */
+	public static BigDecimal getRandomBigDecimal(final int afterComma, final int beforeComma)
+	{
+		return new BigDecimal(getRandomFloatString(afterComma, beforeComma));
+	}
 
 	/**
 	 * The Method getRandomByte() selects a random Byte object.
@@ -70,15 +84,16 @@ public class RandomUtils
 	 *            the length.
 	 * @return the Byte[]
 	 */
-	public static Byte[] getRandomByteArray(int length)
+	public static Byte[] getRandomByteArray(final int length)
 	{
-		Byte[] randomByteArray = new Byte[length];
+		final Byte[] randomByteArray = new Byte[length];
 		for (int i = 0; i < length; i++)
 		{
 			randomByteArray[i] = getRandomByte();
 		}
 		return randomByteArray;
 	}
+
 
 	/**
 	 * Returns a random entry from the given List.
@@ -114,6 +129,82 @@ public class RandomUtils
 
 
 	/**
+	 * Gets the random enum.
+	 *
+	 * @param <T>
+	 *            the generic type
+	 * @param clazz
+	 *            the clazz
+	 * @return the random enum
+	 */
+	public static <T extends Enum<?>> T getRandomEnum(final Class<T> clazz)
+	{
+		return getRandomEnum(clazz.getEnumConstants());
+	}
+
+	/**
+	 * Gets the random enum.
+	 *
+	 * @param <T>
+	 *            the generic type
+	 * @param classname
+	 *            the classname
+	 * @return the random enum
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T extends Enum<?>> T getRandomEnum(final String classname)
+	{
+		if (classname != null && !classname.isEmpty())
+		{
+			Class<T> enumClass = null;
+			try
+			{
+				enumClass = (Class<T>)Class.forName(classname);
+				return getRandomEnum(enumClass);
+			}
+			catch (final ClassNotFoundException e)
+			{
+				return null;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Gets the random enum.
+	 *
+	 * @param <T>
+	 *            the generic type
+	 * @param obj
+	 *            the obj
+	 * @return the random enum
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T extends Enum<?>> T getRandomEnum(final T obj)
+	{
+		if (obj != null)
+		{
+			final Class<T> clazz = (Class<T>)obj.getClass();
+			return getRandomEnum(clazz);
+		}
+		return null;
+	}
+
+	/**
+	 * Gets the random enum.
+	 *
+	 * @param <T>
+	 *            the generic type
+	 * @param values
+	 *            the values
+	 * @return the random enum
+	 */
+	public static <T extends Enum<?>> T getRandomEnum(final T[] values)
+	{
+		return values[randomInt(values.length)];
+	}
+
+	/**
 	 * The Method getRandomFloat(int,int) gets an random float.
 	 *
 	 * @param afterComma
@@ -127,6 +218,22 @@ public class RandomUtils
 		return randomFloat(afterComma, beforeComma);
 	}
 
+	/**
+	 * Gets the random float string.
+	 *
+	 * @param afterComma
+	 *            How many decimal places after the comma.
+	 * @param beforeComma
+	 *            How many decimal places before the comma.
+	 * @return the random float string
+	 */
+	private static String getRandomFloatString(final int afterComma, final int beforeComma)
+	{
+		final String nachkommastellen = getRandomNumericString(afterComma);
+		final String vorkommastellen = getRandomNumericString(beforeComma);
+		final String result = nachkommastellen + "." + vorkommastellen;
+		return result;
+	}
 
 	/**
 	 * Returns a random index from the given List.
@@ -167,8 +274,8 @@ public class RandomUtils
 	 */
 	public static String getRandomNumericString()
 	{
-		int maxLength = Math.min(randomInt(1000), 1024);
-		StringBuilder sb = new StringBuilder(maxLength);
+		final int maxLength = Math.min(randomInt(1000), 1024);
+		final StringBuilder sb = new StringBuilder(maxLength);
 		for (int i = 0; i < maxLength; i++)
 		{
 			sb.append(randomInt());
@@ -198,8 +305,8 @@ public class RandomUtils
 	 */
 	public static String getRandomString(final int length)
 	{
-		int maxLength = Math.min(length, 1024);
-		StringBuilder sb = new StringBuilder(maxLength);
+		final int maxLength = Math.min(length, 1024);
+		final StringBuilder sb = new StringBuilder(maxLength);
 		for (int i = 0; i < maxLength; i++)
 		{
 			sb.append(randomChar());
@@ -269,9 +376,9 @@ public class RandomUtils
 	 *            the length.
 	 * @return the byte[]
 	 */
-	public static byte[] randomByteArray(int length)
+	public static byte[] randomByteArray(final int length)
 	{
-		byte[] randomByteArray = new byte[length];
+		final byte[] randomByteArray = new byte[length];
 		for (int i = 0; i < length; i++)
 		{
 			randomByteArray[i] = randomByte();
@@ -309,6 +416,7 @@ public class RandomUtils
 	{
 		return string.charAt(randomInt(string.length()));
 	}
+
 
 	/**
 	 * The Method randomDouble(double) gets an double to the spezified range. For example: if you
@@ -353,15 +461,16 @@ public class RandomUtils
 	 *            the pattern
 	 * @return the random double between
 	 */
-	public static double randomDoubleBetween(final double start, final double end, String pattern)
+	public static double randomDoubleBetween(final double start, final double end,
+		final String pattern)
 	{
-		DecimalFormat formatter = new DecimalFormat(pattern);
-		String rd = formatter.format(randomDoubleBetween(start, end));
+		final DecimalFormat formatter = new DecimalFormat(pattern);
+		final String rd = formatter.format(randomDoubleBetween(start, end));
 		try
 		{
 			return formatter.parse(rd).doubleValue();
 		}
-		catch (ParseException e)
+		catch (final ParseException e)
 		{
 			throw new NumberFormatException("Could not be parsed:" + rd);
 		}
@@ -399,38 +508,6 @@ public class RandomUtils
 	}
 
 	/**
-	 * Gets the random float string.
-	 *
-	 * @param afterComma
-	 *            How many decimal places after the comma.
-	 * @param beforeComma
-	 *            How many decimal places before the comma.
-	 * @return the random float string
-	 */
-	private static String getRandomFloatString(final int afterComma, final int beforeComma)
-	{
-		final String nachkommastellen = getRandomNumericString(afterComma);
-		final String vorkommastellen = getRandomNumericString(beforeComma);
-		final String result = nachkommastellen + "." + vorkommastellen;
-		return result;
-	}
-
-
-	/**
-	 * The Method getRandomBigDecimal(int,int) gets an random BigDecimal.
-	 *
-	 * @param afterComma
-	 *            How many decimal places after the comma.
-	 * @param beforeComma
-	 *            How many decimal places before the comma.
-	 * @return The produced BigDecimal.
-	 */
-	public static BigDecimal getRandomBigDecimal(final int afterComma, final int beforeComma)
-	{
-		return new BigDecimal(getRandomFloatString(afterComma, beforeComma));
-	}
-
-	/**
 	 * Gets the random float between the range from start and end.
 	 *
 	 * @param start
@@ -456,15 +533,15 @@ public class RandomUtils
 	 *            the pattern
 	 * @return the random float between
 	 */
-	public static float randomFloatBetween(final float start, final float end, String pattern)
+	public static float randomFloatBetween(final float start, final float end, final String pattern)
 	{
-		NumberFormat formatter = new DecimalFormat(pattern);
-		String rf = formatter.format(randomFloatBetween(start, end));
+		final NumberFormat formatter = new DecimalFormat(pattern);
+		final String rf = formatter.format(randomFloatBetween(start, end));
 		try
 		{
 			return formatter.parse(rf).floatValue();
 		}
-		catch (ParseException e)
+		catch (final ParseException e)
 		{
 			throw new NumberFormatException("Could not be parsed:" + rf);
 		}
@@ -509,82 +586,6 @@ public class RandomUtils
 	public static int randomIntBetween(final int start, final int end)
 	{
 		return start + randomInt(end - start);
-	}
-
-	/**
-	 * Gets the random enum.
-	 *
-	 * @param <T>
-	 *            the generic type
-	 * @param values
-	 *            the values
-	 * @return the random enum
-	 */
-	public static <T extends Enum<?>> T getRandomEnum(T[] values)
-	{
-		return values[randomInt(values.length)];
-	}
-
-	/**
-	 * Gets the random enum.
-	 *
-	 * @param <T>
-	 *            the generic type
-	 * @param clazz
-	 *            the clazz
-	 * @return the random enum
-	 */
-	public static <T extends Enum<?>> T getRandomEnum(Class<T> clazz)
-	{
-		return getRandomEnum(clazz.getEnumConstants());
-	}
-
-	/**
-	 * Gets the random enum.
-	 *
-	 * @param <T>
-	 *            the generic type
-	 * @param obj
-	 *            the obj
-	 * @return the random enum
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T extends Enum<?>> T getRandomEnum(T obj)
-	{
-		if (obj != null)
-		{
-			Class<T> clazz = (Class<T>)obj.getClass();
-			return getRandomEnum(clazz);
-		}
-		return null;
-	}
-
-	/**
-	 * Gets the random enum.
-	 *
-	 * @param <T>
-	 *            the generic type
-	 * @param classname
-	 *            the classname
-	 * @return the random enum
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T extends Enum<?>> T getRandomEnum(String classname)
-	{
-		if (classname != null && !classname.isEmpty())
-		{
-			Class<T> enumClass = null;
-			try
-			{
-				enumClass = (Class<T>)Class.forName(classname);
-				return getRandomEnum(enumClass);
-			}
-			catch (ClassNotFoundException e)
-			{
-				return null;
-			}
-		}
-		return null;
 	}
 
 

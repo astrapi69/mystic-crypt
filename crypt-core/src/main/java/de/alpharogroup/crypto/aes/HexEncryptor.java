@@ -29,11 +29,12 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import org.apache.commons.codec.binary.Hex;
+
 import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.algorithm.Algorithm;
 import de.alpharogroup.crypto.interfaces.Encryptor;
-
-import org.apache.commons.codec.binary.Hex;
 
 /**
  * Instantiates a new hex encryptor.
@@ -90,7 +91,7 @@ public class HexEncryptor implements Encryptor
 	 * @param algorithm
 	 *            the algorithm
 	 */
-	public HexEncryptor(final String privateKey, Algorithm algorithm)
+	public HexEncryptor(final String privateKey, final Algorithm algorithm)
 	{
 		this.setPrivateKey(privateKey);
 		this.algorithm = algorithm;
@@ -116,6 +117,7 @@ public class HexEncryptor implements Encryptor
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
 	 * @see de.alpharogroup.crypto.interfaces.Encryptor#encrypt(java.lang.String)
 	 */
+	@Override
 	public String encrypt(final String string) throws InvalidKeyException,
 		UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException,
 		IllegalBlockSizeException, BadPaddingException
@@ -123,7 +125,7 @@ public class HexEncryptor implements Encryptor
 		initialize();
 		final byte[] utf8 = string.getBytes("UTF-8");
 		final byte[] encrypt = this.cipher.doFinal(utf8);
-		char[] original = Hex.encodeHex(encrypt, false);
+		final char[] original = Hex.encodeHex(encrypt, false);
 		return new String(original);
 	}
 
@@ -153,7 +155,7 @@ public class HexEncryptor implements Encryptor
 			{
 				key = CryptConst.PRIVATE_KEY.getBytes("UTF-8");
 			}
-			SecretKeySpec skeySpec = new SecretKeySpec(key, algorithm.getAlgorithm());
+			final SecretKeySpec skeySpec = new SecretKeySpec(key, algorithm.getAlgorithm());
 			this.cipher = Cipher.getInstance(algorithm.getAlgorithm());
 			cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
 		}

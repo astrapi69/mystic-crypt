@@ -23,58 +23,6 @@ public class RandomObjectsUtils
 
 
 	/**
-	 * Creates a random id and returns it.
-	 *
-	 * @return the created random id.
-	 */
-	public static String newRandomId()
-	{
-		final StringBuffer sb = new StringBuffer();
-		sb.append(RandomUtils.getRandomString(Constants.LCUCCHARSWN, 2));
-		sb.append(".");
-		sb.append(RandomUtils.getRandomString(Constants.LCUCCHARSWN, 4));
-		sb.append(".");
-		sb.append(RandomUtils.getRandomString(Constants.LCUCCHARSWN, 2));
-		sb.append(".");
-		sb.append(System.currentTimeMillis());
-		sb.append(".");
-		sb.append(RandomUtils.getRandomString(Constants.LCUCCHARSWN, 2));
-		return sb.toString();
-	}
-
-
-	/**
-	 * Creates a random Name from the donated chararray.
-	 *
-	 * @param donatedChars
-	 *            The Characters for the name.
-	 * @return A random Name.
-	 */
-	public static String newRandomName(final char[] donatedChars)
-	{
-		final StringBuffer sb = new StringBuffer(donatedChars.length);
-		final List<Character> dc = new ArrayList<>(donatedChars.length);
-		for (char donatedChar : donatedChars)
-		{
-			dc.add(donatedChar);
-		}
-		boolean fullList = true;
-		while (fullList)
-		{
-			final int randomIndex = RandomUtils.randomInt(dc.size());
-			final Character c = dc.get(randomIndex);
-			sb.append(c);
-			dc.remove(randomIndex);
-			if (dc.isEmpty())
-			{
-				fullList = false;
-			}
-		}
-		return sb.toString();
-	}
-
-
-	/**
 	 * Gets an infomail address from the given url.
 	 *
 	 * @param url
@@ -109,6 +57,7 @@ public class RandomObjectsUtils
 		}
 		return email.toString();
 	}
+
 
 	/**
 	 * The Method getRandomEmail() gets a random email-address.
@@ -151,7 +100,6 @@ public class RandomObjectsUtils
 		sb.append(pe);
 		return sb.toString();
 	}
-
 
 	/**
 	 * Gets a random mobil number from a mobilphone.
@@ -198,6 +146,7 @@ public class RandomObjectsUtils
 		return randomPhonenumber.toString();
 	}
 
+
 	/**
 	 * Gets a random name for a website.
 	 *
@@ -216,6 +165,57 @@ public class RandomObjectsUtils
 		website.append(".");
 		website.append(topDomain);
 		return website.toString();
+	}
+
+
+	/**
+	 * Creates a random id and returns it.
+	 *
+	 * @return the created random id.
+	 */
+	public static String newRandomId()
+	{
+		final StringBuffer sb = new StringBuffer();
+		sb.append(RandomUtils.getRandomString(Constants.LCUCCHARSWN, 2));
+		sb.append(".");
+		sb.append(RandomUtils.getRandomString(Constants.LCUCCHARSWN, 4));
+		sb.append(".");
+		sb.append(RandomUtils.getRandomString(Constants.LCUCCHARSWN, 2));
+		sb.append(".");
+		sb.append(System.currentTimeMillis());
+		sb.append(".");
+		sb.append(RandomUtils.getRandomString(Constants.LCUCCHARSWN, 2));
+		return sb.toString();
+	}
+
+	/**
+	 * Creates a random Name from the donated chararray.
+	 *
+	 * @param donatedChars
+	 *            The Characters for the name.
+	 * @return A random Name.
+	 */
+	public static String newRandomName(final char[] donatedChars)
+	{
+		final StringBuffer sb = new StringBuffer(donatedChars.length);
+		final List<Character> dc = new ArrayList<>(donatedChars.length);
+		for (final char donatedChar : donatedChars)
+		{
+			dc.add(donatedChar);
+		}
+		boolean fullList = true;
+		while (fullList)
+		{
+			final int randomIndex = RandomUtils.randomInt(dc.size());
+			final Character c = dc.get(randomIndex);
+			sb.append(c);
+			dc.remove(randomIndex);
+			if (dc.isEmpty())
+			{
+				fullList = false;
+			}
+		}
+		return sb.toString();
 	}
 
 }

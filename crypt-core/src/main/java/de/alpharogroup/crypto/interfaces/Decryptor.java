@@ -33,6 +33,6 @@ public interface Decryptor
 	 * @throws Exception
 	 *             is thrown if decryption fails.
 	 */
-	public String decrypt(String encypted) throws Exception;
+	public String decrypt(final String encypted) throws Exception;
 
 }

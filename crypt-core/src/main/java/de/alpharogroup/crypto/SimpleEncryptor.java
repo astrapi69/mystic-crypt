@@ -34,10 +34,11 @@ import javax.crypto.spec.PBEParameterSpec;
 
 import lombok.AccessLevel;
 import lombok.Getter;
-import de.alpharogroup.crypto.interfaces.Encryptor;
-import de.alpharogroup.check.Check;
 
 import org.apache.commons.codec.binary.Base64;
+
+import de.alpharogroup.check.Check;
+import de.alpharogroup.crypto.interfaces.Encryptor;
 
 /**
  * A simple Encryptor object.
@@ -104,6 +105,7 @@ public class SimpleEncryptor implements Encryptor
 	 *
 	 * @see de.alpharogroup.crypto.interfaces.Encryptor#encrypt(java.lang.String)
 	 */
+	@Override
 	public String encrypt(final String string) throws UnsupportedEncodingException,
 		IllegalBlockSizeException, BadPaddingException, InvalidKeyException,
 		NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
@@ -112,7 +114,7 @@ public class SimpleEncryptor implements Encryptor
 		initialize();
 		final byte[] utf8 = string.getBytes(CryptConst.ENCODING);
 		final byte[] encrypt = this.cipher.doFinal(utf8);
-		String encrypted = new Base64().encodeToString(encrypt);
+		final String encrypted = new Base64().encodeToString(encrypt);
 		return encrypted;
 	}
 

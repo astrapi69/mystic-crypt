@@ -18,12 +18,12 @@ package de.alpharogroup.random;
 
 import java.nio.CharBuffer;
 
-import de.alpharogroup.BaseTestCase;
-
 import org.testng.AssertJUnit;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import de.alpharogroup.BaseTestCase;
 
 public class RandomObjectsUtilsTest extends BaseTestCase
 {
@@ -41,8 +41,7 @@ public class RandomObjectsUtilsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomObjectsUtils#newRandomName(char[])}
-	 * .
+	 * Test method for {@link de.alpharogroup.random.RandomObjectsUtils#newRandomName(char[])} .
 	 */
 	@Test
 	public void testCreatedRandomName()
@@ -74,8 +73,7 @@ public class RandomObjectsUtilsTest extends BaseTestCase
 
 	/**
 	 * Test method for
-	 * {@link de.alpharogroup.random.RandomObjectsUtils#getInfomailFromWebsite(java.lang.String)}
-	 * .
+	 * {@link de.alpharogroup.random.RandomObjectsUtils#getInfomailFromWebsite(java.lang.String)} .
 	 */
 	@Test
 	public void testGetInfomailFromWebsite()
@@ -114,8 +112,7 @@ public class RandomObjectsUtilsTest extends BaseTestCase
 
 	/**
 	 * Test method for
-	 * {@link de.alpharogroup.random.RandomObjectsUtils#getRandomFaxnumber(java.lang.String)}
-	 * .
+	 * {@link de.alpharogroup.random.RandomObjectsUtils#getRandomFaxnumber(java.lang.String)} .
 	 */
 	@Test
 	public void testGetRandomFaxnumber()
@@ -133,8 +130,7 @@ public class RandomObjectsUtilsTest extends BaseTestCase
 
 
 	/**
-	 * Test method for
-	 * {@link de.alpharogroup.random.RandomObjectsUtils#getRandomMobilnumber()}.
+	 * Test method for {@link de.alpharogroup.random.RandomObjectsUtils#getRandomMobilnumber()}.
 	 */
 	@Test
 	public void testGetRandomMobilnumber()
@@ -165,8 +161,7 @@ public class RandomObjectsUtilsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for
-	 * {@link de.alpharogroup.random.RandomObjectsUtils#getRandomPhonenumber()}.
+	 * Test method for {@link de.alpharogroup.random.RandomObjectsUtils#getRandomPhonenumber()}.
 	 */
 	@Test
 	public void testGetRandomPhonenumber()

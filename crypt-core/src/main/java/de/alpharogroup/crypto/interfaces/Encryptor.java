@@ -32,6 +32,6 @@ public interface Encryptor
 	 * @throws Exception
 	 *             is thrown if encryption fails.
 	 */
-	public String encrypt(String string) throws Exception;
+	public String encrypt(final String string) throws Exception;
 
 }

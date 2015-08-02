@@ -18,11 +18,11 @@
  */
 package de.alpharogroup.random.address;
 
-import de.alpharogroup.BaseTestCase;
-
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import de.alpharogroup.BaseTestCase;
 
 /**
  * Test class for the class RandomAddressUtils.

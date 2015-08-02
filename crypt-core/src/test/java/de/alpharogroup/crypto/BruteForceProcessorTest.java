@@ -20,10 +20,10 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.Set;
 
-import de.alpharogroup.lang.PackageUtils;
-
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
+
+import de.alpharogroup.lang.PackageUtils;
 
 public class BruteForceProcessorTest
 {
@@ -33,11 +33,13 @@ public class BruteForceProcessorTest
 	{
 
 
-		Set<String> list = PackageUtils.scanClassNames("de.alpharogroup", true, true);
-		for (String string : list)
+		final Set<String> list = PackageUtils.scanClassNames("de.alpharogroup", true, true);
+		for (final String string : list)
 		{
 			if (string.endsWith("Test"))
+			{
 				System.out.println("<class name=\"" + string + "\"/>");
+			}
 		}
 
 
@@ -47,8 +49,8 @@ public class BruteForceProcessorTest
 		possibleCharacters = new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
 				'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 
-		long start = System.currentTimeMillis();
-		BruteForceProcessor brutForce = new BruteForceProcessor(possibleCharacters, 1);
+		final long start = System.currentTimeMillis();
+		final BruteForceProcessor brutForce = new BruteForceProcessor(possibleCharacters, 1);
 		String attempt = brutForce.getCurrentAttempt();
 		boolean found = false;
 		while (true)
@@ -63,7 +65,7 @@ public class BruteForceProcessorTest
 			System.out.println("Tried: " + attempt);
 			brutForce.increment();
 		}
-		long end = System.currentTimeMillis();
+		final long end = System.currentTimeMillis();
 
 		System.out.println("Started brute force the password: " + new Date(start));
 		System.out.println("End brute force the password: " + new Date(end));

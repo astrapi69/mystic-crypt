@@ -17,8 +17,8 @@ package de.alpharogroup.crypto.keyrules;
 
 import java.util.Map;
 
-import de.alpharogroup.check.Check;
 import lombok.Getter;
+import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.interfaces.KeyRule;
 
 public class SimpleKeyRule implements KeyRule
@@ -26,7 +26,7 @@ public class SimpleKeyRule implements KeyRule
 	@Getter
 	private Map<String, String> rules;
 
-	public SimpleKeyRule(Map<String, String> rules)
+	public SimpleKeyRule(final Map<String, String> rules)
 	{
 		Check.get().notEmpty(rules, "rules");
 		this.rules = rules;

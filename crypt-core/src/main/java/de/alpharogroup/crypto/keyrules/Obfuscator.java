@@ -17,16 +17,16 @@ package de.alpharogroup.crypto.keyrules;
 
 import java.util.Map;
 
-import de.alpharogroup.check.Check;
-
 import org.apache.commons.lang.StringUtils;
+
+import de.alpharogroup.check.Check;
 
 public class Obfuscator
 {
 	private SimpleKeyRule rule;
 	private final String key;
 
-	public Obfuscator(SimpleKeyRule rule, String key)
+	public Obfuscator(final SimpleKeyRule rule, final String key)
 	{
 		Check.get().notNull(rule, "rule");
 		Check.get().notEmpty(key, "key");
@@ -34,27 +34,27 @@ public class Obfuscator
 		this.key = key;
 	}
 
+	public String disentangle()
+	{
+		String clonedKey = obfuscate();
+		final Map<String, String> rules = rule.getRules();
+		for (final Map.Entry<String, String> rule : rules.entrySet())
+		{
+			clonedKey = StringUtils.replace(clonedKey, rule.getValue(), rule.getKey());
+		}
+		return clonedKey;
+	}
+
 	public String obfuscate()
 	{
-		Map<String, String> rules = rule.getRules();
+		final Map<String, String> rules = rule.getRules();
 		String clonedKey = key;
-		for (Map.Entry<String, String> rule : rules.entrySet())
+		for (final Map.Entry<String, String> rule : rules.entrySet())
 		{
 			clonedKey = StringUtils.replace(clonedKey, rule.getKey(), rule.getValue());
 		}
 		return clonedKey;
 
-	}
-
-	public String disentangle()
-	{
-		String clonedKey = obfuscate();
-		Map<String, String> rules = rule.getRules();
-		for (Map.Entry<String, String> rule : rules.entrySet())
-		{
-			clonedKey = StringUtils.replace(clonedKey, rule.getValue(), rule.getKey());
-		}
-		return clonedKey;
 	}
 
 }
