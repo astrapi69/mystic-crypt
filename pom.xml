@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.alpharogroup</groupId>
 	<artifactId>mystic-crypt</artifactId>
-	<version>3.12.0</version>
+	<version>4.0.0</version>
 	<packaging>pom</packaging>
 	<inceptionYear>2015</inceptionYear>
 	<name>mystic-crypt</name>
@@ -58,7 +58,7 @@
 		<!-- LOMBOK version -->
 		<lombok.version>1.16.4</lombok.version>
 		<!-- PARENT PROJECT versions -->
-		<jaulp.core.version>3.12.0</jaulp.core.version>		
+		<jaulp.core.version>4.0.0</jaulp.core.version>		
 		<jaulp.time.version>${jaulp.core.version}</jaulp.time.version>
 		<jaulp.lang.version>${jaulp.core.version}</jaulp.lang.version>
 		<jaulp.test.objects.version>${jaulp.core.version}</jaulp.test.objects.version>			
@@ -74,9 +74,9 @@
 		<junit.version>4.12</junit.version>
 		<!-- MAVEN PLUGIN versions -->
 		<maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
-		<maven-compiler-plugin.source.version>1.7</maven-compiler-plugin.source.version>
-		<maven-compiler-plugin.target.version>1.7</maven-compiler-plugin.target.version>
-		<maven-compiler-plugin.compilerVersion>1.7</maven-compiler-plugin.compilerVersion>
+		<maven-compiler-plugin.source.version>1.8</maven-compiler-plugin.source.version>
+		<maven-compiler-plugin.target.version>1.8</maven-compiler-plugin.target.version>
+		<maven-compiler-plugin.compilerVersion>1.8</maven-compiler-plugin.compilerVersion>
 		<maven-compiler-plugin.encoding>UTF-8</maven-compiler-plugin.encoding>
 		<maven-compiler-plugin.optimize>true</maven-compiler-plugin.optimize>
 		<maven-compiler-plugin.showWarnings>true</maven-compiler-plugin.showWarnings>
