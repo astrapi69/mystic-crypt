@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>de.alpharogroup</groupId>
+		<artifactId>mystic-crypt</artifactId>
+		<version>4.0.0</version>
+	</parent>
+
+	<artifactId>auth-security</artifactId>
+	<packaging>jar</packaging>
+
+	<name>${project.artifactId}</name>
+
+	<description>
+		The project jaulp.security contains a few simple modules like authorisation and authentication.
+    </description>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>jaulp.file</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>randomizer</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>jaulp.collections</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>jaulp.test.objects</artifactId>
+		</dependency>
+
+	</dependencies>
+
+</project>

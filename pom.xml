@@ -46,6 +46,7 @@
 	</licenses>
 
 	<modules>
+		<module>auth-security</module>
 		<module>crypt-core</module>
 		<module>randomizer</module>
 	</modules>
@@ -58,12 +59,14 @@
 		<!-- LOMBOK version -->
 		<lombok.version>1.16.4</lombok.version>
 		<!-- PARENT PROJECT versions -->
-		<jaulp.core.version>4.0.0</jaulp.core.version>		
-		<jaulp.time.version>${jaulp.core.version}</jaulp.time.version>
+		<jaulp.core.version>4.0.0</jaulp.core.version>
+		<jaulp.collections.version>${jaulp.core.version}</jaulp.collections.version>
+		<jaulp.file.version>${jaulp.core.version}</jaulp.file.version>
 		<jaulp.lang.version>${jaulp.core.version}</jaulp.lang.version>
-		<jaulp.test.objects.version>${jaulp.core.version}</jaulp.test.objects.version>			
-		<!-- PARENT PROJECT versions -->		
-		<randomizer.version>${project.version}</randomizer.version>		
+		<jaulp.time.version>${jaulp.core.version}</jaulp.time.version>
+		<jaulp.test.objects.version>${jaulp.core.version}</jaulp.test.objects.version>
+		<!-- PARENT PROJECT versions -->
+		<randomizer.version>${project.version}</randomizer.version>
 		<!-- EXTERNAL LIBRARIES versions -->
 		<commons-codec.version>1.10</commons-codec.version>
 		<!-- LOGGING versions -->
@@ -144,6 +147,12 @@
 
 			<dependency>
 				<groupId>de.alpharogroup</groupId>
+				<artifactId>jaulp.collections</artifactId>
+				<version>${jaulp.collections.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
 				<artifactId>jaulp.time</artifactId>
 				<version>${jaulp.time.version}</version>
 			</dependency>
@@ -152,6 +161,12 @@
 				<groupId>de.alpharogroup</groupId>
 				<artifactId>jaulp.lang</artifactId>
 				<version>${jaulp.lang.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>jaulp.file</artifactId>
+				<version>${jaulp.file.version}</version>
 			</dependency>
 
 			<dependency>
@@ -513,7 +528,7 @@
 						<groupId>org.sonatype.plugins</groupId>
 						<artifactId>nexus-staging-maven-plugin</artifactId>
 					</plugin>
-					
+
 					<plugin>
 						<inherited>true</inherited>
 						<artifactId>maven-gpg-plugin</artifactId>
