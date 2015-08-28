@@ -23,9 +23,9 @@ public class WordlistProcessorTest
 		final File wordlist_1 = new File(wordlistDir, "default-pw.txt");
 		final File wordlist_2 = new File(wordlistDir, "firstnames.txt");
 		final File wordlist_3 = new File(wordlistDir, "surnames.txt");
-		final List<String> lines1 = ReadFileUtils.readLinesInList(wordlist_1, true);
-		final List<String> lines2 = ReadFileUtils.readLinesInList(wordlist_2, true);
-		final List<String> lines3 = ReadFileUtils.readLinesInList(wordlist_3, true);
+		final List<String> lines1 = ReadFileUtils.readLinesInList(wordlist_1);
+		final List<String> lines2 = ReadFileUtils.readLinesInList(wordlist_2);
+		final List<String> lines3 = ReadFileUtils.readLinesInList(wordlist_3);
 		final Set<String> set = new TreeSet<>();
 		set.addAll(lines1);
 		set.addAll(lines2);
