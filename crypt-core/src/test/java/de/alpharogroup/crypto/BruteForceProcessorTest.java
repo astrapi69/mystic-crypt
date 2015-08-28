@@ -49,10 +49,10 @@ public class BruteForceProcessorTest
 		possibleCharacters = new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
 				'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 
-		final long start = System.currentTimeMillis();
-		final BruteForceProcessor brutForce = new BruteForceProcessor(possibleCharacters, 1);
-		String attempt = brutForce.getCurrentAttempt();
+		final BruteForceProcessor processor = new BruteForceProcessor(possibleCharacters, 1);
+		String attempt = processor.getCurrentAttempt();
 		boolean found = false;
+		final long start = System.currentTimeMillis();
 		while (true)
 		{
 			if (attempt.equals(password))
@@ -61,14 +61,15 @@ public class BruteForceProcessorTest
 				found = true;
 				break;
 			}
-			attempt = brutForce.getCurrentAttempt();
+			attempt = processor.getCurrentAttempt();
 			System.out.println("Tried: " + attempt);
-			brutForce.increment();
+			processor.increment();
 		}
 		final long end = System.currentTimeMillis();
 
-		System.out.println("Started brute force the password: " + new Date(start));
-		System.out.println("End brute force the password: " + new Date(end));
+		System.out
+			.println("Started of the brute force attack for the password: " + new Date(start));
+		System.out.println("Ended of the brute force attack for the password: " + new Date(end));
 		AssertJUnit.assertTrue(found);
 	}
 

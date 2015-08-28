@@ -22,6 +22,12 @@
 			<artifactId>randomizer</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>jaulp.file</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 	
 </project>
