@@ -1,3 +1,5 @@
+package de.alpharogroup.crypto;
+
 import lombok.Builder;
 import lombok.Data;
 
