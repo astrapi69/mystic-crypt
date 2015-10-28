@@ -28,16 +28,14 @@ import java.util.Set;
 
 /**
  * Utility class for producing random data. Existing name conventions:
- *
+ * 
  * If the method starts with random* than it returns a primitive data type. If the method starts
  * with getRandom* than it returns an object.
  *
  * @version 1.1
  * @author Asterios Raptis
- *
- * @deprecated Use instead {@link RandomExtensions}. Will be removed in the next major version.
  */
-public class RandomUtils
+public class RandomExtensions
 {
 
 	/** The secure random. */
@@ -156,7 +154,7 @@ public class RandomUtils
 	@SuppressWarnings("unchecked")
 	public static <T extends Enum<?>> T getRandomEnum(final String classname)
 	{
-		if ((classname != null) && !classname.isEmpty())
+		if (classname != null && !classname.isEmpty())
 		{
 			Class<T> enumClass = null;
 			try
@@ -271,7 +269,7 @@ public class RandomUtils
 
 	/**
 	 * Generates a random numeric string.
-	 *
+	 * 
 	 * @return the generated random numeric string.
 	 */
 	public static String getRandomNumericString()
@@ -551,7 +549,7 @@ public class RandomUtils
 
 	/**
 	 * The Method randomInt() gets an int between the range 0-9.
-	 *
+	 * 
 	 * @return an int between the range 0-9.
 	 */
 	public static int randomInt()

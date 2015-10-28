@@ -17,17 +17,16 @@ package de.alpharogroup.crypto;
 
 /**
  * Utility class for the use of encrypt or decrypt information.
- *
+ * 
  * @version 1.0
  * @author Asterios Raptis
- * @deprecated Use instead {@link SimpleCrypt}. Will be removed in the next major version.
  */
-public final class SimpleCryptoUtils
+public final class SimpleCrypt
 {
 
 	/**
 	 * Decrypt the given String.
-	 *
+	 * 
 	 * @param toDecode
 	 *            The String to decrypt.
 	 * @return The decrypted String.
@@ -39,7 +38,7 @@ public final class SimpleCryptoUtils
 
 	/**
 	 * Decrypt the given String.
-	 *
+	 * 
 	 * @param toDecode
 	 *            The String to decrypt.
 	 * @param relocate
@@ -61,7 +60,7 @@ public final class SimpleCryptoUtils
 
 	/**
 	 * Encrypt the given String.
-	 *
+	 * 
 	 * @param secret
 	 *            The String to encrypt.
 	 * @return The encrypted String.
@@ -73,7 +72,7 @@ public final class SimpleCryptoUtils
 
 	/**
 	 * Encrypt the given String.
-	 *
+	 * 
 	 * @param secret
 	 *            The String to encrypt.
 	 * @param relocate
@@ -96,7 +95,7 @@ public final class SimpleCryptoUtils
 	/**
 	 * Private constructor. To avoid creating instances.
 	 */
-	private SimpleCryptoUtils()
+	private SimpleCrypt()
 	{
 	}
 

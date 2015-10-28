@@ -20,17 +20,15 @@ import java.util.Properties;
 import java.util.Set;
 
 import de.alpharogroup.lang.PropertiesUtils;
-import de.alpharogroup.random.RandomUtils;
+import de.alpharogroup.random.RandomExtensions;
 
 /**
  * Utility class to create random addresses.
  *
  * @version 1.0
  * @author Asterios Raptis
- * @deprecated Use instead {@link RandomAddressExtensions}. Will be removed in the next major
- *             version.
  */
-public class RandomAddressUtils
+public class RandomAddressExtensions
 {
 
 	/** Resource for get german streets. */
@@ -56,7 +54,7 @@ public class RandomAddressUtils
 		p = properties != null ? properties : PropertiesUtils.loadProperties(PROP_FILE_STREETS);
 		final int size = p.size();
 		final Object[] keys = p.keySet().toArray();
-		final String street = (String)p.get(keys[RandomUtils.randomInt(size)]);
+		final String street = (String)p.get(keys[RandomExtensions.randomInt(size)]);
 		return street;
 	}
 
@@ -73,7 +71,7 @@ public class RandomAddressUtils
 	public static String getRandomStreetWithNumber(final Properties properties) throws IOException
 	{
 		final String street = getRandomStreet(properties);
-		final String streetWithNumber = street + " " + RandomUtils.randomInt(200);
+		final String streetWithNumber = street + " " + RandomExtensions.randomInt(200);
 		return streetWithNumber;
 	}
 
@@ -88,7 +86,7 @@ public class RandomAddressUtils
 	{
 		final Set<Object> keyset = p.keySet();
 		final Object[] keys = keyset.toArray();
-		final int randomIndex = RandomUtils.randomInt(keys.length);
+		final int randomIndex = RandomExtensions.randomInt(keys.length);
 		final String zip = (String)keys[randomIndex];
 		return zip;
 	}

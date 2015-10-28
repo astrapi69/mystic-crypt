@@ -47,7 +47,9 @@ public class WordlistsProcessor
 	}
 
 	/**
-	 * Increment.
+	 * Increments the word list current index.
+	 *
+	 * @return true, if the current index was incremented otherwise false.
 	 */
 	public boolean increment()
 	{

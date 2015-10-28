@@ -18,13 +18,7 @@ package de.alpharogroup.random;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * The Class {@link RandomObjectsUtils}.
- *
- * @deprecated Use instead {@link RandomObjectsExtensions}. Will be removed in the next major
- *             version.
- */
-public class RandomObjectsUtils
+public class RandomObjectsExtensions
 {
 
 
@@ -73,11 +67,11 @@ public class RandomObjectsUtils
 	public static String getRandomEmail()
 	{
 		final StringBuffer email = new StringBuffer();
-		final String emailprefix = RandomUtils.getRandomString(Constants.LCCHARSWN,
-			RandomUtils.randomInt(20) + 1);
-		final String domain = RandomUtils.getRandomString(Constants.LOWCASECHARS,
-			RandomUtils.randomInt(12) + 1);
-		final String topDomain = RandomUtils.getRandomString(Constants.LOWCASECHARS, 2);
+		final String emailprefix = RandomExtensions.getRandomString(Constants.LCCHARSWN,
+			RandomExtensions.randomInt(20) + 1);
+		final String domain = RandomExtensions.getRandomString(Constants.LOWCASECHARS,
+			RandomExtensions.randomInt(12) + 1);
+		final String topDomain = RandomExtensions.getRandomString(Constants.LOWCASECHARS, 2);
 		email.append(emailprefix);
 		email.append("@");
 		email.append(domain);
@@ -116,9 +110,9 @@ public class RandomObjectsUtils
 	{
 		final StringBuffer randomPhonenumber = new StringBuffer();
 		randomPhonenumber.append("0");
-		randomPhonenumber.append(RandomUtils.getRandomNumericString(3));
+		randomPhonenumber.append(RandomExtensions.getRandomNumericString(3));
 		randomPhonenumber.append("/");
-		randomPhonenumber.append(RandomUtils.getRandomNumericString(7));
+		randomPhonenumber.append(RandomExtensions.getRandomNumericString(7));
 		return randomPhonenumber.toString();
 	}
 
@@ -132,7 +126,7 @@ public class RandomObjectsUtils
 	 */
 	public static String getRandomPassword(final int length)
 	{
-		final String password = RandomUtils.getRandomString(Constants.LCUCCHARSWN, length);
+		final String password = RandomExtensions.getRandomString(Constants.LCUCCHARSWN, length);
 		return password;
 	}
 
@@ -146,9 +140,9 @@ public class RandomObjectsUtils
 	{
 		final StringBuffer randomPhonenumber = new StringBuffer();
 		randomPhonenumber.append("0");
-		randomPhonenumber.append(RandomUtils.getRandomNumericString(4));
+		randomPhonenumber.append(RandomExtensions.getRandomNumericString(4));
 		randomPhonenumber.append("/");
-		randomPhonenumber.append(RandomUtils.getRandomNumericString(7));
+		randomPhonenumber.append(RandomExtensions.getRandomNumericString(7));
 		return randomPhonenumber.toString();
 	}
 
@@ -162,9 +156,9 @@ public class RandomObjectsUtils
 	{
 		final StringBuffer website = new StringBuffer();
 		final String websitePrefix = "http://www";
-		final String domain = RandomUtils.getRandomString(Constants.LOWCASECHARS,
-			RandomUtils.randomInt(12) + 1);
-		final String topDomain = RandomUtils.getRandomString(Constants.LOWCASECHARS, 2);
+		final String domain = RandomExtensions.getRandomString(Constants.LOWCASECHARS,
+			RandomExtensions.randomInt(12) + 1);
+		final String topDomain = RandomExtensions.getRandomString(Constants.LOWCASECHARS, 2);
 		website.append(websitePrefix);
 		website.append(".");
 		website.append(domain);
@@ -182,15 +176,15 @@ public class RandomObjectsUtils
 	public static String newRandomId()
 	{
 		final StringBuffer sb = new StringBuffer();
-		sb.append(RandomUtils.getRandomString(Constants.LCUCCHARSWN, 2));
+		sb.append(RandomExtensions.getRandomString(Constants.LCUCCHARSWN, 2));
 		sb.append(".");
-		sb.append(RandomUtils.getRandomString(Constants.LCUCCHARSWN, 4));
+		sb.append(RandomExtensions.getRandomString(Constants.LCUCCHARSWN, 4));
 		sb.append(".");
-		sb.append(RandomUtils.getRandomString(Constants.LCUCCHARSWN, 2));
+		sb.append(RandomExtensions.getRandomString(Constants.LCUCCHARSWN, 2));
 		sb.append(".");
 		sb.append(System.currentTimeMillis());
 		sb.append(".");
-		sb.append(RandomUtils.getRandomString(Constants.LCUCCHARSWN, 2));
+		sb.append(RandomExtensions.getRandomString(Constants.LCUCCHARSWN, 2));
 		return sb.toString();
 	}
 
@@ -212,7 +206,7 @@ public class RandomObjectsUtils
 		boolean fullList = true;
 		while (fullList)
 		{
-			final int randomIndex = RandomUtils.randomInt(dc.size());
+			final int randomIndex = RandomExtensions.randomInt(dc.size());
 			final Character c = dc.get(randomIndex);
 			sb.append(c);
 			dc.remove(randomIndex);

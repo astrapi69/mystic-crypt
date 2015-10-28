@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import de.alpharogroup.random.date.RandomDateUtils;
+import de.alpharogroup.random.date.RandomDateExtensions;
 
 /**
  * The Class DataGenerator.
@@ -39,7 +39,7 @@ public final class DataGenerator
 	 */
 	public static Date dateAfter(final Date date)
 	{
-		return RandomDateUtils.dateAfter(date);
+		return RandomDateExtensions.dateAfter(date);
 	}
 
 	/**
@@ -53,7 +53,7 @@ public final class DataGenerator
 	 */
 	public static Date dateAfter(final Date date, final int range)
 	{
-		return RandomDateUtils.dateAfter(date, range);
+		return RandomDateExtensions.dateAfter(date, range);
 	}
 
 	/**
@@ -65,7 +65,7 @@ public final class DataGenerator
 	 */
 	public static Date dateBefore(final Date date)
 	{
-		return RandomDateUtils.dateBefore(date);
+		return RandomDateExtensions.dateBefore(date);
 	}
 
 	/**
@@ -79,7 +79,7 @@ public final class DataGenerator
 	 */
 	public static Date dateBefore(final Date date, final int range)
 	{
-		return RandomDateUtils.dateBefore(date, range);
+		return RandomDateExtensions.dateBefore(date, range);
 	}
 
 	/**
@@ -93,7 +93,7 @@ public final class DataGenerator
 	 */
 	public static BigDecimal getRandomBigDecimal(final int afterComma, final int beforeComma)
 	{
-		return RandomUtils.getRandomBigDecimal(afterComma, beforeComma);
+		return RandomExtensions.getRandomBigDecimal(afterComma, beforeComma);
 	}
 
 	/**
@@ -103,7 +103,7 @@ public final class DataGenerator
 	 */
 	public static Byte getRandomByte()
 	{
-		return RandomUtils.getRandomByte();
+		return RandomExtensions.getRandomByte();
 	}
 
 	/**
@@ -115,7 +115,7 @@ public final class DataGenerator
 	 */
 	public static Byte[] getRandomByteArray(final int length)
 	{
-		return RandomUtils.getRandomByteArray(length);
+		return RandomExtensions.getRandomByteArray(length);
 	}
 
 	/**
@@ -129,7 +129,7 @@ public final class DataGenerator
 	 */
 	public static <T> T getRandomEntry(final List<T> list)
 	{
-		return RandomUtils.getRandomEntry(list);
+		return RandomExtensions.getRandomEntry(list);
 	}
 
 	/**
@@ -145,7 +145,7 @@ public final class DataGenerator
 	 */
 	public static <K, V> Object getRandomEntry(final Map<K, V> map)
 	{
-		return RandomUtils.getRandomEntry(map);
+		return RandomExtensions.getRandomEntry(map);
 	}
 
 	/**
@@ -159,7 +159,7 @@ public final class DataGenerator
 	 */
 	public static <T extends Enum<?>> T getRandomEnum(final Class<T> clazz)
 	{
-		return RandomUtils.getRandomEnum(clazz);
+		return RandomExtensions.getRandomEnum(clazz);
 	}
 
 	/**
@@ -173,7 +173,7 @@ public final class DataGenerator
 	 */
 	public static <T extends Enum<?>> T getRandomEnum(final String classname)
 	{
-		return RandomUtils.getRandomEnum(classname);
+		return RandomExtensions.getRandomEnum(classname);
 	}
 
 	/**
@@ -187,7 +187,7 @@ public final class DataGenerator
 	 */
 	public static <T extends Enum<?>> T getRandomEnum(final T obj)
 	{
-		return RandomUtils.getRandomEnum(obj);
+		return RandomExtensions.getRandomEnum(obj);
 	}
 
 	/**
@@ -201,7 +201,7 @@ public final class DataGenerator
 	 */
 	public static <T extends Enum<?>> T getRandomEnum(final T[] values)
 	{
-		return RandomUtils.getRandomEnum(values);
+		return RandomExtensions.getRandomEnum(values);
 	}
 
 	/**
@@ -215,7 +215,7 @@ public final class DataGenerator
 	 */
 	public static Float getRandomFloat(final int afterComma, final int beforeComma)
 	{
-		return RandomUtils.getRandomFloat(afterComma, beforeComma);
+		return RandomExtensions.getRandomFloat(afterComma, beforeComma);
 	}
 
 	/**
@@ -229,7 +229,7 @@ public final class DataGenerator
 	 */
 	public static <T> int getRandomIndex(final Collection<T> list)
 	{
-		return RandomUtils.getRandomIndex(list);
+		return RandomExtensions.getRandomIndex(list);
 	}
 
 	/**
@@ -245,7 +245,7 @@ public final class DataGenerator
 	 */
 	public static <K, V> Object getRandomKey(final Map<K, V> map)
 	{
-		return RandomUtils.getRandomKey(map);
+		return RandomExtensions.getRandomKey(map);
 	}
 
 	/**
@@ -255,7 +255,7 @@ public final class DataGenerator
 	 */
 	public static String getRandomNumericString()
 	{
-		return RandomUtils.getRandomNumericString();
+		return RandomExtensions.getRandomNumericString();
 	}
 
 	/**
@@ -267,7 +267,7 @@ public final class DataGenerator
 	 */
 	public static String getRandomNumericString(final int length)
 	{
-		return RandomUtils.getRandomNumericString(length);
+		return RandomExtensions.getRandomNumericString(length);
 	}
 
 	/**
@@ -279,7 +279,7 @@ public final class DataGenerator
 	 */
 	public static String getRandomString(final int length)
 	{
-		return RandomUtils.getRandomString(length);
+		return RandomExtensions.getRandomString(length);
 	}
 
 	/**
@@ -293,7 +293,7 @@ public final class DataGenerator
 	 */
 	public static String getRandomString(final String chars, final int length)
 	{
-		return RandomUtils.getRandomString(chars, length);
+		return RandomExtensions.getRandomString(chars, length);
 	}
 
 	/**
@@ -305,7 +305,7 @@ public final class DataGenerator
 	 */
 	public static String getRandomString(final String[] array)
 	{
-		return RandomUtils.getRandomString(array);
+		return RandomExtensions.getRandomString(array);
 	}
 
 	/**
@@ -315,7 +315,7 @@ public final class DataGenerator
 	 */
 	public static Timestamp getTimestamp()
 	{
-		return RandomDateUtils.getTimestamp();
+		return RandomDateExtensions.getTimestamp();
 	}
 
 	/**
@@ -327,7 +327,7 @@ public final class DataGenerator
 	 */
 	public static Timestamp getTimestamp(final Date date)
 	{
-		return RandomDateUtils.getTimestamp(date);
+		return RandomDateExtensions.getTimestamp(date);
 	}
 
 	/**
@@ -337,7 +337,7 @@ public final class DataGenerator
 	 */
 	public static Date randomBirthday()
 	{
-		return RandomDateUtils.randomBirthday();
+		return RandomDateExtensions.randomBirthday();
 	}
 
 	/**
@@ -351,7 +351,7 @@ public final class DataGenerator
 	 */
 	public static Date randomBirthday(final Date from, final Date till)
 	{
-		return RandomDateUtils.randomBirthday(from, till);
+		return RandomDateExtensions.randomBirthday(from, till);
 	}
 
 	/**
@@ -361,7 +361,7 @@ public final class DataGenerator
 	 */
 	public static boolean randomBoolean()
 	{
-		return RandomUtils.randomBoolean();
+		return RandomExtensions.randomBoolean();
 	}
 
 	/**
@@ -371,7 +371,7 @@ public final class DataGenerator
 	 */
 	public static byte randomByte()
 	{
-		return RandomUtils.randomByte();
+		return RandomExtensions.randomByte();
 	}
 
 	/**
@@ -383,7 +383,7 @@ public final class DataGenerator
 	 */
 	public static byte[] randomByteArray(final int length)
 	{
-		return RandomUtils.randomByteArray(length);
+		return RandomExtensions.randomByteArray(length);
 	}
 
 	/**
@@ -393,7 +393,7 @@ public final class DataGenerator
 	 */
 	public static char randomChar()
 	{
-		return RandomUtils.randomChar();
+		return RandomExtensions.randomChar();
 	}
 
 	/**
@@ -405,7 +405,7 @@ public final class DataGenerator
 	 */
 	public static char randomChar(final String string)
 	{
-		return RandomUtils.randomChar(string);
+		return RandomExtensions.randomChar(string);
 	}
 
 	/**
@@ -417,7 +417,7 @@ public final class DataGenerator
 	 */
 	public static Date randomDate(final Date from)
 	{
-		return RandomDateUtils.randomDate(from);
+		return RandomDateExtensions.randomDate(from);
 	}
 
 	/**
@@ -431,7 +431,7 @@ public final class DataGenerator
 	 */
 	public static Date randomDatebetween(final Date start, final Date end)
 	{
-		return RandomDateUtils.randomDatebetween(start, end);
+		return RandomDateExtensions.randomDatebetween(start, end);
 	}
 
 	/**
@@ -445,7 +445,7 @@ public final class DataGenerator
 	 */
 	public static String randomDatebetween(final long startDate, final long endDate)
 	{
-		return RandomDateUtils.randomDatebetween(startDate, endDate);
+		return RandomDateExtensions.randomDatebetween(startDate, endDate);
 	}
 
 	/**
@@ -462,7 +462,7 @@ public final class DataGenerator
 	public static String randomDatebetween(final long startDate, final long endDate,
 		final String format)
 	{
-		return RandomDateUtils.randomDatebetween(startDate, endDate, format);
+		return RandomDateExtensions.randomDatebetween(startDate, endDate, format);
 	}
 
 	/**
@@ -478,7 +478,7 @@ public final class DataGenerator
 	 */
 	public static Date randomDateBetween(final Date from, final int startDays, final int endDays)
 	{
-		return RandomDateUtils.randomDateBetween(from, startDays, endDays);
+		return RandomDateExtensions.randomDateBetween(from, startDays, endDays);
 	}
 
 	/**
@@ -490,7 +490,7 @@ public final class DataGenerator
 	 */
 	public static double randomDouble(final double range)
 	{
-		return RandomUtils.randomDouble(range);
+		return RandomExtensions.randomDouble(range);
 	}
 
 	/**
@@ -504,7 +504,7 @@ public final class DataGenerator
 	 */
 	public static double randomDoubleBetween(final double start, final double end)
 	{
-		return RandomUtils.randomDoubleBetween(start, end);
+		return RandomExtensions.randomDoubleBetween(start, end);
 	}
 
 	/**
@@ -521,7 +521,7 @@ public final class DataGenerator
 	public static double randomDoubleBetween(final double start, final double end,
 		final String pattern)
 	{
-		return RandomUtils.randomDoubleBetween(start, end, pattern);
+		return RandomExtensions.randomDoubleBetween(start, end, pattern);
 	}
 
 	/**
@@ -533,7 +533,7 @@ public final class DataGenerator
 	 */
 	public static float randomFloat(final float range)
 	{
-		return RandomUtils.randomFloat(range);
+		return RandomExtensions.randomFloat(range);
 	}
 
 	/**
@@ -547,7 +547,7 @@ public final class DataGenerator
 	 */
 	public static float randomFloat(final int afterComma, final int beforeComma)
 	{
-		return RandomUtils.randomFloat(afterComma, beforeComma);
+		return RandomExtensions.randomFloat(afterComma, beforeComma);
 	}
 
 	/**
@@ -561,7 +561,7 @@ public final class DataGenerator
 	 */
 	public static float randomFloatBetween(final float start, final float end)
 	{
-		return RandomUtils.randomFloatBetween(start, end);
+		return RandomExtensions.randomFloatBetween(start, end);
 	}
 
 	/**
@@ -577,7 +577,7 @@ public final class DataGenerator
 	 */
 	public static float randomFloatBetween(final float start, final float end, final String pattern)
 	{
-		return RandomUtils.randomFloatBetween(start, end, pattern);
+		return RandomExtensions.randomFloatBetween(start, end, pattern);
 	}
 
 	/**
@@ -587,7 +587,7 @@ public final class DataGenerator
 	 */
 	public static int randomInt()
 	{
-		return RandomUtils.randomInt();
+		return RandomExtensions.randomInt();
 	}
 
 	/**
@@ -599,7 +599,7 @@ public final class DataGenerator
 	 */
 	public static int randomInt(final int range)
 	{
-		return RandomUtils.randomInt(range);
+		return RandomExtensions.randomInt(range);
 	}
 
 	/**
@@ -613,7 +613,7 @@ public final class DataGenerator
 	 */
 	public static int randomIntBetween(final int start, final int end)
 	{
-		return RandomUtils.randomIntBetween(start, end);
+		return RandomExtensions.randomIntBetween(start, end);
 	}
 
 	/**

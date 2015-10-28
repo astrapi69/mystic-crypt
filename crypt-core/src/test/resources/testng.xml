@@ -6,7 +6,7 @@
 		<class name="de.alpharogroup.crypto.aes.HexEncryptDecryptorTest"/>
 		<class name="de.alpharogroup.crypto.BruteForceProcessorTest"/>
 		<class name="de.alpharogroup.crypto.sha.HasherTest"/>
-		<class name="de.alpharogroup.crypto.SimpleCryptoUtilsTest"/>  
+		<class name="de.alpharogroup.crypto.SimpleCryptTest"/>  
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->

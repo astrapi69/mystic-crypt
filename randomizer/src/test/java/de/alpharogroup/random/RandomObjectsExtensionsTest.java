@@ -25,7 +25,7 @@ import org.testng.annotations.Test;
 
 import de.alpharogroup.BaseTestCase;
 
-public class RandomObjectsUtilsTest extends BaseTestCase
+public class RandomObjectsExtensionsTest extends BaseTestCase
 {
 
 	@Override
@@ -51,21 +51,21 @@ public class RandomObjectsUtilsTest extends BaseTestCase
 		final char[] donatedChars = Constants.LCCHARSWN.toCharArray();
 		for (int i = 0; i < 100; i++)
 		{
-			final String randomName = RandomObjectsUtils.newRandomName(donatedChars);
+			final String randomName = RandomObjectsExtensions.newRandomName(donatedChars);
 			this.result = randomName.contains(charBuffer);
 			AssertJUnit.assertTrue("", this.result);
 		}
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomObjectsUtils#newRandomId()}.
+	 * Test method for {@link de.alpharogroup.random.RandomObjectsExtensions#newRandomId()}.
 	 */
 	@Test
 	public void testCreateRandomId()
 	{
 		for (int i = 0; i < 1000; i++)
 		{
-			System.out.println(RandomObjectsUtils.newRandomId());
+			System.out.println(RandomObjectsExtensions.newRandomId());
 		}
 
 	}
@@ -73,18 +73,18 @@ public class RandomObjectsUtilsTest extends BaseTestCase
 
 	/**
 	 * Test method for
-	 * {@link de.alpharogroup.random.RandomObjectsUtils#getInfomailFromWebsite(java.lang.String)} .
+	 * {@link de.alpharogroup.random.RandomObjectsExtensions#getInfomailFromWebsite(java.lang.String)} .
 	 */
 	@Test
 	public void testGetInfomailFromWebsite()
 	{
 		final CharBuffer charBuffer = CharBuffer.allocate(Constants.LCCHARSWN.length());
 		charBuffer.put(Constants.LCCHARSWN);
-		final String url = RandomObjectsUtils.getRandomWebsite();
+		final String url = RandomObjectsExtensions.getRandomWebsite();
 		final String emailprefix = "info@";
 		for (int i = 0; i < 100; i++)
 		{
-			final String randomInfomail = RandomObjectsUtils.getInfomailFromWebsite(url);
+			final String randomInfomail = RandomObjectsExtensions.getInfomailFromWebsite(url);
 			this.result = randomInfomail.startsWith(emailprefix);
 			AssertJUnit.assertTrue("", this.result);
 
@@ -95,7 +95,7 @@ public class RandomObjectsUtilsTest extends BaseTestCase
 
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomObjectsUtils#getRandomEmail()}.
+	 * Test method for {@link de.alpharogroup.random.RandomObjectsExtensions#getRandomEmail()}.
 	 */
 	@Test
 	public void testGetRandomEmail()
@@ -104,7 +104,7 @@ public class RandomObjectsUtilsTest extends BaseTestCase
 		charBuffer.put(Constants.LCCHARSWN);
 		for (int i = 0; i < 100; i++)
 		{
-			final String randomEmail = RandomObjectsUtils.getRandomEmail();
+			final String randomEmail = RandomObjectsExtensions.getRandomEmail();
 			this.result = randomEmail.contains(charBuffer);
 			AssertJUnit.assertTrue("", this.result);
 		}
@@ -112,7 +112,7 @@ public class RandomObjectsUtilsTest extends BaseTestCase
 
 	/**
 	 * Test method for
-	 * {@link de.alpharogroup.random.RandomObjectsUtils#getRandomFaxnumber(java.lang.String)} .
+	 * {@link de.alpharogroup.random.RandomObjectsExtensions#getRandomFaxnumber(java.lang.String)} .
 	 */
 	@Test
 	public void testGetRandomFaxnumber()
@@ -121,8 +121,8 @@ public class RandomObjectsUtilsTest extends BaseTestCase
 		charBuffer.put(Constants.NUMBERS);
 		for (int i = 0; i < 100; i++)
 		{
-			final String randomPhonenumber = RandomObjectsUtils.getRandomPhonenumber();
-			final String randomFaxnumber = RandomObjectsUtils.getRandomFaxnumber(randomPhonenumber);
+			final String randomPhonenumber = RandomObjectsExtensions.getRandomPhonenumber();
+			final String randomFaxnumber = RandomObjectsExtensions.getRandomFaxnumber(randomPhonenumber);
 			this.result = randomFaxnumber.contains(charBuffer);
 			AssertJUnit.assertTrue("", this.result);
 		}
@@ -130,7 +130,7 @@ public class RandomObjectsUtilsTest extends BaseTestCase
 
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomObjectsUtils#getRandomMobilnumber()}.
+	 * Test method for {@link de.alpharogroup.random.RandomObjectsExtensions#getRandomMobilnumber()}.
 	 */
 	@Test
 	public void testGetRandomMobilnumber()
@@ -139,7 +139,7 @@ public class RandomObjectsUtilsTest extends BaseTestCase
 		charBuffer.put(Constants.NUMBERS);
 		for (int i = 0; i < 100; i++)
 		{
-			final String randomMobilnumber = RandomObjectsUtils.getRandomMobilnumber();
+			final String randomMobilnumber = RandomObjectsExtensions.getRandomMobilnumber();
 			this.result = randomMobilnumber.contains(charBuffer);
 			AssertJUnit.assertTrue("", this.result);
 		}
@@ -154,14 +154,14 @@ public class RandomObjectsUtilsTest extends BaseTestCase
 		charBuffer.put(chars);
 		for (int i = 0; i < 100; i++)
 		{
-			final String randomPassword = RandomObjectsUtils.getRandomPassword(length);
+			final String randomPassword = RandomObjectsExtensions.getRandomPassword(length);
 			this.result = randomPassword.contains(charBuffer);
 			AssertJUnit.assertTrue("", this.result);
 		}
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomObjectsUtils#getRandomPhonenumber()}.
+	 * Test method for {@link de.alpharogroup.random.RandomObjectsExtensions#getRandomPhonenumber()}.
 	 */
 	@Test
 	public void testGetRandomPhonenumber()
@@ -170,14 +170,14 @@ public class RandomObjectsUtilsTest extends BaseTestCase
 		charBuffer.put(Constants.NUMBERS);
 		for (int i = 0; i < 100; i++)
 		{
-			final String randomPhonenumber = RandomObjectsUtils.getRandomPhonenumber();
+			final String randomPhonenumber = RandomObjectsExtensions.getRandomPhonenumber();
 			this.result = randomPhonenumber.contains(charBuffer);
 			AssertJUnit.assertTrue("", this.result);
 		}
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomObjectsUtils#getRandomWebsite()}.
+	 * Test method for {@link de.alpharogroup.random.RandomObjectsExtensions#getRandomWebsite()}.
 	 */
 	@Test
 	public void testGetRandomWebsite()
@@ -186,7 +186,7 @@ public class RandomObjectsUtilsTest extends BaseTestCase
 		charBuffer.put(Constants.LCCHARSWN);
 		for (int i = 0; i < 100; i++)
 		{
-			final String randomWebsite = RandomObjectsUtils.getRandomWebsite();
+			final String randomWebsite = RandomObjectsExtensions.getRandomWebsite();
 			this.result = randomWebsite.contains(charBuffer);
 			AssertJUnit.assertTrue("", this.result);
 		}

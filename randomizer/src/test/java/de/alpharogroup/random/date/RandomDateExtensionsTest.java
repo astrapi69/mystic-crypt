@@ -29,12 +29,12 @@ import de.alpharogroup.BaseTestCase;
 import de.alpharogroup.date.CalculateDateUtils;
 
 /**
- * Test class for the class RandomDateUtils.
+ * Test class for the class RandomDateExtensions.
  *
  * @version 1.0
  * @author Asterios Raptis
  */
-public class RandomDateUtilsTest extends BaseTestCase
+public class RandomDateExtensionsTest extends BaseTestCase
 {
 
 	Date now = null;
@@ -63,18 +63,18 @@ public class RandomDateUtilsTest extends BaseTestCase
 
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.date.RandomDateUtils#randomBirthday()}.
+	 * Test method for {@link de.alpharogroup.random.date.RandomDateExtensions#randomBirthday()}.
 	 */
 	@Test
 	public void testCreateRandomBirthday()
 	{
 		// About 55 years.
-		final Date past = RandomDateUtils.dateBefore(this.now, 20000);
+		final Date past = RandomDateExtensions.dateBefore(this.now, 20000);
 		// About 9 years.
-		final Date recentlyPast = RandomDateUtils.dateBefore(this.now, 3000);
+		final Date recentlyPast = RandomDateExtensions.dateBefore(this.now, 3000);
 		for (int i = 0; i < 100; i++)
 		{
-			final Date randomBirthday = RandomDateUtils.randomBirthday();
+			final Date randomBirthday = RandomDateExtensions.randomBirthday();
 			this.result = CalculateDateUtils.isBetween(past, recentlyPast, randomBirthday);
 			AssertJUnit.assertTrue("",
 				CalculateDateUtils.isBetween(past, recentlyPast, randomBirthday));
@@ -83,7 +83,7 @@ public class RandomDateUtilsTest extends BaseTestCase
 
 	/**
 	 * Test method for
-	 * {@link de.alpharogroup.random.date.RandomDateUtils#randomBirthday(java.util.Date, java.util.Date)}
+	 * {@link de.alpharogroup.random.date.RandomDateExtensions#randomBirthday(java.util.Date, java.util.Date)}
 	 * .
 	 */
 	@Test
@@ -93,7 +93,7 @@ public class RandomDateUtilsTest extends BaseTestCase
 		final Date till = CalculateDateUtils.substractDaysFromDate(this.now, 3000);
 		for (int i = 0; i < 100; i++)
 		{
-			final Date randomBirthday = RandomDateUtils.randomBirthday(from, till);
+			final Date randomBirthday = RandomDateExtensions.randomBirthday(from, till);
 			this.result = CalculateDateUtils.isBetween(from, till, randomBirthday);
 			AssertJUnit.assertTrue("", this.result);
 		}
@@ -101,14 +101,14 @@ public class RandomDateUtilsTest extends BaseTestCase
 
 	/**
 	 * Test method for
-	 * {@link de.alpharogroup.random.date.RandomDateUtils#randomDate(java.util.Date)}.
+	 * {@link de.alpharogroup.random.date.RandomDateExtensions#randomDate(java.util.Date)}.
 	 */
 	@Test
 	public void testCreateRandomDate()
 	{
 
 		final Date from = this.now;
-		final Date randomDate = RandomDateUtils.randomDate(from);
+		final Date randomDate = RandomDateExtensions.randomDate(from);
 		this.result = randomDate != null;
 		AssertJUnit.assertTrue("", this.result);
 
@@ -119,7 +119,7 @@ public class RandomDateUtilsTest extends BaseTestCase
 
 	/**
 	 * Test method for
-	 * {@link de.alpharogroup.random.date.RandomDateUtils#randomDateBetween(java.util.Date, int, int)}
+	 * {@link de.alpharogroup.random.date.RandomDateExtensions#randomDateBetween(java.util.Date, int, int)}
 	 * .
 	 */
 	@Test
@@ -130,7 +130,7 @@ public class RandomDateUtilsTest extends BaseTestCase
 		// final int startDays = 0;
 		// final int endDays = 30;
 		// final Date till = DateUtils.addDaysToDate( this.now, 30 );
-		// final Date randomDate = RandomDateUtils.createRandomDateBetween( from,
+		// final Date randomDate = RandomDateExtensions.createRandomDateBetween( from,
 		// startDays, endDays );
 		// this.result = DateUtils.isBetween( this.now, till, randomDate );
 		// assertTrue( "", this.result );
@@ -138,7 +138,7 @@ public class RandomDateUtilsTest extends BaseTestCase
 
 	/**
 	 * Test method for
-	 * {@link de.alpharogroup.random.date.RandomDateUtils#randomDatebetween(java.util.Date, java.util.Date)}
+	 * {@link de.alpharogroup.random.date.RandomDateExtensions#randomDatebetween(java.util.Date, java.util.Date)}
 	 * .
 	 */
 	@Test
@@ -146,7 +146,7 @@ public class RandomDateUtilsTest extends BaseTestCase
 	{
 		// final Date end = DateUtils.addDaysToDate( this.now, 30 );
 		// final Date start = this.now;
-		// final Date randomDate = RandomDateUtils.createRandomDatebetween( start,
+		// final Date randomDate = RandomDateExtensions.createRandomDatebetween( start,
 		// end );
 		// this.result = DateUtils.isBetween( start, end, randomDate );
 		// assertTrue( "", this.result );
@@ -154,7 +154,7 @@ public class RandomDateUtilsTest extends BaseTestCase
 
 	/**
 	 * Test method for
-	 * {@link de.alpharogroup.random.date.RandomDateUtils#randomDatebetween(long, long)}.
+	 * {@link de.alpharogroup.random.date.RandomDateExtensions#randomDatebetween(long, long)}.
 	 */
 	@Test
 	public void testCreateRandomDatebetweenLongLong()
@@ -162,7 +162,7 @@ public class RandomDateUtilsTest extends BaseTestCase
 		// final Date till = DateUtils.addDaysToDate( this.now, 30 );
 		// final long endDate = till.getTime();
 		// final long startDate = this.now.getTime();
-		// final String randomDate = RandomDateUtils.createRandomDatebetween(
+		// final String randomDate = RandomDateExtensions.createRandomDatebetween(
 		// startDate, endDate );
 		// final Date compare = DateUtils.parseToDate( randomDate,
 		// DatePatterns.DOT_DD_MM_YYYY_HH_MM_SS );
@@ -172,7 +172,7 @@ public class RandomDateUtilsTest extends BaseTestCase
 
 	/**
 	 * Test method for
-	 * {@link de.alpharogroup.random.date.RandomDateUtils#randomDatebetween(long, long, java.lang.String)}
+	 * {@link de.alpharogroup.random.date.RandomDateExtensions#randomDatebetween(long, long, java.lang.String)}
 	 * .
 	 */
 	@Test
@@ -182,7 +182,7 @@ public class RandomDateUtilsTest extends BaseTestCase
 		// final long endDate = till.getTime();
 		// final long startDate = this.now.getTime();
 		// final String format = DatePatterns.DOT_DD_MM_YY;
-		// final String randomDate = RandomDateUtils.createRandomDatebetween(
+		// final String randomDate = RandomDateExtensions.createRandomDatebetween(
 		// startDate, endDate, format );
 		// final Date compare = DateUtils.parseToDate( randomDate, format );
 		// this.result = DateUtils.isBetween( this.now, till, compare );

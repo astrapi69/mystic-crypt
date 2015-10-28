@@ -25,12 +25,12 @@ import org.testng.annotations.Test;
 import de.alpharogroup.BaseTestCase;
 
 /**
- * Test class for the class RandomAddressUtils.
+ * Test class for the class RandomAddressExtensions.
  *
  * @version 1.0
  * @author Asterios Raptis
  */
-public class RandomAddressUtilsTest extends BaseTestCase
+public class RandomAddressExtensionsTest extends BaseTestCase
 {
 
 
@@ -56,15 +56,15 @@ public class RandomAddressUtilsTest extends BaseTestCase
 
 	/**
 	 * Test method for
-	 * {@link de.alpharogroup.random.address.RandomAddressUtils#getRandomStreet(java.util.Properties)}
+	 * {@link de.alpharogroup.random.address.RandomAddressExtensions#getRandomStreet(java.util.Properties)}
 	 * .
 	 */
 	@Test
 	public void testGetRandomStreet()
 	{
 		// final Properties germanstreets = ResourceUtils
-		// .loadProperties( RandomAddressUtils.PROP_FILE_STREETS );
-		// final String germanStreet = RandomAddressUtils
+		// .loadProperties( RandomAddressExtensions.PROP_FILE_STREETS );
+		// final String germanStreet = RandomAddressExtensions
 		// .getRandomStreet( germanstreets );
 		// this.result = germanStreet != null;
 		// assertTrue( "", this.result );
@@ -75,15 +75,15 @@ public class RandomAddressUtilsTest extends BaseTestCase
 
 	/**
 	 * Test method for
-	 * {@link de.alpharogroup.random.address.RandomAddressUtils#getRandomStreetWithNumber(java.util.Properties)}
+	 * {@link de.alpharogroup.random.address.RandomAddressExtensions#getRandomStreetWithNumber(java.util.Properties)}
 	 * .
 	 */
 	@Test
 	public void testGetRandomStreetWithNumber()
 	{
 		// final Properties germanstreets = ResourceUtils
-		// .loadProperties( RandomAddressUtils.PROP_FILE_STREETS );
-		// final String germanStreetWithNumber = RandomAddressUtils
+		// .loadProperties( RandomAddressExtensions.PROP_FILE_STREETS );
+		// final String germanStreetWithNumber = RandomAddressExtensions
 		// .getRandomStreetWithNumber( germanstreets );
 		// this.result = germanStreetWithNumber != null;
 		// assertTrue( "", this.result );
@@ -96,16 +96,16 @@ public class RandomAddressUtilsTest extends BaseTestCase
 
 	/**
 	 * Test method for
-	 * {@link de.alpharogroup.random.address.RandomAddressUtils#getRandomZip(java.util.Properties)}
+	 * {@link de.alpharogroup.random.address.RandomAddressExtensions#getRandomZip(java.util.Properties)}
 	 * .
 	 */
 	@Test
 	public void testGetRandomZip()
 	{
 		// final Properties germanzips = ResourceUtils
-		// .loadProperties( RandomAddressUtils.PROP_FILE_ZIP_CITIES );
+		// .loadProperties( RandomAddressExtensions.PROP_FILE_ZIP_CITIES );
 		//
-		// final String randomZip = RandomAddressUtils.getRandomZip( germanzips );
+		// final String randomZip = RandomAddressExtensions.getRandomZip( germanzips );
 		// this.result = randomZip != null;
 		// assertTrue( "", this.result );
 		//

@@ -28,13 +28,13 @@ import javax.crypto.NoSuchPaddingException;
 
 import de.alpharogroup.crypto.algorithm.HashAlgorithm;
 import de.alpharogroup.crypto.sha.Hasher;
-import de.alpharogroup.random.RandomObjectsUtils;
+import de.alpharogroup.random.RandomObjectsExtensions;
 
 
 /**
  * The Class PasswordEncryptor is a singleton and helps to generate secure encrypted random
  * passwords.
- * 
+ *
  * @author Asterios Raptis
  */
 public class PasswordEncryptor implements Serializable
@@ -50,7 +50,7 @@ public class PasswordEncryptor implements Serializable
 
 	/**
 	 * Gets the single instance of PasswordService.
-	 * 
+	 *
 	 * @return single instance of PasswordService
 	 */
 	public static PasswordEncryptor getInstance()
@@ -74,14 +74,14 @@ public class PasswordEncryptor implements Serializable
 
 	/**
 	 * Gets a random password.
-	 * 
+	 *
 	 * @param length
 	 *            the length
 	 * @return the new secure random password
 	 */
 	public String getRandomPassword(final int length)
 	{
-		return RandomObjectsUtils.getRandomPassword(length);
+		return RandomObjectsExtensions.getRandomPassword(length);
 	}
 
 	/**
@@ -182,7 +182,7 @@ public class PasswordEncryptor implements Serializable
 
 	/**
 	 * Matches the given strings and returns true if they are equal.
-	 * 
+	 *
 	 * @param hashedPassword
 	 *            the hashed password
 	 * @param dbHashedPassword

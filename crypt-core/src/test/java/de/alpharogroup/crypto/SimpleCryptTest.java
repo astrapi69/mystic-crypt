@@ -21,12 +21,12 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /**
- * Test class for the class SimpleCryptoUtils.
+ * Test class for the class {@link SimpleCryptTest}.
  *
  * @version 1.0
  * @author Asterios Raptis
  */
-public class SimpleCryptoUtilsTest
+public class SimpleCryptTest
 {
 
 
@@ -46,8 +46,8 @@ public class SimpleCryptoUtilsTest
 	{
 		final String testString = "top secret";
 		final String expected = testString;
-		final String encrypted = SimpleCryptoUtils.encode(testString);
-		final String decrypted = SimpleCryptoUtils.decode(encrypted);
+		final String encrypted = SimpleCrypt.encode(testString);
+		final String decrypted = SimpleCrypt.decode(encrypted);
 		AssertJUnit.assertTrue(decrypted.equals(expected));
 		testCryptoUtils(testString, 4);
 	}
@@ -56,9 +56,9 @@ public class SimpleCryptoUtilsTest
 	{
 		System.out.println("original:--------\n" + testString + "\n--------");
 		final String expected = new StringBuffer(testString).toString().trim();
-		final String encrypted = SimpleCryptoUtils.encode(testString, verschiebe);
+		final String encrypted = SimpleCrypt.encode(testString, verschiebe);
 		System.out.println("encrypted:--------\n" + encrypted + "\n--------");
-		final String decrypted = SimpleCryptoUtils.decode(encrypted, verschiebe);
+		final String decrypted = SimpleCrypt.decode(encrypted, verschiebe);
 		AssertJUnit.assertTrue(decrypted.equals(expected));
 		System.out.println("decrypted:--------\n" + decrypted + "\n--------");
 	}

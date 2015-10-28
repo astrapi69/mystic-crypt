@@ -34,12 +34,12 @@ import de.alpharogroup.BaseTestCase;
 import de.alpharogroup.test.objects.Gender;
 
 /**
- * Test class for the class RandomUtils.
+ * Test class for the class RandomExtensions.
  *
  * @version 1.0
  * @author Asterios Raptis
  */
-public class RandomUtilsTest extends BaseTestCase
+public class RandomExtensionsTest extends BaseTestCase
 {
 
 	/**
@@ -64,7 +64,7 @@ public class RandomUtilsTest extends BaseTestCase
 
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomUtils#getRandomEntry(java.util.List)} .
+	 * Test method for {@link de.alpharogroup.random.RandomExtensions#getRandomEntry(java.util.List)} .
 	 */
 	@Test
 	public void testGetRandomEntryList()
@@ -78,14 +78,14 @@ public class RandomUtilsTest extends BaseTestCase
 		list.add("Katerina");
 		for (int i = 0; i < 100; i++)
 		{
-			final String randomEntry = RandomUtils.getRandomEntry(list);
+			final String randomEntry = RandomExtensions.getRandomEntry(list);
 			this.result = list.contains(randomEntry);
 			AssertJUnit.assertTrue("", this.result);
 		}
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomUtils#getRandomEntry(java.util.Map)} .
+	 * Test method for {@link de.alpharogroup.random.RandomExtensions#getRandomEntry(java.util.Map)} .
 	 */
 	@Test
 	public void testGetRandomEntryMap()
@@ -99,7 +99,7 @@ public class RandomUtilsTest extends BaseTestCase
 		final Collection<String> values = map.values();
 		for (int i = 0; i < 100; i++)
 		{
-			final String randomValue = (String)RandomUtils.getRandomEntry(map);
+			final String randomValue = (String)RandomExtensions.getRandomEntry(map);
 			this.result = values.contains(randomValue);
 			AssertJUnit.assertTrue("", this.result);
 		}
@@ -109,18 +109,18 @@ public class RandomUtilsTest extends BaseTestCase
 	public void testGetRandomEnum()
 	{
 		final Gender[] genders = Gender.values();
-		Gender randomEnumEntry = RandomUtils.getRandomEnum(genders);
+		Gender randomEnumEntry = RandomExtensions.getRandomEnum(genders);
 		System.out.println(randomEnumEntry.name());
 
-		randomEnumEntry = RandomUtils.getRandomEnum(randomEnumEntry);
+		randomEnumEntry = RandomExtensions.getRandomEnum(randomEnumEntry);
 		System.out.println(randomEnumEntry.name());
 
-		randomEnumEntry = RandomUtils.getRandomEnum(Gender.class);
+		randomEnumEntry = RandomExtensions.getRandomEnum(Gender.class);
 		System.out.println(randomEnumEntry.name());
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomUtils#getRandomFloat(int, int)} .
+	 * Test method for {@link de.alpharogroup.random.RandomExtensions#getRandomFloat(int, int)} .
 	 */
 	@Test
 	public void testGetRandomFloat()
@@ -129,14 +129,14 @@ public class RandomUtilsTest extends BaseTestCase
 		final int afterComma = 4;
 		for (int i = 0; i < 100; i++)
 		{
-			final float randomFloat = RandomUtils.getRandomFloat(afterComma, beforeComma);
+			final float randomFloat = RandomExtensions.getRandomFloat(afterComma, beforeComma);
 			this.result = 0 < randomFloat;
 			AssertJUnit.assertTrue("", this.result);
 		}
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomUtils#getRandomKey(java.util.Map)} .
+	 * Test method for {@link de.alpharogroup.random.RandomExtensions#getRandomKey(java.util.Map)} .
 	 */
 	@Test
 	public void testGetRandomKey()
@@ -150,14 +150,14 @@ public class RandomUtilsTest extends BaseTestCase
 		final Set<String> keys = map.keySet();
 		for (int i = 0; i < 100; i++)
 		{
-			final String randomKey = (String)RandomUtils.getRandomKey(map);
+			final String randomKey = (String)RandomExtensions.getRandomKey(map);
 			this.result = keys.contains(randomKey);
 			AssertJUnit.assertTrue("", this.result);
 		}
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomUtils#randomBoolean()}.
+	 * Test method for {@link de.alpharogroup.random.RandomExtensions#randomBoolean()}.
 	 */
 	@Test
 	public void testRandomBoolean()
@@ -168,12 +168,12 @@ public class RandomUtilsTest extends BaseTestCase
 	@Test
 	public void testRandomByteArray()
 	{
-		final byte[] randomByteArray = RandomUtils.randomByteArray(8);
+		final byte[] randomByteArray = RandomExtensions.randomByteArray(8);
 		System.out.println(new String(randomByteArray, Charset.forName("UTF-8")));
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomUtils#randomChar(java.lang.String)} .
+	 * Test method for {@link de.alpharogroup.random.RandomExtensions#randomChar(java.lang.String)} .
 	 */
 	@Test
 	public void testRandomChar()
@@ -181,7 +181,7 @@ public class RandomUtilsTest extends BaseTestCase
 		final String string = Constants.LOWCASECHARS;
 		for (int i = 0; i < 100; i++)
 		{
-			final char randomChar = RandomUtils.randomChar(string);
+			final char randomChar = RandomExtensions.randomChar(string);
 			final CharBuffer charBuffer = CharBuffer.allocate(1);
 			charBuffer.put(randomChar);
 			this.result = string.contains(charBuffer);
@@ -190,7 +190,7 @@ public class RandomUtilsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomUtils#randomInt(int)}.
+	 * Test method for {@link de.alpharogroup.random.RandomExtensions#randomInt(int)}.
 	 */
 	@Test
 	public void testRandomInt()
@@ -198,14 +198,14 @@ public class RandomUtilsTest extends BaseTestCase
 		System.out.println("Generate 100 secure random numbers:");
 		for (int i = 0; i < 100; i++)
 		{
-			final int randomInt = RandomUtils.randomInt(5);
+			final int randomInt = RandomExtensions.randomInt(5);
 			System.out.println(randomInt);
 		}
 	}
 
 	/**
 	 * Test method for
-	 * {@link de.alpharogroup.random.RandomUtils#getRandomString(java.lang.String[])} .
+	 * {@link de.alpharogroup.random.RandomExtensions#getRandomString(java.lang.String[])} .
 	 */
 	@Test
 	public void testRandomStringStringArray()
@@ -214,7 +214,7 @@ public class RandomUtilsTest extends BaseTestCase
 		final List<String> listFromArray = Arrays.asList(array);
 		for (int i = 0; i < 100; i++)
 		{
-			final String randomString = RandomUtils.getRandomString(array);
+			final String randomString = RandomExtensions.getRandomString(array);
 			this.result = listFromArray.contains(randomString);
 			AssertJUnit.assertTrue("", this.result);
 		}
@@ -222,7 +222,7 @@ public class RandomUtilsTest extends BaseTestCase
 
 	/**
 	 * Test method for
-	 * {@link de.alpharogroup.random.RandomUtils#getRandomString(java.lang.String, int)} .
+	 * {@link de.alpharogroup.random.RandomExtensions#getRandomString(java.lang.String, int)} .
 	 */
 	@Test
 	public void testRandomStringStringInt()
@@ -233,7 +233,7 @@ public class RandomUtilsTest extends BaseTestCase
 		charBuffer.put(chars);
 		for (int i = 0; i < 100; i++)
 		{
-			final String randomString = RandomUtils.getRandomString(chars, length);
+			final String randomString = RandomExtensions.getRandomString(chars, length);
 			this.result = randomString.contains(charBuffer);
 			AssertJUnit.assertTrue("", this.result);
 		}

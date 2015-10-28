@@ -24,16 +24,15 @@ import java.util.GregorianCalendar;
 import java.util.Random;
 
 import de.alpharogroup.date.CalculateDateUtils;
-import de.alpharogroup.random.RandomUtils;
+import de.alpharogroup.random.RandomExtensions;
 
 /**
  * This util class gets random dates.
  *
  * @version 1.0
  * @author Asterios Raptis
- * @deprecated Use instead {@link RandomDateExtensions}. Will be removed in the next major version.
  */
-public class RandomDateUtils
+public class RandomDateExtensions
 {
 
 	/**
@@ -46,7 +45,7 @@ public class RandomDateUtils
 	 */
 	public static Date dateAfter(final Date date)
 	{
-		return dateAfter(date, RandomUtils.randomInt(10000));
+		return dateAfter(date, RandomExtensions.randomInt(10000));
 	}
 
 	/**
@@ -61,7 +60,7 @@ public class RandomDateUtils
 	 */
 	public static Date dateAfter(final Date date, final int range)
 	{
-		return CalculateDateUtils.addDays(date, RandomUtils.randomInt(range));
+		return CalculateDateUtils.addDays(date, RandomExtensions.randomInt(range));
 	}
 
 	/**
@@ -236,7 +235,7 @@ public class RandomDateUtils
 	 */
 	public static Date randomDateBetween(final Date from, final int startDays, final int endDays)
 	{
-		return dateAfter(from, RandomUtils.randomIntBetween(startDays, endDays));
+		return dateAfter(from, RandomExtensions.randomIntBetween(startDays, endDays));
 	}
 
 }

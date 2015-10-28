@@ -31,7 +31,7 @@ import org.apache.commons.codec.binary.Base64;
 import de.alpharogroup.crypto.aes.HexEncryptor;
 import de.alpharogroup.crypto.algorithm.HashAlgorithm;
 import de.alpharogroup.random.Constants;
-import de.alpharogroup.random.RandomUtils;
+import de.alpharogroup.random.RandomExtensions;
 
 /**
  * The Class Hasher.
@@ -52,7 +52,7 @@ public class Hasher
 	 */
 	public static byte[] getRandomSalt(final int length, final Charset charset)
 	{
-		return RandomUtils.getRandomString(Constants.LCUCCHARSWN, length).getBytes(charset);
+		return RandomExtensions.getRandomString(Constants.LCUCCHARSWN, length).getBytes(charset);
 	}
 
 	/**

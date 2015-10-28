@@ -33,7 +33,7 @@ import de.alpharogroup.auth.interfaces.Role;
 import de.alpharogroup.auth.interfaces.Session;
 import de.alpharogroup.auth.interfaces.User;
 import de.alpharogroup.collections.InsertionOrderMap;
-import de.alpharogroup.random.RandomObjectsUtils;
+import de.alpharogroup.random.RandomObjectsExtensions;
 
 /**
  * The Class UserSession.
@@ -178,7 +178,7 @@ public class UserSession implements Session<String, String>
 	 */
 	private void initialize()
 	{
-		this.id = RandomObjectsUtils.newRandomId();
+		this.id = RandomObjectsExtensions.newRandomId();
 		this.startTime = new Date(System.currentTimeMillis());
 		this.lastAccess = (Date)this.startTime.clone();
 		this.maxInactiveTime = 180000;

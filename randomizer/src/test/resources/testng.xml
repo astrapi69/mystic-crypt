@@ -3,10 +3,10 @@
 <suite name="Suite">
   <test name="Test">
     <classes>
-      <class name="de.alpharogroup.random.RandomUtilsTest"/>
-      <class name="de.alpharogroup.random.RandomObjectsUtilsTest"/>
-      <class name="de.alpharogroup.random.date.RandomDateUtilsTest"/>
-      <class name="de.alpharogroup.random.address.RandomAddressUtilsTest"/>
+      <class name="de.alpharogroup.random.RandomExtensionsTest"/>
+      <class name="de.alpharogroup.random.RandomObjectsExtensionsTest"/>
+      <class name="de.alpharogroup.random.date.RandomDateExtensionsTest"/>
+      <class name="de.alpharogroup.random.address.RandomAddressExtensionsTest"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->
