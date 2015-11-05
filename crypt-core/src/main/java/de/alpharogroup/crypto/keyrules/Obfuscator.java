@@ -21,11 +21,26 @@ import org.apache.commons.lang.StringUtils;
 
 import de.alpharogroup.check.Check;
 
+/**
+ * The Class {@link Obfuscator} obfuscates the given {@link SimpleKeyRule}.
+ */
 public class Obfuscator
 {
-	private SimpleKeyRule rule;
+
+	/** The rule. */
+	private final SimpleKeyRule rule;
+
+	/** The key. */
 	private final String key;
 
+	/**
+	 * Instantiates a new {@link Obfuscator}.
+	 *
+	 * @param rule
+	 *            the rule
+	 * @param key
+	 *            the key
+	 */
 	public Obfuscator(final SimpleKeyRule rule, final String key)
 	{
 		Check.get().notNull(rule, "rule");
@@ -34,6 +49,11 @@ public class Obfuscator
 		this.key = key;
 	}
 
+	/**
+	 * Disentangle.
+	 *
+	 * @return the string
+	 */
 	public String disentangle()
 	{
 		String clonedKey = obfuscate();
@@ -45,6 +65,11 @@ public class Obfuscator
 		return clonedKey;
 	}
 
+	/**
+	 * Obfuscate.
+	 *
+	 * @return the string
+	 */
 	public String obfuscate()
 	{
 		final Map<String, String> rules = rule.getRules();

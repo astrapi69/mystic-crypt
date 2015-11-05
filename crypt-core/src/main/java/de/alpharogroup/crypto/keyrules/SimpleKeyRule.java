@@ -21,11 +21,24 @@ import lombok.Getter;
 import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.interfaces.KeyRule;
 
+/**
+ * The Class {@link SimpleKeyRule} can define a simple rule for encrypt and decrypt a key.
+ */
 public class SimpleKeyRule implements KeyRule
 {
-	@Getter
-	private Map<String, String> rules;
 
+	/**
+	 * The rules for encrypt the key.
+	 */
+	@Getter
+	private final Map<String, String> rules;
+
+	/**
+	 * Instantiates a new {@link SimpleKeyRule}.
+	 *
+	 * @param rules
+	 *            the rules for encrypt the key.
+	 */
 	public SimpleKeyRule(final Map<String, String> rules)
 	{
 		Check.get().notEmpty(rules, "rules");

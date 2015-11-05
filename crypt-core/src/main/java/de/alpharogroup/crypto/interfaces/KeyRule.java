@@ -16,7 +16,7 @@
 package de.alpharogroup.crypto.interfaces;
 
 /**
- * The Interface CpyptRule can define a rules for encrypt and decrypt.
+ * The interface {@link KeyRule} can define a rule for encrypt and decrypt a key.
  */
 public interface KeyRule
 {
