@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mystic-crypt</artifactId>
-		<version>4.2.0</version>
+		<version>4.3.0</version>
 	</parent>
 	<artifactId>randomizer</artifactId>
 
@@ -12,17 +12,17 @@
 
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
-			<artifactId>jaulp.time</artifactId>
+			<artifactId>vintage-time</artifactId>
 		</dependency>
 
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
-			<artifactId>jaulp.lang</artifactId>
+			<artifactId>jcommons-lang</artifactId>
 		</dependency>
 
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
-			<artifactId>jaulp.test.objects</artifactId>
+			<artifactId>test-objects</artifactId>
 			<scope>test</scope>
 		</dependency>
 

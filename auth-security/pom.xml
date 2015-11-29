@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mystic-crypt</artifactId>
-		<version>4.2.0</version>
+		<version>4.3.0</version>
 	</parent>
 
 	<artifactId>auth-security</artifactId>
@@ -23,7 +23,7 @@
 
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
-			<artifactId>jaulp.file</artifactId>
+			<artifactId>file-worker</artifactId>
 		</dependency>
 
 		<dependency>
@@ -33,12 +33,12 @@
 
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
-			<artifactId>jaulp.collections</artifactId>
+			<artifactId>silly-collections</artifactId>
 		</dependency>
 
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
-			<artifactId>jaulp.test.objects</artifactId>
+			<artifactId>test-objects</artifactId>
 		</dependency>
 
 	</dependencies>

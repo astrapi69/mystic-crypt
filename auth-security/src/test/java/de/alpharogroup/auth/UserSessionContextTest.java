@@ -33,7 +33,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.auth.interfaces.SessionContext;
-import de.alpharogroup.file.csv.CsvFileUtils;
+import de.alpharogroup.file.csv.CsvFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
@@ -60,7 +60,7 @@ public class UserSessionContextTest
 		final File srctestresDir = PathFinder.getSrcTestResourcesDir();
 		final File resources = new File(srctestresDir, "resources");
 		final File userrole = new File(resources, "userrole");
-		this.permissions = CsvFileUtils.readFileToList(userrole);
+		this.permissions = CsvFileExtensions.readFileToList(userrole);
 	}
 
 	/**

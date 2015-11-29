@@ -26,7 +26,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.BaseTestCase;
-import de.alpharogroup.date.CalculateDateUtils;
+import de.alpharogroup.date.CalculateDateExtensions;
 
 /**
  * Test class for the class RandomDateExtensions.
@@ -75,9 +75,9 @@ public class RandomDateExtensionsTest extends BaseTestCase
 		for (int i = 0; i < 100; i++)
 		{
 			final Date randomBirthday = RandomDateExtensions.randomBirthday();
-			this.result = CalculateDateUtils.isBetween(past, recentlyPast, randomBirthday);
+			this.result = CalculateDateExtensions.isBetween(past, recentlyPast, randomBirthday);
 			AssertJUnit.assertTrue("",
-				CalculateDateUtils.isBetween(past, recentlyPast, randomBirthday));
+				CalculateDateExtensions.isBetween(past, recentlyPast, randomBirthday));
 		}
 	}
 
@@ -89,12 +89,12 @@ public class RandomDateExtensionsTest extends BaseTestCase
 	@Test
 	public void testCreateRandomBirthdayDateDate()
 	{
-		final Date from = CalculateDateUtils.substractDaysFromDate(this.now, 20000);
-		final Date till = CalculateDateUtils.substractDaysFromDate(this.now, 3000);
+		final Date from = CalculateDateExtensions.substractDaysFromDate(this.now, 20000);
+		final Date till = CalculateDateExtensions.substractDaysFromDate(this.now, 3000);
 		for (int i = 0; i < 100; i++)
 		{
 			final Date randomBirthday = RandomDateExtensions.randomBirthday(from, till);
-			this.result = CalculateDateUtils.isBetween(from, till, randomBirthday);
+			this.result = CalculateDateExtensions.isBetween(from, till, randomBirthday);
 			AssertJUnit.assertTrue("", this.result);
 		}
 	}

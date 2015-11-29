@@ -36,7 +36,7 @@ import de.alpharogroup.auth.interfaces.Permission;
 import de.alpharogroup.auth.interfaces.Role;
 import de.alpharogroup.auth.interfaces.Session;
 import de.alpharogroup.auth.interfaces.User;
-import de.alpharogroup.file.csv.CsvFileUtils;
+import de.alpharogroup.file.csv.CsvFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
@@ -86,8 +86,8 @@ public class UserSessionTest
 		final File resources = new File(srctestresDir, "resources");
 		final File userrole = new File(resources, "userrole");
 		final File directorrole = new File(resources, "directorrole");
-		this.accessrights1 = CsvFileUtils.readFileToList(userrole);
-		this.accessrights2 = CsvFileUtils.readFileToList(directorrole);
+		this.accessrights1 = CsvFileExtensions.readFileToList(userrole);
+		this.accessrights2 = CsvFileExtensions.readFileToList(directorrole);
 		this.ars = new HashSet<>(this.accessrights1.size());
 		this.ars2 = new HashSet<>(this.accessrights2.size());
 		for (final String object : this.accessrights1)

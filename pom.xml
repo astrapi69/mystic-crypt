@@ -5,14 +5,15 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mvn-java-parent</artifactId>
-		<version>2.0.0</version>
+		<version>2.2.0</version>
 		<relativePath></relativePath>
 	</parent>	
 	
 	<artifactId>mystic-crypt</artifactId>
-	<version>4.2.0</version>
+	<version>4.3.0</version>
 	<packaging>pom</packaging>
 	<inceptionYear>2015</inceptionYear>
+	
 	<name>${project.artifactId}</name>
 
 	<url>https://github.com/astrapi69/mystic-crypt</url>
@@ -21,12 +22,17 @@
 		Cpyptograhic library parent project.
 	</description>
 
-	<scm>
-		<connection>scm:git:git:@github.com:astrapi69/mystic-crypt.git</connection>
-		<developerConnection>scm:git:git@github.com:astrapi69/mystic-crypt.git</developerConnection>
-		<url>git:@github.com:astrapi69/mystic-crypt.git</url>
-	</scm>
+	<licenses>
 
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt
+			</url>
+			<distribution>repo</distribution>
+		</license>
+
+	</licenses>
+	
 	<developers>
 
 		<developer>
@@ -41,16 +47,21 @@
 
 	</developers>
 
-	<licenses>
+	<organization>
+		<name>Alpha Ro Group UG (haftungsbeschrängt)</name>
+		<url>http://www.alpharogroup.de/</url>
+	</organization>
+	
+	<scm>
+		<connection>scm:git:git:@github.com:astrapi69/mystic-crypt.git</connection>
+		<developerConnection>scm:git:git@github.com:astrapi69/mystic-crypt.git</developerConnection>
+		<url>git:@github.com:astrapi69/mystic-crypt.git</url>
+	</scm>
 
-		<license>
-			<name>The Apache Software License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt
-			</url>
-			<distribution>repo</distribution>
-		</license>
-
-	</licenses>
+	<issueManagement>
+		<url>https://github.com/astrapi69/mystic-crypt/issues</url>
+		<system>github.com</system>
+	</issueManagement>
 
 	<modules>
 		<module>auth-security</module>
@@ -58,16 +69,14 @@
 		<module>randomizer</module>
 	</modules>
 
-
-
 	<properties>
-		<!-- JAULP PROJECT versions -->
-		<jaulp.core.version>4.0.0</jaulp.core.version>
-		<jaulp.collections.version>${jaulp.core.version}</jaulp.collections.version>
-		<jaulp.file.version>${jaulp.core.version}</jaulp.file.version>
-		<jaulp.lang.version>${jaulp.core.version}</jaulp.lang.version>
-		<jaulp.time.version>${jaulp.core.version}</jaulp.time.version>
-		<jaulp.test.objects.version>${jaulp.core.version}</jaulp.test.objects.version>
+		<!-- NEW EXTENSIONS LIB versions -->
+		<extensions-lib.version>4.7.0</extensions-lib.version>
+		<silly-collections.version>${extensions-lib.version}</silly-collections.version>		
+		<file-worker.version>${extensions-lib.version}</file-worker.version>		
+		<jcommons-lang.version>${extensions-lib.version}</jcommons-lang.version>		
+		<test-objects.version>${extensions-lib.version}</test-objects.version>
+		<vintage-time.version>${extensions-lib.version}</vintage-time.version>
 		<!-- PARENT PROJECT versions -->
 		<randomizer.version>${project.version}</randomizer.version>
 		<!-- EXTERNAL LIBRARIES versions -->
@@ -75,80 +84,43 @@
 	</properties>
 
 	<dependencyManagement>
+	
 		<dependencies>
-			<!-- LOMBOK DEPENDENCIES -->
-			<dependency>
-				<groupId>org.projectlombok</groupId>
-				<artifactId>lombok</artifactId>
-				<version>${lombok.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-api</artifactId>
-				<version>${slf4j.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-log4j12</artifactId>
-				<version>${slf4j.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>log4j</groupId>
-				<artifactId>log4j</artifactId>
-				<version>${log4j.version}</version>
-				<optional>true</optional>
-			</dependency>
-			<!-- UNIT DEPENDENCIES FOR TESTING -->
-			<!-- JUNIT DEPENDENCY -->
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>${junit.version}</version>
-			</dependency>
-			<!-- TESTNG DEPENDENCY -->
-			<dependency>
-				<groupId>org.testng</groupId>
-				<artifactId>testng</artifactId>
-				<version>${testng.version}</version>
-			</dependency>
-
+			
 			<dependency>
 				<groupId>commons-codec</groupId>
 				<artifactId>commons-codec</artifactId>
 				<version>${commons-codec.version}</version>
 			</dependency>
-
+			<!-- NEW EXTENSIONS LIB DEPENDENCIES -->
 			<dependency>
 				<groupId>de.alpharogroup</groupId>
-				<artifactId>jaulp.collections</artifactId>
-				<version>${jaulp.collections.version}</version>
+				<artifactId>silly-collections</artifactId>
+				<version>${silly-collections.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>de.alpharogroup</groupId>
-				<artifactId>jaulp.time</artifactId>
-				<version>${jaulp.time.version}</version>
+				<artifactId>jcommons-lang</artifactId>
+				<version>${jcommons-lang.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>de.alpharogroup</groupId>
-				<artifactId>jaulp.lang</artifactId>
-				<version>${jaulp.lang.version}</version>
+				<artifactId>test-objects</artifactId>
+				<version>${test-objects.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>de.alpharogroup</groupId>
-				<artifactId>jaulp.file</artifactId>
-				<version>${jaulp.file.version}</version>
+				<artifactId>file-worker</artifactId>
+				<version>${file-worker.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>de.alpharogroup</groupId>
-				<artifactId>jaulp.test.objects</artifactId>
-				<version>${jaulp.test.objects.version}</version>
+				<artifactId>vintage-time</artifactId>
+				<version>${vintage-time.version}</version>
 			</dependency>
 
 			<dependency>
@@ -160,27 +132,6 @@
 		</dependencies>
 
 	</dependencyManagement>
-
-	<dependencies>
-		<!-- LOMBOK DEPENDENCIES -->
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-		</dependency>
-		<!-- UNIT TESTS DEPENDENCIES -->
-		<dependency>
-			<groupId>org.testng</groupId>
-			<artifactId>testng</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-	</dependencies>
-
 
 	<build>
 
@@ -230,199 +181,6 @@
 
 		</testResources>
 
-		<pluginManagement>
-
-			<plugins>
-
-				<!-- Configuring Maven Source Plugin: To attach source artifacts to your 
-					build we execute the source:jar goal from the source plugin during the package 
-					phase. -->
-				<plugin>
-					<inherited>true</inherited>
-					<artifactId>maven-source-plugin</artifactId>
-					<version>${maven-source-plugin.version}</version>
-					<executions>
-						<execution>
-							<id>attach-sources</id>
-							<goals>
-								<goal>jar-no-fork</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<!-- Configuring Maven Javadoc Plugin: To attach javadoc artifacts to 
-					your build we execute the javadoc:jar goal from the javadoc plugin. -->
-				<plugin>
-					<inherited>true</inherited>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>${maven-javadoc-plugin.version}</version>
-					<configuration>
-						<detectOfflineLinks>false</detectOfflineLinks>
-						<minmemory>128m</minmemory>
-						<maxmemory>256m</maxmemory>
-						<notimestamp>true</notimestamp>
-						<quiet>true</quiet>
-						<links>
-							<link>http://download.oracle.com/javase/1.5.0/docs/api</link>
-							<link>http://download.oracle.com/javaee/5/api</link>
-						</links>
-					</configuration>
-					<executions>
-						<execution>
-							<id>attach-javadoc</id>
-							<goals>
-								<goal>jar</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<!-- Signing with gpg -->
-				<plugin>
-					<inherited>true</inherited>
-					<artifactId>maven-gpg-plugin</artifactId>
-					<version>${maven-gpg-plugin.version}</version>
-					<executions>
-						<execution>
-							<id>sign-artifacts</id>
-							<phase>verify</phase>
-							<goals>
-								<goal>sign</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-
-				<plugin>
-					<inherited>true</inherited>
-					<artifactId>maven-release-plugin</artifactId>
-					<version>${maven-release-plugin.version}</version>
-					<configuration>
-						<mavenExecutorId>forked-path</mavenExecutorId>
-					</configuration>
-				</plugin>
-
-				<plugin>
-					<artifactId>maven-deploy-plugin</artifactId>
-					<version>${maven-deploy-plugin.version}</version>
-				</plugin>
-				<!-- The Nexus Staging Maven Plugin is the recommended way to deploy 
-					your components to OSSRH and release them to the Central Repository. _______________ 
-					If your version is a release version (does not end in -SNAPSHOT) and with 
-					this setup in place, you can run a deployment to OSSRH and an automated release 
-					to the Central Repository with the usual: mvn clean deploy _________________________ 
-					With the property autoReleaseAfterClose set to false you can manually inspect 
-					the staging repository in Nexus and trigger a release of the staging repository 
-					later with: mvn nexus-staging:release. -->
-				<plugin>
-					<groupId>org.sonatype.plugins</groupId>
-					<artifactId>nexus-staging-maven-plugin</artifactId>
-					<version>${nexus-staging-maven-plugin.version}</version>
-					<extensions>true</extensions>
-					<configuration>
-						<serverId>ossrh</serverId>
-						<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-						<autoReleaseAfterClose>true</autoReleaseAfterClose>
-					</configuration>
-				</plugin>
-
-				<plugin>
-					<inherited>true</inherited>
-					<artifactId>maven-assembly-plugin</artifactId>
-					<version>${maven-assembly-plugin.version}</version>
-					<configuration>
-						<descriptorRefs>
-							<descriptorRef>jar-with-dependencies</descriptorRef>
-						</descriptorRefs>
-					</configuration>
-					<executions>
-						<execution>
-							<id>make-assembly</id>
-							<!-- this is used for inheritance merges -->
-							<phase>package</phase>
-							<!-- append to the packaging phase. -->
-							<goals>
-								<goal>attached</goal>
-								<!-- goals == mojos -->
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-
-				<plugin>
-					<inherited>true</inherited>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<version>${maven-surefire-plugin.version}</version>
-					<configuration>
-						<suiteXmlFiles>
-							<suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
-						</suiteXmlFiles>
-					</configuration>
-				</plugin>
-
-				<plugin>
-					<inherited>true</inherited>
-					<artifactId>maven-eclipse-plugin</artifactId>
-					<version>${maven-eclipse-plugin.version}</version>
-					<configuration>
-						<downloadSources>true</downloadSources>
-						<additionalBuildcommands>
-							<buildcommand>org.eclipse.m2e.core.maven2Builder</buildcommand>
-						</additionalBuildcommands>
-						<additionalProjectnatures>
-							<projectnature>org.eclipse.m2e.core.maven2Nature</projectnature>
-							<projectnature>org.springsource.ide.eclipse.gradle.core.nature</projectnature>
-						</additionalProjectnatures>
-					</configuration>
-				</plugin>
-
-				<plugin>
-					<inherited>true</inherited>
-					<artifactId>maven-install-plugin</artifactId>
-					<version>${maven-install-plugin.version}</version>
-				</plugin>
-
-				<plugin>
-					<groupId>com.mycila</groupId>
-					<artifactId>license-maven-plugin</artifactId>
-					<version>${license-maven-plugin.version}</version>
-					<configuration>
-						<header>src/main/resources/LICENSE.txt</header>
-						<properties>
-							<owner>Asterios Raptis</owner>
-							<year>${project.inceptionYear}</year>
-							<email>asterios.raptis@gmx.net</email>
-						</properties>
-						<excludes>
-							<exclude>**/README</exclude>
-							<exclude>**/pom.xml</exclude>
-							<exclude>**/*.xml</exclude>
-							<exclude>**/*.xsl</exclude>
-							<exclude>**/*.xsd</exclude>
-							<exclude>**/*.dtd</exclude>
-							<exclude>**/*.html</exclude>
-							<exclude>**/*.properties</exclude>
-							<exclude>**/*.bat</exclude>
-							<exclude>**/*.gradle</exclude>
-							<exclude>**/*.MF</exclude>
-							<exclude>**/*.txt</exclude>
-							<exclude>**/*.vm</exclude>
-							<exclude>src/test/resources/**</exclude>
-							<exclude>src/main/resources/**</exclude>
-						</excludes>
-					</configuration>
-					<executions>
-						<execution>
-							<goals>
-								<goal>format</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-
-			</plugins>
-
-		</pluginManagement>
-
 		<plugins>
 
 			<plugin>
@@ -443,177 +201,5 @@
 		</plugins>
 
 	</build>
-
-	<distributionManagement>
-		<snapshotRepository>
-			<id>ossrh</id>
-			<name>Sonatype Nexus Snapshots</name>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<repository>
-			<id>ossrh</id>
-			<name>Nexus Release Repository</name>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-	</distributionManagement>
-
-	<profiles>
-
-		<profile>
-			<id>oss.sonatype.org-staged-release</id>
-			<!-- This is the profile to use for releasing into the staged release 
-				repo. We need to sign the artifacts. -->
-			<activation>
-				<property>
-					<name>performRelease</name>
-					<value>true</value>
-				</property>
-			</activation>
-
-			<build>
-				<plugins>
-
-					<plugin>
-						<inherited>true</inherited>
-						<artifactId>maven-javadoc-plugin</artifactId>
-					</plugin>
-
-					<plugin>
-						<inherited>true</inherited>
-						<artifactId>maven-source-plugin</artifactId>
-					</plugin>
-
-					<plugin>
-						<inherited>true</inherited>
-						<groupId>org.sonatype.plugins</groupId>
-						<artifactId>nexus-staging-maven-plugin</artifactId>
-					</plugin>
-
-					<plugin>
-						<inherited>true</inherited>
-						<artifactId>maven-gpg-plugin</artifactId>
-					</plugin>
-
-				</plugins>
-			</build>
-
-			<distributionManagement>
-				<snapshotRepository>
-					<id>ossrh</id>
-					<name>Sonatype Nexus Snapshots</name>
-					<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-				</snapshotRepository>
-				<repository>
-					<id>ossrh</id>
-					<name>Nexus Release Repository</name>
-					<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-				</repository>
-			</distributionManagement>
-
-		</profile>
-
-		<profile>
-			<id>release-sign-artifacts</id>
-			<activation>
-				<property>
-					<name>performRelease</name>
-					<value>true</value>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<inherited>true</inherited>
-						<artifactId>maven-gpg-plugin</artifactId>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-
-		<profile>
-			<!-- This profile is for generate or update the license header from source 
-				files. for generate or update the license header you have to run this profile 
-				with this goal license:format. -->
-			<id>update-license-header</id>
-			<activation>
-				<property>
-					<name>performRelease</name>
-					<value>true</value>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-
-					<plugin>
-						<inherited>true</inherited>
-						<groupId>com.mycila</groupId>
-						<artifactId>license-maven-plugin</artifactId>
-					</plugin>
-
-				</plugins>
-			</build>
-
-		</profile>
-
-		<profile>
-			<id>release-javadoc-jar-with-dependencies</id>
-			<activation>
-				<property>
-					<name>performRelease</name>
-					<value>true</value>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-
-					<plugin>
-						<inherited>true</inherited>
-						<artifactId>maven-javadoc-plugin</artifactId>
-					</plugin>
-
-					<plugin>
-						<inherited>true</inherited>
-						<artifactId>maven-assembly-plugin</artifactId>
-					</plugin>
-
-				</plugins>
-			</build>
-		</profile>
-
-		<profile>
-			<id>generate-reports</id>
-			<activation>
-				<property>
-					<name>performRelease</name>
-					<value>true</value>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<inherited>true</inherited>
-						<artifactId>maven-javadoc-plugin</artifactId>
-					</plugin>
-
-					<plugin>
-						<inherited>true</inherited>
-						<artifactId>maven-surefire-plugin</artifactId>
-					</plugin>
-
-				</plugins>
-			</build>
-		</profile>
-
-	</profiles>
-
-	<organization>
-		<name>Alpha Ro Group UG (haftungsbeschrängt)</name>
-		<url>http://www.alpharogroup.de/</url>
-	</organization>
-
-	<issueManagement>
-		<url>https://github.com/astrapi69/mystic-crypt/issues</url>
-		<system>github.com</system>
-	</issueManagement>
 
 </project>

@@ -23,7 +23,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Random;
 
-import de.alpharogroup.date.CalculateDateUtils;
+import de.alpharogroup.date.CalculateDateExtensions;
 import de.alpharogroup.random.RandomUtils;
 
 /**
@@ -61,7 +61,7 @@ public class RandomDateUtils
 	 */
 	public static Date dateAfter(final Date date, final int range)
 	{
-		return CalculateDateUtils.addDays(date, RandomUtils.randomInt(range));
+		return CalculateDateExtensions.addDays(date, RandomUtils.randomInt(range));
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class RandomDateUtils
 	 */
 	public static Date dateBefore(final Date date, final int range)
 	{
-		return CalculateDateUtils.substractDaysFromDate(date, range);
+		return CalculateDateExtensions.substractDaysFromDate(date, range);
 	}
 
 	/**

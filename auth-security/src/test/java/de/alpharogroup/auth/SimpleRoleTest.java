@@ -37,7 +37,7 @@ import org.testng.annotations.Test;
 
 import de.alpharogroup.auth.interfaces.Permission;
 import de.alpharogroup.auth.interfaces.Role;
-import de.alpharogroup.file.csv.CsvFileUtils;
+import de.alpharogroup.file.csv.CsvFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
@@ -67,7 +67,7 @@ public class SimpleRoleTest
 		final File srctestresDir = PathFinder.getSrcTestResourcesDir();
 		final File resources = new File(srctestresDir, "resources");
 		final File userrole = new File(resources, "userrole");
-		this.permissions = CsvFileUtils.readFileToList(userrole);
+		this.permissions = CsvFileExtensions.readFileToList(userrole);
 		final Set<Permission> ars = new HashSet<Permission>(this.permissions.size());
 		for (final String object : this.permissions)
 		{

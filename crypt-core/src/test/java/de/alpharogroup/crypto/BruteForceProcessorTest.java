@@ -23,7 +23,7 @@ import java.util.Set;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.lang.PackageUtils;
+import de.alpharogroup.lang.PackageExtensions;
 
 public class BruteForceProcessorTest
 {
@@ -33,7 +33,7 @@ public class BruteForceProcessorTest
 	{
 
 
-		final Set<String> list = PackageUtils.scanClassNames("de.alpharogroup", true, true);
+		final Set<String> list = PackageExtensions.scanClassNames("de.alpharogroup", true, true);
 		for (final String string : list)
 		{
 			if (string.endsWith("Test"))

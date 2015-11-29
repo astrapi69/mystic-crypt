@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.Set;
 
-import de.alpharogroup.lang.PropertiesUtils;
+import de.alpharogroup.lang.PropertiesExtensions;
 import de.alpharogroup.random.RandomUtils;
 
 /**
@@ -53,7 +53,7 @@ public class RandomAddressUtils
 	{
 
 		Properties p = null;
-		p = properties != null ? properties : PropertiesUtils.loadProperties(PROP_FILE_STREETS);
+		p = properties != null ? properties : PropertiesExtensions.loadProperties(PROP_FILE_STREETS);
 		final int size = p.size();
 		final Object[] keys = p.keySet().toArray();
 		final String street = (String)p.get(keys[RandomUtils.randomInt(size)]);
