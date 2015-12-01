@@ -28,11 +28,14 @@ import java.io.Serializable;
 
 import de.alpharogroup.auth.enums.InsertUserState;
 
+/**
+ * The interface {@link UserExistenceService}.
+ */
 public interface UserExistenceService extends Serializable
 {
 
 	/**
-	 * Exists user with email.
+	 * Checks if a user exists with the given email.
 	 * 
 	 * @param email
 	 *            the email
@@ -41,23 +44,30 @@ public interface UserExistenceService extends Serializable
 	boolean existsUserWithEmail(final String email);
 
 	/**
-	 * Exists user with username.
+	 * Checks if a user exists with the given user name.
 	 * 
 	 * @param username
-	 *            the username
+	 *            the user name
 	 * @return true, if successful
 	 */
 	boolean existsUserWithUsername(final String username);
-
+	
+	/**
+	 * Checks if a user exists with the given email or user name.
+	 *
+	 * @param emailOrUsername the email or user name
+	 * @return true, if successful
+	 */
+	boolean existsUserWithEmailOrUsername(final String emailOrUsername);
 
 	/**
-	 * Exists user with email or username.
+	 * Checks if a user exists with the given email or user name.
 	 * 
 	 * @param email
 	 *            the email
 	 * @param username
-	 *            the username
-	 * @return the insert user state
+	 *            the user name
+	 * @return the resulted {@link InsertUserState} object.
 	 */
 	InsertUserState existsUserWithEmailOrUsername(final String email, final String username);
 
