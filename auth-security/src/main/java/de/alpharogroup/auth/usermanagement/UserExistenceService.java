@@ -28,7 +28,7 @@ import java.io.Serializable;
 
 import de.alpharogroup.auth.enums.InsertUserState;
 
-public interface UserManagementService extends Serializable
+public interface UserExistenceService extends Serializable
 {
 
 	/**

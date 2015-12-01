@@ -1,19 +1,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-		
+
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mvn-java-parent</artifactId>
 		<version>2.2.0</version>
 		<relativePath></relativePath>
-	</parent>	
-	
+	</parent>
+
 	<artifactId>mystic-crypt</artifactId>
-	<version>4.4.0</version>
+	<version>4.5.0</version>
 	<packaging>pom</packaging>
 	<inceptionYear>2015</inceptionYear>
-	
+
 	<name>${project.artifactId}</name>
 
 	<url>https://github.com/astrapi69/mystic-crypt</url>
@@ -32,7 +32,7 @@
 		</license>
 
 	</licenses>
-	
+
 	<developers>
 
 		<developer>
@@ -51,7 +51,7 @@
 		<name>Alpha Ro Group UG (haftungsbeschrängt)</name>
 		<url>http://www.alpharogroup.de/</url>
 	</organization>
-	
+
 	<scm>
 		<connection>scm:git:git:@github.com:astrapi69/mystic-crypt.git</connection>
 		<developerConnection>scm:git:git@github.com:astrapi69/mystic-crypt.git</developerConnection>
@@ -72,9 +72,9 @@
 	<properties>
 		<!-- NEW EXTENSIONS LIB versions -->
 		<extensions-lib.version>4.7.0</extensions-lib.version>
-		<silly-collections.version>${extensions-lib.version}</silly-collections.version>		
-		<file-worker.version>${extensions-lib.version}</file-worker.version>		
-		<jcommons-lang.version>${extensions-lib.version}</jcommons-lang.version>		
+		<silly-collections.version>${extensions-lib.version}</silly-collections.version>
+		<file-worker.version>${extensions-lib.version}</file-worker.version>
+		<jcommons-lang.version>${extensions-lib.version}</jcommons-lang.version>
 		<test-objects.version>${extensions-lib.version}</test-objects.version>
 		<vintage-time.version>${extensions-lib.version}</vintage-time.version>
 		<!-- PARENT PROJECT versions -->
@@ -84,9 +84,9 @@
 	</properties>
 
 	<dependencyManagement>
-	
+
 		<dependencies>
-			
+
 			<dependency>
 				<groupId>commons-codec</groupId>
 				<artifactId>commons-codec</artifactId>
