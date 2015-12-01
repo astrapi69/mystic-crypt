@@ -25,7 +25,7 @@
 package de.alpharogroup.auth.enums;
 
 /**
- * The Enum InsertUserState keeps three states for checking if the user exist or not.
+ * The enum {@link InsertUserState} keeps three states for checking if the user exist or not.
  */
 public enum InsertUserState
 {
