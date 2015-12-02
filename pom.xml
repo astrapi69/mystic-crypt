@@ -10,7 +10,7 @@
 	</parent>
 
 	<artifactId>mystic-crypt</artifactId>
-	<version>4.6.0</version>
+	<version>4.7.0</version>
 	<packaging>pom</packaging>
 	<inceptionYear>2015</inceptionYear>
 
@@ -71,12 +71,14 @@
 
 	<properties>
 		<!-- NEW EXTENSIONS LIB versions -->
-		<extensions-lib.version>4.7.0</extensions-lib.version>
+		<extensions-lib.version>4.8.0</extensions-lib.version>
 		<silly-collections.version>${extensions-lib.version}</silly-collections.version>
 		<file-worker.version>${extensions-lib.version}</file-worker.version>
 		<jcommons-lang.version>${extensions-lib.version}</jcommons-lang.version>
 		<test-objects.version>${extensions-lib.version}</test-objects.version>
 		<vintage-time.version>${extensions-lib.version}</vintage-time.version>
+		<!-- RESOURCEBUNDLE-CORE versions -->		
+		<resourcebundle-inspector.version>2.6.0</resourcebundle-inspector.version>
 		<!-- PARENT PROJECT versions -->
 		<randomizer.version>${project.version}</randomizer.version>
 		<!-- EXTERNAL LIBRARIES versions -->
@@ -86,6 +88,12 @@
 	<dependencyManagement>
 
 		<dependencies>
+			<!-- RESOURCEBUNDLE-CORE DEPENDENCIES -->
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>resourcebundle-inspector</artifactId>
+				<version>${resourcebundle-inspector.version}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>commons-codec</groupId>

@@ -19,8 +19,8 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.Set;
 
-import de.alpharogroup.lang.PropertiesExtensions;
 import de.alpharogroup.random.RandomExtensions;
+import de.alpharogroup.resourcebundle.properties.PropertiesExtensions;
 
 /**
  * Utility class to create random addresses.
