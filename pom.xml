@@ -77,8 +77,8 @@
 		<jcommons-lang.version>${extensions-lib.version}</jcommons-lang.version>
 		<test-objects.version>${extensions-lib.version}</test-objects.version>
 		<vintage-time.version>${extensions-lib.version}</vintage-time.version>
-		<!-- RESOURCEBUNDLE-CORE versions -->		
-		<resourcebundle-inspector.version>2.6.0</resourcebundle-inspector.version>
+		<!-- RESOURCEBUNDLE-CORE versions -->
+		<resourcebundle-inspector.version>2.7.0</resourcebundle-inspector.version>
 		<!-- PARENT PROJECT versions -->
 		<randomizer.version>${project.version}</randomizer.version>
 		<!-- EXTERNAL LIBRARIES versions -->
