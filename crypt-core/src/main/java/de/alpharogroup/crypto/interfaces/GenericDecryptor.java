@@ -16,9 +16,25 @@
 package de.alpharogroup.crypto.interfaces;
 
 /**
- * interface for encrypting {@link String} objects.
+ * Generic interface for decrypt objects.
  *
- * @version 1.0
  * @author Asterios Raptis
+ * @version 1.0
+ * @param <T> the generic type of the input to decrypt
+ * @param <R> the generic type of the result
  */
-public interface Encryptor extends GenericEncryptor<String, String>{}
+public interface GenericDecryptor<T,R>
+{
+
+	/**
+	 * Decrypt the given encrypted object.
+	 *
+	 * @param encypted
+	 *            The object to decrypt.
+	 * @return The decrypted object
+	 * @throws Exception
+	 *             is thrown if decryption fails.
+	 */
+	public R decrypt(final T encypted) throws Exception;
+
+}

@@ -46,6 +46,26 @@ public abstract class CryptConst
 	public static final String PBEWITH_MD5AND_DES = "PBEWithMD5AndDES";
 
 	/**
+	 * Constant for the algorithm to encrypt and decrypt.
+	 */
+	public static final String PBEWITH_MD5AND_AES = "PBEWithMD5AndAES";
+
+	/**
+	 * Constant for the algorithm to encrypt and decrypt.
+	 */
+	public static final String PBEWITH_SHA1_AND_DES_EDE = "PBEWithSHA1AndDESede";
+
+	/**
+	 * Constant for the algorithm to encrypt and decrypt.
+	 */
+	public static final String PBKDF2_WITH_HMAC_SHA1 = "PBKDF2WithHmacSHA1";
+
+	/**
+	 * Constant for the algorithm to encrypt and decrypt.
+	 */
+	public static final String PBEWITH_SHA1_AND_128BIT_AES_CBC_BC = "PBEWITHSHA1AND128BITAES-CBC-BC";
+
+	/**
 	 * Constant for the encoding for the String.
 	 */
 	public static final String ENCODING = "UTF8";

@@ -15,8 +15,11 @@
  */
 package de.alpharogroup.crypto.io;
 
+import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import de.alpharogroup.crypto.interfaces.StreamEncryptor;
 
 /**
  * The Class CryptoInputStream.
@@ -26,19 +29,63 @@ import java.io.InputStream;
  * @author Asterios Raptis
  *
  */
-public class CryptoInputStream extends InputStream
+public class CryptoInputStream extends FilterInputStream
 {
+	private final StreamEncryptor encryptor;
+
+	protected CryptoInputStream(final InputStream in,
+		final StreamEncryptor encryptor)
+	{
+		super(in);
+		this.encryptor = encryptor;
+	}
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.io.InputStream#read()
 	 */
 	@Override
 	public int read() throws IOException
 	{
-		throw new UnsupportedOperationException(
-			"The method read is not jet supported in this Version.");
+		final int b = in.read();
+		if(b  != -1){
+			try
+			{
+				final int encrypt = this.encryptor.encrypt(b);
+				return encrypt;
+			}
+			catch (final Exception e)
+			{
+				throw new RuntimeException(e);
+			}
+		}
+		return b;
+
 	}
+
+	@Override
+	public int read(final byte[] b) throws IOException
+	{
+		return read(b, 0, b.length);
+	}
+
+    @Override
+	public int read(final byte[] buf, final int off, int len) throws IOException {
+        len = in.read(buf, off, len);
+        if (len != -1) {
+        	try
+			{
+        		final int encrypt = this.encryptor.encrypt(len);
+				return encrypt;
+			}
+			catch (final Exception e)
+			{
+				throw new RuntimeException(e);
+			}
+        }
+        return len;
+    }
+
 
 }

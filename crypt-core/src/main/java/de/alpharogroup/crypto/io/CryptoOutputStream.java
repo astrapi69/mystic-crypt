@@ -15,8 +15,11 @@
  */
 package de.alpharogroup.crypto.io;
 
+import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+
+import de.alpharogroup.crypto.interfaces.GenericDecryptor;
 
 /**
  * The Class CryptoOutputStream.
@@ -26,19 +29,33 @@ import java.io.OutputStream;
  * @author Asterios Raptis
  *
  */
-public class CryptoOutputStream extends OutputStream
+public class CryptoOutputStream extends FilterOutputStream
 {
+	private final GenericDecryptor<Integer, Integer> decryptor;
+
+	public CryptoOutputStream(final OutputStream out, final GenericDecryptor<Integer, Integer> decryptor)
+	{
+		super(out);
+		this.decryptor = decryptor;
+	}
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see java.io.OutputStream#write(int)
 	 */
 	@Override
 	public void write(final int b) throws IOException
 	{
-		throw new UnsupportedOperationException(
-			"The method write is not jet supported in this Version.");
+		try
+		{
+			final Integer dba = this.decryptor.decrypt(b);
+			out.write(dba);
+		}
+		catch (final Exception e1)
+		{
+			throw new RuntimeException(e1);
+		}
 	}
 
 }
