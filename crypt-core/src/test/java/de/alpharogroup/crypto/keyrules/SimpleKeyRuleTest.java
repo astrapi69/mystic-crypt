@@ -29,7 +29,7 @@ public class SimpleKeyRuleTest
 	public void test()
 	{
 		// a key for encryption
-		final String key = "XnQ6eyTmK_ca-rLE_6U4";
+		String toObfuscatedString = "XnQ6eyTmK_ca-rLE_6U4";
 		// create a rule for obfuscate the key
 		final Map<String, String> keymap = new HashMap<>();
 		keymap.put("6", "666");
@@ -38,12 +38,36 @@ public class SimpleKeyRuleTest
 		// create the rule
 		final SimpleKeyRule replaceKeyRule = new SimpleKeyRule(keymap);
 		// obfuscate the key
-		final Obfuscator obfuscator = new Obfuscator(replaceKeyRule, key);
-		final String obfuscatedKey = obfuscator.obfuscate();
-		AssertJUnit.assertEquals("XnQ666eytmK_ca-r777E_666U4", obfuscatedKey);
+		Obfuscatable obfuscator = new Obfuscator(replaceKeyRule, toObfuscatedString);
+		String actual = obfuscator.obfuscate();
+		String expected = "XnQ666eytmK_ca-r777E_666U4";
+		AssertJUnit.assertEquals(expected, actual);
 		// disentangledKey the key
 		final String disentangledKey = obfuscator.disentangle();
-		AssertJUnit.assertEquals(key, disentangledKey);
+		AssertJUnit.assertEquals(toObfuscatedString, disentangledKey);
+
+		 final Map<String, String> charmap = new HashMap<>();
+
+		 charmap.put("1", "O");
+		 charmap.put("2", "Tw");
+		 charmap.put("3", "Th");
+		 charmap.put("4", "Fo");
+		 charmap.put("5", "Fi");
+		 charmap.put("6", "Si");
+		 charmap.put("7", "Se");
+		 charmap.put("8", "E");
+		 charmap.put("9", "N");
+
+		 final SimpleKeyRule charreplaceRule = new SimpleKeyRule(charmap);
+		 toObfuscatedString = "854917632";
+		 obfuscator = new Obfuscator(charreplaceRule, toObfuscatedString);
+		 actual = obfuscator.obfuscate();
+		 expected = "EFiFoNOSeSiThTw";
+		 AssertJUnit.assertEquals(expected, actual);
+
+		 actual = obfuscator.disentangle();
+		 expected = toObfuscatedString;
+		 AssertJUnit.assertEquals(expected, actual);
 
 	}
 

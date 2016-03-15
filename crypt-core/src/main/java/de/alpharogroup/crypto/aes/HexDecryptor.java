@@ -33,9 +33,9 @@ import lombok.Setter;
 import org.apache.commons.codec.DecoderException;
 
 import de.alpharogroup.crypto.CryptConst;
-import de.alpharogroup.crypto.SimpleDecryptor;
 import de.alpharogroup.crypto.algorithm.Algorithm;
 import de.alpharogroup.crypto.interfaces.Decryptor;
+import de.alpharogroup.crypto.simple.SimpleDecryptor;
 
 /**
  * Instantiates a new hex decryptor.

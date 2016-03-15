@@ -20,6 +20,8 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import de.alpharogroup.crypto.simple.SimpleCrypt;
+
 /**
  * Test class for the class {@link SimpleCryptTest}.
  *

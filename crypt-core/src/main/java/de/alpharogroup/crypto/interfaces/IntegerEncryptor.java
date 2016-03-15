@@ -16,9 +16,9 @@
 package de.alpharogroup.crypto.interfaces;
 
 /**
- * interface for encrypting {@link String} objects.
+ * interface for encrypting {@link Integer} objects.
  *
  * @version 1.0
  * @author Asterios Raptis
  */
-public interface Encryptor extends GenericEncryptor<String, String>{}
+public interface IntegerEncryptor extends GenericEncryptor<Integer, Integer>{}
