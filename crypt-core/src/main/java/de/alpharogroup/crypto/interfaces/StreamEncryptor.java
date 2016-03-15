@@ -20,8 +20,6 @@ package de.alpharogroup.crypto.interfaces;
  *
  * @author Asterios Raptis
  * @version 1.0
- * @param <T> the generic type of the input to encrypt
- * @param <R> the generic type of the result
  */
 public interface StreamEncryptor
 {

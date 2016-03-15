@@ -53,6 +53,8 @@ public abstract class BaseEncryptor<T, R> extends AbstractCryptor implements Gen
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeyException
 	 *             is thrown if initialization of the cypher object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported.
 	 */
 	public BaseEncryptor(final String privateKey)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,

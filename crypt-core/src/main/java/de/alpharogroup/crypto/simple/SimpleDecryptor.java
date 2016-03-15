@@ -83,7 +83,7 @@ public class SimpleDecryptor implements Decryptor
 
 	/**
 	 * Decrpyt the given encrypted String.
-	 * 
+	 *
 	 * @param encypted
 	 *            The String to decrypt.
 	 * @throws BadPaddingException
@@ -102,8 +102,8 @@ public class SimpleDecryptor implements Decryptor
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeyException
 	 *             is thrown if initialization of the cypher object fails.
-	 *
-	 * @see de.alpharogroup.crypto.interfaces.Decryptor#decrypt(java.lang.String)
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported.
 	 */
 	@Override
 	public String decrypt(final String encypted) throws IllegalBlockSizeException,

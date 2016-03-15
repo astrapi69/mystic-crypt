@@ -55,13 +55,20 @@ public class HexNewEncryptor extends BaseEncryptor<String, String>
 	/**
 	 * Default constructor.
 	 *
-	 * @param privateKeykey
+	 * @param privateKey
 	 *            The private key.
 	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
 	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
 	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported.
 	 */
 	public HexNewEncryptor(final String privateKey) throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
@@ -76,10 +83,17 @@ public class HexNewEncryptor extends BaseEncryptor<String, String>
 	 * @param algorithm
 	 *            the algorithm
 	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
 	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
 	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported.
 	 */
 	public HexNewEncryptor(final String privateKey, final Algorithm algorithm) throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
@@ -97,7 +111,7 @@ public class HexNewEncryptor extends BaseEncryptor<String, String>
 	 * @throws InvalidKeyException
 	 *             the invalid key exception is thrown if initialization of the cypher object fails.
 	 * @throws UnsupportedEncodingException
-	 *             is thrown by get the byte array of the private key String object fails.
+	 *             is thrown by get the byte array of the private key String object fails or  if the named charset is not supported.
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the cypher object fails.
 	 * @throws NoSuchPaddingException
@@ -106,7 +120,6 @@ public class HexNewEncryptor extends BaseEncryptor<String, String>
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
 	 * @throws BadPaddingException
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @see de.alpharogroup.crypto.interfaces.Encryptor#encrypt(java.lang.String)
 	 */
 	@Override
 	public String encrypt(final String string) throws InvalidKeyException,
