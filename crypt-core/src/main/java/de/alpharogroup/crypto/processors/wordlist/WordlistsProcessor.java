@@ -1,4 +1,4 @@
-package de.alpharogroup.crypto;
+package de.alpharogroup.crypto.processors.wordlist;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import de.alpharogroup.check.Check;
 
 public class WordlistsProcessor
 {
-	private List<String> words;
+	private final List<String> words;
 	private int currentIndex;
 	/** The password to check against it. */
 	@Getter

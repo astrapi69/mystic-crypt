@@ -15,27 +15,37 @@
  */
 package de.alpharogroup.crypto.io;
 
-import java.io.InputStream;
+import java.io.OutputStream;
 
-import javax.crypto.CipherInputStream;
+import javax.crypto.Cipher;
+import javax.crypto.CipherOutputStream;
 
-import de.alpharogroup.crypto.core.BaseEncryptor;
 
 /**
- * The Class CryptoInputStream.
- *
- * @version 1.0
- *
- * @author Asterios Raptis
- *
+ * The class {@link CryptoCipherOutputStream}.
  */
-public class CryptoInputStream extends CipherInputStream
+public class CryptoCipherOutputStream extends CipherOutputStream
 {
 
-	protected CryptoInputStream(final InputStream in,
-		final BaseEncryptor<?, ?> encryptor)
+	/**
+	 * Instantiates a new {@link CryptoCipherOutputStream}.
+	 *
+	 * @param is the is
+	 * @param c the c
+	 */
+	public CryptoCipherOutputStream(final OutputStream is, final Cipher c)
 	{
-		super(in, encryptor.getCipher());
+		super(is, c);
+	}
+
+	/**
+	 * Instantiates a new {@link CryptoCipherOutputStream}.
+	 *
+	 * @param is the is
+	 */
+	public CryptoCipherOutputStream(final OutputStream is)
+	{
+		super(is);
 	}
 
 }

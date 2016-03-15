@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.alpharogroup.crypto;
+package de.alpharogroup.crypto.pw;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;

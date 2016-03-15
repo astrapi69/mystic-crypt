@@ -13,12 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.alpharogroup.crypto.interfaces;
+package de.alpharogroup.crypto.io;
+
+import java.io.InputStream;
+
+import javax.crypto.Cipher;
+import javax.crypto.CipherInputStream;
 
 /**
- * interface for encrypting {@link String} objects.
+ * The Class CryptoInputStream.
  *
  * @version 1.0
+ *
  * @author Asterios Raptis
+ *
  */
-public interface Encryptor extends GenericEncryptor<String, String>{}
+public class CryptoCipherInputStream extends CipherInputStream
+{
+
+
+	public CryptoCipherInputStream(final InputStream is, final Cipher c)
+	{
+		super(is, c);
+	}
+
+	public CryptoCipherInputStream(final InputStream is)
+	{
+		super(is);
+	}
+
+}

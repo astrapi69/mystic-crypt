@@ -10,6 +10,7 @@ import java.util.TreeSet;
 
 import org.testng.annotations.Test;
 
+import de.alpharogroup.crypto.processors.wordlist.WordlistsProcessor;
 import de.alpharogroup.file.read.ReadFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 

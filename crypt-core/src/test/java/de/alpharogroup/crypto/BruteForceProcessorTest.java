@@ -23,6 +23,7 @@ import java.util.Set;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
+import de.alpharogroup.crypto.processors.bruteforce.BruteForceProcessor;
 import de.alpharogroup.lang.PackageExtensions;
 
 public class BruteForceProcessorTest
