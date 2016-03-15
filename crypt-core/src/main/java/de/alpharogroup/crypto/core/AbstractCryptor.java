@@ -95,7 +95,9 @@ public abstract class AbstractCryptor implements Serializable
 	 * @throws InvalidKeyException
 	 *             is thrown if initialization of the cypher object fails.
 	 */
-	protected void onInitialize() throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+	protected void onInitialize()
+		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
 		this.cipher = newCipher(this.privateKey);
 		initialized = true;
@@ -109,7 +111,6 @@ public abstract class AbstractCryptor implements Serializable
 	 * @param privateKey
 	 *            the private key
 	 * @return the new {@link Cipher} from the given private key.
-	 *
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeySpecException
@@ -120,16 +121,15 @@ public abstract class AbstractCryptor implements Serializable
 	 *             is thrown if initialization of the cypher object fails.
 	 * @throws InvalidAlgorithmParameterException
 	 *             is thrown if initialization of the cypher object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported.
 	 */
 	protected Cipher newCipher(final String privateKey)
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
 		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		return newCipher(privateKey,
-							newAlgorithm(),
-							newSalt(),
-							newIterationCount(),
-							newOperationMode());
+		return newCipher(privateKey, newAlgorithm(), newSalt(), newIterationCount(),
+			newOperationMode());
 	}
 
 	/**
@@ -137,7 +137,8 @@ public abstract class AbstractCryptor implements Serializable
 	 *
 	 * @return the string
 	 */
-	protected String newAlgorithm() {
+	protected String newAlgorithm()
+	{
 		return CryptConst.PBEWITH_MD5AND_DES;
 	}
 
@@ -146,7 +147,8 @@ public abstract class AbstractCryptor implements Serializable
 	 *
 	 * @return the salt byte array
 	 */
-	protected byte[] newSalt() {
+	protected byte[] newSalt()
+	{
 		return CryptConst.SALT;
 	}
 
@@ -155,7 +157,8 @@ public abstract class AbstractCryptor implements Serializable
 	 *
 	 * @return the salt byte array
 	 */
-	protected int newIterationCount() {
+	protected int newIterationCount()
+	{
 		return CryptConst.ITERATIONCOUNT;
 	}
 

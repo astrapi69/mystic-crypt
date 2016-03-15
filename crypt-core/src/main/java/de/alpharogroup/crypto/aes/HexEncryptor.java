@@ -115,7 +115,6 @@ public class HexEncryptor implements Encryptor
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
 	 * @throws BadPaddingException
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @see de.alpharogroup.crypto.interfaces.Encryptor#encrypt(java.lang.String)
 	 */
 	@Override
 	public String encrypt(final String string) throws InvalidKeyException,
