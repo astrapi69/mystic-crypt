@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.alpharogroup.crypto;
+package de.alpharogroup.crypto.core;
 
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -23,15 +24,15 @@ import java.security.spec.InvalidKeySpecException;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
-import de.alpharogroup.crypto.interfaces.GenericDecryptor;
+import de.alpharogroup.crypto.interfaces.GenericEncryptor;
 
 /**
- * A base decryptor implementation.
+ * A base encryptor implementation.
  *
- * @author Asterios Raptis
  * @version 1.0
+ * @author Asterios Raptis
  */
-public abstract class BaseDecryptor<T, R> extends AbstractCryptor implements GenericDecryptor<T, R>
+public abstract class BaseEncryptor<T, R> extends AbstractCryptor implements GenericEncryptor<T, R>
 {
 
 	/** The Constant serialVersionUID. */
@@ -53,9 +54,9 @@ public abstract class BaseDecryptor<T, R> extends AbstractCryptor implements Gen
 	 * @throws InvalidKeyException
 	 *             is thrown if initialization of the cypher object fails.
 	 */
-	public BaseDecryptor(final String privateKey)
+	public BaseEncryptor(final String privateKey)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
-		NoSuchPaddingException, InvalidAlgorithmParameterException
+		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
 		super(privateKey);
 	}
@@ -64,9 +65,9 @@ public abstract class BaseDecryptor<T, R> extends AbstractCryptor implements Gen
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected final int getOperationMode()
+	protected final int newOperationMode()
 	{
-		return Cipher.DECRYPT_MODE;
+		return Cipher.ENCRYPT_MODE;
 	}
 
 }

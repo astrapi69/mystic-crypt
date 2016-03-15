@@ -1,5 +1,6 @@
-package de.alpharogroup;
+package de.alpharogroup.crypto.simple;
 
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -7,7 +8,7 @@ import java.security.spec.InvalidKeySpecException;
 
 import javax.crypto.NoSuchPaddingException;
 
-import de.alpharogroup.crypto.BaseEncryptor;
+import de.alpharogroup.crypto.core.BaseEncryptor;
 
 public class SimpleBaseEncryptor extends BaseEncryptor<Integer, Integer>
 {
@@ -16,7 +17,7 @@ public class SimpleBaseEncryptor extends BaseEncryptor<Integer, Integer>
 
 	public SimpleBaseEncryptor(final String privateKey)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
-		NoSuchPaddingException, InvalidAlgorithmParameterException
+		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
 		super(privateKey);
 	}

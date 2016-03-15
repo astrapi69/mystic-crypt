@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.alpharogroup.crypto;
+package de.alpharogroup.crypto.simple;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
@@ -38,6 +38,7 @@ import lombok.Getter;
 import org.apache.commons.codec.binary.Base64;
 
 import de.alpharogroup.check.Check;
+import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.interfaces.Decryptor;
 
 /**

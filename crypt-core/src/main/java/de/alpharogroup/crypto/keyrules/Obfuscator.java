@@ -24,7 +24,7 @@ import de.alpharogroup.check.Check;
 /**
  * The Class {@link Obfuscator} obfuscates the given {@link SimpleKeyRule}.
  */
-public class Obfuscator
+public class Obfuscator implements Obfuscatable
 {
 
 	/** The rule. */
@@ -50,10 +50,9 @@ public class Obfuscator
 	}
 
 	/**
-	 * Disentangle.
-	 *
-	 * @return the string
+	 * {@inheritDoc}
 	 */
+	@Override
 	public String disentangle()
 	{
 		String clonedKey = obfuscate();
@@ -66,10 +65,9 @@ public class Obfuscator
 	}
 
 	/**
-	 * Obfuscate.
-	 *
-	 * @return the string
+	 * {@inheritDoc}
 	 */
+	@Override
 	public String obfuscate()
 	{
 		final Map<String, String> rules = rule.getRules();

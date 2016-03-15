@@ -17,9 +17,8 @@ package de.alpharogroup.crypto.io;
 
 import java.io.InputStream;
 
+import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
-
-import de.alpharogroup.crypto.core.BaseEncryptor;
 
 /**
  * The Class CryptoInputStream.
@@ -29,13 +28,18 @@ import de.alpharogroup.crypto.core.BaseEncryptor;
  * @author Asterios Raptis
  *
  */
-public class CryptoInputStream extends CipherInputStream
+public class CryptoCipherInputStream extends CipherInputStream
 {
 
-	protected CryptoInputStream(final InputStream in,
-		final BaseEncryptor<?, ?> encryptor)
+
+	public CryptoCipherInputStream(final InputStream is, final Cipher c)
 	{
-		super(in, encryptor.getCipher());
+		super(is, c);
+	}
+
+	public CryptoCipherInputStream(final InputStream is)
+	{
+		super(is);
 	}
 
 }

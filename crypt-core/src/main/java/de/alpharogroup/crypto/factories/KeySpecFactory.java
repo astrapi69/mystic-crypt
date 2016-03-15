@@ -6,13 +6,15 @@ import javax.crypto.spec.PBEKeySpec;
 
 import de.alpharogroup.crypto.CryptConst;
 
+
+/**
+ * A factory for creating KeySpec objects.
+ */
 public class KeySpecFactory
 {
 
 	/**
-	 * Factory method for creating a new {@link PBEKeySpec} from the given private key. This method
-	 * is invoked in the constructor from the derived classes and can be overridden so users can
-	 * provide their own version of a new {@link PBEKeySpec} from the given private key.
+	 * Factory method for creating a new {@link PBEKeySpec} from the given private key.
 	 *
 	 * @param privateKey
 	 *            the private key
@@ -29,9 +31,7 @@ public class KeySpecFactory
 
 
 	/**
-	 * Factory method for creating a new {@link PBEKeySpec} from the given private key. This method
-	 * is invoked in the constructor from the derived classes and can be overridden so users can
-	 * provide their own version of a new {@link PBEKeySpec} from the given private key.
+	 * Factory method for creating a new {@link PBEKeySpec} from the given private key.
 	 *
 	 * @param privateKey
 	 *            the private key

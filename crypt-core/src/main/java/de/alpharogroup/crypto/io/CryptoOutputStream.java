@@ -15,11 +15,11 @@
  */
 package de.alpharogroup.crypto.io;
 
-import java.io.FilterOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 
-import de.alpharogroup.crypto.interfaces.GenericDecryptor;
+import javax.crypto.CipherOutputStream;
+
+import de.alpharogroup.crypto.core.BaseDecryptor;
 
 /**
  * The Class CryptoOutputStream.
@@ -29,33 +29,12 @@ import de.alpharogroup.crypto.interfaces.GenericDecryptor;
  * @author Asterios Raptis
  *
  */
-public class CryptoOutputStream extends FilterOutputStream
+public class CryptoOutputStream extends CipherOutputStream
 {
-	private final GenericDecryptor<Integer, Integer> decryptor;
 
-	public CryptoOutputStream(final OutputStream out, final GenericDecryptor<Integer, Integer> decryptor)
+	public CryptoOutputStream(final OutputStream out, final BaseDecryptor<?, ?> decryptor)
 	{
-		super(out);
-		this.decryptor = decryptor;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see java.io.OutputStream#write(int)
-	 */
-	@Override
-	public void write(final int b) throws IOException
-	{
-		try
-		{
-			final Integer dba = this.decryptor.decrypt(b);
-			out.write(dba);
-		}
-		catch (final Exception e1)
-		{
-			throw new RuntimeException(e1);
-		}
+		super(out, decryptor.getCipher());
 	}
 
 }
