@@ -82,3 +82,8 @@ Create your own fork of [astrapi69/mystic-crypt/fork](https://github.com/astrapi
 To share your changes, [submit a pull request](https://github.com/astrapi69/mystic-crypt/pull/new/master).
 
 Don't forget to add new units tests on your changes.
+
+## Contacting the Developer
+
+Do not hesitate to contact the mystic-crypt developers with your questions, concerns, comments, bug reports, or feature requests.
+- Feature requests, questions and bug reports can be reported at the [issues page](https://github.com/astrapi69/mystic-crypt/issues).
