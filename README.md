@@ -43,7 +43,7 @@ Than you can add the dependency to your dependencies:
 			</dependency>
 		</dependencies>
 
-Add the following maven dependency to your project `pom.xml` if you want to import the geoip functionality of randomizer:
+Add the following maven dependency to your project `pom.xml` if you want to import the functionality of randomizer:
 
 Than you can add the dependency to your dependencies:
 
@@ -58,7 +58,7 @@ Than you can add the dependency to your dependencies:
 		</dependencies>
 
 
-Add the following maven dependency to your project `pom.xml` if you want to import the geoip functionality of auth-security:
+Add the following maven dependency to your project `pom.xml` if you want to import the functionality of auth-security:
 
 Than you can add the dependency to your dependencies:
 
