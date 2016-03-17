@@ -21,3 +21,23 @@ The source code comes under the liberal Apache License V2.0, making mystic-crypt
 
 Maven dependency is now on sonatype.
 Check out [sonatype repository](https://oss.sonatype.org/index.html#nexus-search;quick~mystic-crypt) for latest snapshots and releases.
+
+
+Add the following maven dependency to your project `pom.xml` if you want to import the core functionality of jgeohash:
+
+Than you can add the dependency to your dependencies:
+
+		<!-- MYSTIC-CRYPT versions -->
+		<mystic-crypt.version>4.8.0</mystic-crypt.version>
+		<crypt-core.version>${mystic-crypt.version}</crypt-core.version>
+		<randomizer.version>${mystic-crypt.version}</randomizer.version>
+		<auth-security.version>${mystic-crypt.version}</auth-security.version>
+
+		<dependencies>
+			...
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>crypt-core</artifactId>
+				<version>${crypt-core.version}</version>
+			</dependency>
+		</dependencies>
