@@ -23,7 +23,7 @@ Maven dependency is now on sonatype.
 Check out [sonatype repository](https://oss.sonatype.org/index.html#nexus-search;quick~mystic-crypt) for latest snapshots and releases.
 
 
-Add the following maven dependency to your project `pom.xml` if you want to import the core functionality of jgeohash:
+Add the following maven dependency to your project `pom.xml` if you want to import the core functionality of mystic-crypt:
 
 Than you can add the dependency to your dependencies:
 
