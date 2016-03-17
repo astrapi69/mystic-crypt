@@ -71,3 +71,14 @@ Than you can add the dependency to your dependencies:
 				<version>${auth-security.version}</version>
 			</dependency>
 		</dependencies>
+
+
+## Want to Help and improve it? ###
+
+The source code for mystic-crypt are on GitHub. Please feel free to fork and send pull requests!
+
+Create your own fork of [astrapi69/mystic-crypt/fork](https://github.com/astrapi69/mystic-crypt/fork)
+
+To share your changes, [submit a pull request](https://github.com/astrapi69/mystic-crypt/pull/new/master).
+
+Don't forget to add new units tests on your changes.
