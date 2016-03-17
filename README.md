@@ -23,7 +23,7 @@ Maven dependency is now on sonatype.
 Check out [sonatype repository](https://oss.sonatype.org/index.html#nexus-search;quick~mystic-crypt) for latest snapshots and releases.
 
 
-Add the following maven dependency to your project `pom.xml` if you want to import the core functionality of mystic-crypt:
+Add the following maven dependency to your project `pom.xml` if you want to import the core functionality of mystic-core:
 
 Than you can add the dependency to your dependencies:
 
@@ -35,9 +35,39 @@ Than you can add the dependency to your dependencies:
 
 		<dependencies>
 			...
+			<!-- MYSTIC-CRYPT DEPENDENCIES -->
 			<dependency>
 				<groupId>de.alpharogroup</groupId>
 				<artifactId>crypt-core</artifactId>
 				<version>${crypt-core.version}</version>
+			</dependency>
+		</dependencies>
+
+Add the following maven dependency to your project `pom.xml` if you want to import the geoip functionality of randomizer:
+
+Than you can add the dependency to your dependencies:
+
+		<dependencies>
+			...
+			<!-- MYSTIC-CRYPT DEPENDENCIES -->
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>randomizer</artifactId>
+				<version>${randomizer.version}</version>
+			</dependency>
+		</dependencies>
+
+
+Add the following maven dependency to your project `pom.xml` if you want to import the geoip functionality of auth-security:
+
+Than you can add the dependency to your dependencies:
+
+		<dependencies>
+			...
+			<!-- MYSTIC-CRYPT DEPENDENCIES -->
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>auth-security</artifactId>
+				<version>${auth-security.version}</version>
 			</dependency>
 		</dependencies>
