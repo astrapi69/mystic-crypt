@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2007 Asterios Raptis
+ * Copyright (C) 2015 Asterios Raptis
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,7 +59,7 @@ public class SimpleEncryptor implements Encryptor
 	 * The private key.
 	 */
 	@Getter
-	private String privateKey;
+	private final String privateKey;
 
 	/**
 	 * The flag initialized that indicates if the cypher is initialized for decryption.
@@ -83,7 +83,7 @@ public class SimpleEncryptor implements Encryptor
 
 	/**
 	 * Encrypt the given String.
-	 * 
+	 *
 	 * @param string
 	 *            The String to encrypt.
 	 * @return The encrypted String.
@@ -103,8 +103,6 @@ public class SimpleEncryptor implements Encryptor
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeyException
 	 *             is thrown if initialization of the cypher object fails.
-	 *
-	 * @see de.alpharogroup.crypto.interfaces.Encryptor#encrypt(java.lang.String)
 	 */
 	@Override
 	public String encrypt(final String string) throws UnsupportedEncodingException,
@@ -121,7 +119,7 @@ public class SimpleEncryptor implements Encryptor
 
 	/**
 	 * Initializes the {@link SimpleEncryptor} object.
-	 * 
+	 *
 	 * @throws InvalidAlgorithmParameterException
 	 *             is thrown if initialization of the cypher object fails.
 	 * @throws NoSuchPaddingException

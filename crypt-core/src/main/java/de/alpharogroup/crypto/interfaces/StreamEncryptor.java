@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2007 Asterios Raptis
+ * Copyright (C) 2015 Asterios Raptis
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,6 @@ package de.alpharogroup.crypto.interfaces;
  *
  * @author Asterios Raptis
  * @version 1.0
- * @param <T> the generic type of the input to encrypt
- * @param <R> the generic type of the result
  */
 public interface StreamEncryptor
 {
