@@ -1,3 +1,18 @@
+/**
+ * Copyright (C) 2015 Asterios Raptis
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package de.alpharogroup.crypto.core;
 
 import java.io.Serializable;
@@ -49,8 +64,6 @@ public abstract class AbstractCryptor implements Serializable
 
 	/**
 	 * The flag initialized that indicates if the cypher is initialized for decryption.
-	 *
-	 * @return true, if is initialized
 	 */
 	@Getter(value = AccessLevel.PRIVATE)
 	private boolean initialized;
@@ -70,6 +83,10 @@ public abstract class AbstractCryptor implements Serializable
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeyException
 	 *             is thrown if initialization of the cypher object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported.
 	 */
 	public AbstractCryptor(final String privateKey)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
@@ -94,6 +111,8 @@ public abstract class AbstractCryptor implements Serializable
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeyException
 	 *             is thrown if initialization of the cypher object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported.
 	 */
 	protected void onInitialize()
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
@@ -198,6 +217,8 @@ public abstract class AbstractCryptor implements Serializable
 	 *             is thrown if initialization of the cypher object fails.
 	 * @throws InvalidAlgorithmParameterException
 	 *             is thrown if initialization of the cypher object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported.
 	 */
 	protected Cipher newCipher(final String privateKey, final String algorithm, final byte[] salt,
 		final int iterationCount, final int operationMode)
@@ -265,8 +286,9 @@ public abstract class AbstractCryptor implements Serializable
 	 * invoked in the constructor from the derived classes and can be overridden so users can
 	 * provide their own version of a new {@link KeySpec} from the given private key.
 	 *
-	 * @param privateKey
-	 *            the private key
+	 * @param privateKey            the private key
+	 * @param salt the salt
+	 * @param iterationCount the iteration count
 	 * @return the new {@link KeySpec} from the given private key.
 	 */
 	protected KeySpec newKeySpec(final String privateKey, final byte[] salt,
@@ -283,6 +305,8 @@ public abstract class AbstractCryptor implements Serializable
 	 * @param algorithm
 	 *            the algorithm
 	 * @return the new {@link SecretKeyFactory} from the given algorithm.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 */
 	protected SecretKeyFactory newSecretKeyFactory(final String algorithm)
 		throws NoSuchAlgorithmException
