@@ -38,14 +38,17 @@ public class WordlistProcessorTest
 		final File wordlistDir = new File(PathFinder.getSrcTestResourcesDir(), "wordlists");
 		final File wordlist_1 = new File(wordlistDir, "default-pw.txt");
 		final File wordlist_2 = new File(wordlistDir, "firstnames.txt");
-		final File wordlist_3 = new File(wordlistDir, "surnames.txt");
+		final File wordlist_3 = new File(wordlistDir, "surnames.txt");		
+		final File wordlist_4 = new File(wordlistDir, "top25pw.txt");
 		final List<String> lines1 = ReadFileExtensions.readLinesInList(wordlist_1);
 		final List<String> lines2 = ReadFileExtensions.readLinesInList(wordlist_2);
 		final List<String> lines3 = ReadFileExtensions.readLinesInList(wordlist_3);
+		final List<String> lines4 = ReadFileExtensions.readLinesInList(wordlist_4);
 		final Set<String> set = new TreeSet<>();
 		set.addAll(lines1);
 		set.addAll(lines2);
-		set.addAll(lines3);
+		set.addAll(lines3);		
+		set.addAll(lines4);
 
 		final String password = "hash";
 
