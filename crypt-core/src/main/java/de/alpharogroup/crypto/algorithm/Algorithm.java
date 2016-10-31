@@ -16,7 +16,7 @@
 package de.alpharogroup.crypto.algorithm;
 
 /**
- * The enum {@link Algorithm} defines the MessageDigest Algorithm plus the AES.
+ * The enum {@link Algorithm} defines the MessageDigest Algorithm plus the KeyGenerator Algorithm AES.
  *
  * @version 1.0
  * @author Asterios Raptis
