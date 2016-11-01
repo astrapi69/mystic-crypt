@@ -1,12 +1,15 @@
 package de.alpharogroup.crypto.algorithm;
+
 /**
- * The Enum KeyPairAlgorithm.
+ * The enum {@link KeyPairGeneratorAlgorithm}.
+ * For more info see:
+ * <a href="https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#KeyPairGenerator">https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#KeyPairGenerator</a>
  *
  * @version 1.0
  */
-public enum KeyPairAlgorithm
+public enum KeyPairGeneratorAlgorithm
 {
-  /** The enum constant for DIFFIE_HELLMAN algorithm. */
+	/** The enum constant for DIFFIE_HELLMAN algorithm. */
 	DIFFIE_HELLMAN("DiffieHellman"),
 
 	/** The enum constant for EC algorithm. */
@@ -24,7 +27,7 @@ public enum KeyPairAlgorithm
 	 * @param algorithm
 	 *            the algorithm.
 	 */
-	KeyPairAlgorithm(final String algorithm)
+	KeyPairGeneratorAlgorithm(final String algorithm)
 	{
 		this.algorithm = algorithm;
 	}
@@ -36,6 +39,6 @@ public enum KeyPairAlgorithm
 	 */
 	public String getAlgorithm()
 	{
-		return algorithm;
+		return this.algorithm;
 	}
 }

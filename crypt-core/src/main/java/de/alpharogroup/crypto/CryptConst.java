@@ -40,10 +40,13 @@ public abstract class CryptConst
 	 */
 	public static final String PRIVATE_KEY = "privattop secret";
 
+
+	public static final String PBEWITH = "PBEWith";
+
 	/**
 	 * Constant for the algorithm to encrypt and decrypt.
 	 */
-	public static final String PBEWITH_MD5AND_DES = "PBEWithMD5AndDES";
+	public static final String PBEWITH_MD5AND_DES = PBEWITH+ "MD5AndDES";
 
 	/**
 	 * Constant for the algorithm to encrypt and decrypt.
