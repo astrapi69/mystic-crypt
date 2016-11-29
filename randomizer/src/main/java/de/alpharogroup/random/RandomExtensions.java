@@ -51,8 +51,34 @@ public class RandomExtensions
 			// ignore...
 		}
 	}
+         
+        /**
+         * Generates a random int for use with pixel.
+         *
+         * @return a random int for use with pixel.
+         */
+        public static int newRandomPixel() {
+             return newRandomPixel(randomInt(256), randomInt(256), randomInt(256), randomInt(256));
+        }
 
-
+        /**
+         * Generates a random int for use with pixel.
+         *
+         * @param red
+         *            The red value.
+         * @param green
+         *            The green value.
+         * @param blue
+         *            The blue value.
+         * @param alpha
+         *            The alpha value.
+         * @return a random int for use with pixel.
+         */
+        public static int newRandomPixel(int red, int green, int blue, int alpha) { 
+             int pixel = (alpha<<24) | (red<<16) | (green<<8) | blue; 
+             return pixel;
+        }
+	
 	/**
 	 * The Method getRandomBigDecimal(int,int) gets an random BigDecimal.
 	 *
