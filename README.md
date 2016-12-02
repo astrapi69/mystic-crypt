@@ -12,7 +12,7 @@
 
 ## License
 
-The source code comes under the liberal Apache License V2.0, making mystic-crypt great for all types of applications.
+The source code comes under the liberal MIT License, making mystic-crypt great for all types of applications.
 
 
 # Build status and latest maven version
@@ -32,7 +32,7 @@ Add the following maven dependency to your project `pom.xml` if you want to impo
 Than you can add the dependency to your dependencies:
 
 		<!-- MYSTIC-CRYPT versions -->
-		<mystic-crypt.version>4.10.0</mystic-crypt.version>
+		<mystic-crypt.version>4.11.0</mystic-crypt.version>
 		<crypt-core.version>${mystic-crypt.version}</crypt-core.version>
 		<randomizer.version>${mystic-crypt.version}</randomizer.version>
 		<auth-security.version>${mystic-crypt.version}</auth-security.version>
