@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mvn-java-parent</artifactId>
-		<version>2.15.0</version>
+		<version>2.16.0</version>
 		<relativePath></relativePath>
 	</parent>
 
@@ -71,14 +71,14 @@
 
 	<properties>
 		<!-- NEW EXTENSIONS LIB versions -->
-		<extensions-lib.version>4.12.0</extensions-lib.version>
+		<extensions-lib.version>4.14.0</extensions-lib.version>
 		<file-worker.version>${extensions-lib.version}</file-worker.version>
 		<jcommons-lang.version>${extensions-lib.version}</jcommons-lang.version>
-		<test-objects.version>4.11.0</test-objects.version>
-		<silly-collections.version>4.11.0</silly-collections.version>
+		<test-objects.version>4.14.0</test-objects.version>
+		<silly-collections.version>4.12.0</silly-collections.version>
 		<vintage-time.version>4.10.0</vintage-time.version>
 		<!-- RESOURCEBUNDLE-CORE versions -->
-		<resourcebundle-inspector.version>2.9.0</resourcebundle-inspector.version>
+		<resourcebundle-inspector.version>2.11.0</resourcebundle-inspector.version>
 		<!-- PARENT PROJECT versions -->
 		<randomizer.version>${project.version}</randomizer.version>
 		<!-- EXTERNAL LIBRARIES versions -->
