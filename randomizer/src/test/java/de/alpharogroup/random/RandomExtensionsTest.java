@@ -73,7 +73,8 @@ public class RandomExtensionsTest extends BaseTestCase
 
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomExtensions#getRandomEntry(java.util.List)} .
+	 * Test method for
+	 * {@link de.alpharogroup.random.RandomExtensions#getRandomEntry(java.util.List)} .
 	 */
 	@Test
 	public void testGetRandomEntryList()
@@ -94,7 +95,8 @@ public class RandomExtensionsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomExtensions#getRandomEntry(java.util.Map)} .
+	 * Test method for {@link de.alpharogroup.random.RandomExtensions#getRandomEntry(java.util.Map)}
+	 * .
 	 */
 	@Test
 	public void testGetRandomEntryMap()
@@ -182,7 +184,8 @@ public class RandomExtensionsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomExtensions#randomChar(java.lang.String)} .
+	 * Test method for {@link de.alpharogroup.random.RandomExtensions#randomChar(java.lang.String)}
+	 * .
 	 */
 	@Test
 	public void testRandomChar()
@@ -246,6 +249,18 @@ public class RandomExtensionsTest extends BaseTestCase
 			this.result = randomString.contains(charBuffer);
 			AssertJUnit.assertTrue("", this.result);
 		}
+	}
+
+
+	/**
+	 * Test method for {@link de.alpharogroup.random.RandomExtensions#randomToken()} .
+	 */
+	@Test
+	public void testRandomToken()
+	{
+		final String randomToken = RandomExtensions.randomToken();
+		AssertJUnit.assertNotNull(randomToken);
+		AssertJUnit.assertTrue(randomToken.length() == 26);
 	}
 
 }

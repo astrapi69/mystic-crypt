@@ -25,6 +25,7 @@
 package de.alpharogroup.random;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.text.DecimalFormat;
@@ -37,7 +38,7 @@ import java.util.Set;
 
 /**
  * Utility class for producing random data. Existing name conventions:
- * 
+ *
  * If the method starts with random* than it returns a primitive data type. If the method starts
  * with getRandom* than it returns an object.
  *
@@ -60,34 +61,37 @@ public class RandomExtensions
 			// ignore...
 		}
 	}
-         
-        /**
-         * Generates a random int for use with pixel.
-         *
-         * @return a random int for use with pixel.
-         */
-        public static int newRandomPixel() {
-             return newRandomPixel(randomInt(256), randomInt(256), randomInt(256), randomInt(256));
-        }
 
-        /**
-         * Generates a random int for use with pixel.
-         *
-         * @param red
-         *            The red value.
-         * @param green
-         *            The green value.
-         * @param blue
-         *            The blue value.
-         * @param alpha
-         *            The alpha value.
-         * @return a random int for use with pixel.
-         */
-        public static int newRandomPixel(int red, int green, int blue, int alpha) { 
-             int pixel = (alpha<<24) | (red<<16) | (green<<8) | blue; 
-             return pixel;
-        }
-	
+	/**
+	 * Generates a random int for use with pixel.
+	 *
+	 * @return a random int for use with pixel.
+	 */
+	public static int newRandomPixel()
+	{
+		return newRandomPixel(randomInt(256), randomInt(256), randomInt(256), randomInt(256));
+	}
+
+	/**
+	 * Generates a random int for use with pixel.
+	 *
+	 * @param red
+	 *            The red value.
+	 * @param green
+	 *            The green value.
+	 * @param blue
+	 *            The blue value.
+	 * @param alpha
+	 *            The alpha value.
+	 * @return a random int for use with pixel.
+	 */
+	public static int newRandomPixel(final int red, final int green, final int blue,
+		final int alpha)
+	{
+		final int pixel = (alpha << 24) | (red << 16) | (green << 8) | blue;
+		return pixel;
+	}
+
 	/**
 	 * The Method getRandomBigDecimal(int,int) gets an random BigDecimal.
 	 *
@@ -304,7 +308,7 @@ public class RandomExtensions
 
 	/**
 	 * Generates a random numeric string.
-	 * 
+	 *
 	 * @return the generated random numeric string.
 	 */
 	public static String getRandomNumericString()
@@ -584,7 +588,7 @@ public class RandomExtensions
 
 	/**
 	 * The Method randomInt() gets an int between the range 0-9.
-	 * 
+	 *
 	 * @return an int between the range 0-9.
 	 */
 	public static int randomInt()
@@ -623,5 +627,16 @@ public class RandomExtensions
 		return start + randomInt(end - start);
 	}
 
+	/**
+	 * Returns a random token for use in web services.
+	 *
+	 * @return A random token.
+	 */
+	public static String randomToken()
+	{
+		final BigInteger token = new BigInteger(130, secureRandom);
+		final String randomToken = token.toString(32);
+		return randomToken;
+	}
 
 }
