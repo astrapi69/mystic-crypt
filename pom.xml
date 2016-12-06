@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mvn-java-parent</artifactId>
-		<version>2.16.0</version>
+		<version>2.17.0</version>
 		<relativePath></relativePath>
 	</parent>
 
 	<artifactId>mystic-crypt</artifactId>
-	<version>4.11.0</version>
+	<version>4.12.0</version>
 	<packaging>pom</packaging>
 	<inceptionYear>2015</inceptionYear>
 
@@ -73,7 +73,7 @@
 		<!-- NEW EXTENSIONS LIB versions -->
 		<extensions-lib.version>4.14.0</extensions-lib.version>
 		<file-worker.version>${extensions-lib.version}</file-worker.version>
-		<jcommons-lang.version>${extensions-lib.version}</jcommons-lang.version>
+		<jcommons-lang.version>4.16.0</jcommons-lang.version>
 		<test-objects.version>4.14.0</test-objects.version>
 		<silly-collections.version>4.12.0</silly-collections.version>
 		<vintage-time.version>4.10.0</vintage-time.version>
