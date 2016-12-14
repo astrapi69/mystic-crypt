@@ -22,11 +22,8 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.auth.models;
+package de.alpharogroup.auth.token;
 
-import java.util.Set;
-
-import de.alpharogroup.collections.SetExtensions;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -36,15 +33,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * The Class AuthenticationResult holds the user object and a set of
- * authentication errors if occurred.
- *
- * @param <U>
- *            the generic type of the user object
- * @param <E>
- *            the element type of the authentication errors
+ * The class {@link AuthToken}.
  */
-
 @Getter
 @Setter
 @EqualsAndHashCode
@@ -52,12 +42,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AuthenticationResult<U, E> {
-
-	/** The authentication errors. */
-	private Set<E> validationErrors = SetExtensions.newHashSet();
-
-	/** The user object. */
-	private U user;
-
+public class AuthToken
+{
+	private String value;
 }
