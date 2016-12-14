@@ -26,6 +26,7 @@ package de.alpharogroup.auth.models;
 
 import java.util.Set;
 
+import de.alpharogroup.collections.SetExtensions;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -54,7 +55,7 @@ import lombok.ToString;
 public class AuthenticationResult<U, E> {
 
 	/** The authentication errors. */
-	private Set<E> validationErrors;
+	private Set<E> validationErrors = SetExtensions.newHashSet();
 
 	/** The user object. */
 	private U user;
