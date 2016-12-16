@@ -22,33 +22,29 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.aes;
+package de.alpharogroup.crypto.key;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.SecretKeySpec;
 
-import org.apache.commons.codec.binary.Hex;
-
-import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.algorithm.Algorithm;
-import de.alpharogroup.crypto.interfaces.Encryptor;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 /**
- * Instantiates a new hex encryptor.
+ * The class {@link KeyEncryptor} can encrypt characters with his public key.
  */
-@NoArgsConstructor
-public class HexEncryptor implements Encryptor
+public class KeyEncryptor
 {
 
 	/**
@@ -59,20 +55,6 @@ public class HexEncryptor implements Encryptor
 	private Cipher cipher;
 
 	/**
-	 * The private key.
-	 */
-	@Getter
-	@Setter
-	private String privateKey;
-
-	/**
-	 * The algorithm.
-	 */
-	@Getter
-	@Setter
-	private Algorithm algorithm = Algorithm.AES;
-
-	/**
 	 * The flag initialized that indicates if the cypher is initialized for decryption.
 	 *
 	 * @return true, if is initialized
@@ -81,28 +63,24 @@ public class HexEncryptor implements Encryptor
 	private boolean initialized;
 
 	/**
-	 * Default constructor.
-	 *
-	 * @param privateKey
-	 *            The private key.
+	 * The private key.
 	 */
-	public HexEncryptor(final String privateKey)
-	{
-		this.setPrivateKey(privateKey);
-	}
+	@Getter
+	@Setter
+	private PublicKey publicKey;
 
 	/**
 	 * Default constructor.
 	 *
 	 * @param privateKey
 	 *            The private key.
-	 * @param algorithm
-	 *            the algorithm
+	 * @throws NoSuchPaddingException
+	 * @throws NoSuchAlgorithmException
+	 * @throws InvalidKeySpecException
 	 */
-	public HexEncryptor(final String privateKey, final Algorithm algorithm)
+	public KeyEncryptor(final PublicKey publicKey)
 	{
-		this.setPrivateKey(privateKey);
-		this.algorithm = algorithm;
+		this.setPublicKey(publicKey);
 	}
 
 	/**
@@ -123,21 +101,20 @@ public class HexEncryptor implements Encryptor
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
 	 * @throws BadPaddingException
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
+	 * @throws InvalidKeySpecException
 	 */
-	@Override
 	public String encrypt(final String string) throws InvalidKeyException,
 		UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException,
-		IllegalBlockSizeException, BadPaddingException
+		IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException
 	{
 		initialize();
 		final byte[] utf8 = string.getBytes("UTF-8");
 		final byte[] encrypt = this.cipher.doFinal(utf8);
-		final char[] original = Hex.encodeHex(encrypt, false);
-		return new String(original);
+		return new String(encrypt);
 	}
 
 	/**
-	 * Initializes the {@link HexEncryptor} object.
+	 * Initializes the {@link KeyEncryptor} object.
 	 *
 	 * @throws UnsupportedEncodingException
 	 *             is thrown by get the byte array of the private key String object fails.
@@ -147,24 +124,14 @@ public class HexEncryptor implements Encryptor
 	 *             is thrown if instantiation of the cypher object fails.
 	 * @throws InvalidKeyException
 	 *             the invalid key exception is thrown if initialization of the cypher object fails.
+	 * @throws InvalidKeySpecException
 	 */
-	private void initialize() throws UnsupportedEncodingException, NoSuchAlgorithmException,
-		NoSuchPaddingException, InvalidKeyException
+	private void initialize() throws NoSuchAlgorithmException, InvalidKeySpecException, UnsupportedEncodingException, NoSuchPaddingException, InvalidKeyException
 	{
 		if (!isInitialized())
 		{
-			byte[] key;
-			if (this.getPrivateKey() != null)
-			{
-				key = this.getPrivateKey().getBytes("UTF-8");
-			}
-			else
-			{
-				key = CryptConst.PRIVATE_KEY.getBytes("UTF-8");
-			}
-			final SecretKeySpec skeySpec = new SecretKeySpec(key, algorithm.getAlgorithm());
-			this.cipher = Cipher.getInstance(algorithm.getAlgorithm());
-			cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
+			cipher = Cipher.getInstance(Algorithm.RSA.getAlgorithm());
+		    cipher.init(Cipher.ENCRYPT_MODE, publicKey);
 		}
 	}
 

@@ -25,7 +25,6 @@
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
 			<artifactId>file-worker</artifactId>
-			<scope>test</scope>
 		</dependency>
 
 		<dependency>

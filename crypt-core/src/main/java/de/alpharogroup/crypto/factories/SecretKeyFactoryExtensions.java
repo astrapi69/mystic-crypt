@@ -26,7 +26,10 @@ package de.alpharogroup.crypto.factories;
 
 import java.security.NoSuchAlgorithmException;
 
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.SecretKeySpec;
 
 
 /**
@@ -47,5 +50,23 @@ public class SecretKeyFactoryExtensions
 	public static SecretKeyFactory newSecretKeyFactory(final String algorithm) throws NoSuchAlgorithmException {
 		final SecretKeyFactory factory = SecretKeyFactory.getInstance(algorithm);
 		return factory;
+	}
+
+
+	/**
+	 * New secret key spec.
+	 *
+	 * @param algorithm the algorithm
+	 * @param keyLength the key length
+	 * @return the secret key spec
+	 * @throws NoSuchAlgorithmException the no such algorithm exception
+	 */
+	public static SecretKeySpec newSecretKeySpec(final String algorithm, final int keyLength) throws NoSuchAlgorithmException {
+		final KeyGenerator keyGenerator = KeyGenerator.getInstance(algorithm);
+		keyGenerator.init(keyLength);
+	    final SecretKey secretKey = keyGenerator.generateKey();
+	    final byte[] secretKeyEncoded = secretKey.getEncoded();
+	    final SecretKeySpec secretKeySpec = new SecretKeySpec(secretKeyEncoded, algorithm);
+		return secretKeySpec;
 	}
 }

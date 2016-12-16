@@ -55,7 +55,10 @@ public enum Algorithm
 	SHA_512("SHA-512"),
 
 	/** The enum constant for AES algorithm. */
-	AES("AES");
+	AES("AES"),
+
+	/** The enum constant for RSA algorithm. */
+	RSA("RSA");
 
 	/** The algorithm. */
 	private final String algorithm;
