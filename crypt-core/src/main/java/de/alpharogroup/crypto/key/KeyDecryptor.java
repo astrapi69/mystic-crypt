@@ -38,7 +38,7 @@ import javax.crypto.NoSuchPaddingException;
 
 import org.apache.commons.codec.DecoderException;
 
-import de.alpharogroup.crypto.algorithm.Algorithm;
+import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
 import de.alpharogroup.crypto.simple.SimpleDecryptor;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -133,7 +133,7 @@ public class KeyDecryptor
 	{
 		if (!isInitialized())
 		{
-			cipher = Cipher.getInstance(Algorithm.RSA.getAlgorithm());
+			cipher = Cipher.getInstance(KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
 		    cipher.init(Cipher.DECRYPT_MODE, privateKey);
 		}
 	}

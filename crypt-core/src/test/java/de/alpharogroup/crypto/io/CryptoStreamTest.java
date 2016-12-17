@@ -52,7 +52,7 @@ public class CryptoStreamTest
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, IOException
 	{
-		final String algorythm = CryptConst.PBEWITH_MD5AND_DES;
+		final String algorythm = CryptConst.PBE_WITH_MD5_AND_DES;
 
 		final String firstKey = "D1D15ED36B887AF1";
 		final File cryptDir = new File(PathFinder.getSrcTestResourcesDir(), "crypt");

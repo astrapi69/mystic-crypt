@@ -167,7 +167,7 @@ public abstract class AbstractCryptor implements Serializable
 	 */
 	protected String newAlgorithm()
 	{
-		return CryptConst.PBEWITH_MD5AND_DES;
+		return CryptConst.PBE_WITH_MD5_AND_DES;
 	}
 
 	/**

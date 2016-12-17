@@ -22,25 +22,16 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.key;
+package de.alpharogroup.crypto.provider;
 
-import java.io.File;
-import java.security.PrivateKey;
-
-import org.testng.annotations.Test;
-
-import de.alpharogroup.crypto.provider.SecurityProvider;
-import de.alpharogroup.file.search.PathFinder;
-
-public class KeyExtensionsTest
+/**
+ * The enum {@link SecurityProvider}.
+ */
+public enum SecurityProvider
 {
 
-	@Test
-	public void testReadPemPrivateKey() throws Exception
-	{
-		final File privatekeyPemFile = new File(PathFinder.getSrcTestResourcesDir(), "private.pem");
-
-		final PrivateKey privateKey = KeyExtensions.readPemPrivateKey(privatekeyPemFile, SecurityProvider.BC);
-	}
-
+	/** The BouncyCastle SecurityProvider. */
+	BC,
+	/** The sun SecurityProvider. */
+	SUN;
 }

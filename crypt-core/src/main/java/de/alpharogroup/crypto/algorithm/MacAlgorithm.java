@@ -69,4 +69,6 @@ public enum MacAlgorithm
 
 	/** The enum constant for PBEWithHmacSHA512 algorithm. */
 	PBEWithHmacSHA512;
+
+	public static final String HMAC = "Hmac";
 }

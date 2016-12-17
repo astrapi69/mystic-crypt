@@ -34,6 +34,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import de.alpharogroup.crypto.provider.SecurityProvider;
 import de.alpharogroup.file.search.PathFinder;
 
 public class KeyEncryptDecryptorTest
@@ -63,7 +64,7 @@ public class KeyEncryptDecryptorTest
 		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
 		final File privatekeyPemFile = new File(publickeyPemDir, "private.pem");
 
-		final PrivateKey privateKey = KeyExtensions.readPemPrivateKey(privatekeyPemFile);
+		final PrivateKey privateKey = KeyExtensions.readPemPrivateKey(privatekeyPemFile, SecurityProvider.BC);
 
 		final PublicKey publicKey = KeyExtensions.readPemPublicKey(publickeyPemFile);
 

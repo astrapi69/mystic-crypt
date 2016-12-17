@@ -29,25 +29,19 @@ import de.alpharogroup.crypto.padding.PaddingScheme;
 import lombok.Getter;
 
 /**
- * The enum {@link KeyPairGeneratorAlgorithm}.
- * For more info see:
- * <a href="https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#KeyPairGenerator">https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#KeyPairGenerator</a>
+ * The enum {@link KeyPairWithModeAndPaddingAlgorithm}.
  *
  * @version 1.0
  */
-public enum KeyPairGeneratorAlgorithm
+public enum KeyPairWithModeAndPaddingAlgorithm
 {
-	/** The enum constant for DIFFIE_HELLMAN algorithm. */
-	DIFFIE_HELLMAN("DiffieHellman"),
 
-	/** The enum constant for EC algorithm. */
-	EC("EC"),
-	/** The enum constant for DSA algorithm. */
-	DSA("DSA"),
-	/** The enum constant for RSA algorithm. */
-	RSA("RSA"),
-	/** The enum constant for RSA algorithm. */
-	RSA_ECB_PKCS1PADDING("RSA" + "/" + Mode.ECB.name() + "/" + PaddingScheme.PKCS1Padding.name());
+
+	/**
+	 * The enum constant with the 'RSA' algorithm with mode 'ECB' and padding 'PKCS1Padding' that
+	 * results in 'RSA/ECB/PKCS1Padding'.
+	 */
+	RSA_ECB_PKCS1PADDING( KeyPairGeneratorAlgorithm.RSA.name() + "/" + Mode.ECB.name() + "/" + PaddingScheme.PKCS1Padding.name());
 
 
 	/** The algorithm. */
@@ -55,12 +49,12 @@ public enum KeyPairGeneratorAlgorithm
 	private final String algorithm;
 
 	/**
-	 * Instantiates a new {@link KeyPairGeneratorAlgorithm} object.
+	 * Instantiates a new {@link KeyPairWithModeAndPaddingAlgorithm} object.
 	 *
 	 * @param algorithm
 	 *            the algorithm.
 	 */
-	private KeyPairGeneratorAlgorithm(final String algorithm)
+	private KeyPairWithModeAndPaddingAlgorithm(final String algorithm)
 	{
 		this.algorithm = algorithm;
 	}

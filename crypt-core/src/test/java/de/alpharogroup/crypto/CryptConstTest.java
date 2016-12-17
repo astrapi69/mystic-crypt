@@ -22,25 +22,33 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.key;
+package de.alpharogroup.crypto;
 
-import java.io.File;
-import java.security.PrivateKey;
-
+import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.crypto.provider.SecurityProvider;
-import de.alpharogroup.file.search.PathFinder;
-
-public class KeyExtensionsTest
+/**
+ * Test class for {@link CryptConst}.
+ */
+public class CryptConstTest
 {
 
+	/**
+	 * Test for concatenated constants.
+	 */
 	@Test
-	public void testReadPemPrivateKey() throws Exception
+	public void testConcatenatedConst()
 	{
-		final File privatekeyPemFile = new File(PathFinder.getSrcTestResourcesDir(), "private.pem");
+		AssertJUnit.assertEquals(CryptConst.PBE_WITH_MD5_AND_DES, "PBEWithMD5AndDES");
 
-		final PrivateKey privateKey = KeyExtensions.readPemPrivateKey(privatekeyPemFile, SecurityProvider.BC);
+
+		AssertJUnit.assertEquals(CryptConst.PBE_WITH_MD5_AND_AES, "PBEWithMD5AndAES");
+
+
+		AssertJUnit.assertEquals(CryptConst.PBE_WITH_SHA1_AND_DES_EDE, "PBEWithSHA1AndDESede");
+
+
+		AssertJUnit.assertEquals(CryptConst.PBKDF2_WITH_HMAC_SHA1, "PBKDF2WithHmacSHA1");
 	}
 
 }

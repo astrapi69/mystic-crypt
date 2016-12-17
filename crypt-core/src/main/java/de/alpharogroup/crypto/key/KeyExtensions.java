@@ -1,3 +1,27 @@
+/**
+ * The MIT License
+ *
+ * Copyright (C) 2015 Asterios Raptis
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 package de.alpharogroup.crypto.key;
 
 import java.io.File;
@@ -20,7 +44,8 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.io.pem.PemObject;
 import org.bouncycastle.util.io.pem.PemReader;
 
-import de.alpharogroup.crypto.algorithm.Algorithm;
+import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
+import de.alpharogroup.crypto.provider.SecurityProvider;
 
 /**
  * The class {@link KeyExtensions}.
@@ -99,7 +124,7 @@ public class KeyExtensions
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
 	{
 		final X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKeyBytes);
-		final KeyFactory keyFactory = KeyFactory.getInstance(Algorithm.RSA.getAlgorithm(), provider);
+		final KeyFactory keyFactory = KeyFactory.getInstance(KeyPairGeneratorAlgorithm.RSA.getAlgorithm(), provider);
 		return keyFactory.generatePublic(keySpec);
 	}
 
@@ -134,7 +159,7 @@ public class KeyExtensions
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
 	{
 		final PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
-		final KeyFactory keyFactory = KeyFactory.getInstance(Algorithm.RSA.getAlgorithm(), provider);
+		final KeyFactory keyFactory = KeyFactory.getInstance(KeyPairGeneratorAlgorithm.RSA.getAlgorithm(), provider);
 		return keyFactory.generatePrivate(keySpec);
 	}
 
@@ -145,7 +170,7 @@ public class KeyExtensions
 	 * @return the private key
 	 * @throws Exception the exception
 	 */
-	public static PrivateKey readPemPrivateKey(final File file)
+	public static PrivateKey readPemPrivateKey(final File file, final SecurityProvider securityProvider)
 		throws Exception
 	{
 		Security.addProvider(new BouncyCastleProvider());
@@ -156,9 +181,24 @@ public class KeyExtensions
 
 		final byte[] decoded = new Base64().decode(privateKeyAsString);
 
-		return readPrivateKey(decoded, "BC");
+		return readPrivateKey(decoded, securityProvider);
 	}
 
+
+	/**
+	 * Read private key.
+	 *
+	 * @param privateKeyBytes the private key bytes
+	 * @param securityProvider the security provider
+	 * @return the private key
+	 * @throws NoSuchAlgorithmException the no such algorithm exception
+	 * @throws InvalidKeySpecException the invalid key spec exception
+	 * @throws NoSuchProviderException the no such provider exception
+	 */
+	public static PrivateKey readPrivateKey(final byte[] privateKeyBytes, final SecurityProvider securityProvider) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
+	{
+		return readPrivateKey(privateKeyBytes, securityProvider.name());
+	}
 
 	/**
 	 * reads a public key from a file.

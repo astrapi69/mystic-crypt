@@ -27,61 +27,37 @@ package de.alpharogroup.crypto.algorithm;
 import lombok.Getter;
 
 /**
- * The enum {@link Algorithm} defines the MessageDigest Algorithm plus the KeyGenerator Algorithm AES.
+ * The enum {@link SunJCEAlgorithm} defines the algorithm specified by the SunJCE security provider.
  *
  * @version 1.0
  * @author Asterios Raptis
  */
-public enum Algorithm
+public enum SunJCEAlgorithm
 {
 
-	/** The enum constant for MD2 algorithm. */
-	MD2("MD2"),
+	/** The DES algorithm. */
+	DES("DES"),
 
-	/** The enum constant for MD4 algorithm. */
-	MD4("MD4"),
+	/** The DESede algorithm. */
+	DESede("DESede"),
 
-	/** The enum constant for MD5 algorithm. */
-	MD5("MD5"),
+	/** The PBEWithMD5AndDES algorithm. */
+	PBEWithMD5AndDES("PBEWithMD5AndDES"),
 
-	/** The enum constant for SHA-1 algorithm. */
-	SHA_1("SHA-1"),
-
-	/** The enum constant for SHA1 algorithm. */
-	SHA1("SHA1"),
-
-	/** The enum constant for SHA-256 algorithm. */
-	SHA_256("SHA-256"),
-
-	/** The enum constant for SHA256 algorithm. */
-	SHA256("SHA256"),
-
-	/** The enum constant for SHA-384 algorithm. */
-	SHA_384("SHA-384"),
-
-	/** The enum constant for SHA384 algorithm. */
-	SHA384("SHA384"),
-
-	/** The enum constant for SHA-512 algorithm. */
-	SHA_512("SHA-512"),
-
-	/** The enum constant for SHA512 algorithm. */
-	SHA512("SHA512"),
-
-	/** The enum constant for AES algorithm. */
-	AES("AES");
+	/** The Blowfish algorithm. */
+	Blowfish("Blowfish");
 
 	/** The algorithm. */
 	@Getter
 	private final String algorithm;
 
 	/**
-	 * Instantiates a new {@link Algorithm} object.
+	 * Instantiates a new {@link SunJCEAlgorithm} object.
 	 *
 	 * @param algorithm
 	 *            the algorithm.
 	 */
-	private Algorithm(final String algorithm)
+	private SunJCEAlgorithm(final String algorithm)
 	{
 		this.algorithm = algorithm;
 	}

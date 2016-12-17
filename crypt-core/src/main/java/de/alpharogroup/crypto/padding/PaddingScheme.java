@@ -22,47 +22,28 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.algorithm;
+package de.alpharogroup.crypto.padding;
 
-import de.alpharogroup.crypto.modes.Mode;
-import de.alpharogroup.crypto.padding.PaddingScheme;
 import lombok.Getter;
 
 /**
- * The enum {@link KeyPairGeneratorAlgorithm}.
- * For more info see:
- * <a href="https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#KeyPairGenerator">https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#KeyPairGenerator</a>
- *
- * @version 1.0
+ * The enum {@link PaddingScheme}.
  */
-public enum KeyPairGeneratorAlgorithm
+public enum PaddingScheme
 {
-	/** The enum constant for DIFFIE_HELLMAN algorithm. */
-	DIFFIE_HELLMAN("DiffieHellman"),
-
-	/** The enum constant for EC algorithm. */
-	EC("EC"),
-	/** The enum constant for DSA algorithm. */
-	DSA("DSA"),
-	/** The enum constant for RSA algorithm. */
-	RSA("RSA"),
-	/** The enum constant for RSA algorithm. */
-	RSA_ECB_PKCS1PADDING("RSA" + "/" + Mode.ECB.name() + "/" + PaddingScheme.PKCS1Padding.name());
+	PKCS1Padding("PKCS1Padding"), PKCS5Padding("PKCS5Padding"), NoPadding("NoPadding");
 
 
-	/** The algorithm. */
+	/** The padding scheme. */
 	@Getter
-	private final String algorithm;
+	private final String scheme;
 
 	/**
-	 * Instantiates a new {@link KeyPairGeneratorAlgorithm} object.
+	 * Instantiates a new {@link PaddingScheme}.
 	 *
-	 * @param algorithm
-	 *            the algorithm.
+	 * @param scheme the padding scheme
 	 */
-	private KeyPairGeneratorAlgorithm(final String algorithm)
-	{
-		this.algorithm = algorithm;
+	private PaddingScheme(final String scheme) {
+		this.scheme = scheme;
 	}
-
 }
