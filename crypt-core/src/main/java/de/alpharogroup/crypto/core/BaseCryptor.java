@@ -48,7 +48,7 @@ import de.alpharogroup.crypto.model.CryptModel;
  * @author Asterios Raptis
  * @version 1.0
  */
-public abstract class BaseCryptor extends GenericCryptor<Cipher, String>
+public abstract class BaseCryptor extends AbstractCryptor<Cipher, String>
 implements Serializable
 {
 

@@ -46,12 +46,12 @@ import de.alpharogroup.crypto.model.CryptModel;
 import lombok.Getter;
 
 /**
- * A base cryptor implementation.
+ * An abstract cryptor implementation.
  *
  * @author Asterios Raptis
  * @version 1.0
  */
-public abstract class GenericCryptor<C, K> implements Serializable
+public abstract class AbstractCryptor<C, K> implements Serializable
 {
 
 	/** The Constant serialVersionUID. */
@@ -80,7 +80,7 @@ public abstract class GenericCryptor<C, K> implements Serializable
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public GenericCryptor(final K privateKey)
+	public AbstractCryptor(final K privateKey)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
@@ -109,7 +109,7 @@ public abstract class GenericCryptor<C, K> implements Serializable
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public GenericCryptor(final CryptModel<C, K> model)
+	public AbstractCryptor(final CryptModel<C, K> model)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
