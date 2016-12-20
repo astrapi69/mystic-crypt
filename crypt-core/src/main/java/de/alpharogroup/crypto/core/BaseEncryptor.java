@@ -41,7 +41,7 @@ import de.alpharogroup.crypto.interfaces.GenericEncryptor;
  * @version 1.0
  * @author Asterios Raptis
  */
-public abstract class BaseEncryptor<T, R> extends AbstractCryptor implements GenericEncryptor<T, R>
+public abstract class BaseEncryptor<T, R> extends BaseCryptor implements GenericEncryptor<T, R>
 {
 
 	/** The Constant serialVersionUID. */

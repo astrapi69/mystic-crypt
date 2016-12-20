@@ -33,7 +33,7 @@ import lombok.Getter;
  *
  * @version 1.0
  */
-public enum KeyPairWithModeAndPaddingAlgorithm
+public enum KeyPairWithModeAndPaddingAlgorithm implements Algorithm
 {
 
 
@@ -41,7 +41,12 @@ public enum KeyPairWithModeAndPaddingAlgorithm
 	 * The enum constant with the 'RSA' algorithm with mode 'ECB' and padding 'PKCS1Padding' that
 	 * results in 'RSA/ECB/PKCS1Padding'.
 	 */
-	RSA_ECB_PKCS1PADDING( KeyPairGeneratorAlgorithm.RSA.name() + "/" + Mode.ECB.name() + "/" + PaddingScheme.PKCS1Padding.name());
+	RSA_ECB_PKCS1PADDING( KeyPairGeneratorAlgorithm.RSA.name() + "/" + Mode.ECB.name() + "/" + PaddingScheme.PKCS1Padding.name()),
+	/**
+	 * The enum constant with the 'AES' algorithm with mode 'ECB' and padding 'PKCS5Padding' that
+	 * results in 'RSA/ECB/PKCS1Padding'.
+	 */
+	AES_ECB_PKCS5PADDING( KeyPairGeneratorAlgorithm.RSA.name() + "/" + Mode.ECB.name() + "/" + PaddingScheme.PKCS5Padding.name());
 
 
 	/** The algorithm. */

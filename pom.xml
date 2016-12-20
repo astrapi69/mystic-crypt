@@ -75,7 +75,7 @@
 		<file-worker.version>${extensions-lib.version}</file-worker.version>
 		<jcommons-lang.version>4.16.0</jcommons-lang.version>
 		<test-objects.version>4.14.0</test-objects.version>
-		<silly-collections.version>4.13.0</silly-collections.version>
+		<silly-collections.version>4.14.0</silly-collections.version>
 		<vintage-time.version>4.10.0</vintage-time.version>
 		<!-- RESOURCEBUNDLE-CORE versions -->
 		<resourcebundle-inspector.version>2.11.0</resourcebundle-inspector.version>

@@ -24,7 +24,12 @@
  */
 package de.alpharogroup.crypto.pw;
 
+/**
+ * The enum {@link PasswordHashType}.
+ */
 public enum PasswordHashType
 {
+
+	/** The PBKDF2 hash type. */
 	PBKDF2;
 }

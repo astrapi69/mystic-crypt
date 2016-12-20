@@ -35,7 +35,6 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -130,7 +129,7 @@ public class KeyEncryptor
 	{
 		if (!isInitialized())
 		{
-			cipher = Cipher.getInstance(KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
+			cipher = Cipher.getInstance("DESede/CBC/PKCS5Padding");
 		    cipher.init(Cipher.ENCRYPT_MODE, publicKey);
 		}
 	}

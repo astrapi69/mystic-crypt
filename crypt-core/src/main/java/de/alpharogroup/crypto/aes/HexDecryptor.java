@@ -25,129 +25,118 @@
 package de.alpharogroup.crypto.aes;
 
 import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import org.apache.commons.codec.DecoderException;
-
-import de.alpharogroup.crypto.CryptConst;
+import de.alpharogroup.check.Check;
+import de.alpharogroup.crypto.algorithm.AesAlgorithm;
 import de.alpharogroup.crypto.algorithm.Algorithm;
-import de.alpharogroup.crypto.interfaces.Decryptor;
-import de.alpharogroup.crypto.simple.SimpleDecryptor;
+import de.alpharogroup.crypto.core.BaseDecryptor;
 
 /**
- * Instantiates a new hex decryptor.
+ * The class {@link HexDecryptor}.
  */
-@NoArgsConstructor
-public class HexDecryptor implements Decryptor
+public class HexDecryptor extends BaseDecryptor<String, String>
 {
 
-	/**
-	 * The Cipher object.
-	 */
-	@Getter
-	@Setter
-	private Cipher cipher = null;
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 1L;
 
 	/**
-	 * The private key.
-	 */
-	@Getter
-	@Setter
-	private String privateKey = null;
-
-	/**
-	 * The flag initialized that indicates if the cypher is initialized for decryption.
-	 *
-	 * @return true, if is initialized
-	 */
-	@Getter(value = AccessLevel.PRIVATE)
-	private boolean initialized;
-
-	/**
-	 * Constructor with a private key.
+	 * Instantiates a new {@link HexDecryptor} from the given parameters.
 	 *
 	 * @param privateKey
 	 *            The private key.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported.
 	 */
 	public HexDecryptor(final String privateKey)
+		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		this.setPrivateKey(privateKey);
+		this(privateKey, AesAlgorithm.AES);
 	}
 
 	/**
-	 * Decrypt the given encrypted String.
-	 * 
-	 * @param encypted
-	 *            The String to decrypt.
-	 * @return The decrypted String
-	 * 
-	 * @throws UnsupportedEncodingException
-	 *             is thrown by get the byte array of the private key String object fails.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the cypher object fails.
+	 * Instantiates a new {@link HexDecryptor} from the given parameters.
+	 *
+	 * @param privateKey
+	 *            The private key.
+	 * @param algorithm
+	 *            the algorithm
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
 	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cypher object fails.
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeyException
-	 *             the invalid key exception is thrown if initialization of the cypher object fails.
-	 * @throws org.apache.commons.codec.DecoderException
-	 *             is thrown if an odd number or illegal of characters is supplied
-	 * @throws IllegalBlockSizeException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws BadPaddingException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported.
+	 */
+	public HexDecryptor(final String privateKey, final Algorithm algorithm)
+		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+	{
+		super(privateKey);
+		Check.get().notNull(algorithm, "algorithm");
+		getModel().setAlgorithm(algorithm);
+	}
+
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
-	public String decrypt(final String encypted) throws InvalidKeyException,
-		UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException,
-		DecoderException, IllegalBlockSizeException, BadPaddingException
+	protected String newAlgorithm()
 	{
-		initialize();
+		getModel().setAlgorithm(AesAlgorithm.AES);
+		return getModel().getAlgorithm().getAlgorithm();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected Cipher newCipher(final String privateKey, final String algorithm, final byte[] salt,
+		final int iterationCount, final int operationMode)
+		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
+		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+	{
+		final SecretKeySpec skeySpec = new SecretKeySpec(privateKey.getBytes("UTF-8"),
+			getModel().getAlgorithm().getAlgorithm());
+		final  Cipher cipher = Cipher.getInstance(getModel().getAlgorithm().getAlgorithm());
+		cipher.init(Cipher.DECRYPT_MODE, skeySpec);
+		return cipher;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String decrypt(final String encypted) throws Exception
+	{
 		final byte[] dec = HexDump.decodeHex(encypted.toCharArray());
-		final byte[] utf8 = this.cipher.doFinal(dec);
+		final byte[] utf8 = getModel().getCipher().doFinal(dec);
 		return new String(utf8, "UTF-8");
 	}
 
-	/**
-	 * Initializes the {@link SimpleDecryptor} object.
-	 *
-	 * @throws UnsupportedEncodingException
-	 *             is thrown by get the byte array of the private key String object fails.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the cypher object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cypher object fails.
-	 * @throws InvalidKeyException
-	 *             the invalid key exception is thrown if initialization of the cypher object fails.
-	 */
-	private void initialize() throws UnsupportedEncodingException, NoSuchAlgorithmException,
-		NoSuchPaddingException, InvalidKeyException
-	{
-		if (!isInitialized())
-		{
-			byte[] key;
-			if (this.getPrivateKey() != null)
-			{
-				key = this.getPrivateKey().getBytes("UTF-8");
-			}
-			else
-			{
-				key = CryptConst.PRIVATE_KEY.getBytes("UTF-8");
-			}
-			final SecretKeySpec skeySpec = new SecretKeySpec(key, Algorithm.AES.getAlgorithm());
-			this.cipher = Cipher.getInstance(Algorithm.AES.getAlgorithm());
-			cipher.init(Cipher.DECRYPT_MODE, skeySpec);
-		}
-	}
 }

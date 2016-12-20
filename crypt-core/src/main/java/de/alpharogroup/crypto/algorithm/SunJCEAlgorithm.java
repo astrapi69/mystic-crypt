@@ -32,7 +32,7 @@ import lombok.Getter;
  * @version 1.0
  * @author Asterios Raptis
  */
-public enum SunJCEAlgorithm
+public enum SunJCEAlgorithm implements Algorithm
 {
 
 	/** The DES algorithm. */

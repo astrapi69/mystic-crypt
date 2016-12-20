@@ -51,7 +51,7 @@ public class SimpleBaseEncryptor extends BaseEncryptor<Integer, Integer>
 	{
 		final byte[] buf = new byte[1];
         buf[0] = (byte)(toEncrypt.intValue());
-        final byte[] utf8 = this.cipher.doFinal(buf);
+        final byte[] utf8 = getModel().getCipher().doFinal(buf);
 		return (int)utf8[0];
 	}
 

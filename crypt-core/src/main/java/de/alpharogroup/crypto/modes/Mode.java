@@ -24,7 +24,24 @@
  */
 package de.alpharogroup.crypto.modes;
 
+/**
+ * The enum {@link Mode} defines the block chaining mode.
+ */
 public enum Mode
 {
-	ECB, CBC, CFB, OFB, PCBC;
+
+	/** The ecb. */
+	ECB,
+
+	/** The cbc. */
+	CBC,
+
+	/** The cfb. */
+	CFB,
+
+	/** The ofb. */
+	OFB,
+
+	/** The pcbc. */
+	PCBC;
 }

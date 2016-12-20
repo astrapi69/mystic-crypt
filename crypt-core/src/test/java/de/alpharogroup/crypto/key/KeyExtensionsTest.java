@@ -38,7 +38,8 @@ public class KeyExtensionsTest
 	@Test
 	public void testReadPemPrivateKey() throws Exception
 	{
-		final File privatekeyPemFile = new File(PathFinder.getSrcTestResourcesDir(), "private.pem");
+		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		final File privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
 
 		final PrivateKey privateKey = KeyExtensions.readPemPrivateKey(privatekeyPemFile, SecurityProvider.BC);
 	}

@@ -53,7 +53,7 @@ public class KeyEncryptDecryptorTest
 	@Test(enabled=true)
 	public void testEncryptDecrypt() throws Exception
 	{
-		final String test = "I'm an hellenic boy and will be encrypted with the KeyEncryptor;-)";
+		final String test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
 		System.out.println("String before encryption:");
 		System.out.println(test);
 

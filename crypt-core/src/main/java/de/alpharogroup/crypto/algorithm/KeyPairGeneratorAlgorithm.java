@@ -35,7 +35,7 @@ import lombok.Getter;
  *
  * @version 1.0
  */
-public enum KeyPairGeneratorAlgorithm
+public enum KeyPairGeneratorAlgorithm implements Algorithm
 {
 	/** The enum constant for DIFFIE_HELLMAN algorithm. */
 	DIFFIE_HELLMAN("DiffieHellman"),

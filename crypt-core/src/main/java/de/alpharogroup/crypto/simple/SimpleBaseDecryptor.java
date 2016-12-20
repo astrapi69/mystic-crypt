@@ -53,7 +53,7 @@ public class SimpleBaseDecryptor extends BaseDecryptor<Integer, Integer>
 		final byte[] buf = new byte[1];
         buf[0] = (byte)(encypted.intValue());
         System.out.println(buf.length);
-        final byte[] utf8 = this.cipher.doFinal(buf);
+        final byte[] utf8 = getModel().getCipher().doFinal(buf);
 		return (int)utf8[0];
 	}
 

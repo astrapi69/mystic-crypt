@@ -221,6 +221,4 @@ public class KeyExtensions
 		return readPublicKey(decoded, "BC");
 	}
 
-
-
 }

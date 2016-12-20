@@ -38,7 +38,7 @@ import javax.crypto.NoSuchPaddingException;
 
 import org.apache.commons.codec.DecoderException;
 
-import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
+import de.alpharogroup.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
 import de.alpharogroup.crypto.simple.SimpleDecryptor;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -111,7 +111,8 @@ public class KeyDecryptor
 		DecoderException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException, InvalidAlgorithmParameterException, IOException
 	{
 		initialize();
-		final byte[] utf8 = this.cipher.doFinal(encypted.getBytes());
+		final byte[] ecryptedBytes = encypted.getBytes();
+		final byte[] utf8 = this.cipher.doFinal(ecryptedBytes);
 		return new String(utf8, "UTF-8");
 	}
 
@@ -133,7 +134,7 @@ public class KeyDecryptor
 	{
 		if (!isInitialized())
 		{
-			cipher = Cipher.getInstance(KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
+			cipher = Cipher.getInstance(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_PKCS1PADDING.getAlgorithm());
 		    cipher.init(Cipher.DECRYPT_MODE, privateKey);
 		}
 	}

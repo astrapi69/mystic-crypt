@@ -31,7 +31,7 @@ package de.alpharogroup.crypto.algorithm;
  *
  * @version 1.0
  */
-public enum MacAlgorithm
+public enum MacAlgorithm  implements Algorithm
 {
 
 	/** The enum constant for HmacMD5 algorithm. */
@@ -71,4 +71,10 @@ public enum MacAlgorithm
 	PBEWithHmacSHA512;
 
 	public static final String HMAC = "Hmac";
+
+	@Override
+	public String getAlgorithm()
+	{
+		return this.name();
+	}
 }

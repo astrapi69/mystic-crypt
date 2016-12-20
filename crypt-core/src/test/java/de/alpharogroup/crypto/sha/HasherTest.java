@@ -26,8 +26,10 @@ package de.alpharogroup.crypto.sha;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -85,7 +87,7 @@ public class HasherTest
 	@Test
 	public void testHashAndHex() throws NoSuchAlgorithmException, InvalidKeyException,
 		UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException,
-		BadPaddingException
+		BadPaddingException, InvalidKeySpecException, InvalidAlgorithmParameterException
 	{
 		final Charset charset = Charset.forName("UTF-8");
 		final String password = "xxx";

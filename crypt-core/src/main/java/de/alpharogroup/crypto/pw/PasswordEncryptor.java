@@ -27,8 +27,10 @@ package de.alpharogroup.crypto.pw;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Optional;
 
 import javax.crypto.BadPaddingException;
@@ -133,10 +135,14 @@ public class PasswordEncryptor implements Serializable {
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
 	 * @throws IllegalBlockSizeException
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
 	 */
 	public String hashAndHexPassword(final String password, final String salt)
 			throws NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException, NoSuchPaddingException,
-			IllegalBlockSizeException, BadPaddingException {
+			IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException, InvalidAlgorithmParameterException {
 		return hashAndHexPassword(password, salt, DEFAULT_ALGORITHM, DEFAULT_CHARSET);
 	}
 
@@ -167,10 +173,14 @@ public class PasswordEncryptor implements Serializable {
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
 	 * @throws IllegalBlockSizeException
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
 	 */
 	public String hashAndHexPassword(final String password, final String salt, final HashAlgorithm hashAlgorithm,
 			final Charset charset) throws NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException,
-			NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+			NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException, InvalidAlgorithmParameterException {
 		final String hashedPassword = Hasher.hashAndHex(password, salt, hashAlgorithm, charset);
 		return hashedPassword;
 	}

@@ -32,7 +32,7 @@ import lombok.Getter;
  * @version 1.0
  * @author Asterios Raptis
  */
-public enum HashAlgorithm
+public enum HashAlgorithm implements Algorithm
 {
 
 	/** The enum constant for SHA-1 algorithm. */
