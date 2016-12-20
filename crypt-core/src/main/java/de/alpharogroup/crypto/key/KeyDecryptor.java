@@ -46,7 +46,8 @@ import lombok.Setter;
 
 
 /**
- * The class {@link KeyDecryptor} decrypts encrypted characters the was encrypted with the public key of this private key of this class.
+ * The class {@link KeyDecryptor} decrypts encrypted characters the was encrypted with the public
+ * key of this private key of this class.
  */
 public class KeyDecryptor
 {
@@ -103,12 +104,16 @@ public class KeyDecryptor
 	 * @throws BadPaddingException
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
 	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
 	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
 	 */
-	public String decrypt(final String encypted) throws InvalidKeyException,
-		NoSuchAlgorithmException, NoSuchPaddingException,
-		DecoderException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException, InvalidAlgorithmParameterException, IOException
+	public String decrypt(final String encypted)
+		throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
+		DecoderException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException,
+		InvalidAlgorithmParameterException, IOException
 	{
 		initialize();
 		final byte[] ecryptedBytes = encypted.getBytes();
@@ -129,13 +134,15 @@ public class KeyDecryptor
 	 * @throws IOException
 	 * @throws InvalidAlgorithmParameterException
 	 */
-	private void initialize() throws NoSuchAlgorithmException,
-		NoSuchPaddingException, InvalidKeyException, InvalidKeySpecException, IOException, InvalidAlgorithmParameterException
+	private void initialize()
+		throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+		InvalidKeySpecException, IOException, InvalidAlgorithmParameterException
 	{
 		if (!isInitialized())
 		{
-			cipher = Cipher.getInstance(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_PKCS1PADDING.getAlgorithm());
-		    cipher.init(Cipher.DECRYPT_MODE, privateKey);
+			cipher = Cipher.getInstance(
+				KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_PKCS1PADDING.getAlgorithm());
+			cipher.init(Cipher.DECRYPT_MODE, privateKey);
 		}
 	}
 

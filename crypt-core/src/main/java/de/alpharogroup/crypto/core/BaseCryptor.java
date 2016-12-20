@@ -86,8 +86,8 @@ implements Serializable
 	/**
 	 * Constructor with the given {@link CryptModel}.
 	 *
-	 * @param privateKey
-	 *            The private key.
+	 * @param model
+	 *            The crypt model.
 	 * @throws InvalidAlgorithmParameterException
 	 *             is thrown if initialization of the cypher object fails.
 	 * @throws NoSuchPaddingException

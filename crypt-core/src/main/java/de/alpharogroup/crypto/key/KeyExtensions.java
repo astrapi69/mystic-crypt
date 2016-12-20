@@ -78,16 +78,22 @@ public class KeyExtensions
 	/**
 	 * Gets the pem object.
 	 *
-	 * @param file the file
+	 * @param file
+	 *            the file
 	 * @return the pem object
-	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
-	public static PemObject getPemObject(final File file) throws IOException {
+	public static PemObject getPemObject(final File file) throws IOException
+	{
 		PemObject pemObject;
 		final PemReader pemReader = new PemReader(new InputStreamReader(new FileInputStream(file)));
-		try {
+		try
+		{
 			pemObject = pemReader.readPemObject();
-		} finally {
+		}
+		finally
+		{
 			pemReader.close();
 		}
 		return pemObject;
@@ -96,15 +102,21 @@ public class KeyExtensions
 	/**
 	 * Read public key.
 	 *
-	 * @param file the file
+	 * @param file
+	 *            the file
 	 * @return the public key
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 * @throws NoSuchAlgorithmException the no such algorithm exception
-	 * @throws InvalidKeySpecException the invalid key spec exception
-	 * @throws NoSuchProviderException the no such provider exception
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
 	 */
-	public static PublicKey readPublicKey(final File file)
-		throws IOException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
+	public static PublicKey readPublicKey(final File file) throws IOException,
+		NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
 	{
 		final byte[] keyBytes = Files.readAllBytes(file.toPath());
 		return readPublicKey(keyBytes, "BC");
@@ -113,18 +125,25 @@ public class KeyExtensions
 	/**
 	 * Read public key.
 	 *
-	 * @param publicKeyBytes the public key bytes
-	 * @param provider the provider
+	 * @param publicKeyBytes
+	 *            the public key bytes
+	 * @param provider
+	 *            the provider
 	 * @return the public key
-	 * @throws NoSuchAlgorithmException the no such algorithm exception
-	 * @throws InvalidKeySpecException the invalid key spec exception
-	 * @throws NoSuchProviderException the no such provider exception
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
 	 */
 	public static PublicKey readPublicKey(final byte[] publicKeyBytes, final String provider)
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
 	{
 		final X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKeyBytes);
-		final KeyFactory keyFactory = KeyFactory.getInstance(KeyPairGeneratorAlgorithm.RSA.getAlgorithm(), provider);
+		final KeyFactory keyFactory = KeyFactory
+			.getInstance(KeyPairGeneratorAlgorithm.RSA.getAlgorithm(), provider);
 		return keyFactory.generatePublic(keySpec);
 	}
 
@@ -132,15 +151,21 @@ public class KeyExtensions
 	/**
 	 * Read private key.
 	 *
-	 * @param file the file
+	 * @param file
+	 *            the file
 	 * @return the private key
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 * @throws NoSuchAlgorithmException the no such algorithm exception
-	 * @throws InvalidKeySpecException the invalid key spec exception
-	 * @throws NoSuchProviderException the no such provider exception
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
 	 */
-	public static PrivateKey readPrivateKey(final File file)
-		throws IOException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
+	public static PrivateKey readPrivateKey(final File file) throws IOException,
+		NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
 	{
 		final byte[] keyBytes = Files.readAllBytes(file.toPath());
 		return readPrivateKey(keyBytes, "BC");
@@ -149,35 +174,45 @@ public class KeyExtensions
 	/**
 	 * Read private key.
 	 *
-	 * @param privateKeyBytes the private key bytes
+	 * @param privateKeyBytes
+	 *            the private key bytes
+	 * @param provider
+	 *            the provider
 	 * @return the private key
-	 * @throws NoSuchAlgorithmException the no such algorithm exception
-	 * @throws InvalidKeySpecException the invalid key spec exception
-	 * @throws NoSuchProviderException the no such provider exception
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
 	 */
 	public static PrivateKey readPrivateKey(final byte[] privateKeyBytes, final String provider)
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
 	{
 		final PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
-		final KeyFactory keyFactory = KeyFactory.getInstance(KeyPairGeneratorAlgorithm.RSA.getAlgorithm(), provider);
+		final KeyFactory keyFactory = KeyFactory
+			.getInstance(KeyPairGeneratorAlgorithm.RSA.getAlgorithm(), provider);
 		return keyFactory.generatePrivate(keySpec);
 	}
 
 	/**
 	 * Read pem private key.
 	 *
-	 * @param file the file
+	 * @param file            the file
+	 * @param securityProvider the security provider
 	 * @return the private key
-	 * @throws Exception the exception
+	 * @throws Exception             is thrown if if a security error occur
 	 */
-	public static PrivateKey readPemPrivateKey(final File file, final SecurityProvider securityProvider)
-		throws Exception
+	public static PrivateKey readPemPrivateKey(final File file,
+		final SecurityProvider securityProvider) throws Exception
 	{
 		Security.addProvider(new BouncyCastleProvider());
 		final byte[] keyBytes = Files.readAllBytes(file.toPath());
 
-		final String privateKeyAsString = new String(keyBytes).replace(BEGIN_RSA_PRIVATE_KEY_PREFIX, "")
-			.replace(END_RSA_PRIVATE_KEY_SUFFIX, "").trim();
+		final String privateKeyAsString = new String(keyBytes)
+			.replace(BEGIN_RSA_PRIVATE_KEY_PREFIX, "").replace(END_RSA_PRIVATE_KEY_SUFFIX, "")
+			.trim();
 
 		final byte[] decoded = new Base64().decode(privateKeyAsString);
 
@@ -188,14 +223,22 @@ public class KeyExtensions
 	/**
 	 * Read private key.
 	 *
-	 * @param privateKeyBytes the private key bytes
-	 * @param securityProvider the security provider
+	 * @param privateKeyBytes
+	 *            the private key bytes
+	 * @param securityProvider
+	 *            the security provider
 	 * @return the private key
-	 * @throws NoSuchAlgorithmException the no such algorithm exception
-	 * @throws InvalidKeySpecException the invalid key spec exception
-	 * @throws NoSuchProviderException the no such provider exception
+	 * @throws NoSuchAlgorithmException
+	 *             the no such algorithm exception
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
 	 */
-	public static PrivateKey readPrivateKey(final byte[] privateKeyBytes, final SecurityProvider securityProvider) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
+	public static PrivateKey readPrivateKey(final byte[] privateKeyBytes,
+		final SecurityProvider securityProvider)
+		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
 	{
 		return readPrivateKey(privateKeyBytes, securityProvider.name());
 	}
@@ -203,17 +246,18 @@ public class KeyExtensions
 	/**
 	 * reads a public key from a file.
 	 *
-	 * @param f the f
-	 * @return the read public key
-	 * @throws Exception the exception
+	 * @param file
+	 *            the file
+	 * @return the public key
+	 * @throws Exception
+	 *             is thrown if if a security error occur
 	 */
 	public static PublicKey readPemPublicKey(final File file) throws Exception
 	{
 		Security.addProvider(new BouncyCastleProvider());
 		final byte[] keyBytes = Files.readAllBytes(file.toPath());
 
-		final String publicKeyAsString = new String(keyBytes)
-			.replace(BEGIN_PUBLIC_KEY_PREFIX, "")
+		final String publicKeyAsString = new String(keyBytes).replace(BEGIN_PUBLIC_KEY_PREFIX, "")
 			.replace(END_PUBLIC_KEY_SUFFIX, "");
 
 		final byte[] decoded = Base64.decodeBase64(publicKeyAsString);

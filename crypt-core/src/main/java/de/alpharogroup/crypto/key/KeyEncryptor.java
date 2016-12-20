@@ -71,11 +71,8 @@ public class KeyEncryptor
 	/**
 	 * Default constructor.
 	 *
-	 * @param privateKey
-	 *            The private key.
-	 * @throws NoSuchPaddingException
-	 * @throws NoSuchAlgorithmException
-	 * @throws InvalidKeySpecException
+	 * @param publicKey
+	 *            The public key.
 	 */
 	public KeyEncryptor(final PublicKey publicKey)
 	{
@@ -101,6 +98,7 @@ public class KeyEncryptor
 	 * @throws BadPaddingException
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
 	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
 	 */
 	public String encrypt(final String string) throws InvalidKeyException,
 		UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException,
@@ -124,6 +122,7 @@ public class KeyEncryptor
 	 * @throws InvalidKeyException
 	 *             the invalid key exception is thrown if initialization of the cypher object fails.
 	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
 	 */
 	private void initialize() throws NoSuchAlgorithmException, InvalidKeySpecException, UnsupportedEncodingException, NoSuchPaddingException, InvalidKeyException
 	{
