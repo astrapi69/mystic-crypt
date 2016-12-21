@@ -24,6 +24,8 @@
  */
 package de.alpharogroup.crypto.algorithm;
 
+import lombok.Getter;
+
 /**
  * The enum {@link KeyPairGeneratorAlgorithm}.
  * For more info see:
@@ -31,7 +33,7 @@ package de.alpharogroup.crypto.algorithm;
  *
  * @version 1.0
  */
-public enum KeyPairGeneratorAlgorithm
+public enum KeyPairGeneratorAlgorithm implements Algorithm
 {
 	/** The enum constant for DIFFIE_HELLMAN algorithm. */
 	DIFFIE_HELLMAN("DiffieHellman"),
@@ -42,27 +44,21 @@ public enum KeyPairGeneratorAlgorithm
 	DSA("DSA"),
 	/** The enum constant for RSA algorithm. */
 	RSA("RSA");
+
+
 	/** The algorithm. */
+	@Getter
 	private final String algorithm;
 
 	/**
-	 * Instantiates a new KeyPairAlgorithm object.
+	 * Instantiates a new {@link KeyPairGeneratorAlgorithm} object.
 	 *
 	 * @param algorithm
 	 *            the algorithm.
 	 */
-	KeyPairGeneratorAlgorithm(final String algorithm)
+	private KeyPairGeneratorAlgorithm(final String algorithm)
 	{
 		this.algorithm = algorithm;
 	}
 
-	/**
-	 * Gets the algorithm.
-	 *
-	 * @return the algorithm
-	 */
-	public String getAlgorithm()
-	{
-		return this.algorithm;
-	}
 }

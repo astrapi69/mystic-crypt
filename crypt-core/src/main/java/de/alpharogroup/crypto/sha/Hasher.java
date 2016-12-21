@@ -26,9 +26,11 @@ package de.alpharogroup.crypto.sha;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -37,6 +39,7 @@ import javax.crypto.NoSuchPaddingException;
 
 import org.apache.commons.codec.binary.Base64;
 
+import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.aes.HexEncryptor;
 import de.alpharogroup.crypto.algorithm.HashAlgorithm;
 import de.alpharogroup.random.Constants;
@@ -120,13 +123,17 @@ public class Hasher
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
 	 * @throws IllegalBlockSizeException
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
 	 */
 	public static String hashAndHex(final String hashIt, final String salt,
 		final HashAlgorithm hashAlgorithm, final Charset charset) throws NoSuchAlgorithmException,
 		InvalidKeyException, UnsupportedEncodingException, NoSuchPaddingException,
-		IllegalBlockSizeException, BadPaddingException
+		IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException, InvalidAlgorithmParameterException
 	{
-		final HexEncryptor hexEncryptor = new HexEncryptor();
+		final HexEncryptor hexEncryptor = new HexEncryptor(CryptConst.PRIVATE_KEY);
 		return hexEncryptor.encrypt(hash(hashIt, salt, hashAlgorithm, charset));
 	}
 

@@ -155,7 +155,7 @@ public class SimpleEncryptor implements Encryptor
 				keySpec = new PBEKeySpec(CryptConst.PRIVATE_KEY.toCharArray());
 			}
 			final SecretKeyFactory factory = SecretKeyFactory
-				.getInstance(CryptConst.PBEWITH_MD5AND_DES);
+				.getInstance(CryptConst.PBE_WITH_MD5_AND_DES);
 			final SecretKey key = factory.generateSecret(keySpec);
 			this.cipher = Cipher.getInstance(key.getAlgorithm());
 			final AlgorithmParameterSpec paramSpec = new PBEParameterSpec(CryptConst.SALT,

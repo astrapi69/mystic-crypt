@@ -24,21 +24,21 @@
  */
 package de.alpharogroup.crypto.aes;
 
+import de.alpharogroup.crypto.interfaces.GenericEncryptor;
 import lombok.Builder;
 import lombok.Getter;
-import de.alpharogroup.crypto.interfaces.Encryptor;
 
 /**
  * The Class ChainedEncryptor can take many {@code Encryptor} objects and encrypts the given string
  * with all the given {@code Encryptor} objects.
  */
 @Builder
-public class ChainedEncryptor implements Encryptor
+public class ChainedEncryptor implements GenericEncryptor<String, String>
 {
 
 	/** The encryptors. */
 	@Getter
-	private final Encryptor[] encryptors;
+	private final GenericEncryptor<String, String>[] encryptors;
 
 	/**
 	 * Instantiates a new chained encryptor.
@@ -46,14 +46,15 @@ public class ChainedEncryptor implements Encryptor
 	 * @param encryptors
 	 *            the encryptors
 	 */
-	public ChainedEncryptor(final Encryptor... encryptors)
+	@SafeVarargs
+	public ChainedEncryptor(final GenericEncryptor<String, String>... encryptors)
 	{
 		this.encryptors = encryptors;
 	}
 
 	/**
 	 * Encrypt the given String.
-	 * 
+	 *
 	 * @param string
 	 *            The String to encrypt.
 	 * @return The encrypted String.
@@ -64,7 +65,7 @@ public class ChainedEncryptor implements Encryptor
 	public String encrypt(final String string) throws Exception
 	{
 		String result = string;
-		for (final Encryptor encryptor : encryptors)
+		for (final GenericEncryptor<String, String> encryptor : encryptors)
 		{
 			result = encryptor.encrypt(result);
 		}

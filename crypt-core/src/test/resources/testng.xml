@@ -5,6 +5,8 @@
     <classes>
 		<class name="de.alpharogroup.crypto.aes.HexEncryptDecryptorTest"/>
 		<class name="de.alpharogroup.crypto.BruteForceProcessorTest"/>
+		<class name="de.alpharogroup.crypto.key.KeyEncryptDecryptorTest"/>
+		<class name="de.alpharogroup.crypto.key.KeyExtensionsTest"/>
 		<class name="de.alpharogroup.crypto.sha.HasherTest"/>
 		<class name="de.alpharogroup.crypto.SimpleCryptTest"/>
 		<class name="de.alpharogroup.crypto.io.CryptoStreamTest"/>

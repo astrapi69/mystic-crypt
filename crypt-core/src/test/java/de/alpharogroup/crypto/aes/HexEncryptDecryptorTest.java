@@ -25,17 +25,6 @@
 package de.alpharogroup.crypto.aes;
 
 
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-
-import org.apache.commons.codec.DecoderException;
 import org.testng.AssertJUnit;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -55,16 +44,13 @@ public class HexEncryptDecryptorTest
 	}
 
 	@Test
-	public void testEncryptDecrypt() throws NoSuchAlgorithmException, InvalidKeyException,
-		UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException,
-		BadPaddingException, DecoderException, InvalidKeySpecException, InvalidAlgorithmParameterException
+	public void testEncryptDecrypt() throws Exception
 	{
 		final String test = "I'm an hellenic boy and will be encrypted with the HexEncryptor;-)";
 		System.out.println("String before encryption:");
 		System.out.println(test);
 		final String key = "1234567890123456";
-//		final HexEncryptor encryptor = new HexEncryptor(key);
-		final HexNewEncryptor encryptor = new HexNewEncryptor(key);
+		final HexEncryptor encryptor = new HexEncryptor(key);
 		final String encrypted = encryptor.encrypt(test);
 		System.out.println("String after encryption:");
 		System.out.println(encrypted);

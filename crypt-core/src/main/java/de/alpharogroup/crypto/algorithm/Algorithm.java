@@ -25,59 +25,15 @@
 package de.alpharogroup.crypto.algorithm;
 
 /**
- * The enum {@link Algorithm} defines the MessageDigest Algorithm plus the KeyGenerator Algorithm AES.
- *
- * @version 1.0
- * @author Asterios Raptis
+ * The interface {@link Algorithm} is for enums that represents an algorithm for encryption or decryption.
  */
-public enum Algorithm
+public interface Algorithm
 {
 
-	/** The enum constant for MD2 algorithm. */
-	MD2("MD2"),
-
-	/** The enum constant for MD4 algorithm. */
-	MD4("MD4"),
-
-	/** The enum constant for MD5 algorithm. */
-	MD5("MD5"),
-
-	/** The enum constant for SHA-1 algorithm. */
-	SHA_1("SHA-1"),
-
-	/** The enum constant for SHA-256 algorithm. */
-	SHA_256("SHA-256"),
-
-	/** The enum constant for SHA-384 algorithm. */
-	SHA_384("SHA-384"),
-
-	/** The enum constant for SHA-512 algorithm. */
-	SHA_512("SHA-512"),
-
-	/** The enum constant for AES algorithm. */
-	AES("AES");
-
-	/** The algorithm. */
-	private final String algorithm;
-
 	/**
-	 * Instantiates a new Algorithm object.
-	 *
-	 * @param algorithm
-	 *            the algorithm.
-	 */
-	Algorithm(final String algorithm)
-	{
-		this.algorithm = algorithm;
-	}
-
-	/**
-	 * Gets the algorithm.
+	 * Gets the algorithm for encryption or decryption.
 	 *
 	 * @return the algorithm
 	 */
-	public String getAlgorithm()
-	{
-		return algorithm;
-	}
+	String getAlgorithm();
 }
