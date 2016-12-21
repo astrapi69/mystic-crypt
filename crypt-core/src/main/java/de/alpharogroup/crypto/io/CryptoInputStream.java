@@ -42,9 +42,9 @@ public class CryptoInputStream extends CipherInputStream
 {
 
 	protected CryptoInputStream(final InputStream in,
-		final BaseEncryptor<?, ?> encryptor)
+		final BaseEncryptor encryptor)
 	{
-		super(in, encryptor.getCipher());
+		super(in, encryptor.getModel().getCipher());
 	}
 
 }

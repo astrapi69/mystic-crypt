@@ -32,7 +32,7 @@ Add the following maven dependency to your project `pom.xml` if you want to impo
 Than you can add the dependency to your dependencies:
 
 		<!-- MYSTIC-CRYPT versions -->
-		<mystic-crypt.version>4.11.0</mystic-crypt.version>
+		<mystic-crypt.version>4.15.0</mystic-crypt.version>
 		<crypt-core.version>${mystic-crypt.version}</crypt-core.version>
 		<randomizer.version>${mystic-crypt.version}</randomizer.version>
 		<auth-security.version>${mystic-crypt.version}</auth-security.version>

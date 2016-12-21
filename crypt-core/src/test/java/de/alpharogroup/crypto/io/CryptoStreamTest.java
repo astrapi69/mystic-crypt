@@ -52,7 +52,7 @@ public class CryptoStreamTest
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, IOException
 	{
-		final String algorythm = CryptConst.PBEWITH_MD5AND_DES;
+		final String algorythm = CryptConst.PBE_WITH_MD5_AND_DES;
 
 		final String firstKey = "D1D15ED36B887AF1";
 		final File cryptDir = new File(PathFinder.getSrcTestResourcesDir(), "crypt");
@@ -73,7 +73,7 @@ public class CryptoStreamTest
 			}
 		};
 		final CryptoCipherInputStream cis = new CryptoCipherInputStream(fis,
-			encryptor.getCipher());
+			encryptor.getModel().getCipher());
 		final File encryptedFile = new File(cryptDir, "encrypted.txt");
 		System.out.println(encryptedFile.getAbsolutePath());
 		final FileOutputStream out = new FileOutputStream(encryptedFile);
@@ -103,7 +103,7 @@ public class CryptoStreamTest
 				return super.newSecretKeyFactory(algorythm);
 			}
 		};
-		final CryptoCipherOutputStream cos = new CryptoCipherOutputStream(decryptedOut, decryptor.getCipher());
+		final CryptoCipherOutputStream cos = new CryptoCipherOutputStream(decryptedOut, decryptor.getModel().getCipher());
 		final FileInputStream encryptedFis = new FileInputStream(encryptedFile);
 
 		while ((c = encryptedFis.read()) != -1)

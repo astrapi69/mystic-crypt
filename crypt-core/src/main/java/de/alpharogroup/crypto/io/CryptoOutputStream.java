@@ -41,9 +41,9 @@ import de.alpharogroup.crypto.core.BaseDecryptor;
 public class CryptoOutputStream extends CipherOutputStream
 {
 
-	public CryptoOutputStream(final OutputStream out, final BaseDecryptor<?, ?> decryptor)
+	public CryptoOutputStream(final OutputStream out, final BaseDecryptor decryptor)
 	{
-		super(out, decryptor.getCipher());
+		super(out, decryptor.getModel().getCipher());
 	}
 
 }
