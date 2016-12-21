@@ -25,10 +25,10 @@
 package de.alpharogroup.crypto.key;
 
 import java.io.IOException;
-import java.security.InvalidAlgorithmParameterException;
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 
 import javax.crypto.BadPaddingException;
@@ -36,34 +36,26 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Hex;
 
 import de.alpharogroup.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
-import de.alpharogroup.crypto.simple.SimpleDecryptor;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
 
 /**
- * The class {@link KeyDecryptor} decrypts encrypted characters the was encrypted with the public
- * key of this private key of this class.
+ * The class {@link PublicKeyHexEncryptor} can encrypt characters with his public key.
  */
-public class KeyDecryptor
+public class PublicKeyHexEncryptor
 {
+
 	/**
 	 * The Cipher object.
 	 */
 	@Getter
 	@Setter
-	private Cipher cipher = null;
-
-	/**
-	 * The private key.
-	 */
-	@Getter
-	@Setter
-	private PrivateKey privateKey = null;
+	private Cipher cipher;
 
 	/**
 	 * The flag initialized that indicates if the cypher is initialized for decryption.
@@ -74,31 +66,34 @@ public class KeyDecryptor
 	private boolean initialized;
 
 	/**
-	 * Constructor with a private key.
-	 *
-	 * @param privateKey
-	 *            The private key.
+	 * The public key.
 	 */
-	public KeyDecryptor(final PrivateKey privateKey)
+	@Getter
+	private final PublicKey publicKey;
+
+	/**
+	 * Default constructor.
+	 *
+	 * @param publicKey
+	 *            The public key.
+	 */
+	public PublicKeyHexEncryptor(final PublicKey publicKey)
 	{
-		this.setPrivateKey(privateKey);
+		this.publicKey = publicKey;
 	}
 
 	/**
-	 * Decrypt the given encrypted String.
+	 * Encrypt the given String.
 	 *
-	 * @param encypted
-	 *            The String to decrypt.
-	 * @return The decrypted String
-	 *
+	 * @param string
+	 *            The String to encrypt.
+	 * @return The encrypted String.
+	 * @throws InvalidKeyException
+	 *             the invalid key exception is thrown if initialization of the cypher object fails.
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the cypher object fails.
 	 * @throws NoSuchPaddingException
 	 *             is thrown if instantiation of the cypher object fails.
-	 * @throws InvalidKeyException
-	 *             the invalid key exception is thrown if initialization of the cypher object fails.
-	 * @throws org.apache.commons.codec.DecoderException
-	 *             is thrown if an odd number or illegal of characters is supplied
 	 * @throws IllegalBlockSizeException
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
 	 * @throws BadPaddingException
@@ -107,23 +102,23 @@ public class KeyDecryptor
 	 *             is thrown if generation of the SecretKey object fails.
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
 	 */
-	public String decrypt(final String encypted)
-		throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
-		DecoderException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException,
-		InvalidAlgorithmParameterException, IOException
+	public String encrypt(final String string) throws InvalidKeyException,
+		NoSuchAlgorithmException, NoSuchPaddingException,
+		IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException, IOException
 	{
 		initialize();
-		final byte[] ecryptedBytes = encypted.getBytes();
-		final byte[] utf8 = this.cipher.doFinal(ecryptedBytes);
-		return new String(utf8, "UTF-8");
+		final byte[] utf8 = string.getBytes("UTF-8");
+		final byte[] encrypt = this.cipher.doFinal(utf8);
+		final char[] original = Hex.encodeHex(encrypt, false);
+		return new String(original);
 	}
 
 	/**
-	 * Initializes the {@link SimpleDecryptor} object.
+	 * Initializes the {@link PublicKeyHexEncryptor} object.
 	 *
+	 * @throws UnsupportedEncodingException
+	 *             is thrown by get the byte array of the private key String object fails.
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the cypher object fails.
 	 * @throws NoSuchPaddingException
@@ -131,18 +126,14 @@ public class KeyDecryptor
 	 * @throws InvalidKeyException
 	 *             the invalid key exception is thrown if initialization of the cypher object fails.
 	 * @throws InvalidKeySpecException
-	 * @throws IOException
-	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if generation of the SecretKey object fails.
 	 */
-	private void initialize()
-		throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
-		InvalidKeySpecException, IOException, InvalidAlgorithmParameterException
+	private void initialize() throws NoSuchAlgorithmException, InvalidKeySpecException, UnsupportedEncodingException, NoSuchPaddingException, InvalidKeyException
 	{
 		if (!isInitialized())
 		{
-			cipher = Cipher.getInstance(
-				KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_PKCS1PADDING.getAlgorithm());
-			cipher.init(Cipher.DECRYPT_MODE, privateKey);
+			cipher = Cipher.getInstance(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding.getAlgorithm());
+		    cipher.init(Cipher.ENCRYPT_MODE, this.publicKey);
 		}
 	}
 

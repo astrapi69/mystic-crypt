@@ -22,49 +22,43 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.model;
+package de.alpharogroup.crypto.key;
 
-import java.io.Serializable;
+import java.security.PrivateKey;
+import java.security.interfaces.DSAPrivateKey;
+import java.security.interfaces.ECPrivateKey;
+import java.security.interfaces.RSAPrivateKey;
 
-import de.alpharogroup.crypto.algorithm.Algorithm;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
-/**
- * The class {@link CryptModel}.
- *
- * @param <C> the generic type of the cipher
- * @param <K> the generic type of the key
- */
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class CryptModel<C, K> implements Serializable
+public class PrivateKeyExtensions
 {
 
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
-
-	/** The cipher. */
-	private C cipher;
-
-	/** The key. */
-	private K key;
-
-	/** The algorithm. */
-	private Algorithm algorithm;
-
 	/**
-	 * The flag initialized that indicates if the cipher is initialized.
+	 * Gets the key length of the given {@link PrivateKey}.
+	 *
+	 * @param privateKey
+	 *            the private key
+	 * @return the key length
 	 */
-	private boolean initialized;
+	public static int getKeyLength(final PrivateKey privateKey)
+	{
+		int length = -1;
+		if (privateKey == null)
+		{
+			return length;
+		}
+		if (privateKey instanceof RSAPrivateKey)
+		{
+			length = ((RSAPrivateKey)privateKey).getModulus().bitLength();
+		}
+		if (privateKey instanceof DSAPrivateKey)
+		{
+			length = ((DSAPrivateKey)privateKey).getParams().getQ().bitLength();
+		}
+		if (privateKey instanceof ECPrivateKey)
+		{
+			length = ((ECPrivateKey)privateKey).getParams().getCurve().getField().getFieldSize();
+		}
+		return length;
+	}
+
 }

@@ -24,8 +24,6 @@
  */
 package de.alpharogroup.crypto.algorithm;
 
-import de.alpharogroup.crypto.modes.Mode;
-import de.alpharogroup.crypto.padding.PaddingScheme;
 import lombok.Getter;
 
 /**
@@ -45,9 +43,7 @@ public enum KeyPairGeneratorAlgorithm implements Algorithm
 	/** The enum constant for DSA algorithm. */
 	DSA("DSA"),
 	/** The enum constant for RSA algorithm. */
-	RSA("RSA"),
-	/** The enum constant for RSA algorithm. */
-	RSA_ECB_PKCS1PADDING("RSA" + "/" + Mode.ECB.name() + "/" + PaddingScheme.PKCS1Padding.name());
+	RSA("RSA");
 
 
 	/** The algorithm. */

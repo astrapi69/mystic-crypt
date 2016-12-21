@@ -22,49 +22,44 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.model;
+package de.alpharogroup.crypto.key;
 
-import java.io.Serializable;
 
-import de.alpharogroup.crypto.algorithm.Algorithm;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import java.security.PublicKey;
+import java.security.interfaces.DSAPublicKey;
+import java.security.interfaces.ECPublicKey;
+import java.security.interfaces.RSAPublicKey;
 
-/**
- * The class {@link CryptModel}.
- *
- * @param <C> the generic type of the cipher
- * @param <K> the generic type of the key
- */
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class CryptModel<C, K> implements Serializable
+public class PublicKeyExtensions
 {
 
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
-
-	/** The cipher. */
-	private C cipher;
-
-	/** The key. */
-	private K key;
-
-	/** The algorithm. */
-	private Algorithm algorithm;
-
 	/**
-	 * The flag initialized that indicates if the cipher is initialized.
+	 * Gets the key length of the given {@link PublicKey}.
+	 *
+	 * @param publicKey
+	 *            the public key
+	 * @return the key length
 	 */
-	private boolean initialized;
+	public static int getKeyLength(final PublicKey publicKey)
+	{
+		int length = -1;
+		if (publicKey == null)
+		{
+			return length;
+		}
+		if (publicKey instanceof RSAPublicKey)
+		{
+			length = ((RSAPublicKey)publicKey).getModulus().bitLength();
+		}
+		if (publicKey instanceof DSAPublicKey)
+		{
+			length = ((DSAPublicKey)publicKey).getParams().getP().bitLength();
+		}
+		if (publicKey instanceof ECPublicKey)
+		{
+			length = ((ECPublicKey)publicKey).getParams().getCurve().getField().getFieldSize();
+		}
+
+		return length;
+	}
 }

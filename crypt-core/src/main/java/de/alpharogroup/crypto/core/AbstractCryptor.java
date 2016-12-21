@@ -61,10 +61,10 @@ public abstract class AbstractCryptor<C, K> implements Serializable
 	protected final CryptModel<C, K> model;
 
 	/**
-	 * Constructor with a private key.
+	 * Constructor with a key.
 	 *
-	 * @param privateKey
-	 *            The private key.
+	 * @param key
+	 *            The key.
 	 * @throws InvalidAlgorithmParameterException
 	 *             is thrown if initialization of the cypher object fails.
 	 * @throws NoSuchPaddingException
@@ -80,12 +80,12 @@ public abstract class AbstractCryptor<C, K> implements Serializable
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public AbstractCryptor(final K privateKey)
+	public AbstractCryptor(final K key)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		Check.get().notNull(privateKey, "privateKey");
-		model = CryptModel.<C, K>builder().key(privateKey).build();
+		Check.get().notNull(key, "key");
+		model = CryptModel.<C, K>builder().key(key).build();
 		onInitialize();
 	}
 
@@ -149,8 +149,8 @@ public abstract class AbstractCryptor<C, K> implements Serializable
 	 * invoked in the constructor from the derived classes and can be overridden so users can
 	 * provide their own version of a new {@link Cipher} from the given private key.
 	 *
-	 * @param privateKey
-	 *            the private key
+	 * @param key
+	 *            the key
 	 * @return the new {@link Cipher} from the given private key.
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
@@ -165,11 +165,11 @@ public abstract class AbstractCryptor<C, K> implements Serializable
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	protected C newCipher(final K privateKey)
+	protected C newCipher(final K key)
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
 		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		return newCipher(privateKey, newAlgorithm(), newSalt(), newIterationCount(),
+		return newCipher(key, newAlgorithm(), newSalt(), newIterationCount(),
 			newOperationMode());
 	}
 
@@ -217,8 +217,8 @@ public abstract class AbstractCryptor<C, K> implements Serializable
 	 * invoked in the constructor from the derived classes and can be overridden so users can
 	 * provide their own version of a new {@link Cipher} from the given parameters.
 	 *
-	 * @param privateKey
-	 *            the private key
+	 * @param key
+	 *            the key
 	 * @param algorithm
 	 *            the algorithm
 	 * @param salt
@@ -242,7 +242,7 @@ public abstract class AbstractCryptor<C, K> implements Serializable
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	protected abstract C newCipher(final K privateKey, final String algorithm, final byte[] salt,
+	protected abstract C newCipher(final K key, final String algorithm, final byte[] salt,
 		final int iterationCount, final int operationMode)
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
 		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException;
@@ -254,8 +254,8 @@ public abstract class AbstractCryptor<C, K> implements Serializable
 	 *
 	 * @param operationMode
 	 *            the operation mode
-	 * @param key
-	 *            the key
+	 * @param secretKey
+	 *            the secret key
 	 * @param paramSpec
 	 *            the param spec
 	 * @param alg
@@ -271,7 +271,7 @@ public abstract class AbstractCryptor<C, K> implements Serializable
 	 * @throws InvalidAlgorithmParameterException
 	 *             is thrown if initialization of the cypher object fails.
 	 */
-	protected abstract C newCipher(final int operationMode, final SecretKey key,
+	protected abstract C newCipher(final int operationMode, final SecretKey secretKey,
 		final AlgorithmParameterSpec paramSpec, final String alg) throws NoSuchAlgorithmException,
 		NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException;
 
@@ -298,12 +298,12 @@ public abstract class AbstractCryptor<C, K> implements Serializable
 	 * invoked in the constructor from the derived classes and can be overridden so users can
 	 * provide their own version of a new {@link KeySpec} from the given private key.
 	 *
-	 * @param privateKey            the private key
+	 * @param key            the key
 	 * @param salt the salt
 	 * @param iterationCount the iteration count
 	 * @return the new {@link KeySpec} from the given private key.
 	 */
-	protected abstract KeySpec newKeySpec(final K privateKey, final byte[] salt,
+	protected abstract KeySpec newKeySpec(final K key, final byte[] salt,
 		final int iterationCount);
 
 	/**

@@ -42,7 +42,7 @@ import de.alpharogroup.crypto.model.CryptModel;
  * @author Asterios Raptis
  * @version 1.0
  */
-public abstract class BaseDecryptor<T, R> extends BaseCryptor implements GenericDecryptor<T, R>
+public abstract class BaseDecryptor extends BaseCryptor implements GenericDecryptor<String, String>
 {
 
 

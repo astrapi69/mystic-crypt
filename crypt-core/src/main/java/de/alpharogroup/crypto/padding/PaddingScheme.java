@@ -31,7 +31,12 @@ import lombok.Getter;
  */
 public enum PaddingScheme
 {
-	PKCS1Padding("PKCS1Padding"), PKCS5Padding("PKCS5Padding"), OAEPPadding("OAEPPadding"), NoPadding("NoPadding");
+	PKCS1Padding("PKCS1Padding"),
+	PKCS5Padding("PKCS5Padding"),
+	OAEPPadding("OAEPPadding"),
+	NoPadding("NoPadding"),
+	OAEPWithSHA1AndMGF1Padding("OAEPWithSHA1AndMGF1Padding"),
+	OAEPWithSHA256AndMGF1Padding("OAEPWithSHA256AndMGF1Padding");
 
 
 	/** The padding scheme. */

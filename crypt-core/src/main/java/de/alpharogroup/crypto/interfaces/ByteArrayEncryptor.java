@@ -22,28 +22,12 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.io;
-
-import java.io.OutputStream;
-
-import javax.crypto.CipherOutputStream;
-
-import de.alpharogroup.crypto.core.BaseDecryptor;
+package de.alpharogroup.crypto.interfaces;
 
 /**
- * The Class CryptoOutputStream.
+ * Interface for decrypt {@link byte[]} objects.
  *
  * @version 1.0
- *
  * @author Asterios Raptis
- *
  */
-public class CryptoOutputStream extends CipherOutputStream
-{
-
-	public CryptoOutputStream(final OutputStream out, final BaseDecryptor decryptor)
-	{
-		super(out, decryptor.getModel().getCipher());
-	}
-
-}
+public interface ByteArrayEncryptor extends GenericEncryptor<byte[], byte[]>{}

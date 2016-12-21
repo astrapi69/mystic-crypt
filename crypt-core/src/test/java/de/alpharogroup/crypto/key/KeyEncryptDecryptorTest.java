@@ -37,43 +37,96 @@ import org.testng.annotations.Test;
 import de.alpharogroup.crypto.provider.SecurityProvider;
 import de.alpharogroup.file.search.PathFinder;
 
+/**
+ * Test class for {@link PublicKeyHexEncryptor} and {@link PrivateKeyHexDecryptor}.
+ */
 public class KeyEncryptDecryptorTest
 {
 
+	/**
+	 * Sets the up.
+	 *
+	 * @throws Exception the exception
+	 */
 	@BeforeMethod
 	public void setUp() throws Exception
 	{
 	}
 
+	/**
+	 * Tear down.
+	 *
+	 * @throws Exception the exception
+	 */
 	@AfterMethod
 	public void tearDown() throws Exception
 	{
 	}
 
-	@Test(enabled=true)
+	/**
+	 * Test encrypt decrypt pem files.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test(enabled = true)
+	public void testEncryptDecryptPemFiles() throws Exception
+	{
+		final String test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
+		System.out.println("String before encryption:");
+		System.out.println(test);
+
+		final File publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
+		final File privatekeyPemFile = new File(publickeyPemDir, "private.pem");
+
+		final PrivateKey privateKey = KeyExtensions.readPemPrivateKey(privatekeyPemFile,
+			SecurityProvider.BC);
+
+		final PublicKey publicKey = KeyExtensions.readPemPublicKey(publickeyPemFile,
+			SecurityProvider.BC);
+
+		final PublicKeyHexEncryptor encryptor = new PublicKeyHexEncryptor(publicKey);
+
+		final String encrypted = encryptor.encrypt(test);
+
+		System.out.println("String after encryption:");
+		System.out.println(encrypted);
+		final PrivateKeyHexDecryptor decryptor = new PrivateKeyHexDecryptor(privateKey);
+		final String decryted = decryptor.decrypt(encrypted);
+		System.out.println("String after decryption:");
+		System.out.println(decryted);
+		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
+			test.equals(decryted));
+	}
+
+
+	/**
+	 * Test encrypt decrypt.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test(enabled = true)
 	public void testEncryptDecrypt() throws Exception
 	{
 		final String test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
 		System.out.println("String before encryption:");
 		System.out.println(test);
 
-		final File publickeyDerFile = new File(PathFinder.getSrcTestResourcesDir(), "public.der");
-		final File privatekeyDerFile = new File(PathFinder.getSrcTestResourcesDir(), "private.der");
+		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		final File publickeyDerFile = new File(publickeyDerDir, "public.der");
+		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
 
-		final File publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
-		final File privatekeyPemFile = new File(publickeyPemDir, "private.pem");
+		final PrivateKey privateKey = KeyExtensions.readPrivateKey(privatekeyDerFile);
 
-		final PrivateKey privateKey = KeyExtensions.readPemPrivateKey(privatekeyPemFile, SecurityProvider.BC);
+		final PublicKey publicKey = KeyExtensions.readPublicKey(publickeyDerFile);
 
-		final PublicKey publicKey = KeyExtensions.readPemPublicKey(publickeyPemFile);
-
-		final KeyEncryptor encryptor = new KeyEncryptor(publicKey);
+		final PublicKeyHexEncryptor encryptor = new PublicKeyHexEncryptor(publicKey);
 
 		final String encrypted = encryptor.encrypt(test);
+
 		System.out.println("String after encryption:");
 		System.out.println(encrypted);
-		final KeyDecryptor decryptor = new KeyDecryptor(privateKey);
+		final PrivateKeyHexDecryptor decryptor = new PrivateKeyHexDecryptor(privateKey);
 		final String decryted = decryptor.decrypt(encrypted);
 		System.out.println("String after decryption:");
 		System.out.println(decryted);

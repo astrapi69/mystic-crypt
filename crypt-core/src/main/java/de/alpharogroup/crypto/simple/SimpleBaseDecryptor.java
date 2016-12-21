@@ -30,11 +30,13 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
+import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
-import de.alpharogroup.crypto.core.BaseDecryptor;
+import de.alpharogroup.crypto.core.BaseCryptor;
+import de.alpharogroup.crypto.interfaces.IntegerDecryptor;
 
-public class SimpleBaseDecryptor extends BaseDecryptor<Integer, Integer>
+public class SimpleBaseDecryptor extends BaseCryptor implements IntegerDecryptor
 {
 
 	private static final long serialVersionUID = 1L;
@@ -46,7 +48,9 @@ public class SimpleBaseDecryptor extends BaseDecryptor<Integer, Integer>
 		super(privateKey);
 	}
 
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Integer decrypt(final Integer encypted) throws Exception
 	{
@@ -55,6 +59,15 @@ public class SimpleBaseDecryptor extends BaseDecryptor<Integer, Integer>
         System.out.println(buf.length);
         final byte[] utf8 = getModel().getCipher().doFinal(buf);
 		return (int)utf8[0];
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected final int newOperationMode()
+	{
+		return Cipher.DECRYPT_MODE;
 	}
 
 }

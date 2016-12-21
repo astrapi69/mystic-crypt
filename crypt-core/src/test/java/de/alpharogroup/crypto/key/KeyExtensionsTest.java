@@ -27,14 +27,23 @@ package de.alpharogroup.crypto.key;
 import java.io.File;
 import java.security.PrivateKey;
 
+import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.provider.SecurityProvider;
 import de.alpharogroup.file.search.PathFinder;
 
+/**
+ * The class {@link KeyExtensionsTest}.
+ */
 public class KeyExtensionsTest
 {
 
+	/**
+	 * Test method for {@link KeyExtensions#readPemPrivateKey(File, SecurityProvider)}.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testReadPemPrivateKey() throws Exception
 	{
@@ -42,6 +51,7 @@ public class KeyExtensionsTest
 		final File privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
 
 		final PrivateKey privateKey = KeyExtensions.readPemPrivateKey(privatekeyPemFile, SecurityProvider.BC);
+		AssertJUnit.assertNotNull(privateKey);
 	}
 
 }

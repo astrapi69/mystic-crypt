@@ -46,7 +46,7 @@ import de.alpharogroup.crypto.core.BaseEncryptor;
 /**
  * The class {@link HexEncryptor}.
  */
-public class HexEncryptor extends BaseEncryptor<String, String>
+public class HexEncryptor extends BaseEncryptor
 {
 
 	/** The Constant serialVersionUID. */

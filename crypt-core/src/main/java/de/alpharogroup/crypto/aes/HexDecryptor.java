@@ -42,7 +42,7 @@ import de.alpharogroup.crypto.core.BaseDecryptor;
 /**
  * The class {@link HexDecryptor}.
  */
-public class HexDecryptor extends BaseDecryptor<String, String>
+public class HexDecryptor extends BaseDecryptor
 {
 
 	/** The Constant serialVersionUID. */
@@ -131,7 +131,6 @@ public class HexDecryptor extends BaseDecryptor<String, String>
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public String decrypt(final String encypted) throws Exception
 	{
 		final byte[] dec = HexDump.decodeHex(encypted.toCharArray());

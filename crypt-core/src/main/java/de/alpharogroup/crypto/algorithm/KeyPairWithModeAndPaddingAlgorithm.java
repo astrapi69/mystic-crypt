@@ -36,17 +36,29 @@ import lombok.Getter;
 public enum KeyPairWithModeAndPaddingAlgorithm implements Algorithm
 {
 
+	/**
+	 * The enum constant with the 'RSA' algorithm with mode 'ECB' and padding 'OAEPWithSHA1AndMGF1Padding' that
+	 * results in 'RSA/ECB/OAEPWithSHA1AndMGF1Padding'.
+	 */
+	RSA_ECB_OAEPWithSHA1AndMGF1Padding( KeyPairGeneratorAlgorithm.RSA.name() + "/" + Mode.ECB.name() + "/" + PaddingScheme.OAEPWithSHA1AndMGF1Padding.name()),
+
+	/**
+	 * The enum constant with the 'RSA' algorithm with mode 'ECB' and padding 'OAEPWithSHA1AndMGF1Padding' that
+	 * results in 'RSA/ECB/OAEPWithSHA256AndMGF1Padding'.
+	 */
+	RSA_ECB_OAEPWithSHA256AndMGF1Padding( KeyPairGeneratorAlgorithm.RSA.name() + "/" + Mode.ECB.name() + "/" + PaddingScheme.OAEPWithSHA256AndMGF1Padding.name()),
 
 	/**
 	 * The enum constant with the 'RSA' algorithm with mode 'ECB' and padding 'PKCS1Padding' that
 	 * results in 'RSA/ECB/PKCS1Padding'.
 	 */
 	RSA_ECB_PKCS1PADDING( KeyPairGeneratorAlgorithm.RSA.name() + "/" + Mode.ECB.name() + "/" + PaddingScheme.PKCS1Padding.name()),
+
 	/**
-	 * The enum constant with the 'AES' algorithm with mode 'ECB' and padding 'PKCS5Padding' that
-	 * results in 'RSA/ECB/PKCS1Padding'.
+	 * The enum constant with the 'DESede' algorithm with mode 'CBC' and padding 'PKCS5Padding' that
+	 * results in 'DESede/CBC/PKCS5Padding'.
 	 */
-	AES_ECB_PKCS5PADDING( KeyPairGeneratorAlgorithm.RSA.name() + "/" + Mode.ECB.name() + "/" + PaddingScheme.PKCS5Padding.name());
+	DESede_CBC_PKCS5Padding( SunJCEAlgorithm.DESede.name() + "/" + Mode.CBC.name() + "/" + PaddingScheme.PKCS5Padding.name());
 
 
 	/** The algorithm. */

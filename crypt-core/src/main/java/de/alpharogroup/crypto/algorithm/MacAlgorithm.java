@@ -70,8 +70,12 @@ public enum MacAlgorithm  implements Algorithm
 	/** The enum constant for PBEWithHmacSHA512 algorithm. */
 	PBEWithHmacSHA512;
 
+	/** The Constant HMAC. */
 	public static final String HMAC = "Hmac";
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getAlgorithm()
 	{

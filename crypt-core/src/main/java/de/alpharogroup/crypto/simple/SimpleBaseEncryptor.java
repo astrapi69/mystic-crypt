@@ -30,11 +30,13 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
+import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
-import de.alpharogroup.crypto.core.BaseEncryptor;
+import de.alpharogroup.crypto.core.BaseCryptor;
+import de.alpharogroup.crypto.interfaces.IntegerEncryptor;
 
-public class SimpleBaseEncryptor extends BaseEncryptor<Integer, Integer>
+public class SimpleBaseEncryptor extends BaseCryptor implements IntegerEncryptor
 {
 
 	private static final long serialVersionUID = 1L;
@@ -46,6 +48,9 @@ public class SimpleBaseEncryptor extends BaseEncryptor<Integer, Integer>
 		super(privateKey);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Integer encrypt(final Integer toEncrypt) throws Exception
 	{
@@ -53,6 +58,15 @@ public class SimpleBaseEncryptor extends BaseEncryptor<Integer, Integer>
         buf[0] = (byte)(toEncrypt.intValue());
         final byte[] utf8 = getModel().getCipher().doFinal(buf);
 		return (int)utf8[0];
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected final int newOperationMode()
+	{
+		return Cipher.ENCRYPT_MODE;
 	}
 
 }

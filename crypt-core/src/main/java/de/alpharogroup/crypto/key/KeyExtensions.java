@@ -127,6 +127,29 @@ public class KeyExtensions
 	 *
 	 * @param publicKeyBytes
 	 *            the public key bytes
+	 * @param securityProvider
+	 *            the security provider
+	 * @return the public key
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
+	 */
+	public static PublicKey readPublicKey(final byte[] publicKeyBytes,
+		final SecurityProvider securityProvider)
+		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
+	{
+		return readPublicKey(publicKeyBytes, securityProvider.name());
+	}
+
+	/**
+	 * Read public key.
+	 *
+	 * @param publicKeyBytes
+	 *            the public key bytes
 	 * @param provider
 	 *            the provider
 	 * @return the public key
@@ -143,8 +166,9 @@ public class KeyExtensions
 	{
 		final X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKeyBytes);
 		final KeyFactory keyFactory = KeyFactory
-			.getInstance(KeyPairGeneratorAlgorithm.RSA.getAlgorithm(), provider);
-		return keyFactory.generatePublic(keySpec);
+			.getInstance(KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
+		final PublicKey publicKey = keyFactory.generatePublic(keySpec);
+		return publicKey;
 	}
 
 
@@ -192,8 +216,9 @@ public class KeyExtensions
 	{
 		final PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
 		final KeyFactory keyFactory = KeyFactory
-			.getInstance(KeyPairGeneratorAlgorithm.RSA.getAlgorithm(), provider);
-		return keyFactory.generatePrivate(keySpec);
+			.getInstance(KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
+		final PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
+		return privateKey;
 	}
 
 	/**
@@ -248,6 +273,32 @@ public class KeyExtensions
 	 *
 	 * @param file
 	 *            the file
+	 * @param securityProvider
+	 *            the security provider
+	 * @return the public key
+	 * @throws Exception
+	 *             is thrown if if a security error occur
+	 */
+	public static PublicKey readPemPublicKey(final File file,
+		final SecurityProvider securityProvider) throws Exception
+	{
+		Security.addProvider(new BouncyCastleProvider());
+		final byte[] keyBytes = Files.readAllBytes(file.toPath());
+
+		final String publicKeyAsString = new String(keyBytes).replace(BEGIN_PUBLIC_KEY_PREFIX, "")
+			.replace(END_PUBLIC_KEY_SUFFIX, "");
+
+		final byte[] decoded = Base64.decodeBase64(publicKeyAsString);
+
+		return readPublicKey(decoded, securityProvider);
+	}
+
+
+	/**
+	 * reads a public key from a file.
+	 *
+	 * @param file
+	 *            the file
 	 * @return the public key
 	 * @throws Exception
 	 *             is thrown if if a security error occur
@@ -264,5 +315,7 @@ public class KeyExtensions
 
 		return readPublicKey(decoded, "BC");
 	}
+
+
 
 }
