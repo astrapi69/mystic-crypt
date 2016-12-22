@@ -39,10 +39,18 @@ public class KeyPairWithModeAndPaddingAlgorithmTest
 	@Test
 	public void testGetAlgorithm()
 	{
-		AssertJUnit.assertEquals(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding.getAlgorithm(), "RSA/ECB/OAEPWithSHA1AndMGF1Padding");
-		AssertJUnit.assertEquals(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA256AndMGF1Padding.getAlgorithm(), "RSA/ECB/OAEPWithSHA256AndMGF1Padding");
-		AssertJUnit.assertEquals(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_PKCS1PADDING.getAlgorithm(), "RSA/ECB/PKCS1Padding");
-		AssertJUnit.assertEquals(KeyPairWithModeAndPaddingAlgorithm.DESede_CBC_PKCS5Padding.getAlgorithm(), "DESede/CBC/PKCS5Padding");
+		AssertJUnit.assertEquals(
+			KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding.getAlgorithm(),
+			"RSA/ECB/OAEPWithSHA1AndMGF1Padding");
+		AssertJUnit.assertEquals(
+			KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA256AndMGF1Padding.getAlgorithm(),
+			"RSA/ECB/OAEPWithSHA256AndMGF1Padding");
+		AssertJUnit.assertEquals(
+			KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_PKCS1PADDING.getAlgorithm(),
+			"RSA/ECB/PKCS1Padding");
+		AssertJUnit.assertEquals(
+			KeyPairWithModeAndPaddingAlgorithm.DESede_CBC_PKCS5Padding.getAlgorithm(),
+			"DESede/CBC/PKCS5Padding");
 
 	}
 

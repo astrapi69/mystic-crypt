@@ -29,9 +29,10 @@ import lombok.Builder;
 import lombok.Getter;
 
 /**
- * The Class ChainedDecryptor can take many {@code Decryptor} objects and decrypts the given string
- * with all the given {@code Decryptor} objects. The {@code Decryptor} objects must be in a reverse
- * order as they was given in the {@code ChainedEncryptor} object.
+ * The class {@link ChainedDecryptor} can take many {@code Decryptor} objects and decrypts the given
+ * string with all the given {@code Decryptor} objects. The {@code Decryptor} objects must be in a
+ * reverse order as they was given in the {@code ChainedEncryptor} object. For an example see the
+ * unit test.
  */
 @Builder
 public class ChainedDecryptor implements GenericDecryptor<String, String>
@@ -42,7 +43,7 @@ public class ChainedDecryptor implements GenericDecryptor<String, String>
 	private final GenericDecryptor<String, String>[] decryptors;
 
 	/**
-	 * Instantiates a new chained decryptor.
+	 * Instantiates a new {@link ChainedDecryptor}.
 	 *
 	 * @param decryptors
 	 *            the decryptors
@@ -54,13 +55,7 @@ public class ChainedDecryptor implements GenericDecryptor<String, String>
 	}
 
 	/**
-	 * Decrypt the given encrypted String.
-	 *
-	 * @param encypted
-	 *            The String to decrypt.
-	 * @return The decrypted String
-	 * @throws Exception
-	 *             is thrown if decryption fails.
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String decrypt(final String encypted) throws Exception

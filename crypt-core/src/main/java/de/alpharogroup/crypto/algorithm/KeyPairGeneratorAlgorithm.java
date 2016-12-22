@@ -27,9 +27,8 @@ package de.alpharogroup.crypto.algorithm;
 import lombok.Getter;
 
 /**
- * The enum {@link KeyPairGeneratorAlgorithm}.
- * For more info see:
- * <a href="https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#KeyPairGenerator">https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#KeyPairGenerator</a>
+ * The enum {@link KeyPairGeneratorAlgorithm}. For more info see: <a href=
+ * "https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#KeyPairGenerator">https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#KeyPairGenerator</a>
  *
  * @version 1.0
  */

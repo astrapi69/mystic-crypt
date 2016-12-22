@@ -30,4 +30,6 @@ package de.alpharogroup.crypto.interfaces;
  * @version 1.0
  * @author Asterios Raptis
  */
-public interface IntegerDecryptor extends GenericDecryptor<Integer, Integer>{}
+public interface IntegerDecryptor extends GenericDecryptor<Integer, Integer>
+{
+}

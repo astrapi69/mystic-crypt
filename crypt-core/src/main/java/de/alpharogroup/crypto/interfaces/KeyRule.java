@@ -25,9 +25,8 @@
 package de.alpharogroup.crypto.interfaces;
 
 /**
- * The interface {@link KeyRule} can define a rule for encrypt and decrypt a key.
+ * The marker interface {@link KeyRule} can define a rule for encrypt and decrypt a key.
  */
 public interface KeyRule
 {
-
 }

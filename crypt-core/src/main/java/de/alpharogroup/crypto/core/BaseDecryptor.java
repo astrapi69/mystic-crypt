@@ -37,14 +37,14 @@ import de.alpharogroup.crypto.interfaces.GenericDecryptor;
 import de.alpharogroup.crypto.model.CryptModel;
 
 /**
- * A base decryptor implementation.
+ * The abstract class {@link BaseDecryptor} is a base implementation of the
+ * {@link GenericDecryptor}.
  *
  * @author Asterios Raptis
  * @version 1.0
  */
 public abstract class BaseDecryptor extends BaseCryptor implements GenericDecryptor<String, String>
 {
-
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;

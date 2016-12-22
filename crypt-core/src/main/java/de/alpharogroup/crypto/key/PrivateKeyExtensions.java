@@ -29,6 +29,12 @@ import java.security.interfaces.DSAPrivateKey;
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.RSAPrivateKey;
 
+import lombok.experimental.UtilityClass;
+
+/**
+ * The class {@link PrivateKeyExtensions}.
+ */
+@UtilityClass
 public class PrivateKeyExtensions
 {
 

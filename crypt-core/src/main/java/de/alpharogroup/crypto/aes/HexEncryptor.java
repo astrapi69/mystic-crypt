@@ -44,7 +44,8 @@ import de.alpharogroup.crypto.algorithm.Algorithm;
 import de.alpharogroup.crypto.core.BaseEncryptor;
 
 /**
- * The class {@link HexEncryptor}.
+ * The class {@link HexEncryptor} is the pendant class of {@link HexDecryptor} and encrypts given
+ * String objects that can be decrypted with {@link HexDecryptor}. For an example see the unit test.
  */
 public class HexEncryptor extends BaseEncryptor
 {
@@ -107,11 +108,8 @@ public class HexEncryptor extends BaseEncryptor
 	}
 
 	/**
-	 * Encrypt the given {@link String} object.
+	 * {@inheritDoc}
 	 *
-	 * @param string
-	 *            The String to encrypt.
-	 * @return The encrypted String.
 	 * @throws InvalidKeyException
 	 *             the invalid key exception is thrown if initialization of the cypher object fails.
 	 * @throws UnsupportedEncodingException

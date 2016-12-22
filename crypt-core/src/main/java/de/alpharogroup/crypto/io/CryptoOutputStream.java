@@ -31,16 +31,22 @@ import javax.crypto.CipherOutputStream;
 import de.alpharogroup.crypto.core.BaseDecryptor;
 
 /**
- * The Class CryptoOutputStream.
- *
- * @version 1.0
+ * The class {@link CryptoOutputStream} extends the {@link CipherOutputStream}.
  *
  * @author Asterios Raptis
- *
+ * @version 1.0
  */
 public class CryptoOutputStream extends CipherOutputStream
 {
 
+	/**
+	 * Instantiates a new {@link CryptoOutputStream}.
+	 *
+	 * @param out
+	 *            the out
+	 * @param decryptor
+	 *            the decryptor
+	 */
 	public CryptoOutputStream(final OutputStream out, final BaseDecryptor decryptor)
 	{
 		super(out, decryptor.getModel().getCipher());

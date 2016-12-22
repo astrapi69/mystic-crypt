@@ -27,16 +27,23 @@ package de.alpharogroup.crypto.aes;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
+/**
+ * Test class for the class {@link ChainedEncryptor} and {@link ChainedDecryptor}.
+ */
 public class ChainedEncryptDecryptorTest
 {
 
-
+	/**
+	 * Test chained encrypt and decrypt with {@link ChainedEncryptor#encrypt(String)} and
+	 * {@link ChainedDecryptor#decrypt(String)}.
+	 *
+	 * @throws Exception
+	 *             is thrown if any security exception occured.
+	 */
 	@Test
 	public void testChainedEncryptDecrypt() throws Exception
 	{
-		final String secretMessage = "I'm a very secret message and will be encrypted with the ChainedDecryptor;-)";
-		System.out.println("String before encryption:");
-		System.out.println(secretMessage);
+		final String secretMessage = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
 		final String firstKey = "D1D15ED36B887AF1";
 		final String secondKey = "44850AD044361AE8";
 		final String thirdKey = "BD0F34C849772DC6";
@@ -47,8 +54,6 @@ public class ChainedEncryptDecryptorTest
 			thirdEncryptor);
 
 		final String encrypted = encryptor.encrypt(secretMessage);
-		System.out.println("String after encryption:");
-		System.out.println(encrypted);
 		final HexDecryptor firstDecryptor = new HexDecryptor(firstKey);
 		final HexDecryptor secondDecryptor = new HexDecryptor(secondKey);
 		final HexDecryptor thirdDecryptor = new HexDecryptor(thirdKey);
@@ -56,8 +61,6 @@ public class ChainedEncryptDecryptorTest
 			firstDecryptor);
 
 		final String decryted = decryptor.decrypt(encrypted);
-		System.out.println("String after decryption:");
-		System.out.println(decryted);
 		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
 			secretMessage.equals(decryted));
 	}

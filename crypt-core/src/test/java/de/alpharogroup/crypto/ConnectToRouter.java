@@ -32,8 +32,18 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
+/**
+ * The class {@link ConnectToRouter} connects to a router.
+ */
 public class ConnectToRouter
 {
+
+	/**
+	 * The main method connects to a router.
+	 *
+	 * @param args the arguments
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static void main(final String[] args) throws IOException
 	{
 		final String password = URLEncoder.encode("", "US-ASCII");
@@ -46,8 +56,8 @@ public class ConnectToRouter
 		out.println(password);
 		out.close();
 
-		final BufferedReader in = new BufferedReader(new InputStreamReader(
-			connection.getInputStream()));
+		final BufferedReader in = new BufferedReader(
+			new InputStreamReader(connection.getInputStream()));
 		String inputLine;
 
 		while ((inputLine = in.readLine()) != null)

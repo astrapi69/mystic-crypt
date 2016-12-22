@@ -24,12 +24,17 @@
  */
 package de.alpharogroup.crypto.key;
 
-
 import java.security.PublicKey;
 import java.security.interfaces.DSAPublicKey;
 import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPublicKey;
 
+import lombok.experimental.UtilityClass;
+
+/**
+ * The class {@link PublicKeyExtensions}.
+ */
+@UtilityClass
 public class PublicKeyExtensions
 {
 

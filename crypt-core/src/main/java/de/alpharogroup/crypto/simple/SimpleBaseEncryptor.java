@@ -36,11 +36,35 @@ import javax.crypto.NoSuchPaddingException;
 import de.alpharogroup.crypto.core.BaseCryptor;
 import de.alpharogroup.crypto.interfaces.IntegerEncryptor;
 
+/**
+ * The class {@link SimpleBaseEncryptor}.
+ */
 public class SimpleBaseEncryptor extends BaseCryptor implements IntegerEncryptor
 {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Instantiates a new {@link SimpleBaseEncryptor} with the given private key.
+	 *
+	 * @param privateKey
+	 *            The private key.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported.
+	 */
 	public SimpleBaseEncryptor(final String privateKey)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
@@ -55,8 +79,8 @@ public class SimpleBaseEncryptor extends BaseCryptor implements IntegerEncryptor
 	public Integer encrypt(final Integer toEncrypt) throws Exception
 	{
 		final byte[] buf = new byte[1];
-        buf[0] = (byte)(toEncrypt.intValue());
-        final byte[] utf8 = getModel().getCipher().doFinal(buf);
+		buf[0] = (byte)(toEncrypt.intValue());
+		final byte[] utf8 = getModel().getCipher().doFinal(buf);
 		return (int)utf8[0];
 	}
 

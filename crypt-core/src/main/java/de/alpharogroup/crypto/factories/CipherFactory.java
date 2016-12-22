@@ -34,9 +34,12 @@ import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
+import lombok.experimental.UtilityClass;
+
 /**
- * A factory for creating Cipher objects.
+ * A factory for creating {@link Cipher} objects.
  */
+@UtilityClass
 public class CipherFactory
 {
 
@@ -51,7 +54,7 @@ public class CipherFactory
 	 *            the param spec
 	 * @param algorithm
 	 *            the algorithm
-	 * @return the cipher
+	 * @return the new {@link Cipher}
 	 *
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
@@ -78,7 +81,7 @@ public class CipherFactory
 	 *
 	 * @param algorithm
 	 *            the alg
-	 * @return the cipher
+	 * @return the new {@link Cipher}
 	 *
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
@@ -100,7 +103,7 @@ public class CipherFactory
 	 *            the algorithm
 	 * @param provider
 	 *            the provider
-	 * @return the cipher
+	 * @return the new {@link Cipher}
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws NoSuchProviderException

@@ -29,21 +29,25 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 
 import de.alpharogroup.crypto.algorithm.Algorithm;
+import lombok.experimental.UtilityClass;
 
-// TODO: Auto-generated Javadoc
 /**
  * A factory for create {@link KeyPair} objects.
  */
+@UtilityClass
 public class KeyPairFactory
 {
 
 	/**
 	 * Factory method for creating a new {@link KeyPair} from the given algorithm and key size.
 	 *
-	 * @param algorithm the algorithm
-	 * @param keySize the key size
+	 * @param algorithm
+	 *            the algorithm
+	 * @param keySize
+	 *            the key size
 	 * @return the new {@link KeyPair} from the given salt and iteration count.
-	 * @throws NoSuchAlgorithmException the no such algorithm exception
+	 * @throws NoSuchAlgorithmException
+	 *             the no such algorithm exception
 	 */
 	public static KeyPair newKeyPair(final Algorithm algorithm, final int keySize)
 		throws NoSuchAlgorithmException
@@ -54,10 +58,13 @@ public class KeyPairFactory
 	/**
 	 * Factory method for creating a new {@link KeyPair} from the given parameters.
 	 *
-	 * @param algorithm the algorithm
-	 * @param keySize the key size
-	 * @return the key pair
-	 * @throws NoSuchAlgorithmException the no such algorithm exception
+	 * @param algorithm
+	 *            the algorithm
+	 * @param keySize
+	 *            the key size
+	 * @return the new {@link KeyPair} from the given parameters.
+	 * @throws NoSuchAlgorithmException
+	 *             the no such algorithm exception
 	 */
 	public static KeyPair newKeyPair(final String algorithm, final int keySize)
 		throws NoSuchAlgorithmException

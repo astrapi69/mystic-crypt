@@ -25,13 +25,13 @@
 package de.alpharogroup.crypto.algorithm;
 
 /**
- * The enum {@link MacAlgorithm} contains the algorithm names that can be specified when requesting an instance of Mac.
- * For more info see:
- * <a href="https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#Mac">https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#Mac</a>
+ * The enum {@link MacAlgorithm} contains the algorithm names that can be specified when requesting
+ * an instance of Mac. For more info see: <a href=
+ * "https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#Mac">https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#Mac</a>
  *
  * @version 1.0
  */
-public enum MacAlgorithm  implements Algorithm
+public enum MacAlgorithm implements Algorithm
 {
 
 	/** The enum constant for HmacMD5 algorithm. */

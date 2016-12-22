@@ -25,7 +25,8 @@
 package de.alpharogroup.crypto.algorithm;
 
 /**
- * The interface {@link Algorithm} is for enums that represents an algorithm for encryption or decryption.
+ * The interface {@link Algorithm} is for enums that represents an algorithm for encryption or
+ * decryption.
  */
 public interface Algorithm
 {

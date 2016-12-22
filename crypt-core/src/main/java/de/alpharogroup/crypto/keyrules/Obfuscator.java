@@ -31,7 +31,8 @@ import org.apache.commons.lang.StringUtils;
 import de.alpharogroup.check.Check;
 
 /**
- * The Class {@link Obfuscator} obfuscates the given {@link SimpleKeyRule}.
+ * The Class {@link Obfuscator} obfuscates the given {@link SimpleKeyRule}. For an example see the
+ * unit test.
  */
 public class Obfuscator implements Obfuscatable
 {

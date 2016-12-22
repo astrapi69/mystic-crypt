@@ -34,7 +34,7 @@ import de.alpharogroup.crypto.provider.SecurityProvider;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * The class {@link KeyExtensionsTest}.
+ * Test class for {@link KeyExtensions}.
  */
 public class KeyExtensionsTest
 {
@@ -42,7 +42,8 @@ public class KeyExtensionsTest
 	/**
 	 * Test method for {@link KeyExtensions#readPemPrivateKey(File, SecurityProvider)}.
 	 *
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@Test
 	public void testReadPemPrivateKey() throws Exception
@@ -50,7 +51,8 @@ public class KeyExtensionsTest
 		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
 		final File privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
 
-		final PrivateKey privateKey = KeyExtensions.readPemPrivateKey(privatekeyPemFile, SecurityProvider.BC);
+		final PrivateKey privateKey = KeyExtensions.readPemPrivateKey(privatekeyPemFile,
+			SecurityProvider.BC);
 		AssertJUnit.assertNotNull(privateKey);
 	}
 

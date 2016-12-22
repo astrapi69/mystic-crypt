@@ -24,31 +24,26 @@
  */
 package de.alpharogroup.crypto.aes;
 
-
 import org.testng.AssertJUnit;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+/**
+ * Test class for the class {@link HexEncryptor} and {@link HexDecryptor}.
+ */
 public class HexEncryptDecryptorTest
 {
 
-	@BeforeMethod
-	public void setUp() throws Exception
-	{
-	}
-
-	@AfterMethod
-	public void tearDown() throws Exception
-	{
-	}
-
+	/**
+	 * Test chained encrypt and decrypt with {@link HexEncryptor#encrypt(String)} and
+	 * {@link HexDecryptor#decrypt(String)}.
+	 *
+	 * @throws Exception
+	 *             is thrown if any security exception occured.
+	 */
 	@Test
 	public void testEncryptDecrypt() throws Exception
 	{
-		final String test = "I'm an hellenic boy and will be encrypted with the HexEncryptor;-)";
-		System.out.println("String before encryption:");
-		System.out.println(test);
+		final String test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
 		final String key = "1234567890123456";
 		final HexEncryptor encryptor = new HexEncryptor(key);
 		final String encrypted = encryptor.encrypt(test);

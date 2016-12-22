@@ -30,8 +30,6 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 
 import org.testng.AssertJUnit;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.provider.SecurityProvider;
@@ -40,33 +38,15 @@ import de.alpharogroup.file.search.PathFinder;
 /**
  * Test class for {@link PublicKeyHexEncryptor} and {@link PrivateKeyHexDecryptor}.
  */
-public class KeyEncryptDecryptorTest
+public class KeyHexEncryptDecryptorTest
 {
 
 	/**
-	 * Sets the up.
+	 * Test encrypt and decrypt with {@link PublicKeyHexEncryptor#encrypt(String)} and
+	 * {@link PrivateKeyHexDecryptor#decrypt(String)} loaded from pem files.
 	 *
-	 * @throws Exception the exception
-	 */
-	@BeforeMethod
-	public void setUp() throws Exception
-	{
-	}
-
-	/**
-	 * Tear down.
-	 *
-	 * @throws Exception the exception
-	 */
-	@AfterMethod
-	public void tearDown() throws Exception
-	{
-	}
-
-	/**
-	 * Test encrypt decrypt pem files.
-	 *
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             is thrown if any security exception occured.
 	 */
 	@Test(enabled = true)
 	public void testEncryptDecryptPemFiles() throws Exception
@@ -99,18 +79,17 @@ public class KeyEncryptDecryptorTest
 			test.equals(decryted));
 	}
 
-
 	/**
-	 * Test encrypt decrypt.
+	 * Test encrypt and decrypt with {@link PublicKeyHexEncryptor#encrypt(String)} and
+	 * {@link PrivateKeyHexDecryptor#decrypt(String)} loaded from pem files.
 	 *
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             is thrown if any security exception occured.
 	 */
 	@Test(enabled = true)
 	public void testEncryptDecrypt() throws Exception
 	{
 		final String test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
-		System.out.println("String before encryption:");
-		System.out.println(test);
 
 		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
 		final File publickeyDerFile = new File(publickeyDerDir, "public.der");
@@ -128,8 +107,6 @@ public class KeyEncryptDecryptorTest
 		System.out.println(encrypted);
 		final PrivateKeyHexDecryptor decryptor = new PrivateKeyHexDecryptor(privateKey);
 		final String decryted = decryptor.decrypt(encrypted);
-		System.out.println("String after decryption:");
-		System.out.println(decryted);
 		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
 			test.equals(decryted));
 	}

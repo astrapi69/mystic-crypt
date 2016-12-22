@@ -29,21 +29,23 @@ package de.alpharogroup.crypto.interfaces;
  *
  * @author Asterios Raptis
  * @version 1.0
- * @param <T> the generic type of the input to decrypt
- * @param <R> the generic type of the result
+ * @param <T>
+ *            the generic type of the input to decrypt
+ * @param <R>
+ *            the generic type of the result
  */
-public interface GenericDecryptor<T,R>
+public interface GenericDecryptor<T, R>
 {
 
 	/**
 	 * Decrypt the given encrypted object.
 	 *
-	 * @param encypted
+	 * @param encrypted
 	 *            The object to decrypt.
 	 * @return The decrypted object
 	 * @throws Exception
 	 *             is thrown if decryption fails.
 	 */
-	public R decrypt(final T encypted) throws Exception;
+	public R decrypt(final T encrypted) throws Exception;
 
 }

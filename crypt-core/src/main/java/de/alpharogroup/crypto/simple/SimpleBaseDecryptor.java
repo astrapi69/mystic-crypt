@@ -36,11 +36,35 @@ import javax.crypto.NoSuchPaddingException;
 import de.alpharogroup.crypto.core.BaseCryptor;
 import de.alpharogroup.crypto.interfaces.IntegerDecryptor;
 
+/**
+ * The class {@link SimpleBaseDecryptor}.
+ */
 public class SimpleBaseDecryptor extends BaseCryptor implements IntegerDecryptor
 {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Instantiates a new {@link SimpleBaseDecryptor} with the given private key.
+	 *
+	 * @param privateKey
+	 *            The private key.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported.
+	 */
 	public SimpleBaseDecryptor(final String privateKey)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
@@ -55,9 +79,9 @@ public class SimpleBaseDecryptor extends BaseCryptor implements IntegerDecryptor
 	public Integer decrypt(final Integer encypted) throws Exception
 	{
 		final byte[] buf = new byte[1];
-        buf[0] = (byte)(encypted.intValue());
-        System.out.println(buf.length);
-        final byte[] utf8 = getModel().getCipher().doFinal(buf);
+		buf[0] = (byte)(encypted.intValue());
+		System.out.println(buf.length);
+		final byte[] utf8 = getModel().getCipher().doFinal(buf);
 		return (int)utf8[0];
 	}
 

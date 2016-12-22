@@ -27,20 +27,46 @@ package de.alpharogroup.crypto;
 import lombok.Builder;
 import lombok.Data;
 
+/**
+ * The class {@link Router} holds data for a router.
+ */
 @Data
 @Builder
-public class Router {
+public class Router
+{
+
+	/** The vendor. */
 	private String vendor;
+
+	/** The model. */
 	private String model;
+
+	/** The version. */
 	private String version;
+
+	/** The access type. */
 	private String accessType;
+
+	/** The username. */
 	private String username;
+
+	/** The pw. */
 	private String pw;
+
+	/** The permissions. */
 	private String permissions;
+
+	/** The notes. */
 	private String notes;
 
-	public String toLine() {
-		StringBuilder sb = new StringBuilder();
+	/**
+	 * To line.
+	 *
+	 * @return the string
+	 */
+	public String toLine()
+	{
+		final StringBuilder sb = new StringBuilder();
 		sb.append(this.vendor);
 		sb.append(";");
 		sb.append(this.model);

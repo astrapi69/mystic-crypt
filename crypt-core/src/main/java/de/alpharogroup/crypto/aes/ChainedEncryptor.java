@@ -29,8 +29,8 @@ import lombok.Builder;
 import lombok.Getter;
 
 /**
- * The Class ChainedEncryptor can take many {@code Encryptor} objects and encrypts the given string
- * with all the given {@code Encryptor} objects.
+ * The class {@link ChainedEncryptor} can take many {@code Encryptor} objects and encrypts the given
+ * string with all the given {@code Encryptor} objects. For an example see the unit test.
  */
 @Builder
 public class ChainedEncryptor implements GenericEncryptor<String, String>
@@ -53,13 +53,7 @@ public class ChainedEncryptor implements GenericEncryptor<String, String>
 	}
 
 	/**
-	 * Encrypt the given String.
-	 *
-	 * @param string
-	 *            The String to encrypt.
-	 * @return The encrypted String.
-	 * @throws Exception
-	 *             is thrown if encryption fails.
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String encrypt(final String string) throws Exception

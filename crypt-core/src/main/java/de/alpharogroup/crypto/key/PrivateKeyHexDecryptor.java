@@ -45,10 +45,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
-
 /**
- * The class {@link PrivateKeyHexDecryptor} decrypts encrypted characters the was encrypted with the public
- * key of this private key of this class.
+ * The class {@link PrivateKeyHexDecryptor} decrypts encrypted characters the was encrypted with the
+ * public key of the pendant private key of this class.
  */
 public class PrivateKeyHexDecryptor
 {
@@ -75,7 +74,7 @@ public class PrivateKeyHexDecryptor
 	private boolean initialized;
 
 	/**
-	 * Constructor with a private key.
+	 * Instantiates a new {@link PrivateKeyHexDecryptor} with the given {@link PrivateKey}.
 	 *
 	 * @param privateKey
 	 *            The private key.
@@ -141,7 +140,9 @@ public class PrivateKeyHexDecryptor
 	{
 		if (!isInitialized())
 		{
-			cipher = Cipher.getInstance(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding.getAlgorithm());
+			cipher = Cipher
+				.getInstance(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding
+					.getAlgorithm());
 			cipher.init(Cipher.DECRYPT_MODE, privateKey);
 		}
 	}
