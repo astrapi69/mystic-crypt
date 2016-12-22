@@ -51,11 +51,12 @@ public interface UserExistenceService extends Serializable
 	 * @return true, if successful
 	 */
 	boolean existsUserWithUsername(final String username);
-	
+
 	/**
 	 * Checks if a user exists with the given email or user name.
 	 *
-	 * @param emailOrUsername the email or user name
+	 * @param emailOrUsername
+	 *            the email or user name
 	 * @return true, if successful
 	 */
 	boolean existsUserWithEmailOrUsername(final String emailOrUsername);

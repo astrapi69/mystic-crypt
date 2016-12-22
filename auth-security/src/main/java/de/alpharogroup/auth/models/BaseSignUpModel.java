@@ -32,7 +32,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * The Class BaseSignUpModel is an implementation from the interface SimpleSignUpModel.
+ * The class {@link BaseSignUpModel} is an implementation from the interface
+ * {@link SimpleSignUpModel}.
  */
 @Getter
 @Setter

@@ -34,20 +34,34 @@ import de.alpharogroup.auth.interfaces.Session;
 import de.alpharogroup.auth.interfaces.User;
 import de.alpharogroup.collections.InsertionOrderMap;
 import de.alpharogroup.random.RandomObjectsExtensions;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
- * The Class UserSession.
+ * The class {@link UserSession}.
  *
  * @version 1.0
  * @author Asterios Raptis
  */
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class UserSession implements Session<String, String>
 {
 
 	/**
 	 * The serialVersionUID.
 	 */
-	private static final long serialVersionUID = 2858590853976767758L;
+	private static final long serialVersionUID = -5792522256514467537L;
 
 	/** The id. */
 	private String id;
@@ -86,91 +100,13 @@ public class UserSession implements Session<String, String>
 		this.initialize();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getAttributte(final String key)
 	{
 		return attributtes.get(key);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see de.alpharogroup.auth.interfaces.Session#getAttributtes()
-	 */
-	@Override
-	public Map<String, String> getAttributtes()
-	{
-		if (null == this.attributtes)
-		{
-			this.attributtes = new InsertionOrderMap<>();
-		}
-		return this.attributtes;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see de.alpharogroup.auth.interfaces.Session#getId()
-	 */
-	@Override
-	public String getId()
-	{
-		return this.id;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see de.alpharogroup.auth.interfaces.Session#getLastAccess()
-	 */
-	@Override
-	public Date getLastAccess()
-	{
-		return (Date)this.lastAccess.clone();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see de.alpharogroup.auth.interfaces.Session#getLocale()
-	 */
-	@Override
-	public Locale getLocale()
-	{
-		return this.locale;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see de.alpharogroup.auth.interfaces.Session#getMaxInactiveTime()
-	 */
-	@Override
-	public int getMaxInactiveTime()
-	{
-		return this.maxInactiveTime;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see de.alpharogroup.auth.interfaces.Session#getStartTime()
-	 */
-	@Override
-	public Date getStartTime()
-	{
-		return (Date)this.startTime.clone();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see de.alpharogroup.auth.interfaces.Session#getUser()
-	 */
-	@Override
-	public User<Permission, Role<Permission>> getUser()
-	{
-		return this.user;
 	}
 
 	/**
@@ -186,87 +122,13 @@ public class UserSession implements Session<String, String>
 		this.locale = Locale.getDefault();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String setAttribute(final String key, final String value)
 	{
 		return attributtes.put(key, value);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see de.alpharogroup.auth.interfaces.Session#setAttributtes(java.util.Map)
-	 */
-	@Override
-	public void setAttributtes(final Map<String, String> attributtes)
-	{
-		this.attributtes = attributtes;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see de.alpharogroup.auth.interfaces.Session#setId(java.lang.String)
-	 */
-	@Override
-	public void setId(final String id)
-	{
-		this.id = id;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see de.alpharogroup.auth.interfaces.Session#setLastAccess(java.util.Date)
-	 */
-	@Override
-	public void setLastAccess(final Date lastAccess)
-	{
-		this.lastAccess = (Date)lastAccess.clone();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see de.alpharogroup.auth.interfaces.Session#setLocale(java.util.Locale)
-	 */
-	@Override
-	public void setLocale(final Locale locale)
-	{
-		this.locale = locale;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see de.alpharogroup.auth.interfaces.Session#setMaxInactiveTime(int)
-	 */
-	@Override
-	public void setMaxInactiveTime(final int maxInactiveTime)
-	{
-		this.maxInactiveTime = maxInactiveTime;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see de.alpharogroup.auth.interfaces.Session#setStartTime(java.util.Date)
-	 */
-	@Override
-	public void setStartTime(final Date startTime)
-	{
-		this.startTime = (Date)startTime.clone();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see de.alpharogroup.auth.interfaces.Session#setUser(de.alpharogroup.auth.interfaces.User)
-	 */
-	@Override
-	public void setUser(final User<Permission, Role<Permission>> user)
-	{
-		this.user = user;
 	}
 
 }

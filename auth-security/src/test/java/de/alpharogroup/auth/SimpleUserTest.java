@@ -41,7 +41,7 @@ import de.alpharogroup.file.csv.CsvFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * Test class for the class SimpleUser.
+ * Test class for the class {@link SimpleUser}.
  *
  * @version 1.0
  * @author Asterios Raptis

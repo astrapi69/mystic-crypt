@@ -25,8 +25,8 @@
 package de.alpharogroup.auth.models;
 
 /**
- * The enum ValidationErrors holds error constants that can occur over the sign up or sign in
- * process.
+ * The enum {@link ValidationErrors} holds error constants that can occur over the sign up or sign
+ * in process.
  */
 public enum ValidationErrors
 {

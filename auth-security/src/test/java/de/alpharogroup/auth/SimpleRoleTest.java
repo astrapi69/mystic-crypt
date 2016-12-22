@@ -41,8 +41,8 @@ import de.alpharogroup.file.csv.CsvFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * Test class for the class SimpleRole.
- * 
+ * Test class for the class {@link SimpleRole}.
+ *
  * @version 1.1
  * @author Asterios Raptis
  */
@@ -68,7 +68,7 @@ public class SimpleRoleTest
 		final File resources = new File(srctestresDir, "resources");
 		final File userrole = new File(resources, "userrole");
 		this.permissions = CsvFileExtensions.readFileToList(userrole);
-		final Set<Permission> ars = new HashSet<Permission>(this.permissions.size());
+		final Set<Permission> ars = new HashSet<>(this.permissions.size());
 		for (final String object : this.permissions)
 		{
 			final Permission accrig = new SimplePermission();

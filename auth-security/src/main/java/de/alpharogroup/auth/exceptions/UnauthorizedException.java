@@ -43,13 +43,17 @@ public class UnauthorizedException extends Exception
 	/**
 	 * Instantiates a new {@link UnauthorizedException}.
 	 *
-	 * @param message the message
-	 * @param cause the cause
-	 * @param enableSuppression the enable suppression
-	 * @param writableStackTrace the writable stack trace
+	 * @param message
+	 *            the message
+	 * @param cause
+	 *            the cause
+	 * @param enableSuppression
+	 *            the enable suppression
+	 * @param writableStackTrace
+	 *            the writable stack trace
 	 */
-	public UnauthorizedException(final String message, final Throwable cause, final boolean enableSuppression,
-		final boolean writableStackTrace)
+	public UnauthorizedException(final String message, final Throwable cause,
+		final boolean enableSuppression, final boolean writableStackTrace)
 	{
 		super(message, cause, enableSuppression, writableStackTrace);
 	}
@@ -57,8 +61,10 @@ public class UnauthorizedException extends Exception
 	/**
 	 * Instantiates a new {@link UnauthorizedException}.
 	 *
-	 * @param message the message
-	 * @param cause the cause
+	 * @param message
+	 *            the message
+	 * @param cause
+	 *            the cause
 	 */
 	public UnauthorizedException(final String message, final Throwable cause)
 	{
@@ -68,7 +74,8 @@ public class UnauthorizedException extends Exception
 	/**
 	 * Instantiates a new {@link UnauthorizedException}.
 	 *
-	 * @param message the message
+	 * @param message
+	 *            the message
 	 */
 	public UnauthorizedException(final String message)
 	{
@@ -78,7 +85,8 @@ public class UnauthorizedException extends Exception
 	/**
 	 * Instantiates a new {@link UnauthorizedException}.
 	 *
-	 * @param cause the cause
+	 * @param cause
+	 *            the cause
 	 */
 	public UnauthorizedException(final Throwable cause)
 	{

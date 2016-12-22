@@ -27,28 +27,28 @@ package de.alpharogroup.auth.models;
 import java.io.Serializable;
 
 /**
- * The Interface SignInModel for sign in.
+ * The interface {@link SignInModel} for sign in.
  */
 public interface SignInModel extends Serializable
 {
 
 	/**
 	 * Gets the email.
-	 * 
+	 *
 	 * @return the email
 	 */
 	String getEmail();
 
 	/**
 	 * Gets the password.
-	 * 
+	 *
 	 * @return the password
 	 */
 	String getPassword();
 
 	/**
 	 * Sets the email.
-	 * 
+	 *
 	 * @param email
 	 *            the new email
 	 */
@@ -56,7 +56,7 @@ public interface SignInModel extends Serializable
 
 	/**
 	 * Sets the password.
-	 * 
+	 *
 	 * @param password
 	 *            the new password
 	 */

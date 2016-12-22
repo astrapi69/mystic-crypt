@@ -36,15 +36,14 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * The Class AuthenticationResult holds the user object and a set of
- * authentication errors if occurred.
+ * The class {@link AuthenticationResult} holds the user object and a set of authentication errors
+ * if occurred.
  *
  * @param <U>
  *            the generic type of the user object
  * @param <E>
  *            the element type of the authentication errors
  */
-
 @Getter
 @Setter
 @EqualsAndHashCode
@@ -52,7 +51,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AuthenticationResult<U, E> {
+public class AuthenticationResult<U, E>
+{
 
 	/** The authentication errors. */
 	private Set<E> validationErrors = SetExtensions.newHashSet();
