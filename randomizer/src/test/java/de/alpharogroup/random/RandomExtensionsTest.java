@@ -43,7 +43,7 @@ import de.alpharogroup.BaseTestCase;
 import de.alpharogroup.test.objects.Gender;
 
 /**
- * Test class for the class RandomExtensions.
+ * Test class for the class {@link RandomExtensions}.
  *
  * @version 1.0
  * @author Asterios Raptis
@@ -71,10 +71,8 @@ public class RandomExtensionsTest extends BaseTestCase
 		super.tearDown();
 	}
 
-
 	/**
-	 * Test method for
-	 * {@link de.alpharogroup.random.RandomExtensions#getRandomEntry(java.util.List)} .
+	 * Test method for {@link RandomExtensions#getRandomEntry(java.util.List)} .
 	 */
 	@Test
 	public void testGetRandomEntryList()
@@ -95,8 +93,7 @@ public class RandomExtensionsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomExtensions#getRandomEntry(java.util.Map)}
-	 * .
+	 * Test method for {@link RandomExtensions#getRandomEntry(java.util.Map)} .
 	 */
 	@Test
 	public void testGetRandomEntryMap()
@@ -131,7 +128,7 @@ public class RandomExtensionsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomExtensions#getRandomFloat(int, int)} .
+	 * Test method for {@link RandomExtensions#getRandomFloat(int, int)} .
 	 */
 	@Test
 	public void testGetRandomFloat()
@@ -147,7 +144,7 @@ public class RandomExtensionsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomExtensions#getRandomKey(java.util.Map)} .
+	 * Test method for {@link RandomExtensions#getRandomKey(java.util.Map)} .
 	 */
 	@Test
 	public void testGetRandomKey()
@@ -168,12 +165,11 @@ public class RandomExtensionsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomExtensions#randomBoolean()}.
+	 * Test method for {@link RandomExtensions#randomBoolean()}.
 	 */
 	@Test
 	public void testRandomBoolean()
 	{
-
 	}
 
 	@Test
@@ -184,8 +180,7 @@ public class RandomExtensionsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomExtensions#randomChar(java.lang.String)}
-	 * .
+	 * Test method for {@link RandomExtensions#randomChar(java.lang.String)} .
 	 */
 	@Test
 	public void testRandomChar()
@@ -202,7 +197,7 @@ public class RandomExtensionsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomExtensions#randomInt(int)}.
+	 * Test method for {@link RandomExtensions#randomInt(int)}.
 	 */
 	@Test
 	public void testRandomInt()
@@ -216,8 +211,7 @@ public class RandomExtensionsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for
-	 * {@link de.alpharogroup.random.RandomExtensions#getRandomString(java.lang.String[])} .
+	 * Test method for {@link RandomExtensions#getRandomString(java.lang.String[])} .
 	 */
 	@Test
 	public void testRandomStringStringArray()
@@ -233,8 +227,7 @@ public class RandomExtensionsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for
-	 * {@link de.alpharogroup.random.RandomExtensions#getRandomString(java.lang.String, int)} .
+	 * Test method for {@link RandomExtensions#getRandomString(java.lang.String, int)} .
 	 */
 	@Test
 	public void testRandomStringStringInt()
@@ -251,9 +244,8 @@ public class RandomExtensionsTest extends BaseTestCase
 		}
 	}
 
-
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomExtensions#randomToken()} .
+	 * Test method for {@link RandomExtensions#randomToken()} .
 	 */
 	@Test
 	public void testRandomToken()

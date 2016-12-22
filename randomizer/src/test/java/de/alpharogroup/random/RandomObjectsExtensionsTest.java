@@ -43,6 +43,9 @@ public class RandomObjectsExtensionsTest extends BaseTestCase
 	{
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	@AfterMethod
 	public void tearDown() throws Exception
