@@ -29,6 +29,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -44,9 +45,35 @@ import de.alpharogroup.crypto.simple.SimpleBaseDecryptor;
 import de.alpharogroup.crypto.simple.SimpleBaseEncryptor;
 import de.alpharogroup.file.search.PathFinder;
 
+/**
+ * Test class for the classes {@link SimpleBaseEncryptor} and {@link CryptoCipherInputStream} and
+ * the classes {@link SimpleBaseDecryptor} and {@link CryptoCipherOutputStream}.
+ */
 public class CryptoStreamTest
 {
 
+	/**
+	 * Test read and write to decrypted file with cipher IO.
+	 *
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported.
+	 */
 	@Test
 	public void testReadAndWriteToDecryptedFileWithCipherIO()
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
@@ -57,10 +84,10 @@ public class CryptoStreamTest
 		final String firstKey = "D1D15ED36B887AF1";
 		final File cryptDir = new File(PathFinder.getSrcTestResourcesDir(), "crypt");
 		final File toEncrypt = new File(cryptDir, "test.txt");
-		System.out.println(toEncrypt.getAbsolutePath());
 
 		final InputStream fis = new FileInputStream(toEncrypt);
-		final SimpleBaseEncryptor encryptor = new SimpleBaseEncryptor(firstKey) {
+		final SimpleBaseEncryptor encryptor = new SimpleBaseEncryptor(firstKey)
+		{
 
 			/** The Constant serialVersionUID. */
 			private static final long serialVersionUID = 1L;
@@ -75,7 +102,7 @@ public class CryptoStreamTest
 		final CryptoCipherInputStream cis = new CryptoCipherInputStream(fis,
 			encryptor.getModel().getCipher());
 		final File encryptedFile = new File(cryptDir, "encrypted.txt");
-		System.out.println(encryptedFile.getAbsolutePath());
+
 		final FileOutputStream out = new FileOutputStream(encryptedFile);
 
 		int c;
@@ -91,7 +118,8 @@ public class CryptoStreamTest
 		final File outputDecrypted = new File(cryptDir, "decrypted.txt");
 
 		final FileOutputStream decryptedOut = new FileOutputStream(outputDecrypted);
-		final SimpleBaseDecryptor decryptor = new SimpleBaseDecryptor(firstKey){
+		final SimpleBaseDecryptor decryptor = new SimpleBaseDecryptor(firstKey)
+		{
 
 			/** The Constant serialVersionUID. */
 			private static final long serialVersionUID = 1L;
@@ -103,7 +131,8 @@ public class CryptoStreamTest
 				return super.newSecretKeyFactory(algorythm);
 			}
 		};
-		final CryptoCipherOutputStream cos = new CryptoCipherOutputStream(decryptedOut, decryptor.getModel().getCipher());
+		final CryptoCipherOutputStream cos = new CryptoCipherOutputStream(decryptedOut,
+			decryptor.getModel().getCipher());
 		final FileInputStream encryptedFis = new FileInputStream(encryptedFile);
 
 		while ((c = encryptedFis.read()) != -1)

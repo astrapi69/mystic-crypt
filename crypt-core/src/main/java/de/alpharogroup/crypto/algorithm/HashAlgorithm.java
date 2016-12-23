@@ -27,7 +27,7 @@ package de.alpharogroup.crypto.algorithm;
 import lombok.Getter;
 
 /**
- * The enum {@link HashAlgorithm}.
+ * The enum {@link HashAlgorithm} represents the one-way conversion hash algorithms.
  *
  * @version 1.0
  * @author Asterios Raptis

@@ -31,11 +31,9 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.KeySpec;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 
 import de.alpharogroup.check.Check;
@@ -46,7 +44,13 @@ import de.alpharogroup.crypto.model.CryptModel;
 import lombok.Getter;
 
 /**
- * An abstract cryptor implementation.
+ * The abstract class {@link AbstractCryptor} provides factory methods that may or must be
+ * overwritten dependent of the specific implementor class.
+ *
+ * @param <C>
+ *            the generic type
+ * @param <K>
+ *            the key type
  *
  * @author Asterios Raptis
  * @version 1.0
@@ -57,6 +61,7 @@ public abstract class AbstractCryptor<C, K> implements Serializable
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+	/** The crypto model. */
 	@Getter
 	protected final CryptModel<C, K> model;
 
@@ -85,7 +90,7 @@ public abstract class AbstractCryptor<C, K> implements Serializable
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
 		Check.get().notNull(key, "key");
-		model = CryptModel.<C, K>builder().key(key).build();
+		model = CryptModel.<C, K> builder().key(key).build();
 		onInitialize();
 	}
 
@@ -169,14 +174,14 @@ public abstract class AbstractCryptor<C, K> implements Serializable
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
 		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		return newCipher(key, newAlgorithm(), newSalt(), newIterationCount(),
-			newOperationMode());
+		return newCipher(key, newAlgorithm(), newSalt(), newIterationCount(), newOperationMode());
 	}
 
 	/**
 	 * Factory method for creating a new algorithm that will be used with the cipher object.
+	 * Overwrite this method to provide a specific algorithm.
 	 *
-	 * @return the string
+	 * @return the new algorithm that will be used with the cipher object.
 	 */
 	protected String newAlgorithm()
 	{
@@ -248,34 +253,6 @@ public abstract class AbstractCryptor<C, K> implements Serializable
 		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException;
 
 	/**
-	 * Factory method for creating a new {@link Cipher} from the given parameters. This method is
-	 * invoked in the constructor from the derived classes and can be overridden so users can
-	 * provide their own version of a new {@link Cipher} from the given parameters.
-	 *
-	 * @param operationMode
-	 *            the operation mode
-	 * @param secretKey
-	 *            the secret key
-	 * @param paramSpec
-	 *            the param spec
-	 * @param alg
-	 *            the alg
-	 * @return the cipher
-	 *
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cypher object fails.
-	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
-	 */
-	protected abstract C newCipher(final int operationMode, final SecretKey secretKey,
-		final AlgorithmParameterSpec paramSpec, final String alg) throws NoSuchAlgorithmException,
-		NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException;
-
-	/**
 	 * Factory method for creating a new {@link AlgorithmParameterSpec} from the given salt and
 	 * iteration count. This method is invoked in the constructor from the derived classes and can
 	 * be overridden so users can provide their own version of a new {@link AlgorithmParameterSpec}
@@ -292,19 +269,6 @@ public abstract class AbstractCryptor<C, K> implements Serializable
 	{
 		return AlgorithmParameterSpecFactory.newPBEParameterSpec(salt, iterationCount);
 	}
-
-	/**
-	 * Factory method for creating a new {@link KeySpec} from the given private key. This method is
-	 * invoked in the constructor from the derived classes and can be overridden so users can
-	 * provide their own version of a new {@link KeySpec} from the given private key.
-	 *
-	 * @param key            the key
-	 * @param salt the salt
-	 * @param iterationCount the iteration count
-	 * @return the new {@link KeySpec} from the given private key.
-	 */
-	protected abstract KeySpec newKeySpec(final K key, final byte[] salt,
-		final int iterationCount);
 
 	/**
 	 * Factory method for creating a new {@link SecretKeyFactory} from the given algorithm. This

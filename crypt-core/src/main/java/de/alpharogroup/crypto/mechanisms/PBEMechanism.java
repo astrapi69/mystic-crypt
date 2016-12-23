@@ -29,5 +29,9 @@ package de.alpharogroup.crypto.mechanisms;
  */
 public enum PBEMechanism
 {
-	PBE, PKCS;
+
+	/** The pbe mechanism. */
+	PBE,
+	/** The pkcs mechanism. */
+	PKCS;
 }

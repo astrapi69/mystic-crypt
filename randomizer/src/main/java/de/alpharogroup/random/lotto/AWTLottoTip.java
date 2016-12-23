@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * The Class AWTLottoTip.
+ * The class {@link AWTLottoTip} is a simple gui for generate lotto numbers. Try it by execute this class.
  */
 public class AWTLottoTip extends Frame implements ActionListener
 {
@@ -111,7 +111,7 @@ public class AWTLottoTip extends Frame implements ActionListener
 	private GridBagConstraints gbc;
 
 	/**
-	 * Instantiates a new aWT lotto tip.
+	 * Instantiates a new {@link AWTLottoTip} object.
 	 */
 	public AWTLottoTip()
 	{
@@ -125,8 +125,6 @@ public class AWTLottoTip extends Frame implements ActionListener
 
 			/**
 			 * (non-Javadoc)
-			 * 
-			 * @see java.awt.event.WindowAdapter#windowClosed(java.awt.event.WindowEvent)
 			 */
 			@Override
 			public void windowClosed(final WindowEvent we)
@@ -136,8 +134,6 @@ public class AWTLottoTip extends Frame implements ActionListener
 
 			/**
 			 * (non-Javadoc)
-			 *
-			 * @see java.awt.event.WindowAdapter#windowClosing(java.awt.event.WindowEvent)
 			 */
 			@Override
 			public void windowClosing(final WindowEvent we)
@@ -151,8 +147,6 @@ public class AWTLottoTip extends Frame implements ActionListener
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	@Override
 	public void actionPerformed(final ActionEvent ae)

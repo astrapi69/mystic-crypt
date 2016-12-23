@@ -34,13 +34,15 @@ import java.util.Random;
 
 import de.alpharogroup.date.CalculateDateExtensions;
 import de.alpharogroup.random.RandomExtensions;
+import lombok.experimental.UtilityClass;
 
 /**
- * This util class gets random dates.
+ * The class {@link RandomDateExtensions} is a utility class for creating random random dates.
  *
  * @version 1.0
  * @author Asterios Raptis
  */
+@UtilityClass
 public class RandomDateExtensions
 {
 

@@ -27,8 +27,8 @@ package de.alpharogroup.crypto.processors.bruteforce;
 import java.util.Arrays;
 
 /**
- * The Class BruteForceProcessor can process a brute force for find a password. For an example see
- * the junit test.
+ * The class {@link BruteForceProcessor} can process a brute force for find a password. For an
+ * example see the unit test.
  *
  * @version 1.0
  * @author Asterios Raptis
@@ -43,7 +43,7 @@ public class BruteForceProcessor
 	private char[] currentAttempt;
 
 	/**
-	 * Instantiates a new brute force processor.
+	 * Instantiates a new {@link BruteForceProcessor} object.
 	 *
 	 * @param possiblesCharacters
 	 *            the possibles characters
@@ -91,8 +91,8 @@ public class BruteForceProcessor
 			}
 			else
 			{
-				currentAttempt[index] = possiblesCharacters[Arrays.binarySearch(
-					possiblesCharacters, currentAttempt[index]) + 1];
+				currentAttempt[index] = possiblesCharacters[Arrays.binarySearch(possiblesCharacters,
+					currentAttempt[index]) + 1];
 				break;
 			}
 		}

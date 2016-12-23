@@ -28,8 +28,8 @@ import java.io.Serializable;
 import java.util.Set;
 
 /**
- * The Interface Role.
- * 
+ * The interface {@link Role}.
+ *
  * @version 1.0
  * @author Asterios Raptis
  * @param <T>
@@ -40,14 +40,14 @@ public interface Role<T extends Permission> extends Serializable
 
 	/**
 	 * Returns the field <code>description</code>.
-	 * 
+	 *
 	 * @return The field <code>description</code>.
 	 */
 	String getDescription();
 
 	/**
 	 * Sets the field <code>description</code>.
-	 * 
+	 *
 	 * @param description
 	 *            The <code>description</code> to set
 	 */
@@ -55,14 +55,14 @@ public interface Role<T extends Permission> extends Serializable
 
 	/**
 	 * Gets the name.
-	 * 
+	 *
 	 * @return the name.
 	 */
 	String getRolename();
 
 	/**
 	 * Sets the name.
-	 * 
+	 *
 	 * @param name
 	 *            the new name.
 	 */
@@ -70,17 +70,17 @@ public interface Role<T extends Permission> extends Serializable
 
 	/**
 	 * Gets the access rights.
-	 * 
+	 *
 	 * @return the permissions
 	 */
 	Set<T> getPermissions();
 
 	/**
 	 * Sets the permissions.
-	 * 
+	 *
 	 * @param permissions
 	 *            the new access rights.
 	 */
-	public void setPermissions(final Set<T> permissions);
+	void setPermissions(final Set<T> permissions);
 
 }

@@ -33,7 +33,7 @@ import de.alpharogroup.crypto.mechanisms.PBEMechanism;
 import de.alpharogroup.crypto.pw.PasswordHashType;
 
 /**
- * Abstract constant class for Crypto object.
+ * The abstract class {@link CryptConst} that holds constants for Crypto object.
  *
  * @version 1.0
  * @author Asterios Raptis
@@ -57,23 +57,30 @@ public abstract class CryptConst
 	 */
 	public static final String PRIVATE_KEY = "privattop secret";
 
+	/** The Constant PBKDF2. */
 	public static final String PBKDF2 = PasswordHashType.PBKDF2.name();
 
+	/** The Constant WITH. */
 	public static final String WITH = "With";
 
+	/** The Constant AND. */
 	public static final String AND = "And";
 
+	/** The Constant PBE. */
 	public static final String PBE = PBEMechanism.PBE.name();
 
+	/** The Constant PBE_WITH. */
 	public static final String PBE_WITH = PBE + WITH;
 
 	/**
 	 * Constant for the algorithm 'PBEWithMD5AndDES' to encrypt and decrypt.
 	 */
-	public static final String PBE_WITH_MD5_AND_DES = PBE_WITH + MdAlgorithm.MD5.name() + AND + SunJCEAlgorithm.DES.name();
+	public static final String PBE_WITH_MD5_AND_DES = PBE_WITH + MdAlgorithm.MD5.name() + AND
+		+ SunJCEAlgorithm.DES.name();
 
 	/**
 	 * Constant for the algorithm 'PBEWithMD5AndDES' to encrypt and decrypt.
+	 * 
 	 * @deprecated use instead {@link CryptConst#PBE_WITH_MD5_AND_DES}
 	 */
 	@Deprecated
@@ -82,10 +89,12 @@ public abstract class CryptConst
 	/**
 	 * Constant for the algorithm 'PBEWithMD5AndAES' to encrypt and decrypt.
 	 */
-	public static final String PBE_WITH_MD5_AND_AES = PBE_WITH + MdAlgorithm.MD5.name() + AND + AesAlgorithm.AES.name();
+	public static final String PBE_WITH_MD5_AND_AES = PBE_WITH + MdAlgorithm.MD5.name() + AND
+		+ AesAlgorithm.AES.name();
 
 	/**
 	 * Constant for the algorithm 'PBEWithMD5AndAES' to encrypt and decrypt.
+	 * 
 	 * @deprecated use instead {@link CryptConst#PBE_WITH_MD5_AND_DES}
 	 */
 	@Deprecated
@@ -94,10 +103,12 @@ public abstract class CryptConst
 	/**
 	 * Constant for the algorithm 'PBEWithSHA1AndDESede' to encrypt and decrypt.
 	 */
-	public static final String PBE_WITH_SHA1_AND_DES_EDE = PBE_WITH + HashAlgorithm.SHA1.name()  + AND + SunJCEAlgorithm.DESede.name();
+	public static final String PBE_WITH_SHA1_AND_DES_EDE = PBE_WITH + HashAlgorithm.SHA1.name()
+		+ AND + SunJCEAlgorithm.DESede.name();
 
 	/**
 	 * Constant for the algorithm 'PBEWithSHA1AndDESede' to encrypt and decrypt.
+	 * 
 	 * @deprecated use instead {@link CryptConst#PBE_WITH_SHA1_AND_DES_EDE}
 	 */
 	@Deprecated
@@ -106,7 +117,8 @@ public abstract class CryptConst
 	/**
 	 * Constant for the algorithm 'PBKDF2WithHmacSHA1' to encrypt and decrypt.
 	 */
-	public static final String PBKDF2_WITH_HMAC_SHA1 = PBKDF2 + WITH + MacAlgorithm.HMAC + HashAlgorithm.SHA1.name();
+	public static final String PBKDF2_WITH_HMAC_SHA1 = PBKDF2 + WITH + MacAlgorithm.HMAC
+		+ HashAlgorithm.SHA1.name();
 
 	/**
 	 * Constant for the algorithm to encrypt and decrypt.

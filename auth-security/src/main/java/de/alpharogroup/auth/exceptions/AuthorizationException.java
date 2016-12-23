@@ -44,13 +44,17 @@ public class AuthorizationException extends Exception
 	/**
 	 * Instantiates a new {@link AuthorizationException}.
 	 *
-	 * @param message the message
-	 * @param cause the cause
-	 * @param enableSuppression the enable suppression
-	 * @param writableStackTrace the writable stack trace
+	 * @param message
+	 *            the message
+	 * @param cause
+	 *            the cause
+	 * @param enableSuppression
+	 *            the enable suppression
+	 * @param writableStackTrace
+	 *            the writable stack trace
 	 */
-	public AuthorizationException(final String message, final Throwable cause, final boolean enableSuppression,
-		final boolean writableStackTrace)
+	public AuthorizationException(final String message, final Throwable cause,
+		final boolean enableSuppression, final boolean writableStackTrace)
 	{
 		super(message, cause, enableSuppression, writableStackTrace);
 	}
@@ -58,8 +62,10 @@ public class AuthorizationException extends Exception
 	/**
 	 * Instantiates a new {@link AuthorizationException}.
 	 *
-	 * @param message the message
-	 * @param cause the cause
+	 * @param message
+	 *            the message
+	 * @param cause
+	 *            the cause
 	 */
 	public AuthorizationException(final String message, final Throwable cause)
 	{
@@ -69,7 +75,8 @@ public class AuthorizationException extends Exception
 	/**
 	 * Instantiates a new {@link AuthorizationException}.
 	 *
-	 * @param message the message
+	 * @param message
+	 *            the message
 	 */
 	public AuthorizationException(final String message)
 	{
@@ -79,7 +86,8 @@ public class AuthorizationException extends Exception
 	/**
 	 * Instantiates a new {@link AuthorizationException}.
 	 *
-	 * @param cause the cause
+	 * @param cause
+	 *            the cause
 	 */
 	public AuthorizationException(final Throwable cause)
 	{

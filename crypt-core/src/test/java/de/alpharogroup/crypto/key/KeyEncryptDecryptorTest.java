@@ -24,56 +24,38 @@
  */
 package de.alpharogroup.crypto.key;
 
-
 import java.io.File;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
+import javax.crypto.Cipher;
+
 import org.testng.AssertJUnit;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import de.alpharogroup.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
+import de.alpharogroup.crypto.model.CryptModel;
 import de.alpharogroup.crypto.provider.SecurityProvider;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * Test class for {@link PublicKeyHexEncryptor} and {@link PrivateKeyHexDecryptor}.
+ * Test class for {@link PublicKeyEncryptor} and {@link PrivateKeyDecryptor}.
  */
 public class KeyEncryptDecryptorTest
 {
 
 	/**
-	 * Sets the up.
+	 * Test encrypt and decrypt with {@link PublicKeyEncryptor#encrypt(byte[])} and
+	 * {@link PrivateKeyDecryptor#decrypt(byte[])} loaded from pem files.
 	 *
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             is thrown if any security exception occured.
 	 */
-	@BeforeMethod
-	public void setUp() throws Exception
-	{
-	}
-
-	/**
-	 * Tear down.
-	 *
-	 * @throws Exception the exception
-	 */
-	@AfterMethod
-	public void tearDown() throws Exception
-	{
-	}
-
-	/**
-	 * Test encrypt decrypt pem files.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Test(enabled = true)
+	@Test
 	public void testEncryptDecryptPemFiles() throws Exception
 	{
 		final String test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
-		System.out.println("String before encryption:");
-		System.out.println(test);
+		final byte[] testBytes = test.getBytes("UTF-8");
 
 		final File publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
 		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
@@ -85,32 +67,42 @@ public class KeyEncryptDecryptorTest
 		final PublicKey publicKey = KeyExtensions.readPemPublicKey(publickeyPemFile,
 			SecurityProvider.BC);
 
-		final PublicKeyHexEncryptor encryptor = new PublicKeyHexEncryptor(publicKey);
+		final CryptModel<Cipher, PublicKey> encryptModel = CryptModel.<Cipher, PublicKey> builder()
+			.key(publicKey)
+			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding)
+			.operationMode(Cipher.ENCRYPT_MODE).build();
 
-		final String encrypted = encryptor.encrypt(test);
+		final CryptModel<Cipher, PrivateKey> decryptModel = CryptModel
+			.<Cipher, PrivateKey> builder().key(privateKey)
+			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding)
+			.operationMode(Cipher.DECRYPT_MODE).build();
 
-		System.out.println("String after encryption:");
-		System.out.println(encrypted);
-		final PrivateKeyHexDecryptor decryptor = new PrivateKeyHexDecryptor(privateKey);
-		final String decryted = decryptor.decrypt(encrypted);
-		System.out.println("String after decryption:");
-		System.out.println(decryted);
+		final PublicKeyEncryptor encryptor = new PublicKeyEncryptor(encryptModel);
+		final PrivateKeyDecryptor decryptor = new PrivateKeyDecryptor(decryptModel);
+
+
+		final byte[] encrypted = encryptor.encrypt(testBytes);
+
+		final byte[] decrypted = decryptor.decrypt(encrypted);
+
+		final String decryptedString = new String(decrypted, "UTF-8");
 		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
-			test.equals(decryted));
+			test.equals(decryptedString));
+
 	}
 
-
 	/**
-	 * Test encrypt decrypt.
+	 * Test encrypt and decrypt with {@link PublicKeyEncryptor#encrypt(byte[])} and
+	 * {@link PrivateKeyDecryptor#decrypt(byte[])} loaded from der files.
 	 *
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             is thrown if any security exception occured.
 	 */
-	@Test(enabled = true)
-	public void testEncryptDecrypt() throws Exception
+	@Test
+	public void testEncryptDecryptDerFiles() throws Exception
 	{
 		final String test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
-		System.out.println("String before encryption:");
-		System.out.println(test);
+		final byte[] testBytes = test.getBytes("UTF-8");
 
 		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
 		final File publickeyDerFile = new File(publickeyDerDir, "public.der");
@@ -120,18 +112,27 @@ public class KeyEncryptDecryptorTest
 
 		final PublicKey publicKey = KeyExtensions.readPublicKey(publickeyDerFile);
 
-		final PublicKeyHexEncryptor encryptor = new PublicKeyHexEncryptor(publicKey);
+		final CryptModel<Cipher, PublicKey> encryptModel = CryptModel.<Cipher, PublicKey> builder()
+			.key(publicKey)
+			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding)
+			.operationMode(Cipher.ENCRYPT_MODE).build();
 
-		final String encrypted = encryptor.encrypt(test);
+		final CryptModel<Cipher, PrivateKey> decryptModel = CryptModel
+			.<Cipher, PrivateKey> builder().key(privateKey)
+			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding)
+			.operationMode(Cipher.DECRYPT_MODE).build();
 
-		System.out.println("String after encryption:");
-		System.out.println(encrypted);
-		final PrivateKeyHexDecryptor decryptor = new PrivateKeyHexDecryptor(privateKey);
-		final String decryted = decryptor.decrypt(encrypted);
-		System.out.println("String after decryption:");
-		System.out.println(decryted);
+		final PublicKeyEncryptor encryptor = new PublicKeyEncryptor(encryptModel);
+		final PrivateKeyDecryptor decryptor = new PrivateKeyDecryptor(decryptModel);
+
+
+		final byte[] encrypted = encryptor.encrypt(testBytes);
+
+		final byte[] decrypted = decryptor.decrypt(encrypted);
+
+		final String decryptedString = new String(decrypted, "UTF-8");
 		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
-			test.equals(decryted));
+			test.equals(decryptedString));
 	}
 
 }

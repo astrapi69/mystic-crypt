@@ -27,9 +27,12 @@ package de.alpharogroup.crypto.aes;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 
+import lombok.experimental.UtilityClass;
+
 /**
- * The Class HexDump.
+ * The class {@link HexDump} provides methods for encode and decode hex encoded byte or char arrays and {@link String} objects.
  */
+@UtilityClass
 public class HexDump
 {
 	/** A char array from the hexadecimal digits. */
@@ -52,7 +55,7 @@ public class HexDump
 	/**
 	 * Transform the given array of characters representing hexadecimal values into an array of
 	 * bytes.
-	 * 
+	 *
 	 * @param data
 	 *            the array of characters
 	 * @return A byte array that contains the binary data decoded from the given char array.
@@ -81,7 +84,7 @@ public class HexDump
 	/**
 	 * Transform the given array of bytes into an array of characters representing the hexadecimal
 	 * values of each byte in order.
-	 * 
+	 *
 	 * @param data
 	 *            the byte array
 	 * @return the resulted char array of the transformation.
@@ -94,7 +97,7 @@ public class HexDump
 	/**
 	 * Transform the given array of bytes into an array of characters representing the hexadecimal
 	 * values of each byte in order.
-	 * 
+	 *
 	 * @param data
 	 *            the byte array
 	 * @param lowerCase
@@ -110,7 +113,7 @@ public class HexDump
 	/**
 	 * Transform the given String into an array of characters representing the hexadecimal values of
 	 * each byte in order.
-	 * 
+	 *
 	 * @param data
 	 *            the byte array
 	 * @return the resulted char array of the transformation.
@@ -122,7 +125,7 @@ public class HexDump
 
 	/**
 	 * Transform the given {@code int} to a hexadecimal value.
-	 * 
+	 *
 	 * @param i
 	 *            the integer value to transform
 	 * @return the char as a hexadecimal value.

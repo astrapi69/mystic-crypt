@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.testng.AssertJUnit;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -43,7 +44,7 @@ import de.alpharogroup.BaseTestCase;
 import de.alpharogroup.test.objects.Gender;
 
 /**
- * Test class for the class RandomExtensions.
+ * Test class for the class {@link RandomExtensions}.
  *
  * @version 1.0
  * @author Asterios Raptis
@@ -71,10 +72,8 @@ public class RandomExtensionsTest extends BaseTestCase
 		super.tearDown();
 	}
 
-
 	/**
-	 * Test method for
-	 * {@link de.alpharogroup.random.RandomExtensions#getRandomEntry(java.util.List)} .
+	 * Test method for {@link RandomExtensions#getRandomEntry(java.util.List)} .
 	 */
 	@Test
 	public void testGetRandomEntryList()
@@ -95,8 +94,7 @@ public class RandomExtensionsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomExtensions#getRandomEntry(java.util.Map)}
-	 * .
+	 * Test method for {@link RandomExtensions#getRandomEntry(java.util.Map)} .
 	 */
 	@Test
 	public void testGetRandomEntryMap()
@@ -116,22 +114,61 @@ public class RandomExtensionsTest extends BaseTestCase
 		}
 	}
 
+	/**
+	 * Test method for {@link RandomExtensions#getRandomEnum(Enum)} .
+	 */
 	@Test
 	public void testGetRandomEnum()
 	{
+		final Gender enumEntry = Gender.FEMALE;
+		final Gender randomEnumEntry = RandomExtensions.getRandomEnum(enumEntry);
+
 		final Gender[] genders = Gender.values();
-		Gender randomEnumEntry = RandomExtensions.getRandomEnum(genders);
-		System.out.println(randomEnumEntry.name());
-
-		randomEnumEntry = RandomExtensions.getRandomEnum(randomEnumEntry);
-		System.out.println(randomEnumEntry.name());
-
-		randomEnumEntry = RandomExtensions.getRandomEnum(Gender.class);
-		System.out.println(randomEnumEntry.name());
+		AssertJUnit.assertTrue("Enum value should contain the random value.",
+			ArrayUtils.contains(genders, randomEnumEntry));
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomExtensions#getRandomFloat(int, int)} .
+	 * Test method for {@link RandomExtensions#getRandomEnum(Enum)} .
+	 */
+	@Test
+	public void testGetRandomEnumClass()
+	{
+		final Gender randomEnumEntry = RandomExtensions.getRandomEnum(Gender.class);
+
+		final Gender[] genders = Gender.values();
+		AssertJUnit.assertTrue("Enum value should contain the random value.",
+			ArrayUtils.contains(genders, randomEnumEntry));
+	}
+
+	/**
+	 * Test method for {@link RandomExtensions#getRandomEnum(Enum[])} .
+	 */
+	@Test
+	public void testGetRandomEnumArray()
+	{
+		final Gender[] genders = Gender.values();
+		final Gender randomEnumEntry = RandomExtensions.getRandomEnum(genders);
+		AssertJUnit.assertTrue("Enum value should contain the random value.",
+			ArrayUtils.contains(genders, randomEnumEntry));
+	}
+
+	/**
+	 * Test method for {@link RandomExtensions#getRandomEnum(String)} .
+	 */
+	@Test
+	public void testGetRandomEnumString()
+	{
+		final String enumClassName = "de.alpharogroup.test.objects.Gender";
+		final Gender randomEnumEntry = RandomExtensions.getRandomEnum(enumClassName);
+
+		final Gender[] genders = Gender.values();
+		AssertJUnit.assertTrue("Enum value should contain the random value.",
+			ArrayUtils.contains(genders, randomEnumEntry));
+	}
+
+	/**
+	 * Test method for {@link RandomExtensions#getRandomFloat(int, int)} .
 	 */
 	@Test
 	public void testGetRandomFloat()
@@ -147,7 +184,7 @@ public class RandomExtensionsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomExtensions#getRandomKey(java.util.Map)} .
+	 * Test method for {@link RandomExtensions#getRandomKey(java.util.Map)} .
 	 */
 	@Test
 	public void testGetRandomKey()
@@ -168,14 +205,16 @@ public class RandomExtensionsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomExtensions#randomBoolean()}.
+	 * Test method for {@link RandomExtensions#randomBoolean()}.
 	 */
 	@Test
 	public void testRandomBoolean()
 	{
-
 	}
 
+	/**
+	 * Test method for {@link RandomExtensions#randomByteArray(int)}.
+	 */
 	@Test
 	public void testRandomByteArray()
 	{
@@ -184,8 +223,7 @@ public class RandomExtensionsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomExtensions#randomChar(java.lang.String)}
-	 * .
+	 * Test method for {@link RandomExtensions#randomChar(java.lang.String)} .
 	 */
 	@Test
 	public void testRandomChar()
@@ -202,7 +240,7 @@ public class RandomExtensionsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomExtensions#randomInt(int)}.
+	 * Test method for {@link RandomExtensions#randomInt(int)}.
 	 */
 	@Test
 	public void testRandomInt()
@@ -216,8 +254,7 @@ public class RandomExtensionsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for
-	 * {@link de.alpharogroup.random.RandomExtensions#getRandomString(java.lang.String[])} .
+	 * Test method for {@link RandomExtensions#getRandomString(java.lang.String[])} .
 	 */
 	@Test
 	public void testRandomStringStringArray()
@@ -233,8 +270,7 @@ public class RandomExtensionsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for
-	 * {@link de.alpharogroup.random.RandomExtensions#getRandomString(java.lang.String, int)} .
+	 * Test method for {@link RandomExtensions#getRandomString(java.lang.String, int)} .
 	 */
 	@Test
 	public void testRandomStringStringInt()
@@ -251,9 +287,8 @@ public class RandomExtensionsTest extends BaseTestCase
 		}
 	}
 
-
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomExtensions#randomToken()} .
+	 * Test method for {@link RandomExtensions#randomToken()} .
 	 */
 	@Test
 	public void testRandomToken()

@@ -27,7 +27,7 @@ package de.alpharogroup.crypto.simple;
 import lombok.experimental.UtilityClass;
 
 /**
- * Utility class for the use of encrypt or decrypt information.
+ * The class {@link SimpleCrypt} is an utility class for the use of encrypt or decrypt information.
  *
  * @version 1.0
  * @author Asterios Raptis

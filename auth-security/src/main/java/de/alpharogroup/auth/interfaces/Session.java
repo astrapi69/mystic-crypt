@@ -30,12 +30,12 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * The Interface Session.
+ * The interface {@link Session}.
  *
  * @version 1.0
  *
  * @author Asterios Raptis
- * 
+ *
  * @param <K>
  *            the type of keys maintained by the attribute map
  * @param <V>
@@ -142,8 +142,24 @@ public interface Session<K, V> extends Serializable
 	 */
 	Map<K, V> getAttributtes();
 
+	/**
+	 * Gets the attributte.
+	 *
+	 * @param key
+	 *            the key
+	 * @return the attributte
+	 */
 	V getAttributte(final K key);
 
+	/**
+	 * Sets the attribute.
+	 *
+	 * @param key
+	 *            the key
+	 * @param value
+	 *            the value
+	 * @return the v
+	 */
 	V setAttribute(final K key, final V value);
 
 	/**

@@ -43,7 +43,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
-
 /**
  * The class {@link PublicKeyHexEncryptor} can encrypt characters with his public key.
  */
@@ -72,7 +71,7 @@ public class PublicKeyHexEncryptor
 	private final PublicKey publicKey;
 
 	/**
-	 * Default constructor.
+	 * Instantiates a new {@link PublicKeyHexEncryptor} with the given {@link PublicKey}.
 	 *
 	 * @param publicKey
 	 *            The public key.
@@ -103,8 +102,8 @@ public class PublicKeyHexEncryptor
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	public String encrypt(final String string) throws InvalidKeyException,
-		NoSuchAlgorithmException, NoSuchPaddingException,
+	public String encrypt(final String string)
+		throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
 		IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException, IOException
 	{
 		initialize();
@@ -128,12 +127,15 @@ public class PublicKeyHexEncryptor
 	 * @throws InvalidKeySpecException
 	 *             is thrown if generation of the SecretKey object fails.
 	 */
-	private void initialize() throws NoSuchAlgorithmException, InvalidKeySpecException, UnsupportedEncodingException, NoSuchPaddingException, InvalidKeyException
+	private void initialize() throws NoSuchAlgorithmException, InvalidKeySpecException,
+		UnsupportedEncodingException, NoSuchPaddingException, InvalidKeyException
 	{
 		if (!isInitialized())
 		{
-			cipher = Cipher.getInstance(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding.getAlgorithm());
-		    cipher.init(Cipher.ENCRYPT_MODE, this.publicKey);
+			cipher = Cipher
+				.getInstance(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding
+					.getAlgorithm());
+			cipher.init(Cipher.ENCRYPT_MODE, this.publicKey);
 		}
 	}
 

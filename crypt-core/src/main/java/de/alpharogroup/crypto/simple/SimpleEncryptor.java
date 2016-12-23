@@ -41,20 +41,19 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-
 import org.apache.commons.codec.binary.Base64;
 
 import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.interfaces.Encryptor;
+import lombok.AccessLevel;
+import lombok.Getter;
 
 /**
- * A simple Encryptor object.
+ * The class {@link SimpleEncryptor} is a simple {@link Encryptor} implementation.
  *
- * @version 1.0
  * @author Asterios Raptis
+ * @version 1.0
  */
 public class SimpleEncryptor implements Encryptor
 {
@@ -79,7 +78,7 @@ public class SimpleEncryptor implements Encryptor
 	private boolean initialized;
 
 	/**
-	 * Default constructor.
+	 * Instantiates a new {@link SimpleEncryptor} with the given private key.
 	 *
 	 * @param privateKey
 	 *            The private key.
@@ -91,33 +90,13 @@ public class SimpleEncryptor implements Encryptor
 	}
 
 	/**
-	 * Encrypt the given String.
-	 *
-	 * @param string
-	 *            The String to encrypt.
-	 * @return The encrypted String.
-	 * @throws UnsupportedEncodingException
-	 *             is thrown if get the bytes from the given String object fails.
-	 * @throws BadPaddingException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws IllegalBlockSizeException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cypher object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cypher object fails.
+	 * {@inheritDoc}
 	 */
 	@Override
-	public String encrypt(final String string) throws UnsupportedEncodingException,
-		IllegalBlockSizeException, BadPaddingException, InvalidKeyException,
-		NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
-		InvalidAlgorithmParameterException
+	public String encrypt(final String string)
+		throws UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException,
+		InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchPaddingException, InvalidAlgorithmParameterException
 	{
 		initialize();
 		final byte[] utf8 = string.getBytes(CryptConst.ENCODING);

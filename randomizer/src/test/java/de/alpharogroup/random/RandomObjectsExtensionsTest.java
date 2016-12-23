@@ -34,15 +34,27 @@ import org.testng.annotations.Test;
 
 import de.alpharogroup.BaseTestCase;
 
+/**
+ * Test class for the class {@link RandomObjectsExtensions}.
+ *
+ * @version 1.0
+ * @author Asterios Raptis
+ */
 public class RandomObjectsExtensionsTest extends BaseTestCase
 {
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	@BeforeMethod
 	public void setUp() throws Exception
 	{
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	@AfterMethod
 	public void tearDown() throws Exception
@@ -50,10 +62,10 @@ public class RandomObjectsExtensionsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomObjectsUtils#newRandomName(char[])} .
+	 * Test method for {@link RandomObjectsUtils#newRandomName(char[])} .
 	 */
 	@Test
-	public void testCreatedRandomName()
+	public void testNewRandomName()
 	{
 		final CharBuffer charBuffer = CharBuffer.allocate(Constants.LCCHARSWN.length());
 		charBuffer.put(Constants.LCCHARSWN);
@@ -67,22 +79,20 @@ public class RandomObjectsExtensionsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomObjectsExtensions#newRandomId()}.
+	 * Test method for {@link RandomObjectsExtensions#newRandomId()}.
 	 */
 	@Test
-	public void testCreateRandomId()
+	public void testNewRandomId()
 	{
 		for (int i = 0; i < 1000; i++)
 		{
 			System.out.println(RandomObjectsExtensions.newRandomId());
 		}
-
 	}
-
 
 	/**
 	 * Test method for
-	 * {@link de.alpharogroup.random.RandomObjectsExtensions#getInfomailFromWebsite(java.lang.String)} .
+	 * {@link RandomObjectsExtensions#getInfomailFromWebsite(java.lang.String)} .
 	 */
 	@Test
 	public void testGetInfomailFromWebsite()
@@ -102,9 +112,8 @@ public class RandomObjectsExtensionsTest extends BaseTestCase
 		}
 	}
 
-
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomObjectsExtensions#getRandomEmail()}.
+	 * Test method for {@link RandomObjectsExtensions#getRandomEmail()}.
 	 */
 	@Test
 	public void testGetRandomEmail()
@@ -120,8 +129,7 @@ public class RandomObjectsExtensionsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for
-	 * {@link de.alpharogroup.random.RandomObjectsExtensions#getRandomFaxnumber(java.lang.String)} .
+	 * Test method for {@link RandomObjectsExtensions#getRandomFaxnumber(java.lang.String)}.
 	 */
 	@Test
 	public void testGetRandomFaxnumber()
@@ -137,9 +145,8 @@ public class RandomObjectsExtensionsTest extends BaseTestCase
 		}
 	}
 
-
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomObjectsExtensions#getRandomMobilnumber()}.
+	 * Test method for {@link RandomObjectsExtensions#getRandomMobilnumber()}.
 	 */
 	@Test
 	public void testGetRandomMobilnumber()
@@ -154,6 +161,9 @@ public class RandomObjectsExtensionsTest extends BaseTestCase
 		}
 	}
 
+	/**
+	 * Test method for {@link RandomObjectsExtensions#getRandomPassword(int)}.
+	 */
 	@Test
 	public void testGetRandomPassword()
 	{
@@ -170,7 +180,7 @@ public class RandomObjectsExtensionsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomObjectsExtensions#getRandomPhonenumber()}.
+	 * Test method for {@link RandomObjectsExtensions#getRandomPhonenumber()}.
 	 */
 	@Test
 	public void testGetRandomPhonenumber()
@@ -186,7 +196,7 @@ public class RandomObjectsExtensionsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.RandomObjectsExtensions#getRandomWebsite()}.
+	 * Test method for {@link RandomObjectsExtensions#getRandomWebsite()}.
 	 */
 	@Test
 	public void testGetRandomWebsite()

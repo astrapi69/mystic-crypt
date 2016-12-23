@@ -38,16 +38,24 @@ import de.alpharogroup.crypto.processors.wordlist.WordlistsProcessor;
 import de.alpharogroup.file.read.ReadFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
+/**
+ * Test class for {@link WordlistsProcessor}.
+ */
 public class WordlistProcessorTest
 {
 
+	/**
+	 * Test method for test the class {@link WordlistsProcessor}.
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	@Test
 	public void test() throws IOException
 	{
 		final File wordlistDir = new File(PathFinder.getSrcTestResourcesDir(), "wordlists");
 		final File wordlist_1 = new File(wordlistDir, "default-pw.txt");
 		final File wordlist_2 = new File(wordlistDir, "firstnames.txt");
-		final File wordlist_3 = new File(wordlistDir, "surnames.txt");		
+		final File wordlist_3 = new File(wordlistDir, "surnames.txt");
 		final File wordlist_4 = new File(wordlistDir, "top25pw.txt");
 		final List<String> lines1 = ReadFileExtensions.readLinesInList(wordlist_1);
 		final List<String> lines2 = ReadFileExtensions.readLinesInList(wordlist_2);
@@ -56,17 +64,16 @@ public class WordlistProcessorTest
 		final Set<String> set = new TreeSet<>();
 		set.addAll(lines1);
 		set.addAll(lines2);
-		set.addAll(lines3);		
+		set.addAll(lines3);
 		set.addAll(lines4);
 
 		final String password = "hash";
 
-		final WordlistsProcessor processor = new WordlistsProcessor(new ArrayList<String>(set),
+		final WordlistsProcessor processor = new WordlistsProcessor(new ArrayList<>(set),
 			password);
 		final long start = System.currentTimeMillis();
 		final boolean found = processor.process();
 		final long end = System.currentTimeMillis();
-
 
 		System.out.println("Started wordlist attack for the password: " + new Date(start));
 		System.out.println("Ended of the wordlist attack for the password: " + new Date(end));

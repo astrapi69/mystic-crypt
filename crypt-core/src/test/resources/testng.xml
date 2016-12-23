@@ -3,13 +3,22 @@
 <suite name="Suite">
   <test name="Test">
     <classes>
+		<class name="de.alpharogroup.crypto.aes.ChainedEncryptDecryptorTest"/>
+		<class name="de.alpharogroup.crypto.aes.HexDumpTest"/>
 		<class name="de.alpharogroup.crypto.aes.HexEncryptDecryptorTest"/>
-		<class name="de.alpharogroup.crypto.BruteForceProcessorTest"/>
+		<class name="de.alpharogroup.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithmTest"/>
+		<class name="de.alpharogroup.crypto.algorithm.MacAlgorithmTest"/>
+		<class name="de.alpharogroup.crypto.io.CryptoStreamTest"/>
 		<class name="de.alpharogroup.crypto.key.KeyEncryptDecryptorTest"/>
 		<class name="de.alpharogroup.crypto.key.KeyExtensionsTest"/>
+		<class name="de.alpharogroup.crypto.key.KeyHexEncryptDecryptorTest"/>
+		<class name="de.alpharogroup.crypto.keyrules.SimpleKeyRuleTest"/>
 		<class name="de.alpharogroup.crypto.sha.HasherTest"/>
+		<class name="de.alpharogroup.crypto.simple.SimpleEnDecryptorTest"/>
+		<class name="de.alpharogroup.crypto.BruteForceProcessorTest"/>
+		<class name="de.alpharogroup.crypto.CryptConstTest"/>
 		<class name="de.alpharogroup.crypto.SimpleCryptTest"/>
-		<class name="de.alpharogroup.crypto.io.CryptoStreamTest"/>
+		<class name="de.alpharogroup.crypto.WordlistProcessorTest"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->

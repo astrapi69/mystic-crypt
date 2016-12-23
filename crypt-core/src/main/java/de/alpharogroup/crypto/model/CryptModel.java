@@ -36,10 +36,12 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * The class {@link CryptModel}.
+ * The class {@link CryptModel} holds data for the encryption or decryption process.
  *
- * @param <C> the generic type of the cipher
- * @param <K> the generic type of the key
+ * @param <C>
+ *            the generic type of the cipher
+ * @param <K>
+ *            the generic type of the key
  */
 @Getter
 @Setter
@@ -62,6 +64,9 @@ public class CryptModel<C, K> implements Serializable
 
 	/** The algorithm. */
 	private Algorithm algorithm;
+
+	/** The operation mode that indicates if an encryption or decryption process will start. */
+	private int operationMode;
 
 	/**
 	 * The flag initialized that indicates if the cipher is initialized.

@@ -30,4 +30,6 @@ package de.alpharogroup.crypto.interfaces;
  * @version 1.0
  * @author Asterios Raptis
  */
-public interface ByteArrayEncryptor extends GenericEncryptor<byte[], byte[]>{}
+public interface ByteArrayEncryptor extends GenericEncryptor<byte[], byte[]>
+{
+}

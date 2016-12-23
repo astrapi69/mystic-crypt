@@ -32,19 +32,23 @@ import java.util.List;
 import java.util.Map;
 
 import de.alpharogroup.random.date.RandomDateExtensions;
+import lombok.experimental.UtilityClass;
 
 /**
- * The Class DataGenerator.
+ * The class {@link DataGenerator} can generate several random data of different data types. It
+ * delegates to other random generator classes.
  */
+@UtilityClass
 public final class DataGenerator
 {
 
 	/**
-	 * Date after.
+	 * Creates a random Date that is after from the given Date.
 	 *
 	 * @param date
-	 *            the date
-	 * @return the date
+	 *            The Date from where to compute the future date.
+	 *
+	 * @return The random Date in the future.
 	 */
 	public static Date dateAfter(final Date date)
 	{
@@ -52,13 +56,14 @@ public final class DataGenerator
 	}
 
 	/**
-	 * Date after.
+	 * Creates a random Date that is after from the given Date.
 	 *
 	 * @param date
-	 *            the date
+	 *            The Date from where to compute the future date.
 	 * @param range
-	 *            the range
-	 * @return the date
+	 *            The range.
+	 *
+	 * @return The random Date in the future.
 	 */
 	public static Date dateAfter(final Date date, final int range)
 	{
@@ -66,25 +71,28 @@ public final class DataGenerator
 	}
 
 	/**
-	 * Date before.
+	 * Creates a random date that is before from the given date.
 	 *
 	 * @param date
-	 *            the date
-	 * @return the date
+	 *            The date from where to compute the Past date.
+	 *
+	 * @return The random Date in the past.
 	 */
 	public static Date dateBefore(final Date date)
 	{
 		return RandomDateExtensions.dateBefore(date);
 	}
 
+
 	/**
-	 * Date before.
+	 * Creates a random date that is before from the given date.
 	 *
 	 * @param date
-	 *            the date
+	 *            The date from where to compute the past date.
 	 * @param range
-	 *            the range
-	 * @return the date
+	 *            The range.
+	 *
+	 * @return The random Date in the past.
 	 */
 	public static Date dateBefore(final Date date, final int range)
 	{
@@ -92,13 +100,13 @@ public final class DataGenerator
 	}
 
 	/**
-	 * Gets the random big decimal.
+	 * The Method getRandomBigDecimal(int,int) gets an random BigDecimal.
 	 *
 	 * @param afterComma
-	 *            the after comma
+	 *            How many decimal places after the comma.
 	 * @param beforeComma
-	 *            the before comma
-	 * @return the random big decimal
+	 *            How many decimal places before the comma.
+	 * @return The produced BigDecimal.
 	 */
 	public static BigDecimal getRandomBigDecimal(final int afterComma, final int beforeComma)
 	{
@@ -624,13 +632,5 @@ public final class DataGenerator
 	{
 		return RandomExtensions.randomIntBetween(start, end);
 	}
-
-	/**
-	 * Private constructor.
-	 */
-	private DataGenerator()
-	{
-	}
-
 
 }

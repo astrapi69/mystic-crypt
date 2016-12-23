@@ -22,34 +22,40 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.simple;
+package de.alpharogroup.crypto.key;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
-import de.alpharogroup.crypto.core.BaseCryptor;
-import de.alpharogroup.crypto.interfaces.IntegerEncryptor;
+import de.alpharogroup.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
+import de.alpharogroup.crypto.core.AbstractCryptor;
+import de.alpharogroup.crypto.factories.CipherFactory;
+import de.alpharogroup.crypto.interfaces.ByteArrayEncryptor;
+import de.alpharogroup.crypto.model.CryptModel;
 
 /**
- * The class {@link SimpleBaseEncryptor}.
+ * The class {@link PublicKeyEncryptor} can encrypt a byte array with his public key.
  */
-public class SimpleBaseEncryptor extends BaseCryptor implements IntegerEncryptor
+public class PublicKeyEncryptor extends AbstractCryptor<Cipher, PublicKey>
+	implements
+		ByteArrayEncryptor
 {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Instantiates a new {@link SimpleBaseEncryptor} with the given private key.
+	 * Instantiates a new {@link PublicKeyEncryptor} with the given {@link CryptModel}.
 	 *
-	 * @param privateKey
-	 *            The private key.
+	 * @param model
+	 *            The crypt model.
 	 * @throws InvalidAlgorithmParameterException
 	 *             is thrown if initialization of the cypher object fails.
 	 * @throws NoSuchPaddingException
@@ -65,23 +71,44 @@ public class SimpleBaseEncryptor extends BaseCryptor implements IntegerEncryptor
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public SimpleBaseEncryptor(final String privateKey)
+	public PublicKeyEncryptor(final CryptModel<Cipher, PublicKey> model)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		super(privateKey);
+		super(model);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Integer encrypt(final Integer toEncrypt) throws Exception
+	public byte[] encrypt(final byte[] toEncrypt) throws Exception
 	{
-		final byte[] buf = new byte[1];
-		buf[0] = (byte)(toEncrypt.intValue());
-		final byte[] utf8 = getModel().getCipher().doFinal(buf);
-		return (int)utf8[0];
+		final byte[] encrypted = getModel().getCipher().doFinal(toEncrypt);
+		return encrypted;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected String newAlgorithm()
+	{
+		return KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding.getAlgorithm();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected Cipher newCipher(final PublicKey key, final String algorithm, final byte[] salt,
+		final int iterationCount, final int operationMode)
+		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
+		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+	{
+		final Cipher cipher = CipherFactory.newCipher(algorithm);
+		cipher.init(operationMode, key);
+		return cipher;
 	}
 
 	/**
@@ -90,7 +117,8 @@ public class SimpleBaseEncryptor extends BaseCryptor implements IntegerEncryptor
 	@Override
 	protected final int newOperationMode()
 	{
-		return Cipher.ENCRYPT_MODE;
+		getModel().setOperationMode(Cipher.ENCRYPT_MODE);
+		return getModel().getOperationMode();
 	}
 
 }

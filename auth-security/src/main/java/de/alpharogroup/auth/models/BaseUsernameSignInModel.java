@@ -32,7 +32,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * The Class BaseUsernameSignInModel is an implementation from the interface UsernameSignInModel.
+ * The class {@link BaseUsernameSignInModel} is an implementation from the interface
+ * {@link UsernameSignInModel}.
  */
 @Getter
 @Setter

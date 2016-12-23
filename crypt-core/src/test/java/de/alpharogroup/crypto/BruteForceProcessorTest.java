@@ -24,7 +24,6 @@
  */
 package de.alpharogroup.crypto;
 
-
 import java.io.IOException;
 import java.sql.Date;
 import java.util.Set;
@@ -35,13 +34,20 @@ import org.testng.annotations.Test;
 import de.alpharogroup.crypto.processors.bruteforce.BruteForceProcessor;
 import de.alpharogroup.lang.PackageExtensions;
 
+/**
+ * Test class for {@link BruteForceProcessor}.
+ */
 public class BruteForceProcessorTest
 {
 
+	/**
+	 * Test method for test the class {@link BruteForceProcessor}.
+	 *
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	@Test
 	public void test() throws IOException
 	{
-
 
 		final Set<String> list = PackageExtensions.scanClassNames("de.alpharogroup", true, true);
 		for (final String string : list)
@@ -51,7 +57,6 @@ public class BruteForceProcessorTest
 				System.out.println("<class name=\"" + string + "\"/>");
 			}
 		}
-
 
 		String password;
 		char[] possibleCharacters;

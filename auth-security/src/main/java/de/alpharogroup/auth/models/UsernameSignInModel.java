@@ -25,21 +25,21 @@
 package de.alpharogroup.auth.models;
 
 /**
- * The Interface UsernameSignInModel extended with the user name.
+ * The interface {@link UsernameSignInModel} extended with the user name.
  */
 public interface UsernameSignInModel extends SignInModel
 {
 
 	/**
 	 * Gets the username.
-	 * 
+	 *
 	 * @return the username
 	 */
 	String getUsername();
 
 	/**
 	 * Sets the username.
-	 * 
+	 *
 	 * @param username
 	 *            the new username
 	 */

@@ -24,7 +24,6 @@
  */
 package de.alpharogroup.crypto.core;
 
-import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -43,13 +42,13 @@ import de.alpharogroup.crypto.factories.KeySpecFactory;
 import de.alpharogroup.crypto.model.CryptModel;
 
 /**
- * A base cryptor implementation.
+ * The abstract class {@link BaseCryptor} provides a base implementation for some methods of the
+ * {@link AbstractCryptor}.
  *
  * @author Asterios Raptis
  * @version 1.0
  */
 public abstract class BaseCryptor extends AbstractCryptor<Cipher, String>
-implements Serializable
 {
 
 	/** The Constant serialVersionUID. */
@@ -177,7 +176,6 @@ implements Serializable
 	 * @throws InvalidAlgorithmParameterException
 	 *             is thrown if initialization of the cypher object fails.
 	 */
-	@Override
 	protected Cipher newCipher(final int operationMode, final SecretKey key,
 		final AlgorithmParameterSpec paramSpec, final String alg) throws NoSuchAlgorithmException,
 		NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException
@@ -190,12 +188,14 @@ implements Serializable
 	 * invoked in the constructor from the derived classes and can be overridden so users can
 	 * provide their own version of a new {@link KeySpec} from the given private key.
 	 *
-	 * @param privateKey            the private key
-	 * @param salt the salt
-	 * @param iterationCount the iteration count
+	 * @param privateKey
+	 *            the private key
+	 * @param salt
+	 *            the salt
+	 * @param iterationCount
+	 *            the iteration count
 	 * @return the new {@link KeySpec} from the given private key.
 	 */
-	@Override
 	protected KeySpec newKeySpec(final String privateKey, final byte[] salt,
 		final int iterationCount)
 	{

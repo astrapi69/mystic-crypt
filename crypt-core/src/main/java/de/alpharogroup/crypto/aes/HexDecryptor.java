@@ -40,7 +40,8 @@ import de.alpharogroup.crypto.algorithm.Algorithm;
 import de.alpharogroup.crypto.core.BaseDecryptor;
 
 /**
- * The class {@link HexDecryptor}.
+ * The class {@link HexDecryptor} is the pendant class of {@link HexEncryptor} and decrypts given
+ * String objects that was encrypted with {@link HexEncryptor}. For an example see the unit test.
  */
 public class HexDecryptor extends BaseDecryptor
 {
@@ -123,7 +124,7 @@ public class HexDecryptor extends BaseDecryptor
 	{
 		final SecretKeySpec skeySpec = new SecretKeySpec(privateKey.getBytes("UTF-8"),
 			getModel().getAlgorithm().getAlgorithm());
-		final  Cipher cipher = Cipher.getInstance(getModel().getAlgorithm().getAlgorithm());
+		final Cipher cipher = Cipher.getInstance(getModel().getAlgorithm().getAlgorithm());
 		cipher.init(Cipher.DECRYPT_MODE, skeySpec);
 		return cipher;
 	}
@@ -131,6 +132,7 @@ public class HexDecryptor extends BaseDecryptor
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String decrypt(final String encypted) throws Exception
 	{
 		final byte[] dec = HexDump.decodeHex(encypted.toCharArray());

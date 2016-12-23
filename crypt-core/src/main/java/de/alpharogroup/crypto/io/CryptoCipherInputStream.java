@@ -30,25 +30,33 @@ import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 
 /**
- * The Class CryptoInputStream.
- *
- * @version 1.0
- *
- * @author Asterios Raptis
- *
+ * The class {@link CryptoCipherInputStream} extends the {@link CipherInputStream}.
  */
 public class CryptoCipherInputStream extends CipherInputStream
 {
 
-
-	public CryptoCipherInputStream(final InputStream is, final Cipher c)
+	/**
+	 * Instantiates a new {@link CryptoCipherInputStream} object.
+	 *
+	 * @param inputStream
+	 *            the input stream
+	 * @param cipher
+	 *            the cipher
+	 */
+	public CryptoCipherInputStream(final InputStream inputStream, final Cipher cipher)
 	{
-		super(is, c);
+		super(inputStream, cipher);
 	}
 
-	public CryptoCipherInputStream(final InputStream is)
+	/**
+	 * Instantiates a new {@link CryptoCipherInputStream} object.
+	 *
+	 * @param inputStream
+	 *            the input stream
+	 */
+	public CryptoCipherInputStream(final InputStream inputStream)
 	{
-		super(is);
+		super(inputStream);
 	}
 
 }

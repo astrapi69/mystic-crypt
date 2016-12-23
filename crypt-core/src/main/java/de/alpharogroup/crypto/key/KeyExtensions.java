@@ -46,10 +46,13 @@ import org.bouncycastle.util.io.pem.PemReader;
 
 import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
 import de.alpharogroup.crypto.provider.SecurityProvider;
+import lombok.experimental.UtilityClass;
 
 /**
- * The class {@link KeyExtensions}.
+ * The class {@link KeyExtensions} holds utility methods for read public and private keys from
+ * files.
  */
+@UtilityClass
 public class KeyExtensions
 {
 
@@ -73,7 +76,6 @@ public class KeyExtensions
 
 	/** The Constant BEGIN_RSA_PRIVATE_KEY_PREFIX. */
 	public static final String BEGIN_RSA_PRIVATE_KEY_PREFIX = "-----BEGIN RSA PRIVATE KEY-----\n";
-
 
 	/**
 	 * Gets the pem object.
@@ -171,7 +173,6 @@ public class KeyExtensions
 		return publicKey;
 	}
 
-
 	/**
 	 * Read private key.
 	 *
@@ -224,10 +225,13 @@ public class KeyExtensions
 	/**
 	 * Read pem private key.
 	 *
-	 * @param file            the file
-	 * @param securityProvider the security provider
+	 * @param file
+	 *            the file
+	 * @param securityProvider
+	 *            the security provider
 	 * @return the private key
-	 * @throws Exception             is thrown if if a security error occur
+	 * @throws Exception
+	 *             is thrown if if a security error occur
 	 */
 	public static PrivateKey readPemPrivateKey(final File file,
 		final SecurityProvider securityProvider) throws Exception
@@ -243,7 +247,6 @@ public class KeyExtensions
 
 		return readPrivateKey(decoded, securityProvider);
 	}
-
 
 	/**
 	 * Read private key.
@@ -293,7 +296,6 @@ public class KeyExtensions
 		return readPublicKey(decoded, securityProvider);
 	}
 
-
 	/**
 	 * reads a public key from a file.
 	 *
@@ -315,7 +317,5 @@ public class KeyExtensions
 
 		return readPublicKey(decoded, "BC");
 	}
-
-
 
 }
