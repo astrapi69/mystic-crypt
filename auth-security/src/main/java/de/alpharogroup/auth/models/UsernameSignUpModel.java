@@ -25,7 +25,7 @@
 package de.alpharogroup.auth.models;
 
 /**
- * The Interface UsernameSignUpModel extended with the user name.
+ * The interface {@link UsernameSignUpModel} extended with the user name.
  */
 public interface UsernameSignUpModel extends SimpleSignUpModel, UsernameSignInModel
 {

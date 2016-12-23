@@ -29,9 +29,8 @@ import java.io.OutputStream;
 import javax.crypto.Cipher;
 import javax.crypto.CipherOutputStream;
 
-
 /**
- * The class {@link CryptoCipherOutputStream}.
+ * The class {@link CryptoCipherOutputStream} extends the {@link CipherOutputStream}.
  */
 public class CryptoCipherOutputStream extends CipherOutputStream
 {
@@ -39,22 +38,25 @@ public class CryptoCipherOutputStream extends CipherOutputStream
 	/**
 	 * Instantiates a new {@link CryptoCipherOutputStream}.
 	 *
-	 * @param is the is
-	 * @param c the c
+	 * @param outputStream
+	 *            the output stream
+	 * @param cipher
+	 *            the cipher
 	 */
-	public CryptoCipherOutputStream(final OutputStream is, final Cipher c)
+	public CryptoCipherOutputStream(final OutputStream outputStream, final Cipher cipher)
 	{
-		super(is, c);
+		super(outputStream, cipher);
 	}
 
 	/**
 	 * Instantiates a new {@link CryptoCipherOutputStream}.
 	 *
-	 * @param is the is
+	 * @param outputStream
+	 *            the output stream
 	 */
-	public CryptoCipherOutputStream(final OutputStream is)
+	public CryptoCipherOutputStream(final OutputStream outputStream)
 	{
-		super(is);
+		super(outputStream);
 	}
 
 }

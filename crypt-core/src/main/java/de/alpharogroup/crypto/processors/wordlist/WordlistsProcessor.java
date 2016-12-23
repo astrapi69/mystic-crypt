@@ -26,29 +26,52 @@ package de.alpharogroup.crypto.processors.wordlist;
 
 import java.util.List;
 
+import de.alpharogroup.check.Check;
 import lombok.Getter;
 import lombok.Setter;
-import de.alpharogroup.check.Check;
 
+/**
+ * The class {@link WordlistsProcessor} can process a list of words. For an example see the unit
+ * test.
+ */
 public class WordlistsProcessor
 {
+
+	/** The word list. */
 	private final List<String> words;
+
+	/** The current index. */
 	private int currentIndex;
+
 	/** The password to check against it. */
 	@Getter
 	@Setter
 	private String toCheckAgainst;
 
+	/**
+	 * Instantiates a new {@link WordlistsProcessor} object.
+	 *
+	 * @param words
+	 *            the word list
+	 */
 	public WordlistsProcessor(final List<String> words)
 	{
 		this.words = words;
 		this.currentIndex = 0;
 	}
 
+	/**
+	 * Instantiates a new wordlists processor.
+	 *
+	 * @param words
+	 *            the words
+	 * @param toCheckAgainst
+	 *            the to check against
+	 */
 	public WordlistsProcessor(final List<String> words, final String toCheckAgainst)
 	{
-		Check.get().notNull(toCheckAgainst, "toCheckAgainst")
-			.notEmpty(toCheckAgainst, "toCheckAgainst");
+		Check.get().notNull(toCheckAgainst, "toCheckAgainst").notEmpty(toCheckAgainst,
+			"toCheckAgainst");
 		this.words = words;
 		this.currentIndex = 0;
 		this.toCheckAgainst = toCheckAgainst;
@@ -85,6 +108,11 @@ public class WordlistsProcessor
 		return true;
 	}
 
+	/**
+	 * Processes the word list.
+	 *
+	 * @return true, if successful
+	 */
 	public boolean process()
 	{
 		boolean continueIterate = true;

@@ -34,14 +34,16 @@ import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
 import de.alpharogroup.crypto.interfaces.GenericDecryptor;
+import de.alpharogroup.crypto.model.CryptModel;
 
 /**
- * A base decryptor implementation.
+ * The abstract class {@link BaseDecryptor} is a base implementation of the
+ * {@link GenericDecryptor}.
  *
  * @author Asterios Raptis
  * @version 1.0
  */
-public abstract class BaseDecryptor<T, R> extends AbstractCryptor implements GenericDecryptor<T, R>
+public abstract class BaseDecryptor extends BaseCryptor implements GenericDecryptor<String, String>
 {
 
 	/** The Constant serialVersionUID. */
@@ -70,6 +72,33 @@ public abstract class BaseDecryptor<T, R> extends AbstractCryptor implements Gen
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
 		super(privateKey);
+	}
+
+	/**
+	 * Constructor with the given {@link CryptModel}.
+	 *
+	 * @param model
+	 *            The crypt model.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported.
+	 */
+	public BaseDecryptor(final CryptModel<Cipher, String> model)
+		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+	{
+		super(model);
 	}
 
 	/**

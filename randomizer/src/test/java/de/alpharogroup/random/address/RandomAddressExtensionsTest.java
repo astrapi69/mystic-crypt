@@ -27,14 +27,20 @@
  */
 package de.alpharogroup.random.address;
 
+import java.io.IOException;
+import java.util.Properties;
+
+import org.testng.AssertJUnit;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.BaseTestCase;
+import de.alpharogroup.resourcebundle.properties.PropertiesExtensions;
+import de.alpharogroup.string.StringExtensions;
 
 /**
- * Test class for the class RandomAddressExtensions.
+ * Test class for the class {@link RandomAddressExtensions}.
  *
  * @version 1.0
  * @author Asterios Raptis
@@ -64,62 +70,64 @@ public class RandomAddressExtensionsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for
-	 * {@link de.alpharogroup.random.address.RandomAddressExtensions#getRandomStreet(java.util.Properties)}
-	 * .
+	 * Test method for {@link RandomAddressExtensions#getRandomStreet(java.util.Properties)} .
+	 *
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	@Test
-	public void testGetRandomStreet()
+	public void testGetRandomStreet() throws IOException
 	{
-		// final Properties germanstreets = ResourceUtils
-		// .loadProperties( RandomAddressExtensions.PROP_FILE_STREETS );
-		// final String germanStreet = RandomAddressExtensions
-		// .getRandomStreet( germanstreets );
-		// this.result = germanStreet != null;
-		// assertTrue( "", this.result );
-		//
-		// this.result = germanstreets.contains( germanStreet );
-		// assertTrue( "", this.result );
+		final Properties germanstreets = PropertiesExtensions
+			.loadProperties(RandomAddressExtensions.PROP_FILE_STREETS);
+		final String germanStreet = RandomAddressExtensions.getRandomStreet(germanstreets);
+		this.result = germanStreet != null;
+		AssertJUnit.assertTrue("", this.result);
+
+		this.result = germanstreets.contains(germanStreet);
+		AssertJUnit.assertTrue("", this.result);
 	}
 
 	/**
 	 * Test method for
-	 * {@link de.alpharogroup.random.address.RandomAddressExtensions#getRandomStreetWithNumber(java.util.Properties)}
-	 * .
+	 * {@link RandomAddressExtensions#getRandomStreetWithNumber(java.util.Properties)} .
+	 *
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	@Test
-	public void testGetRandomStreetWithNumber()
+	public void testGetRandomStreetWithNumber() throws IOException
 	{
-		// final Properties germanstreets = ResourceUtils
-		// .loadProperties( RandomAddressExtensions.PROP_FILE_STREETS );
-		// final String germanStreetWithNumber = RandomAddressExtensions
-		// .getRandomStreetWithNumber( germanstreets );
-		// this.result = germanStreetWithNumber != null;
-		// assertTrue( "", this.result );
-		// final String lastChar = germanStreetWithNumber.substring(
-		// germanStreetWithNumber.length() - 1, germanStreetWithNumber
-		// .length() );
-		// this.result = StringUtils.isNumber( lastChar );
-		// assertTrue( "", this.result );
+		final Properties germanstreets = PropertiesExtensions
+			.loadProperties(RandomAddressExtensions.PROP_FILE_STREETS);
+		final String germanStreetWithNumber = RandomAddressExtensions
+			.getRandomStreetWithNumber(germanstreets);
+		this.result = germanStreetWithNumber != null;
+		AssertJUnit.assertTrue("", this.result);
+		final String lastChar = germanStreetWithNumber
+			.substring(germanStreetWithNumber.length() - 1, germanStreetWithNumber.length());
+		this.result = StringExtensions.isNumber(lastChar);
+		AssertJUnit.assertTrue("", this.result);
 	}
 
 	/**
-	 * Test method for
-	 * {@link de.alpharogroup.random.address.RandomAddressExtensions#getRandomZip(java.util.Properties)}
-	 * .
+	 * Test method for {@link RandomAddressExtensions#getRandomZip(java.util.Properties)} .
+	 *
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	@Test
-	public void testGetRandomZip()
+	public void testGetRandomZip() throws IOException
 	{
-		// final Properties germanzips = ResourceUtils
-		// .loadProperties( RandomAddressExtensions.PROP_FILE_ZIP_CITIES );
-		//
-		// final String randomZip = RandomAddressExtensions.getRandomZip( germanzips );
-		// this.result = randomZip != null;
-		// assertTrue( "", this.result );
-		//
-		// this.result = StringUtils.isNumber( randomZip );
-		// assertTrue( "", this.result );
+		final Properties germanzips = PropertiesExtensions
+			.loadProperties(RandomAddressExtensions.PROP_FILE_ZIP_CITIES);
+
+		final String randomZip = RandomAddressExtensions.getRandomZip(germanzips);
+		this.result = randomZip != null;
+		AssertJUnit.assertTrue("", this.result);
+
+		this.result = StringExtensions.isNumber(randomZip);
+		AssertJUnit.assertTrue("", this.result);
 	}
 
 }

@@ -27,7 +27,8 @@ package de.alpharogroup.auth.models;
 /**
  * The Enum {@link AuthenticationErrors}.
  */
-public enum AuthenticationErrors {
+public enum AuthenticationErrors
+{
 
 	/**
 	 * This constant indicates that the given email or username does not exist.

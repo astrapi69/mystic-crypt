@@ -27,7 +27,7 @@ package de.alpharogroup.auth.interfaces;
 import java.io.Serializable;
 
 /**
- * The Interface SessionContext.
+ * The interface {@link SessionContext}.
  *
  * @version 1.0
  *

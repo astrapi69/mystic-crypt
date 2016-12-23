@@ -30,10 +30,15 @@ import java.util.Map;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
-
+/**
+ * Test class for {@link SimpleKeyRule}
+ */
 public class SimpleKeyRuleTest
 {
 
+	/**
+	 * Test method for testing the {@link Obfuscator} class with rules.
+	 */
 	@Test
 	public void test()
 	{
@@ -55,28 +60,28 @@ public class SimpleKeyRuleTest
 		final String disentangledKey = obfuscator.disentangle();
 		AssertJUnit.assertEquals(toObfuscatedString, disentangledKey);
 
-		 final Map<String, String> charmap = new HashMap<>();
+		final Map<String, String> charmap = new HashMap<>();
 
-		 charmap.put("1", "O");
-		 charmap.put("2", "Tw");
-		 charmap.put("3", "Th");
-		 charmap.put("4", "Fo");
-		 charmap.put("5", "Fi");
-		 charmap.put("6", "Si");
-		 charmap.put("7", "Se");
-		 charmap.put("8", "E");
-		 charmap.put("9", "N");
+		charmap.put("1", "O");
+		charmap.put("2", "Tw");
+		charmap.put("3", "Th");
+		charmap.put("4", "Fo");
+		charmap.put("5", "Fi");
+		charmap.put("6", "Si");
+		charmap.put("7", "Se");
+		charmap.put("8", "E");
+		charmap.put("9", "N");
 
-		 final SimpleKeyRule charreplaceRule = new SimpleKeyRule(charmap);
-		 toObfuscatedString = "854917632";
-		 obfuscator = new Obfuscator(charreplaceRule, toObfuscatedString);
-		 actual = obfuscator.obfuscate();
-		 expected = "EFiFoNOSeSiThTw";
-		 AssertJUnit.assertEquals(expected, actual);
+		final SimpleKeyRule charreplaceRule = new SimpleKeyRule(charmap);
+		toObfuscatedString = "854917632";
+		obfuscator = new Obfuscator(charreplaceRule, toObfuscatedString);
+		actual = obfuscator.obfuscate();
+		expected = "EFiFoNOSeSiThTw";
+		AssertJUnit.assertEquals(expected, actual);
 
-		 actual = obfuscator.disentangle();
-		 expected = toObfuscatedString;
-		 AssertJUnit.assertEquals(expected, actual);
+		actual = obfuscator.disentangle();
+		expected = toObfuscatedString;
+		AssertJUnit.assertEquals(expected, actual);
 
 	}
 

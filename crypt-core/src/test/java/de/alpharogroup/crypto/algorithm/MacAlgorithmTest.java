@@ -27,18 +27,24 @@ package de.alpharogroup.crypto.algorithm;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
+/**
+ * Test class for enum {@link MacAlgorithm}.
+ */
 public class MacAlgorithmTest
 {
 
+	/**
+	 * Test method for {@link MacAlgorithm#getAlgorithm()}.
+	 */
 	@Test
 	public void test()
 	{
 		String expected = "HmacMD5";
-		String actual = MacAlgorithm.HmacMD5.name();
+		String actual = MacAlgorithm.HmacMD5.getAlgorithm();
 		AssertJUnit.assertEquals(expected, actual);
 
 		expected = "PBEWithHmacMD5";
-		actual = MacAlgorithm.PBEWithHmacMD5.name();
+		actual = MacAlgorithm.PBEWithHmacMD5.getAlgorithm();
 		AssertJUnit.assertEquals(expected, actual);
 
 	}

@@ -36,12 +36,13 @@ import javax.crypto.NoSuchPaddingException;
 import de.alpharogroup.crypto.interfaces.GenericEncryptor;
 
 /**
- * A base encryptor implementation.
+ * The abstract class {@link BaseEncryptor} is a base implementation of the
+ * {@link GenericEncryptor}.
  *
  * @version 1.0
  * @author Asterios Raptis
  */
-public abstract class BaseEncryptor<T, R> extends AbstractCryptor implements GenericEncryptor<T, R>
+public abstract class BaseEncryptor extends BaseCryptor implements GenericEncryptor<String, String>
 {
 
 	/** The Constant serialVersionUID. */

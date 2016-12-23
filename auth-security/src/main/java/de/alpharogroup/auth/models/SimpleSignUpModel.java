@@ -25,22 +25,22 @@
 package de.alpharogroup.auth.models;
 
 /**
- * The Interface SimpleSignUpModel extends the SignInModel and adds the repeat pw of the member and
- * the term of use flag.
+ * The interface {@link SimpleSignUpModel} extends the {@link SignInModel} and adds the repeat
+ * password of the member and the term of use flag.
  */
 public interface SimpleSignUpModel extends SignInModel
 {
 
 	/**
 	 * Gets the repeat password.
-	 * 
+	 *
 	 * @return the repeat password
 	 */
 	String getRepeatPassword();
 
 	/**
 	 * Sets the repeat password.
-	 * 
+	 *
 	 * @param repeatPassword
 	 *            the new repeat password
 	 */
@@ -48,14 +48,14 @@ public interface SimpleSignUpModel extends SignInModel
 
 	/**
 	 * Gets the term of use accepted.
-	 * 
+	 *
 	 * @return the term of use accepted
 	 */
 	Boolean getTermOfUseAccepted();
 
 	/**
 	 * Sets the term of use accepted.
-	 * 
+	 *
 	 * @param termOfUseAccepted
 	 *            the new term of use accepted
 	 */

@@ -31,7 +31,7 @@ import org.apache.commons.codec.binary.StringUtils;
 import org.junit.Test;
 
 /**
- * The Class HexDumpTest.
+ * Test class for the class {@link HexDump}.
  */
 public class HexDumpTest
 {
@@ -40,7 +40,7 @@ public class HexDumpTest
 	 * Test method for {@link de.alpharogroup.crypto.aes.HexDump#decodeHex(char[])}
 	 *
 	 * @throws DecoderException
-	 *             the decoder exception
+	 *             is thrown if an odd number or illegal of characters is supplied
 	 */
 	@Test
 	public void testDecodeHex() throws DecoderException
@@ -56,7 +56,7 @@ public class HexDumpTest
 	 * Test method for {@link de.alpharogroup.crypto.aes.HexDump#decodeHex(byte[])}
 	 *
 	 * @throws DecoderException
-	 *             the decoder exception
+	 *             is thrown if an odd number or illegal of characters is supplied
 	 */
 	@Test
 	public void testDecodeHexCharacterArray() throws DecoderException
@@ -72,7 +72,7 @@ public class HexDumpTest
 	 * Test method for {@link de.alpharogroup.crypto.aes.HexDump#decodeHexToString(char[])}
 	 *
 	 * @throws DecoderException
-	 *             the decoder exception
+	 *             is thrown if an odd number or illegal of characters is supplied
 	 */
 	@Test
 	public void testDecodeHexToString() throws DecoderException

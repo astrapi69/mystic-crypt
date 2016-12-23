@@ -28,7 +28,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 /**
- * The Interface User.
+ * The interface {@link User}.
  *
  * @param <P>
  *            the generic type
@@ -46,42 +46,42 @@ public interface User<P extends Permission, R extends Role<P>> extends Serializa
 	 * @param role
 	 *            the role
 	 */
-	public void addRole(final R role);
+	void addRole(final R role);
 
 	/**
 	 * Returns the field <code>id</code>.
 	 *
 	 * @return The field <code>id</code>.
 	 */
-	public String getId();
+	String getId();
 
 	/**
 	 * Returns the field <code>roles</code>.
 	 *
 	 * @return The field <code>roles</code>.
 	 */
-	public Set<R> getRoles();
+	Set<R> getRoles();
 
 	/**
 	 * Returns the field <code>username</code>.
 	 *
 	 * @return The field <code>username</code>.
 	 */
-	public String getUsername();
+	String getUsername();
 
 	/**
 	 * Returns the field <code>password</code>.
 	 *
 	 * @return The field <code>password</code>.
 	 */
-	public String getPw();
+	String getPw();
 
 	/**
 	 * Returns the field <code>lock</code>.
 	 *
 	 * @return The field <code>lock</code>.
 	 */
-	public Boolean isLocked();
+	Boolean isLocked();
 
 	/**
 	 * Checks if this User is active.
@@ -105,7 +105,7 @@ public interface User<P extends Permission, R extends Role<P>> extends Serializa
 	 *            the role
 	 * @return true, if successful
 	 */
-	public boolean removeRole(final R role);
+	boolean removeRole(final R role);
 
 	/**
 	 * Sets the field <code>id</code>.
@@ -113,7 +113,7 @@ public interface User<P extends Permission, R extends Role<P>> extends Serializa
 	 * @param id
 	 *            The <code>id</code> to set
 	 */
-	public void setId(final String id);
+	void setId(final String id);
 
 	/**
 	 * Sets the field <code>lock</code>.
@@ -121,7 +121,7 @@ public interface User<P extends Permission, R extends Role<P>> extends Serializa
 	 * @param locked
 	 *            The <code>lock</code> to set
 	 */
-	public void setLocked(final Boolean locked);
+	void setLocked(final Boolean locked);
 
 	/**
 	 * Sets the field <code>roles</code>.
@@ -129,7 +129,7 @@ public interface User<P extends Permission, R extends Role<P>> extends Serializa
 	 * @param roles
 	 *            The <code>roles</code> to set
 	 */
-	public void setRoles(final Set<R> roles);
+	void setRoles(final Set<R> roles);
 
 	/**
 	 * Sets the field <code>username</code>.
@@ -137,7 +137,7 @@ public interface User<P extends Permission, R extends Role<P>> extends Serializa
 	 * @param username
 	 *            The <code>username</code> to set
 	 */
-	public void setUsername(final String username);
+	void setUsername(final String username);
 
 	/**
 	 * Sets the field <code>password</code>.
@@ -145,6 +145,6 @@ public interface User<P extends Permission, R extends Role<P>> extends Serializa
 	 * @param password
 	 *            The <code>password</code> to set
 	 */
-	public void setPw(final String password);
+	void setPw(final String password);
 
 }

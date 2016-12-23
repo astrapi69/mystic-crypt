@@ -44,5 +44,7 @@ import lombok.ToString;
 @Builder
 public class AuthToken
 {
+
+	/** The value. */
 	private String value;
 }

@@ -25,33 +25,23 @@
 package de.alpharogroup.crypto;
 
 import org.testng.AssertJUnit;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.simple.SimpleCrypt;
 
+// TODO: Auto-generated Javadoc
 /**
- * Test class for the class {@link SimpleCryptTest}.
+ * Test class for the class {@link SimpleCrypt}.
  *
- * @version 1.0
  * @author Asterios Raptis
+ * @version 1.0
  */
 public class SimpleCryptTest
 {
 
-
-	@BeforeMethod
-	public void setUp() throws Exception
-	{
-	}
-
-
-	@AfterMethod
-	public void tearDown() throws Exception
-	{
-	}
-
+	/**
+	 * Test method for test the method {@link SimpleCrypt#encode(String)} and {@link SimpleCrypt#decode(String)}.
+	 */
 	@Test
 	public void testCryptoUtils()
 	{
@@ -63,6 +53,12 @@ public class SimpleCryptTest
 		testCryptoUtils(testString, 4);
 	}
 
+	/**
+	 * Test method for test the method {@link SimpleCrypt#encode(String)} and {@link SimpleCrypt#decode(String)}.
+	 *
+	 * @param testString the test string
+	 * @param verschiebe the relocate
+	 */
 	protected void testCryptoUtils(final String testString, final int verschiebe)
 	{
 		System.out.println("original:--------\n" + testString + "\n--------");

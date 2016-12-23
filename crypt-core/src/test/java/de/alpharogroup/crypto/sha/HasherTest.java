@@ -26,33 +26,33 @@ package de.alpharogroup.crypto.sha;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
 import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 import org.testng.AssertJUnit;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.algorithm.HashAlgorithm;
 
+/**
+ * Test class for {@link Hasher}.
+ */
 public class HasherTest
 {
 
-	@BeforeMethod
-	public void setUp() throws Exception
-	{
-	}
-
-	@AfterMethod
-	public void tearDown() throws Exception
-	{
-	}
-
+	/**
+	 * Test method for {@link Hasher#hash(String, String, HashAlgorithm, Charset)}
+	 *
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the MessageDigest object fails.
+	 */
 	@Test
 	public void testHash() throws NoSuchAlgorithmException
 	{
@@ -64,10 +64,16 @@ public class HasherTest
 		final String expected = Hasher.hash(password, salt, hashAlgorithm, charset);
 		final String actual = Hasher.hash(newInsertPassword, salt, hashAlgorithm, charset);
 
-		AssertJUnit
-			.assertTrue("'expected' should be equal with 'actual'.", expected.equals(actual));
+		AssertJUnit.assertTrue("'expected' should be equal with 'actual'.",
+			expected.equals(actual));
 	}
 
+	/**
+	 * Test method for {@link Hasher#hashAndBase64(String, String, HashAlgorithm, Charset)}
+	 *
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the MessageDigest object fails.
+	 */
 	@Test
 	public void testHashAndBase64() throws NoSuchAlgorithmException
 	{
@@ -78,14 +84,34 @@ public class HasherTest
 		final HashAlgorithm hashAlgorithm = HashAlgorithm.SHA_512;
 		final String expected = Hasher.hashAndBase64(password, salt, hashAlgorithm, charset);
 		final String actual = Hasher.hashAndBase64(newInsertPassword, salt, hashAlgorithm, charset);
-		AssertJUnit
-			.assertTrue("'expected' should be equal with 'actual'.", expected.equals(actual));
+		AssertJUnit.assertTrue("'expected' should be equal with 'actual'.",
+			expected.equals(actual));
 	}
 
+	/**
+	 * Test method for {@link Hasher#hashAndHex(String, String, HashAlgorithm, Charset)}
+	 *
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the MessageDigest object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown by get the byte array of the private key String object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the cypher object fails.
+	 * @throws InvalidKeyException
+	 *             the invalid key exception is thrown if initialization of the cypher object fails.
+	 * @throws BadPaddingException
+	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
+	 * @throws IllegalBlockSizeException
+	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 */
 	@Test
 	public void testHashAndHex() throws NoSuchAlgorithmException, InvalidKeyException,
 		UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException,
-		BadPaddingException
+		BadPaddingException, InvalidKeySpecException, InvalidAlgorithmParameterException
 	{
 		final Charset charset = Charset.forName("UTF-8");
 		final String password = "xxx";
@@ -97,8 +123,8 @@ public class HasherTest
 		System.out.println(salt);
 		System.out.println(expected);
 		System.out.println(actual);
-		AssertJUnit
-			.assertTrue("'expected' should be equal with 'actual'.", expected.equals(actual));
+		AssertJUnit.assertTrue("'expected' should be equal with 'actual'.",
+			expected.equals(actual));
 	}
 
 }

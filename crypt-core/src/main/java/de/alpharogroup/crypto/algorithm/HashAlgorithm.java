@@ -24,48 +24,54 @@
  */
 package de.alpharogroup.crypto.algorithm;
 
+import lombok.Getter;
+
 /**
- * The Enum HashAlgorithm.
+ * The enum {@link HashAlgorithm} represents the one-way conversion hash algorithms.
  *
  * @version 1.0
  * @author Asterios Raptis
  */
-public enum HashAlgorithm
+public enum HashAlgorithm implements Algorithm
 {
 
 	/** The enum constant for SHA-1 algorithm. */
 	SHA_1("SHA-1"),
 
+	/** The enum constant for SHA1 algorithm. */
+	SHA1("SHA1"),
+
 	/** The enum constant for SHA-256 algorithm. */
 	SHA_256("SHA-256"),
+
+	/** The enum constant for SHA256 algorithm. */
+	SHA256("SHA256"),
 
 	/** The enum constant for SHA-384 algorithm. */
 	SHA_384("SHA-384"),
 
+	/** The enum constant for SHA384 algorithm. */
+	SHA384("SHA384"),
+
 	/** The enum constant for SHA-512 algorithm. */
-	SHA_512("SHA-512");
+	SHA_512("SHA-512"),
+
+	/** The enum constant for SHA512 algorithm. */
+	SHA512("SHA512");
 
 	/** The algorithm. */
+	@Getter
 	private final String algorithm;
 
 	/**
-	 * Instantiates a new Algorithm object.
+	 * Instantiates a new {@link HashAlgorithm} object.
 	 *
 	 * @param algorithm
 	 *            the algorithm.
 	 */
-	HashAlgorithm(final String algorithm)
+	private HashAlgorithm(final String algorithm)
 	{
 		this.algorithm = algorithm;
 	}
 
-	/**
-	 * Gets the algorithm.
-	 *
-	 * @return the algorithm
-	 */
-	public String getAlgorithm()
-	{
-		return algorithm;
-	}
 }

@@ -25,8 +25,8 @@
 package de.alpharogroup.auth.exceptions;
 
 /**
- * The class {@link AuthenticationException} is thrown if a problem occured during the Authentication.
- * Authentication(who are you?)
+ * The class {@link AuthenticationException} is thrown if a problem occured during the
+ * Authentication. Authentication(who are you?)
  */
 public class AuthenticationException extends Exception
 {
@@ -44,13 +44,17 @@ public class AuthenticationException extends Exception
 	/**
 	 * Instantiates a new {@link AuthenticationException}.
 	 *
-	 * @param message the message
-	 * @param cause the cause
-	 * @param enableSuppression the enable suppression
-	 * @param writableStackTrace the writable stack trace
+	 * @param message
+	 *            the message
+	 * @param cause
+	 *            the cause
+	 * @param enableSuppression
+	 *            the enable suppression
+	 * @param writableStackTrace
+	 *            the writable stack trace
 	 */
-	public AuthenticationException(final String message, final Throwable cause, final boolean enableSuppression,
-		final boolean writableStackTrace)
+	public AuthenticationException(final String message, final Throwable cause,
+		final boolean enableSuppression, final boolean writableStackTrace)
 	{
 		super(message, cause, enableSuppression, writableStackTrace);
 	}
@@ -58,8 +62,10 @@ public class AuthenticationException extends Exception
 	/**
 	 * Instantiates a new {@link AuthenticationException}.
 	 *
-	 * @param message the message
-	 * @param cause the cause
+	 * @param message
+	 *            the message
+	 * @param cause
+	 *            the cause
 	 */
 	public AuthenticationException(final String message, final Throwable cause)
 	{
@@ -69,7 +75,8 @@ public class AuthenticationException extends Exception
 	/**
 	 * Instantiates a new {@link AuthenticationException}.
 	 *
-	 * @param message the message
+	 * @param message
+	 *            the message
 	 */
 	public AuthenticationException(final String message)
 	{
@@ -79,7 +86,8 @@ public class AuthenticationException extends Exception
 	/**
 	 * Instantiates a new {@link AuthenticationException}.
 	 *
-	 * @param cause the cause
+	 * @param cause
+	 *            the cause
 	 */
 	public AuthenticationException(final Throwable cause)
 	{

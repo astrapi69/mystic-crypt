@@ -24,48 +24,44 @@
  */
 package de.alpharogroup.crypto.aes;
 
+import de.alpharogroup.crypto.interfaces.GenericDecryptor;
 import lombok.Builder;
 import lombok.Getter;
-import de.alpharogroup.crypto.interfaces.Decryptor;
 
 /**
- * The Class ChainedDecryptor can take many {@code Decryptor} objects and decrypts the given string
- * with all the given {@code Decryptor} objects. The {@code Decryptor} objects must be in a reverse
- * order as they was given in the {@code ChainedEncryptor} object.
+ * The class {@link ChainedDecryptor} can take many {@code Decryptor} objects and decrypts the given
+ * string with all the given {@code Decryptor} objects. The {@code Decryptor} objects must be in a
+ * reverse order as they was given in the {@code ChainedEncryptor} object. For an example see the
+ * unit test.
  */
 @Builder
-public class ChainedDecryptor implements Decryptor
+public class ChainedDecryptor implements GenericDecryptor<String, String>
 {
 
 	/** The decryptors. */
 	@Getter
-	private final Decryptor[] decryptors;
+	private final GenericDecryptor<String, String>[] decryptors;
 
 	/**
-	 * Instantiates a new chained decryptor.
+	 * Instantiates a new {@link ChainedDecryptor}.
 	 *
 	 * @param decryptors
 	 *            the decryptors
 	 */
-	public ChainedDecryptor(final Decryptor... decryptors)
+	@SafeVarargs
+	public ChainedDecryptor(final GenericDecryptor<String, String>... decryptors)
 	{
 		this.decryptors = decryptors;
 	}
 
 	/**
-	 * Decrypt the given encrypted String.
-	 * 
-	 * @param encypted
-	 *            The String to decrypt.
-	 * @return The decrypted String
-	 * @throws Exception
-	 *             is thrown if decryption fails.
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String decrypt(final String encypted) throws Exception
 	{
 		String result = encypted;
-		for (final Decryptor encryptor : decryptors)
+		for (final GenericDecryptor<String, String> encryptor : decryptors)
 		{
 			result = encryptor.decrypt(result);
 		}

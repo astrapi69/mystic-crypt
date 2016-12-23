@@ -33,8 +33,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * The Class BaseSignInModel is an implementation from the interface SignInModel.
- * 
+ * The class {@link BaseSignInModel} is an implementation from the interface {@link SignInModel}.
+ *
  * @author Asterios Raptis
  */
 @Getter

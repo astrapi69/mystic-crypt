@@ -41,17 +41,16 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-
 import org.apache.commons.codec.binary.Base64;
 
 import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.interfaces.Decryptor;
+import lombok.AccessLevel;
+import lombok.Getter;
 
 /**
- * A simple Decryptor implementation.
+ * The class {@link SimpleDecryptor} is a simple {@link Decryptor} implementation.
  *
  * @author Asterios Raptis
  * @version 1.0
@@ -79,7 +78,7 @@ public class SimpleDecryptor implements Decryptor
 	private boolean initialized;
 
 	/**
-	 * Constructor with a private key.
+	 * Instantiates a new {@link SimpleDecryptor} with the given private key.
 	 *
 	 * @param privateKey
 	 *            The private key.
@@ -91,34 +90,13 @@ public class SimpleDecryptor implements Decryptor
 	}
 
 	/**
-	 * Decrpyt the given encrypted String.
-	 *
-	 * @param encypted
-	 *            The String to decrypt.
-	 * @throws BadPaddingException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws IllegalBlockSizeException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws UnsupportedEncodingException
-	 *             is thrown if creation of String object fails.
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cypher object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws UnsupportedEncodingException
-	 *             is thrown if the named charset is not supported.
+	 * {@inheritDoc}
 	 */
 	@Override
-	public String decrypt(final String encypted) throws IllegalBlockSizeException,
-		BadPaddingException, UnsupportedEncodingException, InvalidKeyException,
-		NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
-		InvalidAlgorithmParameterException
+	public String decrypt(final String encypted)
+		throws IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException,
+		InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchPaddingException, InvalidAlgorithmParameterException
 	{
 		initialize();
 		final byte[] dec = Base64.decodeBase64(encypted);
@@ -155,7 +133,7 @@ public class SimpleDecryptor implements Decryptor
 				keySpec = new PBEKeySpec(CryptConst.PRIVATE_KEY.toCharArray());
 			}
 			final SecretKeyFactory factory = SecretKeyFactory
-				.getInstance(CryptConst.PBEWITH_MD5AND_DES);
+				.getInstance(CryptConst.PBE_WITH_MD5_AND_DES);
 			final SecretKey key = factory.generateSecret(keySpec);
 			this.cipher = Cipher.getInstance(key.getAlgorithm());
 			final AlgorithmParameterSpec paramSpec = new PBEParameterSpec(CryptConst.SALT,

@@ -27,46 +27,54 @@ package de.alpharogroup.auth.interfaces;
 import java.io.Serializable;
 
 /**
- * The Interface Permission.
- * 
- * @version 1.0
- * @author Asterios Raptis
+ * The interface {@link Permission}.
  */
 public interface Permission extends Serializable
 {
 
 	/**
 	 * Returns the field <code>description</code>.
-	 * 
+	 *
 	 * @return The field <code>description</code>.
 	 */
-	public String getDescription();
+	String getDescription();
 
 	/**
 	 * Sets the field <code>description</code>.
-	 * 
+	 *
 	 * @param description
 	 *            The <code>description</code> to set
 	 */
-	public void setDescription(final String description);
+	void setDescription(final String description);
 
 	/**
 	 * Returns the field <code>name</code>.
-	 * 
+	 *
 	 * @return The field <code>name</code>.
 	 */
-	public String getPermissionName();
+	String getPermissionName();
 
 	/**
 	 * Sets the field <code>name</code>.
-	 * 
+	 *
 	 * @param name
 	 *            The <code>name</code> to set
 	 */
-	public void setPermissionName(final String name);
+	void setPermissionName(final String name);
 
+	/**
+	 * Gets the shortcut.
+	 *
+	 * @return the shortcut
+	 */
 	String getShortcut();
 
+	/**
+	 * Sets the shortcut.
+	 *
+	 * @param shortcut
+	 *            the new shortcut
+	 */
 	void setShortcut(final String shortcut);
 
 }

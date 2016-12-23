@@ -30,20 +30,34 @@ import java.util.Set;
 import de.alpharogroup.auth.interfaces.Permission;
 import de.alpharogroup.auth.interfaces.Role;
 import de.alpharogroup.auth.interfaces.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
- * The Class SimpleUser.
+ * The class {@link SimpleUser}.
  *
  * @version 1.0
  * @author Asterios Raptis
  */
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class SimpleUser implements User<Permission, Role<Permission>>
 {
-
 	/**
 	 * The serialVersionUID.
 	 */
-	private static final long serialVersionUID = 8255560614886684003L;
+	private static final long serialVersionUID = -5529415990423317979L;
+
 	/** The attribute active, if true the user account is active. */
 	private Boolean active;
 	/** The username. */
@@ -61,6 +75,9 @@ public class SimpleUser implements User<Permission, Role<Permission>>
 	/** Flag if the user is locked. */
 	private Boolean locked;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void addRole(final Role<Permission> role)
 	{
@@ -69,53 +86,15 @@ public class SimpleUser implements User<Permission, Role<Permission>>
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see de.alpharogroup.auth.interfaces.User#getId()
 	 */
 	@Override
-	public String getId()
+	public boolean removeRole(final Role<Permission> role)
 	{
-		return this.id;
+		return this.roles.remove(role);
 	}
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see de.alpharogroup.auth.interfaces.User#getPw()
-	 */
-	@Override
-	public String getPw()
-	{
-		return this.pw;
-	}
-
-	@Override
-	public Set<Role<Permission>> getRoles()
-	{
-		return this.roles;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see de.alpharogroup.auth.interfaces.User#getUsername()
-	 */
-	@Override
-	public String getUsername()
-	{
-		return this.username;
-	}
-
-	@Override
-	public Boolean isActive()
-	{
-		return this.active;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see de.alpharogroup.auth.interfaces.User#isLocked()
 	 */
 	@Override
 	public Boolean isLocked()
@@ -123,62 +102,13 @@ public class SimpleUser implements User<Permission, Role<Permission>>
 		return this.locked;
 	}
 
-	@Override
-	public boolean removeRole(final Role<Permission> role)
-	{
-		return this.roles.remove(role);
-	}
-
-	@Override
-	public void setActive(final Boolean active)
-	{
-		this.active = active;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see de.alpharogroup.auth.interfaces.User#setId(java.lang.String)
-	 */
-	@Override
-	public void setId(final String id)
-	{
-		this.id = id;
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setLocked(final Boolean lock)
+	public Boolean isActive()
 	{
-		this.locked = lock;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void setPw(final String password)
-	{
-		this.pw = password;
-	}
-
-	@Override
-	public void setRoles(final Set<Role<Permission>> roles)
-	{
-		this.roles = roles;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see de.alpharogroup.auth.interfaces.User#setUsername(java.lang.String)
-	 */
-	@Override
-	public void setUsername(final String username)
-	{
-		this.username = username;
+		return active;
 	}
 
 }

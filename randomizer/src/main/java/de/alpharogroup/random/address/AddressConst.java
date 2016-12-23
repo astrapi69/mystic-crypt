@@ -24,12 +24,15 @@
  */
 package de.alpharogroup.random.address;
 
+import lombok.experimental.UtilityClass;
+
 /**
- * A constant class for Addresses.
- * 
+ * The class {@link AddressConst} is a constant class for Address data like cities and countries.
+ *
  * @version 1.0
  * @author Asterios Raptis
  */
+@UtilityClass
 public class AddressConst
 {
 

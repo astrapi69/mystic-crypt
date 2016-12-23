@@ -28,89 +28,42 @@ import java.util.Set;
 
 import de.alpharogroup.auth.interfaces.Permission;
 import de.alpharogroup.auth.interfaces.Role;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
- * The Class SimpleRole.
+ * The class {@link SimpleRole}.
  *
  * @version 1.0
  * @author Asterios Raptis
  */
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class SimpleRole implements Role<Permission>
 {
 
 	/**
 	 * The serialVersionUID.
 	 */
-	private static final long serialVersionUID = -5456020518185764323L;
+	private static final long serialVersionUID = 7366151068585452900L;
 
 	/** The name. */
-	private String name;
+	private String rolename;
 
 	/** The permissions. */
 	private Set<Permission> permissions;
 
 	/** The description from the role. */
 	private String description;
-
-	/**
-	 * Returns the field <code>description</code>.
-	 *
-	 * @return The field <code>description</code>.
-	 */
-	@Override
-	public String getDescription()
-	{
-		return this.description;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see de.alpharogroup.auth.interfaces.Role#getPermissions()
-	 */
-	@Override
-	public Set<Permission> getPermissions()
-	{
-		return this.permissions;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see de.alpharogroup.auth.interfaces.Role#getRolename()
-	 */
-	@Override
-	public String getRolename()
-	{
-		return this.name;
-	}
-
-
-	/**
-	 * Sets the field <code>description</code>.
-	 *
-	 * @param description
-	 *            The <code>description</code> to set
-	 */
-	@Override
-	public void setDescription(final String description)
-	{
-		this.description = description;
-	}
-
-	@Override
-	public void setPermissions(final Set<Permission> permissions)
-	{
-		this.permissions = permissions;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void setRolename(final String name)
-	{
-		this.name = name;
-	}
 
 }

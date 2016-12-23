@@ -9,6 +9,9 @@
  * Creation of randomized data
  * Brute-force processing
  * Wordlist processing
+ * Encryption with PublicKey and decryption with PrivateKey objects that was generated with openssl
+ * Encryption and decryption from .pem, .der files that was generated with openssl
+ 
 
 ## License
 
@@ -32,7 +35,7 @@ Add the following maven dependency to your project `pom.xml` if you want to impo
 Than you can add the dependency to your dependencies:
 
 		<!-- MYSTIC-CRYPT versions -->
-		<mystic-crypt.version>4.11.0</mystic-crypt.version>
+		<mystic-crypt.version>4.15.0</mystic-crypt.version>
 		<crypt-core.version>${mystic-crypt.version}</crypt-core.version>
 		<randomizer.version>${mystic-crypt.version}</randomizer.version>
 		<auth-security.version>${mystic-crypt.version}</auth-security.version>
@@ -97,4 +100,12 @@ Do not hesitate to contact the mystic-crypt developers with your questions, conc
 <a href="http://flattr.com/thing/4152938/astrapi69mystic-crypt-on-GitHub" target="_blank">
 <img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" />
 </a>
+
+# Similar projects
+
+Here is a list of awesome projects for cryptography:
+
+
+[cryptacular](https://github.com/vt-middleware/cryptacular) The friendly complement to the BouncyCastle crypto API for Java.
+
 

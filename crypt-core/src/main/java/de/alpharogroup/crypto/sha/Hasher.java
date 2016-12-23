@@ -26,9 +26,11 @@ package de.alpharogroup.crypto.sha;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -37,16 +39,19 @@ import javax.crypto.NoSuchPaddingException;
 
 import org.apache.commons.codec.binary.Base64;
 
+import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.aes.HexEncryptor;
 import de.alpharogroup.crypto.algorithm.HashAlgorithm;
 import de.alpharogroup.random.Constants;
 import de.alpharogroup.random.RandomExtensions;
+import lombok.experimental.UtilityClass;
 
 /**
- * The Class Hasher.
+ * The class {@link Hasher}.
  *
  * @author Asterios Raptis
  */
+@UtilityClass
 public class Hasher
 {
 
@@ -65,7 +70,7 @@ public class Hasher
 	}
 
 	/**
-	 * Hash.
+	 * Hashes the given {@link String} object with the given parameters.
 	 *
 	 * @param hashIt
 	 *            the hash it
@@ -75,7 +80,7 @@ public class Hasher
 	 *            the hash algorithm
 	 * @param charset
 	 *            the charset
-	 * @return the string
+	 * @return the generated {@link String} object
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the MessageDigest object fails.
 	 */
@@ -88,16 +93,9 @@ public class Hasher
 		return new String(messageDigest.digest(hashIt.getBytes(charset)), charset);
 	}
 
-	public static String hashAndBase64(final String hashIt, final String salt,
-		final HashAlgorithm hashAlgorithm, final Charset charset) throws NoSuchAlgorithmException
-	{
-		final String hashedAndBase64 = new Base64().encodeToString(hash(hashIt, salt,
-			hashAlgorithm, charset).getBytes(charset));
-		return hashedAndBase64;
-	}
-
 	/**
-	 * Hash and hex.
+	 * Hashes and encodes it with base64 from the given {@link String} object with the given
+	 * parameters.
 	 *
 	 * @param hashIt
 	 *            the hash it
@@ -107,7 +105,30 @@ public class Hasher
 	 *            the hash algorithm
 	 * @param charset
 	 *            the charset
-	 * @return the string
+	 * @return the generated {@link String} object
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the MessageDigest object fails.
+	 */
+	public static String hashAndBase64(final String hashIt, final String salt,
+		final HashAlgorithm hashAlgorithm, final Charset charset) throws NoSuchAlgorithmException
+	{
+		final String hashedAndBase64 = new Base64()
+			.encodeToString(hash(hashIt, salt, hashAlgorithm, charset).getBytes(charset));
+		return hashedAndBase64;
+	}
+
+	/**
+	 * Hashes and hex it with the given {@link String} object with the given parameters.
+	 *
+	 * @param hashIt
+	 *            the hash it
+	 * @param salt
+	 *            the salt
+	 * @param hashAlgorithm
+	 *            the hash algorithm
+	 * @param charset
+	 *            the charset
+	 * @return the generated {@link String} object
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the MessageDigest object fails.
 	 * @throws UnsupportedEncodingException
@@ -120,13 +141,18 @@ public class Hasher
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
 	 * @throws IllegalBlockSizeException
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
 	 */
 	public static String hashAndHex(final String hashIt, final String salt,
-		final HashAlgorithm hashAlgorithm, final Charset charset) throws NoSuchAlgorithmException,
-		InvalidKeyException, UnsupportedEncodingException, NoSuchPaddingException,
-		IllegalBlockSizeException, BadPaddingException
+		final HashAlgorithm hashAlgorithm, final Charset charset)
+		throws NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException,
+		NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException,
+		InvalidKeySpecException, InvalidAlgorithmParameterException
 	{
-		final HexEncryptor hexEncryptor = new HexEncryptor();
+		final HexEncryptor hexEncryptor = new HexEncryptor(CryptConst.PRIVATE_KEY);
 		return hexEncryptor.encrypt(hash(hashIt, salt, hashAlgorithm, charset));
 	}
 

@@ -29,11 +29,12 @@ import java.security.spec.KeySpec;
 import javax.crypto.spec.PBEKeySpec;
 
 import de.alpharogroup.crypto.CryptConst;
-
+import lombok.experimental.UtilityClass;
 
 /**
- * A factory for creating KeySpec objects.
+ * A factory for creating {@link KeySpec} objects.
  */
+@UtilityClass
 public class KeySpecFactory
 {
 
@@ -52,7 +53,6 @@ public class KeySpecFactory
 		}
 		return new PBEKeySpec(privateKey.toCharArray());
 	}
-
 
 	/**
 	 * Factory method for creating a new {@link PBEKeySpec} from the given private key.

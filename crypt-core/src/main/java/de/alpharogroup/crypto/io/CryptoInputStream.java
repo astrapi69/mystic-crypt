@@ -31,20 +31,25 @@ import javax.crypto.CipherInputStream;
 import de.alpharogroup.crypto.core.BaseEncryptor;
 
 /**
- * The Class CryptoInputStream.
- *
- * @version 1.0
+ * The class {@link CryptoInputStream} extends the {@link CipherInputStream}.
  *
  * @author Asterios Raptis
- *
+ * @version 1.0
  */
 public class CryptoInputStream extends CipherInputStream
 {
 
-	protected CryptoInputStream(final InputStream in,
-		final BaseEncryptor<?, ?> encryptor)
+	/**
+	 * Instantiates a new {@link CryptoInputStream}.
+	 *
+	 * @param inputStream
+	 *            the input stream
+	 * @param encryptor
+	 *            the encryptor
+	 */
+	protected CryptoInputStream(final InputStream inputStream, final BaseEncryptor encryptor)
 	{
-		super(in, encryptor.getCipher());
+		super(inputStream, encryptor.getModel().getCipher());
 	}
 
 }

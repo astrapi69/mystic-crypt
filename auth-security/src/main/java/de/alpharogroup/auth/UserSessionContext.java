@@ -31,7 +31,7 @@ import de.alpharogroup.auth.interfaces.Session;
 import de.alpharogroup.auth.interfaces.SessionContext;
 
 /**
- * The Class UserSessionContext. Singleton object.
+ * The class {@link UserSessionContext}. Singleton object.
  *
  * @version 1.0
  * @author Asterios Raptis
@@ -42,8 +42,7 @@ public class UserSessionContext implements SessionContext<String, String, String
 	/**
 	 * The serialVersionUID.
 	 */
-	private static final long serialVersionUID = 6569927899638872741L;
-
+	private static final long serialVersionUID = -7176164226848814834L;
 	/** The instance. */
 	private static final SessionContext<String, String, String> instance = new UserSessionContext();
 
@@ -54,25 +53,21 @@ public class UserSessionContext implements SessionContext<String, String, String
 	 */
 	public static SessionContext<String, String, String> getInstance()
 	{
-
 		return instance;
 	}
 
 	/** The online sessions. */
-	private Map<String, Session<String, String>> onlineSessions = new LinkedHashMap<>();
+	private final Map<String, Session<String, String>> onlineSessions = new LinkedHashMap<>();
 
 	/**
-	 * Instantiates a new user session context. It private.
+	 * Instantiates a new {@link UserSessionContext}. Private constructor.
 	 */
 	private UserSessionContext()
 	{
-		super();
 	}
 
 	/**
 	 * {@inheritDoc}
-	 * 
-	 * @see de.alpharogroup.auth.interfaces.SessionContext#addSession(de.alpharogroup.auth.interfaces.Session)
 	 */
 	@Override
 	public synchronized void addSession(final Session<String, String> session)
@@ -82,8 +77,6 @@ public class UserSessionContext implements SessionContext<String, String, String
 
 	/**
 	 * {@inheritDoc}
-	 * 
-	 * @see de.alpharogroup.auth.interfaces.SessionContext#getSession(Object)
 	 */
 	@Override
 	public synchronized Session<String, String> getSession(final String id)
@@ -97,8 +90,6 @@ public class UserSessionContext implements SessionContext<String, String, String
 
 	/**
 	 * {@inheritDoc}
-	 * 
-	 * @see de.alpharogroup.auth.interfaces.SessionContext#removeSession(Object)
 	 */
 	@Override
 	public synchronized void removeSession(final String id)

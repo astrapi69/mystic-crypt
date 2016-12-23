@@ -27,8 +27,10 @@ package de.alpharogroup.crypto.pw;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Optional;
 
 import javax.crypto.BadPaddingException;
@@ -41,27 +43,29 @@ import de.alpharogroup.crypto.sha.Hasher;
 import de.alpharogroup.random.RandomObjectsExtensions;
 
 /**
- * The Class PasswordEncryptor is a singleton and helps to generate secure
- * encrypted random passwords.
+ * The class {@link PasswordEncryptor} is a singleton and helps to generate secure encrypted random
+ * passwords.
  *
  * @author Asterios Raptis
  */
-public class PasswordEncryptor implements Serializable {
+public class PasswordEncryptor implements Serializable
+{
 
 	/**
 	 * The serialVersionUID.
 	 */
 	private static final long serialVersionUID = -4667877106378932018L;
 
-	/** The single instance from the PasswordService. */
+	/** The single instance from the {@link PasswordEncryptor}. */
 	private static final PasswordEncryptor instance = new PasswordEncryptor();
 
 	/**
-	 * Gets the single instance of PasswordService.
+	 * Gets the single instance of the {@link PasswordEncryptor} object.
 	 *
-	 * @return single instance of PasswordService
+	 * @return single instance of {@link PasswordEncryptor}
 	 */
-	public static PasswordEncryptor getInstance() {
+	public static PasswordEncryptor getInstance()
+	{
 		return instance;
 	}
 
@@ -72,10 +76,10 @@ public class PasswordEncryptor implements Serializable {
 	private final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
 
 	/**
-	 * Private constructor. Instantiates a new password service.
+	 * Private constructor. Instantiates a new {@link PasswordEncryptor} object.
 	 */
-	private PasswordEncryptor() {
-		super();
+	private PasswordEncryptor()
+	{
 	}
 
 	/**
@@ -85,7 +89,8 @@ public class PasswordEncryptor implements Serializable {
 	 *            the length
 	 * @return the new secure random password
 	 */
-	public String getRandomPassword(final int length) {
+	public String getRandomPassword(final int length)
+	{
 		return RandomObjectsExtensions.getRandomPassword(length);
 	}
 
@@ -96,7 +101,8 @@ public class PasswordEncryptor implements Serializable {
 	 *            the length
 	 * @return the new secure random password
 	 */
-	public String getRandomPassword(final Optional<Integer> length) {
+	public String getRandomPassword(final Optional<Integer> length)
+	{
 		return RandomObjectsExtensions.getRandomPassword(length);
 	}
 
@@ -107,7 +113,8 @@ public class PasswordEncryptor implements Serializable {
 	 *            the length
 	 * @return the random salt string.
 	 */
-	public String getRandomSalt(final int length) {
+	public String getRandomSalt(final int length)
+	{
 		return new String(Hasher.getRandomSalt(length, DEFAULT_CHARSET), DEFAULT_CHARSET);
 	}
 
@@ -118,31 +125,34 @@ public class PasswordEncryptor implements Serializable {
 	 *            the password
 	 * @param salt
 	 *            the salt
-	 * @return the string
+	 * @return the generated {@link String} object
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the MessageDigest object fails.
 	 * @throws UnsupportedEncodingException
-	 *             is thrown by get the byte array of the private key String
-	 *             object fails.
+	 *             is thrown by get the byte array of the private key String object fails.
 	 * @throws NoSuchPaddingException
 	 *             is thrown if instantiation of the cypher object fails.
 	 * @throws InvalidKeyException
-	 *             the invalid key exception is thrown if initialization of the
-	 *             cypher object fails.
+	 *             the invalid key exception is thrown if initialization of the cypher object fails.
 	 * @throws BadPaddingException
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
 	 * @throws IllegalBlockSizeException
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
 	 */
 	public String hashAndHexPassword(final String password, final String salt)
-			throws NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException, NoSuchPaddingException,
-			IllegalBlockSizeException, BadPaddingException {
+		throws NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException,
+		NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException,
+		InvalidKeySpecException, InvalidAlgorithmParameterException
+	{
 		return hashAndHexPassword(password, salt, DEFAULT_ALGORITHM, DEFAULT_CHARSET);
 	}
 
 	/**
-	 * Hash and hex the given password with the given salt, hash algorithm and
-	 * charset.
+	 * Hash and hex the given password with the given salt, hash algorithm and charset.
 	 *
 	 * @param password
 	 *            the password
@@ -152,32 +162,36 @@ public class PasswordEncryptor implements Serializable {
 	 *            the hash algorithm
 	 * @param charset
 	 *            the charset
-	 * @return the string
+	 * @return the generated {@link String} object
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the MessageDigest object fails.
 	 * @throws UnsupportedEncodingException
-	 *             is thrown by get the byte array of the private key String
-	 *             object fails.
+	 *             is thrown by get the byte array of the private key String object fails.
 	 * @throws NoSuchPaddingException
 	 *             is thrown if instantiation of the cypher object fails.
 	 * @throws InvalidKeyException
-	 *             the invalid key exception is thrown if initialization of the
-	 *             cypher object fails.
+	 *             the invalid key exception is thrown if initialization of the cypher object fails.
 	 * @throws BadPaddingException
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
 	 * @throws IllegalBlockSizeException
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
 	 */
-	public String hashAndHexPassword(final String password, final String salt, final HashAlgorithm hashAlgorithm,
-			final Charset charset) throws NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException,
-			NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+	public String hashAndHexPassword(final String password, final String salt,
+		final HashAlgorithm hashAlgorithm, final Charset charset)
+		throws NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException,
+		NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException,
+		InvalidKeySpecException, InvalidAlgorithmParameterException
+	{
 		final String hashedPassword = Hasher.hashAndHex(password, salt, hashAlgorithm, charset);
 		return hashedPassword;
 	}
 
 	/**
-	 * Hashes the given password with the given salt, hash algorithm and
-	 * charset.
+	 * Hashes the given password with the given salt, hash algorithm and charset.
 	 *
 	 * @param password
 	 *            the password
@@ -187,12 +201,13 @@ public class PasswordEncryptor implements Serializable {
 	 *            the hash algorithm
 	 * @param charset
 	 *            the charset
-	 * @return the string
+	 * @return the generated {@link String} object
 	 * @throws NoSuchAlgorithmException
 	 *             the no such algorithm exception
 	 */
-	public String hashPassword(final String password, final String salt, final HashAlgorithm hashAlgorithm,
-			final Charset charset) throws NoSuchAlgorithmException {
+	public String hashPassword(final String password, final String salt,
+		final HashAlgorithm hashAlgorithm, final Charset charset) throws NoSuchAlgorithmException
+	{
 		final String hashedPassword = Hasher.hash(password, salt, hashAlgorithm, charset);
 		return hashedPassword;
 	}
@@ -206,7 +221,8 @@ public class PasswordEncryptor implements Serializable {
 	 *            the db hashed password
 	 * @return true, if successful
 	 */
-	public boolean match(final String hashedPassword, final String dbHashedPassword) {
+	public boolean match(final String hashedPassword, final String dbHashedPassword)
+	{
 		return hashedPassword.equals(dbHashedPassword);
 	}
 

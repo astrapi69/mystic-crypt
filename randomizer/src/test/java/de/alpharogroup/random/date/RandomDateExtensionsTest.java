@@ -27,6 +27,7 @@
  */
 package de.alpharogroup.random.date;
 
+import java.text.ParseException;
 import java.util.Date;
 
 import org.testng.AssertJUnit;
@@ -36,9 +37,11 @@ import org.testng.annotations.Test;
 
 import de.alpharogroup.BaseTestCase;
 import de.alpharogroup.date.CalculateDateExtensions;
+import de.alpharogroup.date.DatePatterns;
+import de.alpharogroup.date.ParseDateExtensions;
 
 /**
- * Test class for the class RandomDateExtensions.
+ * Test class for the class {@link RandomDateExtensions}.
  *
  * @version 1.0
  * @author Asterios Raptis
@@ -46,7 +49,8 @@ import de.alpharogroup.date.CalculateDateExtensions;
 public class RandomDateExtensionsTest extends BaseTestCase
 {
 
-	Date now = null;
+	/** The date for now. */
+	private Date now;
 
 	/**
 	 * {@inheritDoc}
@@ -72,7 +76,7 @@ public class RandomDateExtensionsTest extends BaseTestCase
 
 
 	/**
-	 * Test method for {@link de.alpharogroup.random.date.RandomDateExtensions#randomBirthday()}.
+	 * Test method for {@link RandomDateExtensions#randomBirthday()}.
 	 */
 	@Test
 	public void testCreateRandomBirthday()
@@ -91,9 +95,7 @@ public class RandomDateExtensionsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for
-	 * {@link de.alpharogroup.random.date.RandomDateExtensions#randomBirthday(java.util.Date, java.util.Date)}
-	 * .
+	 * Test method for {@link RandomDateExtensions#randomBirthday(java.util.Date, java.util.Date)} .
 	 */
 	@Test
 	public void testCreateRandomBirthdayDateDate()
@@ -109,8 +111,7 @@ public class RandomDateExtensionsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for
-	 * {@link de.alpharogroup.random.date.RandomDateExtensions#randomDate(java.util.Date)}.
+	 * Test method for {@link RandomDateExtensions#randomDate(java.util.Date)}.
 	 */
 	@Test
 	public void testCreateRandomDate()
@@ -127,75 +128,72 @@ public class RandomDateExtensionsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for
-	 * {@link de.alpharogroup.random.date.RandomDateExtensions#randomDateBetween(java.util.Date, int, int)}
-	 * .
+	 * Test method for {@link RandomDateExtensions#randomDateBetween(java.util.Date, int, int)} .
 	 */
 	@Test
 	public void testCreateRandomDateBetween()
 	{
-
-		// final Date from = this.now;
-		// final int startDays = 0;
-		// final int endDays = 30;
-		// final Date till = DateUtils.addDaysToDate( this.now, 30 );
-		// final Date randomDate = RandomDateExtensions.createRandomDateBetween( from,
-		// startDays, endDays );
-		// this.result = DateUtils.isBetween( this.now, till, randomDate );
-		// assertTrue( "", this.result );
+		final Date from = this.now;
+		final int startDays = 0;
+		final int endDays = 30;
+		final Date till = CalculateDateExtensions.addDays(this.now, 30);
+		final Date randomDate = RandomDateExtensions.randomDateBetween(from, startDays, endDays);
+		this.result = CalculateDateExtensions.isBetween(this.now, till, randomDate);
+		AssertJUnit.assertTrue("", this.result);
 	}
 
 	/**
 	 * Test method for
-	 * {@link de.alpharogroup.random.date.RandomDateExtensions#randomDatebetween(java.util.Date, java.util.Date)}
-	 * .
+	 * {@link RandomDateExtensions#randomDatebetween(java.util.Date, java.util.Date)} .
 	 */
 	@Test
 	public void testCreateRandomDatebetweenDateDate()
 	{
-		// final Date end = DateUtils.addDaysToDate( this.now, 30 );
-		// final Date start = this.now;
-		// final Date randomDate = RandomDateExtensions.createRandomDatebetween( start,
-		// end );
-		// this.result = DateUtils.isBetween( start, end, randomDate );
-		// assertTrue( "", this.result );
+		final Date end = CalculateDateExtensions.addDays(this.now, 30);
+		final Date start = this.now;
+		final Date randomDate = RandomDateExtensions.randomDatebetween(start, end);
+		this.result = CalculateDateExtensions.isBetween(start, end, randomDate);
+		AssertJUnit.assertTrue("", this.result);
 	}
 
 	/**
-	 * Test method for
-	 * {@link de.alpharogroup.random.date.RandomDateExtensions#randomDatebetween(long, long)}.
+	 * Test method for {@link RandomDateExtensions#randomDatebetween(long, long)}.
+	 *
+	 * @throws ParseException
+	 *             occurs when their are problems with parsing the String to Date.
 	 */
 	@Test
-	public void testCreateRandomDatebetweenLongLong()
+	public void testCreateRandomDatebetweenLongLong() throws ParseException
 	{
-		// final Date till = DateUtils.addDaysToDate( this.now, 30 );
-		// final long endDate = till.getTime();
-		// final long startDate = this.now.getTime();
-		// final String randomDate = RandomDateExtensions.createRandomDatebetween(
-		// startDate, endDate );
-		// final Date compare = DateUtils.parseToDate( randomDate,
-		// DatePatterns.DOT_DD_MM_YYYY_HH_MM_SS );
-		// this.result = DateUtils.isBetween( this.now, till, compare );
-		// assertTrue( "", this.result );
+		final Date till = CalculateDateExtensions.addDays(this.now, 30);
+		final long endDate = till.getTime();
+		final long startDate = this.now.getTime();
+		final String randomDate = RandomDateExtensions.randomDatebetween(startDate, endDate);
+		final Date compare = ParseDateExtensions.parseToDate(randomDate,
+			DatePatterns.DOT_DD_MM_YYYY_HH_MM_SS);
+		this.result = CalculateDateExtensions.isBetween(this.now, till, compare);
+		AssertJUnit.assertTrue("", this.result);
 	}
 
 	/**
-	 * Test method for
-	 * {@link de.alpharogroup.random.date.RandomDateExtensions#randomDatebetween(long, long, java.lang.String)}
+	 * Test method for {@link RandomDateExtensions#randomDatebetween(long, long, java.lang.String)}
 	 * .
+	 *
+	 * @throws ParseException
+	 *             occurs when their are problems with parsing the String to Date.
 	 */
 	@Test
-	public void testCreateRandomDatebetweenLongLongString()
+	public void testCreateRandomDatebetweenLongLongString() throws ParseException
 	{
-		// final Date till = DateUtils.addDaysToDate( this.now, 30 );
-		// final long endDate = till.getTime();
-		// final long startDate = this.now.getTime();
-		// final String format = DatePatterns.DOT_DD_MM_YY;
-		// final String randomDate = RandomDateExtensions.createRandomDatebetween(
-		// startDate, endDate, format );
-		// final Date compare = DateUtils.parseToDate( randomDate, format );
-		// this.result = DateUtils.isBetween( this.now, till, compare );
-		// assertTrue( "", this.result );
+		final Date till = CalculateDateExtensions.addDays(this.now, 30);
+		final long endDate = till.getTime();
+		final long startDate = this.now.getTime();
+		final String format = DatePatterns.DOT_DD_MM_YY;
+		final String randomDate = RandomDateExtensions.randomDatebetween(startDate, endDate,
+			format);
+		final Date compare = ParseDateExtensions.parseToDate(randomDate, format);
+		this.result = CalculateDateExtensions.isBetween(this.now, till, compare);
+		AssertJUnit.assertTrue("", this.result);
 	}
 
 }

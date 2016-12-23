@@ -24,18 +24,21 @@
  */
 package de.alpharogroup.crypto.simple;
 
+import lombok.experimental.UtilityClass;
+
 /**
- * Utility class for the use of encrypt or decrypt information.
- * 
+ * The class {@link SimpleCrypt} is an utility class for the use of encrypt or decrypt information.
+ *
  * @version 1.0
  * @author Asterios Raptis
  */
+@UtilityClass
 public final class SimpleCrypt
 {
 
 	/**
 	 * Decrypt the given String.
-	 * 
+	 *
 	 * @param toDecode
 	 *            The String to decrypt.
 	 * @return The decrypted String.
@@ -47,7 +50,7 @@ public final class SimpleCrypt
 
 	/**
 	 * Decrypt the given String.
-	 * 
+	 *
 	 * @param toDecode
 	 *            The String to decrypt.
 	 * @param relocate
@@ -69,7 +72,7 @@ public final class SimpleCrypt
 
 	/**
 	 * Encrypt the given String.
-	 * 
+	 *
 	 * @param secret
 	 *            The String to encrypt.
 	 * @return The encrypted String.
@@ -81,7 +84,7 @@ public final class SimpleCrypt
 
 	/**
 	 * Encrypt the given String.
-	 * 
+	 *
 	 * @param secret
 	 *            The String to encrypt.
 	 * @param relocate
@@ -99,13 +102,6 @@ public final class SimpleCrypt
 			sb.append(a);
 		}
 		return sb.toString().trim();
-	}
-
-	/**
-	 * Private constructor. To avoid creating instances.
-	 */
-	private SimpleCrypt()
-	{
 	}
 
 }

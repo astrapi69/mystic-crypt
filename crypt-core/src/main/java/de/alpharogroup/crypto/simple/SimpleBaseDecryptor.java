@@ -30,15 +30,41 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
+import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
-import de.alpharogroup.crypto.core.BaseDecryptor;
+import de.alpharogroup.crypto.core.BaseCryptor;
+import de.alpharogroup.crypto.interfaces.IntegerDecryptor;
 
-public class SimpleBaseDecryptor extends BaseDecryptor<Integer, Integer>
+/**
+ * The class {@link SimpleBaseDecryptor}.
+ */
+public class SimpleBaseDecryptor extends BaseCryptor implements IntegerDecryptor
 {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Instantiates a new {@link SimpleBaseDecryptor} with the given private key.
+	 *
+	 * @param privateKey
+	 *            The private key.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported.
+	 */
 	public SimpleBaseDecryptor(final String privateKey)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
@@ -46,15 +72,26 @@ public class SimpleBaseDecryptor extends BaseDecryptor<Integer, Integer>
 		super(privateKey);
 	}
 
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Integer decrypt(final Integer encypted) throws Exception
 	{
 		final byte[] buf = new byte[1];
-        buf[0] = (byte)(encypted.intValue());
-        System.out.println(buf.length);
-        final byte[] utf8 = this.cipher.doFinal(buf);
+		buf[0] = (byte)(encypted.intValue());
+		System.out.println(buf.length);
+		final byte[] utf8 = getModel().getCipher().doFinal(buf);
 		return (int)utf8[0];
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected final int newOperationMode()
+	{
+		return Cipher.DECRYPT_MODE;
 	}
 
 }

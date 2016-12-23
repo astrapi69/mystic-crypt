@@ -51,15 +51,23 @@ public class KeyTrustExtensions
 	/**
 	 * Factory method for load the {@link KeyStore} object from the given file.
 	 *
-	 * @param type the type of the keystore
-	 * @param password the password of the keystore
-	 * @param keystoreFile the keystore file
+	 * @param type
+	 *            the type of the keystore
+	 * @param password
+	 *            the password of the keystore
+	 * @param keystoreFile
+	 *            the keystore file
 	 * @return the loaded {@link KeyStore} object
-	 * @throws NoSuchAlgorithmException the no such algorithm exception
-	 * @throws CertificateException the certificate exception
-	 * @throws FileNotFoundException the file not found exception
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 * @throws KeyStoreException the key store exception
+	 * @throws NoSuchAlgorithmException
+	 *             the no such algorithm exception
+	 * @throws CertificateException
+	 *             the certificate exception
+	 * @throws FileNotFoundException
+	 *             the file not found exception
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws KeyStoreException
+	 *             the key store exception
 	 */
 	public static KeyStore newKeyStore(final String type, final String password,
 		final File keystoreFile) throws NoSuchAlgorithmException, CertificateException,
@@ -71,18 +79,28 @@ public class KeyTrustExtensions
 	}
 
 	/**
-	 * Resolve the {@link TrustManager} array from the keystore that is resolved from the given parameters.
+	 * Resolve the {@link TrustManager} array from the keystore that is resolved from the given
+	 * parameters.
 	 *
-	 * @param type the type
-	 * @param password the password
-	 * @param keystoreFile the keystore file
-	 * @param trustManagerAlgorithm the trust manager algorithm
+	 * @param type
+	 *            the type
+	 * @param password
+	 *            the password
+	 * @param keystoreFile
+	 *            the keystore file
+	 * @param trustManagerAlgorithm
+	 *            the trust manager algorithm
 	 * @return the trust manager[]
-	 * @throws NoSuchAlgorithmException the no such algorithm exception
-	 * @throws CertificateException the certificate exception
-	 * @throws FileNotFoundException the file not found exception
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 * @throws KeyStoreException the key store exception
+	 * @throws NoSuchAlgorithmException
+	 *             the no such algorithm exception
+	 * @throws CertificateException
+	 *             the certificate exception
+	 * @throws FileNotFoundException
+	 *             the file not found exception
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws KeyStoreException
+	 *             the key store exception
 	 */
 	public static TrustManager[] resolveTrustManagers(final String type, final String password,
 		final File keystoreFile, final String trustManagerAlgorithm)
@@ -98,19 +116,30 @@ public class KeyTrustExtensions
 	}
 
 	/**
-	 * Resolve the {@link KeyManager} array from the keystore that is resolved from the given parameters.
+	 * Resolve the {@link KeyManager} array from the keystore that is resolved from the given
+	 * parameters.
 	 *
-	 * @param type the type
-	 * @param password the password
-	 * @param keystoreFile the keystore file
-	 * @param keyManagerAlgorithm the key manager algorithm
+	 * @param type
+	 *            the type
+	 * @param password
+	 *            the password
+	 * @param keystoreFile
+	 *            the keystore file
+	 * @param keyManagerAlgorithm
+	 *            the key manager algorithm
 	 * @return the key manager[]
-	 * @throws NoSuchAlgorithmException the no such algorithm exception
-	 * @throws CertificateException the certificate exception
-	 * @throws FileNotFoundException the file not found exception
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 * @throws KeyStoreException the key store exception
-	 * @throws UnrecoverableKeyException the unrecoverable key exception
+	 * @throws NoSuchAlgorithmException
+	 *             the no such algorithm exception
+	 * @throws CertificateException
+	 *             the certificate exception
+	 * @throws FileNotFoundException
+	 *             the file not found exception
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws KeyStoreException
+	 *             the key store exception
+	 * @throws UnrecoverableKeyException
+	 *             the unrecoverable key exception
 	 */
 	public static KeyManager[] resolveKeyManagers(final String type, final String password,
 		final File keystoreFile, final String keyManagerAlgorithm)

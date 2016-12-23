@@ -25,13 +25,13 @@
 package de.alpharogroup.crypto.algorithm;
 
 /**
- * The enum {@link MacAlgorithm} contains the algorithm names that can be specified when requesting an instance of Mac.
- * For more info see:
- * <a href="https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#Mac">https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#Mac</a>
+ * The enum {@link MacAlgorithm} contains the algorithm names that can be specified when requesting
+ * an instance of Mac. For more info see: <a href=
+ * "https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#Mac">https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#Mac</a>
  *
  * @version 1.0
  */
-public enum MacAlgorithm
+public enum MacAlgorithm implements Algorithm
 {
 
 	/** The enum constant for HmacMD5 algorithm. */
@@ -69,4 +69,16 @@ public enum MacAlgorithm
 
 	/** The enum constant for PBEWithHmacSHA512 algorithm. */
 	PBEWithHmacSHA512;
+
+	/** The Constant HMAC. */
+	public static final String HMAC = "Hmac";
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getAlgorithm()
+	{
+		return this.name();
+	}
 }

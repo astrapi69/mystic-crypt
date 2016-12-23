@@ -25,89 +25,41 @@
 package de.alpharogroup.auth;
 
 import de.alpharogroup.auth.interfaces.Permission;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
- * The Class SimpleAccessRight.
+ * The class {@link SimplePermission}.
  *
  * @version 1.0
  * @author Asterios Raptis
  */
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class SimplePermission implements Permission
 {
 
 	/**
 	 * The serialVersionUID.
 	 */
-	private static final long serialVersionUID = -1128896772349172908L;
+	private static final long serialVersionUID = -6621424851730135115L;
 
 	/** The name. */
-	private String name;
+	private String permissionName;
 
 	/** The description. */
 	private String description;
 
 	private String shortcut;
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @return the description
-	 * @see de.alpharogroup.auth.interfaces.Permission#getDescription()
-	 */
-	@Override
-	public String getDescription()
-	{
-		return this.description;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @return the name
-	 * @see de.alpharogroup.auth.interfaces.Permission#getPermissionName()
-	 */
-	@Override
-	public String getPermissionName()
-	{
-		return this.name;
-	}
-
-	@Override
-	public String getShortcut()
-	{
-		return this.shortcut;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @param description
-	 *            the description
-	 * @see de.alpharogroup.auth.interfaces.Permission#setDescription(java.lang.String)
-	 */
-	@Override
-	public void setDescription(final String description)
-	{
-		this.description = description;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @param name
-	 *            the name
-	 * @see de.alpharogroup.auth.interfaces.Permission#setPermissionName(java.lang.String)
-	 */
-	@Override
-	public void setPermissionName(final String name)
-	{
-		this.name = name;
-	}
-
-	@Override
-	public void setShortcut(final String shortcut)
-	{
-		this.shortcut = shortcut;
-	}
 
 }
