@@ -30,13 +30,15 @@ import java.util.Set;
 
 import de.alpharogroup.random.RandomExtensions;
 import de.alpharogroup.resourcebundle.properties.PropertiesExtensions;
+import lombok.experimental.UtilityClass;
 
 /**
- * Utility class to create random addresses.
+ * The class {@link RandomAddressExtensions} is a utility class to create random addresses.
  *
  * @version 1.0
  * @author Asterios Raptis
  */
+@UtilityClass
 public class RandomAddressExtensions
 {
 
@@ -58,7 +60,6 @@ public class RandomAddressExtensions
 	 */
 	public static String getRandomStreet(final Properties properties) throws IOException
 	{
-
 		Properties p = null;
 		p = properties != null ? properties : PropertiesExtensions.loadProperties(PROP_FILE_STREETS);
 		final int size = p.size();

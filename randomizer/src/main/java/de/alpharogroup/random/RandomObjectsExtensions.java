@@ -28,6 +28,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The class {@link RandomObjectsExtensions} is a utility class to create random objects.
+ */
 public class RandomObjectsExtensions {
 
 	/**

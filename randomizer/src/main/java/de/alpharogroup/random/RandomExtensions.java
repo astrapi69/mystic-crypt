@@ -36,6 +36,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import de.alpharogroup.lang.ClassExtensions;
+import lombok.experimental.UtilityClass;
+
 /**
  * Utility class for producing random data. Existing name conventions:
  *
@@ -45,6 +48,7 @@ import java.util.Set;
  * @version 1.1
  * @author Asterios Raptis
  */
+@UtilityClass
 public class RandomExtensions
 {
 
@@ -198,7 +202,7 @@ public class RandomExtensions
 			Class<T> enumClass = null;
 			try
 			{
-				enumClass = (Class<T>)Class.forName(classname);
+				enumClass = (Class<T>)ClassExtensions.forName(classname);
 				return getRandomEnum(enumClass);
 			}
 			catch (final ClassNotFoundException e)

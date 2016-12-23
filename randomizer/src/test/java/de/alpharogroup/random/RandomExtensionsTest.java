@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.testng.AssertJUnit;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -113,18 +114,57 @@ public class RandomExtensionsTest extends BaseTestCase
 		}
 	}
 
+	/**
+	 * Test method for {@link RandomExtensions#getRandomEnum(Enum)} .
+	 */
 	@Test
 	public void testGetRandomEnum()
 	{
+		final Gender enumEntry = Gender.FEMALE;
+		final Gender randomEnumEntry = RandomExtensions.getRandomEnum(enumEntry);
+
 		final Gender[] genders = Gender.values();
-		Gender randomEnumEntry = RandomExtensions.getRandomEnum(genders);
-		System.out.println(randomEnumEntry.name());
+		AssertJUnit.assertTrue("Enum value should contain the random value.",
+			ArrayUtils.contains(genders, randomEnumEntry));
+	}
 
-		randomEnumEntry = RandomExtensions.getRandomEnum(randomEnumEntry);
-		System.out.println(randomEnumEntry.name());
+	/**
+	 * Test method for {@link RandomExtensions#getRandomEnum(Enum)} .
+	 */
+	@Test
+	public void testGetRandomEnumClass()
+	{
+		final Gender randomEnumEntry = RandomExtensions.getRandomEnum(Gender.class);
 
-		randomEnumEntry = RandomExtensions.getRandomEnum(Gender.class);
-		System.out.println(randomEnumEntry.name());
+		final Gender[] genders = Gender.values();
+		AssertJUnit.assertTrue("Enum value should contain the random value.",
+			ArrayUtils.contains(genders, randomEnumEntry));
+	}
+
+	/**
+	 * Test method for {@link RandomExtensions#getRandomEnum(Enum[])} .
+	 */
+	@Test
+	public void testGetRandomEnumArray()
+	{
+		final Gender[] genders = Gender.values();
+		final Gender randomEnumEntry = RandomExtensions.getRandomEnum(genders);
+		AssertJUnit.assertTrue("Enum value should contain the random value.",
+			ArrayUtils.contains(genders, randomEnumEntry));
+	}
+
+	/**
+	 * Test method for {@link RandomExtensions#getRandomEnum(String)} .
+	 */
+	@Test
+	public void testGetRandomEnumString()
+	{
+		final String enumClassName = "de.alpharogroup.test.objects.Gender";
+		final Gender randomEnumEntry = RandomExtensions.getRandomEnum(enumClassName);
+
+		final Gender[] genders = Gender.values();
+		AssertJUnit.assertTrue("Enum value should contain the random value.",
+			ArrayUtils.contains(genders, randomEnumEntry));
 	}
 
 	/**
@@ -172,6 +212,9 @@ public class RandomExtensionsTest extends BaseTestCase
 	{
 	}
 
+	/**
+	 * Test method for {@link RandomExtensions#randomByteArray(int)}.
+	 */
 	@Test
 	public void testRandomByteArray()
 	{
