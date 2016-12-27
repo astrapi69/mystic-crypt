@@ -25,7 +25,8 @@
 package de.alpharogroup.crypto.interfaces;
 
 /**
- * interface for encrypting {@link Integer} objects.
+ * The interface {@link IntegerEncryptor} can encrypt a {@link Integer} object and return the
+ * encrypted result as {@link Integer} object.
  *
  * @version 1.0
  * @author Asterios Raptis

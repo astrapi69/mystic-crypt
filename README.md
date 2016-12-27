@@ -106,6 +106,7 @@ Do not hesitate to contact the mystic-crypt developers with your questions, conc
 Here is a list of awesome projects for cryptography:
 
 
-[cryptacular](https://github.com/vt-middleware/cryptacular) The friendly complement to the BouncyCastle crypto API for Java.
+ * [cryptacular](https://github.com/vt-middleware/cryptacular) The friendly complement to the BouncyCastle crypto API for Java.
+ * [JSch](http://www.jcraft.com/jsch/) JSch is a pure Java implementation of SSH2.
 
 

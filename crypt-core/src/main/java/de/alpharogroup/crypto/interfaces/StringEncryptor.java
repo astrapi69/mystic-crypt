@@ -25,11 +25,12 @@
 package de.alpharogroup.crypto.interfaces;
 
 /**
- * Interface for decrypt {@link String} objects.
+ * The interface {@link StringEncryptor} can encrypt a {@link String} object and return the
+ * encrypted result as {@link String} object.
  *
  * @version 1.0
  * @author Asterios Raptis
  */
-public interface Decryptor extends GenericDecryptor<String, String>
+public interface StringEncryptor extends GenericEncryptor<String, String>
 {
 }

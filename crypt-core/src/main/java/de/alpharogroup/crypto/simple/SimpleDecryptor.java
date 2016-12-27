@@ -45,17 +45,17 @@ import org.apache.commons.codec.binary.Base64;
 
 import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.CryptConst;
-import de.alpharogroup.crypto.interfaces.Decryptor;
+import de.alpharogroup.crypto.interfaces.StringDecryptor;
 import lombok.AccessLevel;
 import lombok.Getter;
 
 /**
- * The class {@link SimpleDecryptor} is a simple {@link Decryptor} implementation.
+ * The class {@link SimpleDecryptor} is a simple {@link StringDecryptor} implementation.
  *
  * @author Asterios Raptis
  * @version 1.0
  */
-public class SimpleDecryptor implements Decryptor
+public class SimpleDecryptor implements StringDecryptor
 {
 
 	/**

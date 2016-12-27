@@ -25,7 +25,8 @@
 package de.alpharogroup.crypto.interfaces;
 
 /**
- * Generic interface for encrypting objects.
+ * The generic interface {@link GenericEncryptor} can encrypt an object of type &lt;T&gt; and return
+ * the encrypted result as object of type &lt;R&gt;.
  *
  * @author Asterios Raptis
  * @version 1.0

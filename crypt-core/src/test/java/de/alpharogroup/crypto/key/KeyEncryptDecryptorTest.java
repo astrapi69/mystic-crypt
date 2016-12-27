@@ -81,14 +81,23 @@ public class KeyEncryptDecryptorTest
 		final PrivateKeyDecryptor decryptor = new PrivateKeyDecryptor(decryptModel);
 
 
-		final byte[] encrypted = encryptor.encrypt(testBytes);
+		byte[] encrypted = encryptor.encrypt(testBytes);
 
-		final byte[] decrypted = decryptor.decrypt(encrypted);
+		byte[] decrypted = decryptor.decrypt(encrypted);
 
-		final String decryptedString = new String(decrypted, "UTF-8");
+		String decryptedString = new String(decrypted, "UTF-8");
 		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
 			test.equals(decryptedString));
+		for (int i = 0; i < 100; i++)
+		{
+			encrypted = encryptor.encrypt(testBytes);
+			decrypted = decryptor.decrypt(encrypted);
 
+			decryptedString = new String(decrypted, "UTF-8");
+			AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
+				test.equals(decryptedString));
+			System.out.println(decryptedString);
+		}
 	}
 
 	/**
