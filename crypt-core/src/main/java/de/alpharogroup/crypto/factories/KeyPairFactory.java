@@ -69,9 +69,28 @@ public class KeyPairFactory
 	public static KeyPair newKeyPair(final String algorithm, final int keySize)
 		throws NoSuchAlgorithmException
 	{
+		final KeyPairGenerator generator = newKeyPairGenerator(algorithm, keySize);
+		return generator.generateKeyPair();
+	}
+
+	/**
+	 * Factory method for creating a new {@link KeyPairGenerator} from the given parameters.
+	 *
+	 * @param algorithm
+	 *            the algorithm
+	 * @param keySize
+	 *            the key size
+	 * @return the new {@link KeyPairGenerator} from the given parameters.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if no Provider supports a KeyPairGeneratorSpi implementation for the
+	 *             specified algorithm.
+	 */
+	public static KeyPairGenerator newKeyPairGenerator(final String algorithm, final int keySize)
+		throws NoSuchAlgorithmException
+	{
 		final KeyPairGenerator generator = KeyPairGenerator.getInstance(algorithm);
 		generator.initialize(keySize);
-		return generator.generateKeyPair();
+		return generator;
 	}
 
 }
