@@ -32,7 +32,7 @@ import de.alpharogroup.crypto.algorithm.Algorithm;
 import lombok.experimental.UtilityClass;
 
 /**
- * A factory for create {@link KeyPair} objects.
+ * The factory class {@link KeyPairFactory} holds methods for creating {@link KeyPair} objects.
  */
 @UtilityClass
 public class KeyPairFactory

@@ -34,7 +34,7 @@ import javax.crypto.spec.SecretKeySpec;
 import lombok.experimental.UtilityClass;
 
 /**
- * A factory for creating {@link SecretKeyFactory} and {@link SecretKeySpec} objects.
+ * The factory class {@link SecretKeyFactory} holds methods for creating {@link SecretKeySpec} objects.
  */
 @UtilityClass
 public class SecretKeyFactoryExtensions

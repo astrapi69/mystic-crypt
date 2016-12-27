@@ -41,7 +41,8 @@ import org.bouncycastle.x509.X509V3CertificateGenerator;
 import de.alpharogroup.random.RandomExtensions;
 
 /**
- * The class {@link CertFactory} is factory for create {@link Certificate} objects and sub classes like {@link X509Certificate}.
+ * The factory class {@link CertFactory} holds methods for creating {@link Certificate} objects and
+ * sub classes like {@link X509Certificate}.
  */
 @SuppressWarnings("deprecation")
 public class CertFactory

@@ -25,7 +25,6 @@
 package de.alpharogroup.crypto.ssl;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.KeyStore;
@@ -39,44 +38,16 @@ import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 
+import de.alpharogroup.crypto.factories.KeyStoreFactory;
 import lombok.experimental.UtilityClass;
 
 /**
- * The class {@link KeyTrustExtensions}.
+ * The factory class {@link KeyTrustExtensions} holds methods for creating {@link TrustManager}
+ * array objects and {@link KeyManager} array objects. The class {@link KeyTrustExtensions}.
  */
 @UtilityClass
 public class KeyTrustExtensions
 {
-
-	/**
-	 * Factory method for load the {@link KeyStore} object from the given file.
-	 *
-	 * @param type
-	 *            the type of the keystore
-	 * @param password
-	 *            the password of the keystore
-	 * @param keystoreFile
-	 *            the keystore file
-	 * @return the loaded {@link KeyStore} object
-	 * @throws NoSuchAlgorithmException
-	 *             the no such algorithm exception
-	 * @throws CertificateException
-	 *             the certificate exception
-	 * @throws FileNotFoundException
-	 *             the file not found exception
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 * @throws KeyStoreException
-	 *             the key store exception
-	 */
-	public static KeyStore newKeyStore(final String type, final String password,
-		final File keystoreFile) throws NoSuchAlgorithmException, CertificateException,
-		FileNotFoundException, IOException, KeyStoreException
-	{
-		final KeyStore keyStore = KeyStore.getInstance(type);
-		keyStore.load(new FileInputStream(keystoreFile), password.toCharArray());
-		return keyStore;
-	}
 
 	/**
 	 * Resolve the {@link TrustManager} array from the keystore that is resolved from the given
@@ -107,7 +78,7 @@ public class KeyTrustExtensions
 		throws NoSuchAlgorithmException, CertificateException, FileNotFoundException, IOException,
 		KeyStoreException
 	{
-		final KeyStore keyStore = newKeyStore(type, password, keystoreFile);
+		final KeyStore keyStore = KeyStoreFactory.newKeyStore(type, password, keystoreFile);
 		final TrustManagerFactory trustFactory = TrustManagerFactory
 			.getInstance(trustManagerAlgorithm);
 		trustFactory.init(keyStore);
@@ -146,7 +117,7 @@ public class KeyTrustExtensions
 		throws NoSuchAlgorithmException, CertificateException, FileNotFoundException, IOException,
 		KeyStoreException, UnrecoverableKeyException
 	{
-		final KeyStore keyStore = newKeyStore(type, password, keystoreFile);
+		final KeyStore keyStore = KeyStoreFactory.newKeyStore(type, password, keystoreFile);
 		final KeyManagerFactory keyFactory = KeyManagerFactory.getInstance(keyManagerAlgorithm);
 		keyFactory.init(keyStore, password.toCharArray());
 		final KeyManager[] keyManagers = keyFactory.getKeyManagers();

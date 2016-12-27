@@ -41,7 +41,7 @@ import javax.crypto.SecretKeyFactory;
 import lombok.experimental.UtilityClass;
 
 /**
- * A factory for creating {@link Cipher} objects.
+ * The factory class {@link CipherFactory} holds methods for creating {@link Cipher} objects.
  */
 @UtilityClass
 public class CipherFactory
@@ -154,15 +154,16 @@ public class CipherFactory
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public static Cipher newCipher(final String privateKey, final String algorithm, final byte[] salt,
-		final int iterationCount, final int operationMode)
+	public static Cipher newCipher(final String privateKey, final String algorithm,
+		final byte[] salt, final int iterationCount, final int operationMode)
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
 		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
 		final KeySpec keySpec = KeySpecFactory.newPBEKeySpec(privateKey, salt, iterationCount);
 		final SecretKeyFactory factory = SecretKeyFactoryExtensions.newSecretKeyFactory(algorithm);
 		final SecretKey key = factory.generateSecret(keySpec);
-		final AlgorithmParameterSpec paramSpec = AlgorithmParameterSpecFactory.newPBEParameterSpec(salt, iterationCount);
+		final AlgorithmParameterSpec paramSpec = AlgorithmParameterSpecFactory
+			.newPBEParameterSpec(salt, iterationCount);
 		return newCipher(operationMode, key, paramSpec, key.getAlgorithm());
 	}
 

@@ -31,7 +31,8 @@ import javax.crypto.spec.PBEParameterSpec;
 import lombok.experimental.UtilityClass;
 
 /**
- * A factory for creating {@link AlgorithmParameterSpec} objects.
+ * The factory class {@link AlgorithmParameterSpecFactory} holds methods for creating
+ * {@link AlgorithmParameterSpec} objects.
  */
 @UtilityClass
 public class AlgorithmParameterSpecFactory
