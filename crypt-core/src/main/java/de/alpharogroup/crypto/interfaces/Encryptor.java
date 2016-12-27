@@ -25,28 +25,27 @@
 package de.alpharogroup.crypto.interfaces;
 
 /**
- * The generic interface {@link GenericDecryptor} can decrypt an object of type &lt;T&gt; (that was
- * previously encrypted) and return the decrypted result as object of type &lt;R&gt;.
+ * The generic interface {@link Encryptor} can encrypt an object of type &lt;T&gt; and return
+ * the encrypted result as object of type &lt;R&gt;.
  *
  * @author Asterios Raptis
  * @version 1.0
  * @param <T>
- *            the generic type of the input to decrypt
+ *            the generic type of the input to encrypt
  * @param <R>
  *            the generic type of the result
  */
-public interface GenericDecryptor<T, R>
+public interface Encryptor<T, R>
 {
-
 	/**
-	 * Decrypt the given encrypted object.
+	 * Encrypt the given object.
 	 *
-	 * @param encrypted
-	 *            The object to decrypt.
-	 * @return The decrypted object
+	 * @param toEncrypt
+	 *            The object to encrypt.
+	 * @return The encrypted object.
 	 * @throws Exception
-	 *             is thrown if decryption fails.
+	 *             is thrown if encryption fails.
 	 */
-	public R decrypt(final T encrypted) throws Exception;
+	public R encrypt(final T toEncrypt) throws Exception;
 
 }

@@ -33,16 +33,16 @@ import java.security.spec.InvalidKeySpecException;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
-import de.alpharogroup.crypto.interfaces.GenericEncryptor;
+import de.alpharogroup.crypto.interfaces.Encryptor;
 
 /**
  * The abstract class {@link BaseEncryptor} is a base implementation of the
- * {@link GenericEncryptor}.
+ * {@link Encryptor}.
  *
  * @version 1.0
  * @author Asterios Raptis
  */
-public abstract class BaseEncryptor extends BaseCryptor implements GenericEncryptor<String, String>
+public abstract class BaseEncryptor extends BaseCryptor implements Encryptor<String, String>
 {
 
 	/** The Constant serialVersionUID. */

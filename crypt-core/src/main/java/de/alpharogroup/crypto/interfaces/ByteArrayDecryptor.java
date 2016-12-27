@@ -30,6 +30,6 @@ package de.alpharogroup.crypto.interfaces;
  * @version 1.0
  * @author Asterios Raptis
  */
-public interface ByteArrayDecryptor extends GenericDecryptor<byte[], byte[]>
+public interface ByteArrayDecryptor extends Decryptor<byte[], byte[]>
 {
 }

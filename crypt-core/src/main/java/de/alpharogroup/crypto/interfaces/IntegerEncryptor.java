@@ -31,6 +31,6 @@ package de.alpharogroup.crypto.interfaces;
  * @version 1.0
  * @author Asterios Raptis
  */
-public interface IntegerEncryptor extends GenericEncryptor<Integer, Integer>
+public interface IntegerEncryptor extends Encryptor<Integer, Integer>
 {
 }

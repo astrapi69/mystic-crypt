@@ -31,6 +31,6 @@ package de.alpharogroup.crypto.interfaces;
  * @version 1.0
  * @author Asterios Raptis
  */
-public interface StringEncryptor extends GenericEncryptor<String, String>
+public interface StringEncryptor extends Encryptor<String, String>
 {
 }

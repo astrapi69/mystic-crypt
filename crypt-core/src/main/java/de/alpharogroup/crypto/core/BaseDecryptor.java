@@ -33,17 +33,17 @@ import java.security.spec.InvalidKeySpecException;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
-import de.alpharogroup.crypto.interfaces.GenericDecryptor;
+import de.alpharogroup.crypto.interfaces.Decryptor;
 import de.alpharogroup.crypto.model.CryptModel;
 
 /**
  * The abstract class {@link BaseDecryptor} is a base implementation of the
- * {@link GenericDecryptor}.
+ * {@link Decryptor}.
  *
  * @author Asterios Raptis
  * @version 1.0
  */
-public abstract class BaseDecryptor extends BaseCryptor implements GenericDecryptor<String, String>
+public abstract class BaseDecryptor extends BaseCryptor implements Decryptor<String, String>
 {
 
 	/** The Constant serialVersionUID. */
