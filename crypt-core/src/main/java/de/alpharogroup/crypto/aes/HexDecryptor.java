@@ -109,7 +109,10 @@ public class HexDecryptor extends BaseStringDecryptor
 	@Override
 	protected String newAlgorithm()
 	{
-		getModel().setAlgorithm(AesAlgorithm.AES);
+		if (getModel().getAlgorithm() == null)
+		{
+			getModel().setAlgorithm(AesAlgorithm.AES);
+		}
 		return getModel().getAlgorithm().getAlgorithm();
 	}
 
@@ -125,7 +128,7 @@ public class HexDecryptor extends BaseStringDecryptor
 		final SecretKeySpec skeySpec = new SecretKeySpec(privateKey.getBytes("UTF-8"),
 			getModel().getAlgorithm().getAlgorithm());
 		final Cipher cipher = Cipher.getInstance(getModel().getAlgorithm().getAlgorithm());
-		cipher.init(Cipher.DECRYPT_MODE, skeySpec);
+		cipher.init(operationMode, skeySpec);
 		return cipher;
 	}
 

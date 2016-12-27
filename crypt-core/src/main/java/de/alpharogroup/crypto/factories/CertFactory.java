@@ -72,7 +72,7 @@ public class CertFactory
 	}
 
 	/**
-	 * Factory method for creating a new {@link X509Certificate} from the given parameters.
+	 * Factory method for creating a new {@link X509Certificate} object from the given parameters.
 	 *
 	 * @param publicKey
 	 *            the public key
@@ -84,9 +84,13 @@ public class CertFactory
 	 *            the issuer
 	 * @param signatureAlgorithm
 	 *            the signature algorithm
-	 * @return the new {@link X509Certificate}
+	 * @param start
+	 *            the start
+	 * @param end
+	 *            the end
+	 * @return the new {@link X509Certificate} object
 	 * @throws Exception
-	 *             the exception
+	 *             is thrown if if a security error occur
 	 */
 	public static X509Certificate newX509Certificate(final PublicKey publicKey,
 		final PrivateKey privateKey, final String subject, final String issuer,

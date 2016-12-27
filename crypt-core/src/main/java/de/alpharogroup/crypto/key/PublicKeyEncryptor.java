@@ -94,7 +94,10 @@ public class PublicKeyEncryptor extends AbstractCryptor<Cipher, PublicKey>
 	@Override
 	protected String newAlgorithm()
 	{
-		return KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA256AndMGF1Padding.getAlgorithm();
+		if ( getModel().getAlgorithm() == null) {
+			return KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding.getAlgorithm();
+		}
+		return getModel().getAlgorithm().getAlgorithm();
 	}
 
 	/**

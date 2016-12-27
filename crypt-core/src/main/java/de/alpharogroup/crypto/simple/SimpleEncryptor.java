@@ -139,7 +139,7 @@ public class SimpleEncryptor implements StringEncryptor
 			this.cipher = Cipher.getInstance(key.getAlgorithm());
 			final AlgorithmParameterSpec paramSpec = new PBEParameterSpec(CryptConst.SALT,
 				CryptConst.ITERATIONCOUNT);
-			this.cipher.init(Cipher.ENCRYPT_MODE, key, paramSpec);
+			this.cipher.init(newOperationMode(), key, paramSpec);
 			initialized = true;
 		}
 	}

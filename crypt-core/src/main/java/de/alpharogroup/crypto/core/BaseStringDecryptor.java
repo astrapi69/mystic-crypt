@@ -101,14 +101,4 @@ public abstract class BaseStringDecryptor extends BaseCryptor implements StringD
 		super(model);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public
-	final int newOperationMode()
-	{
-		return Cipher.DECRYPT_MODE;
-	}
-
 }

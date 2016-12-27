@@ -138,7 +138,7 @@ public class SimpleDecryptor implements StringDecryptor
 			this.cipher = Cipher.getInstance(key.getAlgorithm());
 			final AlgorithmParameterSpec paramSpec = new PBEParameterSpec(CryptConst.SALT,
 				CryptConst.ITERATIONCOUNT);
-			this.cipher.init(Cipher.DECRYPT_MODE, key, paramSpec);
+			this.cipher.init(newOperationMode(), key, paramSpec);
 			initialized = true;
 		}
 	}

@@ -36,6 +36,8 @@ import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKeyFactory;
 
+import org.apache.commons.lang.ArrayUtils;
+
 import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.factories.AlgorithmParameterSpecFactory;
@@ -186,7 +188,10 @@ public abstract class AbstractCryptor<C, K> implements Serializable, Cryptor
 	 */
 	protected String newAlgorithm()
 	{
-		return CryptConst.PBE_WITH_MD5_AND_DES;
+		if ( getModel().getAlgorithm() == null) {
+			return CryptConst.PBE_WITH_MD5_AND_DES;
+		}
+		return getModel().getAlgorithm().getAlgorithm();
 	}
 
 	/**
@@ -196,7 +201,10 @@ public abstract class AbstractCryptor<C, K> implements Serializable, Cryptor
 	 */
 	protected byte[] newSalt()
 	{
-		return CryptConst.SALT;
+		if (ArrayUtils.isEmpty(getModel().getSalt())) {
+			return CryptConst.SALT;
+		}
+		return getModel().getSalt();
 	}
 
 	/**
@@ -206,7 +214,11 @@ public abstract class AbstractCryptor<C, K> implements Serializable, Cryptor
 	 */
 	protected int newIterationCount()
 	{
-		return CryptConst.ITERATIONCOUNT;
+		if (getModel().getIterationCount() == null)
+		{
+			return CryptConst.ITERATIONCOUNT;
+		}
+		return getModel().getIterationCount();
 	}
 
 	/**

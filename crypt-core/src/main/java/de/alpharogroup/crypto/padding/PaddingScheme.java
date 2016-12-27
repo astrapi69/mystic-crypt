@@ -48,7 +48,13 @@ public enum PaddingScheme
 	OAEPWithSHA1AndMGF1Padding("OAEPWithSHA1AndMGF1Padding"),
 
 	/** The OAEP with SHA 256 and MGF 1 padding. */
-	OAEPWithSHA256AndMGF1Padding("OAEPWithSHA256AndMGF1Padding");
+	OAEPWithSHA256AndMGF1Padding("OAEPWithSHA256AndMGF1Padding"),
+
+	/** The OAEP with SHA 1 and MGF 1 padding. */
+	OAEPWithSHA_1AndMGF1Padding("OAEPWithSHA-1AndMGF1Padding"),
+
+	/** The OAEP with SHA 256 and MGF 1 padding. */
+	OAEPWithSHA_256AndMGF1Padding("OAEPWithSHA-256AndMGF1Padding");
 
 
 	/** The padding scheme. */
