@@ -24,7 +24,7 @@
  */
 package de.alpharogroup.crypto.aes;
 
-import de.alpharogroup.crypto.interfaces.GenericDecryptor;
+import de.alpharogroup.crypto.interfaces.Decryptor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -35,12 +35,12 @@ import lombok.Getter;
  * unit test.
  */
 @Builder
-public class ChainedDecryptor implements GenericDecryptor<String, String>
+public class ChainedDecryptor implements Decryptor<String, String>
 {
 
 	/** The decryptors. */
 	@Getter
-	private final GenericDecryptor<String, String>[] decryptors;
+	private final Decryptor<String, String>[] decryptors;
 
 	/**
 	 * Instantiates a new {@link ChainedDecryptor}.
@@ -49,7 +49,7 @@ public class ChainedDecryptor implements GenericDecryptor<String, String>
 	 *            the decryptors
 	 */
 	@SafeVarargs
-	public ChainedDecryptor(final GenericDecryptor<String, String>... decryptors)
+	public ChainedDecryptor(final Decryptor<String, String>... decryptors)
 	{
 		this.decryptors = decryptors;
 	}
@@ -61,7 +61,7 @@ public class ChainedDecryptor implements GenericDecryptor<String, String>
 	public String decrypt(final String encypted) throws Exception
 	{
 		String result = encypted;
-		for (final GenericDecryptor<String, String> encryptor : decryptors)
+		for (final Decryptor<String, String> encryptor : decryptors)
 		{
 			result = encryptor.decrypt(result);
 		}

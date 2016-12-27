@@ -24,12 +24,38 @@
  */
 package de.alpharogroup.crypto.interfaces;
 
+import javax.crypto.Cipher;
+
 /**
- * interface for encrypting {@link String} objects.
+ * The generic interface {@link Encryptor} can encrypt an object of type &lt;T&gt; and return
+ * the encrypted result as object of type &lt;R&gt;.
  *
- * @version 1.0
  * @author Asterios Raptis
+ * @version 1.0
+ * @param <T>
+ *            the generic type of the input to encrypt
+ * @param <R>
+ *            the generic type of the result
  */
-public interface Encryptor extends GenericEncryptor<String, String>
+public interface Encryptor<T, R> extends Cryptor
 {
+	/**
+	 * Encrypt the given object.
+	 *
+	 * @param toEncrypt
+	 *            The object to encrypt.
+	 * @return The encrypted object.
+	 * @throws Exception
+	 *             is thrown if encryption fails.
+	 */
+	public R encrypt(final T toEncrypt) throws Exception;
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	default int newOperationMode()
+	{
+		return Cipher.ENCRYPT_MODE;
+	}
 }

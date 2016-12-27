@@ -30,7 +30,6 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
-import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
 import de.alpharogroup.crypto.core.BaseCryptor;
@@ -83,15 +82,6 @@ public class SimpleBaseDecryptor extends BaseCryptor implements IntegerDecryptor
 		System.out.println(buf.length);
 		final byte[] utf8 = getModel().getCipher().doFinal(buf);
 		return (int)utf8[0];
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected final int newOperationMode()
-	{
-		return Cipher.DECRYPT_MODE;
 	}
 
 }

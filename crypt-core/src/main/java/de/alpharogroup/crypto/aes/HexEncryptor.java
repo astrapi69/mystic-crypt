@@ -41,13 +41,13 @@ import org.apache.commons.codec.binary.Hex;
 import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.algorithm.AesAlgorithm;
 import de.alpharogroup.crypto.algorithm.Algorithm;
-import de.alpharogroup.crypto.core.BaseEncryptor;
+import de.alpharogroup.crypto.core.BaseStringEncryptor;
 
 /**
  * The class {@link HexEncryptor} is the pendant class of {@link HexDecryptor} and encrypts given
  * String objects that can be decrypted with {@link HexDecryptor}. For an example see the unit test.
  */
-public class HexEncryptor extends BaseEncryptor
+public class HexEncryptor extends BaseStringEncryptor
 {
 
 	/** The Constant serialVersionUID. */
@@ -141,7 +141,10 @@ public class HexEncryptor extends BaseEncryptor
 	@Override
 	protected String newAlgorithm()
 	{
-		getModel().setAlgorithm(AesAlgorithm.AES);
+		if (getModel().getAlgorithm() == null)
+		{
+			getModel().setAlgorithm(AesAlgorithm.AES);
+		}
 		return getModel().getAlgorithm().getAlgorithm();
 	}
 
@@ -157,7 +160,7 @@ public class HexEncryptor extends BaseEncryptor
 		final SecretKeySpec skeySpec = new SecretKeySpec(privateKey.getBytes("UTF-8"),
 			getModel().getAlgorithm().getAlgorithm());
 		final Cipher cipher = Cipher.getInstance(getModel().getAlgorithm().getAlgorithm());
-		cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
+		cipher.init(operationMode, skeySpec);
 		return cipher;
 	}
 

@@ -5,6 +5,7 @@
     <classes>
       <class name="de.alpharogroup.random.RandomExtensionsTest"/>
       <class name="de.alpharogroup.random.RandomObjectsExtensionsTest"/>
+      <class name="de.alpharogroup.random.SecureRandomBeanTest"/>
       <class name="de.alpharogroup.random.date.RandomDateExtensionsTest"/>
       <class name="de.alpharogroup.random.address.RandomAddressExtensionsTest"/>
     </classes>

@@ -25,11 +25,12 @@
 package de.alpharogroup.crypto.interfaces;
 
 /**
- * Interface for decrypt {@link Integer} objects.
+ * The interface {@link IntegerDecryptor} can decrypt a {@link Integer} object (that was previously
+ * encrypted) and return the decrypted result as {@link Integer} object.
  *
  * @version 1.0
  * @author Asterios Raptis
  */
-public interface IntegerDecryptor extends GenericDecryptor<Integer, Integer>
+public interface IntegerDecryptor extends Decryptor<Integer, Integer>
 {
 }
