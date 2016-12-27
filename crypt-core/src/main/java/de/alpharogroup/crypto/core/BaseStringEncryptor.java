@@ -30,20 +30,18 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
-import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
-import de.alpharogroup.crypto.interfaces.Decryptor;
-import de.alpharogroup.crypto.model.CryptModel;
+import de.alpharogroup.crypto.interfaces.StringEncryptor;
 
 /**
- * The abstract class {@link BaseDecryptor} is a base implementation of the
- * {@link Decryptor}.
+ * The abstract class {@link BaseStringEncryptor} is a base implementation of the
+ * {@link StringEncryptor}.
  *
- * @author Asterios Raptis
  * @version 1.0
+ * @author Asterios Raptis
  */
-public abstract class BaseDecryptor extends BaseCryptor implements Decryptor<String, String>
+public abstract class BaseStringEncryptor extends BaseCryptor implements StringEncryptor
 {
 
 	/** The Constant serialVersionUID. */
@@ -67,47 +65,11 @@ public abstract class BaseDecryptor extends BaseCryptor implements Decryptor<Str
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public BaseDecryptor(final String privateKey)
+	public BaseStringEncryptor(final String privateKey)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
 		super(privateKey);
-	}
-
-	/**
-	 * Constructor with the given {@link CryptModel}.
-	 *
-	 * @param model
-	 *            The crypt model.
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws UnsupportedEncodingException
-	 *             is thrown if the named charset is not supported.
-	 */
-	public BaseDecryptor(final CryptModel<Cipher, String> model)
-		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
-		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
-	{
-		super(model);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected final int newOperationMode()
-	{
-		return Cipher.DECRYPT_MODE;
 	}
 
 }

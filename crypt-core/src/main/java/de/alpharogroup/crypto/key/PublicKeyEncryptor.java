@@ -94,7 +94,7 @@ public class PublicKeyEncryptor extends AbstractCryptor<Cipher, PublicKey>
 	@Override
 	protected String newAlgorithm()
 	{
-		return KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding.getAlgorithm();
+		return KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA256AndMGF1Padding.getAlgorithm();
 	}
 
 	/**
@@ -109,16 +109,6 @@ public class PublicKeyEncryptor extends AbstractCryptor<Cipher, PublicKey>
 		final Cipher cipher = CipherFactory.newCipher(algorithm);
 		cipher.init(operationMode, key);
 		return cipher;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected final int newOperationMode()
-	{
-		getModel().setOperationMode(Cipher.ENCRYPT_MODE);
-		return getModel().getOperationMode();
 	}
 
 }

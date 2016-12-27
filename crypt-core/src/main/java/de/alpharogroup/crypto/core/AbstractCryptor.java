@@ -40,6 +40,7 @@ import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.factories.AlgorithmParameterSpecFactory;
 import de.alpharogroup.crypto.factories.SecretKeyFactoryExtensions;
+import de.alpharogroup.crypto.interfaces.Cryptor;
 import de.alpharogroup.crypto.model.CryptModel;
 import lombok.Getter;
 
@@ -55,7 +56,7 @@ import lombok.Getter;
  * @author Asterios Raptis
  * @version 1.0
  */
-public abstract class AbstractCryptor<C, K> implements Serializable
+public abstract class AbstractCryptor<C, K> implements Serializable, Cryptor
 {
 
 	/** The Constant serialVersionUID. */
@@ -207,15 +208,6 @@ public abstract class AbstractCryptor<C, K> implements Serializable
 	{
 		return CryptConst.ITERATIONCOUNT;
 	}
-
-	/**
-	 * Abstact callback method for get the operation mode. the operation mode can be one of the
-	 * following values: ENCRYPT_MODE, DECRYPT_MODE, WRAP_MODE or UNWRAP_MODE
-	 *
-	 * @return the operation mode
-	 */
-	protected abstract int newOperationMode();
-
 
 	/**
 	 * Factory method for creating a new {@link Cipher} from the given parameters. This method is

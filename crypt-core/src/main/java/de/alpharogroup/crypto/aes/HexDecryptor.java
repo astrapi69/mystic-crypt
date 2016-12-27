@@ -37,13 +37,13 @@ import javax.crypto.spec.SecretKeySpec;
 import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.algorithm.AesAlgorithm;
 import de.alpharogroup.crypto.algorithm.Algorithm;
-import de.alpharogroup.crypto.core.BaseDecryptor;
+import de.alpharogroup.crypto.core.BaseStringDecryptor;
 
 /**
  * The class {@link HexDecryptor} is the pendant class of {@link HexEncryptor} and decrypts given
  * String objects that was encrypted with {@link HexEncryptor}. For an example see the unit test.
  */
-public class HexDecryptor extends BaseDecryptor
+public class HexDecryptor extends BaseStringDecryptor
 {
 
 	/** The Constant serialVersionUID. */
