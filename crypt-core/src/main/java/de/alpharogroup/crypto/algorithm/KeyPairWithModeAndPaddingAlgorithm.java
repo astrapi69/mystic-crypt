@@ -40,13 +40,25 @@ public enum KeyPairWithModeAndPaddingAlgorithm implements Algorithm
 	 * The enum constant with the 'RSA' algorithm with mode 'ECB' and padding
 	 * 'OAEPWithSHA1AndMGF1Padding' that results in 'RSA/ECB/OAEPWithSHA1AndMGF1Padding'.
 	 */
-	RSA_ECB_OAEPWithSHA1AndMGF1Padding(KeyPairGeneratorAlgorithm.RSA.name() + "/" + Mode.ECB.name() + "/" + PaddingScheme.OAEPWithSHA1AndMGF1Padding.name()),
+	RSA_ECB_OAEPWithSHA1AndMGF1Padding(KeyPairGeneratorAlgorithm.RSA.getAlgorithm() + "/" + Mode.ECB.name() + "/" + PaddingScheme.OAEPWithSHA1AndMGF1Padding.getScheme()),
 
 	/**
 	 * The enum constant with the 'RSA' algorithm with mode 'ECB' and padding
-	 * 'OAEPWithSHA1AndMGF1Padding' that results in 'RSA/ECB/OAEPWithSHA256AndMGF1Padding'.
+	 * 'OAEPWithSHA256AndMGF1Padding' that results in 'RSA/ECB/OAEPWithSHA256AndMGF1Padding'.
 	 */
-	RSA_ECB_OAEPWithSHA256AndMGF1Padding(KeyPairGeneratorAlgorithm.RSA.name() + "/" + Mode.ECB.name() + "/" + PaddingScheme.OAEPWithSHA256AndMGF1Padding.name()),
+	RSA_ECB_OAEPWithSHA256AndMGF1Padding(KeyPairGeneratorAlgorithm.RSA.getAlgorithm() + "/" + Mode.ECB.name() + "/" + PaddingScheme.OAEPWithSHA256AndMGF1Padding.getScheme()),
+
+	/**
+	 * The enum constant with the 'RSA' algorithm with mode 'ECB' and padding
+	 * 'OAEPWithSHA-1AndMGF1Padding' that results in 'RSA/ECB/OAEPWithSHA-1AndMGF1Padding'.
+	 */
+	RSA_ECB_OAEPWithSHA_1AndMGF1Padding(KeyPairGeneratorAlgorithm.RSA.getAlgorithm() + "/" + Mode.ECB.name() + "/" + PaddingScheme.OAEPWithSHA_1AndMGF1Padding.getScheme()),
+
+	/**
+	 * The enum constant with the 'RSA' algorithm with mode 'ECB' and padding
+	 * 'OAEPWithSHA-256AndMGF1Padding' that results in 'RSA/ECB/OAEPWithSHA-256AndMGF1Padding'.
+	 */
+	RSA_ECB_OAEPWithSHA_256AndMGF1Padding(KeyPairGeneratorAlgorithm.RSA.getAlgorithm() + "/" + Mode.ECB.name() + "/" + PaddingScheme.OAEPWithSHA_256AndMGF1Padding.getScheme()),
 
 	/**
 	 * The enum constant with the 'RSA' algorithm with mode 'ECB' and padding 'PKCS1Padding' that

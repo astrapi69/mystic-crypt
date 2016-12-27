@@ -1,5 +1,6 @@
 # mystic-crypt
 
+The target of this parent project is to make encryption and decryption as simple as possible.
 
 ##Key features:
 
@@ -35,7 +36,7 @@ Add the following maven dependency to your project `pom.xml` if you want to impo
 Than you can add the dependency to your dependencies:
 
 		<!-- MYSTIC-CRYPT versions -->
-		<mystic-crypt.version>4.15.0</mystic-crypt.version>
+		<mystic-crypt.version>4.16.0</mystic-crypt.version>
 		<crypt-core.version>${mystic-crypt.version}</crypt-core.version>
 		<randomizer.version>${mystic-crypt.version}</randomizer.version>
 		<auth-security.version>${mystic-crypt.version}</auth-security.version>
@@ -106,6 +107,7 @@ Do not hesitate to contact the mystic-crypt developers with your questions, conc
 Here is a list of awesome projects for cryptography:
 
 
-[cryptacular](https://github.com/vt-middleware/cryptacular) The friendly complement to the BouncyCastle crypto API for Java.
+ * [cryptacular](https://github.com/vt-middleware/cryptacular) The friendly complement to the BouncyCastle crypto API for Java.
+ * [JSch](http://www.jcraft.com/jsch/) JSch is a pure Java implementation of SSH2.
 
 

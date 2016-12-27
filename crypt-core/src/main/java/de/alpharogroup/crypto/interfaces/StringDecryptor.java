@@ -25,33 +25,12 @@
 package de.alpharogroup.crypto.interfaces;
 
 /**
- * Generic interface for encrypting objects.
+ * The interface {@link StringDecryptor} can decrypt a {@link String} object (that was previously
+ * encrypted) and return the decrypted result as {@link String} object.
  *
- * @author Asterios Raptis
  * @version 1.0
+ * @author Asterios Raptis
  */
-public interface StreamEncryptor
+public interface StringDecryptor extends Decryptor<String, String>
 {
-	/**
-	 * Encrypt the given object.
-	 *
-	 * @param toEncrypt
-	 *            The object to encrypt.
-	 * @return The encrypted object.
-	 * @throws Exception
-	 *             is thrown if encryption fails.
-	 */
-	int encrypt(final int toEncrypt) throws Exception;
-
-	/**
-	 * Encrypt the given object.
-	 *
-	 * @param toEncrypt
-	 *            The object to encrypt.
-	 * @return The encrypted object.
-	 * @throws Exception
-	 *             is thrown if encryption fails.
-	 */
-	byte[] encrypt(final byte[] toEncrypt) throws Exception;
-
 }

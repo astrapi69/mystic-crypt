@@ -69,26 +69,35 @@ public class KeyEncryptDecryptorTest
 
 		final CryptModel<Cipher, PublicKey> encryptModel = CryptModel.<Cipher, PublicKey> builder()
 			.key(publicKey)
-			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding)
-			.operationMode(Cipher.ENCRYPT_MODE).build();
+			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA256AndMGF1Padding)
+			.build();
 
 		final CryptModel<Cipher, PrivateKey> decryptModel = CryptModel
 			.<Cipher, PrivateKey> builder().key(privateKey)
-			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding)
-			.operationMode(Cipher.DECRYPT_MODE).build();
+			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA256AndMGF1Padding)
+			.build();
 
 		final PublicKeyEncryptor encryptor = new PublicKeyEncryptor(encryptModel);
 		final PrivateKeyDecryptor decryptor = new PrivateKeyDecryptor(decryptModel);
 
 
-		final byte[] encrypted = encryptor.encrypt(testBytes);
+		byte[] encrypted = encryptor.encrypt(testBytes);
 
-		final byte[] decrypted = decryptor.decrypt(encrypted);
+		byte[] decrypted = decryptor.decrypt(encrypted);
 
-		final String decryptedString = new String(decrypted, "UTF-8");
+		String decryptedString = new String(decrypted, "UTF-8");
 		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
 			test.equals(decryptedString));
+		for (int i = 0; i < 100; i++)
+		{
+			encrypted = encryptor.encrypt(testBytes);
+			decrypted = decryptor.decrypt(encrypted);
 
+			decryptedString = new String(decrypted, "UTF-8");
+			AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
+				test.equals(decryptedString));
+			System.out.println(decryptedString);
+		}
 	}
 
 	/**
@@ -115,12 +124,12 @@ public class KeyEncryptDecryptorTest
 		final CryptModel<Cipher, PublicKey> encryptModel = CryptModel.<Cipher, PublicKey> builder()
 			.key(publicKey)
 			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding)
-			.operationMode(Cipher.ENCRYPT_MODE).build();
+			.build();
 
 		final CryptModel<Cipher, PrivateKey> decryptModel = CryptModel
 			.<Cipher, PrivateKey> builder().key(privateKey)
 			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding)
-			.operationMode(Cipher.DECRYPT_MODE).build();
+			.build();
 
 		final PublicKeyEncryptor encryptor = new PublicKeyEncryptor(encryptModel);
 		final PrivateKeyDecryptor decryptor = new PrivateKeyDecryptor(decryptModel);

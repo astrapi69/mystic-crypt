@@ -37,13 +37,13 @@ import javax.crypto.spec.SecretKeySpec;
 import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.algorithm.AesAlgorithm;
 import de.alpharogroup.crypto.algorithm.Algorithm;
-import de.alpharogroup.crypto.core.BaseDecryptor;
+import de.alpharogroup.crypto.core.BaseStringDecryptor;
 
 /**
  * The class {@link HexDecryptor} is the pendant class of {@link HexEncryptor} and decrypts given
  * String objects that was encrypted with {@link HexEncryptor}. For an example see the unit test.
  */
-public class HexDecryptor extends BaseDecryptor
+public class HexDecryptor extends BaseStringDecryptor
 {
 
 	/** The Constant serialVersionUID. */
@@ -109,7 +109,10 @@ public class HexDecryptor extends BaseDecryptor
 	@Override
 	protected String newAlgorithm()
 	{
-		getModel().setAlgorithm(AesAlgorithm.AES);
+		if (getModel().getAlgorithm() == null)
+		{
+			getModel().setAlgorithm(AesAlgorithm.AES);
+		}
 		return getModel().getAlgorithm().getAlgorithm();
 	}
 
@@ -125,7 +128,7 @@ public class HexDecryptor extends BaseDecryptor
 		final SecretKeySpec skeySpec = new SecretKeySpec(privateKey.getBytes("UTF-8"),
 			getModel().getAlgorithm().getAlgorithm());
 		final Cipher cipher = Cipher.getInstance(getModel().getAlgorithm().getAlgorithm());
-		cipher.init(Cipher.DECRYPT_MODE, skeySpec);
+		cipher.init(operationMode, skeySpec);
 		return cipher;
 	}
 

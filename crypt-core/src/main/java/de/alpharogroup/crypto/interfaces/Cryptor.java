@@ -22,53 +22,18 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.padding;
-
-import lombok.Getter;
+package de.alpharogroup.crypto.interfaces;
 
 /**
- * The enum {@link PaddingScheme}.
+ * The interface {@link Cryptor} holds the operation mode.
  */
-public enum PaddingScheme
+public interface Cryptor
 {
-
-	/** The PKCS 1 padding. */
-	PKCS1Padding("PKCS1Padding"),
-
-	/** The PKCS 5 padding. */
-	PKCS5Padding("PKCS5Padding"),
-
-	/** The OAEP padding. */
-	OAEPPadding("OAEPPadding"),
-
-	/** The No padding. */
-	NoPadding("NoPadding"),
-
-	/** The OAEP with SHA 1 and MGF 1 padding. */
-	OAEPWithSHA1AndMGF1Padding("OAEPWithSHA1AndMGF1Padding"),
-
-	/** The OAEP with SHA 256 and MGF 1 padding. */
-	OAEPWithSHA256AndMGF1Padding("OAEPWithSHA256AndMGF1Padding"),
-
-	/** The OAEP with SHA 1 and MGF 1 padding. */
-	OAEPWithSHA_1AndMGF1Padding("OAEPWithSHA-1AndMGF1Padding"),
-
-	/** The OAEP with SHA 256 and MGF 1 padding. */
-	OAEPWithSHA_256AndMGF1Padding("OAEPWithSHA-256AndMGF1Padding");
-
-
-	/** The padding scheme. */
-	@Getter
-	private final String scheme;
-
 	/**
-	 * Instantiates a new {@link PaddingScheme}.
+	 * Factory callback method for get the operation mode. the operation mode can be one of the
+	 * following values: ENCRYPT_MODE, DECRYPT_MODE, WRAP_MODE or UNWRAP_MODE
 	 *
-	 * @param scheme
-	 *            the padding scheme
+	 * @return the operation mode
 	 */
-	private PaddingScheme(final String scheme)
-	{
-		this.scheme = scheme;
-	}
+	int newOperationMode();
 }

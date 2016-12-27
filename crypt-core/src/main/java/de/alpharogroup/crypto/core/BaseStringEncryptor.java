@@ -30,19 +30,18 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
-import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
-import de.alpharogroup.crypto.interfaces.GenericEncryptor;
+import de.alpharogroup.crypto.interfaces.StringEncryptor;
 
 /**
- * The abstract class {@link BaseEncryptor} is a base implementation of the
- * {@link GenericEncryptor}.
+ * The abstract class {@link BaseStringEncryptor} is a base implementation of the
+ * {@link StringEncryptor}.
  *
  * @version 1.0
  * @author Asterios Raptis
  */
-public abstract class BaseEncryptor extends BaseCryptor implements GenericEncryptor<String, String>
+public abstract class BaseStringEncryptor extends BaseCryptor implements StringEncryptor
 {
 
 	/** The Constant serialVersionUID. */
@@ -66,20 +65,11 @@ public abstract class BaseEncryptor extends BaseCryptor implements GenericEncryp
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public BaseEncryptor(final String privateKey)
+	public BaseStringEncryptor(final String privateKey)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
 		super(privateKey);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected final int newOperationMode()
-	{
-		return Cipher.ENCRYPT_MODE;
 	}
 
 }

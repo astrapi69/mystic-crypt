@@ -22,53 +22,41 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.padding;
+package de.alpharogroup.random;
 
-import lombok.Getter;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SecureRandom;
+
+import org.testng.AssertJUnit;
+import org.testng.annotations.Test;
 
 /**
- * The enum {@link PaddingScheme}.
+ * The class {@link SecureRandomBeanTest}.
  */
-public enum PaddingScheme
+public class SecureRandomBeanTest
 {
 
-	/** The PKCS 1 padding. */
-	PKCS1Padding("PKCS1Padding"),
-
-	/** The PKCS 5 padding. */
-	PKCS5Padding("PKCS5Padding"),
-
-	/** The OAEP padding. */
-	OAEPPadding("OAEPPadding"),
-
-	/** The No padding. */
-	NoPadding("NoPadding"),
-
-	/** The OAEP with SHA 1 and MGF 1 padding. */
-	OAEPWithSHA1AndMGF1Padding("OAEPWithSHA1AndMGF1Padding"),
-
-	/** The OAEP with SHA 256 and MGF 1 padding. */
-	OAEPWithSHA256AndMGF1Padding("OAEPWithSHA256AndMGF1Padding"),
-
-	/** The OAEP with SHA 1 and MGF 1 padding. */
-	OAEPWithSHA_1AndMGF1Padding("OAEPWithSHA-1AndMGF1Padding"),
-
-	/** The OAEP with SHA 256 and MGF 1 padding. */
-	OAEPWithSHA_256AndMGF1Padding("OAEPWithSHA-256AndMGF1Padding");
-
-
-	/** The padding scheme. */
-	@Getter
-	private final String scheme;
-
 	/**
-	 * Instantiates a new {@link PaddingScheme}.
+	 * Test method for {@link SecureRandomBean#build()} .
 	 *
-	 * @param scheme
-	 *            the padding scheme
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if a SecureRandomSpi implementation for the specified algorithm is not
+	 *             available from the specified provider.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
 	 */
-	private PaddingScheme(final String scheme)
+	@Test
+	public void testBuild() throws NoSuchAlgorithmException, NoSuchProviderException
 	{
-		this.scheme = scheme;
+		SecureRandom sr = SecureRandomBean.builder().build();
+
+		sr = SecureRandomBean.builder().algorithm(SecureRandomBean.DEFAULT_ALGORITHM).build();
+		AssertJUnit.assertNotNull(sr);
+		sr = SecureRandomBean.builder().algorithm(SecureRandomBean.DEFAULT_ALGORITHM)
+			.provider("SUN").build();
+		AssertJUnit.assertNotNull(sr);
 	}
+
 }

@@ -32,7 +32,7 @@ import de.alpharogroup.crypto.CryptConst;
 import lombok.experimental.UtilityClass;
 
 /**
- * A factory for creating {@link KeySpec} objects.
+ * The factory class {@link KeySpecFactory} holds methods for creating {@link KeySpec} objects.
  */
 @UtilityClass
 public class KeySpecFactory
