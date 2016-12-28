@@ -28,14 +28,14 @@ import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
 /**
- * Test class for the class {@link ChainedEncryptor} and {@link ChainedDecryptor}.
+ * Test class for the class {@link ChainedStringEncryptor} and {@link ChainedStringDecryptor}.
  */
 public class ChainedEncryptDecryptorTest
 {
 
 	/**
-	 * Test chained encrypt and decrypt with {@link ChainedEncryptor#encrypt(String)} and
-	 * {@link ChainedDecryptor#decrypt(String)}.
+	 * Test chained encrypt and decrypt with {@link ChainedStringEncryptor#encrypt(String)} and
+	 * {@link ChainedStringDecryptor#decrypt(String)}.
 	 *
 	 * @throws Exception
 	 *             is thrown if any security exception occured.
@@ -50,14 +50,14 @@ public class ChainedEncryptDecryptorTest
 		final HexEncryptor firstEncryptor = new HexEncryptor(firstKey);
 		final HexEncryptor secondEncryptor = new HexEncryptor(secondKey);
 		final HexEncryptor thirdEncryptor = new HexEncryptor(thirdKey);
-		final ChainedEncryptor encryptor = new ChainedEncryptor(firstEncryptor, secondEncryptor,
+		final ChainedStringEncryptor encryptor = new ChainedStringEncryptor(firstEncryptor, secondEncryptor,
 			thirdEncryptor);
 
 		final String encrypted = encryptor.encrypt(secretMessage);
 		final HexDecryptor firstDecryptor = new HexDecryptor(firstKey);
 		final HexDecryptor secondDecryptor = new HexDecryptor(secondKey);
 		final HexDecryptor thirdDecryptor = new HexDecryptor(thirdKey);
-		final ChainedDecryptor decryptor = new ChainedDecryptor(thirdDecryptor, secondDecryptor,
+		final ChainedStringDecryptor decryptor = new ChainedStringDecryptor(thirdDecryptor, secondDecryptor,
 			firstDecryptor);
 
 		final String decryted = decryptor.decrypt(encrypted);

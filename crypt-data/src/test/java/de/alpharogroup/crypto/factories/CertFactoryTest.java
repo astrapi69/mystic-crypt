@@ -24,9 +24,12 @@
  */
 package de.alpharogroup.crypto.factories;
 
+import java.math.BigInteger;
 import java.security.KeyPair;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.Date;
 
@@ -36,6 +39,7 @@ import org.testng.annotations.Test;
 import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.algorithm.HashAlgorithm;
 import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
+import de.alpharogroup.crypto.algorithm.RngAlgorithm;
 
 /**
  * Test class for the class {@link CertFactory}.
@@ -60,13 +64,38 @@ public class CertFactoryTest
 			 KeyPairGeneratorAlgorithm.RSA.getAlgorithm();
 		final Date start = new Date(System.currentTimeMillis());
 		final Date end = new Date(System.currentTimeMillis() + (1000L * 60 * 60 * 24 * 100));
+		final BigInteger serialNumber = randomSerialNumber();
 
 		final X509Certificate cert = CertFactory
-			.newX509Certificate(publicKey, privateKey,
+			.newX509Certificate(publicKey, privateKey, serialNumber,
 				subject, issuer,
 				signatureAlgorithm,
 				start, end);
 		AssertJUnit.assertNotNull(cert);
+	}
+
+
+	/**
+	 * Returns a random serial number that can be used for a serial number.
+	 *
+	 * @return a random serial number as a {@link BigInteger} object.
+	 */
+	public static BigInteger randomSerialNumber() {
+		long next = 0;
+		try
+		{
+			next = SecureRandom.getInstance(RngAlgorithm.SHA1PRNG.getAlgorithm()).nextLong();
+		}
+		catch (final NoSuchAlgorithmException e)
+		{
+			e.printStackTrace();
+		}
+		if (next < 0)
+		{
+			next = next *(-1);
+		}
+		final BigInteger serialNumber = BigInteger.valueOf(next);
+		return serialNumber;
 	}
 
 }

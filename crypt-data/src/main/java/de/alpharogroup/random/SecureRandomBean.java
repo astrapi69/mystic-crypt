@@ -30,7 +30,7 @@ import java.security.SecureRandom;
 
 import org.apache.log4j.Logger;
 
-import de.alpharogroup.check.Check;
+import lombok.NonNull;
 
 /**
  * The class {@link SecureRandomBean} builds a {@link SecureRandom} from the given algorithm and
@@ -75,9 +75,8 @@ public class SecureRandomBean
 	 *            the algorithm
 	 * @return this {@link SecureRandomBean} object. For chaining.
 	 */
-	public SecureRandomBean algorithm(final String algorithm)
+	public SecureRandomBean algorithm(@NonNull final String algorithm)
 	{
-		Check.get().notEmpty(algorithm, "algorithm");
 		this.algorithm = algorithm;
 		return this;
 	}
@@ -138,9 +137,8 @@ public class SecureRandomBean
 	 *            the provider
 	 * @return this {@link SecureRandomBean} object. For chaining.
 	 */
-	public SecureRandomBean provider(final String provider)
+	public SecureRandomBean provider(@NonNull final String provider)
 	{
-		Check.get().notEmpty(provider, "provider");
 		this.provider = provider;
 		return this;
 	}

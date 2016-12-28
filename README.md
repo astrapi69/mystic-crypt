@@ -36,7 +36,7 @@ Add the following maven dependency to your project `pom.xml` if you want to impo
 Than you can add the dependency to your dependencies:
 
 		<!-- MYSTIC-CRYPT versions -->
-		<mystic-crypt.version>4.16.0</mystic-crypt.version>
+		<mystic-crypt.version>4.17.0</mystic-crypt.version>
 		<crypt-core.version>${mystic-crypt.version}</crypt-core.version>
 		<randomizer.version>${mystic-crypt.version}</randomizer.version>
 		<auth-security.version>${mystic-crypt.version}</auth-security.version>
@@ -77,6 +77,21 @@ Than you can add the dependency to your dependencies:
 				<groupId>de.alpharogroup</groupId>
 				<artifactId>auth-security</artifactId>
 				<version>${auth-security.version}</version>
+			</dependency>
+		</dependencies>
+
+
+Add the following maven dependency to your project `pom.xml` if you want to import only the crypt-data like algorithms, modes, paddings etc.:
+
+Than you can add the dependency to your dependencies:
+
+		<dependencies>
+			...
+			<!-- MYSTIC-CRYPT DEPENDENCIES -->
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>crypt-data</artifactId>
+				<version>${crypt-data.version}</version>
 			</dependency>
 		</dependencies>
 

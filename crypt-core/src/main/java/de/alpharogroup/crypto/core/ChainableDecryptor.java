@@ -22,46 +22,46 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.aes;
+package de.alpharogroup.crypto.core;
 
-import de.alpharogroup.crypto.interfaces.Encryptor;
-import lombok.Builder;
+import de.alpharogroup.crypto.interfaces.Decryptor;
 import lombok.Getter;
+import lombok.Singular;
 
 /**
- * The class {@link ChainedEncryptor} can take many {@code Encryptor} objects and encrypts the given
- * string with all the given {@code Encryptor} objects. For an example see the unit test.
+ * The class {@link ChainableDecryptor} can take many {@code Decryptor} objects and decrypts the given
+ * string with all the given {@code Decryptor} objects. The {@code Decryptor} objects must be in a
+ * reverse order as they was given in the {@code ChainedEncryptor} object.
  */
-@Builder
-public class ChainedEncryptor implements Encryptor<String, String>
+public abstract class ChainableDecryptor<T> implements Decryptor<T, T>
 {
 
-	/** The encryptors. */
-	@Getter
-	private final Encryptor<String, String>[] encryptors;
+	/** The decryptors. */
+	@Getter @Singular
+	private final Decryptor<T, T>[] decryptors;
 
 	/**
-	 * Instantiates a new chained encryptor.
+	 * Instantiates a new {@link ChainableDecryptor} object.
 	 *
-	 * @param encryptors
-	 *            the encryptors
+	 * @param decryptors
+	 *            the decryptors
 	 */
 	@SafeVarargs
-	public ChainedEncryptor(final Encryptor<String, String>... encryptors)
+	public ChainableDecryptor(final Decryptor<T, T>... decryptors)
 	{
-		this.encryptors = encryptors;
+		this.decryptors = decryptors;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String encrypt(final String string) throws Exception
+	public T decrypt(final T encypted) throws Exception
 	{
-		String result = string;
-		for (final Encryptor<String, String> encryptor : encryptors)
+		T result = encypted;
+		for (final Decryptor<T, T> encryptor : decryptors)
 		{
-			result = encryptor.encrypt(result);
+			result = encryptor.decrypt(result);
 		}
 		return result;
 	}

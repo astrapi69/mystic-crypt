@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mystic-crypt</artifactId>
-		<version>4.16.0</version>
+		<version>4.17.0</version>
 	</parent>
 	
 	<artifactId>randomizer</artifactId>
@@ -20,6 +20,11 @@
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
 			<artifactId>jcommons-lang</artifactId>
+		</dependency>		
+
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>crypt-data</artifactId>
 		</dependency>
 		<!-- RESOURCEBUNDLE-CORE DEPENDENCIES -->
 		<dependency>
