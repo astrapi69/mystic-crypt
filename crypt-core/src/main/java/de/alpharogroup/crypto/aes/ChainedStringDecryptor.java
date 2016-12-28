@@ -22,41 +22,30 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.random;
+package de.alpharogroup.crypto.aes;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.SecureRandom;
-
-import org.testng.AssertJUnit;
-import org.testng.annotations.Test;
+import de.alpharogroup.crypto.core.ChainableDecryptor;
+import de.alpharogroup.crypto.interfaces.Decryptor;
 
 /**
- * The class {@link SecureRandomBeanTest}.
+ * The class {@link ChainedStringDecryptor} can take many {@code Decryptor} objects and decrypts the
+ * given string with all the given {@code Decryptor} objects. The {@code Decryptor} objects must be
+ * in a reverse order as they was given in the {@code ChainedEncryptor} object. For an example see
+ * the unit test.
  */
-public class SecureRandomBeanTest
+public class ChainedStringDecryptor extends ChainableDecryptor<String>
 {
 
 	/**
-	 * Test method for {@link SecureRandomBean#build()} .
+	 * Instantiates a new {@link ChainedStringDecryptor} object.
 	 *
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if a SecureRandomSpi implementation for the specified algorithm is not
-	 *             available from the specified provider.
-	 * @throws NoSuchProviderException
-	 *             is thrown if the specified provider is not registered in the security provider
-	 *             list.
+	 * @param decryptors
+	 *            the decryptors
 	 */
-	@Test
-	public void testBuild() throws NoSuchAlgorithmException, NoSuchProviderException
+	@SafeVarargs
+	public ChainedStringDecryptor(final Decryptor<String, String>... decryptors)
 	{
-		SecureRandom sr = SecureRandomBean.builder().build();
-
-		sr = SecureRandomBean.builder().algorithm(SecureRandomBean.DEFAULT_ALGORITHM).build();
-		AssertJUnit.assertNotNull(sr);
-		sr = SecureRandomBean.builder().algorithm(SecureRandomBean.DEFAULT_ALGORITHM)
-			.provider("SUN").build();
-		AssertJUnit.assertNotNull(sr);
+		super(decryptors);
 	}
 
 }

@@ -36,7 +36,7 @@ Add the following maven dependency to your project `pom.xml` if you want to impo
 Than you can add the dependency to your dependencies:
 
 		<!-- MYSTIC-CRYPT versions -->
-		<mystic-crypt.version>4.16.0</mystic-crypt.version>
+		<mystic-crypt.version>4.17.0</mystic-crypt.version>
 		<crypt-core.version>${mystic-crypt.version}</crypt-core.version>
 		<randomizer.version>${mystic-crypt.version}</randomizer.version>
 		<auth-security.version>${mystic-crypt.version}</auth-security.version>
@@ -81,6 +81,21 @@ Than you can add the dependency to your dependencies:
 		</dependencies>
 
 
+Add the following maven dependency to your project `pom.xml` if you want to import only the crypt-data like algorithms, modes, paddings etc.:
+
+Than you can add the dependency to your dependencies:
+
+		<dependencies>
+			...
+			<!-- MYSTIC-CRYPT DEPENDENCIES -->
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>crypt-data</artifactId>
+				<version>${crypt-data.version}</version>
+			</dependency>
+		</dependencies>
+
+
 ## Want to Help and improve it? ###
 
 The source code for mystic-crypt are on GitHub. Please feel free to fork and send pull requests!
@@ -109,5 +124,6 @@ Here is a list of awesome projects for cryptography:
 
  * [cryptacular](https://github.com/vt-middleware/cryptacular) The friendly complement to the BouncyCastle crypto API for Java.
  * [JSch](http://www.jcraft.com/jsch/) JSch is a pure Java implementation of SSH2.
+ * [Apache Shiro](https://github.com/apache/shiro) Apache Shiro is a powerful and easy-to-use Java security framework that performs authentication, authorization, cryptography, and session management.
 
 

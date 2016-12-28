@@ -650,7 +650,7 @@ public class RandomExtensions
 	 *
 	 * @return a random serial number as a {@link BigInteger} object.
 	 */
-	public BigInteger randomSerialNumber() {
+	public static BigInteger randomSerialNumber() {
 		long next = RandomExtensions.getSecureRandom().nextLong();
 		if (next < 0)
 		{

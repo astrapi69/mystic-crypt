@@ -27,9 +27,11 @@ package de.alpharogroup.crypto.key;
 import java.io.File;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.Security;
 
 import javax.crypto.Cipher;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
@@ -57,10 +59,11 @@ public class KeyEncryptDecryptorTest
 		final String test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
 		final byte[] testBytes = test.getBytes("UTF-8");
 
-		final File publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
-		final File privatekeyPemFile = new File(publickeyPemDir, "private.pem");
+		final File keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		final File publickeyPemFile = new File(keyPemDir, "public.pem");
+		final File privatekeyPemFile = new File(keyPemDir, "private.pem");
 
+		Security.addProvider(new BouncyCastleProvider());
 		final PrivateKey privateKey = KeyExtensions.readPemPrivateKey(privatekeyPemFile,
 			SecurityProvider.BC);
 
@@ -72,8 +75,8 @@ public class KeyEncryptDecryptorTest
 			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA256AndMGF1Padding)
 			.build();
 
-		final CryptModel<Cipher, PrivateKey> decryptModel = CryptModel
-			.<Cipher, PrivateKey> builder().key(privateKey)
+		final CryptModel<Cipher, PrivateKey> decryptModel = CryptModel.<Cipher, PrivateKey> builder()
+			.key(privateKey)
 			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA256AndMGF1Padding)
 			.build();
 

@@ -26,6 +26,7 @@ package de.alpharogroup.crypto.factories;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.Certificate;
@@ -38,13 +39,14 @@ import javax.security.auth.x500.X500Principal;
 
 import org.bouncycastle.x509.X509V3CertificateGenerator;
 
-import de.alpharogroup.random.RandomExtensions;
+import lombok.experimental.UtilityClass;
 
 /**
  * The factory class {@link CertFactory} holds methods for creating {@link Certificate} objects and
  * sub classes like {@link X509Certificate}.
  */
 @SuppressWarnings("deprecation")
+@UtilityClass
 public class CertFactory
 {
 
@@ -93,14 +95,14 @@ public class CertFactory
 	 *             is thrown if if a security error occur
 	 */
 	public static X509Certificate newX509Certificate(final PublicKey publicKey,
-		final PrivateKey privateKey, final String subject, final String issuer,
+		final PrivateKey privateKey, final BigInteger serialNumber, final String subject, final String issuer,
 		final String signatureAlgorithm, final Date start, final Date end) throws Exception
 	{
 		final X500Principal subjectPrincipal = new X500Principal(subject);
 		final X500Principal issuerPrincipal = new X500Principal(issuer);
 		final X509V3CertificateGenerator certificateGenerator = new X509V3CertificateGenerator();
 		certificateGenerator.setPublicKey(publicKey);
-		certificateGenerator.setSerialNumber(RandomExtensions.randomSerialNumber());
+		certificateGenerator.setSerialNumber(serialNumber);
 		certificateGenerator.setSubjectDN(subjectPrincipal);
 		certificateGenerator.setIssuerDN(issuerPrincipal);
 		certificateGenerator.setNotBefore(start);

@@ -34,13 +34,11 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.Security;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.io.pem.PemObject;
 import org.bouncycastle.util.io.pem.PemReader;
 
@@ -236,7 +234,6 @@ public class KeyExtensions
 	public static PrivateKey readPemPrivateKey(final File file,
 		final SecurityProvider securityProvider) throws Exception
 	{
-		Security.addProvider(new BouncyCastleProvider());
 		final byte[] keyBytes = Files.readAllBytes(file.toPath());
 
 		final String privateKeyAsString = new String(keyBytes)
@@ -285,14 +282,10 @@ public class KeyExtensions
 	public static PublicKey readPemPublicKey(final File file,
 		final SecurityProvider securityProvider) throws Exception
 	{
-		Security.addProvider(new BouncyCastleProvider());
 		final byte[] keyBytes = Files.readAllBytes(file.toPath());
-
 		final String publicKeyAsString = new String(keyBytes).replace(BEGIN_PUBLIC_KEY_PREFIX, "")
 			.replace(END_PUBLIC_KEY_SUFFIX, "");
-
 		final byte[] decoded = Base64.decodeBase64(publicKeyAsString);
-
 		return readPublicKey(decoded, securityProvider);
 	}
 
@@ -307,15 +300,7 @@ public class KeyExtensions
 	 */
 	public static PublicKey readPemPublicKey(final File file) throws Exception
 	{
-		Security.addProvider(new BouncyCastleProvider());
-		final byte[] keyBytes = Files.readAllBytes(file.toPath());
-
-		final String publicKeyAsString = new String(keyBytes).replace(BEGIN_PUBLIC_KEY_PREFIX, "")
-			.replace(END_PUBLIC_KEY_SUFFIX, "");
-
-		final byte[] decoded = Base64.decodeBase64(publicKeyAsString);
-
-		return readPublicKey(decoded, "BC");
+		return readPemPublicKey(file, SecurityProvider.BC);
 	}
 
 }

@@ -24,47 +24,26 @@
  */
 package de.alpharogroup.crypto.aes;
 
-import de.alpharogroup.crypto.interfaces.Decryptor;
-import lombok.Builder;
-import lombok.Getter;
+import de.alpharogroup.crypto.core.ChainableEncryptor;
+import de.alpharogroup.crypto.interfaces.Encryptor;
 
 /**
- * The class {@link ChainedDecryptor} can take many {@code Decryptor} objects and decrypts the given
- * string with all the given {@code Decryptor} objects. The {@code Decryptor} objects must be in a
- * reverse order as they was given in the {@code ChainedEncryptor} object. For an example see the
- * unit test.
+ * The class {@link ChainedStringEncryptor} can take many {@code Encryptor} objects and encrypts the
+ * given string with all the given {@code Encryptor} objects. For an example see the unit test.
  */
-@Builder
-public class ChainedDecryptor implements Decryptor<String, String>
+public class ChainedStringEncryptor extends ChainableEncryptor<String>
 {
 
-	/** The decryptors. */
-	@Getter
-	private final Decryptor<String, String>[] decryptors;
-
 	/**
-	 * Instantiates a new {@link ChainedDecryptor}.
+	 * Instantiates a new {@link ChainedStringEncryptor} object.
 	 *
-	 * @param decryptors
-	 *            the decryptors
+	 * @param encryptors
+	 *            the encryptors
 	 */
 	@SafeVarargs
-	public ChainedDecryptor(final Decryptor<String, String>... decryptors)
+	public ChainedStringEncryptor(final Encryptor<String, String>... encryptors)
 	{
-		this.decryptors = decryptors;
+		super(encryptors);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String decrypt(final String encypted) throws Exception
-	{
-		String result = encypted;
-		for (final Decryptor<String, String> encryptor : decryptors)
-		{
-			result = encryptor.decrypt(result);
-		}
-		return result;
-	}
 }
