@@ -59,4 +59,36 @@ public class SecureRandomBeanTest
 		AssertJUnit.assertNotNull(sr);
 	}
 
+	/**
+	 * Test method for {@link SecureRandomBean#build()} with null value for the algorithm.
+	 *
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if a SecureRandomSpi implementation for the specified algorithm is not
+	 *             available from the specified provider.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
+	 */
+	@Test(expectedExceptions = NullPointerException.class)
+	public void testBuildWithNullAlgorithm() throws NoSuchAlgorithmException, NoSuchProviderException
+	{
+		SecureRandomBean.builder().algorithm(null).build();
+	}
+
+	/**
+	 * Test method for {@link SecureRandomBean#build()} with null value for the algorithm.
+	 *
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if a SecureRandomSpi implementation for the specified algorithm is not
+	 *             available from the specified provider.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
+	 */
+	@Test(expectedExceptions = NullPointerException.class)
+	public void testBuildWithNullProvider() throws NoSuchAlgorithmException, NoSuchProviderException
+	{
+		SecureRandomBean.builder().provider(null).build();
+	}
+
 }
