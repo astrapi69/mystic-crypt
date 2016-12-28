@@ -295,7 +295,6 @@ public class RandomExtensionsTest extends BaseTestCase
 	{
 		final String randomToken = RandomExtensions.randomToken();
 		AssertJUnit.assertNotNull(randomToken);
-		AssertJUnit.assertTrue(randomToken.length() == 26);
 	}
 
 }

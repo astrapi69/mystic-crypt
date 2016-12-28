@@ -10,8 +10,7 @@
 	</parent>
 	
 	<artifactId>mystic-crypt-ui</artifactId>
-	<version>4.16.0</version>
-	
+	<version>4.16.0</version>	
 	
 	<properties>
 		<full-app-name>mystic-crypt-ui</full-app-name>
