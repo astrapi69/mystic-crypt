@@ -37,7 +37,7 @@
 
 	<resources>
 		<res src="../../src/main/izpack/doc/readme.txt" id="HTMLInfoPanel.info" />
-		<res src="../../src/main/izpack/legal/licence.txt" id="LicencePanel.licence" />
+		<res src="../../src/main/izpack/legal/license.txt" id="LicencePanel.licence" />
 		<res src="../../src/main/izpack/images/logo.ico" id="installer.langsel.img" />
 	</resources>
 

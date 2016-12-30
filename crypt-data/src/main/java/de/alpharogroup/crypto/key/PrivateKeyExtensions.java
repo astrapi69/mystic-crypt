@@ -29,6 +29,9 @@ import java.security.interfaces.DSAPrivateKey;
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.RSAPrivateKey;
 
+import org.apache.commons.codec.binary.Base64;
+
+import de.alpharogroup.crypto.hex.HexExtensions;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -65,6 +68,47 @@ public class PrivateKeyExtensions
 			length = ((ECPrivateKey)privateKey).getParams().getCurve().getField().getFieldSize();
 		}
 		return length;
+	}
+
+	/**
+	 * Transform the given {@link PrivateKey} to a hexadecimal {@link String} value.
+	 *
+	 * @param privateKey
+	 *            the private key
+	 * @return the new hexadecimal {@link String} value.
+	 */
+	public static String toHexString(final PrivateKey privateKey)
+	{
+		return toHexString(privateKey, true);
+	}
+
+	/**
+	 * Transform the given {@link PrivateKey} to a hexadecimal {@link String} value.
+	 *
+	 * @param privateKey
+	 *            the private key
+	 * @param lowerCase
+	 *            the flag if the result shell be transform in lower case. If true the result is
+	 * @return the new hexadecimal {@link String} value.
+	 */
+	public static String toHexString(final PrivateKey privateKey, final boolean lowerCase)
+	{
+		final String hexString = HexExtensions.toHexString(privateKey.getEncoded(), lowerCase);
+		return hexString;
+	}
+
+	/**
+	 * Transform the given {@link PrivateKey} to a base64 encoded {@link String} value.
+	 *
+	 * @param privateKey
+	 *            the private key
+	 * @return the new base64 encoded {@link String} value.
+	 */
+	public static String toBase64(final PrivateKey privateKey)
+	{
+		final byte[] encoded = privateKey.getEncoded();
+		final String privateKeyAsBase64String = Base64.encodeBase64String(encoded);
+		return privateKeyAsBase64String;
 	}
 
 }

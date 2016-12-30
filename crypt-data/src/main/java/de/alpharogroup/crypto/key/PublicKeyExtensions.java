@@ -29,6 +29,9 @@ import java.security.interfaces.DSAPublicKey;
 import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPublicKey;
 
+import org.apache.commons.codec.binary.Base64;
+
+import de.alpharogroup.crypto.hex.HexExtensions;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -66,5 +69,46 @@ public class PublicKeyExtensions
 		}
 
 		return length;
+	}
+
+	/**
+	 * Transform the given {@link PublicKey} to a hexadecimal {@link String} value.
+	 *
+	 * @param publicKey
+	 *            the public key
+	 * @return the new hexadecimal {@link String} value.
+	 */
+	public static String toHexString(final PublicKey publicKey)
+	{
+		return toHexString(publicKey, true);
+	}
+
+	/**
+	 * Transform the given {@link PublicKey} to a base64 encoded {@link String} value.
+	 *
+	 * @param publicKey
+	 *            the public key
+	 * @return the base64 encoded {@link String} value.
+	 */
+	public static String toBase64(final PublicKey publicKey)
+	{
+		final byte[] encoded = publicKey.getEncoded();
+		final String publicKeyAsBase64String = Base64.encodeBase64String(encoded);
+		return publicKeyAsBase64String;
+	}
+
+	/**
+	 * Transform the given {@link PublicKey} to a hexadecimal {@link String} value.
+	 *
+	 * @param publicKey
+	 *            the public key
+	 * @param lowerCase
+	 *            the flag if the result shell be transform in lower case. If true the result is
+	 * @return the new hexadecimal {@link String} value.
+	 */
+	public static String toHexString(final PublicKey publicKey, final boolean lowerCase)
+	{
+		final String hexString = HexExtensions.toHexString(publicKey.getEncoded(), lowerCase);
+		return hexString;
 	}
 }

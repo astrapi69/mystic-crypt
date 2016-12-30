@@ -38,6 +38,7 @@ import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.algorithm.AesAlgorithm;
 import de.alpharogroup.crypto.algorithm.Algorithm;
 import de.alpharogroup.crypto.core.BaseStringDecryptor;
+import de.alpharogroup.crypto.hex.HexExtensions;
 
 /**
  * The class {@link HexDecryptor} is the pendant class of {@link HexEncryptor} and decrypts given
@@ -138,7 +139,7 @@ public class HexDecryptor extends BaseStringDecryptor
 	@Override
 	public String decrypt(final String encypted) throws Exception
 	{
-		final byte[] dec = HexDump.decodeHex(encypted.toCharArray());
+		final byte[] dec = HexExtensions.decodeHex(encypted.toCharArray());
 		final byte[] utf8 = getModel().getCipher().doFinal(dec);
 		return new String(utf8, "UTF-8");
 	}

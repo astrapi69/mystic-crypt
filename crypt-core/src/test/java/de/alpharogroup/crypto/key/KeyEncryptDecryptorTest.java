@@ -36,6 +36,9 @@ import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
+import de.alpharogroup.crypto.hex.HexExtensions;
+import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
+import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.crypto.model.CryptModel;
 import de.alpharogroup.crypto.provider.SecurityProvider;
 import de.alpharogroup.file.search.PathFinder;
@@ -64,12 +67,14 @@ public class KeyEncryptDecryptorTest
 		final File privatekeyPemFile = new File(keyPemDir, "private.pem");
 
 		Security.addProvider(new BouncyCastleProvider());
-		final PrivateKey privateKey = KeyExtensions.readPemPrivateKey(privatekeyPemFile,
+		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile,
 			SecurityProvider.BC);
 
-		final PublicKey publicKey = KeyExtensions.readPemPublicKey(publickeyPemFile,
+		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile,
 			SecurityProvider.BC);
 
+		final String hexString = HexExtensions.toHexString(publicKey.getEncoded(), true);
+		System.out.println(hexString);
 		final CryptModel<Cipher, PublicKey> encryptModel = CryptModel.<Cipher, PublicKey> builder()
 			.key(publicKey)
 			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA256AndMGF1Padding)
@@ -89,6 +94,7 @@ public class KeyEncryptDecryptorTest
 		byte[] decrypted = decryptor.decrypt(encrypted);
 
 		String decryptedString = new String(decrypted, "UTF-8");
+		System.out.println(decryptedString);
 		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
 			test.equals(decryptedString));
 		for (int i = 0; i < 100; i++)
@@ -120,9 +126,9 @@ public class KeyEncryptDecryptorTest
 		final File publickeyDerFile = new File(publickeyDerDir, "public.der");
 		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
 
-		final PrivateKey privateKey = KeyExtensions.readPrivateKey(privatekeyDerFile);
+		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
 
-		final PublicKey publicKey = KeyExtensions.readPublicKey(publickeyDerFile);
+		final PublicKey publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
 
 		final CryptModel<Cipher, PublicKey> encryptModel = CryptModel.<Cipher, PublicKey> builder()
 			.key(publicKey)

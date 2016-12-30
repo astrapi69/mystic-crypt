@@ -22,87 +22,37 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.key;
+package de.alpharogroup.crypto.key.reader;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
-import org.bouncycastle.util.io.pem.PemObject;
-import org.bouncycastle.util.io.pem.PemReader;
 
 import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
-import de.alpharogroup.crypto.key.reader.PemObjectReader;
-import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
-import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.crypto.provider.SecurityProvider;
 import lombok.experimental.UtilityClass;
 
+
 /**
- * The class {@link KeyExtensions} holds utility methods for read public and private keys from
- * files.
- * @deprecated Use instead the reader classes {@link PublicKeyReader}, {@link PrivateKeyReader} and {@link PemObjectReader}.
+ * The class {@link PublicKeyReader} is a utility class for reading public keys.
  */
 @UtilityClass
-@Deprecated
-public class KeyExtensions
+public class PublicKeyReader
 {
-
-	/** The Constant AES_KEY_LENGTH. */
-	public static final int AES_KEY_LENGTH = 256;
 
 	/** The Constant END_PUBLIC_KEY_SUFFIX. */
 	public static final String END_PUBLIC_KEY_SUFFIX = "-----END PUBLIC KEY-----";
 
 	/** The Constant BEGIN_PUBLIC_KEY_PREFIX. */
 	public static final String BEGIN_PUBLIC_KEY_PREFIX = "-----BEGIN PUBLIC KEY-----\n";
-
-	/** The Constant END_PRIVATE_KEY_SUFFIX. */
-	public static final String END_PRIVATE_KEY_SUFFIX = "-----END PRIVATE KEY-----";
-
-	/** The Constant BEGIN_PRIVATE_KEY_PREFIX. */
-	public static final String BEGIN_PRIVATE_KEY_PREFIX = "-----BEGIN PRIVATE KEY-----";
-
-	/** The Constant END_RSA_PRIVATE_KEY_SUFFIX. */
-	public static final String END_RSA_PRIVATE_KEY_SUFFIX = "\n-----END RSA PRIVATE KEY-----";
-
-	/** The Constant BEGIN_RSA_PRIVATE_KEY_PREFIX. */
-	public static final String BEGIN_RSA_PRIVATE_KEY_PREFIX = "-----BEGIN RSA PRIVATE KEY-----\n";
-
-	/**
-	 * Gets the pem object.
-	 *
-	 * @param file
-	 *            the file
-	 * @return the pem object
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 */
-	public static PemObject getPemObject(final File file) throws IOException
-	{
-		PemObject pemObject;
-		final PemReader pemReader = new PemReader(new InputStreamReader(new FileInputStream(file)));
-		try
-		{
-			pemObject = pemReader.readPemObject();
-		}
-		finally
-		{
-			pemReader.close();
-		}
-		return pemObject;
-	}
 
 	/**
 	 * Read public key.
@@ -169,109 +119,38 @@ public class KeyExtensions
 	public static PublicKey readPublicKey(final byte[] publicKeyBytes, final String provider)
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
 	{
+		return readPublicKey(publicKeyBytes, provider,
+			KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
+	}
+
+	/**
+	 * Read public key.
+	 *
+	 * @param publicKeyBytes
+	 *            the public key bytes
+	 * @param provider
+	 *            the provider
+	 * @param algorithm
+	 *            the algorithm for the {@link KeyFactory}
+	 * @return the public key
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
+	 */
+	public static PublicKey readPublicKey(final byte[] publicKeyBytes, final String provider,
+		final String algorithm)
+		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
+	{
 		final X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKeyBytes);
-		final KeyFactory keyFactory = KeyFactory
-			.getInstance(KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
+		final KeyFactory keyFactory = KeyFactory.getInstance(algorithm);
 		final PublicKey publicKey = keyFactory.generatePublic(keySpec);
 		return publicKey;
 	}
 
-	/**
-	 * Read private key.
-	 *
-	 * @param file
-	 *            the file
-	 * @return the private key
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the cypher object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchProviderException
-	 *             is thrown if the specified provider is not registered in the security provider
-	 *             list.
-	 */
-	public static PrivateKey readPrivateKey(final File file) throws IOException,
-		NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
-	{
-		final byte[] keyBytes = Files.readAllBytes(file.toPath());
-		return readPrivateKey(keyBytes, "BC");
-	}
-
-	/**
-	 * Read private key.
-	 *
-	 * @param privateKeyBytes
-	 *            the private key bytes
-	 * @param provider
-	 *            the provider
-	 * @return the private key
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the cypher object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchProviderException
-	 *             is thrown if the specified provider is not registered in the security provider
-	 *             list.
-	 */
-	public static PrivateKey readPrivateKey(final byte[] privateKeyBytes, final String provider)
-		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
-	{
-		final PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
-		final KeyFactory keyFactory = KeyFactory
-			.getInstance(KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
-		final PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
-		return privateKey;
-	}
-
-	/**
-	 * Read pem private key.
-	 *
-	 * @param file
-	 *            the file
-	 * @param securityProvider
-	 *            the security provider
-	 * @return the private key
-	 * @throws Exception
-	 *             is thrown if if a security error occur
-	 */
-	public static PrivateKey readPemPrivateKey(final File file,
-		final SecurityProvider securityProvider) throws Exception
-	{
-		final byte[] keyBytes = Files.readAllBytes(file.toPath());
-
-		final String privateKeyAsString = new String(keyBytes)
-			.replace(BEGIN_RSA_PRIVATE_KEY_PREFIX, "").replace(END_RSA_PRIVATE_KEY_SUFFIX, "")
-			.trim();
-
-		final byte[] decoded = new Base64().decode(privateKeyAsString);
-
-		return readPrivateKey(decoded, securityProvider);
-	}
-
-	/**
-	 * Read private key.
-	 *
-	 * @param privateKeyBytes
-	 *            the private key bytes
-	 * @param securityProvider
-	 *            the security provider
-	 * @return the private key
-	 * @throws NoSuchAlgorithmException
-	 *             the no such algorithm exception
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchProviderException
-	 *             is thrown if the specified provider is not registered in the security provider
-	 *             list.
-	 */
-	public static PrivateKey readPrivateKey(final byte[] privateKeyBytes,
-		final SecurityProvider securityProvider)
-		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
-	{
-		return readPrivateKey(privateKeyBytes, securityProvider.name());
-	}
 
 	/**
 	 * reads a public key from a file.
@@ -287,11 +166,26 @@ public class KeyExtensions
 	public static PublicKey readPemPublicKey(final File file,
 		final SecurityProvider securityProvider) throws Exception
 	{
-		final byte[] keyBytes = Files.readAllBytes(file.toPath());
-		final String publicKeyAsString = new String(keyBytes).replace(BEGIN_PUBLIC_KEY_PREFIX, "")
-			.replace(END_PUBLIC_KEY_SUFFIX, "");
+		final String publicKeyAsString = readPemFileAsBase64(file);
 		final byte[] decoded = Base64.decodeBase64(publicKeyAsString);
 		return readPublicKey(decoded, securityProvider);
+	}
+
+	/**
+	 * Read the public key from a pem file as base64 encoded {@link String} value.
+	 *
+	 * @param file
+	 *            the file in pem format that contains the public key.
+	 * @return the base64 encoded {@link String} value.
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	public static String readPemFileAsBase64(final File file) throws IOException
+	{
+		final byte[] keyBytes = Files.readAllBytes(file.toPath());
+		final String publicKeyAsBase64String = new String(keyBytes)
+			.replace(BEGIN_PUBLIC_KEY_PREFIX, "").replace(END_PUBLIC_KEY_SUFFIX, "");
+		return publicKeyAsBase64String;
 	}
 
 	/**

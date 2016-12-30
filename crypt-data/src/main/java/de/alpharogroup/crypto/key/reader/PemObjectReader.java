@@ -22,34 +22,43 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.algorithm;
+package de.alpharogroup.crypto.key.reader;
 
-import lombok.Getter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import org.bouncycastle.util.io.pem.PemObject;
+import org.bouncycastle.util.io.pem.PemReader;
 
 /**
- * The enum {@link AesAlgorithm} for the Advanced Encryption Standard (AES), also known as Rijndael.
+ * The class {@link PemObjectReader} is a utility class for reading {@link PemObject} from a file.
  */
-public enum AesAlgorithm implements Algorithm
+public class PemObjectReader
 {
 
-	/** The enum constant for AES algorithm. */
-	AES("AES");
-
-	/** The Constant AES_KEY_LENGTH. */
-	public static final int AES_KEY_LENGTH = 256;
-
-	/** The algorithm. */
-	@Getter
-	private final String algorithm;
-
 	/**
-	 * Instantiates a new {@link Algorithm} object.
+	 * Gets the pem object.
 	 *
-	 * @param algorithm
-	 *            the algorithm.
+	 * @param file
+	 *            the file
+	 * @return the pem object
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
-	private AesAlgorithm(final String algorithm)
+	public static PemObject getPemObject(final File file) throws IOException
 	{
-		this.algorithm = algorithm;
+		PemObject pemObject;
+		final PemReader pemReader = new PemReader(new InputStreamReader(new FileInputStream(file)));
+		try
+		{
+			pemObject = pemReader.readPemObject();
+		}
+		finally
+		{
+			pemReader.close();
+		}
+		return pemObject;
 	}
 }

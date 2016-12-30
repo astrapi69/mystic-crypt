@@ -32,6 +32,8 @@ import java.security.PublicKey;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
+import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
+import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.crypto.provider.SecurityProvider;
 import de.alpharogroup.file.search.PathFinder;
 
@@ -59,10 +61,10 @@ public class KeyHexEncryptDecryptorTest
 		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
 		final File privatekeyPemFile = new File(publickeyPemDir, "private.pem");
 
-		final PrivateKey privateKey = KeyExtensions.readPemPrivateKey(privatekeyPemFile,
+		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile,
 			SecurityProvider.BC);
 
-		final PublicKey publicKey = KeyExtensions.readPemPublicKey(publickeyPemFile,
+		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile,
 			SecurityProvider.BC);
 
 		final PublicKeyHexEncryptor encryptor = new PublicKeyHexEncryptor(publicKey);
@@ -95,9 +97,9 @@ public class KeyHexEncryptDecryptorTest
 		final File publickeyDerFile = new File(publickeyDerDir, "public.der");
 		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
 
-		final PrivateKey privateKey = KeyExtensions.readPrivateKey(privatekeyDerFile);
+		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
 
-		final PublicKey publicKey = KeyExtensions.readPublicKey(publickeyDerFile);
+		final PublicKey publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
 
 		final PublicKeyHexEncryptor encryptor = new PublicKeyHexEncryptor(publicKey);
 

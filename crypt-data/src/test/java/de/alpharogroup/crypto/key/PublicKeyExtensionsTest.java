@@ -25,59 +25,50 @@
 package de.alpharogroup.crypto.key;
 
 import java.io.File;
-import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.Security;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
+import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.crypto.provider.SecurityProvider;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * Test class for {@link KeyExtensions}.
+ * Test class for the class {@link PublicKeyExtensions}.
  */
-public class KeyExtensionsTest
+public class PublicKeyExtensionsTest
 {
 
+	/** The public key base64 encoded for use in tests. */
+	public static String PUBLIC_KEY_BASE64_ENCODED = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3prZMWp2kO6rfENO4p7X"
+		+ "KNK9OGisJsx4KG1gGfScszdQfIxW/6KaAEWghUShd1n2tyX6Lo3UqA5t9OyhyUnt"
+		+ "XnAQ2CZPY5Nq2a5HCbH2e9QIzJdiPBNCXTs3wIprIGJv2T0O9qkOG7CIqhZjirnh"
+		+ "aGUAAqMS0hvVDn+AApzv0FcJidaO5qX56Lso5lPpOWCRBEHqwQybXhFrDpbTbY0u"
+		+ "0KhXogDnQ+jGt9lMEs8SGvKH0FuW3TuXsDNRk4uHS9w/jbbx1DC1sjFMv3jNHo4T"
+		+ "rKopvRlcL2D3uHp/iAAIeU+DXeZSUIERi/FVkQxINRJf2bAdvRNDgTFtCUW4JQdm" + "YQIDAQAB";
+
 	/**
-	 * Test method for {@link KeyExtensions#readPemPrivateKey(File, SecurityProvider)}.
+	 * Test method for {@link PublicKeyExtensions#toBase64(PublicKey)}
 	 *
 	 * @throws Exception
-	 *             the exception
+	 *             is thrown if an security error occurs
 	 */
 	@Test
-	public void testReadPemPrivateKey() throws Exception
+	public void testToBase64() throws Exception
 	{
-		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
+		final File keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		final File publickeyPemFile = new File(keyPemDir, "public.pem");
 
-		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile,
+		Security.addProvider(new BouncyCastleProvider());
+
+		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile,
 			SecurityProvider.BC);
-		AssertJUnit.assertNotNull(privateKey);
-	}
 
-	/**
-	 * Test method for {@link KeyExtensions#readPrivateKey(File, SecurityProvider)}.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
-	@Test
-	public void testReadDerPrivateKey() throws Exception
-	{
-		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
-
-		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
-
-		AssertJUnit.assertNotNull(privateKey);
-	}
-
-	@Test
-	public void testConvertToBase64() throws Exception
-	{
-
+		final String base64 = PublicKeyExtensions.toBase64(publicKey);
+		AssertJUnit.assertEquals(PUBLIC_KEY_BASE64_ENCODED, base64);
 	}
 
 }

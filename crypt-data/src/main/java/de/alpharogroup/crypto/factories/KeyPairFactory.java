@@ -24,11 +24,19 @@
  */
 package de.alpharogroup.crypto.factories;
 
+import java.io.File;
+import java.io.IOException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
 
 import de.alpharogroup.crypto.algorithm.Algorithm;
+import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
+import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -71,6 +79,48 @@ public class KeyPairFactory
 	{
 		final KeyPairGenerator generator = newKeyPairGenerator(algorithm, keySize);
 		return generator.generateKeyPair();
+	}
+
+	/**
+	 * Factory method for creating a new {@link KeyPair} from the given parameters.
+	 *
+	 * @param publicKey
+	 *            the public key
+	 * @param privateKey
+	 *            the private key
+	 * @return the new {@link KeyPair} from the given parameters.
+	 */
+	public static KeyPair newKeyPair(final PublicKey publicKey, final PrivateKey privateKey)
+	{
+		final KeyPair keyPair = new KeyPair(publicKey, privateKey);
+		return keyPair;
+	}
+
+	/**
+	 * Factory method for creating a new {@link KeyPair} from the given parameters.
+	 *
+	 * @param publicKeyDerFile
+	 *            the public key der file
+	 * @param privateKeyDerFile
+	 *            the private key der file
+	 * @return the new {@link KeyPair} from the given parameters. *
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
+	 */
+	public static KeyPair newKeyPair(final File publicKeyDerFile, final File privateKeyDerFile)
+		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException,
+		IOException
+	{
+		final PublicKey publicKey = PublicKeyReader.readPublicKey(publicKeyDerFile);
+		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privateKeyDerFile);
+		return newKeyPair(publicKey, privateKey);
 	}
 
 	/**
