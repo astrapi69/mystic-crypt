@@ -32,11 +32,16 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
+import org.apache.log4j.Logger;
+
 /**
  * The class {@link ConnectToRouter} connects to a router.
  */
 public class ConnectToRouter
 {
+
+	/** The Constant logger. */
+	private static final Logger logger = Logger.getLogger(ConnectToRouter.class.getName());
 
 	/**
 	 * The main method connects to a router.
@@ -62,7 +67,7 @@ public class ConnectToRouter
 
 		while ((inputLine = in.readLine()) != null)
 		{
-			System.out.println(inputLine);
+			logger.debug(inputLine);
 		}
 
 		in.close();

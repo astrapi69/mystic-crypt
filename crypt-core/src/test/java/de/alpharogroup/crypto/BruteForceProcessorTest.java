@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
@@ -39,6 +40,9 @@ import de.alpharogroup.lang.PackageExtensions;
  */
 public class BruteForceProcessorTest
 {
+
+	/** The Constant logger. */
+	private static final Logger logger = Logger.getLogger(BruteForceProcessorTest.class.getName());
 
 	/**
 	 * Test method for test the class {@link BruteForceProcessor}.
@@ -54,7 +58,7 @@ public class BruteForceProcessorTest
 		{
 			if (string.endsWith("Test"))
 			{
-				System.out.println("<class name=\"" + string + "\"/>");
+				logger.debug("<class name=\"" + string + "\"/>");
 			}
 		}
 
@@ -72,19 +76,18 @@ public class BruteForceProcessorTest
 		{
 			if (attempt.equals(password))
 			{
-				System.out.println("Password Found: " + attempt);
+				logger.debug("Password Found: " + attempt);
 				found = true;
 				break;
 			}
 			attempt = processor.getCurrentAttempt();
-			System.out.println("Tried: " + attempt);
+			logger.debug("Tried: " + attempt);
 			processor.increment();
 		}
 		final long end = System.currentTimeMillis();
 
-		System.out
-			.println("Started of the brute force attack for the password: " + new Date(start));
-		System.out.println("Ended of the brute force attack for the password: " + new Date(end));
+		logger.debug("Started of the brute force attack for the password: " + new Date(start));
+		logger.debug("Ended of the brute force attack for the password: " + new Date(end));
 		AssertJUnit.assertTrue(found);
 	}
 

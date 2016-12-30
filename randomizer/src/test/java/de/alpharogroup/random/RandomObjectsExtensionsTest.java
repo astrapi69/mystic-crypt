@@ -27,6 +27,7 @@ package de.alpharogroup.random;
 
 import java.nio.CharBuffer;
 
+import org.apache.log4j.Logger;
 import org.testng.AssertJUnit;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -42,6 +43,9 @@ import de.alpharogroup.BaseTestCase;
  */
 public class RandomObjectsExtensionsTest extends BaseTestCase
 {
+
+	/** The Constant logger. */
+	private static final Logger logger = Logger.getLogger(RandomObjectsExtensionsTest.class.getName());
 
 	/**
 	 * {@inheritDoc}
@@ -86,7 +90,7 @@ public class RandomObjectsExtensionsTest extends BaseTestCase
 	{
 		for (int i = 0; i < 1000; i++)
 		{
-			System.out.println(RandomObjectsExtensions.newRandomId());
+			logger.debug(RandomObjectsExtensions.newRandomId());
 		}
 	}
 

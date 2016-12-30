@@ -40,6 +40,8 @@ import javax.swing.JMenuItem;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import org.apache.log4j.Logger;
+
 import de.alpharogroup.lang.ClassExtensions;
 import de.alpharogroup.mystic.crypt.actions.OpenBrowserToDonateAction;
 import de.alpharogroup.mystic.crypt.actions.ShowHelpDialogAction;
@@ -56,6 +58,9 @@ import lombok.Setter;
  * The Class DesktopMenu.
  */
 public class DesktopMenu {
+
+	/** The Constant logger. */
+	private static final Logger logger = Logger.getLogger(DesktopMenu.class.getName());
 
 	/** The JMenuBar from the DesktopMenu. */
 	@Getter
@@ -98,21 +103,21 @@ public class DesktopMenu {
 		fileMenu = newFileMenu(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				System.out.println("filemenu");
+				logger.debug("filemenu");
 			}
 		});
 
 		lookAndFeelMenu = createLookAndFeelMenu(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				System.out.println("Look and Feel menu");
+				logger.debug("Look and Feel menu");
 			}
 		});
 
 		helpMenu = createHelpMenu(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				System.out.println("Help menu");
+				logger.debug("Help menu");
 			}
 		});
 

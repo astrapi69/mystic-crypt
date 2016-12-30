@@ -80,6 +80,8 @@ public class CertFactory
 	 *            the public key
 	 * @param privateKey
 	 *            the private key
+	 * @param serialNumber
+	 *            the serial number
 	 * @param subject
 	 *            the subject
 	 * @param issuer

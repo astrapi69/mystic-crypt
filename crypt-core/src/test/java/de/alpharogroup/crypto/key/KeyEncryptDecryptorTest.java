@@ -31,12 +31,12 @@ import java.security.Security;
 
 import javax.crypto.Cipher;
 
+import org.apache.log4j.Logger;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
-import de.alpharogroup.crypto.hex.HexExtensions;
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.crypto.model.CryptModel;
@@ -48,6 +48,9 @@ import de.alpharogroup.file.search.PathFinder;
  */
 public class KeyEncryptDecryptorTest
 {
+
+	/** The Constant logger. */
+	private static final Logger logger = Logger.getLogger(KeyEncryptDecryptorTest.class.getName());
 
 	/**
 	 * Test encrypt and decrypt with {@link PublicKeyEncryptor#encrypt(byte[])} and
@@ -73,8 +76,6 @@ public class KeyEncryptDecryptorTest
 		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile,
 			SecurityProvider.BC);
 
-		final String hexString = HexExtensions.toHexString(publicKey.getEncoded(), true);
-		System.out.println(hexString);
 		final CryptModel<Cipher, PublicKey> encryptModel = CryptModel.<Cipher, PublicKey> builder()
 			.key(publicKey)
 			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA256AndMGF1Padding)
@@ -94,7 +95,7 @@ public class KeyEncryptDecryptorTest
 		byte[] decrypted = decryptor.decrypt(encrypted);
 
 		String decryptedString = new String(decrypted, "UTF-8");
-		System.out.println(decryptedString);
+		logger.debug(decryptedString);
 		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
 			test.equals(decryptedString));
 		for (int i = 0; i < 100; i++)
@@ -105,7 +106,7 @@ public class KeyEncryptDecryptorTest
 			decryptedString = new String(decrypted, "UTF-8");
 			AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
 				test.equals(decryptedString));
-			System.out.println(decryptedString);
+			logger.debug(decryptedString);
 		}
 	}
 

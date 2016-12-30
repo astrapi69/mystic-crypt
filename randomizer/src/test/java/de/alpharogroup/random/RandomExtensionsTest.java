@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.log4j.Logger;
 import org.testng.AssertJUnit;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -52,6 +53,8 @@ import de.alpharogroup.test.objects.Gender;
 public class RandomExtensionsTest extends BaseTestCase
 {
 
+	/** The Constant logger. */
+	private static final Logger logger = Logger.getLogger(RandomExtensionsTest.class.getName());
 	/**
 	 * {@inheritDoc}
 	 */
@@ -219,7 +222,7 @@ public class RandomExtensionsTest extends BaseTestCase
 	public void testRandomByteArray()
 	{
 		final byte[] randomByteArray = RandomExtensions.randomByteArray(8);
-		System.out.println(new String(randomByteArray, Charset.forName("UTF-8")));
+		logger.debug(new String(randomByteArray, Charset.forName("UTF-8")));
 	}
 
 	/**
@@ -245,11 +248,11 @@ public class RandomExtensionsTest extends BaseTestCase
 	@Test
 	public void testRandomInt()
 	{
-		System.out.println("Generate 100 secure random numbers:");
+		logger.debug("Generate 100 secure random numbers:");
 		for (int i = 0; i < 100; i++)
 		{
 			final int randomInt = RandomExtensions.randomInt(5);
-			System.out.println(randomInt);
+			logger.debug(randomInt);
 		}
 	}
 
