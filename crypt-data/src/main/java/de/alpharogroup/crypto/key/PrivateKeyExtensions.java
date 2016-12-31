@@ -24,13 +24,20 @@
  */
 package de.alpharogroup.crypto.key;
 
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.interfaces.DSAPrivateKey;
 import java.security.interfaces.ECPrivateKey;
+import java.security.interfaces.RSAPrivateCrtKey;
 import java.security.interfaces.RSAPrivateKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.RSAPublicKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 
+import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
 import de.alpharogroup.crypto.hex.HexExtensions;
 import lombok.experimental.UtilityClass;
 
@@ -109,6 +116,34 @@ public class PrivateKeyExtensions
 		final byte[] encoded = privateKey.getEncoded();
 		final String privateKeyAsBase64String = Base64.encodeBase64String(encoded);
 		return privateKeyAsBase64String;
+	}
+
+	/**
+	 * Generate the corresponding {@link PublicKey} object from the given {@link PrivateKey} object.
+	 *
+	 * @param privateKey
+	 *            the private key
+	 * @return  the corresponding {@link PublicKey} object or null if generation failed.
+	 * @throws NoSuchAlgorithmException
+	 *             the no such algorithm exception
+	 * @throws InvalidKeySpecException
+	 *             the invalid key spec exception
+	 */
+	public static PublicKey generatePublicKey(final PrivateKey privateKey)
+		throws NoSuchAlgorithmException, InvalidKeySpecException
+	{
+		if (privateKey instanceof RSAPrivateKey)
+		{
+			final RSAPrivateCrtKey privk = (RSAPrivateCrtKey)privateKey;
+			final RSAPublicKeySpec publicKeySpec = new RSAPublicKeySpec(privk.getModulus(),
+				privk.getPublicExponent());
+
+			final KeyFactory keyFactory = KeyFactory
+				.getInstance(KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
+			final PublicKey publicKey = keyFactory.generatePublic(publicKeySpec);
+			return publicKey;
+		}
+		return null;
 	}
 
 }
