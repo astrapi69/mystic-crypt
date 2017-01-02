@@ -1,47 +1,18 @@
-/**
- * The MIT License
- *
- * Copyright (C) 2015 Asterios Raptis
- *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
- * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
- * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-package de.alpharogroup.crypto.aes;
+package de.alpharogroup.crypto.hex;
 
 import static org.junit.Assert.assertEquals;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.StringUtils;
-import org.junit.Test;
-
-import de.alpharogroup.crypto.hex.HexExtensions;
+import org.testng.annotations.Test;
 
 /**
- * Test class for the class {@link HexDump}.
- * This test class will be removed in the next major release.
+ * Test class for the class {@link HexExtensions}.
  */
-@Deprecated
-public class HexDumpTest
-{
+public class HexExtensionsTest {
 
 	/**
-	 * Test method for {@link HexDump#decodeHex(char[])}
+	 * Test method for {@link HexExtensions#decodeHex(char[])}
 	 *
 	 * @throws DecoderException
 	 *             is thrown if an odd number or illegal of characters is supplied
@@ -57,7 +28,7 @@ public class HexDumpTest
 	}
 
 	/**
-	 * Test method for {@link HexDump#decodeHex(byte[])}
+	 * Test method for {@link HexExtensions#decodeHex(byte[])}
 	 *
 	 * @throws DecoderException
 	 *             is thrown if an odd number or illegal of characters is supplied
@@ -73,7 +44,7 @@ public class HexDumpTest
 	}
 
 	/**
-	 * Test method for {@link HexDump#decodeHexToString(char[])}
+	 * Test method for {@link HexExtensions#decodeHexToString(char[])}
 	 *
 	 * @throws DecoderException
 	 *             is thrown if an odd number or illegal of characters is supplied
@@ -88,7 +59,7 @@ public class HexDumpTest
 	}
 
 	/**
-	 * Test method for {@link HexDump#encodeHex(byte[])}
+	 * Test method for {@link HexExtensions#encodeHex(byte[])}
 	 */
 	@Test
 	public void testEncodeHex()
@@ -101,7 +72,7 @@ public class HexDumpTest
 	}
 
 	/**
-	 * Test method for {@link HexDump#encodeHex(byte[], boolean)}
+	 * Test method for {@link HexExtensions#encodeHex(byte[], boolean)}
 	 */
 	@Test
 	public void testEncodeHexBoolean()
@@ -117,7 +88,7 @@ public class HexDumpTest
 	}
 
 	/**
-	 * Test method for {@link HexDump#encodeHex(String)}
+	 * Test method for {@link HexExtensions#encodeHex(String)}
 	 */
 	@Test
 	public void testEncodeString()
@@ -130,7 +101,7 @@ public class HexDumpTest
 	}
 
 	/**
-	 * Test method for {@link HexDump#toHex(int)}
+	 * Test method for {@link HexExtensions#toHex(int)}
 	 */
 	@Test
 	public void testToHex()
@@ -140,5 +111,6 @@ public class HexDumpTest
 		actual = HexExtensions.toHex(10);
 		org.junit.Assert.assertTrue(actual == 'A');
 	}
+
 
 }

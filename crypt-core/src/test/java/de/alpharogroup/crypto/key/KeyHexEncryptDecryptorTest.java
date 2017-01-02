@@ -28,9 +28,12 @@ package de.alpharogroup.crypto.key;
 import java.io.File;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.Security;
 
 import org.apache.log4j.Logger;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.testng.AssertJUnit;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
@@ -46,6 +49,17 @@ public class KeyHexEncryptDecryptorTest
 	/** The Constant logger. */
 	private static final Logger logger = Logger.getLogger(KeyHexEncryptDecryptorTest.class.getName());
 
+	/**
+	 * Sets up method will be invoked before every unit test method in this class.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
+	@BeforeMethod
+	protected void setUp() throws Exception
+	{
+		Security.addProvider(new BouncyCastleProvider());
+	}
 	/**
 	 * Test encrypt and decrypt with {@link PublicKeyHexEncryptor#encrypt(String)} and
 	 * {@link PrivateKeyHexDecryptor#decrypt(String)} loaded from pem files.

@@ -142,9 +142,7 @@ public class HexExtensions
 	 * @return the new hexadecimal {@link String} value.
 	 */
 	public static String toHexString(final byte[] data) {
-		final StringBuilder sb = new StringBuilder();
-		sb.append(HexExtensions.encodeHex(data));
-		return sb.toString();
+		return toHexString(data, true);
 	}
 
 	/**
