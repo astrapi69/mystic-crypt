@@ -43,7 +43,8 @@ public class SimpleCryptTest
 	private static final Logger logger = Logger.getLogger(SimpleCryptTest.class.getName());
 
 	/**
-	 * Test method for test the method {@link SimpleCrypt#encode(String)} and {@link SimpleCrypt#decode(String)}.
+	 * Test method for test the method {@link SimpleCrypt#encode(String)} and
+	 * {@link SimpleCrypt#decode(String)}.
 	 */
 	@Test
 	public void testCryptoUtils()
@@ -57,10 +58,13 @@ public class SimpleCryptTest
 	}
 
 	/**
-	 * Test method for test the method {@link SimpleCrypt#encode(String)} and {@link SimpleCrypt#decode(String)}.
+	 * Test method for test the method {@link SimpleCrypt#encode(String)} and
+	 * {@link SimpleCrypt#decode(String)}.
 	 *
-	 * @param testString the test string
-	 * @param verschiebe the relocate
+	 * @param testString
+	 *            the test string
+	 * @param verschiebe
+	 *            the relocate
 	 */
 	protected void testCryptoUtils(final String testString, final int verschiebe)
 	{

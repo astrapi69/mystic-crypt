@@ -193,8 +193,8 @@ public interface FactoryMethodsCryptor<C, K> extends Serializable, Cryptor
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	C newCipher(final K key, final String algorithm, final byte[] salt,
-		final int iterationCount, final int operationMode)
+	C newCipher(final K key, final String algorithm, final byte[] salt, final int iterationCount,
+		final int operationMode)
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
 		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException;
 

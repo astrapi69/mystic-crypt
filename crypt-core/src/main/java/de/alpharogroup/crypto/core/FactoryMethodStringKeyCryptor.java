@@ -42,8 +42,8 @@ import de.alpharogroup.crypto.factories.CipherFactory;
 import de.alpharogroup.crypto.factories.KeySpecFactory;
 
 /**
- * The abstract class {@link FactoryMethodStringKeyCryptor} provides a base implementation for some methods of the
- * {@link AbstractCryptor}.
+ * The abstract class {@link FactoryMethodStringKeyCryptor} provides a base implementation for some
+ * methods of the {@link AbstractCryptor}.
  *
  * @author Asterios Raptis
  * @version 1.0
@@ -138,8 +138,7 @@ public interface FactoryMethodStringKeyCryptor extends FactoryMethodsCryptor<Cip
 	 *            the iteration count
 	 * @return the new {@link KeySpec} from the given private key.
 	 */
-	default KeySpec newKeySpec(final String privateKey, final byte[] salt,
-		final int iterationCount)
+	default KeySpec newKeySpec(final String privateKey, final byte[] salt, final int iterationCount)
 	{
 		return KeySpecFactory.newPBEKeySpec(privateKey, salt, iterationCount);
 	}

@@ -28,8 +28,8 @@ import de.alpharogroup.crypto.interfaces.Encryptor;
 import lombok.Getter;
 
 /**
- * The class {@link ChainableEncryptor} can take many {@code Encryptor} objects and encrypts the given
- * string with all the given {@code Encryptor} objects.
+ * The class {@link ChainableEncryptor} can take many {@code Encryptor} objects and encrypts the
+ * given string with all the given {@code Encryptor} objects.
  */
 public abstract class ChainableEncryptor<T> implements Encryptor<T, T>
 {

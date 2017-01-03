@@ -37,7 +37,8 @@ import de.alpharogroup.crypto.interfaces.Cryptor;
 import de.alpharogroup.crypto.model.CryptModel;
 
 /**
- * The abstract class {@link AbstractEncryptor} can be extended for providing the encrypting feature.
+ * The abstract class {@link AbstractEncryptor} can be extended for providing the encrypting
+ * feature.
  *
  * @param <C>
  *            the generic type of the cipher

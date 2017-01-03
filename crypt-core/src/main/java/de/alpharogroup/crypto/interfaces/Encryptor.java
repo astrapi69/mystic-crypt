@@ -25,8 +25,8 @@
 package de.alpharogroup.crypto.interfaces;
 
 /**
- * The generic functional interface {@link Encryptor} can encrypt an object of type &lt;T&gt; and return
- * the encrypted result as object of type &lt;R&gt;.
+ * The generic functional interface {@link Encryptor} can encrypt an object of type &lt;T&gt; and
+ * return the encrypted result as object of type &lt;R&gt;.
  *
  * @author Asterios Raptis
  * @version 1.0

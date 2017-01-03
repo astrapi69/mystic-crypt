@@ -49,7 +49,9 @@ import de.alpharogroup.crypto.model.CryptModel;
  * @author Asterios Raptis
  * @version 1.0
  */
-public abstract class AbstractStringEncryptor extends AbstractEncryptor<Cipher, String> implements StringEncryptor
+public abstract class AbstractStringEncryptor extends AbstractEncryptor<Cipher, String>
+	implements
+		StringEncryptor
 {
 
 	/** The Constant serialVersionUID. */

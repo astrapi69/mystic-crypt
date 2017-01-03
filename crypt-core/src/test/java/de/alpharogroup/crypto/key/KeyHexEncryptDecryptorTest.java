@@ -47,7 +47,8 @@ import de.alpharogroup.file.search.PathFinder;
 public class KeyHexEncryptDecryptorTest
 {
 	/** The Constant logger. */
-	private static final Logger logger = Logger.getLogger(KeyHexEncryptDecryptorTest.class.getName());
+	private static final Logger logger = Logger
+		.getLogger(KeyHexEncryptDecryptorTest.class.getName());
 
 	/**
 	 * Sets up method will be invoked before every unit test method in this class.
@@ -60,6 +61,7 @@ public class KeyHexEncryptDecryptorTest
 	{
 		Security.addProvider(new BouncyCastleProvider());
 	}
+
 	/**
 	 * Test encrypt and decrypt with {@link PublicKeyHexEncryptor#encrypt(String)} and
 	 * {@link PrivateKeyHexDecryptor#decrypt(String)} loaded from pem files.
@@ -71,7 +73,7 @@ public class KeyHexEncryptDecryptorTest
 	public void testEncryptDecryptPemFiles() throws Exception
 	{
 		final String test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
-		logger.debug("String before encryption:"+test);
+		logger.debug("String before encryption:" + test);
 
 		final File publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
 		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
@@ -86,10 +88,10 @@ public class KeyHexEncryptDecryptorTest
 		final PublicKeyHexEncryptor encryptor = new PublicKeyHexEncryptor(publicKey);
 
 		final String encrypted = encryptor.encrypt(test);
-		logger.debug("String after encryption:"+ encrypted);
+		logger.debug("String after encryption:" + encrypted);
 		final PrivateKeyHexDecryptor decryptor = new PrivateKeyHexDecryptor(privateKey);
 		final String decryted = decryptor.decrypt(encrypted);
-		logger.debug("String after decryption:"+ decryted);
+		logger.debug("String after decryption:" + decryted);
 		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
 			test.equals(decryted));
 	}
@@ -118,7 +120,7 @@ public class KeyHexEncryptDecryptorTest
 
 		final String encrypted = encryptor.encrypt(test);
 
-		logger.debug("String after encryption:"+ encrypted);
+		logger.debug("String after encryption:" + encrypted);
 		final PrivateKeyHexDecryptor decryptor = new PrivateKeyHexDecryptor(privateKey);
 		final String decryted = decryptor.decrypt(encrypted);
 		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",

@@ -46,7 +46,9 @@ import de.alpharogroup.crypto.model.CryptModel;
  * @author Asterios Raptis
  * @version 1.0
  */
-public abstract class BaseCryptor extends AbstractCryptor<Cipher, String> implements FactoryMethodStringKeyCryptor
+public abstract class BaseCryptor extends AbstractCryptor<Cipher, String>
+	implements
+		FactoryMethodStringKeyCryptor
 {
 
 	/** The Constant serialVersionUID. */

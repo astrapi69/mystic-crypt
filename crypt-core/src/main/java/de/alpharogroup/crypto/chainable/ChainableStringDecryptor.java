@@ -28,10 +28,10 @@ import de.alpharogroup.crypto.core.ChainableDecryptor;
 import de.alpharogroup.crypto.interfaces.Decryptor;
 
 /**
- * The class {@link ChainableStringDecryptor} can take many {@code Decryptor} objects and decrypts the
- * given string with all the given {@code Decryptor} objects. The {@code Decryptor} objects must be
- * in a reverse order as they was given in the {@code ChainedEncryptor} object. For an example see
- * the unit test.
+ * The class {@link ChainableStringDecryptor} can take many {@code Decryptor} objects and decrypts
+ * the given string with all the given {@code Decryptor} objects. The {@code Decryptor} objects must
+ * be in a reverse order as they was given in the {@code ChainedEncryptor} object. For an example
+ * see the unit test.
  */
 public class ChainableStringDecryptor extends ChainableDecryptor<String>
 {

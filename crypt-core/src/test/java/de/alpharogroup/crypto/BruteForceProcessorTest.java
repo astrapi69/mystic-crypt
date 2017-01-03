@@ -47,7 +47,8 @@ public class BruteForceProcessorTest
 	/**
 	 * Test method for test the class {@link BruteForceProcessor}.
 	 *
-	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	@Test
 	public void test() throws IOException

@@ -51,7 +51,8 @@ public class WordlistProcessorTest
 	/**
 	 * Test method for test the class {@link WordlistsProcessor}.
 	 *
-	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	@Test
 	public void test() throws IOException
@@ -73,8 +74,7 @@ public class WordlistProcessorTest
 
 		final String password = "hash";
 
-		final WordlistsProcessor processor = new WordlistsProcessor(new ArrayList<>(set),
-			password);
+		final WordlistsProcessor processor = new WordlistsProcessor(new ArrayList<>(set), password);
 		final long start = System.currentTimeMillis();
 		final boolean found = processor.process();
 		final long end = System.currentTimeMillis();
