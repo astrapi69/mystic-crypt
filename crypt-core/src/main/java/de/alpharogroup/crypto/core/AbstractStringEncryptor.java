@@ -141,7 +141,7 @@ public abstract class AbstractStringEncryptor extends AbstractEncryptor<Cipher, 
 	 *             is thrown if the named charset is not supported.
 	 */
 	@Override
-	protected Cipher newCipher(final String privateKey, final String algorithm, final byte[] salt,
+	public Cipher newCipher(final String privateKey, final String algorithm, final byte[] salt,
 		final int iterationCount, final int operationMode)
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
 		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException

@@ -83,7 +83,7 @@ public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey>
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String newAlgorithm()
+	public String newAlgorithm()
 	{
 		if ( getModel().getAlgorithm() == null) {
 			return KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding.getAlgorithm();
@@ -95,7 +95,7 @@ public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey>
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected Cipher newCipher(final PrivateKey key, final String algorithm, final byte[] salt,
+	public Cipher newCipher(final PrivateKey key, final String algorithm, final byte[] salt,
 		final int iterationCount, final int operationMode)
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
 		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException

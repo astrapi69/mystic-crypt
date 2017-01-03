@@ -92,7 +92,7 @@ public class PublicKeyEncryptor extends AbstractEncryptor<Cipher, PublicKey>
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String newAlgorithm()
+	public String newAlgorithm()
 	{
 		if ( getModel().getAlgorithm() == null) {
 			return KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding.getAlgorithm();
@@ -104,7 +104,7 @@ public class PublicKeyEncryptor extends AbstractEncryptor<Cipher, PublicKey>
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected Cipher newCipher(final PublicKey key, final String algorithm, final byte[] salt,
+	public Cipher newCipher(final PublicKey key, final String algorithm, final byte[] salt,
 		final int iterationCount, final int operationMode)
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
 		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException

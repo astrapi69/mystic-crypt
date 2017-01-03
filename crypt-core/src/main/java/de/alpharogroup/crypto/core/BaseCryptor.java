@@ -37,8 +37,6 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 
-import de.alpharogroup.crypto.factories.CipherFactory;
-import de.alpharogroup.crypto.factories.KeySpecFactory;
 import de.alpharogroup.crypto.model.CryptModel;
 
 /**
@@ -48,7 +46,7 @@ import de.alpharogroup.crypto.model.CryptModel;
  * @author Asterios Raptis
  * @version 1.0
  */
-public abstract class BaseCryptor extends AbstractCryptor<Cipher, String>
+public abstract class BaseCryptor extends AbstractCryptor<Cipher, String> implements FactoryMethodStringKeyCryptor
 {
 
 	/** The Constant serialVersionUID. */
@@ -140,7 +138,7 @@ public abstract class BaseCryptor extends AbstractCryptor<Cipher, String>
 	 *             is thrown if the named charset is not supported.
 	 */
 	@Override
-	protected Cipher newCipher(final String privateKey, final String algorithm, final byte[] salt,
+	public Cipher newCipher(final String privateKey, final String algorithm, final byte[] salt,
 		final int iterationCount, final int operationMode)
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
 		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
@@ -152,54 +150,5 @@ public abstract class BaseCryptor extends AbstractCryptor<Cipher, String>
 		return newCipher(operationMode, key, paramSpec, key.getAlgorithm());
 	}
 
-	/**
-	 * Factory method for creating a new {@link Cipher} from the given parameters. This method is
-	 * invoked in the constructor from the derived classes and can be overridden so users can
-	 * provide their own version of a new {@link Cipher} from the given parameters.
-	 *
-	 * @param operationMode
-	 *            the operation mode
-	 * @param key
-	 *            the key
-	 * @param paramSpec
-	 *            the param spec
-	 * @param alg
-	 *            the alg
-	 * @return the cipher
-	 *
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cypher object fails.
-	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
-	 */
-	protected Cipher newCipher(final int operationMode, final SecretKey key,
-		final AlgorithmParameterSpec paramSpec, final String alg) throws NoSuchAlgorithmException,
-		NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException
-	{
-		return CipherFactory.newCipher(operationMode, key, paramSpec, alg);
-	}
-
-	/**
-	 * Factory method for creating a new {@link KeySpec} from the given private key. This method is
-	 * invoked in the constructor from the derived classes and can be overridden so users can
-	 * provide their own version of a new {@link KeySpec} from the given private key.
-	 *
-	 * @param privateKey
-	 *            the private key
-	 * @param salt
-	 *            the salt
-	 * @param iterationCount
-	 *            the iteration count
-	 * @return the new {@link KeySpec} from the given private key.
-	 */
-	protected KeySpec newKeySpec(final String privateKey, final byte[] salt,
-		final int iterationCount)
-	{
-		return KeySpecFactory.newPBEKeySpec(privateKey, salt, iterationCount);
-	}
 
 }

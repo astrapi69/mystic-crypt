@@ -93,7 +93,7 @@ public class CryptoStreamTest
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected SecretKeyFactory newSecretKeyFactory(final String algorithm)
+			public SecretKeyFactory newSecretKeyFactory(final String algorithm)
 				throws NoSuchAlgorithmException
 			{
 				return super.newSecretKeyFactory(algorythm);
@@ -125,7 +125,7 @@ public class CryptoStreamTest
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected SecretKeyFactory newSecretKeyFactory(final String algorithm)
+			public SecretKeyFactory newSecretKeyFactory(final String algorithm)
 				throws NoSuchAlgorithmException
 			{
 				return super.newSecretKeyFactory(algorythm);

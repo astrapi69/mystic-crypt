@@ -139,7 +139,7 @@ public class HexableEncryptor extends AbstractStringEncryptor
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String newAlgorithm()
+	public String newAlgorithm()
 	{
 		if (getModel().getAlgorithm() == null)
 		{
@@ -152,7 +152,7 @@ public class HexableEncryptor extends AbstractStringEncryptor
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected Cipher newCipher(final String privateKey, final String algorithm, final byte[] salt,
+	public Cipher newCipher(final String privateKey, final String algorithm, final byte[] salt,
 		final int iterationCount, final int operationMode)
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
 		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException

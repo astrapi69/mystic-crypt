@@ -24,25 +24,15 @@
  */
 package de.alpharogroup.crypto.core;
 
-import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.InvalidKeySpecException;
 
-import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKeyFactory;
-
-import org.apache.commons.lang.ArrayUtils;
 
 import de.alpharogroup.check.Check;
-import de.alpharogroup.crypto.CryptConst;
-import de.alpharogroup.crypto.factories.AlgorithmParameterSpecFactory;
-import de.alpharogroup.crypto.factories.SecretKeyFactoryExtensions;
-import de.alpharogroup.crypto.interfaces.Cryptor;
 import de.alpharogroup.crypto.model.CryptModel;
 import lombok.Getter;
 
@@ -58,7 +48,7 @@ import lombok.Getter;
  * @author Asterios Raptis
  * @version 1.0
  */
-public abstract class AbstractCryptor<C, K> implements Serializable, Cryptor
+public abstract class AbstractCryptor<C, K> implements FactoryMethodsCryptor<C, K>
 {
 
 	/** The Constant serialVersionUID. */
@@ -93,7 +83,7 @@ public abstract class AbstractCryptor<C, K> implements Serializable, Cryptor
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
 		Check.get().notNull(key, "key");
-		model = CryptModel.<C, K> builder().key(key).build();
+		this.model = CryptModel.<C, K> builder().key(key).build();
 		onInitialize();
 	}
 
@@ -125,172 +115,6 @@ public abstract class AbstractCryptor<C, K> implements Serializable, Cryptor
 		Check.get().notNull(model.getKey(), "model.getKey()");
 		this.model = model;
 		onInitialize();
-	}
-
-	/**
-	 * This method initialize the cipher object.
-	 * <p>
-	 *
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws UnsupportedEncodingException
-	 *             is thrown if the named charset is not supported.
-	 */
-	protected void onInitialize()
-		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
-		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
-	{
-		model.setCipher(newCipher(model.getKey()));
-		model.setInitialized(true);
-	}
-
-	/**
-	 * Factory method for creating a new {@link Cipher} from the given private key. This method is
-	 * invoked in the constructor from the derived classes and can be overridden so users can
-	 * provide their own version of a new {@link Cipher} from the given private key.
-	 *
-	 * @param key
-	 *            the key
-	 * @return the new {@link Cipher} from the given private key.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cypher object fails.
-	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws UnsupportedEncodingException
-	 *             is thrown if the named charset is not supported.
-	 */
-	protected C newCipher(final K key)
-		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
-		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
-	{
-		return newCipher(key, newAlgorithm(), newSalt(), newIterationCount(), newOperationMode());
-	}
-
-	/**
-	 * Factory method for creating a new algorithm that will be used with the cipher object.
-	 * Overwrite this method to provide a specific algorithm.
-	 *
-	 * @return the new algorithm that will be used with the cipher object.
-	 */
-	protected String newAlgorithm()
-	{
-		if (getModel().getAlgorithm() == null)
-		{
-			return CryptConst.PBE_WITH_MD5_AND_DES;
-		}
-		return getModel().getAlgorithm().getAlgorithm();
-	}
-
-	/**
-	 * Factory method for creating a new salt that will be used with the cipher object.
-	 *
-	 * @return the salt byte array
-	 */
-	protected byte[] newSalt()
-	{
-		if (ArrayUtils.isEmpty(getModel().getSalt()))
-		{
-			return CryptConst.SALT;
-		}
-		return getModel().getSalt();
-	}
-
-	/**
-	 * Factory method for creating a new iteration count that will be used with the cipher object.
-	 *
-	 * @return the salt byte array
-	 */
-	protected int newIterationCount()
-	{
-		if (getModel().getIterationCount() == null)
-		{
-			return CryptConst.ITERATIONCOUNT;
-		}
-		return getModel().getIterationCount();
-	}
-
-	/**
-	 * Factory method for creating a new {@link Cipher} from the given parameters. This method is
-	 * invoked in the constructor from the derived classes and can be overridden so users can
-	 * provide their own version of a new {@link Cipher} from the given parameters.
-	 *
-	 * @param key
-	 *            the key
-	 * @param algorithm
-	 *            the algorithm
-	 * @param salt
-	 *            the salt.
-	 * @param iterationCount
-	 *            the iteration count
-	 * @param operationMode
-	 *            the operation mode for the new cipher object
-	 * @return the cipher
-	 *
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cypher object fails.
-	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws UnsupportedEncodingException
-	 *             is thrown if the named charset is not supported.
-	 */
-	protected abstract C newCipher(final K key, final String algorithm, final byte[] salt,
-		final int iterationCount, final int operationMode)
-		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
-		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException;
-
-	/**
-	 * Factory method for creating a new {@link AlgorithmParameterSpec} from the given salt and
-	 * iteration count. This method is invoked in the constructor from the derived classes and can
-	 * be overridden so users can provide their own version of a new {@link AlgorithmParameterSpec}
-	 * from the given salt and iteration count.
-	 *
-	 * @param salt
-	 *            the salt
-	 * @param iterationCount
-	 *            the iteration count
-	 * @return the new {@link AlgorithmParameterSpec} from the given salt and iteration count.
-	 */
-	protected AlgorithmParameterSpec newAlgorithmParameterSpec(final byte[] salt,
-		final int iterationCount)
-	{
-		return AlgorithmParameterSpecFactory.newPBEParameterSpec(salt, iterationCount);
-	}
-
-	/**
-	 * Factory method for creating a new {@link SecretKeyFactory} from the given algorithm. This
-	 * method is invoked in the constructor from the derived classes and can be overridden so users
-	 * can provide their own version of a new {@link SecretKeyFactory} from the given algorithm.
-	 *
-	 * @param algorithm
-	 *            the algorithm
-	 * @return the new {@link SecretKeyFactory} from the given algorithm.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 */
-	protected SecretKeyFactory newSecretKeyFactory(final String algorithm)
-		throws NoSuchAlgorithmException
-	{
-		return SecretKeyFactoryExtensions.newSecretKeyFactory(algorithm);
 	}
 
 }

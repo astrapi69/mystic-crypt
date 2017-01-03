@@ -75,7 +75,7 @@ public class SecretKeyFactoryExtensions
 		keyGenerator.init(keyLength);
 		final SecretKey secretKey = keyGenerator.generateKey();
 		final byte[] secretKeyEncoded = secretKey.getEncoded();
-		return newSecretKeySpec(algorithm, secretKeyEncoded);
+		return newSecretKeySpec(secretKeyEncoded,algorithm);
 	}
 
 	/**
@@ -90,7 +90,7 @@ public class SecretKeyFactoryExtensions
 	 * @throws NoSuchAlgorithmException
 	 *             the no such algorithm exception
 	 */
-	public static SecretKeySpec newSecretKeySpec(final String algorithm, final byte[] secretKey)
+	public static SecretKeySpec newSecretKeySpec(final byte[] secretKey, final String algorithm)
 		throws NoSuchAlgorithmException
 	{
 		final SecretKeySpec secretKeySpec = new SecretKeySpec(secretKey, algorithm);
