@@ -30,10 +30,9 @@ import lombok.Getter;
 
 /**
  * The enum {@link RngAlgorithm} provides algorithms for generation of random number generator (RNG)
- * that are used with the {@link SecureRandom} object. <br> <br>
- * Note: See what algorithm can be used with
- * your operating system.
+ * that are used with the {@link SecureRandom} object. <br>
  * <br>
+ * Note: See what algorithm can be used with your operating system. <br>
  * For more info see: <a href=
  * "https://docs.oracle.com/javase/8/docs/technotes/guides/security/SunProviders.html#SecureRandomImp">https://docs.oracle.com/javase/8/docs/technotes/guides/security/SunProviders.html#SecureRandomImp</a>
  *

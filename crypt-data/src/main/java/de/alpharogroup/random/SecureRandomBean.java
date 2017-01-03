@@ -121,11 +121,13 @@ public class SecureRandomBean
 		}
 		catch (final NoSuchAlgorithmException e)
 		{
-			logger.error("The specified algorithm is not available from the specified provider.", e);
+			logger.error("The specified algorithm is not available from the specified provider.",
+				e);
 		}
 		catch (final NoSuchProviderException e)
 		{
-			logger.error("The specified provider is not registered in the security provider list.", e);
+			logger.error("The specified provider is not registered in the security provider list.",
+				e);
 		}
 		return secureRandom;
 	}

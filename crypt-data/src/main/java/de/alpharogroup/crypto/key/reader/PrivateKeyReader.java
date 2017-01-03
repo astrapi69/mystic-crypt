@@ -216,8 +216,7 @@ public class PrivateKeyReader
 	{
 		final byte[] keyBytes = Files.readAllBytes(file.toPath());
 		final String privateKeyAsBase64String = new String(keyBytes)
-			.replace(BEGIN_RSA_PRIVATE_KEY_PREFIX, "")
-			.replace(END_RSA_PRIVATE_KEY_SUFFIX, "")
+			.replace(BEGIN_RSA_PRIVATE_KEY_PREFIX, "").replace(END_RSA_PRIVATE_KEY_SUFFIX, "")
 			.trim();
 		return privateKeyAsBase64String;
 	}

@@ -33,7 +33,8 @@ import org.testng.annotations.Test;
 /**
  * Test class for the class {@link HexExtensions}.
  */
-public class HexExtensionsTest {
+public class HexExtensionsTest
+{
 
 	/**
 	 * Test method for {@link HexExtensions#decodeHex(char[])}
@@ -90,7 +91,8 @@ public class HexExtensionsTest {
 	{
 		final String secretMessage = "Secret message";
 		final String expected = "536563726574206d657373616765";
-		final char[] actualCharArray = HexExtensions.encodeHex(StringUtils.getBytesUtf8(secretMessage));
+		final char[] actualCharArray = HexExtensions
+			.encodeHex(StringUtils.getBytesUtf8(secretMessage));
 		final String actual = new String(actualCharArray);
 		assertEquals(expected, actual);
 	}
@@ -103,7 +105,8 @@ public class HexExtensionsTest {
 	{
 		final String secretMessage = "Secret message";
 		final String expected = "536563726574206d657373616765";
-		char[] actualCharArray = HexExtensions.encodeHex(StringUtils.getBytesUtf8(secretMessage), true);
+		char[] actualCharArray = HexExtensions.encodeHex(StringUtils.getBytesUtf8(secretMessage),
+			true);
 		String actual = new String(actualCharArray);
 		assertEquals(expected, actual);
 		actualCharArray = HexExtensions.encodeHex(StringUtils.getBytesUtf8(secretMessage), false);
