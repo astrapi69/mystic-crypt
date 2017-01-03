@@ -45,7 +45,7 @@ import de.alpharogroup.crypto.interfaces.Cryptor;
 import de.alpharogroup.crypto.model.CryptModel;
 
 /**
- * The abstract class {@link AbstractCryptor2} provides factory methods that may or must be
+ * The abstract class {@link FactoryMethodsCryptor} provides factory methods that may or must be
  * overwritten dependent of the specific implementor class.
  *
  * @param <C>
