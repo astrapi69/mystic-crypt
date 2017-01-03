@@ -22,25 +22,23 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.aes;
+package de.alpharogroup.crypto.chainable;
 
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
+import de.alpharogroup.crypto.hex.HexableDecryptor;
+import de.alpharogroup.crypto.hex.HexableEncryptor;
+
 /**
- * Test class for the class {@link ChainedStringEncryptor} and {@link ChainedStringDecryptor}.
- *
- * @deprecated The unit tests moved in the appropriate test class because the class
- *             {@link ChainedStringEncryptor} and {@link ChainedStringDecryptor} are now deprecated.
- *             This test class will be removed in the next major release.
+ * Test class for the class {@link ChainableStringEncryptor} and {@link ChainableStringDecryptor}.
  */
-@Deprecated
-public class ChainedEncryptDecryptorTest
+public class ChainableStringDecryptorTest
 {
 
 	/**
-	 * Test chained encrypt and decrypt with {@link ChainedStringEncryptor#encrypt(String)} and
-	 * {@link ChainedStringDecryptor#decrypt(String)}.
+	 * Test chained encrypt and decrypt with {@link ChainableStringEncryptor#encrypt(String)} and
+	 * {@link ChainableStringDecryptor#decrypt(String)}.
 	 *
 	 * @throws Exception
 	 *             is thrown if any security exception occured.
@@ -52,21 +50,22 @@ public class ChainedEncryptDecryptorTest
 		final String firstKey = "D1D15ED36B887AF1";
 		final String secondKey = "44850AD044361AE8";
 		final String thirdKey = "BD0F34C849772DC6";
-		final HexEncryptor firstEncryptor = new HexEncryptor(firstKey);
-		final HexEncryptor secondEncryptor = new HexEncryptor(secondKey);
-		final HexEncryptor thirdEncryptor = new HexEncryptor(thirdKey);
-		final ChainedStringEncryptor encryptor = new ChainedStringEncryptor(firstEncryptor,
-			secondEncryptor, thirdEncryptor);
+		final HexableEncryptor firstEncryptor = new HexableEncryptor(firstKey);
+		final HexableEncryptor secondEncryptor = new HexableEncryptor(secondKey);
+		final HexableEncryptor thirdEncryptor = new HexableEncryptor(thirdKey);
+		final ChainableStringEncryptor encryptor = new ChainableStringEncryptor(firstEncryptor, secondEncryptor,
+			thirdEncryptor);
 
 		final String encrypted = encryptor.encrypt(secretMessage);
-		final HexDecryptor firstDecryptor = new HexDecryptor(firstKey);
-		final HexDecryptor secondDecryptor = new HexDecryptor(secondKey);
-		final HexDecryptor thirdDecryptor = new HexDecryptor(thirdKey);
-		final ChainedStringDecryptor decryptor = new ChainedStringDecryptor(thirdDecryptor,
-			secondDecryptor, firstDecryptor);
+		final HexableDecryptor firstDecryptor = new HexableDecryptor(firstKey);
+		final HexableDecryptor secondDecryptor = new HexableDecryptor(secondKey);
+		final HexableDecryptor thirdDecryptor = new HexableDecryptor(thirdKey);
+		final ChainableStringDecryptor decryptor = new ChainableStringDecryptor(thirdDecryptor, secondDecryptor,
+			firstDecryptor);
 
 		final String decryted = decryptor.decrypt(encrypted);
 		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
 			secretMessage.equals(decryted));
 	}
+
 }

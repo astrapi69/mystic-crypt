@@ -31,8 +31,11 @@ import de.alpharogroup.crypto.hex.HexExtensions;
 import lombok.experimental.UtilityClass;
 
 /**
- * The class {@link HexDump} provides methods for encode and decode hex encoded byte or char arrays and {@link String} objects.
- * @deprecated use instead the class {@link HexExtensions}.
+ * The class {@link HexDump} provides methods for encode and decode hex encoded byte or char arrays
+ * and {@link String} objects.
+ *
+ * @deprecated use instead the class {@link HexExtensions}. This class will be removed in the next
+ *             major release.
  */
 @UtilityClass
 @Deprecated

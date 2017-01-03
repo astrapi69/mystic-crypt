@@ -22,31 +22,26 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.aes;
+package de.alpharogroup.crypto.chainable;
 
-import de.alpharogroup.crypto.chainable.ChainableStringEncryptor;
 import de.alpharogroup.crypto.core.ChainableEncryptor;
 import de.alpharogroup.crypto.interfaces.Encryptor;
 
 /**
- * The class {@link ChainedStringEncryptor} can take many {@code Encryptor} objects and encrypts the
+ * The class {@link ChainableStringEncryptor} can take many {@code Encryptor} objects and encrypts the
  * given string with all the given {@code Encryptor} objects. For an example see the unit test.
- *
- * @deprecated use instead the new class {@link ChainableStringEncryptor}. This class will be
- *             removed in the next major release.
  */
-@Deprecated
-public class ChainedStringEncryptor extends ChainableEncryptor<String>
+public class ChainableStringEncryptor extends ChainableEncryptor<String>
 {
 
 	/**
-	 * Instantiates a new {@link ChainedStringEncryptor} object.
+	 * Instantiates a new {@link ChainableStringEncryptor} object.
 	 *
 	 * @param encryptors
 	 *            the encryptors
 	 */
 	@SafeVarargs
-	public ChainedStringEncryptor(final Encryptor<String, String>... encryptors)
+	public ChainableStringEncryptor(final Encryptor<String, String>... encryptors)
 	{
 		super(encryptors);
 	}

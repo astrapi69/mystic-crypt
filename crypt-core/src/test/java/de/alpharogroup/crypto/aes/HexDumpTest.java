@@ -34,7 +34,9 @@ import de.alpharogroup.crypto.hex.HexExtensions;
 
 /**
  * Test class for the class {@link HexDump}.
- * This test class will be removed in the next major release.
+ *
+ * @deprecated The unit tests moved in the appropriate test class because the class {@link HexDump}
+ *             is now deprecated. This test class will be removed in the next major release.
  */
 @Deprecated
 public class HexDumpTest
@@ -95,7 +97,8 @@ public class HexDumpTest
 	{
 		final String secretMessage = "Secret message";
 		final String expected = "536563726574206d657373616765";
-		final char[] actualCharArray = HexExtensions.encodeHex(StringUtils.getBytesUtf8(secretMessage));
+		final char[] actualCharArray = HexExtensions
+			.encodeHex(StringUtils.getBytesUtf8(secretMessage));
 		final String actual = new String(actualCharArray);
 		assertEquals(expected, actual);
 	}
@@ -108,7 +111,8 @@ public class HexDumpTest
 	{
 		final String secretMessage = "Secret message";
 		final String expected = "536563726574206d657373616765";
-		char[] actualCharArray = HexExtensions.encodeHex(StringUtils.getBytesUtf8(secretMessage), true);
+		char[] actualCharArray = HexExtensions.encodeHex(StringUtils.getBytesUtf8(secretMessage),
+			true);
 		String actual = new String(actualCharArray);
 		assertEquals(expected, actual);
 		actualCharArray = HexExtensions.encodeHex(StringUtils.getBytesUtf8(secretMessage), false);

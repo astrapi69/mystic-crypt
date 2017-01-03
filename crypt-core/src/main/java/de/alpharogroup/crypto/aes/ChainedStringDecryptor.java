@@ -24,6 +24,7 @@
  */
 package de.alpharogroup.crypto.aes;
 
+import de.alpharogroup.crypto.chainable.ChainableStringDecryptor;
 import de.alpharogroup.crypto.core.ChainableDecryptor;
 import de.alpharogroup.crypto.interfaces.Decryptor;
 
@@ -32,7 +33,11 @@ import de.alpharogroup.crypto.interfaces.Decryptor;
  * given string with all the given {@code Decryptor} objects. The {@code Decryptor} objects must be
  * in a reverse order as they was given in the {@code ChainedEncryptor} object. For an example see
  * the unit test.
+ *
+ * @deprecated use instead the new class {@link ChainableStringDecryptor}. This class will be
+ *             removed in the next major release.
  */
+@Deprecated
 public class ChainedStringDecryptor extends ChainableDecryptor<String>
 {
 

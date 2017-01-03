@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.aes;
+package de.alpharogroup.crypto.hex;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
@@ -30,36 +30,28 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.commons.codec.binary.Hex;
 
 import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.algorithm.AesAlgorithm;
 import de.alpharogroup.crypto.algorithm.Algorithm;
-import de.alpharogroup.crypto.core.BaseStringEncryptor;
-import de.alpharogroup.crypto.hex.HexableEncryptor;
+import de.alpharogroup.crypto.core.BaseStringDecryptor;
+import de.alpharogroup.crypto.hex.HexExtensions;
 
 /**
- * The class {@link HexEncryptor} is the pendant class of {@link HexDecryptor} and encrypts given
- * String objects that can be decrypted with {@link HexDecryptor}. For an example see the unit test.
- *
- * @deprecated use instead the new class {@link HexableEncryptor}. This class will be removed in the
- *             next major release.
+ * The class {@link HexableDecryptor} is the pendant class of {@link HexableEncryptor} and decrypts given
+ * String objects that was encrypted with {@link HexableEncryptor}. For an example see the unit test.
  */
-@Deprecated
-public class HexEncryptor extends BaseStringEncryptor
+public class HexableDecryptor extends BaseStringDecryptor
 {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Instantiates a new {@link HexEncryptor} from the given parameters.
+	 * Instantiates a new {@link HexableDecryptor} from the given parameters.
 	 *
 	 * @param privateKey
 	 *            The private key.
@@ -76,7 +68,7 @@ public class HexEncryptor extends BaseStringEncryptor
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public HexEncryptor(final String privateKey)
+	public HexableDecryptor(final String privateKey)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
@@ -84,7 +76,7 @@ public class HexEncryptor extends BaseStringEncryptor
 	}
 
 	/**
-	 * Instantiates a new {@link HexEncryptor} from the given parameters.
+	 * Instantiates a new {@link HexableDecryptor} from the given parameters.
 	 *
 	 * @param privateKey
 	 *            The private key.
@@ -103,41 +95,13 @@ public class HexEncryptor extends BaseStringEncryptor
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public HexEncryptor(final String privateKey, final Algorithm algorithm)
+	public HexableDecryptor(final String privateKey, final Algorithm algorithm)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
 		super(privateKey);
 		Check.get().notNull(algorithm, "algorithm");
 		getModel().setAlgorithm(algorithm);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @throws InvalidKeyException
-	 *             the invalid key exception is thrown if initialization of the cypher object fails.
-	 * @throws UnsupportedEncodingException
-	 *             is thrown by get the byte array of the private key String object fails or if the
-	 *             named charset is not supported.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the cypher object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cypher object fails.
-	 * @throws IllegalBlockSizeException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws BadPaddingException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 */
-	@Override
-	public String encrypt(final String string)
-		throws InvalidKeyException, UnsupportedEncodingException, NoSuchAlgorithmException,
-		NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException
-	{
-		final byte[] utf8 = string.getBytes("UTF-8");
-		final byte[] encrypt = getModel().getCipher().doFinal(utf8);
-		final char[] original = Hex.encodeHex(encrypt, false);
-		return new String(original);
 	}
 
 	/**
@@ -167,6 +131,17 @@ public class HexEncryptor extends BaseStringEncryptor
 		final Cipher cipher = Cipher.getInstance(getModel().getAlgorithm().getAlgorithm());
 		cipher.init(operationMode, skeySpec);
 		return cipher;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String decrypt(final String encypted) throws Exception
+	{
+		final byte[] dec = HexExtensions.decodeHex(encypted.toCharArray());
+		final byte[] utf8 = getModel().getCipher().doFinal(dec);
+		return new String(utf8, "UTF-8");
 	}
 
 }

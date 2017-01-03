@@ -22,33 +22,30 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.aes;
+package de.alpharogroup.crypto.chainable;
 
-import de.alpharogroup.crypto.chainable.ChainableStringEncryptor;
-import de.alpharogroup.crypto.core.ChainableEncryptor;
-import de.alpharogroup.crypto.interfaces.Encryptor;
+import de.alpharogroup.crypto.core.ChainableDecryptor;
+import de.alpharogroup.crypto.interfaces.Decryptor;
 
 /**
- * The class {@link ChainedStringEncryptor} can take many {@code Encryptor} objects and encrypts the
- * given string with all the given {@code Encryptor} objects. For an example see the unit test.
- *
- * @deprecated use instead the new class {@link ChainableStringEncryptor}. This class will be
- *             removed in the next major release.
+ * The class {@link ChainableStringDecryptor} can take many {@code Decryptor} objects and decrypts the
+ * given string with all the given {@code Decryptor} objects. The {@code Decryptor} objects must be
+ * in a reverse order as they was given in the {@code ChainedEncryptor} object. For an example see
+ * the unit test.
  */
-@Deprecated
-public class ChainedStringEncryptor extends ChainableEncryptor<String>
+public class ChainableStringDecryptor extends ChainableDecryptor<String>
 {
 
 	/**
-	 * Instantiates a new {@link ChainedStringEncryptor} object.
+	 * Instantiates a new {@link ChainableStringDecryptor} object.
 	 *
-	 * @param encryptors
-	 *            the encryptors
+	 * @param decryptors
+	 *            the decryptors
 	 */
 	@SafeVarargs
-	public ChainedStringEncryptor(final Encryptor<String, String>... encryptors)
+	public ChainableStringDecryptor(final Decryptor<String, String>... decryptors)
 	{
-		super(encryptors);
+		super(decryptors);
 	}
 
 }

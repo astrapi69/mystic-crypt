@@ -39,11 +39,16 @@ import de.alpharogroup.crypto.algorithm.AesAlgorithm;
 import de.alpharogroup.crypto.algorithm.Algorithm;
 import de.alpharogroup.crypto.core.BaseStringDecryptor;
 import de.alpharogroup.crypto.hex.HexExtensions;
+import de.alpharogroup.crypto.hex.HexableDecryptor;
 
 /**
  * The class {@link HexDecryptor} is the pendant class of {@link HexEncryptor} and decrypts given
  * String objects that was encrypted with {@link HexEncryptor}. For an example see the unit test.
+ *
+ * @deprecated use instead the new class {@link HexableDecryptor}. This class will be removed in the
+ *             next major release.
  */
+@Deprecated
 public class HexDecryptor extends BaseStringDecryptor
 {
 

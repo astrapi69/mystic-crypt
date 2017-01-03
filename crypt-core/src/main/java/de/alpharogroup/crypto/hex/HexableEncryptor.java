@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.aes;
+package de.alpharogroup.crypto.hex;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
@@ -42,24 +42,19 @@ import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.algorithm.AesAlgorithm;
 import de.alpharogroup.crypto.algorithm.Algorithm;
 import de.alpharogroup.crypto.core.BaseStringEncryptor;
-import de.alpharogroup.crypto.hex.HexableEncryptor;
 
 /**
- * The class {@link HexEncryptor} is the pendant class of {@link HexDecryptor} and encrypts given
- * String objects that can be decrypted with {@link HexDecryptor}. For an example see the unit test.
- *
- * @deprecated use instead the new class {@link HexableEncryptor}. This class will be removed in the
- *             next major release.
+ * The class {@link HexableEncryptor} is the pendant class of {@link HexableDecryptor} and encrypts given
+ * String objects that can be decrypted with {@link HexableDecryptor}. For an example see the unit test.
  */
-@Deprecated
-public class HexEncryptor extends BaseStringEncryptor
+public class HexableEncryptor extends BaseStringEncryptor
 {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Instantiates a new {@link HexEncryptor} from the given parameters.
+	 * Instantiates a new {@link HexableEncryptor} from the given parameters.
 	 *
 	 * @param privateKey
 	 *            The private key.
@@ -76,7 +71,7 @@ public class HexEncryptor extends BaseStringEncryptor
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public HexEncryptor(final String privateKey)
+	public HexableEncryptor(final String privateKey)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
@@ -84,7 +79,7 @@ public class HexEncryptor extends BaseStringEncryptor
 	}
 
 	/**
-	 * Instantiates a new {@link HexEncryptor} from the given parameters.
+	 * Instantiates a new {@link HexableEncryptor} from the given parameters.
 	 *
 	 * @param privateKey
 	 *            The private key.
@@ -103,7 +98,7 @@ public class HexEncryptor extends BaseStringEncryptor
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public HexEncryptor(final String privateKey, final Algorithm algorithm)
+	public HexableEncryptor(final String privateKey, final Algorithm algorithm)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{

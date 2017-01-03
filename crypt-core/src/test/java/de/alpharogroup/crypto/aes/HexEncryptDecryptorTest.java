@@ -30,7 +30,12 @@ import org.testng.annotations.Test;
 
 /**
  * Test class for the class {@link HexEncryptor} and {@link HexDecryptor}.
+ *
+ * @deprecated The unit tests moved in the appropriate test class because the class
+ *             {@link HexEncryptor} and {@link HexDecryptor} are now deprecated. This test class
+ *             will be removed in the next major release.
  */
+@Deprecated
 public class HexEncryptDecryptorTest
 {
 
