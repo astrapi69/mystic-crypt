@@ -37,13 +37,19 @@ import javax.crypto.spec.SecretKeySpec;
 import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.algorithm.AesAlgorithm;
 import de.alpharogroup.crypto.algorithm.Algorithm;
-import de.alpharogroup.crypto.core.BaseDecryptor;
+import de.alpharogroup.crypto.core.AbstractStringDecryptor;
+import de.alpharogroup.crypto.hex.HexExtensions;
+import de.alpharogroup.crypto.hex.HexableDecryptor;
 
 /**
  * The class {@link HexDecryptor} is the pendant class of {@link HexEncryptor} and decrypts given
  * String objects that was encrypted with {@link HexEncryptor}. For an example see the unit test.
+ *
+ * @deprecated use instead the new class {@link HexableDecryptor}. This class will be removed in the
+ *             next major release.
  */
-public class HexDecryptor extends BaseDecryptor
+@Deprecated
+public class HexDecryptor extends AbstractStringDecryptor
 {
 
 	/** The Constant serialVersionUID. */
@@ -109,7 +115,10 @@ public class HexDecryptor extends BaseDecryptor
 	@Override
 	protected String newAlgorithm()
 	{
-		getModel().setAlgorithm(AesAlgorithm.AES);
+		if (getModel().getAlgorithm() == null)
+		{
+			getModel().setAlgorithm(AesAlgorithm.AES);
+		}
 		return getModel().getAlgorithm().getAlgorithm();
 	}
 
@@ -125,7 +134,7 @@ public class HexDecryptor extends BaseDecryptor
 		final SecretKeySpec skeySpec = new SecretKeySpec(privateKey.getBytes("UTF-8"),
 			getModel().getAlgorithm().getAlgorithm());
 		final Cipher cipher = Cipher.getInstance(getModel().getAlgorithm().getAlgorithm());
-		cipher.init(Cipher.DECRYPT_MODE, skeySpec);
+		cipher.init(operationMode, skeySpec);
 		return cipher;
 	}
 
@@ -135,7 +144,7 @@ public class HexDecryptor extends BaseDecryptor
 	@Override
 	public String decrypt(final String encypted) throws Exception
 	{
-		final byte[] dec = HexDump.decodeHex(encypted.toCharArray());
+		final byte[] dec = HexExtensions.decodeHex(encypted.toCharArray());
 		final byte[] utf8 = getModel().getCipher().doFinal(dec);
 		return new String(utf8, "UTF-8");
 	}

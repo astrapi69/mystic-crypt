@@ -28,7 +28,7 @@ import java.io.InputStream;
 
 import javax.crypto.CipherInputStream;
 
-import de.alpharogroup.crypto.core.BaseEncryptor;
+import de.alpharogroup.crypto.core.AbstractStringEncryptor;
 
 /**
  * The class {@link CryptoInputStream} extends the {@link CipherInputStream}.
@@ -47,7 +47,8 @@ public class CryptoInputStream extends CipherInputStream
 	 * @param encryptor
 	 *            the encryptor
 	 */
-	protected CryptoInputStream(final InputStream inputStream, final BaseEncryptor encryptor)
+	protected CryptoInputStream(final InputStream inputStream,
+		final AbstractStringEncryptor encryptor)
 	{
 		super(inputStream, encryptor.getModel().getCipher());
 	}

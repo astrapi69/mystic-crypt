@@ -36,10 +36,13 @@ import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKeyFactory;
 
+import org.apache.commons.lang.ArrayUtils;
+
 import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.factories.AlgorithmParameterSpecFactory;
 import de.alpharogroup.crypto.factories.SecretKeyFactoryExtensions;
+import de.alpharogroup.crypto.interfaces.Cryptor;
 import de.alpharogroup.crypto.model.CryptModel;
 import lombok.Getter;
 
@@ -48,14 +51,14 @@ import lombok.Getter;
  * overwritten dependent of the specific implementor class.
  *
  * @param <C>
- *            the generic type
+ *            the generic type of the cipher
  * @param <K>
- *            the key type
+ *            the generic type of the key
  *
  * @author Asterios Raptis
  * @version 1.0
  */
-public abstract class AbstractCryptor<C, K> implements Serializable
+public abstract class AbstractCryptor<C, K> implements Serializable, Cryptor
 {
 
 	/** The Constant serialVersionUID. */
@@ -185,7 +188,11 @@ public abstract class AbstractCryptor<C, K> implements Serializable
 	 */
 	protected String newAlgorithm()
 	{
-		return CryptConst.PBE_WITH_MD5_AND_DES;
+		if (getModel().getAlgorithm() == null)
+		{
+			return CryptConst.PBE_WITH_MD5_AND_DES;
+		}
+		return getModel().getAlgorithm().getAlgorithm();
 	}
 
 	/**
@@ -195,7 +202,11 @@ public abstract class AbstractCryptor<C, K> implements Serializable
 	 */
 	protected byte[] newSalt()
 	{
-		return CryptConst.SALT;
+		if (ArrayUtils.isEmpty(getModel().getSalt()))
+		{
+			return CryptConst.SALT;
+		}
+		return getModel().getSalt();
 	}
 
 	/**
@@ -205,17 +216,12 @@ public abstract class AbstractCryptor<C, K> implements Serializable
 	 */
 	protected int newIterationCount()
 	{
-		return CryptConst.ITERATIONCOUNT;
+		if (getModel().getIterationCount() == null)
+		{
+			return CryptConst.ITERATIONCOUNT;
+		}
+		return getModel().getIterationCount();
 	}
-
-	/**
-	 * Abstact callback method for get the operation mode. the operation mode can be one of the
-	 * following values: ENCRYPT_MODE, DECRYPT_MODE, WRAP_MODE or UNWRAP_MODE
-	 *
-	 * @return the operation mode
-	 */
-	protected abstract int newOperationMode();
-
 
 	/**
 	 * Factory method for creating a new {@link Cipher} from the given parameters. This method is

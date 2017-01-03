@@ -88,7 +88,7 @@ public class SimpleBaseEncryptor extends BaseCryptor implements IntegerEncryptor
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected final int newOperationMode()
+	public int newOperationMode()
 	{
 		return Cipher.ENCRYPT_MODE;
 	}

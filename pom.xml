@@ -10,7 +10,7 @@
 	</parent>
 
 	<artifactId>mystic-crypt</artifactId>
-	<version>4.15.0</version>
+	<version>4.18.0</version>
 	<packaging>pom</packaging>
 	<inceptionYear>2015</inceptionYear>
 
@@ -67,6 +67,7 @@
 		<module>auth-security</module>
 		<module>crypt-core</module>
 		<module>randomizer</module>
+		<module>crypt-data</module>
 	</modules>
 
 	<properties>
@@ -81,8 +82,10 @@
 		<resourcebundle-inspector.version>2.11.0</resourcebundle-inspector.version>
 		<!-- PARENT PROJECT versions -->
 		<randomizer.version>${project.version}</randomizer.version>
+		<crypt-data.version>${project.version}</crypt-data.version>
 		<!-- EXTERNAL LIBRARIES versions -->
 		<commons-codec.version>1.10</commons-codec.version>
+		<bouncycastle.version>1.55</bouncycastle.version>
 	</properties>
 
 	<dependencyManagement>
@@ -135,6 +138,30 @@
 				<groupId>de.alpharogroup</groupId>
 				<artifactId>randomizer</artifactId>
 				<version>${randomizer.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>crypt-data</artifactId>
+				<version>${crypt-data.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.bouncycastle</groupId>
+				<artifactId>bcprov-jdk15on</artifactId>
+				<version>${bouncycastle.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.bouncycastle</groupId>
+				<artifactId>bcprov-ext-jdk15on</artifactId>
+				<version>${bouncycastle.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.bouncycastle</groupId>
+				<artifactId>bcpkix-jdk15on</artifactId>
+				<version>${bouncycastle.version}</version>
 			</dependency>
 
 		</dependencies>

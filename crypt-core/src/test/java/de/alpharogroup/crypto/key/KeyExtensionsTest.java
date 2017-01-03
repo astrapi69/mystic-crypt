@@ -30,6 +30,7 @@ import java.security.PrivateKey;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
+import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 import de.alpharogroup.crypto.provider.SecurityProvider;
 import de.alpharogroup.file.search.PathFinder;
 
@@ -51,9 +52,32 @@ public class KeyExtensionsTest
 		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
 		final File privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
 
-		final PrivateKey privateKey = KeyExtensions.readPemPrivateKey(privatekeyPemFile,
+		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile,
 			SecurityProvider.BC);
 		AssertJUnit.assertNotNull(privateKey);
+	}
+
+	/**
+	 * Test method for {@link KeyExtensions#readPrivateKey(File, SecurityProvider)}.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
+	@Test
+	public void testReadDerPrivateKey() throws Exception
+	{
+		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
+
+		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
+
+		AssertJUnit.assertNotNull(privateKey);
+	}
+
+	@Test
+	public void testConvertToBase64() throws Exception
+	{
+
 	}
 
 }

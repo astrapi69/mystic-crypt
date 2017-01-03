@@ -25,11 +25,28 @@
 package de.alpharogroup.crypto.interfaces;
 
 /**
- * Interface for decrypt {@link String} objects.
+ * The generic functional interface {@link Decryptor} can decrypt an object of type &lt;T&gt; (that
+ * was previously encrypted) and return the decrypted result as object of type &lt;R&gt;.
  *
- * @version 1.0
  * @author Asterios Raptis
+ * @version 1.0
+ * @param <T>
+ *            the generic type of the input to decrypt
+ * @param <R>
+ *            the generic type of the result
  */
-public interface Decryptor extends GenericDecryptor<String, String>
+public interface Decryptor<T, R>
 {
+
+	/**
+	 * Decrypt the given encrypted object.
+	 *
+	 * @param encrypted
+	 *            The object to decrypt.
+	 * @return The decrypted object
+	 * @throws Exception
+	 *             is thrown if decryption fails.
+	 */
+	public R decrypt(final T encrypted) throws Exception;
+
 }

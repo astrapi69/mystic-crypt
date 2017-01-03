@@ -28,10 +28,16 @@ package de.alpharogroup.crypto.key;
 import java.io.File;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.Security;
 
+import org.apache.log4j.Logger;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.testng.AssertJUnit;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
+import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.crypto.provider.SecurityProvider;
 import de.alpharogroup.file.search.PathFinder;
 
@@ -40,6 +46,21 @@ import de.alpharogroup.file.search.PathFinder;
  */
 public class KeyHexEncryptDecryptorTest
 {
+	/** The Constant logger. */
+	private static final Logger logger = Logger
+		.getLogger(KeyHexEncryptDecryptorTest.class.getName());
+
+	/**
+	 * Sets up method will be invoked before every unit test method in this class.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
+	@BeforeMethod
+	protected void setUp() throws Exception
+	{
+		Security.addProvider(new BouncyCastleProvider());
+	}
 
 	/**
 	 * Test encrypt and decrypt with {@link PublicKeyHexEncryptor#encrypt(String)} and
@@ -52,29 +73,25 @@ public class KeyHexEncryptDecryptorTest
 	public void testEncryptDecryptPemFiles() throws Exception
 	{
 		final String test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
-		System.out.println("String before encryption:");
-		System.out.println(test);
+		logger.debug("String before encryption:" + test);
 
 		final File publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
 		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
 		final File privatekeyPemFile = new File(publickeyPemDir, "private.pem");
 
-		final PrivateKey privateKey = KeyExtensions.readPemPrivateKey(privatekeyPemFile,
+		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile,
 			SecurityProvider.BC);
 
-		final PublicKey publicKey = KeyExtensions.readPemPublicKey(publickeyPemFile,
+		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile,
 			SecurityProvider.BC);
 
 		final PublicKeyHexEncryptor encryptor = new PublicKeyHexEncryptor(publicKey);
 
 		final String encrypted = encryptor.encrypt(test);
-
-		System.out.println("String after encryption:");
-		System.out.println(encrypted);
+		logger.debug("String after encryption:" + encrypted);
 		final PrivateKeyHexDecryptor decryptor = new PrivateKeyHexDecryptor(privateKey);
 		final String decryted = decryptor.decrypt(encrypted);
-		System.out.println("String after decryption:");
-		System.out.println(decryted);
+		logger.debug("String after decryption:" + decryted);
 		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
 			test.equals(decryted));
 	}
@@ -95,16 +112,15 @@ public class KeyHexEncryptDecryptorTest
 		final File publickeyDerFile = new File(publickeyDerDir, "public.der");
 		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
 
-		final PrivateKey privateKey = KeyExtensions.readPrivateKey(privatekeyDerFile);
+		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
 
-		final PublicKey publicKey = KeyExtensions.readPublicKey(publickeyDerFile);
+		final PublicKey publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
 
 		final PublicKeyHexEncryptor encryptor = new PublicKeyHexEncryptor(publicKey);
 
 		final String encrypted = encryptor.encrypt(test);
 
-		System.out.println("String after encryption:");
-		System.out.println(encrypted);
+		logger.debug("String after encryption:" + encrypted);
 		final PrivateKeyHexDecryptor decryptor = new PrivateKeyHexDecryptor(privateKey);
 		final String decryted = decryptor.decrypt(encrypted);
 		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",

@@ -27,13 +27,18 @@ package de.alpharogroup.crypto.key;
 import java.io.File;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.Security;
 
 import javax.crypto.Cipher;
 
+import org.apache.log4j.Logger;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
+import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
+import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.crypto.model.CryptModel;
 import de.alpharogroup.crypto.provider.SecurityProvider;
 import de.alpharogroup.file.search.PathFinder;
@@ -43,6 +48,9 @@ import de.alpharogroup.file.search.PathFinder;
  */
 public class KeyEncryptDecryptorTest
 {
+
+	/** The Constant logger. */
+	private static final Logger logger = Logger.getLogger(KeyEncryptDecryptorTest.class.getName());
 
 	/**
 	 * Test encrypt and decrypt with {@link PublicKeyEncryptor#encrypt(byte[])} and
@@ -57,38 +65,49 @@ public class KeyEncryptDecryptorTest
 		final String test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
 		final byte[] testBytes = test.getBytes("UTF-8");
 
-		final File publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
-		final File privatekeyPemFile = new File(publickeyPemDir, "private.pem");
+		final File keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		final File publickeyPemFile = new File(keyPemDir, "public.pem");
+		final File privatekeyPemFile = new File(keyPemDir, "private.pem");
 
-		final PrivateKey privateKey = KeyExtensions.readPemPrivateKey(privatekeyPemFile,
+		Security.addProvider(new BouncyCastleProvider());
+		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile,
 			SecurityProvider.BC);
 
-		final PublicKey publicKey = KeyExtensions.readPemPublicKey(publickeyPemFile,
+		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile,
 			SecurityProvider.BC);
 
 		final CryptModel<Cipher, PublicKey> encryptModel = CryptModel.<Cipher, PublicKey> builder()
 			.key(publicKey)
-			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding)
-			.operationMode(Cipher.ENCRYPT_MODE).build();
+			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA256AndMGF1Padding)
+			.build();
 
 		final CryptModel<Cipher, PrivateKey> decryptModel = CryptModel
 			.<Cipher, PrivateKey> builder().key(privateKey)
-			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding)
-			.operationMode(Cipher.DECRYPT_MODE).build();
+			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA256AndMGF1Padding)
+			.build();
 
 		final PublicKeyEncryptor encryptor = new PublicKeyEncryptor(encryptModel);
 		final PrivateKeyDecryptor decryptor = new PrivateKeyDecryptor(decryptModel);
 
 
-		final byte[] encrypted = encryptor.encrypt(testBytes);
+		byte[] encrypted = encryptor.encrypt(testBytes);
 
-		final byte[] decrypted = decryptor.decrypt(encrypted);
+		byte[] decrypted = decryptor.decrypt(encrypted);
 
-		final String decryptedString = new String(decrypted, "UTF-8");
+		String decryptedString = new String(decrypted, "UTF-8");
+		logger.debug(decryptedString);
 		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
 			test.equals(decryptedString));
+		for (int i = 0; i < 100; i++)
+		{
+			encrypted = encryptor.encrypt(testBytes);
+			decrypted = decryptor.decrypt(encrypted);
 
+			decryptedString = new String(decrypted, "UTF-8");
+			AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
+				test.equals(decryptedString));
+			logger.debug(decryptedString);
+		}
 	}
 
 	/**
@@ -108,19 +127,19 @@ public class KeyEncryptDecryptorTest
 		final File publickeyDerFile = new File(publickeyDerDir, "public.der");
 		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
 
-		final PrivateKey privateKey = KeyExtensions.readPrivateKey(privatekeyDerFile);
+		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
 
-		final PublicKey publicKey = KeyExtensions.readPublicKey(publickeyDerFile);
+		final PublicKey publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
 
 		final CryptModel<Cipher, PublicKey> encryptModel = CryptModel.<Cipher, PublicKey> builder()
 			.key(publicKey)
 			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding)
-			.operationMode(Cipher.ENCRYPT_MODE).build();
+			.build();
 
 		final CryptModel<Cipher, PrivateKey> decryptModel = CryptModel
 			.<Cipher, PrivateKey> builder().key(privateKey)
 			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding)
-			.operationMode(Cipher.DECRYPT_MODE).build();
+			.build();
 
 		final PublicKeyEncryptor encryptor = new PublicKeyEncryptor(encryptModel);
 		final PrivateKeyDecryptor decryptor = new PrivateKeyDecryptor(decryptModel);

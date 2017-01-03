@@ -26,7 +26,6 @@ package de.alpharogroup.random;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -56,14 +55,17 @@ public class RandomExtensions
 	private static SecureRandom secureRandom;
 	static
 	{
-		try
-		{
-			secureRandom = SecureRandom.getInstance("SHA1PRNG");
-		}
-		catch (final NoSuchAlgorithmException e)
-		{
-			// ignore...
-		}
+		secureRandom = SecureRandomBean.builder().buildQueitly();
+	}
+
+	/**
+	 * Gets the secure random.
+	 *
+	 * @return the secure random
+	 */
+	public static SecureRandom getSecureRandom()
+	{
+		return secureRandom;
 	}
 
 	/**
@@ -638,9 +640,25 @@ public class RandomExtensions
 	 */
 	public static String randomToken()
 	{
-		final BigInteger token = new BigInteger(130, secureRandom);
+		final BigInteger token = new BigInteger(130, RandomExtensions.getSecureRandom());
 		final String randomToken = token.toString(32);
 		return randomToken;
+	}
+
+	/**
+	 * Returns a random serial number that can be used for a serial number.
+	 *
+	 * @return a random serial number as a {@link BigInteger} object.
+	 */
+	public static BigInteger randomSerialNumber()
+	{
+		long next = RandomExtensions.getSecureRandom().nextLong();
+		if (next < 0)
+		{
+			next = next * (-1);
+		}
+		final BigInteger serialNumber = BigInteger.valueOf(next);
+		return serialNumber;
 	}
 
 }

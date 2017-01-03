@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: astrapi69
+Build-Jdk: 1.6.0_16
+Package: de.alpharogroup.mystic.crypt
+Main-Class: de.alpharogroup.mystic.crypt.MainApplication

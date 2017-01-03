@@ -27,12 +27,18 @@ package de.alpharogroup.crypto.aes;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 
+import de.alpharogroup.crypto.hex.HexExtensions;
 import lombok.experimental.UtilityClass;
 
 /**
- * The class {@link HexDump} provides methods for encode and decode hex encoded byte or char arrays and {@link String} objects.
+ * The class {@link HexDump} provides methods for encode and decode hex encoded byte or char arrays
+ * and {@link String} objects.
+ *
+ * @deprecated use instead the class {@link HexExtensions}. This class will be removed in the next
+ *             major release.
  */
 @UtilityClass
+@Deprecated
 public class HexDump
 {
 	/** A char array from the hexadecimal digits. */

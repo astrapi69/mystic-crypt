@@ -24,12 +24,12 @@
  */
 package de.alpharogroup.crypto;
 
+import org.apache.log4j.Logger;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.simple.SimpleCrypt;
 
-// TODO: Auto-generated Javadoc
 /**
  * Test class for the class {@link SimpleCrypt}.
  *
@@ -39,8 +39,12 @@ import de.alpharogroup.crypto.simple.SimpleCrypt;
 public class SimpleCryptTest
 {
 
+	/** The Constant logger. */
+	private static final Logger logger = Logger.getLogger(SimpleCryptTest.class.getName());
+
 	/**
-	 * Test method for test the method {@link SimpleCrypt#encode(String)} and {@link SimpleCrypt#decode(String)}.
+	 * Test method for test the method {@link SimpleCrypt#encode(String)} and
+	 * {@link SimpleCrypt#decode(String)}.
 	 */
 	@Test
 	public void testCryptoUtils()
@@ -54,20 +58,23 @@ public class SimpleCryptTest
 	}
 
 	/**
-	 * Test method for test the method {@link SimpleCrypt#encode(String)} and {@link SimpleCrypt#decode(String)}.
+	 * Test method for test the method {@link SimpleCrypt#encode(String)} and
+	 * {@link SimpleCrypt#decode(String)}.
 	 *
-	 * @param testString the test string
-	 * @param verschiebe the relocate
+	 * @param testString
+	 *            the test string
+	 * @param verschiebe
+	 *            the relocate
 	 */
 	protected void testCryptoUtils(final String testString, final int verschiebe)
 	{
-		System.out.println("original:--------\n" + testString + "\n--------");
+		logger.debug("original:--------\n" + testString + "\n--------");
 		final String expected = new StringBuffer(testString).toString().trim();
 		final String encrypted = SimpleCrypt.encode(testString, verschiebe);
-		System.out.println("encrypted:--------\n" + encrypted + "\n--------");
+		logger.debug("encrypted:--------\n" + encrypted + "\n--------");
 		final String decrypted = SimpleCrypt.decode(encrypted, verschiebe);
 		AssertJUnit.assertTrue(decrypted.equals(expected));
-		System.out.println("decrypted:--------\n" + decrypted + "\n--------");
+		logger.debug("decrypted:--------\n" + decrypted + "\n--------");
 	}
 
 

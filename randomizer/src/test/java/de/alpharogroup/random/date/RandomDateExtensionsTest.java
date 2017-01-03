@@ -185,14 +185,15 @@ public class RandomDateExtensionsTest extends BaseTestCase
 	@Test
 	public void testCreateRandomDatebetweenLongLongString() throws ParseException
 	{
+		final Date from = CalculateDateExtensions.substractDaysFromDate(this.now, 1);
 		final Date till = CalculateDateExtensions.addDays(this.now, 30);
 		final long endDate = till.getTime();
-		final long startDate = this.now.getTime();
+		final long startDate = from.getTime();
 		final String format = DatePatterns.DOT_DD_MM_YY;
 		final String randomDate = RandomDateExtensions.randomDatebetween(startDate, endDate,
 			format);
 		final Date compare = ParseDateExtensions.parseToDate(randomDate, format);
-		this.result = CalculateDateExtensions.isBetween(this.now, till, compare);
+		this.result = CalculateDateExtensions.isBetween(from, till, compare);
 		AssertJUnit.assertTrue("", this.result);
 	}
 
