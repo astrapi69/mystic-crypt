@@ -61,7 +61,9 @@ public class RandomAddressExtensions
 	public static String getRandomStreet(final Properties properties) throws IOException
 	{
 		Properties p = null;
-		p = properties != null ? properties : PropertiesExtensions.loadProperties(PROP_FILE_STREETS);
+		p = properties != null
+			? properties
+			: PropertiesExtensions.loadProperties(PROP_FILE_STREETS);
 		final int size = p.size();
 		final Object[] keys = p.keySet().toArray();
 		final String street = (String)p.get(keys[RandomExtensions.randomInt(size)]);

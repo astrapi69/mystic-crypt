@@ -45,7 +45,8 @@ public class RandomObjectsExtensionsTest extends BaseTestCase
 {
 
 	/** The Constant logger. */
-	private static final Logger logger = Logger.getLogger(RandomObjectsExtensionsTest.class.getName());
+	private static final Logger logger = Logger
+		.getLogger(RandomObjectsExtensionsTest.class.getName());
 
 	/**
 	 * {@inheritDoc}
@@ -95,8 +96,7 @@ public class RandomObjectsExtensionsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for
-	 * {@link RandomObjectsExtensions#getInfomailFromWebsite(java.lang.String)} .
+	 * Test method for {@link RandomObjectsExtensions#getInfomailFromWebsite(java.lang.String)} .
 	 */
 	@Test
 	public void testGetInfomailFromWebsite()
@@ -143,7 +143,8 @@ public class RandomObjectsExtensionsTest extends BaseTestCase
 		for (int i = 0; i < 100; i++)
 		{
 			final String randomPhonenumber = RandomObjectsExtensions.getRandomPhonenumber();
-			final String randomFaxnumber = RandomObjectsExtensions.getRandomFaxnumber(randomPhonenumber);
+			final String randomFaxnumber = RandomObjectsExtensions
+				.getRandomFaxnumber(randomPhonenumber);
 			this.result = randomFaxnumber.contains(charBuffer);
 			AssertJUnit.assertTrue("", this.result);
 		}

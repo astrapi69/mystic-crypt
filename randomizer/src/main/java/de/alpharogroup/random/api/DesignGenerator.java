@@ -25,28 +25,30 @@
 package de.alpharogroup.random.api;
 
 /**
- * The interface {@link DesignGenerator} for generate random colors, images and other design elements.
+ * The interface {@link DesignGenerator} for generate random colors, images and other design
+ * elements.
  */
-public interface DesignGenerator {
+public interface DesignGenerator
+{
 
-    /**
-     * New color.
-     *
-     * @return the string
-     */
-    String newColor();
+	/**
+	 * New color.
+	 *
+	 * @return the string
+	 */
+	String newColor();
 
-    /**
-     * New hex color.
-     *
-     * @return the string
-     */
-    String newHexColor();
+	/**
+	 * New hex color.
+	 *
+	 * @return the string
+	 */
+	String newHexColor();
 
-    /**
-     * New image.
-     *
-     * @return the string
-     */
-    String newImage();
+	/**
+	 * New image.
+	 *
+	 * @return the string
+	 */
+	String newImage();
 }

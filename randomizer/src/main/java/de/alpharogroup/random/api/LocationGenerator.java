@@ -27,68 +27,69 @@ package de.alpharogroup.random.api;
 /**
  * The interface {@link LocationGenerator} for generate location data.
  */
-public interface LocationGenerator {
+public interface LocationGenerator
+{
 
-    /**
-     * New street name.
-     *
-     * @return the string
-     */
-    String newStreetName();
+	/**
+	 * New street name.
+	 *
+	 * @return the string
+	 */
+	String newStreetName();
 
-    /**
-     * New street number.
-     *
-     * @return the string
-     */
-    String newStreetNumber();
+	/**
+	 * New street number.
+	 *
+	 * @return the string
+	 */
+	String newStreetNumber();
 
-    /**
-     * New zip code.
-     *
-     * @return the string
-     */
-    String newZipCode();
+	/**
+	 * New zip code.
+	 *
+	 * @return the string
+	 */
+	String newZipCode();
 
-    /**
-     * New city.
-     *
-     * @return the string
-     */
-    String newCity();
+	/**
+	 * New city.
+	 *
+	 * @return the string
+	 */
+	String newCity();
 
-    /**
-     * New state.
-     *
-     * @return the string
-     */
-    String newState();
+	/**
+	 * New state.
+	 *
+	 * @return the string
+	 */
+	String newState();
 
-    /**
-     * New country.
-     *
-     * @return the string
-     */
-    String newCountry();
+	/**
+	 * New country.
+	 *
+	 * @return the string
+	 */
+	String newCountry();
 
-    /**
-     * New longitude.
-     *
-     * @return the string
-     */
-    String newLongitude();
+	/**
+	 * New longitude.
+	 *
+	 * @return the string
+	 */
+	String newLongitude();
 
-    /**
-     * New latitude.
-     *
-     * @return the string
-     */
-    String newLatitude();
+	/**
+	 * New latitude.
+	 *
+	 * @return the string
+	 */
+	String newLatitude();
 
-    /**
-     * New address comment.
-     *
-     * @return the string
-     */
-    String newAddressComment();
+	/**
+	 * New address comment.
+	 *
+	 * @return the string
+	 */
+	String newAddressComment();
 }
