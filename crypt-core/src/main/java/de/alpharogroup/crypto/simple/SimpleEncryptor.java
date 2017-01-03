@@ -45,6 +45,7 @@ import org.apache.commons.codec.binary.Base64;
 
 import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.CryptConst;
+import de.alpharogroup.crypto.interfaces.Cryptor;
 import de.alpharogroup.crypto.interfaces.StringEncryptor;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -55,7 +56,7 @@ import lombok.Getter;
  * @author Asterios Raptis
  * @version 1.0
  */
-public class SimpleEncryptor implements StringEncryptor
+public class SimpleEncryptor implements StringEncryptor, Cryptor
 {
 
 	/**
@@ -142,5 +143,14 @@ public class SimpleEncryptor implements StringEncryptor
 			this.cipher.init(newOperationMode(), key, paramSpec);
 			initialized = true;
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int newOperationMode()
+	{
+		return Cipher.ENCRYPT_MODE;
 	}
 }

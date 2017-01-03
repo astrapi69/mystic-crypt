@@ -37,7 +37,7 @@ import javax.crypto.spec.SecretKeySpec;
 import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.algorithm.AesAlgorithm;
 import de.alpharogroup.crypto.algorithm.Algorithm;
-import de.alpharogroup.crypto.core.BaseStringDecryptor;
+import de.alpharogroup.crypto.core.AbstractStringDecryptor;
 import de.alpharogroup.crypto.hex.HexExtensions;
 import de.alpharogroup.crypto.hex.HexableDecryptor;
 
@@ -49,7 +49,7 @@ import de.alpharogroup.crypto.hex.HexableDecryptor;
  *             next major release.
  */
 @Deprecated
-public class HexDecryptor extends BaseStringDecryptor
+public class HexDecryptor extends AbstractStringDecryptor
 {
 
 	/** The Constant serialVersionUID. */

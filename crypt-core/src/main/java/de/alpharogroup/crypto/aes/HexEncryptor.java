@@ -41,7 +41,7 @@ import org.apache.commons.codec.binary.Hex;
 import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.algorithm.AesAlgorithm;
 import de.alpharogroup.crypto.algorithm.Algorithm;
-import de.alpharogroup.crypto.core.BaseStringEncryptor;
+import de.alpharogroup.crypto.core.AbstractStringEncryptor;
 import de.alpharogroup.crypto.hex.HexableEncryptor;
 
 /**
@@ -52,7 +52,7 @@ import de.alpharogroup.crypto.hex.HexableEncryptor;
  *             next major release.
  */
 @Deprecated
-public class HexEncryptor extends BaseStringEncryptor
+public class HexEncryptor extends AbstractStringEncryptor
 {
 
 	/** The Constant serialVersionUID. */

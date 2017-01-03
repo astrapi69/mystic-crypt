@@ -24,10 +24,8 @@
  */
 package de.alpharogroup.crypto.interfaces;
 
-import javax.crypto.Cipher;
-
 /**
- * The generic interface {@link Decryptor} can decrypt an object of type &lt;T&gt; (that was
+ * The generic functional interface {@link Decryptor} can decrypt an object of type &lt;T&gt; (that was
  * previously encrypted) and return the decrypted result as object of type &lt;R&gt;.
  *
  * @author Asterios Raptis
@@ -37,7 +35,7 @@ import javax.crypto.Cipher;
  * @param <R>
  *            the generic type of the result
  */
-public interface Decryptor<T, R> extends Cryptor
+public interface Decryptor<T, R>
 {
 
 	/**
@@ -50,14 +48,5 @@ public interface Decryptor<T, R> extends Cryptor
 	 *             is thrown if decryption fails.
 	 */
 	public R decrypt(final T encrypted) throws Exception;
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	default int newOperationMode()
-	{
-		return Cipher.DECRYPT_MODE;
-	}
 
 }

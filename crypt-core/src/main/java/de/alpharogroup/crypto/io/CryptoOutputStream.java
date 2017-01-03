@@ -28,7 +28,7 @@ import java.io.OutputStream;
 
 import javax.crypto.CipherOutputStream;
 
-import de.alpharogroup.crypto.core.BaseStringDecryptor;
+import de.alpharogroup.crypto.core.AbstractStringDecryptor;
 
 /**
  * The class {@link CryptoOutputStream} extends the {@link CipherOutputStream}.
@@ -47,7 +47,7 @@ public class CryptoOutputStream extends CipherOutputStream
 	 * @param decryptor
 	 *            the decryptor
 	 */
-	public CryptoOutputStream(final OutputStream out, final BaseStringDecryptor decryptor)
+	public CryptoOutputStream(final OutputStream out, final AbstractStringDecryptor decryptor)
 	{
 		super(out, decryptor.getModel().getCipher());
 	}
