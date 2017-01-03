@@ -25,77 +25,79 @@
 package de.alpharogroup.random.api;
 
 /**
- * The interface {@link NetworkGenerator}  for generate random data like email, file names, urls, domain names and other network elements.
+ * The interface {@link NetworkGenerator} for generate random data like email, file names, urls,
+ * domain names and other network elements.
  */
-public interface NetworkGenerator {
+public interface NetworkGenerator
+{
 
-    /**
-     * New email.
-     *
-     * @return the string
-     */
-    String newEmail();
+	/**
+	 * New email.
+	 *
+	 * @return the string
+	 */
+	String newEmail();
 
-    /**
-     * New filename.
-     *
-     * @return the string
-     */
-    String newFilename();
+	/**
+	 * New filename.
+	 *
+	 * @return the string
+	 */
+	String newFilename();
 
-    /**
-     * New url.
-     *
-     * @return the string
-     */
-    String newUrl();
+	/**
+	 * New url.
+	 *
+	 * @return the string
+	 */
+	String newUrl();
 
-    /**
-     * New domainname.
-     *
-     * @return the string
-     */
-    String newDomainname();
+	/**
+	 * New domainname.
+	 *
+	 * @return the string
+	 */
+	String newDomainname();
 
-    /**
-     * New ip address 4.
-     *
-     * @return the string
-     */
-    String newIpAddress4();
+	/**
+	 * New ip address 4.
+	 *
+	 * @return the string
+	 */
+	String newIpAddress4();
 
-    /**
-     * New ip address 6.
-     *
-     * @return the string
-     */
-    String newIpAddress6();
+	/**
+	 * New ip address 6.
+	 *
+	 * @return the string
+	 */
+	String newIpAddress6();
 
-    /**
-     * New mac address.
-     *
-     * @return the string
-     */
-    String newMacAddress();
+	/**
+	 * New mac address.
+	 *
+	 * @return the string
+	 */
+	String newMacAddress();
 
-    /**
-     * New sha 1.
-     *
-     * @return the string
-     */
-    String newSha1();
+	/**
+	 * New sha 1.
+	 *
+	 * @return the string
+	 */
+	String newSha1();
 
-    /**
-     * New sha 256.
-     *
-     * @return the string
-     */
-    String newSha256();
+	/**
+	 * New sha 256.
+	 *
+	 * @return the string
+	 */
+	String newSha256();
 
-    /**
-     * New mime type.
-     *
-     * @return the string
-     */
-    String newMimeType();
+	/**
+	 * New mime type.
+	 *
+	 * @return the string
+	 */
+	String newMimeType();
 }

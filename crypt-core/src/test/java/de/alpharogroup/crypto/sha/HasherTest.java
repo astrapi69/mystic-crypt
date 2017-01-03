@@ -124,9 +124,9 @@ public class HasherTest
 		final HashAlgorithm hashAlgorithm = HashAlgorithm.SHA_512;
 		final String expected = Hasher.hashAndHex(password, salt, hashAlgorithm, charset);
 		final String actual = Hasher.hashAndHex(newInsertPassword, salt, hashAlgorithm, charset);
-		logger.debug("salt:"+salt);
-		logger.debug("expected:"+expected);
-		logger.debug("actual:"+actual);
+		logger.debug("salt:" + salt);
+		logger.debug("expected:" + expected);
+		logger.debug("actual:" + actual);
 		AssertJUnit.assertTrue("'expected' should be equal with 'actual'.",
 			expected.equals(actual));
 	}

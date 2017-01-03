@@ -45,8 +45,9 @@ import de.alpharogroup.crypto.core.AbstractStringEncryptor;
 import de.alpharogroup.crypto.factories.SecretKeyFactoryExtensions;
 
 /**
- * The class {@link HexableEncryptor} is the pendant class of {@link HexableDecryptor} and encrypts given
- * String objects that can be decrypted with {@link HexableDecryptor}. For an example see the unit test.
+ * The class {@link HexableEncryptor} is the pendant class of {@link HexableDecryptor} and encrypts
+ * given String objects that can be decrypted with {@link HexableDecryptor}. For an example see the
+ * unit test.
  */
 public class HexableEncryptor extends AbstractStringEncryptor
 {

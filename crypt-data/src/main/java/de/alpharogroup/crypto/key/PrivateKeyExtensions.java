@@ -123,7 +123,7 @@ public class PrivateKeyExtensions
 	 *
 	 * @param privateKey
 	 *            the private key
-	 * @return  the corresponding {@link PublicKey} object or null if generation failed.
+	 * @return the corresponding {@link PublicKey} object or null if generation failed.
 	 * @throws NoSuchAlgorithmException
 	 *             the no such algorithm exception
 	 * @throws InvalidKeySpecException

@@ -28,8 +28,8 @@ import de.alpharogroup.crypto.core.ChainableEncryptor;
 import de.alpharogroup.crypto.interfaces.Encryptor;
 
 /**
- * The class {@link ChainableStringEncryptor} can take many {@code Encryptor} objects and encrypts the
- * given string with all the given {@code Encryptor} objects. For an example see the unit test.
+ * The class {@link ChainableStringEncryptor} can take many {@code Encryptor} objects and encrypts
+ * the given string with all the given {@code Encryptor} objects. For an example see the unit test.
  */
 public class ChainableStringEncryptor extends ChainableEncryptor<String>
 {

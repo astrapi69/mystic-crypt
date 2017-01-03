@@ -29,15 +29,16 @@ import lombok.Getter;
 import lombok.Singular;
 
 /**
- * The class {@link ChainableDecryptor} can take many {@code Decryptor} objects and decrypts the given
- * string with all the given {@code Decryptor} objects. The {@code Decryptor} objects must be in a
- * reverse order as they was given in the {@code ChainedEncryptor} object.
+ * The class {@link ChainableDecryptor} can take many {@code Decryptor} objects and decrypts the
+ * given string with all the given {@code Decryptor} objects. The {@code Decryptor} objects must be
+ * in a reverse order as they was given in the {@code ChainedEncryptor} object.
  */
 public abstract class ChainableDecryptor<T> implements Decryptor<T, T>
 {
 
 	/** The decryptors. */
-	@Getter @Singular
+	@Getter
+	@Singular
 	private final Decryptor<T, T>[] decryptors;
 
 	/**

@@ -30,7 +30,8 @@ import org.apache.commons.codec.binary.Hex;
 import lombok.experimental.UtilityClass;
 
 /**
- * The class {@link HexExtensions} provides methods for encode and decode hex encoded byte or char arrays and {@link String} objects.
+ * The class {@link HexExtensions} provides methods for encode and decode hex encoded byte or char
+ * arrays and {@link String} objects.
  */
 @UtilityClass
 public class HexExtensions
@@ -138,22 +139,26 @@ public class HexExtensions
 	/**
 	 * Transform the given {@code byte array} to a hexadecimal {@link String} value.
 	 *
-	 * @param data the byte array
+	 * @param data
+	 *            the byte array
 	 * @return the new hexadecimal {@link String} value.
 	 */
-	public static String toHexString(final byte[] data) {
+	public static String toHexString(final byte[] data)
+	{
 		return toHexString(data, true);
 	}
 
 	/**
 	 * Transform the given {@code byte array} to a hexadecimal {@link String} value.
 	 *
-	 * @param data the byte array
+	 * @param data
+	 *            the byte array
 	 * @param lowerCase
 	 *            the flag if the result shell be transform in lower case. If true the result is
 	 * @return the new hexadecimal {@link String} value.
 	 */
-	public static String toHexString(final byte[] data, final boolean lowerCase) {
+	public static String toHexString(final byte[] data, final boolean lowerCase)
+	{
 		final StringBuilder sb = new StringBuilder();
 		sb.append(HexExtensions.encodeHex(data, lowerCase));
 		return sb.toString();

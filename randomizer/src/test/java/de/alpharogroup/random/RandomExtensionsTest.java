@@ -55,6 +55,7 @@ public class RandomExtensionsTest extends BaseTestCase
 
 	/** The Constant logger. */
 	private static final Logger logger = Logger.getLogger(RandomExtensionsTest.class.getName());
+
 	/**
 	 * {@inheritDoc}
 	 */

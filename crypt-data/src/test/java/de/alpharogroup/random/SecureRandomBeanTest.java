@@ -70,7 +70,8 @@ public class SecureRandomBeanTest
 	 *             list.
 	 */
 	@Test(expectedExceptions = NullPointerException.class)
-	public void testBuildWithNullAlgorithm() throws NoSuchAlgorithmException, NoSuchProviderException
+	public void testBuildWithNullAlgorithm()
+		throws NoSuchAlgorithmException, NoSuchProviderException
 	{
 		SecureRandomBean.builder().algorithm(null).build();
 	}

@@ -25,8 +25,8 @@
 package de.alpharogroup.crypto.interfaces;
 
 /**
- * The generic functional interface {@link Decryptor} can decrypt an object of type &lt;T&gt; (that was
- * previously encrypted) and return the decrypted result as object of type &lt;R&gt;.
+ * The generic functional interface {@link Decryptor} can decrypt an object of type &lt;T&gt; (that
+ * was previously encrypted) and return the decrypted result as object of type &lt;R&gt;.
  *
  * @author Asterios Raptis
  * @version 1.0

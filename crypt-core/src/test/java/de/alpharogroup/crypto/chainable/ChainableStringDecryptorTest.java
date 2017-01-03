@@ -53,15 +53,15 @@ public class ChainableStringDecryptorTest
 		final HexableEncryptor firstEncryptor = new HexableEncryptor(firstKey);
 		final HexableEncryptor secondEncryptor = new HexableEncryptor(secondKey);
 		final HexableEncryptor thirdEncryptor = new HexableEncryptor(thirdKey);
-		final ChainableStringEncryptor encryptor = new ChainableStringEncryptor(firstEncryptor, secondEncryptor,
-			thirdEncryptor);
+		final ChainableStringEncryptor encryptor = new ChainableStringEncryptor(firstEncryptor,
+			secondEncryptor, thirdEncryptor);
 
 		final String encrypted = encryptor.encrypt(secretMessage);
 		final HexableDecryptor firstDecryptor = new HexableDecryptor(firstKey);
 		final HexableDecryptor secondDecryptor = new HexableDecryptor(secondKey);
 		final HexableDecryptor thirdDecryptor = new HexableDecryptor(thirdKey);
-		final ChainableStringDecryptor decryptor = new ChainableStringDecryptor(thirdDecryptor, secondDecryptor,
-			firstDecryptor);
+		final ChainableStringDecryptor decryptor = new ChainableStringDecryptor(thirdDecryptor,
+			secondDecryptor, firstDecryptor);
 
 		final String decryted = decryptor.decrypt(encrypted);
 		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",

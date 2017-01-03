@@ -81,8 +81,8 @@ public class KeyEncryptDecryptorTest
 			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA256AndMGF1Padding)
 			.build();
 
-		final CryptModel<Cipher, PrivateKey> decryptModel = CryptModel.<Cipher, PrivateKey> builder()
-			.key(privateKey)
+		final CryptModel<Cipher, PrivateKey> decryptModel = CryptModel
+			.<Cipher, PrivateKey> builder().key(privateKey)
 			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA256AndMGF1Padding)
 			.build();
 

@@ -47,7 +47,8 @@ public class CryptoInputStream extends CipherInputStream
 	 * @param encryptor
 	 *            the encryptor
 	 */
-	protected CryptoInputStream(final InputStream inputStream, final AbstractStringEncryptor encryptor)
+	protected CryptoInputStream(final InputStream inputStream,
+		final AbstractStringEncryptor encryptor)
 	{
 		super(inputStream, encryptor.getModel().getCipher());
 	}

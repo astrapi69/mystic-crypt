@@ -34,7 +34,8 @@ import javax.crypto.spec.SecretKeySpec;
 import lombok.experimental.UtilityClass;
 
 /**
- * The factory class {@link SecretKeyFactory} holds methods for creating {@link SecretKeySpec} objects.
+ * The factory class {@link SecretKeyFactory} holds methods for creating {@link SecretKeySpec}
+ * objects.
  */
 @UtilityClass
 public class SecretKeyFactoryExtensions
@@ -75,7 +76,7 @@ public class SecretKeyFactoryExtensions
 		keyGenerator.init(keyLength);
 		final SecretKey secretKey = keyGenerator.generateKey();
 		final byte[] secretKeyEncoded = secretKey.getEncoded();
-		return newSecretKeySpec(secretKeyEncoded,algorithm);
+		return newSecretKeySpec(secretKeyEncoded, algorithm);
 	}
 
 	/**

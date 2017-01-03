@@ -25,7 +25,8 @@
 package de.alpharogroup.random;
 
 /**
- * The constant class {@link Constants} holds data for the characters to create random Strings like passwords.
+ * The constant class {@link Constants} holds data for the characters to create random Strings like
+ * passwords.
  *
  * @author Asterios Raptis
  */
