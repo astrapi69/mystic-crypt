@@ -38,10 +38,12 @@ import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.algorithm.AesAlgorithm;
 import de.alpharogroup.crypto.algorithm.Algorithm;
 import de.alpharogroup.crypto.core.AbstractStringDecryptor;
+import de.alpharogroup.crypto.factories.SecretKeyFactoryExtensions;
 
 /**
- * The class {@link HexableDecryptor} is the pendant class of {@link HexableEncryptor} and decrypts given
- * String objects that was encrypted with {@link HexableEncryptor}. For an example see the unit test.
+ * The class {@link HexableDecryptor} is the pendant class of {@link HexableEncryptor} and decrypts
+ * given String objects that was encrypted with {@link HexableEncryptor}. For an example see the
+ * unit test.
  */
 public class HexableDecryptor extends AbstractStringDecryptor
 {
@@ -125,9 +127,9 @@ public class HexableDecryptor extends AbstractStringDecryptor
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
 		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		final SecretKeySpec skeySpec = new SecretKeySpec(privateKey.getBytes("UTF-8"),
-			getModel().getAlgorithm().getAlgorithm());
-		final Cipher cipher = Cipher.getInstance(getModel().getAlgorithm().getAlgorithm());
+		final SecretKeySpec skeySpec = SecretKeyFactoryExtensions
+			.newSecretKeySpec(privateKey.getBytes("UTF-8"), algorithm);
+		final Cipher cipher = Cipher.getInstance(algorithm);
 		cipher.init(operationMode, skeySpec);
 		return cipher;
 	}

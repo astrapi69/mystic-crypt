@@ -42,6 +42,7 @@ import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.algorithm.AesAlgorithm;
 import de.alpharogroup.crypto.algorithm.Algorithm;
 import de.alpharogroup.crypto.core.AbstractStringEncryptor;
+import de.alpharogroup.crypto.factories.SecretKeyFactoryExtensions;
 
 /**
  * The class {@link HexableEncryptor} is the pendant class of {@link HexableDecryptor} and encrypts given
@@ -157,9 +158,9 @@ public class HexableEncryptor extends AbstractStringEncryptor
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
 		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		final SecretKeySpec skeySpec = new SecretKeySpec(privateKey.getBytes("UTF-8"),
-			getModel().getAlgorithm().getAlgorithm());
-		final Cipher cipher = Cipher.getInstance(getModel().getAlgorithm().getAlgorithm());
+		final SecretKeySpec skeySpec = SecretKeyFactoryExtensions
+			.newSecretKeySpec(privateKey.getBytes("UTF-8"), algorithm);
+		final Cipher cipher = Cipher.getInstance(algorithm);
 		cipher.init(operationMode, skeySpec);
 		return cipher;
 	}
