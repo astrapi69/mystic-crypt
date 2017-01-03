@@ -43,14 +43,21 @@ import org.bouncycastle.util.io.pem.PemObject;
 import org.bouncycastle.util.io.pem.PemReader;
 
 import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
+import de.alpharogroup.crypto.key.reader.PemObjectReader;
+import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
+import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.crypto.provider.SecurityProvider;
 import lombok.experimental.UtilityClass;
 
 /**
  * The class {@link KeyExtensions} holds utility methods for read public and private keys from
  * files.
+ * 
+ * @deprecated Use instead the reader classes {@link PublicKeyReader}, {@link PrivateKeyReader} and
+ *             {@link PemObjectReader}.
  */
 @UtilityClass
+@Deprecated
 public class KeyExtensions
 {
 

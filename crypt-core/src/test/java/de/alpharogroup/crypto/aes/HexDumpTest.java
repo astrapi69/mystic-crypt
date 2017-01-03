@@ -30,14 +30,20 @@ import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.StringUtils;
 import org.junit.Test;
 
+import de.alpharogroup.crypto.hex.HexExtensions;
+
 /**
  * Test class for the class {@link HexDump}.
+ *
+ * @deprecated The unit tests moved in the appropriate test class because the class {@link HexDump}
+ *             is now deprecated. This test class will be removed in the next major release.
  */
+@Deprecated
 public class HexDumpTest
 {
 
 	/**
-	 * Test method for {@link de.alpharogroup.crypto.aes.HexDump#decodeHex(char[])}
+	 * Test method for {@link HexDump#decodeHex(char[])}
 	 *
 	 * @throws DecoderException
 	 *             is thrown if an odd number or illegal of characters is supplied
@@ -46,14 +52,14 @@ public class HexDumpTest
 	public void testDecodeHex() throws DecoderException
 	{
 		final String expected = "Secret message";
-		final char[] actualCharArray = HexDump.encodeHex(StringUtils.getBytesUtf8(expected));
-		final byte[] decoded = HexDump.decodeHex(actualCharArray);
+		final char[] actualCharArray = HexExtensions.encodeHex(StringUtils.getBytesUtf8(expected));
+		final byte[] decoded = HexExtensions.decodeHex(actualCharArray);
 		final String actual = new String(decoded);
 		assertEquals(expected, actual);
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.crypto.aes.HexDump#decodeHex(byte[])}
+	 * Test method for {@link HexDump#decodeHex(byte[])}
 	 *
 	 * @throws DecoderException
 	 *             is thrown if an odd number or illegal of characters is supplied
@@ -62,14 +68,14 @@ public class HexDumpTest
 	public void testDecodeHexCharacterArray() throws DecoderException
 	{
 		final String expected = "Secret message";
-		final char[] actualCharArray = HexDump.encodeHex(StringUtils.getBytesUtf8(expected));
-		final byte[] decoded = HexDump.decodeHex(actualCharArray);
-		final String actual = HexDump.decodeHex(decoded);
+		final char[] actualCharArray = HexExtensions.encodeHex(StringUtils.getBytesUtf8(expected));
+		final byte[] decoded = HexExtensions.decodeHex(actualCharArray);
+		final String actual = HexExtensions.decodeHex(decoded);
 		assertEquals(expected, actual);
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.crypto.aes.HexDump#decodeHexToString(char[])}
+	 * Test method for {@link HexDump#decodeHexToString(char[])}
 	 *
 	 * @throws DecoderException
 	 *             is thrown if an odd number or illegal of characters is supplied
@@ -78,62 +84,64 @@ public class HexDumpTest
 	public void testDecodeHexToString() throws DecoderException
 	{
 		final String expected = "Secret message";
-		final char[] actualCharArray = HexDump.encodeHex(StringUtils.getBytesUtf8(expected));
-		final String actual = HexDump.decodeHexToString(actualCharArray);
+		final char[] actualCharArray = HexExtensions.encodeHex(StringUtils.getBytesUtf8(expected));
+		final String actual = HexExtensions.decodeHexToString(actualCharArray);
 		assertEquals(expected, actual);
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.crypto.aes.HexDump#encodeHex(byte[])}
+	 * Test method for {@link HexDump#encodeHex(byte[])}
 	 */
 	@Test
 	public void testEncodeHex()
 	{
 		final String secretMessage = "Secret message";
 		final String expected = "536563726574206d657373616765";
-		final char[] actualCharArray = HexDump.encodeHex(StringUtils.getBytesUtf8(secretMessage));
+		final char[] actualCharArray = HexExtensions
+			.encodeHex(StringUtils.getBytesUtf8(secretMessage));
 		final String actual = new String(actualCharArray);
 		assertEquals(expected, actual);
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.crypto.aes.HexDump#encodeHex(byte[], boolean)}
+	 * Test method for {@link HexDump#encodeHex(byte[], boolean)}
 	 */
 	@Test
 	public void testEncodeHexBoolean()
 	{
 		final String secretMessage = "Secret message";
 		final String expected = "536563726574206d657373616765";
-		char[] actualCharArray = HexDump.encodeHex(StringUtils.getBytesUtf8(secretMessage), true);
+		char[] actualCharArray = HexExtensions.encodeHex(StringUtils.getBytesUtf8(secretMessage),
+			true);
 		String actual = new String(actualCharArray);
 		assertEquals(expected, actual);
-		actualCharArray = HexDump.encodeHex(StringUtils.getBytesUtf8(secretMessage), false);
+		actualCharArray = HexExtensions.encodeHex(StringUtils.getBytesUtf8(secretMessage), false);
 		actual = new String(actualCharArray);
 		assertEquals(expected.toUpperCase(), actual);
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.crypto.aes.HexDump#encodeHex(String)}
+	 * Test method for {@link HexDump#encodeHex(String)}
 	 */
 	@Test
 	public void testEncodeString()
 	{
 		final String secretMessage = "Secret message";
 		final String expected = "536563726574206d657373616765";
-		final char[] actualCharArray = HexDump.encodeHex(secretMessage);
+		final char[] actualCharArray = HexExtensions.encodeHex(secretMessage);
 		final String actual = new String(actualCharArray);
 		assertEquals(expected, actual);
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.crypto.aes.HexDump#toHex(int)}
+	 * Test method for {@link HexDump#toHex(int)}
 	 */
 	@Test
 	public void testToHex()
 	{
-		char actual = HexDump.toHex(5);
+		char actual = HexExtensions.toHex(5);
 		org.junit.Assert.assertTrue(actual == '5');
-		actual = HexDump.toHex(10);
+		actual = HexExtensions.toHex(10);
 		org.junit.Assert.assertTrue(actual == 'A');
 	}
 

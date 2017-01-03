@@ -41,13 +41,18 @@ import org.apache.commons.codec.binary.Hex;
 import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.algorithm.AesAlgorithm;
 import de.alpharogroup.crypto.algorithm.Algorithm;
-import de.alpharogroup.crypto.core.BaseStringEncryptor;
+import de.alpharogroup.crypto.core.AbstractStringEncryptor;
+import de.alpharogroup.crypto.hex.HexableEncryptor;
 
 /**
  * The class {@link HexEncryptor} is the pendant class of {@link HexDecryptor} and encrypts given
  * String objects that can be decrypted with {@link HexDecryptor}. For an example see the unit test.
+ *
+ * @deprecated use instead the new class {@link HexableEncryptor}. This class will be removed in the
+ *             next major release.
  */
-public class HexEncryptor extends BaseStringEncryptor
+@Deprecated
+public class HexEncryptor extends AbstractStringEncryptor
 {
 
 	/** The Constant serialVersionUID. */

@@ -22,49 +22,42 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.key;
+package de.alpharogroup.mystic.crypt.actions;
 
-import java.security.PublicKey;
-import java.security.interfaces.DSAPublicKey;
-import java.security.interfaces.ECPublicKey;
-import java.security.interfaces.RSAPublicKey;
+import java.awt.event.ActionEvent;
 
-import lombok.experimental.UtilityClass;
+import javax.swing.AbstractAction;
+
+import de.alpharogroup.mystic.crypt.MainFrame;
+import de.alpharogroup.mystic.crypt.help.InfoJDialog;
 
 /**
- * The class {@link PublicKeyExtensions}.
+ * The class {@link ShowInfoDialogAction}.
  */
-@UtilityClass
-public class PublicKeyExtensions
-{
+public class ShowInfoDialogAction extends AbstractAction {
+
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 1L;
+	/** The Constant INFO_TITLE. */
+	private static final String INFO_TITLE = "Info";
 
 	/**
-	 * Gets the key length of the given {@link PublicKey}.
+	 * Instantiates a new {@link ShowInfoDialogAction}.
 	 *
-	 * @param publicKey
-	 *            the public key
-	 * @return the key length
+	 * @param name
+	 *            the name
 	 */
-	public static int getKeyLength(final PublicKey publicKey)
-	{
-		int length = -1;
-		if (publicKey == null)
-		{
-			return length;
-		}
-		if (publicKey instanceof RSAPublicKey)
-		{
-			length = ((RSAPublicKey)publicKey).getModulus().bitLength();
-		}
-		if (publicKey instanceof DSAPublicKey)
-		{
-			length = ((DSAPublicKey)publicKey).getParams().getP().bitLength();
-		}
-		if (publicKey instanceof ECPublicKey)
-		{
-			length = ((ECPublicKey)publicKey).getParams().getCurve().getField().getFieldSize();
-		}
-
-		return length;
+	public ShowInfoDialogAction(final String name) {
+		super(name);
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void actionPerformed(final ActionEvent e) {
+		final InfoJDialog info = new InfoJDialog(MainFrame.getInstance(), INFO_TITLE);
+		info.setVisible(true);
+	}
+
 }

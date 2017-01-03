@@ -24,13 +24,18 @@
  */
 package de.alpharogroup.crypto.aes;
 
+import de.alpharogroup.crypto.chainable.ChainableStringEncryptor;
 import de.alpharogroup.crypto.core.ChainableEncryptor;
 import de.alpharogroup.crypto.interfaces.Encryptor;
 
 /**
  * The class {@link ChainedStringEncryptor} can take many {@code Encryptor} objects and encrypts the
  * given string with all the given {@code Encryptor} objects. For an example see the unit test.
+ *
+ * @deprecated use instead the new class {@link ChainableStringEncryptor}. This class will be
+ *             removed in the next major release.
  */
+@Deprecated
 public class ChainedStringEncryptor extends ChainableEncryptor<String>
 {
 

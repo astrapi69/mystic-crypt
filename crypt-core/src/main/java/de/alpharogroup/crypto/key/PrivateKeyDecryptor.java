@@ -35,7 +35,7 @@ import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
 import de.alpharogroup.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
-import de.alpharogroup.crypto.core.AbstractCryptor;
+import de.alpharogroup.crypto.core.AbstractDecryptor;
 import de.alpharogroup.crypto.factories.CipherFactory;
 import de.alpharogroup.crypto.interfaces.ByteArrayDecryptor;
 import de.alpharogroup.crypto.model.CryptModel;
@@ -44,7 +44,7 @@ import de.alpharogroup.crypto.model.CryptModel;
  * The class {@link PrivateKeyDecryptor} decrypts encrypted byte array the was encrypted with the
  * public key of the pendant private key of this class.
  */
-public class PrivateKeyDecryptor extends AbstractCryptor<Cipher, PrivateKey>
+public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey>
 	implements
 		ByteArrayDecryptor
 {
@@ -85,8 +85,10 @@ public class PrivateKeyDecryptor extends AbstractCryptor<Cipher, PrivateKey>
 	@Override
 	protected String newAlgorithm()
 	{
-		if ( getModel().getAlgorithm() == null) {
-			return KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding.getAlgorithm();
+		if (getModel().getAlgorithm() == null)
+		{
+			return KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding
+				.getAlgorithm();
 		}
 		return getModel().getAlgorithm().getAlgorithm();
 	}

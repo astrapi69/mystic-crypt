@@ -48,10 +48,12 @@ public class CertFactoryTest
 {
 
 	/**
-	 * Test method for {@link CertFactory#newX509Certificate(PublicKey, PrivateKey, String, String, String, Date, Date)}.
+	 * Test method for
+	 * {@link CertFactory#newX509Certificate(PublicKey, PrivateKey, String, String, String, Date, Date)}.
 	 */
 	@Test
-	public void testNewX509CertificatePublicKeyPrivateKeyStringStringStringDateDate() throws Exception
+	public void testNewX509CertificatePublicKeyPrivateKeyStringStringStringDateDate()
+		throws Exception
 	{
 		final KeyPair keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, 2048);
 
@@ -60,17 +62,14 @@ public class CertFactoryTest
 		final PublicKey publicKey = keyPair.getPublic();
 		final String subject = "CN=Test subject";
 		final String issuer = "CN=Test issue";
-		final String signatureAlgorithm = HashAlgorithm.SHA256.getAlgorithm() + CryptConst.WITH +
-			 KeyPairGeneratorAlgorithm.RSA.getAlgorithm();
+		final String signatureAlgorithm = HashAlgorithm.SHA256.getAlgorithm() + CryptConst.WITH
+			+ KeyPairGeneratorAlgorithm.RSA.getAlgorithm();
 		final Date start = new Date(System.currentTimeMillis());
 		final Date end = new Date(System.currentTimeMillis() + (1000L * 60 * 60 * 24 * 100));
 		final BigInteger serialNumber = randomSerialNumber();
 
-		final X509Certificate cert = CertFactory
-			.newX509Certificate(publicKey, privateKey, serialNumber,
-				subject, issuer,
-				signatureAlgorithm,
-				start, end);
+		final X509Certificate cert = CertFactory.newX509Certificate(publicKey, privateKey,
+			serialNumber, subject, issuer, signatureAlgorithm, start, end);
 		AssertJUnit.assertNotNull(cert);
 	}
 
@@ -80,7 +79,8 @@ public class CertFactoryTest
 	 *
 	 * @return a random serial number as a {@link BigInteger} object.
 	 */
-	public static BigInteger randomSerialNumber() {
+	public static BigInteger randomSerialNumber()
+	{
 		long next = 0;
 		try
 		{
@@ -92,7 +92,7 @@ public class CertFactoryTest
 		}
 		if (next < 0)
 		{
-			next = next *(-1);
+			next = next * (-1);
 		}
 		final BigInteger serialNumber = BigInteger.valueOf(next);
 		return serialNumber;

@@ -29,7 +29,12 @@ import org.testng.annotations.Test;
 
 /**
  * Test class for the class {@link ChainedStringEncryptor} and {@link ChainedStringDecryptor}.
+ *
+ * @deprecated The unit tests moved in the appropriate test class because the class
+ *             {@link ChainedStringEncryptor} and {@link ChainedStringDecryptor} are now deprecated.
+ *             This test class will be removed in the next major release.
  */
+@Deprecated
 public class ChainedEncryptDecryptorTest
 {
 
@@ -50,15 +55,15 @@ public class ChainedEncryptDecryptorTest
 		final HexEncryptor firstEncryptor = new HexEncryptor(firstKey);
 		final HexEncryptor secondEncryptor = new HexEncryptor(secondKey);
 		final HexEncryptor thirdEncryptor = new HexEncryptor(thirdKey);
-		final ChainedStringEncryptor encryptor = new ChainedStringEncryptor(firstEncryptor, secondEncryptor,
-			thirdEncryptor);
+		final ChainedStringEncryptor encryptor = new ChainedStringEncryptor(firstEncryptor,
+			secondEncryptor, thirdEncryptor);
 
 		final String encrypted = encryptor.encrypt(secretMessage);
 		final HexDecryptor firstDecryptor = new HexDecryptor(firstKey);
 		final HexDecryptor secondDecryptor = new HexDecryptor(secondKey);
 		final HexDecryptor thirdDecryptor = new HexDecryptor(thirdKey);
-		final ChainedStringDecryptor decryptor = new ChainedStringDecryptor(thirdDecryptor, secondDecryptor,
-			firstDecryptor);
+		final ChainedStringDecryptor decryptor = new ChainedStringDecryptor(thirdDecryptor,
+			secondDecryptor, firstDecryptor);
 
 		final String decryted = decryptor.decrypt(encrypted);
 		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",

@@ -34,6 +34,10 @@ public enum AesAlgorithm implements Algorithm
 
 	/** The enum constant for AES algorithm. */
 	AES("AES");
+
+	/** The Constant AES_KEY_LENGTH. */
+	public static final int AES_KEY_LENGTH = 256;
+
 	/** The algorithm. */
 	@Getter
 	private final String algorithm;

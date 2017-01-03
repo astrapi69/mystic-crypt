@@ -38,8 +38,8 @@ import javax.crypto.NoSuchPaddingException;
 
 import org.apache.commons.codec.DecoderException;
 
-import de.alpharogroup.crypto.aes.HexDump;
 import de.alpharogroup.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
+import de.alpharogroup.crypto.hex.HexExtensions;
 import de.alpharogroup.crypto.simple.SimpleDecryptor;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -116,7 +116,7 @@ public class PrivateKeyHexDecryptor
 		InvalidAlgorithmParameterException, IOException
 	{
 		initialize();
-		final byte[] dec = HexDump.decodeHex(encypted.toCharArray());
+		final byte[] dec = HexExtensions.decodeHex(encypted.toCharArray());
 		final byte[] utf8 = this.cipher.doFinal(dec);
 		return new String(utf8, "UTF-8");
 	}

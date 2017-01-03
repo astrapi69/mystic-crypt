@@ -51,9 +51,9 @@ import lombok.Getter;
  * overwritten dependent of the specific implementor class.
  *
  * @param <C>
- *            the generic type
+ *            the generic type of the cipher
  * @param <K>
- *            the key type
+ *            the generic type of the key
  *
  * @author Asterios Raptis
  * @version 1.0
@@ -188,7 +188,8 @@ public abstract class AbstractCryptor<C, K> implements Serializable, Cryptor
 	 */
 	protected String newAlgorithm()
 	{
-		if ( getModel().getAlgorithm() == null) {
+		if (getModel().getAlgorithm() == null)
+		{
 			return CryptConst.PBE_WITH_MD5_AND_DES;
 		}
 		return getModel().getAlgorithm().getAlgorithm();
@@ -201,7 +202,8 @@ public abstract class AbstractCryptor<C, K> implements Serializable, Cryptor
 	 */
 	protected byte[] newSalt()
 	{
-		if (ArrayUtils.isEmpty(getModel().getSalt())) {
+		if (ArrayUtils.isEmpty(getModel().getSalt()))
+		{
 			return CryptConst.SALT;
 		}
 		return getModel().getSalt();
