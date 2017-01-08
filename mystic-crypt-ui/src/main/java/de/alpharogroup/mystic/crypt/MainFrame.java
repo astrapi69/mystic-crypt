@@ -85,7 +85,7 @@ public class MainFrame extends JXFrame {
 	 * Instantiates a new main frame.
 	 */
 	private MainFrame() {
-		super("Find duplicate files");
+		super(Messages.getString("mainframe.title"));
 		initComponents();
 	}
 

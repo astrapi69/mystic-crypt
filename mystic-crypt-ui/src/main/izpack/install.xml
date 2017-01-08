@@ -54,7 +54,7 @@
 	<packs>
 		<pack name="executables" required="yes">
 			<description>The executables</description>
-			<file src="../../src/main/izpack/legal/licence.txt" targetdir="${INSTALL_PATH}" />
+			<file src="../../src/main/izpack/legal/license.txt" targetdir="${INSTALL_PATH}" />
 			<file src="../../dist/launch4j/mystic-crypt-ui.exe"
 				targetdir="${INSTALL_PATH}" />
 			<file src="../../target/mystic-crypt-ui-jar-with-dependencies.jar" targetdir="${INSTALL_PATH}" />
