@@ -34,34 +34,62 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.LayoutStyle;
 
+/**
+ * The class {@link EnDecryptPanel} holds components for encrypt and decrypt text.
+ */
 public class EnDecryptPanel extends JPanel
 {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+	/** The btn decrypt. */
 	private JButton btnDecrypt;
+
+	/** The btn encrypt. */
 	private JButton btnEncrypt;
+
+	/** The lbl encrypted. */
 	private JLabel lblEncrypted;
+
+	/** The lbl to encrypt. */
 	private JLabel lblToEncrypt;
+
+	/** The scp encrypted. */
 	private JScrollPane scpEncrypted;
+
+	/** The scp to encrypt. */
 	private JScrollPane scpToEncrypt;
+
+	/** The txt encrypted. */
 	private JTextArea txtEncrypted;
+
+	/** The txt to encrypt. */
 	private JTextArea txtToEncrypt;
 
+	/**
+	 * Instantiates a new {@link EnDecryptPanel}.
+	 */
 	public EnDecryptPanel()
 	{
 		initialize();
 	}
 
 
+	/**
+	 * Initialize Panel.
+	 */
 	protected void initialize()
 	{
-		initComponents();
+		initializeComponents();
 		initializeLayout();
 	}
 
 
-	protected void initComponents()
+	/**
+	 * Initialize components.
+	 */
+	protected void initializeComponents()
 	{
 		lblToEncrypt = new JLabel();
 		scpToEncrypt = new JScrollPane();
@@ -92,6 +120,9 @@ public class EnDecryptPanel extends JPanel
 
 	}
 
+	/**
+	 * Initialize layout.
+	 */
 	protected void initializeLayout()
 	{
 		final GroupLayout layout = new GroupLayout(this);
@@ -132,16 +163,24 @@ public class EnDecryptPanel extends JPanel
 				.addContainerGap(39, Short.MAX_VALUE)));
 	}
 
-	protected void onDecrypt(final ActionEvent evt)
+	/**
+	 * Callback method that can be overwritten to provide specific action for the on decrypt.
+	 *
+	 * @param actionEvent the action event
+	 */
+	protected void onDecrypt(final ActionEvent actionEvent)
 	{
-		// TODO add your handling code here:
 		System.out.println("onDecrypt");
 	}
 
 
-	protected void onEncrypt(final ActionEvent evt)
+	/**
+	 * Callback method that can be overwritten to provide specific action for the on encrypt.
+	 *
+	 * @param actionEvent the action event
+	 */
+	protected void onEncrypt(final ActionEvent actionEvent)
 	{
-		// TODO add your handling code here:
 		System.out.println("onEncrypt");
 
 	}
