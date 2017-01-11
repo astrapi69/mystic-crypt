@@ -108,9 +108,17 @@ public class EnDecryptPanel extends JPanel
 
 		btnEncrypt.setText("Encrypt >");
 		btnEncrypt.addActionListener(actionEvent -> onEncrypt(actionEvent));
+		EnableButtonBehavior.builder()
+		.buttonModel(btnEncrypt.getModel())
+		.document(txtToEncrypt.getDocument())
+		.build();
 
 		btnDecrypt.setText("< Decrypt");
 		btnDecrypt.addActionListener(actionEvent -> onDecrypt(actionEvent));
+		EnableButtonBehavior.builder()
+		.buttonModel(btnDecrypt.getModel())
+		.document(txtEncrypted.getDocument())
+		.build();
 
 		txtEncrypted.setColumns(20);
 		txtEncrypted.setRows(5);

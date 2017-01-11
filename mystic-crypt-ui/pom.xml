@@ -13,6 +13,7 @@
 	<version>4.18.0</version>
 
 	<properties>
+		<mystic-crypt.version>4.18.0</mystic-crypt.version>
 		<full-app-name>mystic-crypt-ui</full-app-name>
 		<info.appName>mystic-crypt-ui</info.appName>
 		<file-name-with-dependencies>${full-app-name}-jar-with-dependencies.jar</file-name-with-dependencies>
@@ -28,7 +29,13 @@
 			<dependency>
 				<groupId>de.alpharogroup</groupId>
 				<artifactId>crypt-data</artifactId>
-				<version>4.18.0</version>
+				<version>${mystic-crypt.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>crypt-data</artifactId>
+				<version>${mystic-crypt.version}</version>
 			</dependency>
 
 		</dependencies>
