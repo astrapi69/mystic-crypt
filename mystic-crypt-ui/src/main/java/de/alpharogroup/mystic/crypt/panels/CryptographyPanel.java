@@ -37,10 +37,12 @@ import javax.swing.JTextArea;
 import javax.swing.LayoutStyle;
 
 import de.alpharogroup.crypto.key.KeySize;
+import lombok.Getter;
 
 /**
  * The class {@link CryptographyPanel} can generate private and public keys and save them to files.
  */
+@Getter
 public class CryptographyPanel extends JPanel
 {
 

@@ -34,11 +34,13 @@ import java.security.interfaces.RSAPrivateCrtKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPublicKeySpec;
+import java.util.List;
 
 import org.apache.commons.codec.binary.Base64;
 
 import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
 import de.alpharogroup.crypto.hex.HexExtensions;
+import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -144,6 +146,31 @@ public class PrivateKeyExtensions
 			return publicKey;
 		}
 		return null;
+	}
+
+
+
+	/**
+	 * Transform the public key in pem format.
+	 *
+	 * @param publicKey
+	 *            the public key
+	 * @return the public key in pem format
+	 */
+	public static String toPemFormat(final PrivateKey privateKey)
+	{
+		final String publicKeyAsBase64String =  toBase64(privateKey);
+		final List<String> parts = PublicKeyExtensions.splitByFixedLength(publicKeyAsBase64String, 64);
+
+		final StringBuilder sb = new StringBuilder();
+		sb.append(PrivateKeyReader.BEGIN_RSA_PRIVATE_KEY_PREFIX);
+		for(final String part : parts) {
+			sb.append(part);
+			sb.append(System.lineSeparator());
+		}
+		sb.append(PrivateKeyReader.END_RSA_PRIVATE_KEY_SUFFIX);
+		sb.append(System.lineSeparator());
+		return sb.toString();
 	}
 
 }

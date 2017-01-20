@@ -34,6 +34,7 @@ import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.crypto.provider.SecurityProvider;
+import de.alpharogroup.file.read.ReadFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
@@ -49,6 +50,19 @@ public class PublicKeyExtensionsTest
 		+ "aGUAAqMS0hvVDn+AApzv0FcJidaO5qX56Lso5lPpOWCRBEHqwQybXhFrDpbTbY0u"
 		+ "0KhXogDnQ+jGt9lMEs8SGvKH0FuW3TuXsDNRk4uHS9w/jbbx1DC1sjFMv3jNHo4T"
 		+ "rKopvRlcL2D3uHp/iAAIeU+DXeZSUIERi/FVkQxINRJf2bAdvRNDgTFtCUW4JQdm" + "YQIDAQAB";
+
+
+	/** The public key in pem format for use in tests. */
+	public static String PUBLIC_KEY_PEM_FORMATED =
+		PublicKeyReader.BEGIN_PUBLIC_KEY_PREFIX
+		+ "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3prZMWp2kO6rfENO4p7X" + System.lineSeparator()
+		+ "KNK9OGisJsx4KG1gGfScszdQfIxW/6KaAEWghUShd1n2tyX6Lo3UqA5t9OyhyUnt" + System.lineSeparator()
+		+ "XnAQ2CZPY5Nq2a5HCbH2e9QIzJdiPBNCXTs3wIprIGJv2T0O9qkOG7CIqhZjirnh" + System.lineSeparator()
+		+ "aGUAAqMS0hvVDn+AApzv0FcJidaO5qX56Lso5lPpOWCRBEHqwQybXhFrDpbTbY0u" + System.lineSeparator()
+		+ "0KhXogDnQ+jGt9lMEs8SGvKH0FuW3TuXsDNRk4uHS9w/jbbx1DC1sjFMv3jNHo4T" + System.lineSeparator()
+		+ "rKopvRlcL2D3uHp/iAAIeU+DXeZSUIERi/FVkQxINRJf2bAdvRNDgTFtCUW4JQdm" + System.lineSeparator()
+		+ "YQIDAQAB" + System.lineSeparator()
+		+ PublicKeyReader.END_PUBLIC_KEY_SUFFIX;
 
 	/**
 	 * Test method for {@link PublicKeyExtensions#toBase64(PublicKey)}
@@ -69,6 +83,28 @@ public class PublicKeyExtensionsTest
 
 		final String base64 = PublicKeyExtensions.toBase64(publicKey);
 		AssertJUnit.assertEquals(PUBLIC_KEY_BASE64_ENCODED, base64);
+	}
+
+	/**
+	 * Test method for {@link PublicKeyExtensions#toBase64(PublicKey)}
+	 *
+	 * @throws Exception
+	 *             is thrown if an security error occurs
+	 */
+	@Test
+	public void testToPemFormat() throws Exception
+	{
+		final File keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		final File publickeyPemFile = new File(keyPemDir, "public.pem");
+
+		Security.addProvider(new BouncyCastleProvider());
+
+		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile,
+			SecurityProvider.BC);
+
+		final String pemFormat = PublicKeyExtensions.toPemFormat(publicKey);
+		final String expected = ReadFileExtensions.readFromFile(publickeyPemFile);
+		AssertJUnit.assertEquals(pemFormat, expected);
 	}
 
 }

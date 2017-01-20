@@ -36,6 +36,7 @@ import org.testng.annotations.Test;
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.crypto.provider.SecurityProvider;
+import de.alpharogroup.file.read.ReadFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
@@ -67,6 +68,28 @@ public class PrivateKeyExtensionsTest
 
 		final PublicKey actual = PrivateKeyExtensions.generatePublicKey(privateKey);
 		AssertJUnit.assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test method for {@link PrivateKeyExtensions#toBase64(PublicKey)}
+	 *
+	 * @throws Exception
+	 *             is thrown if an security error occurs
+	 *
+	 */
+	@Test(enabled = false)
+	public void testToPemFormat() throws Exception
+	{
+		final File keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		final File privatekeyPemFile = new File(keyPemDir, "private.pem");
+
+		Security.addProvider(new BouncyCastleProvider());
+		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile,
+			SecurityProvider.BC);
+
+		final String pemFormat = PrivateKeyExtensions.toPemFormat(privateKey);
+		final String expected = ReadFileExtensions.readFromFile(privatekeyPemFile);
+		AssertJUnit.assertEquals(pemFormat, expected);
 	}
 
 }
