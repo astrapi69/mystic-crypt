@@ -35,7 +35,6 @@ import org.apache.commons.codec.binary.Base64;
 
 import de.alpharogroup.crypto.hex.HexExtensions;
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
-import de.alpharogroup.string.StringExtensions;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -145,7 +144,7 @@ public class PublicKeyExtensions
 	 * @param input the input
 	 * @param fixedLength the fixed length
 	 * @return the list with the splitted {@link String} objects
-	 * @deprecated use instead the same name method from {@link StringExtensions}
+	 * @deprecated use instead the same name method from  StringExtensions
 	 */
 	@Deprecated
 	public static List<String> splitByFixedLength(final String input, final int fixedLength) {

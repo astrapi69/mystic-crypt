@@ -1,18 +1,34 @@
 package de.alpharogroup.mystic.crypt.panels;
 
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.swing.JComboBox;
 
+import org.apache.commons.codec.DecoderException;
 import org.jdesktop.swingx.JXPanel;
 
 import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
+import de.alpharogroup.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
 import de.alpharogroup.crypto.factories.KeyPairFactory;
 import de.alpharogroup.crypto.key.KeySize;
+import de.alpharogroup.crypto.key.PrivateKeyExtensions;
+import de.alpharogroup.crypto.key.PrivateKeyHexDecryptor;
+import de.alpharogroup.crypto.key.PublicKeyExtensions;
+import de.alpharogroup.crypto.key.PublicKeyHexEncryptor;
+import de.alpharogroup.crypto.model.CryptModel;
 import lombok.Getter;
 import net.miginfocom.swing.MigLayout;
 
@@ -25,6 +41,13 @@ public class GenerateKeysPanel extends JXPanel
 	private CryptographyPanel cryptographyPanel;
 
 	private EnDecryptPanel enDecryptPanel;
+
+	private PrivateKey privateKey;
+	private PublicKey publicKey;
+
+	private PublicKeyHexEncryptor encryptor;
+
+	private PrivateKeyHexDecryptor decryptor;
 
 	public GenerateKeysPanel()
 	{
@@ -167,10 +190,22 @@ public class GenerateKeysPanel extends JXPanel
 		{
 			final KeyPair keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, selected.getKeySize());
 
-			final PrivateKey privateKey = keyPair.getPrivate();
-			final PublicKey PublicKey = keyPair.getPublic();
+			privateKey = keyPair.getPrivate();
+			publicKey = keyPair.getPublic();
+
+			final String privateKeyFormat = PrivateKeyExtensions.toPemFormat(privateKey);
+
+			final String publicKeyFormat = PublicKeyExtensions.toPemFormat(publicKey);
+
+			getCryptographyPanel().getTxtPrivateKey().setText(privateKeyFormat);
+			getCryptographyPanel().getTxtPublicKey().setText(publicKeyFormat);
 		}
 		catch (final NoSuchAlgorithmException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (final IOException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -187,6 +222,21 @@ public class GenerateKeysPanel extends JXPanel
 	protected void onDecrypt(final ActionEvent actionEvent)
 	{
 		System.out.println("onDecrypt");
+		decryptor = new PrivateKeyHexDecryptor(privateKey);
+		try
+		{
+			final String decryted = decryptor.decrypt(getEnDecryptPanel().getTxtEncrypted().getText());
+			getEnDecryptPanel().getTxtToEncrypt().setText(decryted);
+			getEnDecryptPanel().getTxtEncrypted().setText("");
+		}
+		catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
+			| IllegalBlockSizeException | BadPaddingException | InvalidKeySpecException
+			| InvalidAlgorithmParameterException | DecoderException | IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 
@@ -198,6 +248,40 @@ public class GenerateKeysPanel extends JXPanel
 	protected void onEncrypt(final ActionEvent actionEvent)
 	{
 		System.out.println("onEncrypt");
+
+		final CryptModel<Cipher, PublicKey> encryptModel = CryptModel.<Cipher, PublicKey> builder()
+			.key(publicKey)
+			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA256AndMGF1Padding)
+			.build();
+
+		try
+		{
+			encryptor = new PublicKeyHexEncryptor(publicKey);
+
+			getEnDecryptPanel().getTxtEncrypted().setText(encryptor.encrypt(getEnDecryptPanel().getTxtToEncrypt().getText()));
+			getEnDecryptPanel().getTxtToEncrypt().setText("");
+		}
+		catch (InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException
+			| NoSuchPaddingException | UnsupportedEncodingException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (final IllegalBlockSizeException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (final BadPaddingException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (final IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 }

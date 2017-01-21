@@ -47,17 +47,22 @@ import lombok.experimental.UtilityClass;
 public class PrivateKeyReader
 {
 
-	/** The Constant END_PRIVATE_KEY_SUFFIX. */
-	public static final String END_PRIVATE_KEY_SUFFIX = "-----END PRIVATE KEY-----";
+	/** The Constant RSA_PRIVATE_KEY. */
+	public static final String RSA_PRIVATE_KEY = "RSA PRIVATE KEY";
 
 	/** The Constant BEGIN_PRIVATE_KEY_PREFIX. */
 	public static final String BEGIN_PRIVATE_KEY_PREFIX = "-----BEGIN PRIVATE KEY-----";
 
-	/** The Constant END_RSA_PRIVATE_KEY_SUFFIX. */
-	public static final String END_RSA_PRIVATE_KEY_SUFFIX = "\n-----END RSA PRIVATE KEY-----";
+	/** The Constant END_PRIVATE_KEY_SUFFIX. */
+	public static final String END_PRIVATE_KEY_SUFFIX = "-----END PRIVATE KEY-----";
 
 	/** The Constant BEGIN_RSA_PRIVATE_KEY_PREFIX. */
-	public static final String BEGIN_RSA_PRIVATE_KEY_PREFIX = "-----BEGIN RSA PRIVATE KEY-----\n";
+	public static final String BEGIN_RSA_PRIVATE_KEY_PREFIX = "-----BEGIN " + RSA_PRIVATE_KEY
+		+ "-----\n";
+
+	/** The Constant END_RSA_PRIVATE_KEY_SUFFIX. */
+	public static final String END_RSA_PRIVATE_KEY_SUFFIX = "\n-----END " + RSA_PRIVATE_KEY
+		+ "-----";
 
 	/**
 	 * Read private key.
@@ -215,9 +220,21 @@ public class PrivateKeyReader
 	public static String readPemFileAsBase64(final File file) throws IOException
 	{
 		final byte[] keyBytes = Files.readAllBytes(file.toPath());
-		final String privateKeyAsBase64String = new String(keyBytes)
-			.replace(BEGIN_RSA_PRIVATE_KEY_PREFIX, "").replace(END_RSA_PRIVATE_KEY_SUFFIX, "")
-			.trim();
+		final String privateKeyPem = new String(keyBytes);
+		String privateKeyAsBase64String = null;
+		if (privateKeyPem.indexOf(BEGIN_PRIVATE_KEY_PREFIX) != -1)
+		{
+			// PKCS#8 format
+			privateKeyAsBase64String = new String(keyBytes).replace(BEGIN_PRIVATE_KEY_PREFIX, "")
+				.replace(END_PRIVATE_KEY_SUFFIX, "").trim();
+		}
+		if (privateKeyPem.indexOf(BEGIN_RSA_PRIVATE_KEY_PREFIX) != -1)
+		{
+			// PKCS#1 format
+			privateKeyAsBase64String = new String(keyBytes)
+				.replace(BEGIN_RSA_PRIVATE_KEY_PREFIX, "").replace(END_RSA_PRIVATE_KEY_SUFFIX, "")
+				.trim();
+		}
 		return privateKeyAsBase64String;
 	}
 

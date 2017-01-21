@@ -26,7 +26,9 @@ package de.alpharogroup.crypto.key;
 
 import java.io.File;
 import java.security.PrivateKey;
+import java.security.Security;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
@@ -52,6 +54,7 @@ public class KeyExtensionsTest
 		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
 		final File privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
 
+		Security.addProvider(new BouncyCastleProvider());
 		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile,
 			SecurityProvider.BC);
 		AssertJUnit.assertNotNull(privateKey);
@@ -72,12 +75,6 @@ public class KeyExtensionsTest
 		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
 
 		AssertJUnit.assertNotNull(privateKey);
-	}
-
-	@Test
-	public void testConvertToBase64() throws Exception
-	{
-
 	}
 
 }

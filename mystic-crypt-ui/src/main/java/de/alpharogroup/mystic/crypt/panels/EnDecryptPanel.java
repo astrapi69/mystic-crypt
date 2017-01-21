@@ -34,9 +34,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.LayoutStyle;
 
+import lombok.Getter;
+
 /**
  * The class {@link EnDecryptPanel} holds components for encrypt and decrypt text.
  */
+@Getter
 public class EnDecryptPanel extends JPanel
 {
 

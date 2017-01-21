@@ -35,7 +35,7 @@
 
 			<dependency>
 				<groupId>de.alpharogroup</groupId>
-				<artifactId>crypt-data</artifactId>
+				<artifactId>crypt-core</artifactId>
 				<version>${mystic-crypt.version}</version>
 			</dependency>
 
@@ -109,6 +109,11 @@
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
 			<artifactId>crypt-data</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>crypt-core</artifactId>
 		</dependency>
 
 	</dependencies>

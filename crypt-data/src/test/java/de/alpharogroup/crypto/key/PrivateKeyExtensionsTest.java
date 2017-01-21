@@ -36,7 +36,6 @@ import org.testng.annotations.Test;
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.crypto.provider.SecurityProvider;
-import de.alpharogroup.file.read.ReadFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
@@ -45,6 +44,35 @@ import de.alpharogroup.file.search.PathFinder;
 public class PrivateKeyExtensionsTest
 {
 
+	/** The private key base64 encoded for use in tests. */
+	public static String PRIVATE_KEY_BASE64_ENCODED =
+		"-----BEGIN RSA PRIVATE KEY-----\n"
+		+"MIIEogIBAAKCAQEA3prZMWp2kO6rfENO4p7XKNK9OGisJsx4KG1gGfScszdQfIxW" + "\n"
+		+"/6KaAEWghUShd1n2tyX6Lo3UqA5t9OyhyUntXnAQ2CZPY5Nq2a5HCbH2e9QIzJdi" + "\n"
+		+"PBNCXTs3wIprIGJv2T0O9qkOG7CIqhZjirnhaGUAAqMS0hvVDn+AApzv0FcJidaO" + "\n"
+		+"5qX56Lso5lPpOWCRBEHqwQybXhFrDpbTbY0u0KhXogDnQ+jGt9lMEs8SGvKH0FuW" + "\n"
+		+"3TuXsDNRk4uHS9w/jbbx1DC1sjFMv3jNHo4TrKopvRlcL2D3uHp/iAAIeU+DXeZS" + "\n"
+		+"UIERi/FVkQxINRJf2bAdvRNDgTFtCUW4JQdmYQIDAQABAoIBABeq7xzJ7QFL3v+/" + "\n"
+		+"SEvgB5BXl7a/qk4Vv1DNEEKyN1b2sqALa9SSPT16Ka8BtQkzj3+5kfgRLGMR5a78" + "\n"
+		+"2dbE/W/lCmVw7U/xBJNQbE0jlsljqevWzKMGiS/QdAUMsocm8C1wyH6BSva2tlEf" + "\n"
+		+"QEYnrUekNXQSUpX0T5rTA5FDjlvgMkiTptMT4sJ3jS3dMjXB713uo4nEHEeD+ND5" + "\n"
+		+"QEKzulV0nguYu7EGqJkIUu/kVt8deFZ3QcDb3vPHeP4DpXLYTPzGkRekaD7XrOkc" + "\n"
+		+"fWlzhk8zBnpffZ7Uxw/4thQXwssDpC9FYHxHH5we6S6bScUNqy6RAR5XlhE+49Ba" + "\n"
+		+"JFPDXOECgYEA//NUHz0ImvoAgnNvP7DlCR/dPzVETnkScspf8w+3XVBNOWk8URu/" + "\n"
+		+"CxbVMO9b+LXUiwt6tCuczl2WM+GKbcpk2mm47AO0OKCYOOUDj9l7OpslUXbkrHI/" + "\n"
+		+"MnTIW/nfinaWURqJNEg6WzG/Hs8i6+wkvTDtVP+XOtadWDupavBMa4cCgYEA3qXe" + "\n"
+		+"dB4zDZQeTOZQhr4d4KjNP/VPkraMVKsCOGVUmsoqyZD8wB9CXLSsqtrhEaBUFn0t" + "\n"
+		+"ltwIA9McyzKRlB+s5M6gV5atSFarwA8EbiKmsivsGCY+YstyFjXj4dXr7CB3Y4ir" + "\n"
+		+"mgDxVYj7pREauXGCWQZdsF6GKKwo6Qmk8naUKNcCgYBuihh6pVFiHTa7ID+bsjo4" + "\n"
+		+"hpp3AfpOKdvd16k4wEDg/B1d/iUeom0PzPyl9boy39S7eGm2Bl/igGiuX2n5oL+N" + "\n"
+		+"1LsYs0DSdAlKCR5QsgyWcwra9A4uq+i/UdB2aKQymKSywlMfUVJisElqdOsQGRyE" + "\n"
+		+"2OynGPunXaj2wk2Y8c8PYQKBgFF+fPIbq6worv6OvqLTK7RzlMz4SWv2DV9gSKvD" + "\n"
+		+"yzftD8Q/oYPg7TVpnFndS8xb1ut0Xh994iEkQMHPfKGvBmWpi98Dc+Gqd6sQ1BpL" + "\n"
+		+"7KACm6QrO2KF/PhMOWEMIBKJv6la+RShi7Q3M4Szwghml8NmJRzNPGXevgquUQW+" + "\n"
+		+"iXR5AoGAZ9hYXARnUY6Yv+1AdlQVBTVWPUZr3nS8ds8ItYS2boRwTKhvdJBVgdGT" + "\n"
+		+"D7a5pWsHInK5dcO9csB5T08lHdmrAzgjRVtkNIvQ6EPVRVVsqILNXKVDMUpgO8CC" + "\n"
+		+"6G0S1EXrNrxpcqjnWNL5EhmAKDRETTRuGB4h/RwjIa+owrx0kDo=\n"
+		+"-----END RSA PRIVATE KEY-----\n";
 	/**
 	 * Test method for {@link PrivateKeyExtensions#generatePublicKey(PrivateKey)}
 	 *
@@ -77,7 +105,7 @@ public class PrivateKeyExtensionsTest
 	 *             is thrown if an security error occurs
 	 *
 	 */
-	@Test(enabled = false)
+	@Test(enabled = true)
 	public void testToPemFormat() throws Exception
 	{
 		final File keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
@@ -87,9 +115,10 @@ public class PrivateKeyExtensionsTest
 		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile,
 			SecurityProvider.BC);
 
-		final String pemFormat = PrivateKeyExtensions.toPemFormat(privateKey);
-		final String expected = ReadFileExtensions.readFromFile(privatekeyPemFile);
-		AssertJUnit.assertEquals(pemFormat, expected);
+		final String actual = PrivateKeyExtensions.toPemFormat(privateKey);
+		final String expected = PRIVATE_KEY_BASE64_ENCODED;
+		AssertJUnit.assertEquals(expected, actual);
+
 	}
 
 }
