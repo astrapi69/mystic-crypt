@@ -31,6 +31,7 @@ import javax.swing.JToolBar;
 
 import org.jdesktop.swingx.JXFrame;
 
+import de.alpharogroup.mystic.crypt.panels.GenerateKeysPanel;
 //
 //import de.alpharogroup.duplicate.files.controller.FindDuplicateFilesController;
 //import de.alpharogroup.duplicate.files.gen.view.FindDuplicateFilesView;
@@ -101,8 +102,9 @@ public class MainFrame extends JXFrame {
 		// create internal frame
 		internalFrame = JComponentFactory.newInternalFrame("Random generator", true, true, true, true);
 
-//		final FindDuplicateFilesView view = new FindDuplicateFilesView(new FindDuplicateFilesController());
-//		JInternalFrameExtensions.setViewAndControllerForJInternalFrame(internalFrame, view);
+
+		final GenerateKeysPanel component = new GenerateKeysPanel();
+		JInternalFrameExtensions.addComponentToFrame(internalFrame, component);
 
 		JInternalFrameExtensions.addJInternalFrame(desktopPane, internalFrame);
 

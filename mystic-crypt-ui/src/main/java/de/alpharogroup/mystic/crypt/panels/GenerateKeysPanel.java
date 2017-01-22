@@ -1,40 +1,40 @@
 package de.alpharogroup.mystic.crypt.panels;
 
 import java.awt.event.ActionEvent;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 
 import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 
 import org.apache.commons.codec.DecoderException;
+import org.apache.log4j.Logger;
 import org.jdesktop.swingx.JXPanel;
 
 import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
-import de.alpharogroup.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
 import de.alpharogroup.crypto.factories.KeyPairFactory;
 import de.alpharogroup.crypto.key.KeySize;
 import de.alpharogroup.crypto.key.PrivateKeyExtensions;
 import de.alpharogroup.crypto.key.PrivateKeyHexDecryptor;
 import de.alpharogroup.crypto.key.PublicKeyExtensions;
 import de.alpharogroup.crypto.key.PublicKeyHexEncryptor;
-import de.alpharogroup.crypto.model.CryptModel;
 import lombok.Getter;
 import net.miginfocom.swing.MigLayout;
 
 @Getter
 public class GenerateKeysPanel extends JXPanel
 {
+	/** The Constant logger. */
+	protected static final Logger logger = Logger.getLogger(GenerateKeysPanel.class.getName());
 
 	private static final long serialVersionUID = 1L;
 
@@ -42,14 +42,7 @@ public class GenerateKeysPanel extends JXPanel
 
 	private EnDecryptPanel enDecryptPanel;
 
-	private PrivateKey privateKey;
-	private PublicKey publicKey;
-
-	private PublicKeyHexEncryptor encryptor;
-
-	private PrivateKeyHexDecryptor decryptor;
-
-	private final GenerateKeysModelBean model= GenerateKeysModelBean.builder().build();
+	private final GenerateKeysModelBean model = GenerateKeysModelBean.builder().build();
 
 	public GenerateKeysPanel()
 	{
@@ -71,9 +64,11 @@ public class GenerateKeysPanel extends JXPanel
 	 */
 	protected void initializeComponents()
 	{
-		cryptographyPanel = new CryptographyPanel(){
+		cryptographyPanel = new CryptographyPanel()
+		{
 
 			private static final long serialVersionUID = 1L;
+
 			@Override
 			protected void onChangeKeySize(final ActionEvent actionEvent)
 			{
@@ -91,24 +86,29 @@ public class GenerateKeysPanel extends JXPanel
 			{
 				GenerateKeysPanel.this.onGenerate(actionEvent);
 			}
+
 			@Override
 			protected void onSavePrivateKey(final ActionEvent actionEvent)
 			{
 				GenerateKeysPanel.this.onSavePrivateKey(actionEvent);
 			}
+
 			@Override
 			protected void onSavePublicKey(final ActionEvent actionEvent)
 			{
 				GenerateKeysPanel.this.onSavePublicKey(actionEvent);
 			}
 		};
-		enDecryptPanel = new EnDecryptPanel(){
+		enDecryptPanel = new EnDecryptPanel()
+		{
 			private static final long serialVersionUID = 1L;
+
 			@Override
 			protected void onDecrypt(final ActionEvent actionEvent)
 			{
 				GenerateKeysPanel.this.onDecrypt(actionEvent);
 			}
+
 			@Override
 			protected void onEncrypt(final ActionEvent actionEvent)
 			{
@@ -123,7 +123,7 @@ public class GenerateKeysPanel extends JXPanel
 	protected void initializeLayout()
 	{
 		setLayout(new MigLayout());
-		add(cryptographyPanel,   "wrap");
+		add(cryptographyPanel, "wrap");
 		add(enDecryptPanel);
 	}
 
@@ -153,7 +153,24 @@ public class GenerateKeysPanel extends JXPanel
 	 */
 	protected void onSavePublicKey(final ActionEvent actionEvent)
 	{
-		System.out.println("onSavePublicKey");
+		final JFileChooser fileChooser = new JFileChooser();
+		final int state = fileChooser.showSaveDialog(this);
+		if (state == JFileChooser.APPROVE_OPTION)
+		{
+			try
+			{
+				final FileWriter fw = new FileWriter(fileChooser.getSelectedFile() + ".pem");
+				fw.write(getCryptographyPanel().getTxtPublicKey().getText());
+				fw.close();
+			}
+			catch (final Exception ex)
+			{
+				ex.printStackTrace();
+			}
+		}
+		if (state == JFileChooser.CANCEL_OPTION)
+		{
+		}
 	}
 
 	/**
@@ -165,7 +182,24 @@ public class GenerateKeysPanel extends JXPanel
 	 */
 	protected void onSavePrivateKey(final ActionEvent actionEvent)
 	{
-		System.out.println("onSavePrivateKey");
+		final JFileChooser fileChooser = new JFileChooser();
+		final int state = fileChooser.showSaveDialog(this);
+		if (state == JFileChooser.APPROVE_OPTION)
+		{
+			try
+			{
+				final FileWriter fw = new FileWriter(fileChooser.getSelectedFile() + ".pem");
+				fw.write(getCryptographyPanel().getTxtPrivateKey().getText());
+				fw.close();
+			}
+			catch (final Exception ex)
+			{
+				ex.printStackTrace();
+			}
+		}
+		if (state == JFileChooser.CANCEL_OPTION)
+		{
+		}
 	}
 
 	/**
@@ -176,7 +210,16 @@ public class GenerateKeysPanel extends JXPanel
 	 */
 	protected void onClear(final ActionEvent actionEvent)
 	{
-		System.out.println("onClear");
+		getCryptographyPanel().getCmbKeySize().setSelectedItem(KeySize.KEYSIZE_1024);
+		getCryptographyPanel().getTxtPrivateKey().setText("");
+		getCryptographyPanel().getTxtPublicKey().setText("");
+		getEnDecryptPanel().getTxtEncrypted().setText("");
+		getEnDecryptPanel().getTxtToEncrypt().setText("");
+		model.setDecryptor(null);
+		model.setEncryptor(null);
+		model.setKeySize(KeySize.KEYSIZE_1024);
+		model.setPrivateKey(null);
+		model.setPublicKey(null);
 	}
 
 	/**
@@ -187,14 +230,17 @@ public class GenerateKeysPanel extends JXPanel
 	 */
 	protected void onGenerate(final ActionEvent actionEvent)
 	{
-		System.out.println("onGenerate");
 		final KeySize selected = (KeySize)getCryptographyPanel().getCmbKeySize().getSelectedItem();
 		try
 		{
-			final KeyPair keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, selected.getKeySize());
+			final KeyPair keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA,
+				selected.getKeySize());
 
 			model.setPrivateKey(keyPair.getPrivate());
 			model.setPublicKey(keyPair.getPublic());
+
+			model.setDecryptor(new PrivateKeyHexDecryptor(model.getPrivateKey()));
+			model.setEncryptor(new PublicKeyHexEncryptor(model.getPublicKey()));
 
 			final String privateKeyFormat = PrivateKeyExtensions.toPemFormat(model.getPrivateKey());
 
@@ -205,13 +251,11 @@ public class GenerateKeysPanel extends JXPanel
 		}
 		catch (final NoSuchAlgorithmException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("", e);
 		}
 		catch (final IOException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("", e);
 		}
 
 	}
@@ -220,15 +264,16 @@ public class GenerateKeysPanel extends JXPanel
 	/**
 	 * Callback method that can be overwritten to provide specific action for the on decrypt.
 	 *
-	 * @param actionEvent the action event
+	 * @param actionEvent
+	 *            the action event
 	 */
 	protected void onDecrypt(final ActionEvent actionEvent)
 	{
 		System.out.println("onDecrypt");
-		decryptor = new PrivateKeyHexDecryptor(privateKey);
 		try
 		{
-			final String decryted = decryptor.decrypt(getEnDecryptPanel().getTxtEncrypted().getText());
+			final String decryted = model.getDecryptor()
+				.decrypt(getEnDecryptPanel().getTxtEncrypted().getText());
 			getEnDecryptPanel().getTxtToEncrypt().setText(decryted);
 			getEnDecryptPanel().getTxtEncrypted().setText("");
 		}
@@ -236,8 +281,7 @@ public class GenerateKeysPanel extends JXPanel
 			| IllegalBlockSizeException | BadPaddingException | InvalidKeySpecException
 			| InvalidAlgorithmParameterException | DecoderException | IOException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("", e);
 		}
 
 	}
@@ -246,44 +290,34 @@ public class GenerateKeysPanel extends JXPanel
 	/**
 	 * Callback method that can be overwritten to provide specific action for the on encrypt.
 	 *
-	 * @param actionEvent the action event
+	 * @param actionEvent
+	 *            the action event
 	 */
 	protected void onEncrypt(final ActionEvent actionEvent)
 	{
 		System.out.println("onEncrypt");
-
-		final CryptModel<Cipher, PublicKey> encryptModel = CryptModel.<Cipher, PublicKey> builder()
-			.key(publicKey)
-			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA256AndMGF1Padding)
-			.build();
-
 		try
 		{
-			encryptor = new PublicKeyHexEncryptor(publicKey);
-
-			getEnDecryptPanel().getTxtEncrypted().setText(encryptor.encrypt(getEnDecryptPanel().getTxtToEncrypt().getText()));
+			getEnDecryptPanel().getTxtEncrypted().setText(
+				model.getEncryptor().encrypt(getEnDecryptPanel().getTxtToEncrypt().getText()));
 			getEnDecryptPanel().getTxtToEncrypt().setText("");
 		}
 		catch (InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException
 			| NoSuchPaddingException | UnsupportedEncodingException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("", e);
 		}
 		catch (final IllegalBlockSizeException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("", e);
 		}
 		catch (final BadPaddingException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("", e);
 		}
 		catch (final IOException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("", e);
 		}
 
 	}
