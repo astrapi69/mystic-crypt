@@ -32,6 +32,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 
 import de.alpharogroup.crypto.algorithm.Algorithm;
@@ -140,6 +141,28 @@ public class KeyPairFactory
 	{
 		final KeyPairGenerator generator = KeyPairGenerator.getInstance(algorithm);
 		generator.initialize(keySize);
+		return generator;
+	}
+
+	/**
+	 * Factory method for creating a new {@link KeyPairGenerator} from the given parameters.
+	 *
+	 * @param algorithm
+	 *            the algorithm
+	 * @param keySize
+	 *            the key size
+	 * @param secureRandom
+	 *            the secure random
+	 * @return the new {@link KeyPairGenerator} from the given parameters.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if no Provider supports a KeyPairGeneratorSpi implementation for the
+	 *             specified algorithm.
+	 */
+	public static KeyPairGenerator newKeyPairGenerator(final String algorithm, final int keySize,
+		final SecureRandom secureRandom) throws NoSuchAlgorithmException
+	{
+		final KeyPairGenerator generator = KeyPairGenerator.getInstance(algorithm);
+		generator.initialize(keySize, secureRandom);
 		return generator;
 	}
 

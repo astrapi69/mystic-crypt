@@ -4,14 +4,14 @@ The target of this parent project is to make encryption and decryption as simple
 
 ##Key features:
 
+ * Encryption with PublicKey and decryption with PrivateKey objects that was generated with openssl or java
+ * Encryption and decryption from .pem, .der files that was generated with openssl
  * Hashing passwords
  * Obfuscate text with specified map
  * Hex en- and decryption
  * Creation of randomized data
  * Brute-force processing
  * Wordlist processing
- * Encryption with PublicKey and decryption with PrivateKey objects that was generated with openssl
- * Encryption and decryption from .pem, .der files that was generated with openssl
  
 
 ## License
@@ -125,5 +125,5 @@ Here is a list of awesome projects for cryptography:
  * [cryptacular](https://github.com/vt-middleware/cryptacular) The friendly complement to the BouncyCastle crypto API for Java.
  * [JSch](http://www.jcraft.com/jsch/) JSch is a pure Java implementation of SSH2.
  * [Apache Shiro](https://github.com/apache/shiro) Apache Shiro is a powerful and easy-to-use Java security framework that performs authentication, authorization, cryptography, and session management.
-
+ * [commons-ssl](http://juliusdavies.ca/commons-ssl/)
 

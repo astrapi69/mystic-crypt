@@ -24,6 +24,7 @@
  */
 package de.alpharogroup.crypto.key;
 
+import java.io.IOException;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -35,10 +36,18 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPublicKeySpec;
 
+import javax.xml.bind.DatatypeConverter;
+
 import org.apache.commons.codec.binary.Base64;
+import org.bouncycastle.asn1.ASN1Encodable;
+import org.bouncycastle.asn1.ASN1Primitive;
+import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
+import org.bouncycastle.util.io.pem.PemObject;
 
 import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
 import de.alpharogroup.crypto.hex.HexExtensions;
+import de.alpharogroup.crypto.key.reader.PemObjectReader;
+import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -119,6 +128,20 @@ public class PrivateKeyExtensions
 	}
 
 	/**
+	 * Transform the given {@link PrivateKey} to a base64 encoded {@link String} value.
+	 *
+	 * @param privateKey
+	 *            the private key
+	 * @return the new base64 encoded {@link String} value.
+	 */
+	public static String toBase64Binary(final PrivateKey privateKey)
+	{
+		final byte[] encoded = privateKey.getEncoded();
+		final String privateKeyAsBase64String = DatatypeConverter.printBase64Binary(encoded);
+		return privateKeyAsBase64String;
+	}
+
+	/**
 	 * Generate the corresponding {@link PublicKey} object from the given {@link PrivateKey} object.
 	 *
 	 * @param privateKey
@@ -144,6 +167,28 @@ public class PrivateKeyExtensions
 			return publicKey;
 		}
 		return null;
+	}
+
+
+	/**
+	 * Transform the given private key that is in PKCS1 format and returns a {@link String} object
+	 * in pem format.
+	 *
+	 * @param privateKey
+	 *            the private key
+	 * @return the {@link String} object in pem format generated from the given private key.
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	public static String toPemFormat(final PrivateKey privateKey) throws IOException
+	{
+		final byte[] encoded = privateKey.getEncoded();
+		final PrivateKeyInfo privateKeyInfo = PrivateKeyInfo.getInstance(encoded);
+		final ASN1Encodable asn1Encodable = privateKeyInfo.parsePrivateKey();
+		final ASN1Primitive asn1Primitive = asn1Encodable.toASN1Primitive();
+		final byte[] privateKeyPKCS1Formatted = asn1Primitive.getEncoded();
+		return PemObjectReader
+			.toPemFormat(new PemObject(PrivateKeyReader.RSA_PRIVATE_KEY, privateKeyPKCS1Formatted));
 	}
 
 }

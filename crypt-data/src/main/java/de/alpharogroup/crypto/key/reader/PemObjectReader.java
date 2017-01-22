@@ -28,9 +28,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.StringWriter;
 
 import org.bouncycastle.util.io.pem.PemObject;
 import org.bouncycastle.util.io.pem.PemReader;
+import org.bouncycastle.util.io.pem.PemWriter;
 
 /**
  * The class {@link PemObjectReader} is a utility class for reading {@link PemObject} from a file.
@@ -60,5 +62,24 @@ public class PemObjectReader
 			pemReader.close();
 		}
 		return pemObject;
+	}
+
+	/**
+	 * Transform the given {@link PemObject} object in pem format {@link String} object.
+	 *
+	 * @param pemObject
+	 *            the pem object
+	 * @return the string
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	public static String toPemFormat(final PemObject pemObject) throws IOException
+	{
+		final StringWriter stringWriter = new StringWriter();
+		final PemWriter pemWriter = new PemWriter(stringWriter);
+		pemWriter.writeObject(pemObject);
+		pemWriter.close();
+		final String pemString = stringWriter.toString();
+		return pemString;
 	}
 }
