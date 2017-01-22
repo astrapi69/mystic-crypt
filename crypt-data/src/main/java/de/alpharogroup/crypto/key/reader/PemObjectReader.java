@@ -64,12 +64,12 @@ public class PemObjectReader
 		return pemObject;
 	}
 
-
 	/**
 	 * Transform the given {@link PemObject} object in pem format {@link String} object.
 	 *
-	 * @return the pem object
-	 * @return the {@link String} object in pem format
+	 * @param pemObject
+	 *            the pem object
+	 * @return the string
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
