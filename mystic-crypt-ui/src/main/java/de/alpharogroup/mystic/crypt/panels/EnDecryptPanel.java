@@ -138,40 +138,41 @@ public class EnDecryptPanel extends JPanel
 	{
 		final GroupLayout layout = new GroupLayout(this);
 		this.setLayout(layout);
-		layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-			.addGroup(layout.createSequentialGroup().addContainerGap()
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-					.addComponent(lblToEncrypt, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-						Short.MAX_VALUE)
-					.addComponent(scpToEncrypt, GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE))
-				.addGap(28, 28, 28)
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-					.addComponent(btnDecrypt, GroupLayout.PREFERRED_SIZE, 156,
-						GroupLayout.PREFERRED_SIZE)
-					.addComponent(btnEncrypt, GroupLayout.PREFERRED_SIZE, 156,
-						GroupLayout.PREFERRED_SIZE))
-				.addGap(28, 28, 28)
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-					.addComponent(scpEncrypted, GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
-					.addComponent(lblEncrypted, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-						Short.MAX_VALUE))
-				.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
-		layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-			.addGroup(layout.createSequentialGroup().addContainerGap()
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-					.addComponent(lblToEncrypt, GroupLayout.PREFERRED_SIZE, 31,
-						GroupLayout.PREFERRED_SIZE)
-					.addComponent(lblEncrypted, GroupLayout.PREFERRED_SIZE, 31,
-						GroupLayout.PREFERRED_SIZE))
-				.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-					.addGroup(layout.createSequentialGroup().addGap(19, 19, 19)
-						.addComponent(btnEncrypt).addGap(53, 53, 53).addComponent(btnDecrypt))
-					.addComponent(scpEncrypted, GroupLayout.PREFERRED_SIZE, 148,
-						GroupLayout.PREFERRED_SIZE)
-					.addComponent(scpToEncrypt, GroupLayout.PREFERRED_SIZE, 148,
-						GroupLayout.PREFERRED_SIZE))
-				.addContainerGap(39, Short.MAX_VALUE)));
+
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(lblToEncrypt, GroupLayout.PREFERRED_SIZE, 381, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(scpToEncrypt, GroupLayout.PREFERRED_SIZE, 500, GroupLayout.PREFERRED_SIZE))
+                .addGap(39, 39, 39)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnDecrypt, GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
+                    .addComponent(btnEncrypt, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(scpEncrypted, GroupLayout.PREFERRED_SIZE, 500, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblEncrypted, GroupLayout.PREFERRED_SIZE, 381, GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblToEncrypt, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblEncrypted, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnEncrypt)
+                        .addGap(90, 90, 90)
+                        .addComponent(btnDecrypt))
+                    .addComponent(scpEncrypted)
+                    .addComponent(scpToEncrypt))
+                .addContainerGap(40, Short.MAX_VALUE))
+        );
 	}
 
 	/**

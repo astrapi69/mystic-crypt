@@ -49,6 +49,8 @@ public class GenerateKeysPanel extends JXPanel
 
 	private PrivateKeyHexDecryptor decryptor;
 
+	private final GenerateKeysModelBean model= GenerateKeysModelBean.builder().build();
+
 	public GenerateKeysPanel()
 	{
 		initialize();
@@ -101,6 +103,7 @@ public class GenerateKeysPanel extends JXPanel
 			}
 		};
 		enDecryptPanel = new EnDecryptPanel(){
+			private static final long serialVersionUID = 1L;
 			@Override
 			protected void onDecrypt(final ActionEvent actionEvent)
 			{
@@ -137,8 +140,8 @@ public class GenerateKeysPanel extends JXPanel
 	protected void onChangeKeySize(final ActionEvent actionEvent)
 	{
 		final JComboBox<String> cb = (JComboBox<String>)actionEvent.getSource();
-		final Object selected = cb.getSelectedItem();
-		System.out.println("selected item:" + selected);
+		final KeySize selected = (KeySize)cb.getSelectedItem();
+		model.setKeySize(selected);
 	}
 
 	/**
@@ -190,12 +193,12 @@ public class GenerateKeysPanel extends JXPanel
 		{
 			final KeyPair keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, selected.getKeySize());
 
-			privateKey = keyPair.getPrivate();
-			publicKey = keyPair.getPublic();
+			model.setPrivateKey(keyPair.getPrivate());
+			model.setPublicKey(keyPair.getPublic());
 
-			final String privateKeyFormat = PrivateKeyExtensions.toPemFormat(privateKey);
+			final String privateKeyFormat = PrivateKeyExtensions.toPemFormat(model.getPrivateKey());
 
-			final String publicKeyFormat = PublicKeyExtensions.toPemFormat(publicKey);
+			final String publicKeyFormat = PublicKeyExtensions.toPemFormat(model.getPublicKey());
 
 			getCryptographyPanel().getTxtPrivateKey().setText(privateKeyFormat);
 			getCryptographyPanel().getTxtPublicKey().setText(publicKeyFormat);

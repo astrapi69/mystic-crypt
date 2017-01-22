@@ -22,8 +22,7 @@ public class GenerateKeysPanelTest
 
 		final GenerateKeysPanel panel = new GenerateKeysPanel();
 		frame.add( panel);
-//        frame.setBounds(0, 0, 1020, 250);
-		frame.pack();
+        frame.setBounds(0, 0, 1280, 650);
         frame.setVisible( true );
 	}
 
