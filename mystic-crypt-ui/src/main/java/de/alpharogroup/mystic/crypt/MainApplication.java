@@ -24,6 +24,9 @@
  */
 package de.alpharogroup.mystic.crypt;
 
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -48,11 +51,10 @@ public class MainApplication
 		mainFrame.setJMenuBar(menu.getMenubar());
 
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mainFrame.setSize(ScreenSizeExtensions.getScreenWidth(), ScreenSizeExtensions.getScreenHeight());
+		final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		final GraphicsDevice[] gs = ge.getScreenDevices();
+		mainFrame.setSize(ScreenSizeExtensions.getScreenWidth(gs[0]), ScreenSizeExtensions.getScreenHeight(gs[0]));
 		mainFrame.setVisible(true);
-		mainFrame.getDesktopPane().getDesktopManager().activateFrame(mainFrame.getInternalFrame());
-		mainFrame.getDesktopPane().getDesktopManager().maximizeFrame(mainFrame.getInternalFrame());
-		mainFrame.getInternalFrame().toFront();
 
 		// Set default look and feel...
 		try {

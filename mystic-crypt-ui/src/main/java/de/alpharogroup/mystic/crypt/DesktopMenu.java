@@ -43,6 +43,8 @@ import javax.swing.UIManager;
 import org.apache.log4j.Logger;
 
 import de.alpharogroup.lang.ClassExtensions;
+import de.alpharogroup.mystic.crypt.actions.NewKeyGenerationInternalFrameAction;
+import de.alpharogroup.mystic.crypt.actions.NewObfuscationInternalFrameAction;
 import de.alpharogroup.mystic.crypt.actions.OpenBrowserToDonateAction;
 import de.alpharogroup.mystic.crypt.actions.ShowHelpDialogAction;
 import de.alpharogroup.mystic.crypt.actions.ShowLicenseFrameAction;
@@ -139,56 +141,64 @@ public class DesktopMenu {
 		fileMenu.setMnemonic('F');
 		JMenuItem jmi;
 
-		// New
-		jmi = new JMenuItem("New", 'N');
-		// TODO add action
-		// jmi.addActionListener(new NewAction("New"));
-		MenuExtensions.setCtrlAccelerator(jmi, 'N');
+		// New key generation
+		jmi = new JMenuItem("New key generation", 'K');
+		 jmi.addActionListener(new NewKeyGenerationInternalFrameAction("New key generation"));
+		MenuExtensions.setCtrlAccelerator(jmi, 'K');
+		fileMenu.add(jmi);
+
+		// Separator
+		fileMenu.addSeparator();
+
+		// New obfuscation
+		jmi = new JMenuItem("New obfuscation", 'O');
+		 jmi.addActionListener(new NewObfuscationInternalFrameAction("New Obfuscation"));
+		MenuExtensions.setCtrlAccelerator(jmi, 'O');
 		fileMenu.add(jmi);
 
 		// Separator
 		fileMenu.addSeparator();
 
 		// Save
-		JMenuItem jmiSave;
-		jmiSave = new JMenuItem("Save", 'S');
-		jmiSave.addActionListener(listener);
-		MenuExtensions.setCtrlAccelerator(jmiSave, 'S');
-		jmiSave.setEnabled(false);
-		fileMenu.add(jmiSave);
+//		JMenuItem jmiSave;
+//		jmiSave = new JMenuItem("Save", 'S');
+//		jmiSave.addActionListener(listener);
+//		MenuExtensions.setCtrlAccelerator(jmiSave, 'S');
+//		jmiSave.setEnabled(false);
+//		fileMenu.add(jmiSave);
 
 		// Separator
-		fileMenu.addSeparator();
+//		fileMenu.addSeparator();
 
 		// Save as
-		JMenuItem jmiSaveAs;
-		jmiSaveAs = new JMenuItem("Save as", 'a');
-		jmiSaveAs.addActionListener(listener);
-		jmiSaveAs.setEnabled(false);
-		fileMenu.add(jmiSaveAs);
+//		JMenuItem jmiSaveAs;
+//		jmiSaveAs = new JMenuItem("Save as", 'a');
+//		jmiSaveAs.addActionListener(listener);
+//		jmiSaveAs.setEnabled(false);
+//		fileMenu.add(jmiSaveAs);
 
 		// Separator
-		fileMenu.addSeparator();
+//		fileMenu.addSeparator();
 
 		// Configuration
-		JMenuItem jmiPrint;
-		jmiPrint = new JMenuItem("Print", 'r');
-		jmiPrint.addActionListener(listener);
-		jmiPrint.setEnabled(false);
-		fileMenu.add(jmiPrint);
+//		JMenuItem jmiPrint;
+//		jmiPrint = new JMenuItem("Print", 'r');
+//		jmiPrint.addActionListener(listener);
+//		jmiPrint.setEnabled(false);
+//		fileMenu.add(jmiPrint);
 
 		// Separator
-		fileMenu.addSeparator();
+//		fileMenu.addSeparator();
 
 		// Configuration
-		JMenuItem jmiConfiguration;
-		jmiConfiguration = new JMenuItem("Configuration", 'C');
-		jmiConfiguration.addActionListener(listener);
-		jmiConfiguration.setEnabled(false);
-		fileMenu.add(jmiConfiguration);
+//		JMenuItem jmiConfiguration;
+//		jmiConfiguration = new JMenuItem("Configuration", 'C');
+//		jmiConfiguration.addActionListener(listener);
+//		jmiConfiguration.setEnabled(false);
+//		fileMenu.add(jmiConfiguration);
 
 		// Separator
-		fileMenu.addSeparator();
+//		fileMenu.addSeparator();
 
 		// Configuration
 		JMenuItem jmiExit;

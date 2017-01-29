@@ -8,15 +8,21 @@ import javax.swing.LayoutStyle;
 
 import de.alpharogroup.collections.pairs.KeyValuePair;
 import de.alpharogroup.swing.GenericJTable;
+import lombok.Getter;
+import lombok.NonNull;
 
+
+@Getter
 public class SimpleRuleTablePanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JLabel lblKeyRules;
     private JScrollPane scpKeyRules;
     private GenericJTable<KeyValuePair<String, String>> tblKeyRules;
+    private final ObfuscationModel model;
 
-    public SimpleRuleTablePanel() {
+    public SimpleRuleTablePanel(@NonNull final ObfuscationModel model) {
+    	this.model = model;
     	initialize();
     }
 
@@ -40,7 +46,7 @@ public class SimpleRuleTablePanel extends JPanel {
 	protected void initializeComponents() {
 
         scpKeyRules = new JScrollPane();
-        tblKeyRules = new GenericJTable<>(KeyRulesTableModel.builder().build());
+        tblKeyRules = new GenericJTable<>(this.model.getKeyRulesTableModel());
         lblKeyRules = new JLabel();
 
         scpKeyRules.setViewportView(tblKeyRules);
@@ -50,8 +56,6 @@ public class SimpleRuleTablePanel extends JPanel {
 
     protected void initializeGroupLayout()
 	{
-
-
         final GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(

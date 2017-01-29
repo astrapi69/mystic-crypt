@@ -255,6 +255,8 @@ public class GenerateKeysPanel extends JXPanel
 	protected void onGenerate(final ActionEvent actionEvent)
 	{
 		final KeySize selected = (KeySize)getCryptographyPanel().getCmbKeySize().getSelectedItem();
+		getCryptographyPanel().getTxtPrivateKey().setText("Generating private key...");
+		getCryptographyPanel().getTxtPublicKey().setText("Generating public key...");
 		try
 		{
 			final KeyPair keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA,
@@ -270,6 +272,8 @@ public class GenerateKeysPanel extends JXPanel
 
 			final String publicKeyFormat = PublicKeyExtensions.toPemFormat(model.getPublicKey());
 
+			getCryptographyPanel().getTxtPrivateKey().setText("");
+			getCryptographyPanel().getTxtPublicKey().setText("");
 			getCryptographyPanel().getTxtPrivateKey().setText(privateKeyFormat);
 			getCryptographyPanel().getTxtPublicKey().setText(publicKeyFormat);
 		}

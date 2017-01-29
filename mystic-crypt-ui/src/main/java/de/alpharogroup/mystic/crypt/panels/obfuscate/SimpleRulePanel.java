@@ -1,5 +1,7 @@
 package de.alpharogroup.mystic.crypt.panels.obfuscate;
 
+import java.awt.event.ActionEvent;
+
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -7,6 +9,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 
+import lombok.Getter;
+
+@Getter
 public class SimpleRulePanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -50,15 +55,19 @@ public class SimpleRulePanel extends JPanel {
 
         lblOriginalChar.setText("Original Character");
 
+        btnAdd.addActionListener(actionEvent -> onAdd(actionEvent));
         btnAdd.setText("Add");
 
         lblReplaceWith.setText("Replace with");
 
         lblKeyRule.setText("KeyRule");
-
     }
 
-    protected void initializeGroupLayout()
+    protected void onAdd(final ActionEvent actionEvent)
+	{
+	}
+
+	protected void initializeGroupLayout()
 	{
 
 

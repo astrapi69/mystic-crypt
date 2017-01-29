@@ -1,5 +1,9 @@
 package de.alpharogroup.mystic.crypt.panels.obfuscate;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import de.alpharogroup.collections.pairs.KeyValuePair;
 import de.alpharogroup.swing.tablemodel.GenericTableModel;
 import lombok.Builder;
@@ -92,6 +96,21 @@ public class KeyRulesTableModel extends GenericTableModel<KeyValuePair<String, S
 	public boolean isCellEditable(final int rowIndex, final int columnIndex)
 	{
 		return canEdit[columnIndex];
+	}
+
+	/**
+	 * To map.
+	 *
+	 * @return the map
+	 */
+	public Map<String, String> toMap() {
+		final List<KeyValuePair<String, String>> data = getData();
+		final Map<String, String> map = new HashMap<>();
+		for(final KeyValuePair<String, String> row : data) {
+			map.put(row.getKey(), row.getValue());
+		}
+		return map;
+
 	}
 
 }

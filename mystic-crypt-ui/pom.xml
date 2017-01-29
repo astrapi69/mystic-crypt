@@ -256,7 +256,7 @@
 							</manifest>
 							<manifestEntries>
 								<mode>development</mode>
-								<url>${pom.url}</url>
+								<url>${project.url}</url>
 							</manifestEntries>
 							<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
 						</archive>

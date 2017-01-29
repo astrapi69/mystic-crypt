@@ -31,15 +31,8 @@ import javax.swing.JToolBar;
 
 import org.jdesktop.swingx.JXFrame;
 
-import de.alpharogroup.mystic.crypt.panels.GenerateKeysPanel;
-//
-//import de.alpharogroup.duplicate.files.controller.FindDuplicateFilesController;
-//import de.alpharogroup.duplicate.files.gen.view.FindDuplicateFilesView;
-//import de.alpharogroup.duplicate.files.utils.JInternalFrameExtensions;
-import de.alpharogroup.swing.components.factories.JComponentFactory;
 import de.alpharogroup.swing.desktoppane.SingletonDesktopPane;
 import de.alpharogroup.swing.laf.LookAndFeels;
-import de.alpharogroup.swing.utils.JInternalFrameExtensions;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -98,15 +91,6 @@ public class MainFrame extends JXFrame {
 		toolbar = new JToolBar(); // create the tool bar
 		setJMenuBar(menubar);
 		setToolBar(toolbar);
-
-		// create internal frame
-		internalFrame = JComponentFactory.newInternalFrame("Random generator", true, true, true, true);
-
-
-		final GenerateKeysPanel component = new GenerateKeysPanel();
-		JInternalFrameExtensions.addComponentToFrame(internalFrame, component);
-
-		JInternalFrameExtensions.addJInternalFrame(desktopPane, internalFrame);
 
 		getContentPane().add(desktopPane);
 
