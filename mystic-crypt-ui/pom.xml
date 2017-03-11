@@ -5,16 +5,16 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mvn-ui-parent</artifactId>
-		<version>1.7.0</version>
+		<version>1.8.0-SNAPSHOT</version>
 		<relativePath></relativePath>
 	</parent>
 
 	<artifactId>mystic-crypt-ui</artifactId>
-	<version>4.19.0</version>
+	<version>4.20.0-SNAPSHOT</version>
 
 	<properties>
 		<miglayout-swing.version>5.0</miglayout-swing.version>
-		<mystic-crypt.version>4.19.0</mystic-crypt.version>
+		<mystic-crypt.version>4.20.0-SNAPSHOT</mystic-crypt.version>
 		<full-app-name>mystic-crypt-ui</full-app-name>
 		<info.appName>mystic-crypt-ui</info.appName>
 		<file-name-with-dependencies>${full-app-name}-jar-with-dependencies.jar</file-name-with-dependencies>
