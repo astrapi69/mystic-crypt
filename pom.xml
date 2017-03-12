@@ -75,7 +75,7 @@
 		<extensions-lib.version>4.14.0</extensions-lib.version>
 		<file-worker.version>4.15.0-SNAPSHOT</file-worker.version>
 		<jcommons-lang.version>4.19.0-SNAPSHOT</jcommons-lang.version>
-		<test-objects.version>4.15.0-SNAPSHOT</test-objects.version>
+		<test-objects.version>4.16.0-SNAPSHOT</test-objects.version>
 		<silly-collections.version>4.15.0-SNAPSHOT</silly-collections.version>
 		<vintage-time.version>4.11.0-SNAPSHOT</vintage-time.version>
 		<!-- RESOURCEBUNDLE-CORE versions -->
