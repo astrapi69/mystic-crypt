@@ -30,17 +30,22 @@ The source code comes under the liberal MIT License, making mystic-crypt great f
 Maven dependency is now on sonatype.
 Check out [sonatype repository](https://oss.sonatype.org/index.html#nexus-search;quick~mystic-crypt) for latest snapshots and releases.
 
+Add the following maven dependencies to your project `pom.xml` if you want to import the core functionality:
 
-Add the following maven dependency to your project `pom.xml` if you want to import the core functionality of mystic-core:
+You can first define the version properties:
 
-Than you can add the dependency to your dependencies:
-
+	<properties>
+			...
 		<!-- MYSTIC-CRYPT versions -->
 		<mystic-crypt.version>4.20.0</mystic-crypt.version>
 		<crypt-core.version>${mystic-crypt.version}</crypt-core.version>
 		<randomizer.version>${mystic-crypt.version}</randomizer.version>
 		<auth-security.version>${mystic-crypt.version}</auth-security.version>
 		<crypt-data.version>${mystic-crypt.version}</crypt-data.version>
+			...
+	</properties>
+
+Add the following maven dependency to your project `pom.xml` if you want to import the core functionality of mystic-core:
 
 		<dependencies>
 			...
@@ -53,8 +58,6 @@ Than you can add the dependency to your dependencies:
 		</dependencies>
 
 Add the following maven dependency to your project `pom.xml` if you want to import the functionality of randomizer:
-
-Than you can add the dependency to your dependencies:
 
 		<dependencies>
 			...
@@ -118,6 +121,7 @@ No animals were harmed in the making of this library.
 
 # Donate
 
+If you like this library, please consider a donation through 
 <a href="http://flattr.com/thing/4152938/astrapi69mystic-crypt-on-GitHub" target="_blank">
 <img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" />
 </a>
