@@ -24,7 +24,6 @@
  */
 package de.alpharogroup.auth;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import de.alpharogroup.auth.interfaces.Permission;
@@ -36,6 +35,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.Singular;
 import lombok.ToString;
 
 /**
@@ -70,8 +70,8 @@ public class SimpleUser implements User<Permission, Role<Permission>>
 	private String id;
 
 	/** The roles. */
-	@Builder.Default
-	private Set<Role<Permission>> roles = new HashSet<>();
+	@Singular
+	private Set<Role<Permission>> roles;
 
 	/** Flag if the user is locked. */
 	private Boolean locked;
