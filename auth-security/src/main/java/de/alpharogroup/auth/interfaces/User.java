@@ -56,6 +56,13 @@ public interface User<P extends Permission, R extends Role<P>> extends Serializa
 	String getId();
 
 	/**
+	 * Returns the field <code>password</code>.
+	 *
+	 * @return The field <code>password</code>.
+	 */
+	String getPw();
+
+	/**
 	 * Returns the field <code>roles</code>.
 	 *
 	 * @return The field <code>roles</code>.
@@ -70,11 +77,11 @@ public interface User<P extends Permission, R extends Role<P>> extends Serializa
 	String getUsername();
 
 	/**
-	 * Returns the field <code>password</code>.
+	 * Checks if this User is active.
 	 *
-	 * @return The field <code>password</code>.
+	 * @return true if the User is active otherwise false.
 	 */
-	String getPw();
+	Boolean isActive();
 
 	/**
 	 * Returns the field <code>lock</code>.
@@ -84,11 +91,13 @@ public interface User<P extends Permission, R extends Role<P>> extends Serializa
 	Boolean isLocked();
 
 	/**
-	 * Checks if this User is active.
+	 * Removes the given role from the user.
 	 *
-	 * @return true if the User is active otherwise false.
+	 * @param role
+	 *            the role
+	 * @return true, if successful
 	 */
-	Boolean isActive();
+	boolean removeRole(final R role);
 
 	/**
 	 * Sets the active flag.
@@ -97,15 +106,6 @@ public interface User<P extends Permission, R extends Role<P>> extends Serializa
 	 *            the new active flag.
 	 */
 	void setActive(final Boolean active);
-
-	/**
-	 * Removes the given role from the user.
-	 *
-	 * @param role
-	 *            the role
-	 * @return true, if successful
-	 */
-	boolean removeRole(final R role);
 
 	/**
 	 * Sets the field <code>id</code>.
@@ -124,6 +124,14 @@ public interface User<P extends Permission, R extends Role<P>> extends Serializa
 	void setLocked(final Boolean locked);
 
 	/**
+	 * Sets the field <code>password</code>.
+	 *
+	 * @param password
+	 *            The <code>password</code> to set
+	 */
+	void setPw(final String password);
+
+	/**
 	 * Sets the field <code>roles</code>.
 	 *
 	 * @param roles
@@ -138,13 +146,5 @@ public interface User<P extends Permission, R extends Role<P>> extends Serializa
 	 *            The <code>username</code> to set
 	 */
 	void setUsername(final String username);
-
-	/**
-	 * Sets the field <code>password</code>.
-	 *
-	 * @param password
-	 *            The <code>password</code> to set
-	 */
-	void setPw(final String password);
 
 }

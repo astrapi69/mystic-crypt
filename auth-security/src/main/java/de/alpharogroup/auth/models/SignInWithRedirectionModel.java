@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.auth.token;
+package de.alpharogroup.auth.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,7 +33,10 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * The class {@link AuthToken}.
+ * The Class {@link SignInWithRedirectionModel} captures the data for sign in action with
+ * redirection feature.
+ *
+ * @author Asterios Raptis
  */
 @Getter
 @Setter
@@ -42,9 +45,22 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-public class AuthToken
+public class SignInWithRedirectionModel<T> implements UsernameSignInModel
 {
+	/**
+	 * The serialVersionUID.
+	 */
+	private static final long serialVersionUID = 1L;
 
-	/** The value. */
-	private String value;
+	/** The email. */
+	private String email;
+
+	/** The password. */
+	private String password;
+
+	/** The redirect page. */
+	private Class<? extends T> redirectPage;
+
+	/** The username. */
+	private String username;
 }

@@ -37,6 +37,7 @@ import org.testng.annotations.Test;
 import de.alpharogroup.auth.interfaces.Permission;
 import de.alpharogroup.auth.interfaces.Role;
 import de.alpharogroup.auth.interfaces.User;
+import de.alpharogroup.collections.SetExtensions;
 import de.alpharogroup.file.csv.CsvFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
@@ -96,24 +97,17 @@ public class SimpleUserTest
 		}
 		for (final String object : this.accessrights2)
 		{
-			final Permission accrig = new SimplePermission();
-			accrig.setDescription(object);
-			accrig.setPermissionName(object);
-			this.ars2.add(accrig);
+			this.ars2
+				.add(SimplePermission.builder().description(object).permissionName(object).build());
 		}
-		this.testrole = new SimpleRole();
-		this.testrole.setPermissions(this.ars);
+		this.testrole = SimpleRole.builder().permissions(this.ars).build();
 
-		this.testrole2 = new SimpleRole();
-		this.testrole2.setDescription("");
-		this.testrole2.setRolename("");
-		this.testrole2.setPermissions(this.ars2);
+		this.testrole2 = SimpleRole.builder().description("").rolename("").permissions(this.ars2)
+			.build();
 
-		this.testuser = new SimpleUser();
-		this.testuser.setUsername("Leonidas");
-		this.testuser.addRole(this.testrole);
-		this.testuser.addRole(this.testrole2);
 
+		this.testuser = SimpleUser.builder().roles(SetExtensions.newHashSet()).username("Leonidas")
+			.role(this.testrole).role(this.testrole2).build();
 	}
 
 	/**

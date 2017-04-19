@@ -22,29 +22,19 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.auth.token;
+package de.alpharogroup.crypto.key.reader;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import org.testng.annotations.Test;
 
 /**
- * The class {@link AuthToken}.
+ * Test class for {@link PublicKeyReader}.
  */
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder(toBuilder = true)
-public class AuthToken
+public class PublicKeyReaderTest
 {
 
-	/** The value. */
-	private String value;
+	@Test
+	public void test()
+	{
+	}
+
 }

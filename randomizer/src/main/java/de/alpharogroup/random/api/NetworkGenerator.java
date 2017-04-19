@@ -32,6 +32,13 @@ public interface NetworkGenerator
 {
 
 	/**
+	 * New domainname.
+	 *
+	 * @return the string
+	 */
+	String newDomainname();
+
+	/**
 	 * New email.
 	 *
 	 * @return the string
@@ -44,20 +51,6 @@ public interface NetworkGenerator
 	 * @return the string
 	 */
 	String newFilename();
-
-	/**
-	 * New url.
-	 *
-	 * @return the string
-	 */
-	String newUrl();
-
-	/**
-	 * New domainname.
-	 *
-	 * @return the string
-	 */
-	String newDomainname();
 
 	/**
 	 * New ip address 4.
@@ -81,6 +74,13 @@ public interface NetworkGenerator
 	String newMacAddress();
 
 	/**
+	 * New mime type.
+	 *
+	 * @return the string
+	 */
+	String newMimeType();
+
+	/**
 	 * New sha 1.
 	 *
 	 * @return the string
@@ -95,9 +95,9 @@ public interface NetworkGenerator
 	String newSha256();
 
 	/**
-	 * New mime type.
+	 * New url.
 	 *
 	 * @return the string
 	 */
-	String newMimeType();
+	String newUrl();
 }

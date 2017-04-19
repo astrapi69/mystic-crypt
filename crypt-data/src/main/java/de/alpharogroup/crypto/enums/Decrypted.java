@@ -22,29 +22,18 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.auth.token;
+package de.alpharogroup.crypto.enums;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * The class {@link AuthToken}.
+ * The marker annotation {@link Decrypted} marks a field that it was decrypted as the name let
+ * assume.
  */
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder(toBuilder = true)
-public class AuthToken
-{
-
-	/** The value. */
-	private String value;
+@Retention(RetentionPolicy.RUNTIME)
+@Target(value = { ElementType.FIELD, ElementType.PARAMETER })
+public @interface Decrypted {
 }

@@ -54,6 +54,50 @@ public class KeyEncryptDecryptorTest
 
 	/**
 	 * Test encrypt and decrypt with {@link PublicKeyEncryptor#encrypt(byte[])} and
+	 * {@link PrivateKeyDecryptor#decrypt(byte[])} loaded from der files.
+	 *
+	 * @throws Exception
+	 *             is thrown if any security exception occured.
+	 */
+	@Test
+	public void testEncryptDecryptDerFiles() throws Exception
+	{
+		final String test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
+		final byte[] testBytes = test.getBytes("UTF-8");
+
+		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		final File publickeyDerFile = new File(publickeyDerDir, "public.der");
+		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
+
+		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
+
+		final PublicKey publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
+
+		final CryptModel<Cipher, PublicKey> encryptModel = CryptModel.<Cipher, PublicKey> builder()
+			.key(publicKey)
+			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding)
+			.build();
+
+		final CryptModel<Cipher, PrivateKey> decryptModel = CryptModel
+			.<Cipher, PrivateKey> builder().key(privateKey)
+			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding)
+			.build();
+
+		final PublicKeyEncryptor encryptor = new PublicKeyEncryptor(encryptModel);
+		final PrivateKeyDecryptor decryptor = new PrivateKeyDecryptor(decryptModel);
+
+
+		final byte[] encrypted = encryptor.encrypt(testBytes);
+
+		final byte[] decrypted = decryptor.decrypt(encrypted);
+
+		final String decryptedString = new String(decrypted, "UTF-8");
+		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
+			test.equals(decryptedString));
+	}
+
+	/**
+	 * Test encrypt and decrypt with {@link PublicKeyEncryptor#encrypt(byte[])} and
 	 * {@link PrivateKeyDecryptor#decrypt(byte[])} loaded from pem files.
 	 *
 	 * @throws Exception
@@ -108,50 +152,6 @@ public class KeyEncryptDecryptorTest
 				test.equals(decryptedString));
 			logger.debug(decryptedString);
 		}
-	}
-
-	/**
-	 * Test encrypt and decrypt with {@link PublicKeyEncryptor#encrypt(byte[])} and
-	 * {@link PrivateKeyDecryptor#decrypt(byte[])} loaded from der files.
-	 *
-	 * @throws Exception
-	 *             is thrown if any security exception occured.
-	 */
-	@Test
-	public void testEncryptDecryptDerFiles() throws Exception
-	{
-		final String test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
-		final byte[] testBytes = test.getBytes("UTF-8");
-
-		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		final File publickeyDerFile = new File(publickeyDerDir, "public.der");
-		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
-
-		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
-
-		final PublicKey publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
-
-		final CryptModel<Cipher, PublicKey> encryptModel = CryptModel.<Cipher, PublicKey> builder()
-			.key(publicKey)
-			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding)
-			.build();
-
-		final CryptModel<Cipher, PrivateKey> decryptModel = CryptModel
-			.<Cipher, PrivateKey> builder().key(privateKey)
-			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding)
-			.build();
-
-		final PublicKeyEncryptor encryptor = new PublicKeyEncryptor(encryptModel);
-		final PrivateKeyDecryptor decryptor = new PrivateKeyDecryptor(decryptModel);
-
-
-		final byte[] encrypted = encryptor.encrypt(testBytes);
-
-		final byte[] decrypted = decryptor.decrypt(encrypted);
-
-		final String decryptedString = new String(decrypted, "UTF-8");
-		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
-			test.equals(decryptedString));
 	}
 
 }

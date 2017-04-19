@@ -45,17 +45,10 @@ public class UnauthorizedException extends Exception
 	 *
 	 * @param message
 	 *            the message
-	 * @param cause
-	 *            the cause
-	 * @param enableSuppression
-	 *            the enable suppression
-	 * @param writableStackTrace
-	 *            the writable stack trace
 	 */
-	public UnauthorizedException(final String message, final Throwable cause,
-		final boolean enableSuppression, final boolean writableStackTrace)
+	public UnauthorizedException(final String message)
 	{
-		super(message, cause, enableSuppression, writableStackTrace);
+		super(message);
 	}
 
 	/**
@@ -76,10 +69,17 @@ public class UnauthorizedException extends Exception
 	 *
 	 * @param message
 	 *            the message
+	 * @param cause
+	 *            the cause
+	 * @param enableSuppression
+	 *            the enable suppression
+	 * @param writableStackTrace
+	 *            the writable stack trace
 	 */
-	public UnauthorizedException(final String message)
+	public UnauthorizedException(final String message, final Throwable cause,
+		final boolean enableSuppression, final boolean writableStackTrace)
 	{
-		super(message);
+		super(message, cause, enableSuppression, writableStackTrace);
 	}
 
 	/**

@@ -22,31 +22,16 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.mystic.crypt.actions;
+package de.alpharogroup.crypto.key.writer;
 
-import de.alpharogroup.mystic.crypt.MainFrame;
-import de.alpharogroup.swing.actions.OpenBrowserAction;
+import org.testng.annotations.Test;
 
-/**
- * The Class OpenBrowserToDonateAction.
- */
-public class OpenBrowserToDonateAction extends OpenBrowserAction
+public class PublicKeyWriterTest
 {
 
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
-	/** The Constant URL_TO_DONATE. */
-	public static final String URL_TO_DONATE = "http://sourceforge.net/donate/index.php?group_id=207406";
-
-	/**
-	 * Instantiates a new open browser to donate action.
-	 *
-	 * @param name
-	 *            the name
-	 */
-	public OpenBrowserToDonateAction(final String name)
+	@Test
+	public void test()
 	{
-		super(name, MainFrame.getInstance(), URL_TO_DONATE);
 	}
 
 }

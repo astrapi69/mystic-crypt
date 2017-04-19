@@ -58,6 +58,34 @@ public abstract class AbstractStringDecryptor extends AbstractDecryptor<Cipher, 
 	private static final long serialVersionUID = 1L;
 
 	/**
+	 * Constructor with the given {@link CryptModel}.
+	 *
+	 * @param model
+	 *            The crypt model.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported.
+	 */
+	public AbstractStringDecryptor(final CryptModel<Cipher, String> model)
+		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+	{
+		super(model);
+	}
+
+
+	/**
 	 * Constructor with a private key.
 	 *
 	 * @param privateKey
@@ -84,32 +112,35 @@ public abstract class AbstractStringDecryptor extends AbstractDecryptor<Cipher, 
 		super(privateKey);
 	}
 
-
 	/**
-	 * Constructor with the given {@link CryptModel}.
+	 * Factory method for creating a new {@link Cipher} from the given parameters. This method is
+	 * invoked in the constructor from the derived classes and can be overridden so users can
+	 * provide their own version of a new {@link Cipher} from the given parameters.
 	 *
-	 * @param model
-	 *            The crypt model.
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
+	 * @param operationMode
+	 *            the operation mode
+	 * @param key
+	 *            the key
+	 * @param paramSpec
+	 *            the param spec
+	 * @param alg
+	 *            the alg
+	 * @return the cipher
+	 *
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the cypher object fails.
 	 * @throws InvalidKeyException
 	 *             is thrown if initialization of the cypher object fails.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws UnsupportedEncodingException
-	 *             is thrown if the named charset is not supported.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
 	 */
-	public AbstractStringDecryptor(final CryptModel<Cipher, String> model)
-		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
-		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+	protected Cipher newCipher(final int operationMode, final SecretKey key,
+		final AlgorithmParameterSpec paramSpec, final String alg) throws NoSuchAlgorithmException,
+		NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException
 	{
-		super(model);
+		return CipherFactory.newCipher(operationMode, key, paramSpec, alg);
 	}
 
 	/**
@@ -153,37 +184,6 @@ public abstract class AbstractStringDecryptor extends AbstractDecryptor<Cipher, 
 		final SecretKey key = factory.generateSecret(keySpec);
 		final AlgorithmParameterSpec paramSpec = newAlgorithmParameterSpec(salt, iterationCount);
 		return newCipher(operationMode, key, paramSpec, key.getAlgorithm());
-	}
-
-	/**
-	 * Factory method for creating a new {@link Cipher} from the given parameters. This method is
-	 * invoked in the constructor from the derived classes and can be overridden so users can
-	 * provide their own version of a new {@link Cipher} from the given parameters.
-	 *
-	 * @param operationMode
-	 *            the operation mode
-	 * @param key
-	 *            the key
-	 * @param paramSpec
-	 *            the param spec
-	 * @param alg
-	 *            the alg
-	 * @return the cipher
-	 *
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cypher object fails.
-	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
-	 */
-	protected Cipher newCipher(final int operationMode, final SecretKey key,
-		final AlgorithmParameterSpec paramSpec, final String alg) throws NoSuchAlgorithmException,
-		NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException
-	{
-		return CipherFactory.newCipher(operationMode, key, paramSpec, alg);
 	}
 
 	/**

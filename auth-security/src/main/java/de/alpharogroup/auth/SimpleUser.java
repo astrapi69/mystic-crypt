@@ -24,7 +24,6 @@
  */
 package de.alpharogroup.auth;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import de.alpharogroup.auth.interfaces.Permission;
@@ -36,6 +35,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.Singular;
 import lombok.ToString;
 
 /**
@@ -50,7 +50,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class SimpleUser implements User<Permission, Role<Permission>>
 {
 	/**
@@ -70,7 +70,8 @@ public class SimpleUser implements User<Permission, Role<Permission>>
 	private String id;
 
 	/** The roles. */
-	private Set<Role<Permission>> roles = new HashSet<>();
+	@Singular
+	private Set<Role<Permission>> roles;
 
 	/** Flag if the user is locked. */
 	private Boolean locked;
@@ -88,9 +89,9 @@ public class SimpleUser implements User<Permission, Role<Permission>>
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean removeRole(final Role<Permission> role)
+	public Boolean isActive()
 	{
-		return this.roles.remove(role);
+		return active;
 	}
 
 	/**
@@ -106,9 +107,9 @@ public class SimpleUser implements User<Permission, Role<Permission>>
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Boolean isActive()
+	public boolean removeRole(final Role<Permission> role)
 	{
-		return active;
+		return this.roles.remove(role);
 	}
 
 }

@@ -22,39 +22,16 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.mystic.crypt;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+package de.alpharogroup.crypto.key.writer;
 
-/**
- * The Class Messages.
- */
-public class Messages {
+import org.testng.annotations.Test;
 
-	/** The Constant BUNDLE_NAME. */
-	private static final String BUNDLE_NAME = "ui.messages"; //$NON-NLS-1$
+public class PrivateKeyWriterTest
+{
 
-	/** The Constant RESOURCE_BUNDLE. */
-	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
-
-	/**
-	 * Instantiates a new messages.
-	 */
-	private Messages() {
+	@Test
+	public void test()
+	{
 	}
 
-	/**
-	 * Gets the string.
-	 *
-	 * @param key
-	 *            the key
-	 * @return the string
-	 */
-	public static String getString(final String key) {
-		try {
-			return RESOURCE_BUNDLE.getString(key);
-		} catch (final MissingResourceException e) {
-			return '!' + key + '!';
-		}
-	}
 }

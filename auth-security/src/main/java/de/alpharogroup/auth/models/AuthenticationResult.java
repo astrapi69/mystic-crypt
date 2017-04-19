@@ -26,7 +26,6 @@ package de.alpharogroup.auth.models;
 
 import java.util.Set;
 
-import de.alpharogroup.collections.SetExtensions;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -42,7 +41,7 @@ import lombok.ToString;
  * @param <U>
  *            the generic type of the user object
  * @param <E>
- *            the element type of the authentication errors
+ *            the generic element type of the authentication errors
  */
 @Getter
 @Setter
@@ -50,12 +49,12 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class AuthenticationResult<U, E>
 {
 
 	/** The authentication errors. */
-	private Set<E> validationErrors = SetExtensions.newHashSet();
+	private Set<E> validationErrors;
 
 	/** The user object. */
 	private U user;

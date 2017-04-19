@@ -22,42 +22,46 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.mystic.crypt.actions;
+package de.alpharogroup.crypto.key;
 
-import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
-
-import de.alpharogroup.mystic.crypt.MainFrame;
-import de.alpharogroup.mystic.crypt.help.InfoJDialog;
+import lombok.Getter;
 
 /**
- * The class {@link ShowInfoDialogAction}.
+ * The enum {@link KeySize} hold the bit size for private keys.
  */
-public class ShowInfoDialogAction extends AbstractAction {
+public enum KeySize
+{
 
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
-	/** The Constant INFO_TITLE. */
-	private static final String INFO_TITLE = "Info";
+	/** The keysize 1024. */
+	KEYSIZE_1024(1024),
+
+	/** The keysize 2048. */
+	KEYSIZE_2048(2048),
+
+	/** The keysize 4096. */
+	KEYSIZE_4096(4096);
+
+	/** The display. */
+	@Getter
+	private final Integer keySize;
 
 	/**
-	 * Instantiates a new {@link ShowInfoDialogAction}.
+	 * Instantiates a new {@link KeySize}.
 	 *
-	 * @param name
-	 *            the name
+	 * @param keySize
+	 *            the key size
 	 */
-	public ShowInfoDialogAction(final String name) {
-		super(name);
+	private KeySize(final Integer keySize)
+	{
+		this.keySize = keySize;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void actionPerformed(final ActionEvent e) {
-		final InfoJDialog info = new InfoJDialog(MainFrame.getInstance(), INFO_TITLE);
-		info.setVisible(true);
+	public String toString()
+	{
+		return this.keySize.toString();
 	}
-
 }

@@ -46,94 +46,13 @@ public interface Session<K, V> extends Serializable
 {
 
 	/**
-	 * Returns the field <code>id</code>.
+	 * Gets the attributte.
 	 *
-	 * @return The field <code>id</code>.
+	 * @param key
+	 *            the key
+	 * @return the attributte
 	 */
-	String getId();
-
-	/**
-	 * Sets the field <code>id</code>.
-	 *
-	 * @param id
-	 *            The <code>id</code> to set
-	 */
-	void setId(final String id);
-
-	/**
-	 * Returns the field <code>locale</code>.
-	 *
-	 * @return The field <code>locale</code>.
-	 */
-	Locale getLocale();
-
-	/**
-	 * Sets the field <code>locale</code>.
-	 *
-	 * @param locale
-	 *            The <code>locale</code> to set
-	 */
-	void setLocale(final Locale locale);
-
-	/**
-	 * Returns the field <code>startTime</code>.
-	 *
-	 * @return The field <code>startTime</code>.
-	 */
-	Date getStartTime();
-
-	/**
-	 * Sets the field <code>startTime</code>.
-	 *
-	 * @param startTime
-	 *            The <code>startTime</code> to set
-	 */
-	void setStartTime(final Date startTime);
-
-	/**
-	 * Returns the field <code>user</code>.
-	 *
-	 * @return The field <code>user</code>.
-	 */
-	User<Permission, Role<Permission>> getUser();
-
-	/**
-	 * Sets the field <code>user</code>.
-	 *
-	 * @param user
-	 *            The <code>user</code> to set.
-	 */
-	void setUser(final User<Permission, Role<Permission>> user);
-
-	/**
-	 * Returns the field <code>lastAccess</code>.
-	 *
-	 * @return The field <code>lastAccess</code>.
-	 */
-	Date getLastAccess();
-
-	/**
-	 * Sets the field <code>lastAccess</code>.
-	 *
-	 * @param lastAccess
-	 *            The <code>lastAccess</code> to set
-	 */
-	void setLastAccess(final Date lastAccess);
-
-	/**
-	 * Returns the field <code>maxInactiveTime</code>.
-	 *
-	 * @return The field <code>maxInactiveTime</code>.
-	 */
-	int getMaxInactiveTime();
-
-	/**
-	 * Sets the field <code>maxInactiveTime</code>.
-	 *
-	 * @param maxInactiveTime
-	 *            The <code>maxInactiveTime</code> to set
-	 */
-	void setMaxInactiveTime(final int maxInactiveTime);
+	V getAttributte(final K key);
 
 	/**
 	 * Returns the field <code>attributtes</code>.
@@ -143,13 +62,46 @@ public interface Session<K, V> extends Serializable
 	Map<K, V> getAttributtes();
 
 	/**
-	 * Gets the attributte.
+	 * Returns the field <code>id</code>.
 	 *
-	 * @param key
-	 *            the key
-	 * @return the attributte
+	 * @return The field <code>id</code>.
 	 */
-	V getAttributte(final K key);
+	String getId();
+
+	/**
+	 * Returns the field <code>lastAccess</code>.
+	 *
+	 * @return The field <code>lastAccess</code>.
+	 */
+	Date getLastAccess();
+
+	/**
+	 * Returns the field <code>locale</code>.
+	 *
+	 * @return The field <code>locale</code>.
+	 */
+	Locale getLocale();
+
+	/**
+	 * Returns the field <code>maxInactiveTime</code>.
+	 *
+	 * @return The field <code>maxInactiveTime</code>.
+	 */
+	int getMaxInactiveTime();
+
+	/**
+	 * Returns the field <code>startTime</code>.
+	 *
+	 * @return The field <code>startTime</code>.
+	 */
+	Date getStartTime();
+
+	/**
+	 * Returns the field <code>user</code>.
+	 *
+	 * @return The field <code>user</code>.
+	 */
+	User<Permission, Role<Permission>> getUser();
 
 	/**
 	 * Sets the attribute.
@@ -169,5 +121,53 @@ public interface Session<K, V> extends Serializable
 	 *            The <code>attributtes</code> to set
 	 */
 	void setAttributtes(final Map<K, V> attributtes);
+
+	/**
+	 * Sets the field <code>id</code>.
+	 *
+	 * @param id
+	 *            The <code>id</code> to set
+	 */
+	void setId(final String id);
+
+	/**
+	 * Sets the field <code>lastAccess</code>.
+	 *
+	 * @param lastAccess
+	 *            The <code>lastAccess</code> to set
+	 */
+	void setLastAccess(final Date lastAccess);
+
+	/**
+	 * Sets the field <code>locale</code>.
+	 *
+	 * @param locale
+	 *            The <code>locale</code> to set
+	 */
+	void setLocale(final Locale locale);
+
+	/**
+	 * Sets the field <code>maxInactiveTime</code>.
+	 *
+	 * @param maxInactiveTime
+	 *            The <code>maxInactiveTime</code> to set
+	 */
+	void setMaxInactiveTime(final int maxInactiveTime);
+
+	/**
+	 * Sets the field <code>startTime</code>.
+	 *
+	 * @param startTime
+	 *            The <code>startTime</code> to set
+	 */
+	void setStartTime(final Date startTime);
+
+	/**
+	 * Sets the field <code>user</code>.
+	 *
+	 * @param user
+	 *            The <code>user</code> to set.
+	 */
+	void setUser(final User<Permission, Role<Permission>> user);
 
 }

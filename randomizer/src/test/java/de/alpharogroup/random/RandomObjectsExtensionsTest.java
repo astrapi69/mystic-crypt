@@ -67,35 +67,6 @@ public class RandomObjectsExtensionsTest extends BaseTestCase
 	}
 
 	/**
-	 * Test method for {@link RandomObjectsUtils#newRandomName(char[])} .
-	 */
-	@Test
-	public void testNewRandomName()
-	{
-		final CharBuffer charBuffer = CharBuffer.allocate(Constants.LCCHARSWN.length());
-		charBuffer.put(Constants.LCCHARSWN);
-		final char[] donatedChars = Constants.LCCHARSWN.toCharArray();
-		for (int i = 0; i < 100; i++)
-		{
-			final String randomName = RandomObjectsExtensions.newRandomName(donatedChars);
-			this.result = randomName.contains(charBuffer);
-			AssertJUnit.assertTrue("", this.result);
-		}
-	}
-
-	/**
-	 * Test method for {@link RandomObjectsExtensions#newRandomId()}.
-	 */
-	@Test
-	public void testNewRandomId()
-	{
-		for (int i = 0; i < 1000; i++)
-		{
-			logger.debug(RandomObjectsExtensions.newRandomId());
-		}
-	}
-
-	/**
 	 * Test method for {@link RandomObjectsExtensions#getInfomailFromWebsite(java.lang.String)} .
 	 */
 	@Test
@@ -212,6 +183,35 @@ public class RandomObjectsExtensionsTest extends BaseTestCase
 		{
 			final String randomWebsite = RandomObjectsExtensions.getRandomWebsite();
 			this.result = randomWebsite.contains(charBuffer);
+			AssertJUnit.assertTrue("", this.result);
+		}
+	}
+
+	/**
+	 * Test method for {@link RandomObjectsExtensions#newRandomId()}.
+	 */
+	@Test
+	public void testNewRandomId()
+	{
+		for (int i = 0; i < 1000; i++)
+		{
+			logger.debug(RandomObjectsExtensions.newRandomId());
+		}
+	}
+
+	/**
+	 * Test method for {@link RandomObjectsUtils#newRandomName(char[])} .
+	 */
+	@Test
+	public void testNewRandomName()
+	{
+		final CharBuffer charBuffer = CharBuffer.allocate(Constants.LCCHARSWN.length());
+		charBuffer.put(Constants.LCCHARSWN);
+		final char[] donatedChars = Constants.LCCHARSWN.toCharArray();
+		for (int i = 0; i < 100; i++)
+		{
+			final String randomName = RandomObjectsExtensions.newRandomName(donatedChars);
+			this.result = randomName.contains(charBuffer);
 			AssertJUnit.assertTrue("", this.result);
 		}
 	}
