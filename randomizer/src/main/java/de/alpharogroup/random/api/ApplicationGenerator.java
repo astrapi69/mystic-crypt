@@ -25,42 +25,44 @@
 package de.alpharogroup.random.api;
 
 /**
- * The interface {@link ApplicationGenerator} for generate random application names, versions, group ids or artefact ids.
+ * The interface {@link ApplicationGenerator} for generate random application names, versions, group
+ * ids or artefact ids.
  */
-public interface ApplicationGenerator {
+public interface ApplicationGenerator
+{
 
-    /**
-     * New application name.
-     *
-     * @return the string
-     */
-    String newApplicationName();
+	/**
+	 * New application artefact id.
+	 *
+	 * @return the string
+	 */
+	String newApplicationArtefactId();
 
-    /**
-     * New application version.
-     *
-     * @return the string
-     */
-    String newApplicationVersion();
+	/**
+	 * New application group id.
+	 *
+	 * @return the string
+	 */
+	String newApplicationGroupId();
 
-    /**
-     * New application group id.
-     *
-     * @return the string
-     */
-    String newApplicationGroupId();
+	/**
+	 * New application name.
+	 *
+	 * @return the string
+	 */
+	String newApplicationName();
 
-    /**
-     * New application artefact id.
-     *
-     * @return the string
-     */
-    String newApplicationArtefactId();
+	/**
+	 * New application version.
+	 *
+	 * @return the string
+	 */
+	String newApplicationVersion();
 
-    /**
-     * New filename.
-     *
-     * @return the string
-     */
-    String newFilename();
+	/**
+	 * New filename.
+	 *
+	 * @return the string
+	 */
+	String newFilename();
 }

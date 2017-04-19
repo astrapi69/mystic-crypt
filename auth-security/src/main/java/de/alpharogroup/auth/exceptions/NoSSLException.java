@@ -45,17 +45,10 @@ public class NoSSLException extends Exception
 	 *
 	 * @param message
 	 *            the message
-	 * @param cause
-	 *            the cause
-	 * @param enableSuppression
-	 *            the enable suppression
-	 * @param writableStackTrace
-	 *            the writable stack trace
 	 */
-	public NoSSLException(final String message, final Throwable cause,
-		final boolean enableSuppression, final boolean writableStackTrace)
+	public NoSSLException(final String message)
 	{
-		super(message, cause, enableSuppression, writableStackTrace);
+		super(message);
 	}
 
 	/**
@@ -76,10 +69,17 @@ public class NoSSLException extends Exception
 	 *
 	 * @param message
 	 *            the message
+	 * @param cause
+	 *            the cause
+	 * @param enableSuppression
+	 *            the enable suppression
+	 * @param writableStackTrace
+	 *            the writable stack trace
 	 */
-	public NoSSLException(final String message)
+	public NoSSLException(final String message, final Throwable cause,
+		final boolean enableSuppression, final boolean writableStackTrace)
 	{
-		super(message);
+		super(message, cause, enableSuppression, writableStackTrace);
 	}
 
 	/**

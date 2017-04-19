@@ -190,8 +190,8 @@ public class RandomDateExtensions
 	public static Date randomDatebetween(final Date start, final Date end)
 	{
 		final Random secran = new SecureRandom();
-		final long randomLong = (long)(start.getTime() + (secran.nextDouble()
-			* (end.getTime() - start.getTime())));
+		final long randomLong = (long)(start.getTime()
+			+ (secran.nextDouble() * (end.getTime() - start.getTime())));
 		return new Date(randomLong);
 	}
 

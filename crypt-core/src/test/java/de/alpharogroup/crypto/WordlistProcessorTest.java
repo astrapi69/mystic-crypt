@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.log4j.Logger;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.processors.wordlist.WordlistsProcessor;
@@ -44,10 +45,14 @@ import de.alpharogroup.file.search.PathFinder;
 public class WordlistProcessorTest
 {
 
+	/** The Constant logger. */
+	private static final Logger logger = Logger.getLogger(WordlistProcessorTest.class.getName());
+
 	/**
 	 * Test method for test the class {@link WordlistsProcessor}.
 	 *
-	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	@Test
 	public void test() throws IOException
@@ -69,15 +74,14 @@ public class WordlistProcessorTest
 
 		final String password = "hash";
 
-		final WordlistsProcessor processor = new WordlistsProcessor(new ArrayList<>(set),
-			password);
+		final WordlistsProcessor processor = new WordlistsProcessor(new ArrayList<>(set), password);
 		final long start = System.currentTimeMillis();
 		final boolean found = processor.process();
 		final long end = System.currentTimeMillis();
 
-		System.out.println("Started wordlist attack for the password: " + new Date(start));
-		System.out.println("Ended of the wordlist attack for the password: " + new Date(end));
-		System.out.println("Password found: " + found);
+		logger.debug("Started wordlist attack for the password: " + new Date(start));
+		logger.debug("Ended of the wordlist attack for the password: " + new Date(end));
+		logger.debug("Password found: " + found);
 
 	}
 }

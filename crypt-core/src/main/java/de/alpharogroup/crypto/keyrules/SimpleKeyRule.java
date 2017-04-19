@@ -26,9 +26,9 @@ package de.alpharogroup.crypto.keyrules;
 
 import java.util.Map;
 
-import lombok.Getter;
 import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.interfaces.KeyRule;
+import lombok.Getter;
 
 /**
  * The Class {@link SimpleKeyRule} can define a simple rule for encrypt and decrypt a key.

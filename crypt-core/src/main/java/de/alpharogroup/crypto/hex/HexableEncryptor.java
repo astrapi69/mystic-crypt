@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.core;
+package de.alpharogroup.crypto.hex;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
@@ -30,27 +30,33 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.SecretKeySpec;
 
-import de.alpharogroup.crypto.interfaces.StringDecryptor;
-import de.alpharogroup.crypto.model.CryptModel;
+import org.apache.commons.codec.binary.Hex;
+
+import de.alpharogroup.check.Check;
+import de.alpharogroup.crypto.algorithm.AesAlgorithm;
+import de.alpharogroup.crypto.algorithm.Algorithm;
+import de.alpharogroup.crypto.core.AbstractStringEncryptor;
+import de.alpharogroup.crypto.factories.SecretKeyFactoryExtensions;
 
 /**
- * The abstract class {@link BaseStringDecryptor} is a base implementation of the
- * {@link StringDecryptor}.
- *
- * @author Asterios Raptis
- * @version 1.0
+ * The class {@link HexableEncryptor} is the pendant class of {@link HexableDecryptor} and encrypts
+ * given String objects that can be decrypted with {@link HexableDecryptor}. For an example see the
+ * unit test.
  */
-public abstract class BaseStringDecryptor extends BaseCryptor implements StringDecryptor
+public class HexableEncryptor extends AbstractStringEncryptor
 {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Constructor with a private key.
+	 * Instantiates a new {@link HexableEncryptor} from the given parameters.
 	 *
 	 * @param privateKey
 	 *            The private key.
@@ -67,18 +73,20 @@ public abstract class BaseStringDecryptor extends BaseCryptor implements StringD
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public BaseStringDecryptor(final String privateKey)
+	public HexableEncryptor(final String privateKey)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		super(privateKey);
+		this(privateKey, AesAlgorithm.AES);
 	}
 
 	/**
-	 * Constructor with the given {@link CryptModel}.
+	 * Instantiates a new {@link HexableEncryptor} from the given parameters.
 	 *
-	 * @param model
-	 *            The crypt model.
+	 * @param privateKey
+	 *            The private key.
+	 * @param algorithm
+	 *            the algorithm
 	 * @throws InvalidAlgorithmParameterException
 	 *             is thrown if initialization of the cypher object fails.
 	 * @throws NoSuchPaddingException
@@ -89,16 +97,73 @@ public abstract class BaseStringDecryptor extends BaseCryptor implements StringD
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeyException
 	 *             is thrown if initialization of the cypher object fails.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public BaseStringDecryptor(final CryptModel<Cipher, String> model)
+	public HexableEncryptor(final String privateKey, final Algorithm algorithm)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		super(model);
+		super(privateKey);
+		Check.get().notNull(algorithm, "algorithm");
+		getModel().setAlgorithm(algorithm);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @throws InvalidKeyException
+	 *             the invalid key exception is thrown if initialization of the cypher object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown by get the byte array of the private key String object fails or if the
+	 *             named charset is not supported.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the cypher object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the cypher object fails.
+	 * @throws IllegalBlockSizeException
+	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
+	 * @throws BadPaddingException
+	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
+	 */
+	@Override
+	public String encrypt(final String string)
+		throws InvalidKeyException, UnsupportedEncodingException, NoSuchAlgorithmException,
+		NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException
+	{
+		final byte[] utf8 = string.getBytes("UTF-8");
+		final byte[] encrypt = getModel().getCipher().doFinal(utf8);
+		final char[] original = Hex.encodeHex(encrypt, false);
+		return new String(original);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected String newAlgorithm()
+	{
+		if (getModel().getAlgorithm() == null)
+		{
+			getModel().setAlgorithm(AesAlgorithm.AES);
+		}
+		return getModel().getAlgorithm().getAlgorithm();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected Cipher newCipher(final String privateKey, final String algorithm, final byte[] salt,
+		final int iterationCount, final int operationMode)
+		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
+		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+	{
+		final SecretKeySpec skeySpec = SecretKeyFactoryExtensions
+			.newSecretKeySpec(privateKey.getBytes("UTF-8"), algorithm);
+		final Cipher cipher = Cipher.getInstance(algorithm);
+		cipher.init(operationMode, skeySpec);
+		return cipher;
 	}
 
 }

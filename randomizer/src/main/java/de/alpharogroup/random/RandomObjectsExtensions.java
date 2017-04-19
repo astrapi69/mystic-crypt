@@ -31,7 +31,8 @@ import java.util.Optional;
 /**
  * The class {@link RandomObjectsExtensions} is a utility class to create random objects.
  */
-public class RandomObjectsExtensions {
+public class RandomObjectsExtensions
+{
 
 	/**
 	 * Gets an infomail address from the given url.
@@ -40,22 +41,29 @@ public class RandomObjectsExtensions {
 	 *            The url.
 	 * @return Returns an infomail address from the given url.
 	 */
-	public static String getInfomailFromWebsite(final String url) {
+	public static String getInfomailFromWebsite(final String url)
+	{
 		int startIndex = url.indexOf("www.");
 		final StringBuilder email = new StringBuilder();
-		if (0 < startIndex) {
+		if (0 < startIndex)
+		{
 			final String emailprefix = "info";
 			email.append(emailprefix);
 			email.append("@");
 			email.append(url.substring(startIndex + 4, url.length()));
-		} else {
+		}
+		else
+		{
 			startIndex = url.indexOf("//");
-			if (0 < startIndex) {
+			if (0 < startIndex)
+			{
 				final String emailprefix = "info";
 				email.append(emailprefix);
 				email.append("@");
 				email.append(url.substring(startIndex + 2, url.length()));
-			} else {
+			}
+			else
+			{
 				throw new IllegalArgumentException(url);
 			}
 		}
@@ -67,12 +75,13 @@ public class RandomObjectsExtensions {
 	 *
 	 * @return The random email-address.
 	 */
-	public static String getRandomEmail() {
+	public static String getRandomEmail()
+	{
 		final StringBuffer email = new StringBuffer();
 		final String emailprefix = RandomExtensions.getRandomString(Constants.LCCHARSWN,
-				RandomExtensions.randomInt(20) + 1);
+			RandomExtensions.randomInt(20) + 1);
 		final String domain = RandomExtensions.getRandomString(Constants.LOWCASECHARS,
-				RandomExtensions.randomInt(12) + 1);
+			RandomExtensions.randomInt(12) + 1);
 		final String topDomain = RandomExtensions.getRandomString(Constants.LOWCASECHARS, 2);
 		email.append(emailprefix);
 		email.append("@");
@@ -89,11 +98,13 @@ public class RandomObjectsExtensions {
 	 *            The phonenumber.
 	 * @return Return's a random faxnumber from a phone.
 	 */
-	public static String getRandomFaxnumber(final String phonenumber) {
+	public static String getRandomFaxnumber(final String phonenumber)
+	{
 		final StringBuffer sb = new StringBuffer();
 		final String randomFax = phonenumber.substring(0, phonenumber.length() - 2);
 		sb.append(randomFax);
-		final String phoneExtension = phonenumber.substring(phonenumber.length() - 2, phonenumber.length());
+		final String phoneExtension = phonenumber.substring(phonenumber.length() - 2,
+			phonenumber.length());
 		final Integer phEx = new Integer(phoneExtension);
 		final int pe = phEx + 1;
 		sb.append(pe);
@@ -105,7 +116,8 @@ public class RandomObjectsExtensions {
 	 *
 	 * @return Return's a random mobil number from a mobilphone.
 	 */
-	public static String getRandomMobilnumber() {
+	public static String getRandomMobilnumber()
+	{
 		final StringBuffer randomPhonenumber = new StringBuffer();
 		randomPhonenumber.append("0");
 		randomPhonenumber.append(RandomExtensions.getRandomNumericString(3));
@@ -121,7 +133,8 @@ public class RandomObjectsExtensions {
 	 *            The length from the password.
 	 * @return The password.
 	 */
-	public static String getRandomPassword(final int length) {
+	public static String getRandomPassword(final int length)
+	{
 		final String password = RandomExtensions.getRandomString(Constants.LCUCCHARSWN, length);
 		return password;
 	}
@@ -133,9 +146,12 @@ public class RandomObjectsExtensions {
 	 *            The length from the password as Optional.
 	 * @return The password.
 	 */
-	public static String getRandomPassword(final Optional<Integer> length) {
-		if (length.isPresent()) {
-			final String password = RandomExtensions.getRandomString(Constants.LCUCCHARSWN, length.get());
+	public static String getRandomPassword(final Optional<Integer> length)
+	{
+		if (length.isPresent())
+		{
+			final String password = RandomExtensions.getRandomString(Constants.LCUCCHARSWN,
+				length.get());
 			return password;
 		}
 		return RandomExtensions.getRandomString(Constants.LCUCCHARSWN, 8);
@@ -146,7 +162,8 @@ public class RandomObjectsExtensions {
 	 *
 	 * @return Return's a random phonenumber.
 	 */
-	public static String getRandomPhonenumber() {
+	public static String getRandomPhonenumber()
+	{
 		final StringBuffer randomPhonenumber = new StringBuffer();
 		randomPhonenumber.append("0");
 		randomPhonenumber.append(RandomExtensions.getRandomNumericString(4));
@@ -160,11 +177,12 @@ public class RandomObjectsExtensions {
 	 *
 	 * @return Returns a random name for a website.
 	 */
-	public static String getRandomWebsite() {
+	public static String getRandomWebsite()
+	{
 		final StringBuffer website = new StringBuffer();
 		final String websitePrefix = "http://www";
 		final String domain = RandomExtensions.getRandomString(Constants.LOWCASECHARS,
-				RandomExtensions.randomInt(12) + 1);
+			RandomExtensions.randomInt(12) + 1);
 		final String topDomain = RandomExtensions.getRandomString(Constants.LOWCASECHARS, 2);
 		website.append(websitePrefix);
 		website.append(".");
@@ -179,7 +197,8 @@ public class RandomObjectsExtensions {
 	 *
 	 * @return the created random id.
 	 */
-	public static String newRandomId() {
+	public static String newRandomId()
+	{
 		final StringBuffer sb = new StringBuffer();
 		sb.append(RandomExtensions.getRandomString(Constants.LCUCCHARSWN, 2));
 		sb.append(".");
@@ -200,19 +219,23 @@ public class RandomObjectsExtensions {
 	 *            The Characters for the name.
 	 * @return A random Name.
 	 */
-	public static String newRandomName(final char[] donatedChars) {
+	public static String newRandomName(final char[] donatedChars)
+	{
 		final StringBuffer sb = new StringBuffer(donatedChars.length);
 		final List<Character> dc = new ArrayList<>(donatedChars.length);
-		for (final char donatedChar : donatedChars) {
+		for (final char donatedChar : donatedChars)
+		{
 			dc.add(donatedChar);
 		}
 		boolean fullList = true;
-		while (fullList) {
+		while (fullList)
+		{
 			final int randomIndex = RandomExtensions.randomInt(dc.size());
 			final Character c = dc.get(randomIndex);
 			sb.append(c);
 			dc.remove(randomIndex);
-			if (dc.isEmpty()) {
+			if (dc.isEmpty())
+			{
 				fullList = false;
 			}
 		}

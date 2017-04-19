@@ -27,54 +27,55 @@ package de.alpharogroup.random.api;
 /**
  * The interface {@link FinanceGenerator} provides factory methods for create finance data.
  */
-public interface FinanceGenerator {
+public interface FinanceGenerator
+{
 
-    /**
-     * New bitcoin address.
-     *
-     * @return the string
-     */
-    String newBitcoinAddress();
+	/**
+	 * New bic.
+	 *
+	 * @return the string
+	 */
+	String newBic();
 
-    /**
-     * New credit card number.
-     *
-     * @return the string
-     */
-    String newCreditCardNumber();
+	/**
+	 * New bitcoin address.
+	 *
+	 * @return the string
+	 */
+	String newBitcoinAddress();
 
-    /**
-     * New credit card type.
-     *
-     * @return the string
-     */
-    String newCreditCardType();
+	/**
+	 * New credit card number.
+	 *
+	 * @return the string
+	 */
+	String newCreditCardNumber();
 
-    /**
-     * New currency name.
-     *
-     * @return the string
-     */
-    String newCurrencyName();
+	/**
+	 * New credit card type.
+	 *
+	 * @return the string
+	 */
+	String newCreditCardType();
 
-    /**
-     * New currency code.
-     *
-     * @return the string
-     */
-    String newCurrencyCode();
+	/**
+	 * New currency code.
+	 *
+	 * @return the string
+	 */
+	String newCurrencyCode();
 
-    /**
-     * New iban.
-     *
-     * @return the string
-     */
-    String newIban();
+	/**
+	 * New currency name.
+	 *
+	 * @return the string
+	 */
+	String newCurrencyName();
 
-    /**
-     * New bic.
-     *
-     * @return the string
-     */
-    String newBic();
+	/**
+	 * New iban.
+	 *
+	 * @return the string
+	 */
+	String newIban();
 }

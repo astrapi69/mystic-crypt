@@ -26,10 +26,13 @@ package de.alpharogroup.crypto.key;
 
 import java.io.File;
 import java.security.PrivateKey;
+import java.security.Security;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
+import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 import de.alpharogroup.crypto.provider.SecurityProvider;
 import de.alpharogroup.file.search.PathFinder;
 
@@ -38,6 +41,23 @@ import de.alpharogroup.file.search.PathFinder;
  */
 public class KeyExtensionsTest
 {
+
+	/**
+	 * Test method for {@link KeyExtensions#readPrivateKey(File, SecurityProvider)}.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
+	@Test
+	public void testReadDerPrivateKey() throws Exception
+	{
+		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
+
+		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
+
+		AssertJUnit.assertNotNull(privateKey);
+	}
 
 	/**
 	 * Test method for {@link KeyExtensions#readPemPrivateKey(File, SecurityProvider)}.
@@ -51,7 +71,8 @@ public class KeyExtensionsTest
 		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
 		final File privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
 
-		final PrivateKey privateKey = KeyExtensions.readPemPrivateKey(privatekeyPemFile,
+		Security.addProvider(new BouncyCastleProvider());
+		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile,
 			SecurityProvider.BC);
 		AssertJUnit.assertNotNull(privateKey);
 	}

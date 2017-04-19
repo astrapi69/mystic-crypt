@@ -49,7 +49,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class CryptModel<C, K> implements Serializable
 {
 
@@ -67,10 +67,10 @@ public class CryptModel<C, K> implements Serializable
 
 	/** The operation mode that indicates if an encryption or decryption process will start. */
 	private int operationMode;
-	
+
 	/** The iteration count. */
 	private Integer iterationCount;
-	
+
 	/** The salt byte array. */
 	byte[] salt;
 

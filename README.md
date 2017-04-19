@@ -4,14 +4,14 @@ The target of this parent project is to make encryption and decryption as simple
 
 ##Key features:
 
+ * Encryption with PublicKey and decryption with PrivateKey objects that was generated with openssl or java
+ * Encryption and decryption from .pem, .der files that was generated with openssl
  * Hashing passwords
  * Obfuscate text with specified map
  * Hex en- and decryption
  * Creation of randomized data
  * Brute-force processing
  * Wordlist processing
- * Encryption with PublicKey and decryption with PrivateKey objects that was generated with openssl
- * Encryption and decryption from .pem, .der files that was generated with openssl
  
 
 ## License
@@ -36,10 +36,11 @@ Add the following maven dependency to your project `pom.xml` if you want to impo
 Than you can add the dependency to your dependencies:
 
 		<!-- MYSTIC-CRYPT versions -->
-		<mystic-crypt.version>4.17.0</mystic-crypt.version>
+		<mystic-crypt.version>4.20.0</mystic-crypt.version>
 		<crypt-core.version>${mystic-crypt.version}</crypt-core.version>
 		<randomizer.version>${mystic-crypt.version}</randomizer.version>
 		<auth-security.version>${mystic-crypt.version}</auth-security.version>
+		<crypt-data.version>${mystic-crypt.version}</crypt-data.version>
 
 		<dependencies>
 			...
@@ -111,6 +112,10 @@ Don't forget to add new units tests on your changes.
 Do not hesitate to contact the mystic-crypt developers with your questions, concerns, comments, bug reports, or feature requests.
 - Feature requests, questions and bug reports can be reported at the [issues page](https://github.com/astrapi69/mystic-crypt/issues).
 
+## Note
+
+No animals were harmed in the making of this library.
+
 # Donate
 
 <a href="http://flattr.com/thing/4152938/astrapi69mystic-crypt-on-GitHub" target="_blank">
@@ -124,5 +129,6 @@ Here is a list of awesome projects for cryptography:
 
  * [cryptacular](https://github.com/vt-middleware/cryptacular) The friendly complement to the BouncyCastle crypto API for Java.
  * [JSch](http://www.jcraft.com/jsch/) JSch is a pure Java implementation of SSH2.
-
+ * [Apache Shiro](https://github.com/apache/shiro) Apache Shiro is a powerful and easy-to-use Java security framework that performs authentication, authorization, cryptography, and session management.
+ * [commons-ssl](http://juliusdavies.ca/commons-ssl/)
 

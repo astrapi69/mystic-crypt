@@ -22,49 +22,28 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.key;
+package de.alpharogroup.crypto.chainable;
 
-import java.security.PrivateKey;
-import java.security.interfaces.DSAPrivateKey;
-import java.security.interfaces.ECPrivateKey;
-import java.security.interfaces.RSAPrivateKey;
-
-import lombok.experimental.UtilityClass;
+import de.alpharogroup.crypto.core.ChainableEncryptor;
+import de.alpharogroup.crypto.interfaces.Encryptor;
 
 /**
- * The class {@link PrivateKeyExtensions}.
+ * The class {@link ChainableStringEncryptor} can take many {@code Encryptor} objects and encrypts
+ * the given string with all the given {@code Encryptor} objects. For an example see the unit test.
  */
-@UtilityClass
-public class PrivateKeyExtensions
+public class ChainableStringEncryptor extends ChainableEncryptor<String>
 {
 
 	/**
-	 * Gets the key length of the given {@link PrivateKey}.
+	 * Instantiates a new {@link ChainableStringEncryptor} object.
 	 *
-	 * @param privateKey
-	 *            the private key
-	 * @return the key length
+	 * @param encryptors
+	 *            the encryptors
 	 */
-	public static int getKeyLength(final PrivateKey privateKey)
+	@SafeVarargs
+	public ChainableStringEncryptor(final Encryptor<String, String>... encryptors)
 	{
-		int length = -1;
-		if (privateKey == null)
-		{
-			return length;
-		}
-		if (privateKey instanceof RSAPrivateKey)
-		{
-			length = ((RSAPrivateKey)privateKey).getModulus().bitLength();
-		}
-		if (privateKey instanceof DSAPrivateKey)
-		{
-			length = ((DSAPrivateKey)privateKey).getParams().getQ().bitLength();
-		}
-		if (privateKey instanceof ECPrivateKey)
-		{
-			length = ((ECPrivateKey)privateKey).getParams().getCurve().getField().getFieldSize();
-		}
-		return length;
+		super(encryptors);
 	}
 
 }

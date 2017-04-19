@@ -24,14 +24,23 @@
  */
 package de.alpharogroup.crypto.aes;
 
+import org.apache.log4j.Logger;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
 /**
  * Test class for the class {@link HexEncryptor} and {@link HexDecryptor}.
+ *
+ * @deprecated The unit tests moved in the appropriate test class because the class
+ *             {@link HexEncryptor} and {@link HexDecryptor} are now deprecated. This test class
+ *             will be removed in the next major release.
  */
+@Deprecated
 public class HexEncryptDecryptorTest
 {
+
+	/** The Constant logger. */
+	private static final Logger logger = Logger.getLogger(HexEncryptDecryptorTest.class.getName());
 
 	/**
 	 * Test chained encrypt and decrypt with {@link HexEncryptor#encrypt(String)} and
@@ -47,12 +56,11 @@ public class HexEncryptDecryptorTest
 		final String key = "1234567890123456";
 		final HexEncryptor encryptor = new HexEncryptor(key);
 		final String encrypted = encryptor.encrypt(test);
-		System.out.println("String after encryption:");
-		System.out.println(encrypted);
+		logger.debug("String after encryption:" + encrypted);
+
 		final HexDecryptor decryptor = new HexDecryptor(key);
 		final String decryted = decryptor.decrypt(encrypted);
-		System.out.println("String after decryption:");
-		System.out.println(decryted);
+		logger.debug("String after decryption:" + decryted);
 		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
 			test.equals(decryted));
 	}

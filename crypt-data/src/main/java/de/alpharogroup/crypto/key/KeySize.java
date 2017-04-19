@@ -24,47 +24,44 @@
  */
 package de.alpharogroup.crypto.key;
 
-import java.security.PublicKey;
-import java.security.interfaces.DSAPublicKey;
-import java.security.interfaces.ECPublicKey;
-import java.security.interfaces.RSAPublicKey;
-
-import lombok.experimental.UtilityClass;
+import lombok.Getter;
 
 /**
- * The class {@link PublicKeyExtensions}.
+ * The enum {@link KeySize} hold the bit size for private keys.
  */
-@UtilityClass
-public class PublicKeyExtensions
+public enum KeySize
 {
 
-	/**
-	 * Gets the key length of the given {@link PublicKey}.
-	 *
-	 * @param publicKey
-	 *            the public key
-	 * @return the key length
-	 */
-	public static int getKeyLength(final PublicKey publicKey)
-	{
-		int length = -1;
-		if (publicKey == null)
-		{
-			return length;
-		}
-		if (publicKey instanceof RSAPublicKey)
-		{
-			length = ((RSAPublicKey)publicKey).getModulus().bitLength();
-		}
-		if (publicKey instanceof DSAPublicKey)
-		{
-			length = ((DSAPublicKey)publicKey).getParams().getP().bitLength();
-		}
-		if (publicKey instanceof ECPublicKey)
-		{
-			length = ((ECPublicKey)publicKey).getParams().getCurve().getField().getFieldSize();
-		}
+	/** The keysize 1024. */
+	KEYSIZE_1024(1024),
 
-		return length;
+	/** The keysize 2048. */
+	KEYSIZE_2048(2048),
+
+	/** The keysize 4096. */
+	KEYSIZE_4096(4096);
+
+	/** The display. */
+	@Getter
+	private final Integer keySize;
+
+	/**
+	 * Instantiates a new {@link KeySize}.
+	 *
+	 * @param keySize
+	 *            the key size
+	 */
+	private KeySize(final Integer keySize)
+	{
+		this.keySize = keySize;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString()
+	{
+		return this.keySize.toString();
 	}
 }

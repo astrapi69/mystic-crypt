@@ -25,65 +25,69 @@
 package de.alpharogroup.random.api;
 
 /**
- * The interface {@link HumanDataGenerator} for generate random names, gender, jobs and other human data.
+ * The interface {@link HumanDataGenerator} for generate random names, gender, jobs and other human
+ * data.
  */
-public interface HumanDataGenerator {
+public interface HumanDataGenerator
+{
 
-    /**
-     * New first name.
-     *
-     * @param female the female
-     * @return the string
-     */
-    String newFirstName(boolean female);
+	/**
+	 * New family name.
+	 *
+	 * @param female
+	 *            the female
+	 * @return the string
+	 */
+	String newFamilyName(boolean female);
 
-    /**
-     * New family name.
-     *
-     * @param female the female
-     * @return the string
-     */
-    String newFamilyName(boolean female);
+	/**
+	 * New first name.
+	 *
+	 * @param female
+	 *            the female
+	 * @return the string
+	 */
+	String newFirstName(boolean female);
 
-    /**
-     * New gender.
-     *
-     * @return the string
-     */
-    String newGender();
+	/**
+	 * New gender.
+	 *
+	 * @return the string
+	 */
+	String newGender();
 
-    /**
-     * New job name.
-     *
-     * @return the string
-     */
-    String newJobName();
+	/**
+	 * New job name.
+	 *
+	 * @return the string
+	 */
+	String newJobName();
 
-    /**
-     * New language.
-     *
-     * @return the string
-     */
-    String newLanguage();
+	/**
+	 * New language.
+	 *
+	 * @return the string
+	 */
+	String newLanguage();
 
-    /**
-     * New title.
-     *
-     * @return the string
-     */
-    String newTitle();
+	/**
+	 * New nickname.
+	 *
+	 * @return the string
+	 */
+	String newNickname();
 
-    /**
-     * New nickname.
-     *
-     * @return the string
-     */
-    String newNickname();
+	/**
+	 * New title.
+	 *
+	 * @return the string
+	 */
+	String newTitle();
 
-    /**
-     * New username.
-     *
-     * @return the string
-     */
-    String newUsername();
+	/**
+	 * New username.
+	 *
+	 * @return the string
+	 */
+	String newUsername();
 }

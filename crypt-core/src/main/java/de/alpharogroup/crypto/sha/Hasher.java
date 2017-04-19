@@ -40,8 +40,8 @@ import javax.crypto.NoSuchPaddingException;
 import org.apache.commons.codec.binary.Base64;
 
 import de.alpharogroup.crypto.CryptConst;
-import de.alpharogroup.crypto.aes.HexEncryptor;
 import de.alpharogroup.crypto.algorithm.HashAlgorithm;
+import de.alpharogroup.crypto.hex.HexableEncryptor;
 import de.alpharogroup.random.Constants;
 import de.alpharogroup.random.RandomExtensions;
 import lombok.experimental.UtilityClass;
@@ -152,7 +152,7 @@ public class Hasher
 		NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException,
 		InvalidKeySpecException, InvalidAlgorithmParameterException
 	{
-		final HexEncryptor hexEncryptor = new HexEncryptor(CryptConst.PRIVATE_KEY);
+		final HexableEncryptor hexEncryptor = new HexableEncryptor(CryptConst.PRIVATE_KEY);
 		return hexEncryptor.encrypt(hash(hashIt, salt, hashAlgorithm, charset));
 	}
 
