@@ -46,17 +46,10 @@ public class AuthenticationException extends Exception
 	 *
 	 * @param message
 	 *            the message
-	 * @param cause
-	 *            the cause
-	 * @param enableSuppression
-	 *            the enable suppression
-	 * @param writableStackTrace
-	 *            the writable stack trace
 	 */
-	public AuthenticationException(final String message, final Throwable cause,
-		final boolean enableSuppression, final boolean writableStackTrace)
+	public AuthenticationException(final String message)
 	{
-		super(message, cause, enableSuppression, writableStackTrace);
+		super(message);
 	}
 
 	/**
@@ -77,10 +70,17 @@ public class AuthenticationException extends Exception
 	 *
 	 * @param message
 	 *            the message
+	 * @param cause
+	 *            the cause
+	 * @param enableSuppression
+	 *            the enable suppression
+	 * @param writableStackTrace
+	 *            the writable stack trace
 	 */
-	public AuthenticationException(final String message)
+	public AuthenticationException(final String message, final Throwable cause,
+		final boolean enableSuppression, final boolean writableStackTrace)
 	{
-		super(message);
+		super(message, cause, enableSuppression, writableStackTrace);
 	}
 
 	/**

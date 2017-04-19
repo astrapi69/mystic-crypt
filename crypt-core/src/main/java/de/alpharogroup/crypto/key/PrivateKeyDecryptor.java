@@ -83,6 +83,16 @@ public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey>
 	 * {@inheritDoc}
 	 */
 	@Override
+	public byte[] decrypt(final byte[] encrypted) throws Exception
+	{
+		final byte[] decrypted = getModel().getCipher().doFinal(encrypted);
+		return decrypted;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	protected String newAlgorithm()
 	{
 		if (getModel().getAlgorithm() == null)
@@ -105,16 +115,6 @@ public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey>
 		final Cipher cipher = CipherFactory.newCipher(algorithm);
 		cipher.init(operationMode, key);
 		return cipher;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public byte[] decrypt(final byte[] encrypted) throws Exception
-	{
-		final byte[] decrypted = getModel().getCipher().doFinal(encrypted);
-		return decrypted;
 	}
 
 }

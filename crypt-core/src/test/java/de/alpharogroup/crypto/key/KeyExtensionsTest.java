@@ -43,6 +43,23 @@ public class KeyExtensionsTest
 {
 
 	/**
+	 * Test method for {@link KeyExtensions#readPrivateKey(File, SecurityProvider)}.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
+	@Test
+	public void testReadDerPrivateKey() throws Exception
+	{
+		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
+
+		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
+
+		AssertJUnit.assertNotNull(privateKey);
+	}
+
+	/**
 	 * Test method for {@link KeyExtensions#readPemPrivateKey(File, SecurityProvider)}.
 	 *
 	 * @throws Exception
@@ -57,23 +74,6 @@ public class KeyExtensionsTest
 		Security.addProvider(new BouncyCastleProvider());
 		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile,
 			SecurityProvider.BC);
-		AssertJUnit.assertNotNull(privateKey);
-	}
-
-	/**
-	 * Test method for {@link KeyExtensions#readPrivateKey(File, SecurityProvider)}.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
-	@Test
-	public void testReadDerPrivateKey() throws Exception
-	{
-		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
-
-		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
-
 		AssertJUnit.assertNotNull(privateKey);
 	}
 

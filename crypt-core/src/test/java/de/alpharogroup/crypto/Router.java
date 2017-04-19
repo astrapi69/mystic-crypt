@@ -31,7 +31,7 @@ import lombok.Data;
  * The class {@link Router} holds data for a router.
  */
 @Data
-@Builder
+@Builder(toBuilder = true)
 public class Router
 {
 

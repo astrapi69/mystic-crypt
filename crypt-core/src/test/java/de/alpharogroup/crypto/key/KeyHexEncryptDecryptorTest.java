@@ -70,6 +70,37 @@ public class KeyHexEncryptDecryptorTest
 	 *             is thrown if any security exception occured.
 	 */
 	@Test(enabled = true)
+	public void testEncryptDecrypt() throws Exception
+	{
+		final String test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
+
+		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		final File publickeyDerFile = new File(publickeyDerDir, "public.der");
+		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
+
+		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
+
+		final PublicKey publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
+
+		final PublicKeyHexEncryptor encryptor = new PublicKeyHexEncryptor(publicKey);
+
+		final String encrypted = encryptor.encrypt(test);
+
+		logger.debug("String after encryption:" + encrypted);
+		final PrivateKeyHexDecryptor decryptor = new PrivateKeyHexDecryptor(privateKey);
+		final String decryted = decryptor.decrypt(encrypted);
+		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
+			test.equals(decryted));
+	}
+
+	/**
+	 * Test encrypt and decrypt with {@link PublicKeyHexEncryptor#encrypt(String)} and
+	 * {@link PrivateKeyHexDecryptor#decrypt(String)} loaded from pem files.
+	 *
+	 * @throws Exception
+	 *             is thrown if any security exception occured.
+	 */
+	@Test(enabled = true)
 	public void testEncryptDecryptPemFiles() throws Exception
 	{
 		final String test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
@@ -92,37 +123,6 @@ public class KeyHexEncryptDecryptorTest
 		final PrivateKeyHexDecryptor decryptor = new PrivateKeyHexDecryptor(privateKey);
 		final String decryted = decryptor.decrypt(encrypted);
 		logger.debug("String after decryption:" + decryted);
-		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
-			test.equals(decryted));
-	}
-
-	/**
-	 * Test encrypt and decrypt with {@link PublicKeyHexEncryptor#encrypt(String)} and
-	 * {@link PrivateKeyHexDecryptor#decrypt(String)} loaded from pem files.
-	 *
-	 * @throws Exception
-	 *             is thrown if any security exception occured.
-	 */
-	@Test(enabled = true)
-	public void testEncryptDecrypt() throws Exception
-	{
-		final String test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
-
-		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		final File publickeyDerFile = new File(publickeyDerDir, "public.der");
-		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
-
-		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
-
-		final PublicKey publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
-
-		final PublicKeyHexEncryptor encryptor = new PublicKeyHexEncryptor(publicKey);
-
-		final String encrypted = encryptor.encrypt(test);
-
-		logger.debug("String after encryption:" + encrypted);
-		final PrivateKeyHexDecryptor decryptor = new PrivateKeyHexDecryptor(privateKey);
-		final String decryted = decryptor.decrypt(encrypted);
 		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
 			test.equals(decryted));
 	}

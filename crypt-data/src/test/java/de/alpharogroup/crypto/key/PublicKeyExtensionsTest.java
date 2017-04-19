@@ -53,16 +53,14 @@ public class PublicKeyExtensionsTest
 
 
 	/** The public key in pem format for use in tests. */
-	public static String PUBLIC_KEY_PEM_FORMATED =
-		PublicKeyReader.BEGIN_PUBLIC_KEY_PREFIX
+	public static String PUBLIC_KEY_PEM_FORMATED = PublicKeyReader.BEGIN_PUBLIC_KEY_PREFIX
 		+ "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3prZMWp2kO6rfENO4p7X" + "\n"
 		+ "KNK9OGisJsx4KG1gGfScszdQfIxW/6KaAEWghUShd1n2tyX6Lo3UqA5t9OyhyUnt" + "\n"
 		+ "XnAQ2CZPY5Nq2a5HCbH2e9QIzJdiPBNCXTs3wIprIGJv2T0O9qkOG7CIqhZjirnh" + "\n"
 		+ "aGUAAqMS0hvVDn+AApzv0FcJidaO5qX56Lso5lPpOWCRBEHqwQybXhFrDpbTbY0u" + "\n"
 		+ "0KhXogDnQ+jGt9lMEs8SGvKH0FuW3TuXsDNRk4uHS9w/jbbx1DC1sjFMv3jNHo4T" + "\n"
-		+ "rKopvRlcL2D3uHp/iAAIeU+DXeZSUIERi/FVkQxINRJf2bAdvRNDgTFtCUW4JQdm" + "\n"
-		+ "YQIDAQAB" + "\n"
-		+ PublicKeyReader.END_PUBLIC_KEY_SUFFIX;
+		+ "rKopvRlcL2D3uHp/iAAIeU+DXeZSUIERi/FVkQxINRJf2bAdvRNDgTFtCUW4JQdm" + "\n" + "YQIDAQAB"
+		+ "\n" + PublicKeyReader.END_PUBLIC_KEY_SUFFIX;
 
 	/**
 	 * Test method for {@link PublicKeyExtensions#toBase64(PublicKey)}

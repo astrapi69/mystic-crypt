@@ -30,10 +30,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * The marker annotation {@link Decrypted} marks a field that it was decrypted as the name let assume.
+ * The marker annotation {@link Decrypted} marks a field that it was decrypted as the name let
+ * assume.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(value={ElementType.FIELD, ElementType.PARAMETER})
-public @interface Decrypted 
-{
+@Target(value = { ElementType.FIELD, ElementType.PARAMETER })
+public @interface Decrypted {
 }

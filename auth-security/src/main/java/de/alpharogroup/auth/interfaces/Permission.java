@@ -40,6 +40,20 @@ public interface Permission extends Serializable
 	String getDescription();
 
 	/**
+	 * Returns the field <code>name</code>.
+	 *
+	 * @return The field <code>name</code>.
+	 */
+	String getPermissionName();
+
+	/**
+	 * Gets the shortcut.
+	 *
+	 * @return the shortcut
+	 */
+	String getShortcut();
+
+	/**
 	 * Sets the field <code>description</code>.
 	 *
 	 * @param description
@@ -48,26 +62,12 @@ public interface Permission extends Serializable
 	void setDescription(final String description);
 
 	/**
-	 * Returns the field <code>name</code>.
-	 *
-	 * @return The field <code>name</code>.
-	 */
-	String getPermissionName();
-
-	/**
 	 * Sets the field <code>name</code>.
 	 *
 	 * @param name
 	 *            The <code>name</code> to set
 	 */
 	void setPermissionName(final String name);
-
-	/**
-	 * Gets the shortcut.
-	 *
-	 * @return the shortcut
-	 */
-	String getShortcut();
 
 	/**
 	 * Sets the shortcut.

@@ -32,6 +32,20 @@ public interface ApplicationGenerator
 {
 
 	/**
+	 * New application artefact id.
+	 *
+	 * @return the string
+	 */
+	String newApplicationArtefactId();
+
+	/**
+	 * New application group id.
+	 *
+	 * @return the string
+	 */
+	String newApplicationGroupId();
+
+	/**
 	 * New application name.
 	 *
 	 * @return the string
@@ -44,20 +58,6 @@ public interface ApplicationGenerator
 	 * @return the string
 	 */
 	String newApplicationVersion();
-
-	/**
-	 * New application group id.
-	 *
-	 * @return the string
-	 */
-	String newApplicationGroupId();
-
-	/**
-	 * New application artefact id.
-	 *
-	 * @return the string
-	 */
-	String newApplicationArtefactId();
 
 	/**
 	 * New filename.

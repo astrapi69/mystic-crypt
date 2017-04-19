@@ -33,7 +33,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * The Class {@link SignInWithRedirectionModel} captures the data for sign in action with redirection feature.
+ * The Class {@link SignInWithRedirectionModel} captures the data for sign in action with
+ * redirection feature.
  *
  * @author Asterios Raptis
  */
@@ -43,7 +44,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class SignInWithRedirectionModel<T> implements UsernameSignInModel
 {
 	/**

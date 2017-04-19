@@ -113,6 +113,17 @@ public class HexDecryptor extends AbstractStringDecryptor
 	 * {@inheritDoc}
 	 */
 	@Override
+	public String decrypt(final String encypted) throws Exception
+	{
+		final byte[] dec = HexExtensions.decodeHex(encypted.toCharArray());
+		final byte[] utf8 = getModel().getCipher().doFinal(dec);
+		return new String(utf8, "UTF-8");
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	protected String newAlgorithm()
 	{
 		if (getModel().getAlgorithm() == null)
@@ -136,17 +147,6 @@ public class HexDecryptor extends AbstractStringDecryptor
 		final Cipher cipher = Cipher.getInstance(getModel().getAlgorithm().getAlgorithm());
 		cipher.init(operationMode, skeySpec);
 		return cipher;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String decrypt(final String encypted) throws Exception
-	{
-		final byte[] dec = HexExtensions.decodeHex(encypted.toCharArray());
-		final byte[] utf8 = getModel().getCipher().doFinal(dec);
-		return new String(utf8, "UTF-8");
 	}
 
 }

@@ -43,7 +43,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class BaseSignInModel implements SignInModel
 {
 
