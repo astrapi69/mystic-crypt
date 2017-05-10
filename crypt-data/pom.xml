@@ -21,6 +21,11 @@
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcpkix-jdk15on</artifactId>
 		</dependency>
+		<!-- JSR305 DEPENDENCY -->
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>jsr305</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
