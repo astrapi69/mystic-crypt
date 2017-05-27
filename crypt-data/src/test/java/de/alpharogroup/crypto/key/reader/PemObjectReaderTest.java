@@ -23,6 +23,9 @@ public class PemObjectReaderTest
 
 	/**
 	 * Test method for {@link PemObjectReader#getPemObject(File)}.
+	 *
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	@Test
 	public void testGetPemObject() throws IOException
@@ -39,10 +42,19 @@ public class PemObjectReaderTest
 
 	/**
 	 * Test method for {@link PemObjectReader#toPemFormat(PemObject)}.
+	 *
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	@Test
-	public void testToPemFormat()
+	public void testToPemFormat() throws IOException
 	{
+		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		final File privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
+
+		PemObject pemObject = PemObjectReader.getPemObject(privatekeyPemFile);
+		String foo = PemObjectReader.toPemFormat(pemObject);
+		logger.debug("\n"+foo);
 	}
 
 }
