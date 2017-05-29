@@ -98,4 +98,22 @@ public class CertFactoryTest
 		AssertJUnit.assertNotNull(cert);
 	}
 
+	/**
+	 * Test method for
+	 * {@link CertFactory#newX509CertificateV1(KeyPair, X500Name, BigInteger, Date, Date, X500Name, String)}.
+	 */
+	@Test
+	public void testNewX509CertificateV1() throws Exception {
+		final KeyPair keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, 2048);
+		X500Name issuer = new X500Name("CN=Issuer of this certificate");
+		BigInteger serial = BigInteger.ONE;
+		Date notBefore = Date.from(Instant.now());
+		Date notAfter = Date.from(Instant.now().plusSeconds(60 * 60 * 24 * 365 * 5));
+		X500Name subject = new X500Name("CN=Subject of this certificate");
+		String signatureAlgorithm = "SHA1withRSA";
+		X509Certificate cert = CertFactory.newX509CertificateV1(keyPair, issuer, serial, notBefore, notAfter, subject,
+				signatureAlgorithm);
+		AssertJUnit.assertNotNull(cert);
+	}
+
 }
