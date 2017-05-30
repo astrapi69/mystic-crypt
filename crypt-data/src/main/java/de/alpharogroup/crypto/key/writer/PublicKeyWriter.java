@@ -28,9 +28,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.StringWriter;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
 
+import org.bouncycastle.openssl.jcajce.JcaPEMWriter;
+
+import de.alpharogroup.file.write.WriteFileExtensions;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
@@ -73,5 +77,27 @@ public class PublicKeyWriter
 		final X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKeyBytes);
 		outputStream.write(keySpec.getEncoded());
 		outputStream.close();
+	}
+	
+	/**
+	 * Write the given {@link PublicKey} into the given {@link File}.
+	 *
+	 * @param publicKey
+	 *            the public key
+	 * @param file
+	 *            the file to write in
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	public static void writeInPemFormat(final PublicKey publicKey, final @NonNull File file)
+		throws IOException
+	{
+		StringWriter stringWriter = new StringWriter();
+		JcaPEMWriter pemWriter = new JcaPEMWriter(stringWriter);
+		pemWriter.writeObject(publicKey);
+		pemWriter.close();
+		String pemFormat = stringWriter.toString();
+		pemFormat = pemFormat.replaceAll("\\r\\n", "\\\n");
+		WriteFileExtensions.string2File(file, pemFormat);
 	}
 }
