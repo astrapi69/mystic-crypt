@@ -27,7 +27,9 @@ package de.alpharogroup.crypto.factories;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -64,8 +66,50 @@ public class KeyStoreFactory
 		final File keystoreFile) throws NoSuchAlgorithmException, CertificateException,
 		FileNotFoundException, IOException, KeyStoreException
 	{
+		return newKeyStore(type, password, keystoreFile, false);
+	}
+
+	/**
+	 * Factory method for create a new empty {@link KeyStore} object and save it
+	 * to the given file with the given parameters or load an existing
+	 * {@link KeyStore} object from the given file.
+	 *
+	 * @param type
+	 *            the type of the keystore
+	 * @param password
+	 *            the password of the keystore
+	 * @param keystoreFile
+	 *            the keystore file
+	 * @param newEmpty
+	 *            if the {@linkplain KeyStore} should be new created.
+	 * @return the loaded {@link KeyStore} object
+	 * @throws NoSuchAlgorithmException
+	 *             the no such algorithm exception
+	 * @throws CertificateException
+	 *             the certificate exception
+	 * @throws FileNotFoundException
+	 *             the file not found exception
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws KeyStoreException
+	 *             the key store exception
+	 */
+	public static KeyStore newKeyStore(final String type, final String password, final File keystoreFile,
+			final boolean newEmpty) throws NoSuchAlgorithmException, CertificateException, FileNotFoundException,
+			IOException, KeyStoreException 
+	{
 		final KeyStore keyStore = KeyStore.getInstance(type);
+		if (newEmpty) {
+			keyStore.load(null, password.toCharArray());
+			if (!keystoreFile.exists()) {
+				keystoreFile.createNewFile();
+			}
+			OutputStream out = new FileOutputStream(keystoreFile);
+			keyStore.store(out, password.toCharArray());
+			return keyStore;
+		}
 		keyStore.load(new FileInputStream(keystoreFile), password.toCharArray());
 		return keyStore;
 	}
+
 }
