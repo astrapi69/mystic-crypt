@@ -46,7 +46,7 @@ public class PrivateKeyWriter
 {
 
 	/**
-	 * Write the given {@link PrivateKey} into the given {@link File}.
+	 * Write the given {@link PrivateKey} into the given {@link File} in the *.der format.
 	 *
 	 * @param privateKey
 	 *            the private key
@@ -62,7 +62,7 @@ public class PrivateKeyWriter
 	}
 
 	/**
-	 * Write the given {@link PrivateKey} into the given {@link OutputStream}.
+	 * Write the given {@link PrivateKey} into the given {@link OutputStream} in the *.der format.
 	 *
 	 * @param privateKey
 	 *            the private key
