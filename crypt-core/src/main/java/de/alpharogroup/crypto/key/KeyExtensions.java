@@ -58,6 +58,12 @@ public class KeyExtensions
 	/** The Constant AES_KEY_LENGTH. */
 	public static final int AES_KEY_LENGTH = 256;
 
+	/** The Constant END_CERTIFICATE_SUFFIX. */
+	public static final String END_CERTIFICATE_SUFFIX = "-----END CERTIFICATE-----";
+
+	/** The Constant BEGIN_CERTIFICATE_PREFIX. */
+	public static final String BEGIN_CERTIFICATE_PREFIX = "-----BEGIN CERTIFICATE-----\n";
+
 	/** The Constant END_PUBLIC_KEY_SUFFIX. */
 	public static final String END_PUBLIC_KEY_SUFFIX = "-----END PUBLIC KEY-----";
 
