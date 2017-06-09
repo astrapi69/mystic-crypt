@@ -21,7 +21,7 @@ The source code comes under the liberal MIT License, making mystic-crypt great f
 
 # Build status and latest maven version
 
-[![Build Status](https://travis-ci.org/astrapi69/mystic-crypt.svg?branch=master)](https://travis-ci.org/astrapi69/mystic-crypt)
+[![Build Status](https://travis-ci.org/astrapi69/mystic-crypt.svg?branch=develop)](https://travis-ci.org/astrapi69/mystic-crypt)
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.alpharogroup/mystic-crypt/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.alpharogroup/mystic-crypt)
 
