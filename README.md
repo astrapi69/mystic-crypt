@@ -32,8 +32,6 @@ The source code comes under the liberal MIT License, making mystic-crypt great f
 Maven dependency is now on sonatype.
 Check out [sonatype repository](https://oss.sonatype.org/index.html#nexus-search;quick~mystic-crypt) for latest snapshots and releases.
 
-Add the following maven dependencies to your project `pom.xml` if you want to import the core functionality:
-
 You can first define the version properties:
 
 	<properties>
@@ -46,6 +44,8 @@ You can first define the version properties:
 		<crypt-data.version>${mystic-crypt.version}</crypt-data.version>
 			...
 	</properties>
+	
+You can add the following dependencies to your project for use the functionality of mystic-crypt.
 
 Add the following maven dependency to your project `pom.xml` if you want to import the core functionality of mystic-core:
 
@@ -61,8 +61,6 @@ Add the following maven dependency to your project `pom.xml` if you want to impo
 
 Add the following maven dependency to your project `pom.xml` if you want to import the functionality of randomizer:
 
-Than you can add the dependency to your dependencies:
-
 		<dependencies>
 			...
 			<!-- MYSTIC-CRYPT DEPENDENCIES -->
@@ -76,8 +74,6 @@ Than you can add the dependency to your dependencies:
 
 Add the following maven dependency to your project `pom.xml` if you want to import the functionality of auth-security:
 
-Than you can add the dependency to your dependencies:
-
 		<dependencies>
 			...
 			<!-- MYSTIC-CRYPT DEPENDENCIES -->
@@ -90,8 +86,6 @@ Than you can add the dependency to your dependencies:
 
 
 Add the following maven dependency to your project `pom.xml` if you want to import only the crypt-data like algorithms, modes, paddings etc.:
-
-Than you can add the dependency to your dependencies:
 
 		<dependencies>
 			...
@@ -110,7 +104,7 @@ The source code for mystic-crypt are on GitHub. Please feel free to fork and sen
 
 Create your own fork of [astrapi69/mystic-crypt/fork](https://github.com/astrapi69/mystic-crypt/fork)
 
-To share your changes, [submit a pull request](https://github.com/astrapi69/mystic-crypt/pull/new/master).
+To share your changes, [submit a pull request](https://github.com/astrapi69/mystic-crypt/pull/new/develop).
 
 Don't forget to add new units tests on your changes.
 
@@ -138,5 +132,5 @@ Here is a list of awesome projects for cryptography:
  * [cryptacular](https://github.com/vt-middleware/cryptacular) The friendly complement to the BouncyCastle crypto API for Java.
  * [JSch](http://www.jcraft.com/jsch/) JSch is a pure Java implementation of SSH2.
  * [Apache Shiro](https://github.com/apache/shiro) Apache Shiro is a powerful and easy-to-use Java security framework that performs authentication, authorization, cryptography, and session management.
- * [commons-ssl](http://juliusdavies.ca/commons-ssl/)
+ * [commons-ssl](http://juliusdavies.ca/commons-ssl/) Not-Yet-Commons-SSL
 
