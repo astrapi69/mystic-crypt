@@ -1,4 +1,4 @@
-# mystic-crypt
+# Overview
 
 The target of this parent project is to make encryption and decryption as simple as possible.
 
