@@ -72,7 +72,7 @@ public class PrivateKeyReaderTest
 	 * @throws Exception
 	 *             the exception
 	 */
-	@Test(enabled = false)
+	@Test(enabled = true)
 	public void testReadPemPrivateKey() throws Exception
 	{
 		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");

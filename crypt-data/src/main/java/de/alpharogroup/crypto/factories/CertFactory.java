@@ -27,6 +27,7 @@ package de.alpharogroup.crypto.factories;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.Certificate;
@@ -37,8 +38,15 @@ import java.util.Date;
 
 import javax.security.auth.x500.X500Principal;
 
+import org.bouncycastle.asn1.x500.X500Name;
+import org.bouncycastle.cert.X509v1CertificateBuilder;
+import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
+import org.bouncycastle.cert.jcajce.JcaX509v1CertificateBuilder;
+import org.bouncycastle.operator.ContentSigner;
+import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.bouncycastle.x509.X509V3CertificateGenerator;
 
+import de.alpharogroup.crypto.provider.SecurityProvider;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -113,6 +121,42 @@ public class CertFactory
 		certificateGenerator.setSignatureAlgorithm(signatureAlgorithm);
 		final X509Certificate certificate = certificateGenerator.generate(privateKey);
 		return certificate;
+	}
+
+	/**
+	 * Factory method for creating a new {@link X509Certificate} object of the first version of X.509 from the
+	 * given parameters.
+	 * 
+	 * SecurityProvider is Bouncy Castle.
+	 *
+	 * @param keyPair
+	 *            the key pair
+	 * @param issuer
+	 *            X500Name representing the issuer of this certificate.
+	 * @param serial
+	 *            the serial number for the certificate.
+	 * @param notBefore
+	 *            date before which the certificate is not valid.
+	 * @param notAfter
+	 *            date after which the certificate is not valid.
+	 * @param subject
+	 *            X500Name representing the subject of this certificate.
+	 *
+	 * @param signatureAlgorithm
+	 *            the signature algorithm i.e 'SHA1withRSA'
+	 * @return the new {@link X509Certificate} object
+	 * @throws Exception
+	 *             is thrown if if a security error occur
+	 */
+	public static X509Certificate newX509CertificateV1(KeyPair keyPair, X500Name issuer, BigInteger serial,
+			Date notBefore, Date notAfter, X500Name subject, String signatureAlgorithm) throws Exception {
+		X509v1CertificateBuilder certBuilder = new JcaX509v1CertificateBuilder(issuer, serial, notBefore, notAfter,
+				subject, keyPair.getPublic());
+		ContentSigner signer = new JcaContentSignerBuilder(signatureAlgorithm).setProvider(SecurityProvider.BC.name())
+				.build(keyPair.getPrivate());
+		X509Certificate x509Certificate = new JcaX509CertificateConverter().setProvider(SecurityProvider.BC.name())
+				.getCertificate(certBuilder.build(signer));
+		return x509Certificate;
 	}
 
 }

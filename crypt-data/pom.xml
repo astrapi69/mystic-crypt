@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mystic-crypt</artifactId>
-		<version>4.20.0</version>
+		<version>4.21.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>crypt-data</artifactId>
@@ -21,11 +21,15 @@
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcpkix-jdk15on</artifactId>
 		</dependency>
+		<!-- JSR305 DEPENDENCY -->
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>jsr305</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
 			<artifactId>file-worker</artifactId>
-			<scope>test</scope>
 		</dependency>
 
 	</dependencies>

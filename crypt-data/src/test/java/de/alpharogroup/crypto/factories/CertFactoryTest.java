@@ -31,8 +31,10 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
+import java.time.Instant;
 import java.util.Date;
 
+import org.bouncycastle.asn1.x500.X500Name;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
@@ -95,6 +97,24 @@ public class CertFactoryTest
 
 		final X509Certificate cert = CertFactory.newX509Certificate(publicKey, privateKey,
 			serialNumber, subject, issuer, signatureAlgorithm, start, end);
+		AssertJUnit.assertNotNull(cert);
+	}
+
+	/**
+	 * Test method for
+	 * {@link CertFactory#newX509CertificateV1(KeyPair, X500Name, BigInteger, Date, Date, X500Name, String)}.
+	 */
+	@Test
+	public void testNewX509CertificateV1() throws Exception {
+		final KeyPair keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, 2048);
+		final X500Name issuer = new X500Name("CN=Issuer of this certificate");
+		final BigInteger serial = BigInteger.ONE;
+		final Date notBefore = Date.from(Instant.now());
+		final Date notAfter = Date.from(Instant.now().plusSeconds(60 * 60 * 24 * 365 * 5));
+		final X500Name subject = new X500Name("CN=Subject of this certificate");
+		final String signatureAlgorithm = "SHA1withRSA";
+		final X509Certificate cert = CertFactory.newX509CertificateV1(keyPair, issuer, serial, notBefore, notAfter, subject,
+				signatureAlgorithm);
 		AssertJUnit.assertNotNull(cert);
 	}
 

@@ -28,9 +28,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.StringWriter;
 import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 
+import org.bouncycastle.openssl.jcajce.JcaPEMWriter;
+
+import de.alpharogroup.file.write.WriteFileExtensions;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
@@ -42,7 +46,7 @@ public class PrivateKeyWriter
 {
 
 	/**
-	 * Write the given {@link PrivateKey} into the given {@link File}.
+	 * Write the given {@link PrivateKey} into the given {@link File} in the *.der format.
 	 *
 	 * @param privateKey
 	 *            the private key
@@ -58,7 +62,7 @@ public class PrivateKeyWriter
 	}
 
 	/**
-	 * Write the given {@link PrivateKey} into the given {@link OutputStream}.
+	 * Write the given {@link PrivateKey} into the given {@link OutputStream} in the *.der format.
 	 *
 	 * @param privateKey
 	 *            the private key
@@ -74,6 +78,28 @@ public class PrivateKeyWriter
 		final PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
 		outputStream.write(keySpec.getEncoded());
 		outputStream.close();
+	}
+	
+	/**
+	 * Write the given {@link PrivateKey} into the given {@link File}.
+	 *
+	 * @param privateKey
+	 *            the private key
+	 * @param file
+	 *            the file to write in
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	public static void writeInPemFormat(final PrivateKey privateKey, final @NonNull File file)
+		throws IOException
+	{
+		StringWriter stringWriter = new StringWriter();
+		JcaPEMWriter pemWriter = new JcaPEMWriter(stringWriter);
+		pemWriter.writeObject(privateKey);
+		pemWriter.close(); 
+		String pemFormat = stringWriter.toString();
+		pemFormat = pemFormat.replaceAll("\\r\\n", "\\\n");
+		WriteFileExtensions.string2File(file, pemFormat);
 	}
 
 }
