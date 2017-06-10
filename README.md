@@ -25,7 +25,7 @@ The source code comes under the liberal MIT License, making mystic-crypt great f
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.alpharogroup/mystic-crypt/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.alpharogroup/mystic-crypt)
 
-[![Coverage Status](https://coveralls.io/repos/github/astrapi69/mystic-crypt/badge.svg?branch=master)](https://coveralls.io/github/astrapi69/mystic-crypt?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/astrapi69/mystic-crypt/badge.svg?branch=develop)](https://coveralls.io/github/astrapi69/mystic-crypt?branch=develop)
 
 ## Maven dependency
 
