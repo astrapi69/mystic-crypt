@@ -133,6 +133,18 @@ public class RandomExtensionsTest extends BaseTestCase
 	}
 
 	/**
+	 * Test method for {@link RandomExtensions#getRandomEnum(Enum[])} .
+	 */
+	@Test
+	public void testGetRandomEnumArray()
+	{
+		final Gender[] genders = Gender.values();
+		final Gender randomEnumEntry = RandomExtensions.getRandomEnum(genders);
+		AssertJUnit.assertTrue("Enum value should contain the random value.",
+			ArrayUtils.contains(genders, randomEnumEntry));
+	}
+
+	/**
 	 * Test method for {@link RandomExtensions#getRandomEnum(Enum)} .
 	 */
 	@Test
@@ -141,18 +153,6 @@ public class RandomExtensionsTest extends BaseTestCase
 		final Gender randomEnumEntry = RandomExtensions.getRandomEnum(Gender.class);
 
 		final Gender[] genders = Gender.values();
-		AssertJUnit.assertTrue("Enum value should contain the random value.",
-			ArrayUtils.contains(genders, randomEnumEntry));
-	}
-
-	/**
-	 * Test method for {@link RandomExtensions#getRandomEnum(Enum[])} .
-	 */
-	@Test
-	public void testGetRandomEnumArray()
-	{
-		final Gender[] genders = Gender.values();
-		final Gender randomEnumEntry = RandomExtensions.getRandomEnum(genders);
 		AssertJUnit.assertTrue("Enum value should contain the random value.",
 			ArrayUtils.contains(genders, randomEnumEntry));
 	}

@@ -31,6 +31,48 @@ public interface LocationGenerator
 {
 
 	/**
+	 * New address comment.
+	 *
+	 * @return the string
+	 */
+	String newAddressComment();
+
+	/**
+	 * New city.
+	 *
+	 * @return the string
+	 */
+	String newCity();
+
+	/**
+	 * New country.
+	 *
+	 * @return the string
+	 */
+	String newCountry();
+
+	/**
+	 * New latitude.
+	 *
+	 * @return the string
+	 */
+	String newLatitude();
+
+	/**
+	 * New longitude.
+	 *
+	 * @return the string
+	 */
+	String newLongitude();
+
+	/**
+	 * New state.
+	 *
+	 * @return the string
+	 */
+	String newState();
+
+	/**
 	 * New street name.
 	 *
 	 * @return the string
@@ -50,46 +92,4 @@ public interface LocationGenerator
 	 * @return the string
 	 */
 	String newZipCode();
-
-	/**
-	 * New city.
-	 *
-	 * @return the string
-	 */
-	String newCity();
-
-	/**
-	 * New state.
-	 *
-	 * @return the string
-	 */
-	String newState();
-
-	/**
-	 * New country.
-	 *
-	 * @return the string
-	 */
-	String newCountry();
-
-	/**
-	 * New longitude.
-	 *
-	 * @return the string
-	 */
-	String newLongitude();
-
-	/**
-	 * New latitude.
-	 *
-	 * @return the string
-	 */
-	String newLatitude();
-
-	/**
-	 * New address comment.
-	 *
-	 * @return the string
-	 */
-	String newAddressComment();
 }

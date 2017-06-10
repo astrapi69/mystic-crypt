@@ -40,12 +40,10 @@ public class CryptoCipherInputStream extends CipherInputStream
 	 *
 	 * @param inputStream
 	 *            the input stream
-	 * @param cipher
-	 *            the cipher
 	 */
-	public CryptoCipherInputStream(final InputStream inputStream, final Cipher cipher)
+	public CryptoCipherInputStream(final InputStream inputStream)
 	{
-		super(inputStream, cipher);
+		super(inputStream);
 	}
 
 	/**
@@ -53,10 +51,12 @@ public class CryptoCipherInputStream extends CipherInputStream
 	 *
 	 * @param inputStream
 	 *            the input stream
+	 * @param cipher
+	 *            the cipher
 	 */
-	public CryptoCipherInputStream(final InputStream inputStream)
+	public CryptoCipherInputStream(final InputStream inputStream, final Cipher cipher)
 	{
-		super(inputStream);
+		super(inputStream, cipher);
 	}
 
 }

@@ -22,42 +22,45 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.mystic.crypt.actions;
+package de.alpharogroup.auth.models;
 
-import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
-
-import de.alpharogroup.mystic.crypt.MainFrame;
-import de.alpharogroup.mystic.crypt.help.InfoJDialog;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
- * The class {@link ShowInfoDialogAction}.
+ * The Class {@link SignInWithRedirectionModel} captures the data for sign in action with
+ * redirection feature.
+ *
+ * @author Asterios Raptis
  */
-public class ShowInfoDialogAction extends AbstractAction {
-
-	/** The Constant serialVersionUID. */
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder(toBuilder = true)
+public class SignInWithRedirectionModel<T> implements UsernameSignInModel
+{
+	/**
+	 * The serialVersionUID.
+	 */
 	private static final long serialVersionUID = 1L;
-	/** The Constant INFO_TITLE. */
-	private static final String INFO_TITLE = "Info";
 
-	/**
-	 * Instantiates a new {@link ShowInfoDialogAction}.
-	 *
-	 * @param name
-	 *            the name
-	 */
-	public ShowInfoDialogAction(final String name) {
-		super(name);
-	}
+	/** The email. */
+	private String email;
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void actionPerformed(final ActionEvent e) {
-		final InfoJDialog info = new InfoJDialog(MainFrame.getInstance(), INFO_TITLE);
-		info.setVisible(true);
-	}
+	/** The password. */
+	private String password;
 
+	/** The redirect page. */
+	private Class<? extends T> redirectPage;
+
+	/** The username. */
+	private String username;
 }

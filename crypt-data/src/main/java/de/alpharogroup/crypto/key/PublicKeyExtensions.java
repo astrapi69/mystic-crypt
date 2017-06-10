@@ -109,12 +109,13 @@ public class PublicKeyExtensions
 	 */
 	public static String toPemFormat(final PublicKey publicKey)
 	{
-		final String publicKeyAsBase64String =  toBase64(publicKey);
+		final String publicKeyAsBase64String = toBase64(publicKey);
 		final List<String> parts = splitByFixedLength(publicKeyAsBase64String, 64);
 
 		final StringBuilder sb = new StringBuilder();
 		sb.append(PublicKeyReader.BEGIN_PUBLIC_KEY_PREFIX);
-		for(final String part : parts) {
+		for (final String part : parts)
+		{
 			sb.append(part);
 			sb.append(System.lineSeparator());
 		}
@@ -141,17 +142,21 @@ public class PublicKeyExtensions
 	/**
 	 * Split the given {@link String} in parts in the given fixed length.
 	 *
-	 * @param input the input
-	 * @param fixedLength the fixed length
+	 * @param input
+	 *            the input
+	 * @param fixedLength
+	 *            the fixed length
 	 * @return the list with the splitted {@link String} objects
-	 * @deprecated use instead the same name method from  StringExtensions
+	 * @deprecated use instead the same name method from StringExtensions
 	 */
 	@Deprecated
-	public static List<String> splitByFixedLength(final String input, final int fixedLength) {
+	public static List<String> splitByFixedLength(final String input, final int fixedLength)
+	{
 		final List<String> parts = new ArrayList<>();
 		int beginIndex = 0;
-		while (beginIndex < input.length()) {
-			final int endIndex = Math.min(beginIndex + fixedLength,input.length());
+		while (beginIndex < input.length())
+		{
+			final int endIndex = Math.min(beginIndex + fixedLength, input.length());
 			final String part = input.substring(beginIndex, endIndex);
 			parts.add(part);
 			beginIndex += fixedLength;

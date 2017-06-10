@@ -48,7 +48,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class SimpleRole implements Role<Permission>
 {
 

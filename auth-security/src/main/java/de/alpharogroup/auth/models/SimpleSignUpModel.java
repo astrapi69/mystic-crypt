@@ -39,19 +39,19 @@ public interface SimpleSignUpModel extends SignInModel
 	String getRepeatPassword();
 
 	/**
+	 * Gets the term of use accepted.
+	 *
+	 * @return the term of use accepted
+	 */
+	Boolean getTermOfUseAccepted();
+
+	/**
 	 * Sets the repeat password.
 	 *
 	 * @param repeatPassword
 	 *            the new repeat password
 	 */
 	void setRepeatPassword(final String repeatPassword);
-
-	/**
-	 * Gets the term of use accepted.
-	 *
-	 * @return the term of use accepted
-	 */
-	Boolean getTermOfUseAccepted();
 
 	/**
 	 * Sets the term of use accepted.

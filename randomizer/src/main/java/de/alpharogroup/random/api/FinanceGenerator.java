@@ -31,6 +31,13 @@ public interface FinanceGenerator
 {
 
 	/**
+	 * New bic.
+	 *
+	 * @return the string
+	 */
+	String newBic();
+
+	/**
 	 * New bitcoin address.
 	 *
 	 * @return the string
@@ -52,13 +59,6 @@ public interface FinanceGenerator
 	String newCreditCardType();
 
 	/**
-	 * New currency name.
-	 *
-	 * @return the string
-	 */
-	String newCurrencyName();
-
-	/**
 	 * New currency code.
 	 *
 	 * @return the string
@@ -66,16 +66,16 @@ public interface FinanceGenerator
 	String newCurrencyCode();
 
 	/**
+	 * New currency name.
+	 *
+	 * @return the string
+	 */
+	String newCurrencyName();
+
+	/**
 	 * New iban.
 	 *
 	 * @return the string
 	 */
 	String newIban();
-
-	/**
-	 * New bic.
-	 *
-	 * @return the string
-	 */
-	String newBic();
 }

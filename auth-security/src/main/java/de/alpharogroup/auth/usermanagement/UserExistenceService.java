@@ -44,15 +44,6 @@ public interface UserExistenceService extends Serializable
 	boolean existsUserWithEmail(final String email);
 
 	/**
-	 * Checks if a user exists with the given user name.
-	 * 
-	 * @param username
-	 *            the user name
-	 * @return true, if successful
-	 */
-	boolean existsUserWithUsername(final String username);
-
-	/**
 	 * Checks if a user exists with the given email or user name.
 	 *
 	 * @param emailOrUsername
@@ -71,5 +62,14 @@ public interface UserExistenceService extends Serializable
 	 * @return the resulted {@link InsertUserState} object.
 	 */
 	InsertUserState existsUserWithEmailOrUsername(final String email, final String username);
+
+	/**
+	 * Checks if a user exists with the given user name.
+	 * 
+	 * @param username
+	 *            the user name
+	 * @return true, if successful
+	 */
+	boolean existsUserWithUsername(final String username);
 
 }

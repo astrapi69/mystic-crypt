@@ -32,15 +32,6 @@ public interface HumanDataGenerator
 {
 
 	/**
-	 * New first name.
-	 *
-	 * @param female
-	 *            the female
-	 * @return the string
-	 */
-	String newFirstName(boolean female);
-
-	/**
 	 * New family name.
 	 *
 	 * @param female
@@ -48,6 +39,15 @@ public interface HumanDataGenerator
 	 * @return the string
 	 */
 	String newFamilyName(boolean female);
+
+	/**
+	 * New first name.
+	 *
+	 * @param female
+	 *            the female
+	 * @return the string
+	 */
+	String newFirstName(boolean female);
 
 	/**
 	 * New gender.
@@ -71,18 +71,18 @@ public interface HumanDataGenerator
 	String newLanguage();
 
 	/**
-	 * New title.
-	 *
-	 * @return the string
-	 */
-	String newTitle();
-
-	/**
 	 * New nickname.
 	 *
 	 * @return the string
 	 */
 	String newNickname();
+
+	/**
+	 * New title.
+	 *
+	 * @return the string
+	 */
+	String newTitle();
 
 	/**
 	 * New username.

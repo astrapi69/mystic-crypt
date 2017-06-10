@@ -25,6 +25,8 @@ The source code comes under the liberal MIT License, making mystic-crypt great f
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.alpharogroup/mystic-crypt/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.alpharogroup/mystic-crypt)
 
+[![Coverage Status](https://coveralls.io/repos/github/astrapi69/mystic-crypt/badge.svg?branch=master)](https://coveralls.io/github/astrapi69/mystic-crypt?branch=master)
+
 ## Maven dependency
 
 Maven dependency is now on sonatype.
@@ -36,10 +38,11 @@ Add the following maven dependency to your project `pom.xml` if you want to impo
 Than you can add the dependency to your dependencies:
 
 		<!-- MYSTIC-CRYPT versions -->
-		<mystic-crypt.version>4.17.0</mystic-crypt.version>
+		<mystic-crypt.version>4.20.0</mystic-crypt.version>
 		<crypt-core.version>${mystic-crypt.version}</crypt-core.version>
 		<randomizer.version>${mystic-crypt.version}</randomizer.version>
 		<auth-security.version>${mystic-crypt.version}</auth-security.version>
+		<crypt-data.version>${mystic-crypt.version}</crypt-data.version>
 
 		<dependencies>
 			...
@@ -110,6 +113,10 @@ Don't forget to add new units tests on your changes.
 
 Do not hesitate to contact the mystic-crypt developers with your questions, concerns, comments, bug reports, or feature requests.
 - Feature requests, questions and bug reports can be reported at the [issues page](https://github.com/astrapi69/mystic-crypt/issues).
+
+## Note
+
+No animals were harmed in the making of this library.
 
 # Donate
 

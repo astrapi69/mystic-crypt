@@ -46,12 +46,11 @@ public interface Role<T extends Permission> extends Serializable
 	String getDescription();
 
 	/**
-	 * Sets the field <code>description</code>.
+	 * Gets the access rights.
 	 *
-	 * @param description
-	 *            The <code>description</code> to set
+	 * @return the permissions
 	 */
-	void setDescription(final String description);
+	Set<T> getPermissions();
 
 	/**
 	 * Gets the name.
@@ -61,19 +60,12 @@ public interface Role<T extends Permission> extends Serializable
 	String getRolename();
 
 	/**
-	 * Sets the name.
+	 * Sets the field <code>description</code>.
 	 *
-	 * @param name
-	 *            the new name.
+	 * @param description
+	 *            The <code>description</code> to set
 	 */
-	void setRolename(final String name);
-
-	/**
-	 * Gets the access rights.
-	 *
-	 * @return the permissions
-	 */
-	Set<T> getPermissions();
+	void setDescription(final String description);
 
 	/**
 	 * Sets the permissions.
@@ -82,5 +74,13 @@ public interface Role<T extends Permission> extends Serializable
 	 *            the new access rights.
 	 */
 	void setPermissions(final Set<T> permissions);
+
+	/**
+	 * Sets the name.
+	 *
+	 * @param name
+	 *            the new name.
+	 */
+	void setRolename(final String name);
 
 }

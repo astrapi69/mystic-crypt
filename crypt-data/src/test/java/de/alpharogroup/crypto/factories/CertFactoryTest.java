@@ -48,6 +48,31 @@ public class CertFactoryTest
 {
 
 	/**
+	 * Returns a random serial number that can be used for a serial number.
+	 *
+	 * @return a random serial number as a {@link BigInteger} object.
+	 */
+	public static BigInteger randomSerialNumber()
+	{
+		long next = 0;
+		try
+		{
+			next = SecureRandom.getInstance(RngAlgorithm.SHA1PRNG.getAlgorithm()).nextLong();
+		}
+		catch (final NoSuchAlgorithmException e)
+		{
+			e.printStackTrace();
+		}
+		if (next < 0)
+		{
+			next = next * (-1);
+		}
+		final BigInteger serialNumber = BigInteger.valueOf(next);
+		return serialNumber;
+	}
+
+
+	/**
 	 * Test method for
 	 * {@link CertFactory#newX509Certificate(PublicKey, PrivateKey, String, String, String, Date, Date)}.
 	 */
@@ -71,31 +96,6 @@ public class CertFactoryTest
 		final X509Certificate cert = CertFactory.newX509Certificate(publicKey, privateKey,
 			serialNumber, subject, issuer, signatureAlgorithm, start, end);
 		AssertJUnit.assertNotNull(cert);
-	}
-
-
-	/**
-	 * Returns a random serial number that can be used for a serial number.
-	 *
-	 * @return a random serial number as a {@link BigInteger} object.
-	 */
-	public static BigInteger randomSerialNumber()
-	{
-		long next = 0;
-		try
-		{
-			next = SecureRandom.getInstance(RngAlgorithm.SHA1PRNG.getAlgorithm()).nextLong();
-		}
-		catch (final NoSuchAlgorithmException e)
-		{
-			e.printStackTrace();
-		}
-		if (next < 0)
-		{
-			next = next * (-1);
-		}
-		final BigInteger serialNumber = BigInteger.valueOf(next);
-		return serialNumber;
 	}
 
 }
