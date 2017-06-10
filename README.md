@@ -2,7 +2,7 @@
 
 The target of this parent project is to make encryption and decryption as simple as possible.
 
-##Key features:
+## Key features:
 
  * Encryption with PublicKey and decryption with PrivateKey objects that was generated with openssl or java
  * Encryption and decryption from .pem, .der files that was generated with openssl
