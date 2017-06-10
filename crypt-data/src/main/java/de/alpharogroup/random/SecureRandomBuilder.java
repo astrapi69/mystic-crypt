@@ -43,7 +43,7 @@ public class SecureRandomBuilder
 
 	/** The Constant DEFAULT_ALGORITHM. */
 	public static final String DEFAULT_ALGORITHM = "SHA1PRNG";
-	
+
 	/** The Constant logger. */
 	private static final Logger logger = LoggerFactory.getLogger(SecureRandomBuilder.class.getName());
 
@@ -56,7 +56,7 @@ public class SecureRandomBuilder
 	{
 		return new SecureRandomBuilder();
 	}
-	
+
 	/**
 	 * Gets an instance of {@link SecureRandomBuilder} from the given algorithm and provider.
 	 *
@@ -64,24 +64,23 @@ public class SecureRandomBuilder
 	 * @param provider the provider
 	 * @return the new {@link SecureRandomBuilder} object
 	 */
-	public static SecureRandomBuilder getInstance(String algorithm, String provider) {
+	public static SecureRandomBuilder getInstance(final String algorithm, final String provider) {
 		return SecureRandomBuilder.builder().algorithm(algorithm).provider(provider);
 	}
-	
+
 	/**
 	 * Gets an instance of {@link SecureRandomBuilder} from the given algorithm and provider.
 	 *
 	 * @param algorithm the algorithm
 	 * @return the new {@link SecureRandomBuilder} object
 	 */
-	public static SecureRandomBuilder getInstance(String algorithm) {
+	public static SecureRandomBuilder getInstance(final String algorithm) {
 		return SecureRandomBuilder.builder().algorithm(algorithm);
 	}
-	
+
 	/**
 	 * Gets an instance of {@link SecureRandomBuilder} with the default algorithm and provider.
 	 *
-	 * @param algorithm the algorithm
 	 * @return the new {@link SecureRandomBuilder} object
 	 */
 	public static SecureRandomBuilder getInstance() {
