@@ -31,11 +31,31 @@ public enum KeyType
 {
 
 	/** The certificate type. */
-	CERTIFICATE,
+	CERTIFICATE("Certificate"),
 
 	/** The private key type. */
-	PRIVATE_KEY,
+	PRIVATE_KEY("Private key"),
 
 	/** The public key type. */
-	PUBLIC_KEY
+	PUBLIC_KEY("Public key");
+
+	private final String displayValue;
+
+	/**
+	 * Instantiates a new {@link KeyType} object.
+	 *
+	 * @param displayValue the display value
+	 */
+	private KeyType(final String displayValue){
+		this.displayValue = displayValue;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString()
+	{
+		return this.displayValue;
+	}
 }

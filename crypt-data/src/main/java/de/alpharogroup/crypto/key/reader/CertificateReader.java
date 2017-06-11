@@ -84,6 +84,25 @@ public class CertificateReader
 	}
 
 	/**
+	 * Reads the given file in *.der format and tries to create a {@link X509Certificate} object.
+	 *
+	 * @param file
+	 *            the file
+	 * @return the {@link X509Certificate} object from the given byte array.
+	 * @throws CertificateException
+	 *             is thrown if no Provider supports a CertificateFactorySpi implementation for the
+	 *             specified type.
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	public static X509Certificate readCertificate(final File file)
+		throws CertificateException, IOException
+	{
+		final byte[] decoded = Files.readAllBytes(file.toPath());
+		return readCertificate(decoded);
+	}
+
+	/**
 	 * Reads the given byte array and tries to create a {@link X509Certificate} object.
 	 *
 	 * @param decoded
