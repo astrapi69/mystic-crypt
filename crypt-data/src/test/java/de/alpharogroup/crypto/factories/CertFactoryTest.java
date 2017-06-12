@@ -106,6 +106,7 @@ public class CertFactoryTest
 	 */
 	@Test
 	public void testNewX509CertificateV1() throws Exception {
+		Security.addProvider(new BouncyCastleProvider());
 		final KeyPair keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, 2048);
 		final X500Name issuer = new X500Name("CN=Issuer of this certificate");
 		final BigInteger serial = BigInteger.ONE;
