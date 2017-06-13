@@ -24,7 +24,17 @@
  */
 package de.alpharogroup.crypto.key.reader;
 
+import java.io.File;
+import java.security.PublicKey;
+import java.security.Security;
+
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
+
+import de.alpharogroup.crypto.key.PublicKeyExtensions;
+import de.alpharogroup.crypto.provider.SecurityProvider;
+import de.alpharogroup.file.search.PathFinder;
 
 /**
  * Test class for {@link PublicKeyReader}.
