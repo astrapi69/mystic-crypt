@@ -33,11 +33,12 @@ import java.security.cert.X509Certificate;
 
 import org.apache.commons.codec.binary.Base64;
 
+import de.alpharogroup.crypto.key.KeyFileFormat;
 import lombok.NonNull;
 
 /**
  * The class {@link CertificateWriter} is a utility class for write certificates
- * in files or streams.
+ * in files or streams in several file formats.
  */
 public class CertificateWriter {
 
@@ -54,9 +55,27 @@ public class CertificateWriter {
 	 * @throws CertificateEncodingException
 	 *             is thrown if an encoding error occurs.
 	 */
-	public static void write(final X509Certificate certificate, final @NonNull File file)
+	public static void writeInPemFormat(final X509Certificate certificate, final @NonNull File file)
 			throws IOException, CertificateEncodingException {
-		write(certificate, new FileOutputStream(file));
+		writeInPemFormat(certificate, new FileOutputStream(file));
+	}
+
+	/**
+	 * Write the given {@link X509Certificate} into the given {@link File} in
+	 * the *.der format.
+	 *
+	 * @param certificate
+	 *            the certificate
+	 * @param file
+	 *            the file to write in
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws CertificateEncodingException
+	 *             is thrown if an encoding error occurs.
+	 */
+	public static void writeInDerFormat(final X509Certificate certificate, final @NonNull File file)
+			throws IOException, CertificateEncodingException {
+		writeInDerFormat(certificate, new FileOutputStream(file));
 	}
 
 	/**
@@ -72,12 +91,77 @@ public class CertificateWriter {
 	 * @throws CertificateEncodingException
 	 *             is thrown if an encoding error occurs.
 	 */
-	public static void write(final X509Certificate certificate, final @NonNull OutputStream outputStream)
+	public static void writeInDerFormat(final X509Certificate certificate, final @NonNull OutputStream outputStream)
+			throws IOException, CertificateEncodingException {
+		write(certificate, outputStream, KeyFileFormat.DER);
+	}
+
+	/**
+	 * Write the given {@link X509Certificate} into the given
+	 * {@link OutputStream} in the *.pem format.
+	 *
+	 * @param certificate
+	 *            the certificate
+	 * @param outputStream
+	 *            the output stream to write in
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws CertificateEncodingException
+	 *             is thrown if an encoding error occurs.
+	 */
+	public static void writeInPemFormat(final X509Certificate certificate, final @NonNull OutputStream outputStream)
+			throws IOException, CertificateEncodingException {
+		write(certificate, outputStream, KeyFileFormat.PEM);
+	}
+
+	/**
+	 * Write the given {@link X509Certificate} into the given {@link File} in
+	 * the given {@link KeyFileFormat} format.
+	 *
+	 * @param certificate
+	 *            the certificate
+	 * @param file
+	 *            the file to write in
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws CertificateEncodingException
+	 *             is thrown if an encoding error occurs.
+	 */
+	public static void write(final X509Certificate certificate, final @NonNull File file, KeyFileFormat fileFormat)
+			throws IOException, CertificateEncodingException {
+		write(certificate, new FileOutputStream(file), fileFormat);
+	}
+	
+	/**
+	 * Write the given {@link X509Certificate} into the given {@link OutputStream} in
+	 * the given {@link KeyFileFormat} format.
+	 *
+	 * @param certificate
+	 *            the certificate
+	 * @param file
+	 *            the file to write in
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws CertificateEncodingException
+	 *             is thrown if an encoding error occurs.
+	 */
+	public static void write(final X509Certificate certificate, final @NonNull OutputStream outputStream, KeyFileFormat fileFormat)
 			throws IOException, CertificateEncodingException {
 		final byte[] certificateBytes = certificate.getEncoded();
-		outputStream.write("-----BEGIN CERTIFICATE-----\n".getBytes("US-ASCII"));
-		outputStream.write(Base64.encodeBase64(certificateBytes, true));
-		outputStream.write("-----END CERTIFICATE-----\n".getBytes("US-ASCII"));
-		outputStream.close();
+		switch (fileFormat) {
+		case DER:
+			outputStream.write(certificateBytes);
+			break;
+		case PEM:			
+			outputStream.write("-----BEGIN CERTIFICATE-----\n".getBytes("US-ASCII"));
+			outputStream.write(Base64.encodeBase64(certificateBytes, true));
+			outputStream.write("-----END CERTIFICATE-----\n".getBytes("US-ASCII"));
+			break;
+		default:
+			outputStream.write(certificateBytes);
+			break;
+		}	
+		outputStream.close();	
 	}
+	
 }
