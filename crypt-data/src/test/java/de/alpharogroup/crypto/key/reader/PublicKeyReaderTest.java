@@ -32,9 +32,29 @@ import org.testng.annotations.Test;
 public class PublicKeyReaderTest
 {
 
+	/**
+	 * Test method for {@link PublicKeyReader#readPemPublicKey(File)}.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
 	@Test
-	public void test()
+	public void testReadPemFileAsBase64() throws Exception
 	{
+		final File publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
+
+		Security.addProvider(new BouncyCastleProvider());
+		final String publicKeyAsBase64String = PublicKeyReader
+			.readPemFileAsBase64(publickeyPemFile);
+
+		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile,
+			SecurityProvider.BC);
+
+		final String base64 = PublicKeyExtensions.toBase64(publicKey);
+		AssertJUnit.assertNotNull(publicKeyAsBase64String);
+		AssertJUnit.assertNotNull(base64);
 	}
+
 
 }
