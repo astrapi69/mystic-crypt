@@ -24,6 +24,7 @@
  */
 package de.alpharogroup.crypto.factories;
 
+import java.io.File;
 import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
@@ -44,6 +45,12 @@ import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.algorithm.HashAlgorithm;
 import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
 import de.alpharogroup.crypto.algorithm.RngAlgorithm;
+import de.alpharogroup.crypto.key.reader.CertificateReader;
+import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
+import de.alpharogroup.crypto.key.reader.PublicKeyReader;
+import de.alpharogroup.crypto.key.writer.CertificateWriter;
+import de.alpharogroup.crypto.provider.SecurityProvider;
+import de.alpharogroup.file.search.PathFinder;
 
 /**
  * Test class for the class {@link CertFactory}.
@@ -84,11 +91,22 @@ public class CertFactoryTest
 	public void testNewX509CertificatePublicKeyPrivateKeyStringStringStringDateDate()
 		throws Exception
 	{
-		final KeyPair keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, 2048);
+		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		final File privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
 
-		final PrivateKey privateKey = keyPair.getPrivate();
+		Security.addProvider(new BouncyCastleProvider());
 
-		final PublicKey publicKey = keyPair.getPublic();
+		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile,
+			SecurityProvider.BC);		
+
+		final File publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
+
+		Security.addProvider(new BouncyCastleProvider());
+
+		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile,
+			SecurityProvider.BC);
+		
 		final String subject = "CN=Test subject";
 		final String issuer = "CN=Test issue";
 		final String signatureAlgorithm = HashAlgorithm.SHA256.getAlgorithm() + CryptConst.WITH
@@ -96,10 +114,21 @@ public class CertFactoryTest
 		final Date start = new Date(System.currentTimeMillis());
 		final Date end = new Date(System.currentTimeMillis() + (1000L * 60 * 60 * 24 * 100));
 		final BigInteger serialNumber = randomSerialNumber();
-
+		// create certificate
 		final X509Certificate cert = CertFactory.newX509Certificate(publicKey, privateKey,
 			serialNumber, subject, issuer, signatureAlgorithm, start, end);
 		AssertJUnit.assertNotNull(cert);
+		
+		final File pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		final File certificateFile = new File(pemDir, "certificate.cert");
+		// save it ...
+		CertificateWriter.writeInPemFormat(cert, certificateFile);
+		// read it ...
+		X509Certificate certificate = CertificateReader.readPemCertificate(certificateFile);
+		// check null
+		AssertJUnit.assertNotNull(certificate);
+		// check equal
+		AssertJUnit.assertEquals(cert, certificate);
 	}
 
 	/**
@@ -119,6 +148,11 @@ public class CertFactoryTest
 		final X509Certificate cert = CertFactory.newX509CertificateV1(keyPair, issuer, serial, notBefore, notAfter, subject,
 				signatureAlgorithm);
 		AssertJUnit.assertNotNull(cert);
+		
+		final File pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		final File certificateFile = new File(pemDir, "certificate.cert");
+		
+		CertificateWriter.writeInPemFormat(cert, certificateFile);
 	}
 
 }
