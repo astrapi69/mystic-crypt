@@ -30,11 +30,13 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
+import java.security.Security;
 import java.security.cert.X509Certificate;
 import java.time.Instant;
 import java.util.Date;
 
 import org.bouncycastle.asn1.x500.X500Name;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
@@ -106,6 +108,7 @@ public class CertFactoryTest
 	 */
 	@Test
 	public void testNewX509CertificateV1() throws Exception {
+		Security.addProvider(new BouncyCastleProvider());
 		final KeyPair keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, 2048);
 		final X500Name issuer = new X500Name("CN=Issuer of this certificate");
 		final BigInteger serial = BigInteger.ONE;
