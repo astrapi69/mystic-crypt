@@ -228,14 +228,28 @@
 								<!-- enums -->
 								<ignore>de.alpharogroup.crypto.enums.*</ignore>
 								<ignore>de.alpharogroup.auth.enums.*</ignore>
+								<ignore>de.alpharogroup.crypto.algorithm.*</ignore>
+								<ignore>de.alpharogroup.crypto.enums.*</ignore>
+								<ignore>de.alpharogroup.crypto.mechanisms.*</ignore>
+								<ignore>de.alpharogroup.crypto.modes.*</ignore>
+								<ignore>de.alpharogroup.crypto.padding.*</ignore>
+								<ignore>de.alpharogroup.crypto.provider.*</ignore>
+								<ignore>de.alpharogroup.crypto.pw.*</ignore>
 								<!-- beans -->
 								<ignore>de.alpharogroup.auth.models.*</ignore>
 								<ignore>de.alpharogroup.auth.token.*</ignore>
+								<ignore>de.alpharogroup.crypto.model.*</ignore>
 								<!-- interfaces -->
 								<ignore>de.alpharogroup.auth.interfaces.*</ignore>
 								<ignore>de.alpharogroup.auth.usermanagement.*</ignore>
+								<ignore>de.alpharogroup.crypto.interfaces.*</ignore>
+								<ignore>de.alpharogroup.random.api.*</ignore>
 								<!-- exceptions -->
 								<ignore>de.alpharogroup.exceptions.*</ignore>
+								<!-- deprecated -->
+								<ignore>de.alpharogroup.crypto.aes.*</ignore>
+								<!-- constant classes with only constants -->
+								<ignore>de.alpharogroup.random.address.*</ignore>
 							</ignores>
 							<excludes>
 								<!-- bean classes -->
@@ -243,6 +257,14 @@
 								<exclude>de/alpharogroup/auth/SimplePermission.class</exclude>
 								<exclude>de/alpharogroup/auth/SimpleRole.class</exclude>
 								<exclude>de/alpharogroup/auth/SimpleUser.class</exclude>
+								<!-- deprecated -->
+								<exclude>de/alpharogroup/crypto/key/KeyExtensions.class</exclude>
+								<!-- interfaces -->
+								<exclude>de/alpharogroup/crypto/keyrules/Obfuscatable.class</exclude>
+								<!-- constant classes with only constants -->
+								<exclude>de/alpharogroup/random/Constants.class</exclude>
+								<!-- delegation classes -->
+								<exclude>de/alpharogroup/random/DataGenerator.class</exclude>
 							</excludes>
 						</instrumentation>
 					</configuration>
