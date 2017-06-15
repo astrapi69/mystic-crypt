@@ -224,23 +224,6 @@
 					<artifactId>cobertura-maven-plugin</artifactId>
 					<configuration>
 						<instrumentation>
-							<ignores>
-								<!-- beans -->
-								<ignore>de.alpharogroup.auth.models.*</ignore>
-								<ignore>de.alpharogroup.auth.token.*</ignore>
-								<ignore>de.alpharogroup.crypto.model.*</ignore>
-								<!-- interfaces -->
-								<ignore>de.alpharogroup.auth.interfaces.*</ignore>
-								<ignore>de.alpharogroup.auth.usermanagement.*</ignore>
-								<ignore>de.alpharogroup.crypto.interfaces.*</ignore>
-								<ignore>de.alpharogroup.random.api.*</ignore>
-								<!-- exceptions -->
-								<ignore>de.alpharogroup.exceptions.*</ignore>
-								<!-- deprecated -->
-								<ignore>de.alpharogroup.crypto.aes.*</ignore>
-								<!-- constant classes with only constants -->
-								<ignore>de.alpharogroup.random.address.*</ignore>
-							</ignores>
 							<excludes>
 								<!-- enums -->
 								<exclude>de/alpharogroup/crypto/enums/**/*.class</exclude>
@@ -251,7 +234,22 @@
 								<exclude>de/alpharogroup/crypto/modes/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/padding/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/provider/**/*.class</exclude>
-								<exclude>de/alpharogroup/crypto/pw/**/*.class</exclude>
+								<exclude>de/alpharogroup/crypto/pw/**/*.class</exclude>								
+								<!-- beans -->
+								<exclude>de/alpharogroup/auth/models/**/*.class</exclude>
+								<exclude>de/alpharogroup/auth/token/**/*.class</exclude>
+								<exclude>de/alpharogroup/crypto/model/**/*.class</exclude>
+								<!-- interfaces -->
+								<exclude>de/alpharogroup/auth/interfaces/**/*.class</exclude>
+								<exclude>de/alpharogroup/auth/usermanagement/**/*.class</exclude>
+								<exclude>de/alpharogroup/crypto/interfaces/**/*.class</exclude>
+								<exclude>de/alpharogroup/random/api/**/*.class</exclude>
+								<!-- exceptions -->
+								<exclude>de/alpharogroup/exceptions/**/*.class</exclude>
+								<!-- deprecated -->
+								<exclude>de/alpharogroup/crypto/aes/**/*.class</exclude>
+								<!-- constant classes with only constants -->
+								<exclude>de/alpharogroup/random/address/**/*.class</exclude>
 								<!-- bean classes -->
 								<exclude>de/alpharogroup/auth/Credentials.class</exclude>
 								<exclude>de/alpharogroup/auth/SimplePermission.class</exclude>
