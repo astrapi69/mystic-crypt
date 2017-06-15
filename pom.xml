@@ -225,16 +225,6 @@
 					<configuration>
 						<instrumentation>
 							<ignores>
-								<!-- enums -->
-								<ignore>de.alpharogroup.crypto.enums.*</ignore>
-								<ignore>de.alpharogroup.auth.enums.*</ignore>
-								<ignore>de.alpharogroup.crypto.algorithm.*</ignore>
-								<ignore>de.alpharogroup.crypto.enums.*</ignore>
-								<ignore>de.alpharogroup.crypto.mechanisms.*</ignore>
-								<ignore>de.alpharogroup.crypto.modes.*</ignore>
-								<ignore>de.alpharogroup.crypto.padding.*</ignore>
-								<ignore>de.alpharogroup.crypto.provider.*</ignore>
-								<ignore>de.alpharogroup.crypto.pw.*</ignore>
 								<!-- beans -->
 								<ignore>de.alpharogroup.auth.models.*</ignore>
 								<ignore>de.alpharogroup.auth.token.*</ignore>
@@ -252,6 +242,16 @@
 								<ignore>de.alpharogroup.random.address.*</ignore>
 							</ignores>
 							<excludes>
+								<!-- enums -->
+								<exclude>de/alpharogroup/crypto/enums/**/*.class</exclude>
+								<exclude>de/alpharogroup/auth/enums/**/*.class</exclude>
+								<exclude>de/alpharogroup/crypto/algorithm/**/*.class</exclude>
+								<exclude>de/alpharogroup/crypto/enums/**/*.class</exclude>
+								<exclude>de/alpharogroup/crypto/mechanisms/**/*.class</exclude>
+								<exclude>de/alpharogroup/crypto/modes/**/*.class</exclude>
+								<exclude>de/alpharogroup/crypto/padding/**/*.class</exclude>
+								<exclude>de/alpharogroup/crypto/provider/**/*.class</exclude>
+								<exclude>de/alpharogroup/crypto/pw/**/*.class</exclude>
 								<!-- bean classes -->
 								<exclude>de/alpharogroup/auth/Credentials.class</exclude>
 								<exclude>de/alpharogroup/auth/SimplePermission.class</exclude>
