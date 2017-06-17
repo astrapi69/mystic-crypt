@@ -18,7 +18,7 @@ public class CertificateReaderTest {
 	 *             the exception
 	 */
 	@Test
-	public void testReadPemFileAsBase64() throws Exception
+	public void testReadPemCertificateFile() throws Exception
 	{
 		final File pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
 		final File certificateFile = new File(pemDir, "certificate.cert");
@@ -26,7 +26,25 @@ public class CertificateReaderTest {
 		X509Certificate certificate = CertificateReader.readPemCertificate(certificateFile);
 		AssertJUnit.assertNotNull(certificate);
 		System.out.println(certificate);
-		
+	}
+
+
+
+	/**
+	 * Test method for {@link CertificateReader#readCertificate(File)}.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
+	@Test
+	public void testReadDerCertificateFile() throws Exception
+	{
+		final File derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		final File certificateDerFile = new File(derDir, "certificate.der");
+
+		X509Certificate certificate = CertificateReader.readCertificate(certificateDerFile);
+		AssertJUnit.assertNotNull(certificate);
+		System.out.println(certificate);
 	}
 
 }

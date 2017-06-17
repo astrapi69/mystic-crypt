@@ -44,11 +44,11 @@ import lombok.experimental.UtilityClass;
 public class CertificateReader
 {
 
-	/** The Constant END_CERTIFICATE_SUFFIX. */
-	public static final String END_CERTIFICATE_SUFFIX = "-----END CERTIFICATE-----";
-
 	/** The Constant BEGIN_CERTIFICATE_PREFIX. */
 	public static final String BEGIN_CERTIFICATE_PREFIX = "-----BEGIN CERTIFICATE-----\n";
+
+	/** The Constant END_CERTIFICATE_SUFFIX. */
+	public static final String END_CERTIFICATE_SUFFIX = "-----END CERTIFICATE-----";
 
 	/**
 	 * Read pem certificate.
