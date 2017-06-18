@@ -29,6 +29,5 @@ package de.alpharogroup.crypto.key;
  */
 public enum KeyFormat
 {
-	PKCS_8,
-	PKCS_1;
+	PKCS_8, PKCS_1;
 }

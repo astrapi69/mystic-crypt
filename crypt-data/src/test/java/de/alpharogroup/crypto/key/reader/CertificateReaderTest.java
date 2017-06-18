@@ -50,58 +50,8 @@ import de.alpharogroup.crypto.provider.SecurityProvider;
 import de.alpharogroup.file.delete.DeleteFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
-public class CertificateReaderTest {
-
-
-	/**
-	 * Test method for {@link CertificateReader#readPemCertificate(File)}.
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
-	@Test
-	public void testReadPemCertificateFile() throws Exception
-	{
-		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
-
-		Security.addProvider(new BouncyCastleProvider());
-
-		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile,
-			SecurityProvider.BC);
-
-		final File publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
-
-		Security.addProvider(new BouncyCastleProvider());
-
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile,
-			SecurityProvider.BC);
-
-		final String subject = "CN=Test subject";
-		final String issuer = "CN=Test issue";
-		final String signatureAlgorithm = HashAlgorithm.SHA256.getAlgorithm() + CryptConst.WITH
-			+ KeyPairGeneratorAlgorithm.RSA.getAlgorithm();
-
-		final Date start = Date.from(LocalDate.of(2017, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		final Date end = Date.from(LocalDate.of(2027, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		final BigInteger serialNumber = CertFactoryTest.randomSerialNumber();
-		// create certificate
-		final X509Certificate cert = CertFactory.newX509Certificate(publicKey, privateKey,
-			serialNumber, subject, issuer, signatureAlgorithm, start, end);
-		AssertJUnit.assertNotNull(cert);
-
-		final File pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File certificateFile = new File(pemDir, "certificate.cert");
-		// save it ...
-		CertificateWriter.write(cert, certificateFile, KeyFileFormat.PEM);
-
-		X509Certificate certificate = CertificateReader.readPemCertificate(certificateFile);
-		AssertJUnit.assertNotNull(certificate);
-
-		DeleteFileExtensions.delete(certificateFile);
-	}
-
+public class CertificateReaderTest
+{
 
 
 	/**
@@ -135,8 +85,10 @@ public class CertificateReaderTest {
 		final String signatureAlgorithm = HashAlgorithm.SHA256.getAlgorithm() + CryptConst.WITH
 			+ KeyPairGeneratorAlgorithm.RSA.getAlgorithm();
 
-		final Date start = Date.from(LocalDate.of(2017, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		final Date end = Date.from(LocalDate.of(2027, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+		final Date start = Date.from(
+			LocalDate.of(2017, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+		final Date end = Date.from(
+			LocalDate.of(2027, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
 		final BigInteger serialNumber = CertFactoryTest.randomSerialNumber();
 		// create certificate
 		final X509Certificate cert = CertFactory.newX509Certificate(publicKey, privateKey,
@@ -152,6 +104,58 @@ public class CertificateReaderTest {
 		AssertJUnit.assertNotNull(certificate);
 
 		DeleteFileExtensions.delete(certificateDerFile);
+	}
+
+
+	/**
+	 * Test method for {@link CertificateReader#readPemCertificate(File)}.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
+	@Test
+	public void testReadPemCertificateFile() throws Exception
+	{
+		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		final File privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
+
+		Security.addProvider(new BouncyCastleProvider());
+
+		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile,
+			SecurityProvider.BC);
+
+		final File publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
+
+		Security.addProvider(new BouncyCastleProvider());
+
+		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile,
+			SecurityProvider.BC);
+
+		final String subject = "CN=Test subject";
+		final String issuer = "CN=Test issue";
+		final String signatureAlgorithm = HashAlgorithm.SHA256.getAlgorithm() + CryptConst.WITH
+			+ KeyPairGeneratorAlgorithm.RSA.getAlgorithm();
+
+		final Date start = Date.from(
+			LocalDate.of(2017, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+		final Date end = Date.from(
+			LocalDate.of(2027, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+		final BigInteger serialNumber = CertFactoryTest.randomSerialNumber();
+		// create certificate
+		final X509Certificate cert = CertFactory.newX509Certificate(publicKey, privateKey,
+			serialNumber, subject, issuer, signatureAlgorithm, start, end);
+		AssertJUnit.assertNotNull(cert);
+
+		final File pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		final File certificateFile = new File(pemDir, "certificate.cert");
+		// save it ...
+		CertificateWriter.write(cert, certificateFile, KeyFileFormat.PEM);
+
+		X509Certificate certificate = CertificateReader.readPemCertificate(certificateFile);
+		AssertJUnit.assertNotNull(certificate);
+
+		DeleteFileExtensions.delete(certificateFile);
 	}
 
 }

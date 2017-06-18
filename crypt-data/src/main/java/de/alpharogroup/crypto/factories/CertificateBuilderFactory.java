@@ -37,15 +37,16 @@ import org.bouncycastle.cert.jcajce.JcaX509v1CertificateBuilder;
 import lombok.experimental.UtilityClass;
 
 /**
- * The factory class {@link CertificateBuilderFactory} holds methods for
- * creating CertificateBuilder.
+ * The factory class {@link CertificateBuilderFactory} holds methods for creating
+ * CertificateBuilder.
  */
 @UtilityClass
-public class CertificateBuilderFactory {
+public class CertificateBuilderFactory
+{
 
 	/**
-	 * Factory method for creating a new {@link X509v1CertificateBuilder} object
-	 * of version 1 of X.509 from the given parameters.
+	 * Factory method for creating a new {@link X509v1CertificateBuilder} object of version 1 of
+	 * X.509 from the given parameters.
 	 *
 	 * @param issuer
 	 *            X500Name representing the issuer of this certificate.
@@ -61,16 +62,17 @@ public class CertificateBuilderFactory {
 	 *            the public key to be associated with the certificate.
 	 * @return the new {@link X509v3CertificateBuilder} object
 	 */
-	public static X509v1CertificateBuilder newX509v1CertificateBuilder(X500Name issuer, BigInteger serial,
-			Date notBefore, Date notAfter, X500Name subject, PublicKey publicKey) {
-		final X509v1CertificateBuilder certBuilder = new JcaX509v1CertificateBuilder(issuer, serial, notBefore,
-				notAfter, subject, publicKey);
+	public static X509v1CertificateBuilder newX509v1CertificateBuilder(X500Name issuer,
+		BigInteger serial, Date notBefore, Date notAfter, X500Name subject, PublicKey publicKey)
+	{
+		final X509v1CertificateBuilder certBuilder = new JcaX509v1CertificateBuilder(issuer, serial,
+			notBefore, notAfter, subject, publicKey);
 		return certBuilder;
 	}
 
 	/**
-	 * Factory method for creating a new {@link X509v3CertificateBuilder} object
-	 * of version 3 of X.509 from the given parameters.
+	 * Factory method for creating a new {@link X509v3CertificateBuilder} object of version 3 of
+	 * X.509 from the given parameters.
 	 *
 	 * @param issuer
 	 *            X500Name representing the issuer of this certificate.
@@ -83,14 +85,15 @@ public class CertificateBuilderFactory {
 	 * @param subject
 	 *            X500Name representing the subject of this certificate.
 	 * @param publicKeyInfo
-	 *            the info structure for the public key to be associated with
-	 *            this certificate.
+	 *            the info structure for the public key to be associated with this certificate.
 	 * @return the new {@link X509v3CertificateBuilder} object
 	 */
-	public static X509v3CertificateBuilder newX509v3CertificateBuilder(X500Name issuer, BigInteger serial,
-			Date notBefore, Date notAfter, X500Name subject, SubjectPublicKeyInfo publicKeyInfo) {
-		final X509v3CertificateBuilder certBuilder = new X509v3CertificateBuilder(issuer, serial, notBefore, notAfter,
-				subject, publicKeyInfo);
+	public static X509v3CertificateBuilder newX509v3CertificateBuilder(X500Name issuer,
+		BigInteger serial, Date notBefore, Date notAfter, X500Name subject,
+		SubjectPublicKeyInfo publicKeyInfo)
+	{
+		final X509v3CertificateBuilder certBuilder = new X509v3CertificateBuilder(issuer, serial,
+			notBefore, notAfter, subject, publicKeyInfo);
 		return certBuilder;
 	}
 }

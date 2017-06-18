@@ -135,9 +135,12 @@ public class RandomExtensions
 		final byte[] randomByteBox = new byte[1];
 		for (int i = 0; i < length; i++)
 		{
-			if(randomBoolean()) {
+			if (randomBoolean())
+			{
 				randomByteArray[i] = getRandomByte();
-			} else {
+			}
+			else
+			{
 				secureRandom.nextBytes(randomByteBox);
 				randomByteArray[i] = Byte.valueOf(randomByteBox[0]);
 			}
@@ -680,9 +683,12 @@ public class RandomExtensions
 		final byte[] randomByteBox = new byte[1];
 		for (int i = 0; i < length; i++)
 		{
-			if(randomBoolean()) {
+			if (randomBoolean())
+			{
 				randomByteArray[i] = getRandomByte();
-			} else {
+			}
+			else
+			{
 				secureRandom.nextBytes(randomByteBox);
 				randomByteArray[i] = Byte.valueOf(randomByteBox[0]);
 			}

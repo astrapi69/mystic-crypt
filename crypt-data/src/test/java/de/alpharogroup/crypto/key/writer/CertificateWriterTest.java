@@ -81,8 +81,10 @@ public class CertificateWriterTest
 		final String signatureAlgorithm = HashAlgorithm.SHA256.getAlgorithm() + CryptConst.WITH
 			+ KeyPairGeneratorAlgorithm.RSA.getAlgorithm();
 
-		final Date start = Date.from(LocalDate.of(2017, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		final Date end = Date.from(LocalDate.of(2027, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+		final Date start = Date.from(
+			LocalDate.of(2017, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+		final Date end = Date.from(
+			LocalDate.of(2027, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
 		final BigInteger serialNumber = CertFactoryTest.randomSerialNumber();
 		// create certificate
 		final X509Certificate cert = CertFactory.newX509Certificate(publicKey, privateKey,

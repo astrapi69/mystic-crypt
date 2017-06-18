@@ -78,7 +78,7 @@ public class PublicKeyWriter
 		outputStream.write(keySpec.getEncoded());
 		outputStream.close();
 	}
-	
+
 	/**
 	 * Write the given {@link PublicKey} into the given {@link File}.
 	 *

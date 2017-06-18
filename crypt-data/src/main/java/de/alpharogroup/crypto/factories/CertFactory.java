@@ -124,8 +124,8 @@ public class CertFactory
 	}
 
 	/**
-	 * Factory method for creating a new {@link X509Certificate} object of the first version of X.509 from the
-	 * given parameters.
+	 * Factory method for creating a new {@link X509Certificate} object of the first version of
+	 * X.509 from the given parameters.
 	 * 
 	 * SecurityProvider is Bouncy Castle.
 	 *
@@ -148,14 +148,16 @@ public class CertFactory
 	 * @throws Exception
 	 *             is thrown if if a security error occur
 	 */
-	public static X509Certificate newX509CertificateV1(KeyPair keyPair, X500Name issuer, BigInteger serial,
-			Date notBefore, Date notAfter, X500Name subject, String signatureAlgorithm) throws Exception {
-		X509v1CertificateBuilder certBuilder = new JcaX509v1CertificateBuilder(issuer, serial, notBefore, notAfter,
-				subject, keyPair.getPublic());
-		ContentSigner signer = new JcaContentSignerBuilder(signatureAlgorithm).setProvider(SecurityProvider.BC.name())
-				.build(keyPair.getPrivate());
-		X509Certificate x509Certificate = new JcaX509CertificateConverter().setProvider(SecurityProvider.BC.name())
-				.getCertificate(certBuilder.build(signer));
+	public static X509Certificate newX509CertificateV1(KeyPair keyPair, X500Name issuer,
+		BigInteger serial, Date notBefore, Date notAfter, X500Name subject,
+		String signatureAlgorithm) throws Exception
+	{
+		X509v1CertificateBuilder certBuilder = new JcaX509v1CertificateBuilder(issuer, serial,
+			notBefore, notAfter, subject, keyPair.getPublic());
+		ContentSigner signer = new JcaContentSignerBuilder(signatureAlgorithm)
+			.setProvider(SecurityProvider.BC.name()).build(keyPair.getPrivate());
+		X509Certificate x509Certificate = new JcaX509CertificateConverter()
+			.setProvider(SecurityProvider.BC.name()).getCertificate(certBuilder.build(signer));
 		return x509Certificate;
 	}
 

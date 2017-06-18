@@ -25,7 +25,8 @@
 package de.alpharogroup.crypto.key;
 
 /**
- * The enum {@link KeyType} can discriminate the type, if it is a private or public key or a certificate.
+ * The enum {@link KeyType} can discriminate the type, if it is a private or public key or a
+ * certificate.
  */
 public enum KeyType
 {
@@ -44,9 +45,11 @@ public enum KeyType
 	/**
 	 * Instantiates a new {@link KeyType} object.
 	 *
-	 * @param displayValue the display value
+	 * @param displayValue
+	 *            the display value
 	 */
-	private KeyType(final String displayValue){
+	private KeyType(final String displayValue)
+	{
 		this.displayValue = displayValue;
 	}
 

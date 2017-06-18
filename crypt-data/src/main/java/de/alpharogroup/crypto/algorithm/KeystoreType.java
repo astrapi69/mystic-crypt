@@ -29,7 +29,8 @@ import java.security.KeyStore;
 /**
  * The enum {@link KeystoreType} for algorithm that are used to create {@link KeyStore} objects.
  */
-public enum KeystoreType {
+public enum KeystoreType
+{
 
 	/** The enum constant for DSA algorithm. */
 	DSA,

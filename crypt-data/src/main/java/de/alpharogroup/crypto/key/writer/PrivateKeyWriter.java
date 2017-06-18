@@ -133,20 +133,20 @@ public class PrivateKeyWriter
 				{
 					if (keyFormat.equals(KeyFormat.PKCS_8))
 					{
-						outputStream
-							.write(PrivateKeyReader.BEGIN_PRIVATE_KEY_PREFIX.getBytes(StandardCharsets.US_ASCII));
+						outputStream.write(PrivateKeyReader.BEGIN_PRIVATE_KEY_PREFIX
+							.getBytes(StandardCharsets.US_ASCII));
 						outputStream.write(Base64.encodeBase64(privateKeyBytes, true));
-						outputStream
-							.write(PrivateKeyReader.END_PRIVATE_KEY_SUFFIX.getBytes(StandardCharsets.US_ASCII));
+						outputStream.write(PrivateKeyReader.END_PRIVATE_KEY_SUFFIX
+							.getBytes(StandardCharsets.US_ASCII));
 						break;
 					}
 					else if (keyFormat.equals(KeyFormat.PKCS_1))
 					{
-						outputStream.write(
-							PrivateKeyReader.BEGIN_RSA_PRIVATE_KEY_PREFIX.getBytes(StandardCharsets.US_ASCII));
+						outputStream.write(PrivateKeyReader.BEGIN_RSA_PRIVATE_KEY_PREFIX
+							.getBytes(StandardCharsets.US_ASCII));
 						outputStream.write(Base64.encodeBase64(privateKeyBytes, true));
-						outputStream.write(
-							PrivateKeyReader.END_RSA_PRIVATE_KEY_SUFFIX.getBytes(StandardCharsets.US_ASCII));
+						outputStream.write(PrivateKeyReader.END_RSA_PRIVATE_KEY_SUFFIX
+							.getBytes(StandardCharsets.US_ASCII));
 						break;
 					}
 				}

@@ -46,80 +46,6 @@ public class CertificateWriter
 {
 
 	/**
-	 * Write the given {@link X509Certificate} into the given {@link File} in the *.pem format.
-	 *
-	 * @param certificate
-	 *            the certificate
-	 * @param file
-	 *            the file to write in
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 * @throws CertificateEncodingException
-	 *             is thrown if an encoding error occurs.
-	 */
-	public static void writeInPemFormat(final X509Certificate certificate, final @NonNull File file)
-		throws IOException, CertificateEncodingException
-	{
-		writeInPemFormat(certificate, new FileOutputStream(file));
-	}
-
-	/**
-	 * Write the given {@link X509Certificate} into the given {@link File} in the *.der format.
-	 *
-	 * @param certificate
-	 *            the certificate
-	 * @param file
-	 *            the file to write in
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 * @throws CertificateEncodingException
-	 *             is thrown if an encoding error occurs.
-	 */
-	public static void writeInDerFormat(final X509Certificate certificate, final @NonNull File file)
-		throws IOException, CertificateEncodingException
-	{
-		writeInDerFormat(certificate, new FileOutputStream(file));
-	}
-
-	/**
-	 * Write the given {@link X509Certificate} into the given {@link OutputStream} in the *.pem
-	 * format.
-	 *
-	 * @param certificate
-	 *            the certificate
-	 * @param outputStream
-	 *            the output stream to write in
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 * @throws CertificateEncodingException
-	 *             is thrown if an encoding error occurs.
-	 */
-	public static void writeInDerFormat(final X509Certificate certificate,
-		final @NonNull OutputStream outputStream) throws IOException, CertificateEncodingException
-	{
-		write(certificate, outputStream, KeyFileFormat.DER);
-	}
-
-	/**
-	 * Write the given {@link X509Certificate} into the given {@link OutputStream} in the *.pem
-	 * format.
-	 *
-	 * @param certificate
-	 *            the certificate
-	 * @param outputStream
-	 *            the output stream to write in
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 * @throws CertificateEncodingException
-	 *             is thrown if an encoding error occurs.
-	 */
-	public static void writeInPemFormat(final X509Certificate certificate,
-		final @NonNull OutputStream outputStream) throws IOException, CertificateEncodingException
-	{
-		write(certificate, outputStream, KeyFileFormat.PEM);
-	}
-
-	/**
 	 * Write the given {@link X509Certificate} into the given {@link File} in the given
 	 * {@link KeyFileFormat} format.
 	 *
@@ -177,6 +103,80 @@ public class CertificateWriter
 				break;
 		}
 		outputStream.close();
+	}
+
+	/**
+	 * Write the given {@link X509Certificate} into the given {@link File} in the *.der format.
+	 *
+	 * @param certificate
+	 *            the certificate
+	 * @param file
+	 *            the file to write in
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws CertificateEncodingException
+	 *             is thrown if an encoding error occurs.
+	 */
+	public static void writeInDerFormat(final X509Certificate certificate, final @NonNull File file)
+		throws IOException, CertificateEncodingException
+	{
+		writeInDerFormat(certificate, new FileOutputStream(file));
+	}
+
+	/**
+	 * Write the given {@link X509Certificate} into the given {@link OutputStream} in the *.pem
+	 * format.
+	 *
+	 * @param certificate
+	 *            the certificate
+	 * @param outputStream
+	 *            the output stream to write in
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws CertificateEncodingException
+	 *             is thrown if an encoding error occurs.
+	 */
+	public static void writeInDerFormat(final X509Certificate certificate,
+		final @NonNull OutputStream outputStream) throws IOException, CertificateEncodingException
+	{
+		write(certificate, outputStream, KeyFileFormat.DER);
+	}
+
+	/**
+	 * Write the given {@link X509Certificate} into the given {@link File} in the *.pem format.
+	 *
+	 * @param certificate
+	 *            the certificate
+	 * @param file
+	 *            the file to write in
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws CertificateEncodingException
+	 *             is thrown if an encoding error occurs.
+	 */
+	public static void writeInPemFormat(final X509Certificate certificate, final @NonNull File file)
+		throws IOException, CertificateEncodingException
+	{
+		writeInPemFormat(certificate, new FileOutputStream(file));
+	}
+
+	/**
+	 * Write the given {@link X509Certificate} into the given {@link OutputStream} in the *.pem
+	 * format.
+	 *
+	 * @param certificate
+	 *            the certificate
+	 * @param outputStream
+	 *            the output stream to write in
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws CertificateEncodingException
+	 *             is thrown if an encoding error occurs.
+	 */
+	public static void writeInPemFormat(final X509Certificate certificate,
+		final @NonNull OutputStream outputStream) throws IOException, CertificateEncodingException
+	{
+		write(certificate, outputStream, KeyFileFormat.PEM);
 	}
 
 }

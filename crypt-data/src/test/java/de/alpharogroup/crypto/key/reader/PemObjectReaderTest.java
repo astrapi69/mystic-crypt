@@ -78,7 +78,7 @@ public class PemObjectReaderTest
 
 		PemObject pemObject = PemObjectReader.getPemObject(privatekeyPemFile);
 		String foo = PemObjectReader.toPemFormat(pemObject);
-		logger.debug("\n"+foo);
+		logger.debug("\n" + foo);
 	}
 
 }

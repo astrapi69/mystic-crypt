@@ -64,30 +64,30 @@ public class PublicKeyWriterTest
 	 * @throws InvalidKeySpecException
 	 *             is thrown if generation of the SecretKey object fails.
 	 * @throws NoSuchProviderException
-	 *             is thrown if the specified provider is not registered in the
-	 *             security provider list.
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
 	 */
 	@Test
-	public void testWriteFile() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
+	public void testWriteFile() throws IOException, NoSuchAlgorithmException,
+		InvalidKeySpecException, NoSuchProviderException
 	{
 		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
 		final File publickeyDerFile = new File(publickeyDerDir, "public.der");
 
 		final PublicKey publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
-		
+
 		final File keyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
 		final File writtenPublickeyDerFile = new File(keyDerDir, "written-public.der");
 		PublicKeyWriter.write(publicKey, writtenPublickeyDerFile);
-		
+
 		String expected = ChecksumExtensions.getChecksum(publickeyDerFile, Algorithm.MD5);
 		String actual = ChecksumExtensions.getChecksum(writtenPublickeyDerFile, Algorithm.MD5);
 		DeleteFileExtensions.delete(writtenPublickeyDerFile);
 		assertEquals(expected, actual);
 	}
-	
+
 	/**
-	 * Test method for
-	 * {@link PublicKeyWriter#writeInPemFormat(PublicKey, File)}.
+	 * Test method for {@link PublicKeyWriter#writeInPemFormat(PublicKey, File)}.
 	 * 
 	 * @throws Exception
 	 *             is thrown if a security issue occurs
@@ -100,10 +100,11 @@ public class PublicKeyWriterTest
 		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
 		final File privatekeyPemFile = new File(publickeyPemDir, "private.pem");
 
-		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile, SecurityProvider.BC);
-		
+		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile,
+			SecurityProvider.BC);
+
 		final PublicKey publicKey = PrivateKeyExtensions.generatePublicKey(privateKey);
-		
+
 		final File keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
 		final File convertedPublickeyPemFile = new File(keyPemDir, "converted-public.pem");
 		PublicKeyWriter.writeInPemFormat(publicKey, convertedPublickeyPemFile);

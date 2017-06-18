@@ -170,7 +170,8 @@ public class KeyExtensions
 	 *             is thrown if the specified provider is not registered in the security provider
 	 *             list.
 	 */
-	public static PrivateKey readPKCS8EncodedPrivateKey(final byte[] privateKeyBytes, final String provider)
+	public static PrivateKey readPKCS8EncodedPrivateKey(final byte[] privateKeyBytes,
+		final String provider)
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
 	{
 		final PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateKeyBytes);

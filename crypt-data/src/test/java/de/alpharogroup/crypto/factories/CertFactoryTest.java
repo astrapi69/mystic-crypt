@@ -115,8 +115,10 @@ public class CertFactoryTest
 		final String signatureAlgorithm = HashAlgorithm.SHA256.getAlgorithm() + CryptConst.WITH
 			+ KeyPairGeneratorAlgorithm.RSA.getAlgorithm();
 
-		final Date start = Date.from(LocalDate.of(2017, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		final Date end = Date.from(LocalDate.of(2027, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+		final Date start = Date.from(
+			LocalDate.of(2017, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+		final Date end = Date.from(
+			LocalDate.of(2027, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
 		final BigInteger serialNumber = randomSerialNumber();
 		// create certificate
 		final X509Certificate cert = CertFactory.newX509Certificate(publicKey, privateKey,
@@ -142,17 +144,20 @@ public class CertFactoryTest
 	 * {@link CertFactory#newX509CertificateV1(KeyPair, X500Name, BigInteger, Date, Date, X500Name, String)}.
 	 */
 	@Test
-	public void testNewX509CertificateV1() throws Exception {
+	public void testNewX509CertificateV1() throws Exception
+	{
 		Security.addProvider(new BouncyCastleProvider());
 		final KeyPair keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, 2048);
 		final X500Name issuer = new X500Name("CN=Issuer of this certificate");
 		final BigInteger serial = BigInteger.ONE;
-		final Date notBefore = Date.from(LocalDate.of(2017, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		final Date notAfter = Date.from(LocalDate.of(2027, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+		final Date notBefore = Date.from(
+			LocalDate.of(2017, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+		final Date notAfter = Date.from(
+			LocalDate.of(2027, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
 		final X500Name subject = new X500Name("CN=Subject of this certificate");
 		final String signatureAlgorithm = "SHA1withRSA";
-		final X509Certificate cert = CertFactory.newX509CertificateV1(keyPair, issuer, serial, notBefore, notAfter, subject,
-				signatureAlgorithm);
+		final X509Certificate cert = CertFactory.newX509CertificateV1(keyPair, issuer, serial,
+			notBefore, notAfter, subject, signatureAlgorithm);
 		AssertJUnit.assertNotNull(cert);
 
 	}

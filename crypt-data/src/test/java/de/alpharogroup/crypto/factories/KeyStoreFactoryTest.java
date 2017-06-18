@@ -41,18 +41,16 @@ import de.alpharogroup.file.search.PathFinder;
 /**
  * Test class for the class {@link KeyStoreFactory}.
  */
-public class KeyStoreFactoryTest {
+public class KeyStoreFactoryTest
+{
 
 	/**
-	 * Test method for
-	 * {@link KeyStoreFactory#newKeyStore(String, String, File, boolean)}. 
+	 * Test method for {@link KeyStoreFactory#newKeyStore(String, String, File, boolean)}.
 	 * 
 	 * @throws NoSuchAlgorithmException
-	 *             if the algorithm used to check the integrity of the keystore
-	 *             cannot be found
+	 *             if the algorithm used to check the integrity of the keystore cannot be found
 	 * @throws CertificateException
-	 *             if any of the certificates in the keystore could not be
-	 *             loaded
+	 *             if any of the certificates in the keystore could not be loaded
 	 * @throws FileNotFoundException
 	 *             if the file not found
 	 * @throws KeyStoreException
@@ -62,12 +60,14 @@ public class KeyStoreFactoryTest {
 	 *             Signals that an I/O exception has occurred.
 	 */
 	@Test
-	public void testNewKeyStore() throws NoSuchAlgorithmException, CertificateException, FileNotFoundException,
-			KeyStoreException, IOException {
+	public void testNewKeyStore() throws NoSuchAlgorithmException, CertificateException,
+		FileNotFoundException, KeyStoreException, IOException
+	{
 		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
 		final File privatekeyDerFile = new File(publickeyDerDir, "keystore.jks");
 
-		KeyStore keystore = KeyStoreFactory.newKeyStore("jks", "foobar-secret-pw", privatekeyDerFile, true);
+		KeyStore keystore = KeyStoreFactory.newKeyStore("jks", "foobar-secret-pw",
+			privatekeyDerFile, true);
 		AssertJUnit.assertNotNull(keystore);
 		DeleteFileExtensions.delete(privatekeyDerFile);
 	}
