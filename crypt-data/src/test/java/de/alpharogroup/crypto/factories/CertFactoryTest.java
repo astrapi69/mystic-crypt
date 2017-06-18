@@ -52,6 +52,7 @@ import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.crypto.key.writer.CertificateWriter;
 import de.alpharogroup.crypto.provider.SecurityProvider;
+import de.alpharogroup.file.delete.DeleteFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
@@ -132,6 +133,8 @@ public class CertFactoryTest
 		AssertJUnit.assertNotNull(certificate);
 		// check equal
 		AssertJUnit.assertEquals(cert, certificate);
+
+		DeleteFileExtensions.delete(certificateFile);
 	}
 
 	/**
