@@ -97,7 +97,7 @@ public class CertFactoryTest
 		Security.addProvider(new BouncyCastleProvider());
 
 		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile,
-			SecurityProvider.BC);		
+			SecurityProvider.BC);
 
 		final File publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
 		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
@@ -106,7 +106,7 @@ public class CertFactoryTest
 
 		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile,
 			SecurityProvider.BC);
-		
+
 		final String subject = "CN=Test subject";
 		final String issuer = "CN=Test issue";
 		final String signatureAlgorithm = HashAlgorithm.SHA256.getAlgorithm() + CryptConst.WITH
@@ -118,7 +118,7 @@ public class CertFactoryTest
 		final X509Certificate cert = CertFactory.newX509Certificate(publicKey, privateKey,
 			serialNumber, subject, issuer, signatureAlgorithm, start, end);
 		AssertJUnit.assertNotNull(cert);
-		
+
 		final File pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
 		final File certificateFile = new File(pemDir, "certificate.cert");
 		// save it ...
@@ -148,11 +148,7 @@ public class CertFactoryTest
 		final X509Certificate cert = CertFactory.newX509CertificateV1(keyPair, issuer, serial, notBefore, notAfter, subject,
 				signatureAlgorithm);
 		AssertJUnit.assertNotNull(cert);
-		
-		final File pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File certificateFile = new File(pemDir, "certificate.cert");
-		
-		CertificateWriter.writeInPemFormat(cert, certificateFile);
+
 	}
 
 }

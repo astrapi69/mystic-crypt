@@ -127,6 +127,8 @@ public class CertificateWriter
 	 *            the certificate
 	 * @param file
 	 *            the file to write in
+	 * @param fileFormat
+	 *            the file format to write
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws CertificateEncodingException
@@ -144,8 +146,10 @@ public class CertificateWriter
 	 *
 	 * @param certificate
 	 *            the certificate
-	 * @param file
-	 *            the file to write in
+	 * @param outputStream
+	 *            the output stream
+	 * @param fileFormat
+	 *            the file format to write
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws CertificateEncodingException
