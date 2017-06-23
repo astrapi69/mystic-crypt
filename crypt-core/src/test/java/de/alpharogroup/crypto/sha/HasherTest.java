@@ -52,6 +52,27 @@ public class HasherTest
 	private static final Logger logger = Logger.getLogger(HasherTest.class.getName());
 
 	/**
+	 * Test method for {@link Hasher#hash(byte[], String, HashAlgorithm, Charset)}
+	 *
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the MessageDigest object fails.
+	 */
+	@Test
+	public void testHashByteArray() throws NoSuchAlgorithmException
+	{
+		final Charset charset = Charset.forName("UTF-8");
+		final String password = "abcdefghijklmnopqrst";
+		final String newInsertPassword = "abcdefghijklmnopqrst";
+		final String salt = new String(Hasher.getRandomSalt(8, charset), charset);
+		final HashAlgorithm hashAlgorithm = HashAlgorithm.SHA_512;
+		final  byte[] expected = Hasher.hash(password.getBytes(), salt, hashAlgorithm, charset);
+		final  byte[] actual = Hasher.hash(newInsertPassword.getBytes(), salt, hashAlgorithm, charset);
+
+		AssertJUnit.assertTrue(expected.length == actual.length);
+		AssertJUnit.assertTrue("'expected' should be equal with 'actual'.", Arrays.equals(expected, actual));
+	}
+
+	/**
 	 * Test method for {@link Hasher#hash(String, String, HashAlgorithm, Charset)}
 	 *
 	 * @throws NoSuchAlgorithmException
