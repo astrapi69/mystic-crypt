@@ -70,6 +70,50 @@ public class Hasher
 	}
 
 	/**
+	 * Hashes the given {@link byte[]} object with the given parameters.
+	 *
+	 * @param hashIt
+	 *            the hash it
+	 * @param hashAlgorithm
+	 *            the hash algorithm
+	 * @return the generated {@link String} object
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the MessageDigest object fails.
+	 */
+	public static byte[] hash(final byte[] hashIt, final HashAlgorithm hashAlgorithm) throws NoSuchAlgorithmException
+	{
+		return hash(hashIt, null, hashAlgorithm, null);
+	}
+
+	/**
+	 * Hashes the given {@link byte[]} object with the given parameters.
+	 *
+	 * @param hashIt
+	 *            the hash it
+	 * @param salt
+	 *            the salt
+	 * @param hashAlgorithm
+	 *            the hash algorithm
+	 * @param charset
+	 *            the charset
+	 * @return the generated {@link String} object
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the MessageDigest object fails.
+	 */
+	public static byte[] hash(final byte[] hashIt, final String salt,
+		final HashAlgorithm hashAlgorithm, final Charset charset) throws NoSuchAlgorithmException
+	{
+		final MessageDigest messageDigest = MessageDigest.getInstance(hashAlgorithm.getAlgorithm());
+		messageDigest.reset();
+		if(salt != null) {
+			messageDigest.update(salt.getBytes(charset));
+		}
+		messageDigest.update(hashIt);
+		byte[] digestBytes = messageDigest.digest();
+		return digestBytes;
+	}
+
+	/**
 	 * Hashes the given {@link String} object with the given parameters.
 	 *
 	 * @param hashIt
