@@ -130,7 +130,7 @@ public class CertFactoryTest
 		// save it ...
 		CertificateWriter.writeInPemFormat(cert, certificateFile);
 		// read it ...
-		X509Certificate certificate = CertificateReader.readPemCertificate(certificateFile);
+		final X509Certificate certificate = CertificateReader.readPemCertificate(certificateFile);
 		// check null
 		AssertJUnit.assertNotNull(certificate);
 		// check equal

@@ -24,7 +24,8 @@
  */
 package de.alpharogroup.crypto;
 
-import org.testng.AssertJUnit;
+import static org.testng.AssertJUnit.assertEquals;
+
 import org.testng.annotations.Test;
 
 /**
@@ -39,16 +40,13 @@ public class CryptConstTest
 	@Test
 	public void testConcatenatedConst()
 	{
-		AssertJUnit.assertEquals(CryptConst.PBE_WITH_MD5_AND_DES, "PBEWithMD5AndDES");
+		assertEquals(CryptConst.PBE_WITH_MD5_AND_DES, "PBEWithMD5AndDES");
 
+		assertEquals(CryptConst.PBE_WITH_SHA1_AND_DES_EDE, "PBEWithSHA1AndDESede");
 
-		AssertJUnit.assertEquals(CryptConst.PBE_WITH_MD5_AND_AES, "PBEWithMD5AndAES");
+		assertEquals(CryptConst.PBKDF2_WITH_HMAC_SHA1, "PBKDF2WithHmacSHA1");
 
-
-		AssertJUnit.assertEquals(CryptConst.PBE_WITH_SHA1_AND_DES_EDE, "PBEWithSHA1AndDESede");
-
-
-		AssertJUnit.assertEquals(CryptConst.PBKDF2_WITH_HMAC_SHA1, "PBKDF2WithHmacSHA1");
+		assertEquals(CryptConst.SHA256_WITH_RSA, "SHA256withRSA");
 	}
 
 }

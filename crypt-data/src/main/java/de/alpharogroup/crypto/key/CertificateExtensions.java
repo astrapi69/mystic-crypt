@@ -60,8 +60,8 @@ public class CertificateExtensions
 	 */
 	public static String getIssuedTo(final X509Certificate certificate)
 	{
-		X500Principal issuedToPrincipal = certificate.getIssuerX500Principal();
-		String issuedTo = issuedToPrincipal.getName();
+		final X500Principal issuedToPrincipal = certificate.getIssuerX500Principal();
+		final String issuedTo = issuedToPrincipal.getName();
 		return issuedTo;
 	}
 
@@ -74,8 +74,8 @@ public class CertificateExtensions
 	 */
 	public static String getIssuedBy(final X509Certificate certificate)
 	{
-		X500Principal issuedByPrincipal = certificate.getSubjectX500Principal();
-		String issuedBy = issuedByPrincipal.getName();
+		final X500Principal issuedByPrincipal = certificate.getSubjectX500Principal();
+		final String issuedBy = issuedByPrincipal.getName();
 		return issuedBy;
 	}
 
@@ -132,18 +132,24 @@ public class CertificateExtensions
 	 *            the certificate
 	 * @param style
 	 *            the style
-	 * @return the first value of
+	 * @return the first value of the given {@link X509Certificate} and the given
+	 *         {@link ASN1ObjectIdentifier} or an empty String if the {@link ASN1ObjectIdentifier}
+	 *         does not exists.
 	 * @throws CertificateEncodingException
 	 *             is thrown if an encoding error occurs.
 	 */
 	public static String getFirstValueOf(final X509Certificate certificate,
-		ASN1ObjectIdentifier style) throws CertificateEncodingException
+		final ASN1ObjectIdentifier style) throws CertificateEncodingException
 	{
-		X500Name x500name = new JcaX509CertificateHolder(certificate).getSubject();
-		RDN[] rdns = x500name.getRDNs(style);
-		RDN rdn = rdns[0];
-		String firstValue = IETFUtils.valueToString(rdn.getFirst().getValue());
-		return firstValue;
+		final X500Name x500name = new JcaX509CertificateHolder(certificate).getSubject();
+		final RDN[] rdns = x500name.getRDNs(style);
+		if (rdns != null && 0 < rdns.length)
+		{
+			final RDN rdn = rdns[0];
+			final String firstValue = IETFUtils.valueToString(rdn.getFirst().getValue());
+			return firstValue;
+		}
+		return "";
 	}
 
 	/**
@@ -186,14 +192,26 @@ public class CertificateExtensions
 	 *             is thrown if instantiation of the MessageDigest object fails.
 	 */
 	public static String getFingerprint(final X509Certificate certificate,
-		HashAlgorithm hashAlgorithm) throws CertificateEncodingException, NoSuchAlgorithmException
+		final HashAlgorithm hashAlgorithm)
+		throws CertificateEncodingException, NoSuchAlgorithmException
 	{
+		final byte[] derEncoded = certificate.getEncoded();
 		final MessageDigest messageDigest = MessageDigest.getInstance(hashAlgorithm.getAlgorithm());
-		messageDigest.reset();
-		byte[] derEncoded = certificate.getEncoded();
 		messageDigest.update(derEncoded);
-		byte[] digest = messageDigest.digest();
-		String fingerprint = HexExtensions.toHexString(digest);
+		final byte[] digest = messageDigest.digest();
+		final String fingerprint = HexExtensions.toHexString(digest);
 		return fingerprint;
+	}
+
+	/**
+	 * Gets the signature algorithm.
+	 *
+	 * @param certificate
+	 *            the certificate
+	 * @return the signature algorithm
+	 */
+	public static String getSignatureAlgorithm(final X509Certificate certificate)
+	{
+		return certificate.getSigAlgName();
 	}
 }
