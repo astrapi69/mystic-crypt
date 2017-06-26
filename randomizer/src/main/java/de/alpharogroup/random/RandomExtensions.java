@@ -26,6 +26,7 @@ package de.alpharogroup.random;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.charset.Charset;
 import java.security.SecureRandom;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -704,6 +705,20 @@ public class RandomExtensions
 	public static byte[] newSalt()
 	{
 		return getRandomPrimitiveByteArray(16);
+	}
+
+	/**
+	 * Gets the random salt.
+	 *
+	 * @param length
+	 *            the length
+	 * @param charset
+	 *            the charset
+	 * @return the random salt
+	 */
+	public static byte[] getRandomSalt(final int length, final Charset charset)
+	{
+		return RandomExtensions.getRandomString(Constants.LCUCCHARSWN, length).getBytes(charset);
 	}
 
 }
