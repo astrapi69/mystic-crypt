@@ -28,7 +28,6 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
@@ -37,13 +36,10 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import org.apache.commons.codec.binary.Base64;
-
 import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.algorithm.HashAlgorithm;
+import de.alpharogroup.crypto.hash.HashExtensions;
 import de.alpharogroup.crypto.hex.HexableEncryptor;
-import de.alpharogroup.random.Constants;
-import de.alpharogroup.random.RandomExtensions;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -54,112 +50,6 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class Hasher
 {
-
-	/**
-	 * Gets the random salt.
-	 *
-	 * @param length
-	 *            the length
-	 * @param charset
-	 *            the charset
-	 * @return the random salt
-	 */
-	public static byte[] getRandomSalt(final int length, final Charset charset)
-	{
-		return RandomExtensions.getRandomString(Constants.LCUCCHARSWN, length).getBytes(charset);
-	}
-
-	/**
-	 * Hashes the given {@link byte[]} object with the given parameters.
-	 *
-	 * @param hashIt
-	 *            the hash it
-	 * @param hashAlgorithm
-	 *            the hash algorithm
-	 * @return the generated {@link String} object
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the MessageDigest object fails.
-	 */
-	public static byte[] hash(final byte[] hashIt, final HashAlgorithm hashAlgorithm) throws NoSuchAlgorithmException
-	{
-		return hash(hashIt, null, hashAlgorithm, null);
-	}
-
-	/**
-	 * Hashes the given {@link byte[]} object with the given parameters.
-	 *
-	 * @param hashIt
-	 *            the hash it
-	 * @param salt
-	 *            the salt
-	 * @param hashAlgorithm
-	 *            the hash algorithm
-	 * @param charset
-	 *            the charset
-	 * @return the generated {@link String} object
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the MessageDigest object fails.
-	 */
-	public static byte[] hash(final byte[] hashIt, final String salt,
-		final HashAlgorithm hashAlgorithm, final Charset charset) throws NoSuchAlgorithmException
-	{
-		final MessageDigest messageDigest = MessageDigest.getInstance(hashAlgorithm.getAlgorithm());
-		messageDigest.reset();
-		if(salt != null) {
-			messageDigest.update(salt.getBytes(charset));
-		}
-		messageDigest.update(hashIt);
-		byte[] digestBytes = messageDigest.digest();
-		return digestBytes;
-	}
-
-	/**
-	 * Hashes the given {@link String} object with the given parameters.
-	 *
-	 * @param hashIt
-	 *            the hash it
-	 * @param salt
-	 *            the salt
-	 * @param hashAlgorithm
-	 *            the hash algorithm
-	 * @param charset
-	 *            the charset
-	 * @return the generated {@link String} object
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the MessageDigest object fails.
-	 */
-	public static String hash(final String hashIt, final String salt,
-		final HashAlgorithm hashAlgorithm, final Charset charset) throws NoSuchAlgorithmException
-	{
-		final MessageDigest messageDigest = MessageDigest.getInstance(hashAlgorithm.getAlgorithm());
-		messageDigest.reset();
-		messageDigest.update(salt.getBytes(charset));
-		return new String(messageDigest.digest(hashIt.getBytes(charset)), charset);
-	}
-
-	/**
-	 * Hashes and encodes it with base64 from the given {@link String} object with the given
-	 * parameters.
-	 *
-	 * @param hashIt
-	 *            the hash it
-	 * @param salt
-	 *            the salt
-	 * @param hashAlgorithm
-	 *            the hash algorithm
-	 * @param charset
-	 *            the charset
-	 * @return the generated {@link String} object
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the MessageDigest object fails.
-	 */
-	public static String hashAndBase64(final String hashIt, final String salt,
-		final HashAlgorithm hashAlgorithm, final Charset charset) throws NoSuchAlgorithmException
-	{
-		final String hashedAndBase64 = new Base64()
-			.encodeToString(hash(hashIt, salt, hashAlgorithm, charset).getBytes(charset));
-		return hashedAndBase64;
-	}
 
 	/**
 	 * Hashes and hex it with the given {@link String} object with the given parameters.
@@ -197,7 +87,7 @@ public class Hasher
 		InvalidKeySpecException, InvalidAlgorithmParameterException
 	{
 		final HexableEncryptor hexEncryptor = new HexableEncryptor(CryptConst.PRIVATE_KEY);
-		return hexEncryptor.encrypt(hash(hashIt, salt, hashAlgorithm, charset));
+		return hexEncryptor.encrypt(HashExtensions.hash(hashIt, salt, hashAlgorithm, charset));
 	}
 
 }
