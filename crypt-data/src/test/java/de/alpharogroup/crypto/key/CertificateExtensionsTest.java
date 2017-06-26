@@ -135,7 +135,7 @@ public class CertificateExtensionsTest
 	public void testGetValidFrom()
 	{
 		final Date expected = Date.from(
-			LocalDate.of(2017, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+			LocalDate.of(2017, Month.JANUARY, 1).atStartOfDay(ZoneId.of("UTC")).toInstant());
 		final Date actual = CertificateExtensions.getValidFrom(certificate);
 		assertEquals(expected, actual);
 	}
@@ -147,7 +147,7 @@ public class CertificateExtensionsTest
 	public void testGetValidUntil()
 	{
 		final Date expected = Date.from(
-			LocalDate.of(2027, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+			LocalDate.of(2027, Month.JANUARY, 1).atStartOfDay(ZoneId.of("UTC")).toInstant());
 		final Date actual = CertificateExtensions.getValidUntil(certificate);
 		assertEquals(expected, actual);
 	}
