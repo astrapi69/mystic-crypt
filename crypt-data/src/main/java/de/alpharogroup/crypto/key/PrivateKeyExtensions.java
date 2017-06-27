@@ -108,6 +108,10 @@ public class PrivateKeyExtensions
 		{
 			return KeySize.KEYSIZE_4096;
 		}
+		if (length == 8192)
+		{
+			return KeySize.KEYSIZE_8192;
+		}
 		return null;
 	}
 
