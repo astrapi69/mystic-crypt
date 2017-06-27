@@ -70,7 +70,7 @@ public class HashExtensionsTest
 		final Charset charset = Charset.forName("UTF-8");
 		final String password = "abcdefghijklmnopqrst";
 		final String newInsertPassword = "abcdefghijklmnopqrst";
-		final String salt = null;
+		final String salt = "NzeCdmaz";
 		final HashAlgorithm hashAlgorithm = HashAlgorithm.SHA_512;
 		byte[] expected = HashExtensions.hash(password.getBytes(), salt, hashAlgorithm, charset);
 		byte[] actual = HashExtensions.hash(newInsertPassword.getBytes(), salt, hashAlgorithm, charset);
