@@ -27,6 +27,8 @@ The source code comes under the liberal MIT License, making mystic-crypt great f
 
 [![Coverage Status](https://coveralls.io/repos/github/astrapi69/mystic-crypt/badge.svg?branch=develop)](https://coveralls.io/github/astrapi69/mystic-crypt?branch=develop)
 
+[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/mystic-crypt/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/mystic-crypt)
+
 ## Maven dependency
 
 Maven dependency is now on sonatype.
