@@ -39,7 +39,9 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 import de.alpharogroup.crypto.algorithm.HashAlgorithm;
+import de.alpharogroup.crypto.hash.HashExtensions;
 import de.alpharogroup.crypto.sha.Hasher;
+import de.alpharogroup.random.RandomExtensions;
 import de.alpharogroup.random.RandomObjectsExtensions;
 
 /**
@@ -115,7 +117,7 @@ public class PasswordEncryptor implements Serializable
 	 */
 	public String getRandomSalt(final int length)
 	{
-		return new String(Hasher.getRandomSalt(length, DEFAULT_CHARSET), DEFAULT_CHARSET);
+		return new String(RandomExtensions.getRandomSalt(length, DEFAULT_CHARSET), DEFAULT_CHARSET);
 	}
 
 	/**
@@ -208,7 +210,7 @@ public class PasswordEncryptor implements Serializable
 	public String hashPassword(final String password, final String salt,
 		final HashAlgorithm hashAlgorithm, final Charset charset) throws NoSuchAlgorithmException
 	{
-		final String hashedPassword = Hasher.hash(password, salt, hashAlgorithm, charset);
+		final String hashedPassword = HashExtensions.hash(password, salt, hashAlgorithm, charset);
 		return hashedPassword;
 	}
 

@@ -9,6 +9,7 @@ import java.security.cert.X509Certificate;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 import org.bouncycastle.asn1.x500.style.BCStyle;
@@ -135,7 +136,7 @@ public class CertificateExtensionsTest
 	public void testGetValidFrom()
 	{
 		final Date expected = Date.from(
-			LocalDate.of(2017, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+			ZonedDateTime.of(2016, 12, 31, 23, 0, 0, 0, ZoneId.of("UTC")).toInstant());
 		final Date actual = CertificateExtensions.getValidFrom(certificate);
 		assertEquals(expected, actual);
 	}
@@ -147,7 +148,7 @@ public class CertificateExtensionsTest
 	public void testGetValidUntil()
 	{
 		final Date expected = Date.from(
-			LocalDate.of(2027, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+			ZonedDateTime.of(2026, 12, 31, 23, 0, 0, 0, ZoneId.of("UTC")).toInstant());
 		final Date actual = CertificateExtensions.getValidUntil(certificate);
 		assertEquals(expected, actual);
 	}
