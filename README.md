@@ -44,6 +44,10 @@ randomizer [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/ra
 Maven dependency is now on sonatype.
 Check out [sonatype repository](https://oss.sonatype.org/index.html#nexus-search;quick~mystic-crypt) for latest snapshots and releases.
 
+![maven-dependencies-diagramm](https://github.com/astrapi69/mystic-crypt/blob/develop/src/main/resources/imgs/mystic-crypt-mvn-dependencies.png)
+
+This erd-diagramm was created with with [netbeans](https://netbeans.org/).
+
 You can first define the version properties:
 
 	<properties>
