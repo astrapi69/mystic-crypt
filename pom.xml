@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mvn-java-parent</artifactId>
-		<version>2.26.0</version>
+		<version>2.26.1</version>
 		<relativePath></relativePath>
 	</parent>
 
@@ -144,7 +144,7 @@
 				<artifactId>crypt-data</artifactId>
 				<version>${crypt-data.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.bouncycastle</groupId>
 				<artifactId>bcprov-jdk15on</artifactId>
@@ -234,7 +234,7 @@
 								<exclude>de/alpharogroup/crypto/modes/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/padding/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/provider/**/*.class</exclude>
-								<exclude>de/alpharogroup/crypto/pw/**/*.class</exclude>								
+								<exclude>de/alpharogroup/crypto/pw/**/*.class</exclude>
 								<!-- beans -->
 								<exclude>de/alpharogroup/auth/models/**/*.class</exclude>
 								<exclude>de/alpharogroup/auth/token/**/*.class</exclude>
