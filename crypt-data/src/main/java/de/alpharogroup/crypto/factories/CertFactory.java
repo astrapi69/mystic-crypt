@@ -161,4 +161,95 @@ public class CertFactory
 		return x509Certificate;
 	}
 
+	/**
+	 * Factory method for creating a new intermediate {@link X509Certificate}
+	 * object of version 3 of X.509 from the given parameters that can be used
+	 * to sign other certificates.
+	 *
+	 * @param keyPair
+	 *            the key pair
+	 * @param issuer
+	 *            X500Name representing the issuer of this certificate.
+	 * @param serial
+	 *            the serial number for the certificate.
+	 * @param notBefore
+	 *            date before which the certificate is not valid.
+	 * @param notAfter
+	 *            date after which the certificate is not valid.
+	 * @param subject
+	 *            X500Name representing the subject of this certificate.
+	 * @param signatureAlgorithm
+	 *            the signature algorithm i.e 'SHA1withRSA'
+	 * @param caCert
+	 *            the ca cert
+	 * @return the {@link X509Certificate} object
+	 * @throws Exception
+	 *             is thrown if if a security error occur
+	 */
+	public static X509Certificate newIntermediateX509CertificateV3(KeyPair keyPair, X500Name issuer, BigInteger serial,
+			Date notBefore, Date notAfter, X500Name subject, String signatureAlgorithm, X509Certificate caCert)
+			throws Exception {
+		X509v3CertificateBuilder certBuilder = new JcaX509v3CertificateBuilder(issuer, serial, notBefore, notAfter,
+				subject, keyPair.getPublic());
+
+		JcaX509ExtensionUtils extensionUtils = new JcaX509ExtensionUtils();
+		certBuilder.addExtension(Extension.authorityKeyIdentifier, false,
+				extensionUtils.createAuthorityKeyIdentifier(caCert));
+		certBuilder.addExtension(Extension.subjectKeyIdentifier, false,
+				extensionUtils.createSubjectKeyIdentifier(keyPair.getPublic()));
+		certBuilder.addExtension(Extension.basicConstraints, true, new BasicConstraints(0));
+		certBuilder.addExtension(Extension.keyUsage, true,
+				new KeyUsage(KeyUsage.digitalSignature | KeyUsage.keyCertSign | KeyUsage.cRLSign));
+		ContentSigner signer = new JcaContentSignerBuilder(signatureAlgorithm).setProvider(SecurityProvider.BC.name())
+				.build(keyPair.getPrivate());
+		return new JcaX509CertificateConverter().setProvider(SecurityProvider.BC.name())
+				.getCertificate(certBuilder.build(signer));
+	}
+
+	/**
+	 * Factory method for creating a new intermediate {@link X509Certificate}
+	 * object of version 3 of X.509 from the given parameters that can be used
+	 * as an end entity certificate.
+	 *
+	 * @param keyPair
+	 *            the key pair
+	 * @param issuer
+	 *            X500Name representing the issuer of this certificate.
+	 * @param serial
+	 *            the serial number for the certificate.
+	 * @param notBefore
+	 *            date before which the certificate is not valid.
+	 * @param notAfter
+	 *            date after which the certificate is not valid.
+	 * @param subject
+	 *            X500Name representing the subject of this certificate.
+	 * @param signatureAlgorithm
+	 *            the signature algorithm i.e 'SHA1withRSA'
+	 * @param caCert
+	 *            the ca cert
+	 * @return the {@link X509Certificate} object
+	 * @throws Exception
+	 *             is thrown if if a security error occur
+	 */
+	public static X509Certificate newEndEntityX509CertificateV3(KeyPair keyPair, X500Name issuer, BigInteger serial,
+			Date notBefore, Date notAfter, X500Name subject, String signatureAlgorithm, X509Certificate caCert)
+			throws Exception {
+		X509v3CertificateBuilder certBuilder = new JcaX509v3CertificateBuilder(issuer, serial, notBefore, notAfter,
+				subject, keyPair.getPublic());
+
+		JcaX509ExtensionUtils extensionUtils = new JcaX509ExtensionUtils();
+		certBuilder.addExtension(Extension.authorityKeyIdentifier, false,
+				extensionUtils.createAuthorityKeyIdentifier(caCert));
+		certBuilder.addExtension(Extension.subjectKeyIdentifier, false,
+				extensionUtils.createSubjectKeyIdentifier(keyPair.getPublic()));
+		certBuilder.addExtension(Extension.basicConstraints, true, new BasicConstraints(false));
+		certBuilder.addExtension(Extension.keyUsage, true,
+				new KeyUsage(KeyUsage.digitalSignature | KeyUsage.keyEncipherment));
+		ContentSigner signer = new JcaContentSignerBuilder(signatureAlgorithm).setProvider(SecurityProvider.BC.name())
+				.build(keyPair.getPrivate());
+		return new JcaX509CertificateConverter().setProvider(SecurityProvider.BC.name())
+				.getCertificate(certBuilder.build(signer));
+	}
+
+
 }
