@@ -1,3 +1,27 @@
+/**
+ * The MIT License
+ *
+ * Copyright (C) 2015 Asterios Raptis
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 package de.alpharogroup.crypto.key;
 
 import static org.testng.AssertJUnit.assertEquals;
@@ -49,56 +73,6 @@ public class CertificateExtensionsTest
 	}
 
 	/**
-	 * Test method for {@link CertificateExtensions#getIssuedTo(X509Certificate)}.
-	 */
-	@Test
-	public void testGetIssuedTo()
-	{
-		final String expected = "CN=Test issue";
-		final String actual = CertificateExtensions.getIssuedTo(certificate);
-		assertEquals(expected, actual);
-	}
-
-	/**
-	 * Test method for {@link CertificateExtensions#getIssuedBy(X509Certificate)}.
-	 */
-	@Test
-	public void testGetIssuedBy()
-	{
-		final String expected = "CN=Test subject";
-		final String actual = CertificateExtensions.getIssuedBy(certificate);
-		assertEquals(expected, actual);
-	}
-
-	/**
-	 * Test method for {@link CertificateExtensions#getOrganization(X509Certificate)}.
-	 *
-	 * @throws CertificateEncodingException
-	 *             is thrown if an encoding error occurs.
-	 */
-	@Test
-	public void testGetOrganization() throws CertificateEncodingException
-	{
-		final String expected = "";
-		final String actual = CertificateExtensions.getOrganization(certificate);
-		assertEquals(expected, actual);
-	}
-
-	/**
-	 * Test method for {@link CertificateExtensions#getLocality(X509Certificate)}.
-	 *
-	 * @throws CertificateEncodingException
-	 *             is thrown if an encoding error occurs.
-	 */
-	@Test
-	public void testGetLocality() throws CertificateEncodingException
-	{
-		final String expected = "";
-		final String actual = CertificateExtensions.getLocality(certificate);
-		assertEquals(expected, actual);
-	}
-
-	/**
 	 * Test method for {@link CertificateExtensions#getCountry(X509Certificate)}.
 	 *
 	 * @throws CertificateEncodingException
@@ -109,45 +83,6 @@ public class CertificateExtensionsTest
 	{
 		final String expected = "";
 		final String actual = CertificateExtensions.getCountry(certificate);
-		assertEquals(expected, actual);
-	}
-
-	/**
-	 * Test method for
-	 * {@link CertificateExtensions#getFirstValueOf(X509Certificate, org.bouncycastle.asn1.ASN1ObjectIdentifier)}.
-	 *
-	 * @throws CertificateEncodingException
-	 *             is thrown if an encoding error occurs.
-	 */
-	@Test
-	public void testGetFirstValueOf() throws CertificateEncodingException
-	{
-		final String expected = "Test subject";
-		final String actual = CertificateExtensions.getFirstValueOf(certificate, BCStyle.CN);
-		assertEquals(expected, actual);
-	}
-
-	/**
-	 * Test method for {@link CertificateExtensions#getValidFrom(X509Certificate)}.
-	 */
-	@Test
-	public void testGetValidFrom()
-	{
-		final Date expected = Date.from(
-			ZonedDateTime.of(2016, 12, 31, 23, 0, 0, 0, ZoneId.of("UTC")).toInstant());
-		final Date actual = CertificateExtensions.getValidFrom(certificate);
-		assertEquals(expected, actual);
-	}
-
-	/**
-	 * Test method for {@link CertificateExtensions#getValidUntil(X509Certificate)}.
-	 */
-	@Test
-	public void testGetValidUntil()
-	{
-		final Date expected = Date.from(
-			ZonedDateTime.of(2026, 12, 31, 23, 0, 0, 0, ZoneId.of("UTC")).toInstant());
-		final Date actual = CertificateExtensions.getValidUntil(certificate);
 		assertEquals(expected, actual);
 	}
 
@@ -180,6 +115,71 @@ public class CertificateExtensionsTest
 	}
 
 	/**
+	 * Test method for
+	 * {@link CertificateExtensions#getFirstValueOf(X509Certificate, org.bouncycastle.asn1.ASN1ObjectIdentifier)}.
+	 *
+	 * @throws CertificateEncodingException
+	 *             is thrown if an encoding error occurs.
+	 */
+	@Test
+	public void testGetFirstValueOf() throws CertificateEncodingException
+	{
+		final String expected = "Test subject";
+		final String actual = CertificateExtensions.getFirstValueOf(certificate, BCStyle.CN);
+		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test method for {@link CertificateExtensions#getIssuedBy(X509Certificate)}.
+	 */
+	@Test
+	public void testGetIssuedBy()
+	{
+		final String expected = "CN=Test subject";
+		final String actual = CertificateExtensions.getIssuedBy(certificate);
+		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test method for {@link CertificateExtensions#getIssuedTo(X509Certificate)}.
+	 */
+	@Test
+	public void testGetIssuedTo()
+	{
+		final String expected = "CN=Test issue";
+		final String actual = CertificateExtensions.getIssuedTo(certificate);
+		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test method for {@link CertificateExtensions#getLocality(X509Certificate)}.
+	 *
+	 * @throws CertificateEncodingException
+	 *             is thrown if an encoding error occurs.
+	 */
+	@Test
+	public void testGetLocality() throws CertificateEncodingException
+	{
+		final String expected = "";
+		final String actual = CertificateExtensions.getLocality(certificate);
+		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test method for {@link CertificateExtensions#getOrganization(X509Certificate)}.
+	 *
+	 * @throws CertificateEncodingException
+	 *             is thrown if an encoding error occurs.
+	 */
+	@Test
+	public void testGetOrganization() throws CertificateEncodingException
+	{
+		final String expected = "";
+		final String actual = CertificateExtensions.getOrganization(certificate);
+		assertEquals(expected, actual);
+	}
+
+	/**
 	 * Test method for {@link CertificateExtensions#getSignatureAlgorithm(X509Certificate)}.
 	 */
 	@Test
@@ -187,6 +187,30 @@ public class CertificateExtensionsTest
 	{
 		final String expected = CryptConst.SHA256_WITH_RSA;
 		final String actual = CertificateExtensions.getSignatureAlgorithm(certificate);
+		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test method for {@link CertificateExtensions#getValidFrom(X509Certificate)}.
+	 */
+	@Test
+	public void testGetValidFrom()
+	{
+		final Date expected = Date
+			.from(ZonedDateTime.of(2016, 12, 31, 23, 0, 0, 0, ZoneId.of("UTC")).toInstant());
+		final Date actual = CertificateExtensions.getValidFrom(certificate);
+		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test method for {@link CertificateExtensions#getValidUntil(X509Certificate)}.
+	 */
+	@Test
+	public void testGetValidUntil()
+	{
+		final Date expected = Date
+			.from(ZonedDateTime.of(2026, 12, 31, 23, 0, 0, 0, ZoneId.of("UTC")).toInstant());
+		final Date actual = CertificateExtensions.getValidUntil(certificate);
 		assertEquals(expected, actual);
 	}
 

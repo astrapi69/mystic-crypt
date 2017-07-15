@@ -48,7 +48,8 @@ public class CryptConstTest
 
 		assertEquals(CryptConst.PBKDF2_WITH_HMAC_SHA1, "PBKDF2WithHmacSHA1");
 
-		assertEquals(CryptConst.PBE_WITH_SHA1_AND_128BIT_AES_CBC_BC, "PBEWITHSHA1AND128BITAES-CBC-BC");
+		assertEquals(CryptConst.PBE_WITH_SHA1_AND_128BIT_AES_CBC_BC,
+			"PBEWITHSHA1AND128BITAES-CBC-BC");
 
 		assertEquals(CryptConst.SHA256_WITH_RSA, "SHA256withRSA");
 	}

@@ -47,9 +47,10 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class KeyPairFactory
 {
-	
+
 	/**
-	 * Factory method for creating a new {@link KeyPair} from the given algorithm and {@link KeySize}.
+	 * Factory method for creating a new {@link KeyPair} from the given algorithm and
+	 * {@link KeySize}.
 	 *
 	 * @param algorithm
 	 *            the algorithm

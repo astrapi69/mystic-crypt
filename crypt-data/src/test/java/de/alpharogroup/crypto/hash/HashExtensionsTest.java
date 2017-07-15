@@ -40,54 +40,6 @@ public class HashExtensionsTest
 {
 
 	/**
-	 * Test method for {@link HashExtensions#hash(byte[], HashAlgorithm)}
-	 *
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the MessageDigest object fails.
-	 */
-	@Test
-	public void testHashByteArrayWithAlgorithm() throws NoSuchAlgorithmException
-	{
-		final String password = "abcdefghijklmnopqrst";
-		final String newInsertPassword = "abcdefghijklmnopqrst";
-		final HashAlgorithm hashAlgorithm = HashAlgorithm.SHA_512;
-		byte[] expected = HashExtensions.hash(password.getBytes(), hashAlgorithm);
-		byte[] actual = HashExtensions.hash(newInsertPassword.getBytes(), hashAlgorithm);
-
-		AssertJUnit.assertTrue(expected.length == actual.length);
-		AssertJUnit.assertTrue("'expected' should be equal with 'actual'.", Arrays.equals(expected, actual));
-	}
-
-	/**
-	 * Test method for {@link HashExtensions#hash(byte[], String, HashAlgorithm, Charset)}
-	 *
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the MessageDigest object fails.
-	 */
-	@Test
-	public void testHashByteArray() throws NoSuchAlgorithmException
-	{
-		final Charset charset = Charset.forName("UTF-8");
-		final String password = "abcdefghijklmnopqrst";
-		final String newInsertPassword = "abcdefghijklmnopqrst";
-		final String salt = "NzeCdmaz";
-		final HashAlgorithm hashAlgorithm = HashAlgorithm.SHA_512;
-		byte[] expected = HashExtensions.hash(password.getBytes(), salt, hashAlgorithm, charset);
-		byte[] actual = HashExtensions.hash(newInsertPassword.getBytes(), salt, hashAlgorithm, charset);
-
-		AssertJUnit.assertTrue(expected.length == actual.length);
-		AssertJUnit.assertTrue("'expected' should be equal with 'actual'.", Arrays.equals(expected, actual));
-		
-		expected = HashExtensions.hash(password.getBytes(), null, hashAlgorithm, charset);
-		actual = HashExtensions.hash(newInsertPassword.getBytes(), null, hashAlgorithm, charset);
-
-		AssertJUnit.assertTrue(expected.length == actual.length);
-		AssertJUnit.assertTrue("'expected' should be equal with 'actual'.", Arrays.equals(expected, actual));
-	}
-	
-
-	
-	/**
 	 * Test method for {@link HashExtensions#hash(String, String, HashAlgorithm, Charset)}
 	 *
 	 * @throws NoSuchAlgorithmException
@@ -122,11 +74,64 @@ public class HashExtensionsTest
 		final String newInsertPassword = "secret";
 		final String salt = "NzeCdmaz";
 		final HashAlgorithm hashAlgorithm = HashAlgorithm.SHA_512;
-		final String expected = HashExtensions.hashAndBase64(password, salt, hashAlgorithm, charset);
-		final String actual = HashExtensions.hashAndBase64(newInsertPassword, salt, hashAlgorithm, charset);
+		final String expected = HashExtensions.hashAndBase64(password, salt, hashAlgorithm,
+			charset);
+		final String actual = HashExtensions.hashAndBase64(newInsertPassword, salt, hashAlgorithm,
+			charset);
 		AssertJUnit.assertTrue("'expected' should be equal with 'actual'.",
 			expected.equals(actual));
 	}
 
+
+	/**
+	 * Test method for {@link HashExtensions#hash(byte[], String, HashAlgorithm, Charset)}
+	 *
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the MessageDigest object fails.
+	 */
+	@Test
+	public void testHashByteArray() throws NoSuchAlgorithmException
+	{
+		final Charset charset = Charset.forName("UTF-8");
+		final String password = "abcdefghijklmnopqrst";
+		final String newInsertPassword = "abcdefghijklmnopqrst";
+		final String salt = "NzeCdmaz";
+		final HashAlgorithm hashAlgorithm = HashAlgorithm.SHA_512;
+		byte[] expected = HashExtensions.hash(password.getBytes(), salt, hashAlgorithm, charset);
+		byte[] actual = HashExtensions.hash(newInsertPassword.getBytes(), salt, hashAlgorithm,
+			charset);
+
+		AssertJUnit.assertTrue(expected.length == actual.length);
+		AssertJUnit.assertTrue("'expected' should be equal with 'actual'.",
+			Arrays.equals(expected, actual));
+
+		expected = HashExtensions.hash(password.getBytes(), null, hashAlgorithm, charset);
+		actual = HashExtensions.hash(newInsertPassword.getBytes(), null, hashAlgorithm, charset);
+
+		AssertJUnit.assertTrue(expected.length == actual.length);
+		AssertJUnit.assertTrue("'expected' should be equal with 'actual'.",
+			Arrays.equals(expected, actual));
+	}
+
+	/**
+	 * Test method for {@link HashExtensions#hash(byte[], HashAlgorithm)}
+	 *
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the MessageDigest object fails.
+	 */
+	@Test
+	public void testHashByteArrayWithAlgorithm() throws NoSuchAlgorithmException
+	{
+		final String password = "abcdefghijklmnopqrst";
+		final String newInsertPassword = "abcdefghijklmnopqrst";
+		final HashAlgorithm hashAlgorithm = HashAlgorithm.SHA_512;
+		byte[] expected = HashExtensions.hash(password.getBytes(), hashAlgorithm);
+		byte[] actual = HashExtensions.hash(newInsertPassword.getBytes(), hashAlgorithm);
+
+		AssertJUnit.assertTrue(expected.length == actual.length);
+		AssertJUnit.assertTrue("'expected' should be equal with 'actual'.",
+			Arrays.equals(expected, actual));
+	}
+
 }
-	
+

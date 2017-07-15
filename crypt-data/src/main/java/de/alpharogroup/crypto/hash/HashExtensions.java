@@ -53,7 +53,8 @@ public class HashExtensions
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the MessageDigest object fails.
 	 */
-	public static byte[] hash(final byte[] hashIt, final HashAlgorithm hashAlgorithm) throws NoSuchAlgorithmException
+	public static byte[] hash(final byte[] hashIt, final HashAlgorithm hashAlgorithm)
+		throws NoSuchAlgorithmException
 	{
 		return hash(hashIt, null, hashAlgorithm, null);
 	}
@@ -78,7 +79,8 @@ public class HashExtensions
 	{
 		final MessageDigest messageDigest = MessageDigest.getInstance(hashAlgorithm.getAlgorithm());
 		messageDigest.reset();
-		if(salt != null) {
+		if (salt != null)
+		{
 			messageDigest.update(salt.getBytes(charset));
 		}
 		messageDigest.update(hashIt);
