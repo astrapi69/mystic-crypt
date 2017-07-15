@@ -1,8 +1,8 @@
-# mystic-crypt
+# Overview
 
 The target of this parent project is to make encryption and decryption as simple as possible.
 
-##Key features:
+## Key features:
 
  * Encryption with PublicKey and decryption with PrivateKey objects that was generated with openssl or java
  * Encryption and decryption from .pem, .der files that was generated with openssl
@@ -19,9 +19,23 @@ The target of this parent project is to make encryption and decryption as simple
 The source code comes under the liberal MIT License, making mystic-crypt great for all types of applications.
 
 
-# Build status and latest maven version
+## Build status
 
 [![Build Status](https://travis-ci.org/astrapi69/mystic-crypt.svg?branch=master)](https://travis-ci.org/astrapi69/mystic-crypt)
+
+## Coverage Status
+[![Coverage Status](https://coveralls.io/repos/github/astrapi69/mystic-crypt/badge.svg?branch=develop)](https://coveralls.io/github/astrapi69/mystic-crypt?branch=develop)
+
+## Javadoc
+auth-security [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/auth-security/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/auth-security)
+
+crypt-core [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/crypt-core/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-core)
+
+crypt-data [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/crypt-data/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-data)
+
+randomizer [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/randomizer/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/randomizer)
+
+## Maven Central
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.alpharogroup/mystic-crypt/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.alpharogroup/mystic-crypt)
 
@@ -30,17 +44,26 @@ The source code comes under the liberal MIT License, making mystic-crypt great f
 Maven dependency is now on sonatype.
 Check out [sonatype repository](https://oss.sonatype.org/index.html#nexus-search;quick~mystic-crypt) for latest snapshots and releases.
 
+![maven-dependencies-diagramm](https://github.com/astrapi69/mystic-crypt/blob/develop/src/main/resources/imgs/mystic-crypt-mvn-dependencies.png)
 
-Add the following maven dependency to your project `pom.xml` if you want to import the core functionality of mystic-core:
+This erd-diagramm was created with with [netbeans](https://netbeans.org/).
 
-Than you can add the dependency to your dependencies:
+You can first define the version properties:
 
+	<properties>
+			...
 		<!-- MYSTIC-CRYPT versions -->
-		<mystic-crypt.version>4.20.0</mystic-crypt.version>
+		<mystic-crypt.version>4.22.0</mystic-crypt.version>
 		<crypt-core.version>${mystic-crypt.version}</crypt-core.version>
 		<randomizer.version>${mystic-crypt.version}</randomizer.version>
 		<auth-security.version>${mystic-crypt.version}</auth-security.version>
 		<crypt-data.version>${mystic-crypt.version}</crypt-data.version>
+			...
+	</properties>
+	
+You can add the following dependencies to your project for use the functionality of mystic-crypt.
+
+Add the following maven dependency to your project `pom.xml` if you want to import the core functionality of mystic-core:
 
 		<dependencies>
 			...
@@ -53,8 +76,6 @@ Than you can add the dependency to your dependencies:
 		</dependencies>
 
 Add the following maven dependency to your project `pom.xml` if you want to import the functionality of randomizer:
-
-Than you can add the dependency to your dependencies:
 
 		<dependencies>
 			...
@@ -69,8 +90,6 @@ Than you can add the dependency to your dependencies:
 
 Add the following maven dependency to your project `pom.xml` if you want to import the functionality of auth-security:
 
-Than you can add the dependency to your dependencies:
-
 		<dependencies>
 			...
 			<!-- MYSTIC-CRYPT DEPENDENCIES -->
@@ -84,8 +103,6 @@ Than you can add the dependency to your dependencies:
 
 Add the following maven dependency to your project `pom.xml` if you want to import only the crypt-data like algorithms, modes, paddings etc.:
 
-Than you can add the dependency to your dependencies:
-
 		<dependencies>
 			...
 			<!-- MYSTIC-CRYPT DEPENDENCIES -->
@@ -96,6 +113,15 @@ Than you can add the dependency to your dependencies:
 			</dependency>
 		</dependencies>
 
+## Semantic Versioning
+
+mystic-crypt is maintained with the Semantic Versioning guidelines.
+
+Release version numbers will be incremented in the following format:
+
+`<major>.<minor>.<patch>`
+
+For more information on SemVer you can visit [semver.org](http://semver.org/).
 
 ## Want to Help and improve it? ###
 
@@ -103,7 +129,7 @@ The source code for mystic-crypt are on GitHub. Please feel free to fork and sen
 
 Create your own fork of [astrapi69/mystic-crypt/fork](https://github.com/astrapi69/mystic-crypt/fork)
 
-To share your changes, [submit a pull request](https://github.com/astrapi69/mystic-crypt/pull/new/master).
+To share your changes, [submit a pull request](https://github.com/astrapi69/mystic-crypt/pull/new/develop).
 
 Don't forget to add new units tests on your changes.
 
@@ -118,6 +144,7 @@ No animals were harmed in the making of this library.
 
 # Donate
 
+If you like this library, please consider a donation through 
 <a href="http://flattr.com/thing/4152938/astrapi69mystic-crypt-on-GitHub" target="_blank">
 <img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" />
 </a>
@@ -130,5 +157,5 @@ Here is a list of awesome projects for cryptography:
  * [cryptacular](https://github.com/vt-middleware/cryptacular) The friendly complement to the BouncyCastle crypto API for Java.
  * [JSch](http://www.jcraft.com/jsch/) JSch is a pure Java implementation of SSH2.
  * [Apache Shiro](https://github.com/apache/shiro) Apache Shiro is a powerful and easy-to-use Java security framework that performs authentication, authorization, cryptography, and session management.
- * [commons-ssl](http://juliusdavies.ca/commons-ssl/)
+ * [commons-ssl](http://juliusdavies.ca/commons-ssl/) Not-Yet-Commons-SSL
 

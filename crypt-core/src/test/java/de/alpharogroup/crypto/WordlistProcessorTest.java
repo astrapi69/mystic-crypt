@@ -54,7 +54,7 @@ public class WordlistProcessorTest
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	@Test
+	@Test(enabled = false)
 	public void test() throws IOException
 	{
 		final File wordlistDir = new File(PathFinder.getSrcTestResourcesDir(), "wordlists");

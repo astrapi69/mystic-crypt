@@ -58,6 +58,12 @@ public class KeyExtensions
 	/** The Constant AES_KEY_LENGTH. */
 	public static final int AES_KEY_LENGTH = 256;
 
+	/** The Constant END_CERTIFICATE_SUFFIX. */
+	public static final String END_CERTIFICATE_SUFFIX = "-----END CERTIFICATE-----";
+
+	/** The Constant BEGIN_CERTIFICATE_PREFIX. */
+	public static final String BEGIN_CERTIFICATE_PREFIX = "-----BEGIN CERTIFICATE-----\n";
+
 	/** The Constant END_PUBLIC_KEY_SUFFIX. */
 	public static final String END_PUBLIC_KEY_SUFFIX = "-----END PUBLIC KEY-----";
 
@@ -141,11 +147,11 @@ public class KeyExtensions
 	 *             is thrown if the specified provider is not registered in the security provider
 	 *             list.
 	 */
-	public static PrivateKey readPrivateKey(final File file) throws IOException,
+	public static PrivateKey readPKCS8EncodedPrivateKey(final File file) throws IOException,
 		NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
 	{
 		final byte[] keyBytes = Files.readAllBytes(file.toPath());
-		return readPrivateKey(keyBytes, "BC");
+		return readPKCS8EncodedPrivateKey(keyBytes, "BC");
 	}
 
 	/**
@@ -164,7 +170,8 @@ public class KeyExtensions
 	 *             is thrown if the specified provider is not registered in the security provider
 	 *             list.
 	 */
-	public static PrivateKey readPrivateKey(final byte[] privateKeyBytes, final String provider)
+	public static PrivateKey readPKCS8EncodedPrivateKey(final byte[] privateKeyBytes,
+		final String provider)
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
 	{
 		final PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateKeyBytes);

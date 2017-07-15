@@ -24,14 +24,94 @@
  */
 package de.alpharogroup.crypto.key.writer;
 
+import static org.testng.AssertJUnit.assertEquals;
+
+import java.io.File;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.Security;
+import java.security.spec.InvalidKeySpecException;
+
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.testng.annotations.Test;
 
+import de.alpharogroup.crypto.key.PrivateKeyExtensions;
+import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
+import de.alpharogroup.crypto.key.reader.PublicKeyReader;
+import de.alpharogroup.crypto.provider.SecurityProvider;
+import de.alpharogroup.file.checksum.Algorithm;
+import de.alpharogroup.file.checksum.ChecksumExtensions;
+import de.alpharogroup.file.delete.DeleteFileExtensions;
+import de.alpharogroup.file.search.PathFinder;
+
+/**
+ * Test class for the class {@link PublicKeyWriter}.
+ */
 public class PublicKeyWriterTest
 {
 
+	/**
+	 * Test method for {@link PublicKeyWriter#write(PublicKey, File)}.
+	 *
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * 
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
+	 */
 	@Test
-	public void test()
+	public void testWriteFile() throws IOException, NoSuchAlgorithmException,
+		InvalidKeySpecException, NoSuchProviderException
 	{
+		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		final File publickeyDerFile = new File(publickeyDerDir, "public.der");
+
+		final PublicKey publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
+
+		final File keyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		final File writtenPublickeyDerFile = new File(keyDerDir, "written-public.der");
+		PublicKeyWriter.write(publicKey, writtenPublickeyDerFile);
+
+		String expected = ChecksumExtensions.getChecksum(publickeyDerFile, Algorithm.MD5);
+		String actual = ChecksumExtensions.getChecksum(writtenPublickeyDerFile, Algorithm.MD5);
+		DeleteFileExtensions.delete(writtenPublickeyDerFile);
+		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test method for {@link PublicKeyWriter#writeInPemFormat(PublicKey, File)}.
+	 * 
+	 * @throws Exception
+	 *             is thrown if a security issue occurs
+	 */
+	@Test
+	public void testWriteInPemFormat() throws Exception
+	{
+		Security.addProvider(new BouncyCastleProvider());
+		final File publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
+		final File privatekeyPemFile = new File(publickeyPemDir, "private.pem");
+
+		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile,
+			SecurityProvider.BC);
+
+		final PublicKey publicKey = PrivateKeyExtensions.generatePublicKey(privateKey);
+
+		final File keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		final File convertedPublickeyPemFile = new File(keyPemDir, "converted-public.pem");
+		PublicKeyWriter.writeInPemFormat(publicKey, convertedPublickeyPemFile);
+		String expected = ChecksumExtensions.getChecksum(publickeyPemFile, Algorithm.MD5);
+		String actual = ChecksumExtensions.getChecksum(convertedPublickeyPemFile, Algorithm.MD5);
+		DeleteFileExtensions.delete(convertedPublickeyPemFile);
+		assertEquals(expected, actual);
 	}
 
 }

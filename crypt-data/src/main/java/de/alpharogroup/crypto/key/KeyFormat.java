@@ -22,36 +22,12 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto;
-
-import static org.testng.AssertJUnit.assertEquals;
-
-import org.testng.annotations.Test;
+package de.alpharogroup.crypto.key;
 
 /**
- * Test class for {@link CryptConst}.
+ * The enum {@link KeyFormat} for the format of the private keys.
  */
-public class CryptConstTest
+public enum KeyFormat
 {
-
-	/**
-	 * Test for concatenated constants.
-	 */
-	@Test
-	public void testConcatenatedConst()
-	{
-		assertEquals(CryptConst.PBE_WITH_MD5_AND_DES, "PBEWithMD5AndDES");
-
-		assertEquals(CryptConst.PBE_WITH_MD5_AND_AES, "PBEWithMD5AndAES");
-
-		assertEquals(CryptConst.PBE_WITH_SHA1_AND_DES_EDE, "PBEWithSHA1AndDESede");
-
-		assertEquals(CryptConst.PBKDF2_WITH_HMAC_SHA1, "PBKDF2WithHmacSHA1");
-
-		assertEquals(CryptConst.PBE_WITH_SHA1_AND_128BIT_AES_CBC_BC,
-			"PBEWITHSHA1AND128BITAES-CBC-BC");
-
-		assertEquals(CryptConst.SHA256_WITH_RSA, "SHA256withRSA");
-	}
-
+	PKCS_8, PKCS_1;
 }

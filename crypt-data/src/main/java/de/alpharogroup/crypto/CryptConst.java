@@ -26,6 +26,7 @@ package de.alpharogroup.crypto;
 
 import de.alpharogroup.crypto.algorithm.AesAlgorithm;
 import de.alpharogroup.crypto.algorithm.HashAlgorithm;
+import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
 import de.alpharogroup.crypto.algorithm.MacAlgorithm;
 import de.alpharogroup.crypto.algorithm.MdAlgorithm;
 import de.alpharogroup.crypto.algorithm.SunJCEAlgorithm;
@@ -79,26 +80,10 @@ public abstract class CryptConst
 		+ SunJCEAlgorithm.DES.name();
 
 	/**
-	 * Constant for the algorithm 'PBEWithMD5AndDES' to encrypt and decrypt.
-	 * 
-	 * @deprecated use instead {@link CryptConst#PBE_WITH_MD5_AND_DES}
-	 */
-	@Deprecated
-	public static final String PBEWITH_MD5AND_DES = PBE_WITH_MD5_AND_DES;
-
-	/**
 	 * Constant for the algorithm 'PBEWithMD5AndAES' to encrypt and decrypt.
 	 */
 	public static final String PBE_WITH_MD5_AND_AES = PBE_WITH + MdAlgorithm.MD5.name() + AND
 		+ AesAlgorithm.AES.name();
-
-	/**
-	 * Constant for the algorithm 'PBEWithMD5AndAES' to encrypt and decrypt.
-	 * 
-	 * @deprecated use instead {@link CryptConst#PBE_WITH_MD5_AND_DES}
-	 */
-	@Deprecated
-	public static final String PBEWITH_MD5AND_AES = PBE_WITH_MD5_AND_AES;
 
 	/**
 	 * Constant for the algorithm 'PBEWithSHA1AndDESede' to encrypt and decrypt.
@@ -107,26 +92,22 @@ public abstract class CryptConst
 		+ AND + SunJCEAlgorithm.DESede.name();
 
 	/**
-	 * Constant for the algorithm 'PBEWithSHA1AndDESede' to encrypt and decrypt.
-	 * 
-	 * @deprecated use instead {@link CryptConst#PBE_WITH_SHA1_AND_DES_EDE}
-	 */
-	@Deprecated
-	public static final String PBEWITH_SHA1_AND_DES_EDE = PBE_WITH_SHA1_AND_DES_EDE;
-
-	/**
 	 * Constant for the algorithm 'PBKDF2WithHmacSHA1' to encrypt and decrypt.
 	 */
 	public static final String PBKDF2_WITH_HMAC_SHA1 = PBKDF2 + WITH + MacAlgorithm.HMAC
 		+ HashAlgorithm.SHA1.name();
 
 	/**
-	 * Constant for the algorithm to encrypt and decrypt.
+	 * Constant for the algorithm 'PBEWITHSHA1AND128BITAES-CBC-BC' to encrypt and decrypt.
 	 */
-	public static final String PBEWITH_SHA1_AND_128BIT_AES_CBC_BC = "PBEWITHSHA1AND128BITAES-CBC-BC";
+	public static final String PBE_WITH_SHA1_AND_128BIT_AES_CBC_BC = "PBEWITHSHA1AND128BITAES-CBC-BC";
+
+	/** Constant for algorithm 'SHA256withRSA' to encrypt and decrypt. */
+	public static final String SHA256_WITH_RSA = HashAlgorithm.SHA256.getAlgorithm()
+		+ CryptConst.WITH.toLowerCase() + KeyPairGeneratorAlgorithm.RSA.getAlgorithm();
 
 	/**
-	 * Constant for the encoding for the String.
+	 * Constant for the utf-8 encoding.
 	 */
 	public static final String ENCODING = "UTF8";
 

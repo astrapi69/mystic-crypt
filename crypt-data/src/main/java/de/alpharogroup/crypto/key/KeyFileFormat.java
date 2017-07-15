@@ -22,36 +22,46 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto;
+package de.alpharogroup.crypto.key;
 
-import static org.testng.AssertJUnit.assertEquals;
-
-import org.testng.annotations.Test;
+import lombok.Getter;
 
 /**
- * Test class for {@link CryptConst}.
+ * The enum {@link KeyFileFormat}.
  */
-public class CryptConstTest
+public enum KeyFileFormat
 {
 
 	/**
-	 * Test for concatenated constants.
+	 * The constant for the file format DER. The DER file format is encoded in binary form. DER
+	 * formatted files usually have the file extension '*.der'.
 	 */
-	@Test
-	public void testConcatenatedConst()
+	DER("der"),
+
+	/**
+	 * The constant for the file format PEM. The PEM file format is encoded in Base64 ASCII format.
+	 * PEM formatted files usually have the file extension '*.cer', '*.crt' and '*.pem'.
+	 */
+	PEM("cer", "crt", "pem"),
+
+	/**
+	 * The constant for the file format P7B. The P7B file format is encoded in Base64 ASCII format.
+	 * PEM formatted files usually have the file extension '*.p7b' and '*.p7c'.
+	 */
+	P7B("p7b", "p7c");
+
+	/** The file extensions. */
+	@Getter
+	private final String[] fileExtensions;
+
+	/**
+	 * Instantiates a new key file format.
+	 *
+	 * @param fileExtensions
+	 *            the file extensions
+	 */
+	private KeyFileFormat(String... fileExtensions)
 	{
-		assertEquals(CryptConst.PBE_WITH_MD5_AND_DES, "PBEWithMD5AndDES");
-
-		assertEquals(CryptConst.PBE_WITH_MD5_AND_AES, "PBEWithMD5AndAES");
-
-		assertEquals(CryptConst.PBE_WITH_SHA1_AND_DES_EDE, "PBEWithSHA1AndDESede");
-
-		assertEquals(CryptConst.PBKDF2_WITH_HMAC_SHA1, "PBKDF2WithHmacSHA1");
-
-		assertEquals(CryptConst.PBE_WITH_SHA1_AND_128BIT_AES_CBC_BC,
-			"PBEWITHSHA1AND128BITAES-CBC-BC");
-
-		assertEquals(CryptConst.SHA256_WITH_RSA, "SHA256withRSA");
+		this.fileExtensions = fileExtensions;
 	}
-
 }

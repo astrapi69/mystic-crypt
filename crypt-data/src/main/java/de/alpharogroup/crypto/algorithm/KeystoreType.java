@@ -22,36 +22,25 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto;
+package de.alpharogroup.crypto.algorithm;
 
-import static org.testng.AssertJUnit.assertEquals;
-
-import org.testng.annotations.Test;
+import java.security.KeyStore;
 
 /**
- * Test class for {@link CryptConst}.
+ * The enum {@link KeystoreType} for algorithm that are used to create {@link KeyStore} objects.
  */
-public class CryptConstTest
+public enum KeystoreType
 {
 
-	/**
-	 * Test for concatenated constants.
-	 */
-	@Test
-	public void testConcatenatedConst()
-	{
-		assertEquals(CryptConst.PBE_WITH_MD5_AND_DES, "PBEWithMD5AndDES");
+	/** The enum constant for DSA algorithm. */
+	DSA,
 
-		assertEquals(CryptConst.PBE_WITH_MD5_AND_AES, "PBEWithMD5AndAES");
+	/** The enum constant for JKS algorithm. */
+	JKS,
 
-		assertEquals(CryptConst.PBE_WITH_SHA1_AND_DES_EDE, "PBEWithSHA1AndDESede");
+	/** The enum constant for PKCS12 algorithm. */
+	PKCS12,
 
-		assertEquals(CryptConst.PBKDF2_WITH_HMAC_SHA1, "PBKDF2WithHmacSHA1");
-
-		assertEquals(CryptConst.PBE_WITH_SHA1_AND_128BIT_AES_CBC_BC,
-			"PBEWITHSHA1AND128BITAES-CBC-BC");
-
-		assertEquals(CryptConst.SHA256_WITH_RSA, "SHA256withRSA");
-	}
-
+	/** The enum constant for JCEKS algorithm. */
+	JCEKS;
 }

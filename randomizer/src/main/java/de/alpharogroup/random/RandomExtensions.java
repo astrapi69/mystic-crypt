@@ -26,6 +26,7 @@ package de.alpharogroup.random;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.charset.Charset;
 import java.security.SecureRandom;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -132,9 +133,18 @@ public class RandomExtensions
 	public static Byte[] getRandomByteArray(final int length)
 	{
 		final Byte[] randomByteArray = new Byte[length];
+		final byte[] randomByteBox = new byte[1];
 		for (int i = 0; i < length; i++)
 		{
-			randomByteArray[i] = getRandomByte();
+			if (randomBoolean())
+			{
+				randomByteArray[i] = getRandomByte();
+			}
+			else
+			{
+				secureRandom.nextBytes(randomByteBox);
+				randomByteArray[i] = Byte.valueOf(randomByteBox[0]);
+			}
 		}
 		return randomByteArray;
 	}
@@ -659,6 +669,56 @@ public class RandomExtensions
 		}
 		final BigInteger serialNumber = BigInteger.valueOf(next);
 		return serialNumber;
+	}
+
+	/**
+	 * The Method getRandomPrimitiveByteArray(int) generates a random byte array.
+	 *
+	 * @param length
+	 *            the length.
+	 * @return the byte[]
+	 */
+	public static byte[] getRandomPrimitiveByteArray(final int length)
+	{
+		final byte[] randomByteArray = new byte[length];
+		final byte[] randomByteBox = new byte[1];
+		for (int i = 0; i < length; i++)
+		{
+			if (randomBoolean())
+			{
+				randomByteArray[i] = getRandomByte();
+			}
+			else
+			{
+				secureRandom.nextBytes(randomByteBox);
+				randomByteArray[i] = Byte.valueOf(randomByteBox[0]);
+			}
+		}
+		return randomByteArray;
+	}
+
+	/**
+	 * Factory method for create a new random salt.
+	 *
+	 * @return the byte[] with the new random salt.
+	 */
+	public static byte[] newSalt()
+	{
+		return getRandomPrimitiveByteArray(16);
+	}
+
+	/**
+	 * Gets the random salt.
+	 *
+	 * @param length
+	 *            the length
+	 * @param charset
+	 *            the charset
+	 * @return the random salt
+	 */
+	public static byte[] getRandomSalt(final int length, final Charset charset)
+	{
+		return RandomExtensions.getRandomString(Constants.LCUCCHARSWN, length).getBytes(charset);
 	}
 
 }

@@ -24,14 +24,91 @@
  */
 package de.alpharogroup.crypto.key.writer;
 
+import static org.testng.AssertJUnit.assertEquals;
+
+import java.io.File;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.PrivateKey;
+import java.security.spec.InvalidKeySpecException;
+
 import org.testng.annotations.Test;
 
+import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
+import de.alpharogroup.file.checksum.Algorithm;
+import de.alpharogroup.file.checksum.ChecksumExtensions;
+import de.alpharogroup.file.delete.DeleteFileExtensions;
+import de.alpharogroup.file.search.PathFinder;
+
+/**
+ * Test class for the class {@link PrivateKeyWriter}.
+ */
 public class PrivateKeyWriterTest
 {
 
+	/**
+	 * Test method for {@link PrivateKeyWriter#write(PrivateKey, File)}.
+	 *
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * 
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
+	 */
 	@Test
-	public void test()
+	public void testWriteFile() throws IOException, NoSuchAlgorithmException,
+		InvalidKeySpecException, NoSuchProviderException
 	{
+		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
+
+		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
+
+		final File writtenPrivatekeyDerFile = new File(publickeyDerDir, "written-private.der");
+		PrivateKeyWriter.write(privateKey, writtenPrivatekeyDerFile);
+		String expected = ChecksumExtensions.getChecksum(privatekeyDerFile, Algorithm.MD5);
+		String actual = ChecksumExtensions.getChecksum(writtenPrivatekeyDerFile, Algorithm.MD5);
+		DeleteFileExtensions.delete(writtenPrivatekeyDerFile);
+		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test method for {@link PrivateKeyWriter#writeInPemFormat(PrivateKey, File)}.
+	 *
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * 
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
+	 */
+	@Test
+	public void testWriteInPemFormat() throws IOException, NoSuchAlgorithmException,
+		InvalidKeySpecException, NoSuchProviderException
+	{
+		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
+		final File privatekeyPemFile = new File(publickeyDerDir, "private.pem");
+
+		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
+
+		final File keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		final File convertedPrivatekeyPemFile = new File(keyPemDir, "converted-private.pem");
+		PrivateKeyWriter.writeInPemFormat(privateKey, convertedPrivatekeyPemFile);
+		String expected = ChecksumExtensions.getChecksum(privatekeyPemFile, Algorithm.MD5);
+		String actual = ChecksumExtensions.getChecksum(convertedPrivatekeyPemFile, Algorithm.MD5);
+		DeleteFileExtensions.delete(convertedPrivatekeyPemFile);
+		assertEquals(expected, actual);
 	}
 
 }

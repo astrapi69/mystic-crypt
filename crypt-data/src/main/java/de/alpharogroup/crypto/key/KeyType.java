@@ -22,36 +22,43 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto;
-
-import static org.testng.AssertJUnit.assertEquals;
-
-import org.testng.annotations.Test;
+package de.alpharogroup.crypto.key;
 
 /**
- * Test class for {@link CryptConst}.
+ * The enum {@link KeyType} can discriminate the type, if it is a private or public key or a
+ * certificate.
  */
-public class CryptConstTest
+public enum KeyType
 {
 
+	/** The certificate type. */
+	CERTIFICATE("Certificate"),
+
+	/** The private key type. */
+	PRIVATE_KEY("Private key"),
+
+	/** The public key type. */
+	PUBLIC_KEY("Public key");
+
+	private final String displayValue;
+
 	/**
-	 * Test for concatenated constants.
+	 * Instantiates a new {@link KeyType} object.
+	 *
+	 * @param displayValue
+	 *            the display value
 	 */
-	@Test
-	public void testConcatenatedConst()
+	private KeyType(final String displayValue)
 	{
-		assertEquals(CryptConst.PBE_WITH_MD5_AND_DES, "PBEWithMD5AndDES");
-
-		assertEquals(CryptConst.PBE_WITH_MD5_AND_AES, "PBEWithMD5AndAES");
-
-		assertEquals(CryptConst.PBE_WITH_SHA1_AND_DES_EDE, "PBEWithSHA1AndDESede");
-
-		assertEquals(CryptConst.PBKDF2_WITH_HMAC_SHA1, "PBKDF2WithHmacSHA1");
-
-		assertEquals(CryptConst.PBE_WITH_SHA1_AND_128BIT_AES_CBC_BC,
-			"PBEWITHSHA1AND128BITAES-CBC-BC");
-
-		assertEquals(CryptConst.SHA256_WITH_RSA, "SHA256withRSA");
+		this.displayValue = displayValue;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString()
+	{
+		return this.displayValue;
+	}
 }

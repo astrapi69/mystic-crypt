@@ -258,6 +258,16 @@ public class RandomExtensionsTest extends BaseTestCase
 	}
 
 	/**
+	 * Test method for {@link RandomExtensions#randomToken()} .
+	 */
+	@Test
+	public void testRandomSalt()
+	{
+		final byte[] randomSalt = RandomExtensions.getRandomSalt(8, Charset.forName("UTF-8"));
+		System.out.println(new String(randomSalt));
+	}
+
+	/**
 	 * Test method for {@link RandomExtensions#getRandomString(java.lang.String[])} .
 	 */
 	@Test
