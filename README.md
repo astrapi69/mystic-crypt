@@ -115,7 +115,7 @@ Add the following maven dependency to your project `pom.xml` if you want to impo
 
 ## Semantic Versioning
 
-The versions of mystic-crypt is maintained with the Semantic Versioning guidelines.
+The versions of mystic-crypt are maintained with the Semantic Versioning guidelines.
 
 Release version numbers will be incremented in the following format:
 
