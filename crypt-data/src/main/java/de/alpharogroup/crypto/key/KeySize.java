@@ -32,14 +32,17 @@ import lombok.Getter;
 public enum KeySize
 {
 
-	/** The keysize 1024. */
+	/** The keysize of 1024 bits. */
 	KEYSIZE_1024(1024),
 
-	/** The keysize 2048. */
+	/** The keysize of 2048 bits. */
 	KEYSIZE_2048(2048),
 
-	/** The keysize 4096. */
-	KEYSIZE_4096(4096);
+	/** The keysize of 4096 bits. */
+	KEYSIZE_4096(4096),
+
+	/** The keysize of 8192 bits. */
+	KEYSIZE_8192(8192);
 
 	/** The display. */
 	@Getter

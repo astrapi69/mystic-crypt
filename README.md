@@ -19,25 +19,41 @@ The target of this parent project is to make encryption and decryption as simple
 The source code comes under the liberal MIT License, making mystic-crypt great for all types of applications.
 
 
-# Build status and latest maven version
+## Build status
 
 [![Build Status](https://travis-ci.org/astrapi69/mystic-crypt.svg?branch=master)](https://travis-ci.org/astrapi69/mystic-crypt)
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.alpharogroup/mystic-crypt/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.alpharogroup/mystic-crypt)
-
+## Coverage Status
 [![Coverage Status](https://coveralls.io/repos/github/astrapi69/mystic-crypt/badge.svg?branch=develop)](https://coveralls.io/github/astrapi69/mystic-crypt?branch=develop)
+
+## Javadoc
+auth-security [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/auth-security/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/auth-security)
+
+crypt-core [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/crypt-core/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-core)
+
+crypt-data [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/crypt-data/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-data)
+
+randomizer [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/randomizer/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/randomizer)
+
+## Maven Central
+
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.alpharogroup/mystic-crypt/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.alpharogroup/mystic-crypt)
 
 ## Maven dependency
 
 Maven dependency is now on sonatype.
 Check out [sonatype repository](https://oss.sonatype.org/index.html#nexus-search;quick~mystic-crypt) for latest snapshots and releases.
 
+![maven-dependencies-diagramm](https://github.com/astrapi69/mystic-crypt/blob/develop/src/main/resources/imgs/mystic-crypt-mvn-dependencies.png)
+
+This erd-diagramm was created with with [netbeans](https://netbeans.org/).
+
 You can first define the version properties:
 
 	<properties>
 			...
 		<!-- MYSTIC-CRYPT versions -->
-		<mystic-crypt.version>4.21.0</mystic-crypt.version>
+		<mystic-crypt.version>4.23.0</mystic-crypt.version>
 		<crypt-core.version>${mystic-crypt.version}</crypt-core.version>
 		<randomizer.version>${mystic-crypt.version}</randomizer.version>
 		<auth-security.version>${mystic-crypt.version}</auth-security.version>
@@ -97,6 +113,15 @@ Add the following maven dependency to your project `pom.xml` if you want to impo
 			</dependency>
 		</dependencies>
 
+## Semantic Versioning
+
+The versions of mystic-crypt are maintained with the Semantic Versioning guidelines.
+
+Release version numbers will be incremented in the following format:
+
+`<major>.<minor>.<patch>`
+
+For more information on SemVer you can visit [semver.org](http://semver.org/).
 
 ## Want to Help and improve it? ###
 

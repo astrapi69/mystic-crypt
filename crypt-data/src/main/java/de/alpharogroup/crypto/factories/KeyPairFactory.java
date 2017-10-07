@@ -36,6 +36,7 @@ import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 
 import de.alpharogroup.crypto.algorithm.Algorithm;
+import de.alpharogroup.crypto.key.KeySize;
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import lombok.experimental.UtilityClass;
@@ -46,6 +47,24 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class KeyPairFactory
 {
+
+	/**
+	 * Factory method for creating a new {@link KeyPair} from the given algorithm and
+	 * {@link KeySize}.
+	 *
+	 * @param algorithm
+	 *            the algorithm
+	 * @param keySize
+	 *            the key size as enum
+	 * @return the new {@link KeyPair} from the given salt and iteration count.
+	 * @throws NoSuchAlgorithmException
+	 *             the no such algorithm exception
+	 */
+	public static KeyPair newKeyPair(final Algorithm algorithm, final KeySize keySize)
+		throws NoSuchAlgorithmException
+	{
+		return newKeyPair(algorithm.getAlgorithm(), keySize.getKeySize());
+	}
 
 	/**
 	 * Factory method for creating a new {@link KeyPair} from the given algorithm and key size.

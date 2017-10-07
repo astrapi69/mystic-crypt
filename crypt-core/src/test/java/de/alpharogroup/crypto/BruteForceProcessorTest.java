@@ -50,7 +50,7 @@ public class BruteForceProcessorTest
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	@Test(enabled=false)
+	@Test(enabled = false)
 	public void test() throws IOException
 	{
 

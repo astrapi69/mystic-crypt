@@ -87,6 +87,35 @@ public class PrivateKeyExtensions
 	}
 
 	/**
+	 * Gets the {@link KeySize} of the given {@link PrivateKey} or null if not found.
+	 *
+	 * @param privateKey
+	 *            the private key
+	 * @return the {@link KeySize} of the given {@link PrivateKey} or null if not found.
+	 */
+	public static KeySize getKeySize(final PrivateKey privateKey)
+	{
+		int length = getKeyLength(privateKey);
+		if (length == 1024)
+		{
+			return KeySize.KEYSIZE_1024;
+		}
+		if (length == 2048)
+		{
+			return KeySize.KEYSIZE_2048;
+		}
+		if (length == 4096)
+		{
+			return KeySize.KEYSIZE_4096;
+		}
+		if (length == 8192)
+		{
+			return KeySize.KEYSIZE_8192;
+		}
+		return null;
+	}
+
+	/**
 	 * Transform the given {@link PrivateKey} to a hexadecimal {@link String} value.
 	 *
 	 * @param privateKey

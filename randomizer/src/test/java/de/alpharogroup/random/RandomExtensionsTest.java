@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.log4j.Logger;
 import org.testng.AssertJUnit;
 import org.testng.annotations.AfterMethod;
@@ -255,6 +255,16 @@ public class RandomExtensionsTest extends BaseTestCase
 			final int randomInt = RandomExtensions.randomInt(5);
 			logger.debug(randomInt);
 		}
+	}
+
+	/**
+	 * Test method for {@link RandomExtensions#randomToken()} .
+	 */
+	@Test
+	public void testRandomSalt()
+	{
+		final byte[] randomSalt = RandomExtensions.getRandomSalt(8, Charset.forName("UTF-8"));
+		System.out.println(new String(randomSalt));
 	}
 
 	/**

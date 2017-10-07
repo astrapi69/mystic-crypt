@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mvn-java-parent</artifactId>
-		<version>2.25.0</version>
+		<version>2.28.0</version>
 		<relativePath></relativePath>
 	</parent>
 
 	<artifactId>mystic-crypt</artifactId>
-	<version>4.21.0</version>
+	<version>4.23.0</version>
 	<packaging>pom</packaging>
 	<inceptionYear>2015</inceptionYear>
 
@@ -72,13 +72,13 @@
 
 	<properties>
 		<!-- NEW EXTENSIONS LIB versions -->
-		<file-worker.version>4.15.0</file-worker.version>
-		<jcommons-lang.version>4.19.0</jcommons-lang.version>
+		<file-worker.version>4.16.1</file-worker.version>
+		<jcommons-lang.version>4.23.0</jcommons-lang.version>
 		<test-objects.version>4.16.0</test-objects.version>
-		<silly-collections.version>4.15.0</silly-collections.version>
+		<silly-collections.version>4.19.0</silly-collections.version>
 		<vintage-time.version>4.11.0</vintage-time.version>
 		<!-- RESOURCEBUNDLE-CORE versions -->
-		<resourcebundle-inspector.version>2.12.0</resourcebundle-inspector.version>
+		<resourcebundle-inspector.version>2.15.1</resourcebundle-inspector.version>
 		<!-- PARENT PROJECT versions -->
 		<randomizer.version>${project.version}</randomizer.version>
 		<crypt-data.version>${project.version}</crypt-data.version>
@@ -144,7 +144,7 @@
 				<artifactId>crypt-data</artifactId>
 				<version>${crypt-data.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.bouncycastle</groupId>
 				<artifactId>bcprov-jdk15on</artifactId>
@@ -214,6 +214,70 @@
 			</testResource>
 
 		</testResources>
+
+		<pluginManagement>
+
+			<plugins>
+
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>cobertura-maven-plugin</artifactId>
+					<configuration>
+						<instrumentation>
+							<excludes>
+								<!-- enums -->
+								<exclude>de/alpharogroup/crypto/enums/**/*.class</exclude>
+								<exclude>de/alpharogroup/auth/enums/**/*.class</exclude>
+								<exclude>de/alpharogroup/crypto/algorithm/**/*.class</exclude>
+								<exclude>de/alpharogroup/crypto/enums/**/*.class</exclude>
+								<exclude>de/alpharogroup/crypto/mechanisms/**/*.class</exclude>
+								<exclude>de/alpharogroup/crypto/modes/**/*.class</exclude>
+								<exclude>de/alpharogroup/crypto/padding/**/*.class</exclude>
+								<exclude>de/alpharogroup/crypto/provider/**/*.class</exclude>
+								<exclude>de/alpharogroup/crypto/pw/**/*.class</exclude>
+								<!-- beans -->
+								<exclude>de/alpharogroup/auth/models/**/*.class</exclude>
+								<exclude>de/alpharogroup/auth/token/**/*.class</exclude>
+								<exclude>de/alpharogroup/crypto/model/**/*.class</exclude>
+								<!-- interfaces -->
+								<exclude>de/alpharogroup/auth/interfaces/**/*.class</exclude>
+								<exclude>de/alpharogroup/auth/usermanagement/**/*.class</exclude>
+								<exclude>de/alpharogroup/crypto/interfaces/**/*.class</exclude>
+								<exclude>de/alpharogroup/random/api/**/*.class</exclude>
+								<!-- exceptions -->
+								<exclude>de/alpharogroup/exceptions/**/*.class</exclude>
+								<!-- deprecated -->
+								<exclude>de/alpharogroup/crypto/aes/**/*.class</exclude>
+								<!-- constant classes with only constants -->
+								<exclude>de/alpharogroup/random/address/**/*.class</exclude>
+								<!-- bean classes -->
+								<exclude>de/alpharogroup/auth/Credentials.class</exclude>
+								<exclude>de/alpharogroup/auth/SimplePermission.class</exclude>
+								<exclude>de/alpharogroup/auth/SimpleRole.class</exclude>
+								<exclude>de/alpharogroup/auth/SimpleUser.class</exclude>
+								<!-- deprecated -->
+								<exclude>de/alpharogroup/crypto/key/KeyExtensions.class</exclude>
+								<!-- interfaces -->
+								<exclude>de/alpharogroup/crypto/keyrules/Obfuscatable.class</exclude>
+								<!-- constant classes with only constants -->
+								<exclude>de/alpharogroup/random/Constants.class</exclude>
+								<!-- delegation classes -->
+								<exclude>de/alpharogroup/random/DataGenerator.class</exclude>
+							</excludes>
+						</instrumentation>
+					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<goal>clean</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+			</plugins>
+
+		</pluginManagement>
 
 		<plugins>
 

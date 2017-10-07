@@ -44,11 +44,11 @@ import lombok.experimental.UtilityClass;
 public class CertificateReader
 {
 
-	/** The Constant END_CERTIFICATE_SUFFIX. */
-	public static final String END_CERTIFICATE_SUFFIX = "-----END CERTIFICATE-----";
-
 	/** The Constant BEGIN_CERTIFICATE_PREFIX. */
 	public static final String BEGIN_CERTIFICATE_PREFIX = "-----BEGIN CERTIFICATE-----\n";
+
+	/** The Constant END_CERTIFICATE_SUFFIX. */
+	public static final String END_CERTIFICATE_SUFFIX = "-----END CERTIFICATE-----";
 
 	/**
 	 * Read pem certificate.
@@ -81,6 +81,25 @@ public class CertificateReader
 		final String publicKeyAsBase64String = new String(keyBytes)
 			.replace(BEGIN_CERTIFICATE_PREFIX, "").replace(END_CERTIFICATE_SUFFIX, "");
 		return publicKeyAsBase64String;
+	}
+
+	/**
+	 * Reads the given file in *.der format and tries to create a {@link X509Certificate} object.
+	 *
+	 * @param file
+	 *            the file
+	 * @return the {@link X509Certificate} object from the given byte array.
+	 * @throws CertificateException
+	 *             is thrown if no Provider supports a CertificateFactorySpi implementation for the
+	 *             specified type.
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	public static X509Certificate readCertificate(final File file)
+		throws CertificateException, IOException
+	{
+		final byte[] decoded = Files.readAllBytes(file.toPath());
+		return readCertificate(decoded);
 	}
 
 	/**

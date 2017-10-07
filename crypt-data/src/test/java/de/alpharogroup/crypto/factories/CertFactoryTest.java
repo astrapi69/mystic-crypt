@@ -24,17 +24,22 @@
  */
 package de.alpharogroup.crypto.factories;
 
+import java.io.File;
 import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
+import java.security.Security;
 import java.security.cert.X509Certificate;
-import java.time.Instant;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.ZoneId;
 import java.util.Date;
 
 import org.bouncycastle.asn1.x500.X500Name;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
@@ -42,6 +47,13 @@ import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.algorithm.HashAlgorithm;
 import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
 import de.alpharogroup.crypto.algorithm.RngAlgorithm;
+import de.alpharogroup.crypto.key.reader.CertificateReader;
+import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
+import de.alpharogroup.crypto.key.reader.PublicKeyReader;
+import de.alpharogroup.crypto.key.writer.CertificateWriter;
+import de.alpharogroup.crypto.provider.SecurityProvider;
+import de.alpharogroup.file.delete.DeleteFileExtensions;
+import de.alpharogroup.file.search.PathFinder;
 
 /**
  * Test class for the class {@link CertFactory}.
@@ -82,22 +94,49 @@ public class CertFactoryTest
 	public void testNewX509CertificatePublicKeyPrivateKeyStringStringStringDateDate()
 		throws Exception
 	{
-		final KeyPair keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, 2048);
+		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		final File privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
 
-		final PrivateKey privateKey = keyPair.getPrivate();
+		Security.addProvider(new BouncyCastleProvider());
 
-		final PublicKey publicKey = keyPair.getPublic();
+		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile,
+			SecurityProvider.BC);
+
+		final File publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
+
+		Security.addProvider(new BouncyCastleProvider());
+
+		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile,
+			SecurityProvider.BC);
+
 		final String subject = "CN=Test subject";
 		final String issuer = "CN=Test issue";
 		final String signatureAlgorithm = HashAlgorithm.SHA256.getAlgorithm() + CryptConst.WITH
 			+ KeyPairGeneratorAlgorithm.RSA.getAlgorithm();
-		final Date start = new Date(System.currentTimeMillis());
-		final Date end = new Date(System.currentTimeMillis() + (1000L * 60 * 60 * 24 * 100));
-		final BigInteger serialNumber = randomSerialNumber();
 
+		final Date start = Date.from(
+			LocalDate.of(2017, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+		final Date end = Date.from(
+			LocalDate.of(2027, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+		final BigInteger serialNumber = randomSerialNumber();
+		// create certificate
 		final X509Certificate cert = CertFactory.newX509Certificate(publicKey, privateKey,
 			serialNumber, subject, issuer, signatureAlgorithm, start, end);
 		AssertJUnit.assertNotNull(cert);
+
+		final File pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		final File certificateFile = new File(pemDir, "certificate.cert");
+		// save it ...
+		CertificateWriter.writeInPemFormat(cert, certificateFile);
+		// read it ...
+		final X509Certificate certificate = CertificateReader.readPemCertificate(certificateFile);
+		// check null
+		AssertJUnit.assertNotNull(certificate);
+		// check equal
+		AssertJUnit.assertEquals(cert, certificate);
+
+		DeleteFileExtensions.delete(certificateFile);
 	}
 
 	/**
@@ -105,17 +144,22 @@ public class CertFactoryTest
 	 * {@link CertFactory#newX509CertificateV1(KeyPair, X500Name, BigInteger, Date, Date, X500Name, String)}.
 	 */
 	@Test
-	public void testNewX509CertificateV1() throws Exception {
+	public void testNewX509CertificateV1() throws Exception
+	{
+		Security.addProvider(new BouncyCastleProvider());
 		final KeyPair keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, 2048);
 		final X500Name issuer = new X500Name("CN=Issuer of this certificate");
 		final BigInteger serial = BigInteger.ONE;
-		final Date notBefore = Date.from(Instant.now());
-		final Date notAfter = Date.from(Instant.now().plusSeconds(60 * 60 * 24 * 365 * 5));
+		final Date notBefore = Date.from(
+			LocalDate.of(2017, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+		final Date notAfter = Date.from(
+			LocalDate.of(2027, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
 		final X500Name subject = new X500Name("CN=Subject of this certificate");
 		final String signatureAlgorithm = "SHA1withRSA";
-		final X509Certificate cert = CertFactory.newX509CertificateV1(keyPair, issuer, serial, notBefore, notAfter, subject,
-				signatureAlgorithm);
+		final X509Certificate cert = CertFactory.newX509CertificateV1(keyPair, issuer, serial,
+			notBefore, notAfter, subject, signatureAlgorithm);
 		AssertJUnit.assertNotNull(cert);
+
 	}
 
 }

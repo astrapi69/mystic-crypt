@@ -58,17 +58,18 @@ public class PrivateKeyWriterTest
 	 * @throws InvalidKeySpecException
 	 *             is thrown if generation of the SecretKey object fails.
 	 * @throws NoSuchProviderException
-	 *             is thrown if the specified provider is not registered in the
-	 *             security provider list.
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
 	 */
 	@Test
-	public void testWriteFile() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
+	public void testWriteFile() throws IOException, NoSuchAlgorithmException,
+		InvalidKeySpecException, NoSuchProviderException
 	{
 		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
 		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
 
 		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
-		
+
 		final File writtenPrivatekeyDerFile = new File(publickeyDerDir, "written-private.der");
 		PrivateKeyWriter.write(privateKey, writtenPrivatekeyDerFile);
 		String expected = ChecksumExtensions.getChecksum(privatekeyDerFile, Algorithm.MD5);
@@ -76,7 +77,7 @@ public class PrivateKeyWriterTest
 		DeleteFileExtensions.delete(writtenPrivatekeyDerFile);
 		assertEquals(expected, actual);
 	}
-	
+
 	/**
 	 * Test method for {@link PrivateKeyWriter#writeInPemFormat(PrivateKey, File)}.
 	 *
@@ -88,18 +89,19 @@ public class PrivateKeyWriterTest
 	 * @throws InvalidKeySpecException
 	 *             is thrown if generation of the SecretKey object fails.
 	 * @throws NoSuchProviderException
-	 *             is thrown if the specified provider is not registered in the
-	 *             security provider list.
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
 	 */
 	@Test
-	public void testWriteInPemFormat() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
+	public void testWriteInPemFormat() throws IOException, NoSuchAlgorithmException,
+		InvalidKeySpecException, NoSuchProviderException
 	{
 		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
 		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
 		final File privatekeyPemFile = new File(publickeyDerDir, "private.pem");
 
 		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
-		
+
 		final File keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
 		final File convertedPrivatekeyPemFile = new File(keyPemDir, "converted-private.pem");
 		PrivateKeyWriter.writeInPemFormat(privateKey, convertedPrivatekeyPemFile);

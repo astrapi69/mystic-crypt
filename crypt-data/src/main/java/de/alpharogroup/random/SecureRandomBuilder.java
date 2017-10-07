@@ -45,7 +45,8 @@ public class SecureRandomBuilder
 	public static final String DEFAULT_ALGORITHM = "SHA1PRNG";
 
 	/** The Constant logger. */
-	private static final Logger logger = LoggerFactory.getLogger(SecureRandomBuilder.class.getName());
+	private static final Logger logger = LoggerFactory
+		.getLogger(SecureRandomBuilder.class.getName());
 
 	/**
 	 * Gets an instance of {@link SecureRandomBuilder} for build a {@link SecureRandom} object.
@@ -58,33 +59,39 @@ public class SecureRandomBuilder
 	}
 
 	/**
-	 * Gets an instance of {@link SecureRandomBuilder} from the given algorithm and provider.
-	 *
-	 * @param algorithm the algorithm
-	 * @param provider the provider
-	 * @return the new {@link SecureRandomBuilder} object
-	 */
-	public static SecureRandomBuilder getInstance(final String algorithm, final String provider) {
-		return SecureRandomBuilder.builder().algorithm(algorithm).provider(provider);
-	}
-
-	/**
-	 * Gets an instance of {@link SecureRandomBuilder} from the given algorithm and provider.
-	 *
-	 * @param algorithm the algorithm
-	 * @return the new {@link SecureRandomBuilder} object
-	 */
-	public static SecureRandomBuilder getInstance(final String algorithm) {
-		return SecureRandomBuilder.builder().algorithm(algorithm);
-	}
-
-	/**
 	 * Gets an instance of {@link SecureRandomBuilder} with the default algorithm and provider.
 	 *
 	 * @return the new {@link SecureRandomBuilder} object
 	 */
-	public static SecureRandomBuilder getInstance() {
+	public static SecureRandomBuilder getInstance()
+	{
 		return SecureRandomBuilder.builder();
+	}
+
+	/**
+	 * Gets an instance of {@link SecureRandomBuilder} from the given algorithm and provider.
+	 *
+	 * @param algorithm
+	 *            the algorithm
+	 * @return the new {@link SecureRandomBuilder} object
+	 */
+	public static SecureRandomBuilder getInstance(final String algorithm)
+	{
+		return SecureRandomBuilder.builder().algorithm(algorithm);
+	}
+
+	/**
+	 * Gets an instance of {@link SecureRandomBuilder} from the given algorithm and provider.
+	 *
+	 * @param algorithm
+	 *            the algorithm
+	 * @param provider
+	 *            the provider
+	 * @return the new {@link SecureRandomBuilder} object
+	 */
+	public static SecureRandomBuilder getInstance(final String algorithm, final String provider)
+	{
+		return SecureRandomBuilder.builder().algorithm(algorithm).provider(provider);
 	}
 
 	/** The algorithm. */

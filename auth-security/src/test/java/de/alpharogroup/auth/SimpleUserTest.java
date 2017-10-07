@@ -37,7 +37,7 @@ import org.testng.annotations.Test;
 import de.alpharogroup.auth.interfaces.Permission;
 import de.alpharogroup.auth.interfaces.Role;
 import de.alpharogroup.auth.interfaces.User;
-import de.alpharogroup.collections.SetExtensions;
+import de.alpharogroup.collections.set.SetExtensions;
 import de.alpharogroup.file.csv.CsvFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 

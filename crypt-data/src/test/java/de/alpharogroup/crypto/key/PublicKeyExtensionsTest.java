@@ -69,7 +69,8 @@ public class PublicKeyExtensionsTest
 	/**
 	 * Test method for {@link PublicKeyExtensions#getKeyLength(PrivateKey)}.
 	 *
-	 * @throws Exception             is thrown if an security error occurs
+	 * @throws Exception
+	 *             is thrown if an security error occurs
 	 */
 	@Test(enabled = true)
 	public void testGetKeyLength() throws Exception
@@ -87,51 +88,6 @@ public class PublicKeyExtensionsTest
 		final int expected = 2048;
 		AssertJUnit.assertEquals(expected, actual);
 	}
-
-	/**
-	 * Test method for {@link PrivateKeyExtensions#toHexString(PrivateKey)}.
-	 *
-	 * @throws Exception             is thrown if an security error occurs
-	 */
-	@Test(enabled = true)
-	public void testToHexString() throws Exception
-	{
-
-		final File keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File publickeyPemFile = new File(keyPemDir, "public.pem");
-
-		Security.addProvider(new BouncyCastleProvider());
-
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile,
-			SecurityProvider.BC);
-
-		final String actual = PublicKeyExtensions.toHexString(publicKey);
-		final String expected = HEX_STRING_ENCODED;
-		AssertJUnit.assertEquals(expected, actual);
-	}
-
-	/**
-	 * Test method for {@link PrivateKeyExtensions#toHexString(PrivateKey)}.
-	 *
-	 * @throws Exception             is thrown if an security error occurs
-	 */
-	@Test(enabled = true)
-	public void testToHexStringBoolean() throws Exception
-	{
-
-		final File keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File publickeyPemFile = new File(keyPemDir, "public.pem");
-
-		Security.addProvider(new BouncyCastleProvider());
-
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile,
-			SecurityProvider.BC);
-
-		final String actual = PublicKeyExtensions.toHexString(publicKey, false);
-		final String expected = HEX_STRING_ENCODED.toUpperCase();
-		AssertJUnit.assertEquals(expected, actual);
-	}
-
 
 	/**
 	 * Test method for {@link PublicKeyExtensions#toBase64(PublicKey)}
@@ -152,6 +108,53 @@ public class PublicKeyExtensionsTest
 
 		final String base64 = PublicKeyExtensions.toBase64(publicKey);
 		AssertJUnit.assertEquals(PUBLIC_KEY_BASE64_ENCODED, base64);
+	}
+
+	/**
+	 * Test method for {@link PrivateKeyExtensions#toHexString(PrivateKey)}.
+	 *
+	 * @throws Exception
+	 *             is thrown if an security error occurs
+	 */
+	@Test(enabled = true)
+	public void testToHexString() throws Exception
+	{
+
+		final File keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		final File publickeyPemFile = new File(keyPemDir, "public.pem");
+
+		Security.addProvider(new BouncyCastleProvider());
+
+		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile,
+			SecurityProvider.BC);
+
+		final String actual = PublicKeyExtensions.toHexString(publicKey);
+		final String expected = HEX_STRING_ENCODED;
+		AssertJUnit.assertEquals(expected, actual);
+	}
+
+
+	/**
+	 * Test method for {@link PrivateKeyExtensions#toHexString(PrivateKey)}.
+	 *
+	 * @throws Exception
+	 *             is thrown if an security error occurs
+	 */
+	@Test(enabled = true)
+	public void testToHexStringBoolean() throws Exception
+	{
+
+		final File keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		final File publickeyPemFile = new File(keyPemDir, "public.pem");
+
+		Security.addProvider(new BouncyCastleProvider());
+
+		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile,
+			SecurityProvider.BC);
+
+		final String actual = PublicKeyExtensions.toHexString(publicKey, false);
+		final String expected = HEX_STRING_ENCODED.toUpperCase();
+		AssertJUnit.assertEquals(expected, actual);
 	}
 
 	/**

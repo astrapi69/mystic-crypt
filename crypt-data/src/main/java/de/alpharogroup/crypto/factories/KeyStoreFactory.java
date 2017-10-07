@@ -70,9 +70,8 @@ public class KeyStoreFactory
 	}
 
 	/**
-	 * Factory method for create a new empty {@link KeyStore} object and save it
-	 * to the given file with the given parameters or load an existing
-	 * {@link KeyStore} object from the given file.
+	 * Factory method for create a new empty {@link KeyStore} object and save it to the given file
+	 * with the given parameters or load an existing {@link KeyStore} object from the given file.
 	 *
 	 * @param type
 	 *            the type of the keystore
@@ -94,14 +93,16 @@ public class KeyStoreFactory
 	 * @throws KeyStoreException
 	 *             the key store exception
 	 */
-	public static KeyStore newKeyStore(final String type, final String password, final File keystoreFile,
-			final boolean newEmpty) throws NoSuchAlgorithmException, CertificateException, FileNotFoundException,
-			IOException, KeyStoreException 
+	public static KeyStore newKeyStore(final String type, final String password,
+		final File keystoreFile, final boolean newEmpty) throws NoSuchAlgorithmException,
+		CertificateException, FileNotFoundException, IOException, KeyStoreException
 	{
 		final KeyStore keyStore = KeyStore.getInstance(type);
-		if (newEmpty) {
+		if (newEmpty)
+		{
 			keyStore.load(null, password.toCharArray());
-			if (!keystoreFile.exists()) {
+			if (!keystoreFile.exists())
+			{
 				keystoreFile.createNewFile();
 			}
 			OutputStream out = new FileOutputStream(keystoreFile);
