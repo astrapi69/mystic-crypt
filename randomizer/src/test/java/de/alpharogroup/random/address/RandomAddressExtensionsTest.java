@@ -36,7 +36,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.BaseTestCase;
-import de.alpharogroup.resourcebundle.properties.PropertiesExtensions;
+import de.alpharogroup.resourcebundle.properties.PropertiesFileExtensions;
 import de.alpharogroup.string.StringExtensions;
 
 /**
@@ -78,7 +78,7 @@ public class RandomAddressExtensionsTest extends BaseTestCase
 	@Test
 	public void testGetRandomStreet() throws IOException
 	{
-		final Properties germanstreets = PropertiesExtensions
+		final Properties germanstreets = PropertiesFileExtensions
 			.loadProperties(RandomAddressExtensions.PROP_FILE_STREETS);
 		final String germanStreet = RandomAddressExtensions.getRandomStreet(germanstreets);
 		this.result = germanStreet != null;
@@ -98,7 +98,7 @@ public class RandomAddressExtensionsTest extends BaseTestCase
 	@Test
 	public void testGetRandomStreetWithNumber() throws IOException
 	{
-		final Properties germanstreets = PropertiesExtensions
+		final Properties germanstreets = PropertiesFileExtensions
 			.loadProperties(RandomAddressExtensions.PROP_FILE_STREETS);
 		final String germanStreetWithNumber = RandomAddressExtensions
 			.getRandomStreetWithNumber(germanstreets);
@@ -119,7 +119,7 @@ public class RandomAddressExtensionsTest extends BaseTestCase
 	@Test
 	public void testGetRandomZip() throws IOException
 	{
-		final Properties germanzips = PropertiesExtensions
+		final Properties germanzips = PropertiesFileExtensions
 			.loadProperties(RandomAddressExtensions.PROP_FILE_ZIP_CITIES);
 
 		final String randomZip = RandomAddressExtensions.getRandomZip(germanzips);

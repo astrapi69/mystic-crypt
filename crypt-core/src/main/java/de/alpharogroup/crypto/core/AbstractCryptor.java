@@ -36,7 +36,7 @@ import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKeyFactory;
 
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 
 import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.CryptConst;

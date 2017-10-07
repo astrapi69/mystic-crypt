@@ -29,7 +29,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import de.alpharogroup.random.RandomExtensions;
-import de.alpharogroup.resourcebundle.properties.PropertiesExtensions;
+import de.alpharogroup.resourcebundle.properties.PropertiesFileExtensions;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -63,7 +63,7 @@ public class RandomAddressExtensions
 		Properties p = null;
 		p = properties != null
 			? properties
-			: PropertiesExtensions.loadProperties(PROP_FILE_STREETS);
+			: PropertiesFileExtensions.loadProperties(PROP_FILE_STREETS);
 		final int size = p.size();
 		final Object[] keys = p.keySet().toArray();
 		final String street = (String)p.get(keys[RandomExtensions.randomInt(size)]);
