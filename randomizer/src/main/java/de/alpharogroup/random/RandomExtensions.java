@@ -34,6 +34,7 @@ import java.text.ParseException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import de.alpharogroup.lang.ClassExtensions;
@@ -609,7 +610,7 @@ public class RandomExtensions
 	 */
 	public static int randomInt()
 	{
-		return randomInt(10);
+		return randomInt(new Random(System.currentTimeMillis()).nextInt());
 	}
 
 	/**
