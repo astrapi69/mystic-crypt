@@ -61,6 +61,20 @@ public class RandomExtensions
 	}
 
 	/**
+	 * Generates a random float between the range 0.0-9.9.
+	 *
+	 * @return the generated random float between the range 0.0-9.9.
+	 */
+	public static float randomFloat() 
+	{
+		if (secureRandom != null) 
+		{
+			return randomFloat(secureRandom.nextFloat());
+		}
+		return randomFloat(new Random(System.currentTimeMillis()).nextFloat());
+	}
+
+	/**
 	 * Gets the secure random.
 	 *
 	 * @return the secure random
@@ -610,6 +624,10 @@ public class RandomExtensions
 	 */
 	public static int randomInt()
 	{
+		if (secureRandom != null) 
+		{
+			return randomInt(secureRandom.nextInt());
+		}
 		return randomInt(new Random(System.currentTimeMillis()).nextInt());
 	}
 
