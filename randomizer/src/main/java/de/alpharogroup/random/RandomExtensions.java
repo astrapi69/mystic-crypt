@@ -60,6 +60,43 @@ public class RandomExtensions
 		secureRandom = SecureRandomBean.builder().buildQueitly();
 	}
 
+
+	/**
+	 * The Method randomLong() gets an long between the range 0-9.
+	 *
+	 * @return an long between the range 0-9.
+	 */
+	public static long randomLong() {
+		return randomLong(new Random(System.currentTimeMillis()).nextInt());
+	}
+	
+	/**
+	 * The Method randomLong(long) gets an long to the spezified range. For
+	 * example: if you put range to 10 the random int is between 0-9.
+	 *
+	 * @param range
+	 *            the range
+	 * @return an long not greater then the range.
+	 */public static long randomLong(final long range) {
+		if (secureRandom != null) {
+			return (long) (secureRandom.nextDouble() * range);
+		}
+		return (long) (Math.random() * range);
+	}
+
+	/**
+	 * Returns a random long between the range from start and end.
+	 *
+	 * @param start
+	 *            The long from where the range starts.
+	 * @param end
+	 *            The long from where the range ends.
+	 * @return A random long between the range from start and end.
+	 */
+	public static long randomLongBetween(final long start, final long end) {
+		return start + randomLong(end - start);
+	}
+
 	/**
 	 * Generates a random float between the range 0.0-9.9.
 	 *
