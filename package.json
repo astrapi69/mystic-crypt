@@ -1,0 +1,8 @@
+{
+    "name": "mystic-crypt home page",
+    "version": "1.0.0",
+    "keywords": ["encryption", "decryption", "server", "client", "browser"],
+    "author": "astrapi69",
+    "contributors": [],
+    "dependencies": {}
+}
