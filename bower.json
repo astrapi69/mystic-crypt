@@ -1,0 +1,22 @@
+{
+  "name": "mystic-crypt home page",
+  "description": "The web page of the mystic-crypt project",
+  "version": "1.0.0",
+  "homepage": "https://github.com/astrapi69/mystic-crypt",
+  "authors": [
+    "Asterios Raptis <asterios.raptis@gmx.net>"
+  ],
+  "main": "index.html",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}

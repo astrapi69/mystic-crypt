@@ -57,3 +57,5 @@
 /build
 /.gradle
 /gradle
+/bower_components/
+/node_modules/
