@@ -71,8 +71,7 @@
 	</modules>
 
 	<properties>
-		<!-- NEW EXTENSIONS LIB versions -->
-		
+		<!-- NEW EXTENSIONS LIB versions -->		
 		<file-worker.version>4.17.0</file-worker.version>
 		<jcommons-lang.version>4.26.0</jcommons-lang.version>
 		<test-objects.version>4.17.0</test-objects.version>
