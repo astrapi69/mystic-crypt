@@ -72,10 +72,10 @@
 
 	<properties>
 		<!-- NEW EXTENSIONS LIB versions -->
-		<file-worker.version>4.16.1</file-worker.version>
-		<jcommons-lang.version>4.23.0</jcommons-lang.version>
-		<test-objects.version>4.16.0</test-objects.version>
-		<silly-collections.version>4.19.0</silly-collections.version>
+		<file-worker.version>4.17.0</file-worker.version>
+		<jcommons-lang.version>4.26.0</jcommons-lang.version>
+		<test-objects.version>4.17.0</test-objects.version>
+		<silly-collections.version>4.20.0</silly-collections.version>
 		<vintage-time.version>4.11.0</vintage-time.version>
 		<!-- RESOURCEBUNDLE-CORE versions -->
 		<resourcebundle-inspector.version>2.15.1</resourcebundle-inspector.version>
