@@ -31,7 +31,12 @@
 			<groupId>de.alpharogroup</groupId>
 			<artifactId>file-worker</artifactId>
 		</dependency>
-		
+		<!-- GUAVA DEPENDENCY -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
+
 	</dependencies>
 
 </project>

@@ -2,8 +2,6 @@ package de.alpharogroup.crypto.blockchain.api;
 
 import java.util.List;
 
-import de.alpharogroup.crypto.blockchain.Transaction;
-
 public interface IBlock
 {
 
@@ -15,9 +13,9 @@ public interface IBlock
 
 	void setPreviousBlockHash(byte[] previousBlockHash);
 
-	List<Transaction> getTransactions();
+	List<ITransaction> getTransactions();
 
-	void setTransactions(List<Transaction> transactions);
+	void setTransactions(List<ITransaction> transactions);
 
 	byte[] getMerkleRoot();
 
