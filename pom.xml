@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mvn-java-parent</artifactId>
-		<version>2.28.0</version>
+		<version>3.2.0</version>
 		<relativePath></relativePath>
 	</parent>
 
@@ -71,7 +71,7 @@
 	</modules>
 
 	<properties>
-		<!-- NEW EXTENSIONS LIB versions -->		
+		<!-- NEW EXTENSIONS LIB versions -->
 		<file-worker.version>4.17.0</file-worker.version>
 		<jcommons-lang.version>4.26.0</jcommons-lang.version>
 		<test-objects.version>4.17.0</test-objects.version>
@@ -85,6 +85,11 @@
 		<!-- EXTERNAL LIBRARIES versions -->
 		<commons-codec.version>1.10</commons-codec.version>
 		<bouncycastle.version>1.55</bouncycastle.version>
+		<!-- GUAVA version -->
+		<guava.version>19.0</guava.version>
+		<!-- JOBJECT-EXTENSIONS versions -->
+		<jobject-extensions.version>1.4.0</jobject-extensions.version>
+		<jobject-core.version>${jobject-extensions.version}</jobject-core.version>
 	</properties>
 
 	<dependencyManagement>
@@ -162,7 +167,20 @@
 				<artifactId>bcpkix-jdk15on</artifactId>
 				<version>${bouncycastle.version}</version>
 			</dependency>
-
+			<!-- GUAVA DEPENDENCY -->
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>${guava.version}</version>
+			</dependency>
+			<!-- JOBJECT-EXTENSIONS DEPENDENCIES -->
+			<!-- JOBJECT-CORE DEPENDENCY -->
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>jobject-core</artifactId>
+				<version>${jobject-core.version}</version>
+			</dependency>
+			
 		</dependencies>
 
 	</dependencyManagement>
