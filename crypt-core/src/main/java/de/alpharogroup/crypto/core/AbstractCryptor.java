@@ -92,8 +92,9 @@ public abstract class AbstractCryptor<C, K> implements Serializable, Cryptor
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		Check.get().notNull(model, "model");
-		Check.get().notNull(model.getKey(), "model.getKey()");
+		Check.get()
+		.notNull(model, "model")
+		.notNull(model.getKey(), "model.getKey()");
 		this.model = model;
 		onInitialize();
 	}
