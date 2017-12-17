@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -5,63 +6,44 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mvn-java-parent</artifactId>
-		<version>2.28.0</version>
+		<version>3.3.0</version>
 		<relativePath></relativePath>
 	</parent>
 
 	<artifactId>mystic-crypt</artifactId>
-	<version>4.23.1</version>
+	<version>4.24.0</version>
 	<packaging>pom</packaging>
 	<inceptionYear>2015</inceptionYear>
 
 	<name>${project.artifactId}</name>
 
-	<url>https://github.com/astrapi69/mystic-crypt</url>
-
 	<description>
-		Cpyptograhic library parent project.
+		The target of this parent project is to make encryption and decryption as simple as possible.
 	</description>
 
-	<licenses>
+	<url>https://github.com/astrapi69/mystic-crypt</url>
 
-		<license>
-			<name>The Apache Software License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt
-			</url>
-			<distribution>repo</distribution>
-		</license>
-
-	</licenses>
-
-	<developers>
-
-		<developer>
-			<id>astrapi69</id>
-			<name>Asterios Raptis</name>
-			<timezone>Berlin</timezone>
-			<roles>
-				<role>Project manager</role>
-				<role>Developer</role>
-			</roles>
-		</developer>
-
-	</developers>
-
-	<organization>
-		<name>Alpha Ro Group UG (haftungsbeschrängt)</name>
-		<url>http://www.alpharogroup.de/</url>
-	</organization>
-
-	<scm>
-		<connection>scm:git:git:@github.com:astrapi69/mystic-crypt.git</connection>
-		<developerConnection>scm:git:git@github.com:astrapi69/mystic-crypt.git</developerConnection>
-		<url>git:@github.com:astrapi69/mystic-crypt.git</url>
-	</scm>
-
-	<issueManagement>
-		<url>https://github.com/astrapi69/mystic-crypt/issues</url>
-		<system>github.com</system>
-	</issueManagement>
+	<properties>
+		<!-- NEW EXTENSIONS LIB versions -->
+		<file-worker.version>4.18.0</file-worker.version>
+		<jcommons-lang.version>4.28.0</jcommons-lang.version>
+		<test-objects.version>4.17.0</test-objects.version>
+		<silly-collections.version>4.21.0</silly-collections.version>
+		<vintage-time.version>4.11.0</vintage-time.version>
+		<!-- RESOURCEBUNDLE-CORE versions -->
+		<resourcebundle-inspector.version>2.16.0</resourcebundle-inspector.version>
+		<!-- JOBJECT-EXTENSIONS versions -->
+		<jobject-extensions.version>1.5.0</jobject-extensions.version>
+		<jobject-core.version>${jobject-extensions.version}</jobject-core.version>
+		<!-- PARENT PROJECT versions -->
+		<randomizer.version>${project.version}</randomizer.version>
+		<crypt-data.version>${project.version}</crypt-data.version>
+		<!-- EXTERNAL LIBRARIES versions -->
+		<commons-codec.version>1.10</commons-codec.version>
+		<bouncycastle.version>1.55</bouncycastle.version>
+		<!-- GUAVA version -->
+		<guava.version>23.0</guava.version>
+	</properties>
 
 	<modules>
 		<module>auth-security</module>
@@ -70,22 +52,30 @@
 		<module>crypt-data</module>
 	</modules>
 
-	<properties>
-		<!-- NEW EXTENSIONS LIB versions -->
-		<file-worker.version>4.16.1</file-worker.version>
-		<jcommons-lang.version>4.23.0</jcommons-lang.version>
-		<test-objects.version>4.16.0</test-objects.version>
-		<silly-collections.version>4.19.0</silly-collections.version>
-		<vintage-time.version>4.11.0</vintage-time.version>
-		<!-- RESOURCEBUNDLE-CORE versions -->
-		<resourcebundle-inspector.version>2.15.1</resourcebundle-inspector.version>
-		<!-- PARENT PROJECT versions -->
-		<randomizer.version>${project.version}</randomizer.version>
-		<crypt-data.version>${project.version}</crypt-data.version>
-		<!-- EXTERNAL LIBRARIES versions -->
-		<commons-codec.version>1.10</commons-codec.version>
-		<bouncycastle.version>1.55</bouncycastle.version>
-	</properties>
+	<developers>
+
+		<developer>
+			<id>astrapi69</id>
+			<name>Asterios Raptis</name>
+			<roles>
+				<role>Project manager</role>
+				<role>Developer</role>
+			</roles>
+			<timezone>Berlin</timezone>
+		</developer>
+
+	</developers>
+
+	<scm>
+		<connection>scm:git:git:@github.com:astrapi69/mystic-crypt.git</connection>
+		<developerConnection>scm:git:git@github.com:astrapi69/mystic-crypt.git</developerConnection>
+		<url>git:@github.com:astrapi69/mystic-crypt.git</url>
+	</scm>
+
+	<issueManagement>
+		<system>github.com</system>
+		<url>https://github.com/astrapi69/mystic-crypt/issues</url>
+	</issueManagement>
 
 	<dependencyManagement>
 
@@ -161,6 +151,19 @@
 				<groupId>org.bouncycastle</groupId>
 				<artifactId>bcpkix-jdk15on</artifactId>
 				<version>${bouncycastle.version}</version>
+			</dependency>
+			<!-- GUAVA DEPENDENCY -->
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>${guava.version}</version>
+			</dependency>
+			<!-- JOBJECT-EXTENSIONS DEPENDENCIES -->
+			<!-- JOBJECT-CORE DEPENDENCY -->
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>jobject-core</artifactId>
+				<version>${jobject-core.version}</version>
 			</dependency>
 
 		</dependencies>

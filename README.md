@@ -53,7 +53,7 @@ You can first define the version properties:
 	<properties>
 			...
 		<!-- MYSTIC-CRYPT versions -->
-		<mystic-crypt.version>4.23.1</mystic-crypt.version>
+		<mystic-crypt.version>4.24.0</mystic-crypt.version>
 		<crypt-core.version>${mystic-crypt.version}</crypt-core.version>
 		<randomizer.version>${mystic-crypt.version}</randomizer.version>
 		<auth-security.version>${mystic-crypt.version}</auth-security.version>
@@ -148,6 +148,17 @@ If you like this library, please consider a donation through
 <a href="http://flattr.com/thing/4152938/astrapi69mystic-crypt-on-GitHub" target="_blank">
 <img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" />
 </a>
+
+or over bitcoin:
+1Jzso5h7U82QCNmgxxSCya1yUK7UVcSXsW
+
+or over ether:
+0xaB6EaE10F352268B0CA672Dd6e999C86344D49D8
+
+or over bitcoin-cash:
+1Jzso5h7U82QCNmgxxSCya1yUK7UVcSXsW
+
+bitcoin:1Jzso5h7U82QCNmgxxSCya1yUK7UVcSXsW
 
 # Similar projects
 

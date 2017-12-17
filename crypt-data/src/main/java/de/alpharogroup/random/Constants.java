@@ -48,16 +48,38 @@ public abstract class Constants
 	/** Lowercase chars and numbers. */
 	public static final String LCCHARSWN = LOWCASECHARS + NUMBERS;
 
+	/** Lowercase chars and numbers. */
+	public static final String LOWCASECHARS_WITH_NUMBERS = LCCHARSWN;
+
 	/** Uppercase chars and numbers. */
 	public static final String UCCHARSWN = UPPERCASECHARS + NUMBERS;
+
+	/** Uppercase chars and numbers. */
+	public static final String UPPERCASECHARS_WITH_NUMBERS = UCCHARSWN;
 
 	/** Lowercase chars, numbers and special chars. */
 	public static final String LCCHARSWNASC = LOWCASECHARS + NUMBERS + SPECIALCHARS;
 
 	/** Lowercase chars, numbers and special chars. */
+	public static final String LOWCASECHARS_WITH_NUMBERS_AND_SPECIALCHARS = LCCHARSWNASC;
+
+	/** Lowercase chars, numbers and special chars. */
 	public static final String UCCHARSWNASC = UPPERCASECHARS + NUMBERS + SPECIALCHARS;
+
+	/** Lowercase chars, numbers and special chars. */
+	public static final String UPPERCASECHARS_WITH_NUMBERS_AND_SPECIALCHARS = UCCHARSWNASC;
 
 	/** Lower and uppercase chars and numbers. */
 	public static final String LCUCCHARSWN = LOWCASECHARS + UPPERCASECHARS + NUMBERS;
+
+	/** Lower and uppercase chars and numbers. */
+	public static final String LOWCASECHARS_UPPERCASECHARS_WITH_NUMBERS = LCUCCHARSWN;
+
+	/** Lower and uppercase chars with numbers and special chars. */
+	public static final String LCUCCHARSWNASC = LOWCASECHARS + UPPERCASECHARS + NUMBERS
+		+ SPECIALCHARS;
+
+	/** Lower and uppercase chars with numbers and special chars. */
+	public static final String LOWCASECHARS_UPPERCASECHARS_WITH_NUMBERS_AND_SPECIALCHARS = LCUCCHARSWNASC;
 
 }

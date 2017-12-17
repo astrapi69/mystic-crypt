@@ -22,18 +22,20 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.enums;
+package de.alpharogroup.crypto.annotations;
 
-import java.lang.annotation.ElementType;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * The marker annotation {@link Decrypted} marks a field that it was decrypted as the name let
- * assume.
+ * The interface {@link ObfuscationRule}.
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(value = { ElementType.FIELD, ElementType.PARAMETER })
-public @interface Decrypted {
+@Retention(RUNTIME)
+@Target({ TYPE, FIELD })
+public @interface ObfuscationRule {
+
 }
