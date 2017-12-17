@@ -1,3 +1,27 @@
+/**
+ * The MIT License
+ *
+ * Copyright (C) 2015 Asterios Raptis
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 package de.alpharogroup.crypto.gm;
 
 import java.io.UnsupportedEncodingException;
@@ -34,22 +58,22 @@ public class GoogleMapsUrlSigner {
 	 * @throws URISyntaxException
 	 *             the URI syntax exception
 	 */
-	public static String signRequest(URL url, String yourGooglePrivateKeyString)
+	public static String signRequest(final URL url, final String yourGooglePrivateKeyString)
 			throws NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException, URISyntaxException {
 
 		// Retrieve the proper URL components to sign
-		String resource = url.getPath() + '?' + url.getQuery();
+		final String resource = url.getPath() + '?' + url.getQuery();
 
 		// Get an HMAC-SHA1 signing key from the raw key bytes
-		SecretKeySpec sha1Key = new SecretKeySpec(convertToKeyByteArray(yourGooglePrivateKeyString), "HmacSHA1");
+		final SecretKeySpec sha1Key = new SecretKeySpec(convertToKeyByteArray(yourGooglePrivateKeyString), "HmacSHA1");
 
 		// Get an HMAC-SHA1 Mac instance and initialize it with the HMAC-SHA1
 		// key
-		Mac mac = Mac.getInstance("HmacSHA1");
+		final Mac mac = Mac.getInstance("HmacSHA1");
 		mac.init(sha1Key);
 
 		// compute the binary signature for the request
-		byte[] sigBytes = mac.doFinal(resource.getBytes());
+		final byte[] sigBytes = mac.doFinal(resource.getBytes());
 
 		// base 64 encode the binary signature
 		// Base64 is JDK 1.8 only - older versions may need to use Apache
@@ -59,8 +83,8 @@ public class GoogleMapsUrlSigner {
 		// convert the signature to 'web safe' base 64
 		signature = signature.replace('+', '-');
 		signature = signature.replace('/', '_');
-		String signedRequestPath = resource + "&signature=" + signature;
-		String urlGoogleMapSignedRequest = url.getProtocol() + "://" + url.getHost() + signedRequestPath;
+		final String signedRequestPath = resource + "&signature=" + signature;
+		final String urlGoogleMapSignedRequest = url.getProtocol() + "://" + url.getHost() + signedRequestPath;
 		return urlGoogleMapSignedRequest;
 	}
 
@@ -81,7 +105,7 @@ public class GoogleMapsUrlSigner {
 	/**
 	 * Returns the context path with the signature as parameter.
 	 *
-	 * @param key
+	 * @param yourGooglePrivateKeyString
 	 *            your private key from google as byte array in Base64 format
 	 * @param path
 	 *            the path
@@ -97,22 +121,22 @@ public class GoogleMapsUrlSigner {
 	 * @throws URISyntaxException
 	 *             the URI syntax exception
 	 */
-	public static String signRequest(String yourGooglePrivateKeyString, String path, String query)
+	public static String signRequest(final String yourGooglePrivateKeyString, final String path, final String query)
 			throws NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException, URISyntaxException {
 
 		// Retrieve the proper URL components to sign
-		String resource = path + '?' + query;
+		final String resource = path + '?' + query;
 
 		// Get an HMAC-SHA1 signing key from the raw key bytes
-		SecretKeySpec sha1Key = new SecretKeySpec(convertToKeyByteArray(yourGooglePrivateKeyString), "HmacSHA1");
+		final SecretKeySpec sha1Key = new SecretKeySpec(convertToKeyByteArray(yourGooglePrivateKeyString), "HmacSHA1");
 
 		// Get an HMAC-SHA1 Mac instance and initialize it with the HMAC-SHA1
 		// key
-		Mac mac = Mac.getInstance("HmacSHA1");
+		final Mac mac = Mac.getInstance("HmacSHA1");
 		mac.init(sha1Key);
 
 		// compute the binary signature for the request
-		byte[] sigBytes = mac.doFinal(resource.getBytes());
+		final byte[] sigBytes = mac.doFinal(resource.getBytes());
 
 		// base 64 encode the binary signature
 		// Base64 is JDK 1.8 only - older versions may need to use Apache
