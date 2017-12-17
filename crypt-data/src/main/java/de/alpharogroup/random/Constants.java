@@ -47,7 +47,7 @@ public abstract class Constants
 
 	/** Lowercase chars and numbers. */
 	public static final String LCCHARSWN = LOWCASECHARS + NUMBERS;
-	
+
 	/** Lowercase chars and numbers. */
 	public static final String LOWCASECHARS_WITH_NUMBERS = LCCHARSWN;
 
@@ -59,7 +59,7 @@ public abstract class Constants
 
 	/** Lowercase chars, numbers and special chars. */
 	public static final String LCCHARSWNASC = LOWCASECHARS + NUMBERS + SPECIALCHARS;
-	
+
 	/** Lowercase chars, numbers and special chars. */
 	public static final String LOWCASECHARS_WITH_NUMBERS_AND_SPECIALCHARS = LCCHARSWNASC;
 
@@ -76,7 +76,8 @@ public abstract class Constants
 	public static final String LOWCASECHARS_UPPERCASECHARS_WITH_NUMBERS = LCUCCHARSWN;
 
 	/** Lower and uppercase chars with numbers and special chars. */
-	public static final String LCUCCHARSWNASC = LOWCASECHARS + UPPERCASECHARS + NUMBERS + SPECIALCHARS;
+	public static final String LCUCCHARSWNASC = LOWCASECHARS + UPPERCASECHARS + NUMBERS
+		+ SPECIALCHARS;
 
 	/** Lower and uppercase chars with numbers and special chars. */
 	public static final String LOWCASECHARS_UPPERCASECHARS_WITH_NUMBERS_AND_SPECIALCHARS = LCUCCHARSWNASC;

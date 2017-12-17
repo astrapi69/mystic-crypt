@@ -29,34 +29,34 @@ import java.util.List;
 public interface IBlock
 {
 
-	byte[] getHash();
-
-	void setHash(byte[] hash);
-
-	byte[] getPreviousBlockHash();
-
-	void setPreviousBlockHash(byte[] previousBlockHash);
-
-	List<ITransaction> getTransactions();
-
-	void setTransactions(List<ITransaction> transactions);
-
-	byte[] getMerkleRoot();
-
-	void setMerkleRoot(byte[] merkleRoot);
-
-	long getTries();
-
-	void setTries(long tries);
-
-	long getTimestamp();
-
-	void setTimestamp(long timestamp);
-
 	byte[] calculateHash();
 
 	byte[] calculateMerkleRoot();
 
+	byte[] getHash();
+
 	int getLeadingZerosCount();
+
+	byte[] getMerkleRoot();
+
+	byte[] getPreviousBlockHash();
+
+	long getTimestamp();
+
+	List<ITransaction> getTransactions();
+
+	long getTries();
+
+	void setHash(byte[] hash);
+
+	void setMerkleRoot(byte[] merkleRoot);
+
+	void setPreviousBlockHash(byte[] previousBlockHash);
+
+	void setTimestamp(long timestamp);
+
+	void setTransactions(List<ITransaction> transactions);
+
+	void setTries(long tries);
 
 }

@@ -66,22 +66,26 @@ public class RandomExtensions
 	 *
 	 * @return an long between the range 0-9.
 	 */
-	public static long randomLong() {
+	public static long randomLong()
+	{
 		return randomLong(new Random(System.currentTimeMillis()).nextInt());
 	}
-	
+
 	/**
-	 * The Method randomLong(long) gets an long to the spezified range. For
-	 * example: if you put range to 10 the random int is between 0-9.
+	 * The Method randomLong(long) gets an long to the spezified range. For example: if you put
+	 * range to 10 the random int is between 0-9.
 	 *
 	 * @param range
 	 *            the range
 	 * @return an long not greater then the range.
-	 */public static long randomLong(final long range) {
-		if (secureRandom != null) {
-			return (long) (secureRandom.nextDouble() * range);
+	 */
+	public static long randomLong(final long range)
+	{
+		if (secureRandom != null)
+		{
+			return (long)(secureRandom.nextDouble() * range);
 		}
-		return (long) (Math.random() * range);
+		return (long)(Math.random() * range);
 	}
 
 	/**
@@ -93,7 +97,8 @@ public class RandomExtensions
 	 *            The long from where the range ends.
 	 * @return A random long between the range from start and end.
 	 */
-	public static long randomLongBetween(final long start, final long end) {
+	public static long randomLongBetween(final long start, final long end)
+	{
 		return start + randomLong(end - start);
 	}
 
@@ -102,9 +107,9 @@ public class RandomExtensions
 	 *
 	 * @return the generated random float between the range 0.0-9.9.
 	 */
-	public static float randomFloat() 
+	public static float randomFloat()
 	{
-		if (secureRandom != null) 
+		if (secureRandom != null)
 		{
 			return randomFloat(secureRandom.nextFloat());
 		}
@@ -661,7 +666,7 @@ public class RandomExtensions
 	 */
 	public static int randomInt()
 	{
-		if (secureRandom != null) 
+		if (secureRandom != null)
 		{
 			return randomInt(secureRandom.nextInt());
 		}

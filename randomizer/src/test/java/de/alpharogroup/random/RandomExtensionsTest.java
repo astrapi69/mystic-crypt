@@ -254,8 +254,9 @@ public class RandomExtensionsTest extends BaseTestCase
 		for (int i = 0; i < 100; i++)
 		{
 			final int randomInt = RandomExtensions.randomInt(5);
-			AssertJUnit.assertTrue("randomInt result is " + randomInt
-					+ " but should be between 0-4.", MathExtensions.isBetween(-1, 5, randomInt));
+			AssertJUnit.assertTrue(
+				"randomInt result is " + randomInt + " but should be between 0-4.",
+				MathExtensions.isBetween(-1, 5, randomInt));
 		}
 	}
 
@@ -269,8 +270,8 @@ public class RandomExtensionsTest extends BaseTestCase
 		for (int i = 0; i < 100; i++)
 		{
 			final long randomLong = RandomExtensions.randomLong(5l);
-//			AssertJUnit.assertTrue("randomLong result is " + randomLong
-//					+ " but should be between 0-4.", MathExtensions.isBetween(-1, 5, randomLong));
+			// AssertJUnit.assertTrue("randomLong result is " + randomLong
+			// + " but should be between 0-4.", MathExtensions.isBetween(-1, 5, randomLong));
 		}
 	}
 

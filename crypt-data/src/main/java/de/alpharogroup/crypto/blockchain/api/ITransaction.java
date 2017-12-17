@@ -27,28 +27,28 @@ package de.alpharogroup.crypto.blockchain.api;
 public interface ITransaction
 {
 
+	byte[] calculateHash();
+
 	byte[] getHash();
-
-	void setHash(byte[] hash);
-
-	String getText();
-
-	void setText(String text);
 
 	byte[] getSenderHash();
 
-	void setSenderHash(byte[] senderHash);
+	byte[] getSignableData();
 
 	byte[] getSignature();
 
-	void setSignature(byte[] signature);
+	String getText();
 
 	long getTimestamp();
 
+	void setHash(byte[] hash);
+
+	void setSenderHash(byte[] senderHash);
+
+	void setSignature(byte[] signature);
+
+	void setText(String text);
+
 	void setTimestamp(long timestamp);
-
-	byte[] getSignableData();
-
-	byte[] calculateHash();
 
 }
