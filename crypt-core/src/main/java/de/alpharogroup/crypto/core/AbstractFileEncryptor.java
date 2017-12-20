@@ -41,16 +41,17 @@ import de.alpharogroup.crypto.factories.CipherFactory;
 import de.alpharogroup.crypto.factories.KeySpecFactory;
 import de.alpharogroup.crypto.interfaces.FileEncryptor;
 import de.alpharogroup.crypto.model.CryptModel;
+
 /**
  * The abstract class {@link AbstractFileEncryptor} provides a base implementation for encrypting
- * {@link String} objects.
+ * {@link File} objects.
  *
  * @author Asterios Raptis
  * @version 1.0
  */
 public abstract class AbstractFileEncryptor extends AbstractEncryptor<Cipher, String>
 	implements
-	FileEncryptor
+		FileEncryptor
 {
 
 	/** The Constant serialVersionUID. */

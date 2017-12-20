@@ -38,12 +38,12 @@ import java.security.spec.InvalidKeySpecException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKeyFactory;
 
-import de.alpharogroup.file.delete.DeleteFileExtensions;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.simple.SimpleBaseDecryptor;
 import de.alpharogroup.crypto.simple.SimpleBaseEncryptor;
+import de.alpharogroup.file.delete.DeleteFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
@@ -143,8 +143,7 @@ public class CryptoStreamTest
 
 		encryptedFis.close();
 		cos.close();
-
-
+		// clean up...
 		DeleteFileExtensions.delete(encryptedFile);
 		DeleteFileExtensions.delete(outputDecrypted);
 

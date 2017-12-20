@@ -27,8 +27,8 @@ package de.alpharogroup.crypto.interfaces;
 import java.io.File;
 
 /**
- * The interface {@link FileEncryptor} can encrypt a {@link File} object and return the
- * encrypted result as {@link File} object.
+ * The interface {@link FileEncryptor} can encrypt a {@link File} object and return the encrypted
+ * result as {@link File} object.
  *
  * @version 1.0
  * @author Asterios Raptis
