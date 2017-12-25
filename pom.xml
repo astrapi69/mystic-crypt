@@ -253,18 +253,18 @@
 								<exclude>de/alpharogroup/crypto/aes/**/*.class</exclude>
 								<!-- constant classes with only constants -->
 								<exclude>de/alpharogroup/random/address/**/*.class</exclude>
-								<!-- bean classes -->
+								<!-- explicit bean classes -->
 								<exclude>de/alpharogroup/auth/Credentials.class</exclude>
 								<exclude>de/alpharogroup/auth/SimplePermission.class</exclude>
 								<exclude>de/alpharogroup/auth/SimpleRole.class</exclude>
 								<exclude>de/alpharogroup/auth/SimpleUser.class</exclude>
-								<!-- deprecated -->
+								<!-- explicit deprecated classes -->
 								<exclude>de/alpharogroup/crypto/key/KeyExtensions.class</exclude>
-								<!-- interfaces -->
+								<!-- explicit interfaces -->
 								<exclude>de/alpharogroup/crypto/keyrules/Obfuscatable.class</exclude>
-								<!-- constant classes with only constants -->
+								<!-- explicit constant classes with only constants -->
 								<exclude>de/alpharogroup/random/Constants.class</exclude>
-								<!-- delegation classes -->
+								<!-- explicit delegation classes -->
 								<exclude>de/alpharogroup/random/DataGenerator.class</exclude>
 							</excludes>
 						</instrumentation>
