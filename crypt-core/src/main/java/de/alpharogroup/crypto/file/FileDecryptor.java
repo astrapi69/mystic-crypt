@@ -120,8 +120,7 @@ public class FileDecryptor extends AbstractFileDecryptor
 		if (decryptedFile == null)
 		{
 			final String filename = FilenameUtils.getBaseName(encrypted.getName());
-			decryptedFile = newDecryptedFile(encrypted.getParent(),
-				filename + ".decrypted");
+			decryptedFile = newDecryptedFile(encrypted.getParent(), filename + ".decrypted");
 		}
 
 		final FileOutputStream decryptedOut = new FileOutputStream(decryptedFile);

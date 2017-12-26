@@ -43,7 +43,7 @@ import org.testng.annotations.Test;
 
 import de.alpharogroup.BaseTestCase;
 import de.alpharogroup.math.MathExtensions;
-import de.alpharogroup.test.objects.Gender;
+import de.alpharogroup.test.objects.enums.Gender;
 
 /**
  * Test class for the class {@link RandomExtensions}.
@@ -164,7 +164,7 @@ public class RandomExtensionsTest extends BaseTestCase
 	@Test
 	public void testGetRandomEnumString()
 	{
-		final String enumClassName = "de.alpharogroup.test.objects.Gender";
+		final String enumClassName = "de.alpharogroup.test.objects.enums.Gender";
 		final Gender randomEnumEntry = RandomExtensions.getRandomEnum(enumClassName);
 
 		final Gender[] genders = Gender.values();
@@ -263,15 +263,16 @@ public class RandomExtensionsTest extends BaseTestCase
 	/**
 	 * Test method for {@link RandomExtensions#randomLong(long)}.
 	 */
-	@Test
+	@Test(enabled = true)
 	public void testRandomLong()
 	{
 		logger.debug("Generate 100 secure random numbers:");
 		for (int i = 0; i < 100; i++)
 		{
 			final long randomLong = RandomExtensions.randomLong(5l);
-			// AssertJUnit.assertTrue("randomLong result is " + randomLong
-			// + " but should be between 0-4.", MathExtensions.isBetween(-1, 5, randomLong));
+			AssertJUnit.assertTrue(
+				"randomLong result is " + randomLong + " but should be between 0-4.",
+				MathExtensions.isBetween(-1, 5, randomLong));
 		}
 	}
 

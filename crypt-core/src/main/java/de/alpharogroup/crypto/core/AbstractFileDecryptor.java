@@ -24,6 +24,7 @@
  */
 package de.alpharogroup.crypto.core;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;

@@ -44,7 +44,8 @@ import de.alpharogroup.crypto.provider.SecurityProvider;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * The unit test class for the class {@link PublicKeyEncryptor} and the class {@link PrivateKeyDecryptor}.
+ * The unit test class for the class {@link PublicKeyEncryptor} and the class
+ * {@link PrivateKeyDecryptor}.
  */
 public class KeyEncryptDecryptorTest
 {

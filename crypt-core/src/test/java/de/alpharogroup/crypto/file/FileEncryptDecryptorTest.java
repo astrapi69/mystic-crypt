@@ -31,8 +31,6 @@ import javax.crypto.Cipher;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.algorithm.SunJCEAlgorithm;
-import de.alpharogroup.crypto.file.FileDecryptor;
-import de.alpharogroup.crypto.file.FileEncryptor;
 import de.alpharogroup.crypto.model.CryptModel;
 import de.alpharogroup.file.delete.DeleteFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
@@ -42,6 +40,37 @@ import de.alpharogroup.file.search.PathFinder;
  */
 public class FileEncryptDecryptorTest
 {
+
+	/**
+	 * Test method for the encrpytion with the class {@link FileEncryptor} and decryption with the
+	 * class {@link FileDecryptor} with given constructor files.
+	 *
+	 * @throws Exception
+	 *             is thrown if any error occurs on the execution
+	 */
+	@Test
+	public void testEncryptDecryptConstructorFiles() throws Exception
+	{
+		final File cryptDir = new File(PathFinder.getSrcTestResourcesDir(), "crypt");
+		final File toEncrypt = new File(cryptDir, "test.txt");
+
+		final String firstKey = "D1D15ED36B887AF1";
+
+		final CryptModel<Cipher, String> cryptModel = CryptModel.<Cipher, String> builder()
+			.key(firstKey).algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).build();
+
+		final FileEncryptor encryptor = new FileEncryptor(cryptModel,
+			new File(cryptDir, "encryptedCnstr.enc"));
+		final File encrypted = encryptor.encrypt(toEncrypt);
+
+		final FileDecryptor decryptor = new FileDecryptor(cryptModel,
+			new File(cryptDir, "decryptedCnstr.decrypted"));
+
+		final File decrypted = decryptor.decrypt(encrypted);
+		// clean up...
+		DeleteFileExtensions.delete(encrypted);
+		DeleteFileExtensions.delete(decrypted);
+	}
 
 	/**
 	 * Test method for the encrpytion with the class {@link FileEncryptor} and decryption with the
@@ -65,35 +94,6 @@ public class FileEncryptDecryptorTest
 		final File encrypted = encryptor.encrypt(toEncrypt);
 
 		final FileDecryptor decryptor = new FileDecryptor(cryptModel);
-
-		final File decrypted = decryptor.decrypt(encrypted);
-		// clean up...
-		DeleteFileExtensions.delete(encrypted);
-		DeleteFileExtensions.delete(decrypted);
-	}
-
-	/**
-	 * Test method for the encrpytion with the class {@link FileEncryptor} and decryption with the
-	 * class {@link FileDecryptor} with given constructor files.
-	 *
-	 * @throws Exception
-	 *             is thrown if any error occurs on the execution
-	 */
-	@Test
-	public void testEncryptDecryptConstructorFiles() throws Exception
-	{
-		final File cryptDir = new File(PathFinder.getSrcTestResourcesDir(), "crypt");
-		final File toEncrypt = new File(cryptDir, "test.txt");
-
-		final String firstKey = "D1D15ED36B887AF1";
-
-		final CryptModel<Cipher, String> cryptModel = CryptModel.<Cipher, String> builder()
-			.key(firstKey).algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).build();
-
-		final FileEncryptor encryptor = new FileEncryptor(cryptModel, new File(cryptDir, "encryptedCnstr.enc"));
-		final File encrypted = encryptor.encrypt(toEncrypt);
-
-		final FileDecryptor decryptor = new FileDecryptor(cryptModel, new File(cryptDir, "decryptedCnstr.decrypted"));
 
 		final File decrypted = decryptor.decrypt(encrypted);
 		// clean up...
