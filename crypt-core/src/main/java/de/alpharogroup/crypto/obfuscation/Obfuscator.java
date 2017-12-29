@@ -29,18 +29,18 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import de.alpharogroup.check.Check;
-import de.alpharogroup.crypto.keyrules.SimpleKeyRule;
+import de.alpharogroup.crypto.keyrules.KeyMapObfuscationRules;
 import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
 
 /**
- * The Class {@link Obfuscator} obfuscates the given {@link SimpleKeyRule}. For an example see the
+ * The Class {@link Obfuscator} obfuscates the given {@link KeyMapObfuscationRules}. For an example see the
  * unit test.
  */
 public class Obfuscator implements Obfuscatable
 {
 
 	/** The rule. */
-	private final SimpleKeyRule rule;
+	private final KeyMapObfuscationRules rule;
 
 	/** The key. */
 	private final String key;
@@ -53,7 +53,7 @@ public class Obfuscator implements Obfuscatable
 	 * @param key
 	 *            the key
 	 */
-	public Obfuscator(final SimpleKeyRule rule, final String key)
+	public Obfuscator(final KeyMapObfuscationRules rule, final String key)
 	{
 		Check.get().notNull(rule, "rule");
 		Check.get().notEmpty(key, "key");

@@ -13,7 +13,7 @@ import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 /**
- * The class {@link ComplexKeyRule} builds a complex rule for obfuscating a single character.
+ * The class {@link ComplexObfuscationKeyMapRule} builds a complex rule for obfuscating a single character.
  */
 @Getter
 @Setter
@@ -23,7 +23,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder(toBuilder = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ComplexKeyRule implements Serializable
+public class ComplexObfuscationKeyMapRule implements Serializable
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;

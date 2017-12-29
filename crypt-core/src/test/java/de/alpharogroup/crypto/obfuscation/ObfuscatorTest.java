@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.testng.annotations.Test;
 
-import de.alpharogroup.crypto.keyrules.SimpleKeyRule;
+import de.alpharogroup.crypto.keyrules.KeyMapObfuscationRules;
 import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
 
 /**
@@ -37,7 +37,7 @@ public class ObfuscatorTest
 		charmap.put("8", "E");
 		charmap.put("9", "N");
 
-		final SimpleKeyRule charreplaceRule = new SimpleKeyRule(charmap);
+		final KeyMapObfuscationRules charreplaceRule = new KeyMapObfuscationRules(charmap);
 		String toObfuscatedString = "854917632";
 		Obfuscatable obfuscator = new Obfuscator(charreplaceRule, toObfuscatedString);
 		actual = obfuscator.obfuscate();
@@ -65,7 +65,7 @@ public class ObfuscatorTest
 		keymap.put("T", "t");
 		keymap.put("L", "777");
 		// create the rule
-		final SimpleKeyRule replaceKeyRule = new SimpleKeyRule(keymap);
+		final KeyMapObfuscationRules replaceKeyRule = new KeyMapObfuscationRules(keymap);
 		// obfuscate the key
 		Obfuscatable obfuscator = new Obfuscator(replaceKeyRule, toObfuscatedString);
 		actual = obfuscator.obfuscate();

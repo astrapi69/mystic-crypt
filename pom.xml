@@ -38,9 +38,11 @@
 		<!-- PARENT PROJECT versions -->
 		<!-- MYSTIC-CRYPT versions -->
 		<mystic-crypt.version>${project.version}</mystic-crypt.version>
+		<auth-api.version>${mystic-crypt.version}</auth-api.version>
 		<crypt-api.version>${mystic-crypt.version}</crypt-api.version>
 		<crypt-data.version>${mystic-crypt.version}</crypt-data.version>
 		<randomizer.version>${mystic-crypt.version}</randomizer.version>
+		<randomizer-api.version>${mystic-crypt.version}</randomizer-api.version>
 		<!-- EXTERNAL LIBRARIES versions -->
 		<commons-codec.version>1.10</commons-codec.version>
 		<bouncycastle.version>1.55</bouncycastle.version>
@@ -49,11 +51,13 @@
 	</properties>
 
 	<modules>
+		<module>auth-api</module>
 		<module>auth-security</module>
-		<module>crypt-core</module>
-		<module>randomizer</module>
-		<module>crypt-data</module>
 		<module>crypt-api</module>
+		<module>crypt-core</module>
+		<module>crypt-data</module>
+		<module>randomizer</module>
+		<module>randomizer-api</module>
 	</modules>
 
 	<developers>
@@ -129,6 +133,12 @@
 
 			<dependency>
 				<groupId>de.alpharogroup</groupId>
+				<artifactId>auth-api</artifactId>
+				<version>${auth-api.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
 				<artifactId>crypt-api</artifactId>
 				<version>${crypt-api.version}</version>
 			</dependency>
@@ -143,6 +153,12 @@
 				<groupId>de.alpharogroup</groupId>
 				<artifactId>randomizer</artifactId>
 				<version>${randomizer.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>randomizer-api</artifactId>
+				<version>${randomizer-api.version}</version>
 			</dependency>
 
 			<dependency>
@@ -253,7 +269,7 @@
 								<exclude>de/alpharogroup/auth/token/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/model/**/*.class</exclude>
 								<!-- interfaces -->
-								<exclude>de/alpharogroup/auth/interfaces/**/*.class</exclude>
+								<exclude>de/alpharogroup/auth/api/**/*.class</exclude>
 								<exclude>de/alpharogroup/auth/usermanagement/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/api/**/*.class</exclude>
 								<exclude>de/alpharogroup/random/api/**/*.class</exclude>

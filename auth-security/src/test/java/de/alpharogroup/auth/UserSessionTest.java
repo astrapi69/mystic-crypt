@@ -32,10 +32,10 @@ import java.util.Set;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
-import de.alpharogroup.auth.interfaces.Permission;
-import de.alpharogroup.auth.interfaces.Role;
-import de.alpharogroup.auth.interfaces.Session;
-import de.alpharogroup.auth.interfaces.User;
+import de.alpharogroup.auth.api.Permission;
+import de.alpharogroup.auth.api.Role;
+import de.alpharogroup.auth.api.Session;
+import de.alpharogroup.auth.api.User;
 import de.alpharogroup.file.csv.CsvFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 

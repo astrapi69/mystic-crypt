@@ -24,32 +24,30 @@
  */
 package de.alpharogroup.crypto.keyrules;
 
-import java.util.Properties;
+import java.util.Map;
 
 import de.alpharogroup.check.Check;
-import de.alpharogroup.crypto.annotations.ObfuscationRule;
 import lombok.Getter;
 
 /**
- * The Class {@link PropertiesKeyRule} can define a simple rule for encrypt and decrypt a key.
+ * The class {@link KeyMapObfuscationRules} can define a simple rule for encrypt and decrypt a key.
  */
-@ObfuscationRule
-public class PropertiesKeyRule
+public class KeyMapObfuscationRules
 {
 
 	/**
 	 * The rules for encrypt the key.
 	 */
 	@Getter
-	private final Properties rules;
+	private final Map<String, String> rules;
 
 	/**
-	 * Instantiates a new {@link PropertiesKeyRule}.
+	 * Instantiates a new {@link KeyMapObfuscationRules}.
 	 *
 	 * @param rules
 	 *            the rules for encrypt the key.
 	 */
-	public PropertiesKeyRule(final Properties rules)
+	public KeyMapObfuscationRules(final Map<String, String> rules)
 	{
 		Check.get().notEmpty(rules, "rules");
 		this.rules = rules;
