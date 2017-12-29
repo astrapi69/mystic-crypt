@@ -53,15 +53,31 @@ You can first define the version properties:
 			...
 		<!-- MYSTIC-CRYPT versions -->
 		<mystic-crypt.version>4.24.0</mystic-crypt.version>
+		<auth-api.version>${mystic-crypt.version}</auth-api.version>
 		<auth-security.version>${mystic-crypt.version}</auth-security.version>
 		<crypt-api.version>${mystic-crypt.version}</crypt-api.version>
 		<crypt-core.version>${mystic-crypt.version}</crypt-core.version>
 		<crypt-data.version>${mystic-crypt.version}</crypt-data.version>
 		<randomizer.version>${mystic-crypt.version}</randomizer.version>
+		<randomizer-api.version>${mystic-crypt.version}</randomizer-api.version>
 			...
 	</properties>
 	
 You can add the following dependencies to your project for use the functionality of mystic-crypt.
+
+
+Add the following maven dependency to your project `pom.xml` if you want to import the functionality of auth-api:
+
+		<dependencies>
+			...
+			<!-- AUTH-API DEPENDENCY -->
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>auth-api</artifactId>
+				<version>${auth-api.version}</version>
+			</dependency>
+			...
+		</dependencies>
 
 
 Add the following maven dependency to your project `pom.xml` if you want to import the functionality of auth-security:
@@ -103,6 +119,19 @@ Add the following maven dependency to your project `pom.xml` if you want to impo
 			...
 		</dependencies>
 
+Add the following maven dependency to your project `pom.xml` if you want to import only the crypt-data like algorithms, modes, paddings etc.:
+
+		<dependencies>
+			...
+			<!-- CRYPT-DATA DEPENDENCY -->
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>crypt-data</artifactId>
+				<version>${crypt-data.version}</version>
+			</dependency>
+			...
+		</dependencies>
+
 Add the following maven dependency to your project `pom.xml` if you want to import the functionality of randomizer:
 
 		<dependencies>
@@ -116,16 +145,15 @@ Add the following maven dependency to your project `pom.xml` if you want to impo
 			...
 		</dependencies>
 
-
-Add the following maven dependency to your project `pom.xml` if you want to import only the crypt-data like algorithms, modes, paddings etc.:
+Add the following maven dependency to your project `pom.xml` if you want to import the functionality of randomizer-api:
 
 		<dependencies>
 			...
-			<!-- CRYPT-DATA DEPENDENCY -->
+			<!-- RANDOMIZER DEPENDENCY -->
 			<dependency>
 				<groupId>de.alpharogroup</groupId>
-				<artifactId>crypt-data</artifactId>
-				<version>${crypt-data.version}</version>
+				<artifactId>randomizer-api</artifactId>
+				<version>${randomizer-api.version}</version>
 			</dependency>
 			...
 		</dependencies>
