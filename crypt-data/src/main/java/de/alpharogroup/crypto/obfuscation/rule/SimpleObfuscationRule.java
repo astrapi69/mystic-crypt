@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.obfuscation.rules;
+package de.alpharogroup.crypto.obfuscation.rule;
 
 
 import lombok.AccessLevel;
@@ -43,7 +43,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder(toBuilder = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class SimpleObfuscationKeyMapRule {
+public class SimpleObfuscationRule {
 
     String character;
 

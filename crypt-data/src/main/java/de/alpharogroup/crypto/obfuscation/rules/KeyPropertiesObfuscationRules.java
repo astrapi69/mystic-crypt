@@ -24,28 +24,35 @@
  */
 package de.alpharogroup.crypto.obfuscation.rules;
 
+import java.util.Properties;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
+import de.alpharogroup.check.Check;
+import de.alpharogroup.crypto.annotations.ObfuscationRule;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.FieldDefaults;
 
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder(toBuilder = true)
-@FieldDefaults(level = AccessLevel.PRIVATE)
-public class ComplexObfuscationRule {
+/**
+ * The Class {@link KeyPropertiesObfuscationRules} can define a simple rule for encrypt and decrypt a key.
+ */
+@ObfuscationRule
+public class KeyPropertiesObfuscationRules
+{
 
-    Character character;
+	/**
+	 * The rules for encrypt the key.
+	 */
+	@Getter
+	private final Properties rules;
 
-    ObfuscationRules replaceWithRules;
+	/**
+	 * Instantiates a new {@link KeyPropertiesObfuscationRules}.
+	 *
+	 * @param rules
+	 *            the rules for encrypt the key.
+	 */
+	public KeyPropertiesObfuscationRules(final Properties rules)
+	{
+		Check.get().notEmpty(rules, "rules");
+		this.rules = rules;
+	}
+
 }

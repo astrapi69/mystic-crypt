@@ -22,43 +22,35 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.keyrules;
+package de.alpharogroup.crypto.obfuscation.rules;
 
-import java.io.Serializable;
+import java.util.Map;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
+import de.alpharogroup.check.Check;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.FieldDefaults;
 
 /**
- * The class {@link ComplexObfuscationKeyMapRule} builds a complex rule for obfuscating a single character.
+ * The class {@link KeyMapObfuscationRules} can define a simple rule for encrypt and decrypt a key.
  */
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder(toBuilder = true)
-@FieldDefaults(level = AccessLevel.PRIVATE)
-public class ComplexObfuscationKeyMapRule implements Serializable
+public class KeyMapObfuscationRules
 {
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
 
-	/** The index where this rule will execute. */
-	int index;
+	/**
+	 * The rules for encrypt the key.
+	 */
+	@Getter
+	private final Map<String, String> rules;
 
-	/** The sort order priority for the obfuscation. */
-	int priority;
-
-	/** The type of operation for the obfuscation. */
-	String operation;
+	/**
+	 * Instantiates a new {@link KeyMapObfuscationRules}.
+	 *
+	 * @param rules
+	 *            the rules for encrypt the key.
+	 */
+	public KeyMapObfuscationRules(final Map<String, String> rules)
+	{
+		Check.get().notEmpty(rules, "rules");
+		this.rules = rules;
+	}
 
 }

@@ -31,8 +31,8 @@ import java.util.Map;
 
 import org.testng.annotations.Test;
 
-import de.alpharogroup.crypto.keyrules.KeyMapObfuscationRules;
 import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
+import de.alpharogroup.crypto.obfuscation.rules.KeyMapObfuscationRules;
 
 /**
  * The unit test class for the class {@link Obfuscator}.
