@@ -22,11 +22,9 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.model;
+package de.alpharogroup.crypto.obfuscation.rules;
 
-import java.io.Serializable;
 
-import de.alpharogroup.crypto.algorithm.Algorithm;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,14 +35,6 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
-/**
- * The class {@link CryptModel} holds data for the encryption or decryption process.
- *
- * @param <C>
- *            the generic type of the cipher
- * @param <K>
- *            the generic type of the key
- */
 @Getter
 @Setter
 @EqualsAndHashCode
@@ -52,33 +42,10 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@FieldDefaults(level=AccessLevel.PRIVATE)
-public class CryptModel<C, K> implements Serializable
-{
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class ComplexObfuscationRule {
 
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
+    Character character;
 
-	/** The cipher. */
-	C cipher;
-
-	/** The key. */
-	K key;
-
-	/** The algorithm. */
-	Algorithm algorithm;
-
-	/** The operation mode that indicates if an encryption or decryption process will start. */
-	int operationMode;
-
-	/** The iteration count. */
-	Integer iterationCount;
-
-	/** The salt byte array. */
-	byte[] salt;
-
-	/**
-	 * The flag initialized that indicates if the cipher is initialized.
-	 */
-	boolean initialized;
+    ObfuscationRules replaceWithRules;
 }
