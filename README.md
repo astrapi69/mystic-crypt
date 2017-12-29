@@ -53,50 +53,67 @@ You can first define the version properties:
 			...
 		<!-- MYSTIC-CRYPT versions -->
 		<mystic-crypt.version>4.24.0</mystic-crypt.version>
-		<crypt-core.version>${mystic-crypt.version}</crypt-core.version>
-		<randomizer.version>${mystic-crypt.version}</randomizer.version>
 		<auth-security.version>${mystic-crypt.version}</auth-security.version>
+		<crypt-api.version>${mystic-crypt.version}</crypt-api.version>
+		<crypt-core.version>${mystic-crypt.version}</crypt-core.version>
 		<crypt-data.version>${mystic-crypt.version}</crypt-data.version>
+		<randomizer.version>${mystic-crypt.version}</randomizer.version>
 			...
 	</properties>
 	
 You can add the following dependencies to your project for use the functionality of mystic-crypt.
-
-Add the following maven dependency to your project `pom.xml` if you want to import the core functionality of mystic-core:
-
-		<dependencies>
-			...
-			<!-- MYSTIC-CRYPT DEPENDENCIES -->
-			<dependency>
-				<groupId>de.alpharogroup</groupId>
-				<artifactId>crypt-core</artifactId>
-				<version>${crypt-core.version}</version>
-			</dependency>
-		</dependencies>
-
-Add the following maven dependency to your project `pom.xml` if you want to import the functionality of randomizer:
-
-		<dependencies>
-			...
-			<!-- MYSTIC-CRYPT DEPENDENCIES -->
-			<dependency>
-				<groupId>de.alpharogroup</groupId>
-				<artifactId>randomizer</artifactId>
-				<version>${randomizer.version}</version>
-			</dependency>
-		</dependencies>
 
 
 Add the following maven dependency to your project `pom.xml` if you want to import the functionality of auth-security:
 
 		<dependencies>
 			...
-			<!-- MYSTIC-CRYPT DEPENDENCIES -->
+			<!-- AUTH-SECURITY DEPENDENCY -->
 			<dependency>
 				<groupId>de.alpharogroup</groupId>
 				<artifactId>auth-security</artifactId>
 				<version>${auth-security.version}</version>
 			</dependency>
+			...
+		</dependencies>
+
+Add the following maven dependency to your project `pom.xml` if you want to import the core functionality of mystic-api:
+
+		<dependencies>
+			...
+			<!-- CRYPT-API DEPENDENCY -->
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>crypt-api</artifactId>
+				<version>${crypt-api.version}</version>
+			</dependency>
+			...
+		</dependencies>
+
+Add the following maven dependency to your project `pom.xml` if you want to import the core functionality of mystic-core:
+
+		<dependencies>
+			...
+			<!-- CRYPT-CORE DEPENDENCY -->
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>crypt-core</artifactId>
+				<version>${crypt-core.version}</version>
+			</dependency>
+			...
+		</dependencies>
+
+Add the following maven dependency to your project `pom.xml` if you want to import the functionality of randomizer:
+
+		<dependencies>
+			...
+			<!-- RANDOMIZER DEPENDENCY -->
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>randomizer</artifactId>
+				<version>${randomizer.version}</version>
+			</dependency>
+			...
 		</dependencies>
 
 
@@ -104,12 +121,13 @@ Add the following maven dependency to your project `pom.xml` if you want to impo
 
 		<dependencies>
 			...
-			<!-- MYSTIC-CRYPT DEPENDENCIES -->
+			<!-- CRYPT-DATA DEPENDENCY -->
 			<dependency>
 				<groupId>de.alpharogroup</groupId>
 				<artifactId>crypt-data</artifactId>
 				<version>${crypt-data.version}</version>
 			</dependency>
+			...
 		</dependencies>
 
 ## Semantic Versioning

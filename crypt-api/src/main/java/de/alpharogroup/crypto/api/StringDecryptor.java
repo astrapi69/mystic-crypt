@@ -22,14 +22,15 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.interfaces;
+package de.alpharogroup.crypto.api;
 
 /**
- * Interface for decrypt {@link byte[]} objects.
+ * The interface {@link StringDecryptor} can decrypt a {@link String} object (that was previously
+ * encrypted) and return the decrypted result as {@link String} object.
  *
  * @version 1.0
  * @author Asterios Raptis
  */
-public interface ByteArrayDecryptor extends Decryptor<byte[], byte[]>
+public interface StringDecryptor extends Decryptor<String, String>
 {
 }

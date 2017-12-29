@@ -22,36 +22,26 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.keyrules;
-
-import java.util.Map;
-
-import de.alpharogroup.check.Check;
-import de.alpharogroup.crypto.interfaces.KeyRule;
-import lombok.Getter;
+package de.alpharogroup.crypto.obfuscation.api;
 
 /**
- * The Class {@link SimpleKeyRule} can define a simple rule for encrypt and decrypt a key.
+ * The interface {@link Obfuscatable} provide method to obfuscate text and disentangle it back.
  */
-public class SimpleKeyRule implements KeyRule
+public interface Obfuscatable
 {
 
 	/**
-	 * The rules for encrypt the key.
+	 * Disentangle.
+	 *
+	 * @return the string
 	 */
-	@Getter
-	private final Map<String, String> rules;
+	String disentangle();
 
 	/**
-	 * Instantiates a new {@link SimpleKeyRule}.
+	 * Obfuscate.
 	 *
-	 * @param rules
-	 *            the rules for encrypt the key.
+	 * @return the string
 	 */
-	public SimpleKeyRule(final Map<String, String> rules)
-	{
-		Check.get().notEmpty(rules, "rules");
-		this.rules = rules;
-	}
+	String obfuscate();
 
 }

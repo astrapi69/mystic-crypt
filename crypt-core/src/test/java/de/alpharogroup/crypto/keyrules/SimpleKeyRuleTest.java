@@ -30,6 +30,9 @@ import java.util.Map;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
+import de.alpharogroup.crypto.obfuscation.Obfuscator;
+import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
+
 /**
  * Test class for {@link SimpleKeyRule}
  */

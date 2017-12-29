@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.interfaces;
+package de.alpharogroup.crypto.api;
 
 /**
  * The interface {@link IntegerEncryptor} can encrypt a {@link Integer} object and return the

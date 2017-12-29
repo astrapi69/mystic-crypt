@@ -14,6 +14,11 @@
 	<dependencies>
 
 		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>crypt-api</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
 		</dependency>

@@ -38,9 +38,9 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 
+import de.alpharogroup.crypto.api.FileEncryptor;
 import de.alpharogroup.crypto.factories.CipherFactory;
 import de.alpharogroup.crypto.factories.KeySpecFactory;
-import de.alpharogroup.crypto.interfaces.FileEncryptor;
 import de.alpharogroup.crypto.model.CryptModel;
 
 /**

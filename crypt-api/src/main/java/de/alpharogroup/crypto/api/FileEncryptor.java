@@ -22,31 +22,17 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.interfaces;
+package de.alpharogroup.crypto.api;
+
+import java.io.File;
 
 /**
- * The generic functional interface {@link Decryptor} can decrypt an object of type &lt;T&gt; (that
- * was previously encrypted) and return the decrypted result as object of type &lt;R&gt;.
+ * The interface {@link FileEncryptor} can encrypt a {@link File} object and return the encrypted
+ * result as {@link File} object.
  *
- * @author Asterios Raptis
  * @version 1.0
- * @param <T>
- *            the generic type of the input to decrypt
- * @param <R>
- *            the generic type of the result
+ * @author Asterios Raptis
  */
-public interface Decryptor<T, R>
+public interface FileEncryptor extends Encryptor<File, File>
 {
-
-	/**
-	 * Decrypt the given encrypted object.
-	 *
-	 * @param encrypted
-	 *            The object to decrypt.
-	 * @return The decrypted object
-	 * @throws Exception
-	 *             is thrown if decryption fails.
-	 */
-	public R decrypt(final T encrypted) throws Exception;
-
 }

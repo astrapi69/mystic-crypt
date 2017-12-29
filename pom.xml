@@ -26,18 +26,21 @@
 	<properties>
 		<!-- NEW EXTENSIONS LIB versions -->
 		<file-worker.version>4.18.0</file-worker.version>
-		<jcommons-lang.version>4.28.0</jcommons-lang.version>
+		<jcommons-lang.version>4.28.1</jcommons-lang.version>
 		<test-objects.version>4.19.0</test-objects.version>
-		<silly-collections.version>4.21.1</silly-collections.version>
+		<silly-collections.version>4.21.2</silly-collections.version>
 		<vintage-time.version>4.11.0</vintage-time.version>
 		<!-- RESOURCEBUNDLE-CORE versions -->
-		<resourcebundle-inspector.version>2.16.0</resourcebundle-inspector.version>
+		<resourcebundle-inspector.version>2.16.1</resourcebundle-inspector.version>
 		<!-- JOBJECT-EXTENSIONS versions -->
 		<jobject-extensions.version>1.6.0</jobject-extensions.version>
 		<jobject-core.version>${jobject-extensions.version}</jobject-core.version>
 		<!-- PARENT PROJECT versions -->
-		<randomizer.version>${project.version}</randomizer.version>
-		<crypt-data.version>${project.version}</crypt-data.version>
+		<!-- MYSTIC-CRYPT versions -->
+		<mystic-crypt.version>${project.version}</mystic-crypt.version>
+		<crypt-api.version>${mystic-crypt.version}</crypt-api.version>
+		<crypt-data.version>${mystic-crypt.version}</crypt-data.version>
+		<randomizer.version>${mystic-crypt.version}</randomizer.version>
 		<!-- EXTERNAL LIBRARIES versions -->
 		<commons-codec.version>1.10</commons-codec.version>
 		<bouncycastle.version>1.55</bouncycastle.version>
@@ -50,6 +53,7 @@
 		<module>crypt-core</module>
 		<module>randomizer</module>
 		<module>crypt-data</module>
+		<module>crypt-api</module>
 	</modules>
 
 	<developers>
@@ -125,14 +129,20 @@
 
 			<dependency>
 				<groupId>de.alpharogroup</groupId>
-				<artifactId>randomizer</artifactId>
-				<version>${randomizer.version}</version>
+				<artifactId>crypt-api</artifactId>
+				<version>${crypt-api.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>de.alpharogroup</groupId>
 				<artifactId>crypt-data</artifactId>
 				<version>${crypt-data.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>randomizer</artifactId>
+				<version>${randomizer.version}</version>
 			</dependency>
 
 			<dependency>
@@ -245,7 +255,7 @@
 								<!-- interfaces -->
 								<exclude>de/alpharogroup/auth/interfaces/**/*.class</exclude>
 								<exclude>de/alpharogroup/auth/usermanagement/**/*.class</exclude>
-								<exclude>de/alpharogroup/crypto/interfaces/**/*.class</exclude>
+								<exclude>de/alpharogroup/crypto/api/**/*.class</exclude>
 								<exclude>de/alpharogroup/random/api/**/*.class</exclude>
 								<!-- exceptions -->
 								<exclude>de/alpharogroup/exceptions/**/*.class</exclude>
@@ -261,7 +271,7 @@
 								<!-- explicit deprecated classes -->
 								<exclude>de/alpharogroup/crypto/key/KeyExtensions.class</exclude>
 								<!-- explicit interfaces -->
-								<exclude>de/alpharogroup/crypto/keyrules/Obfuscatable.class</exclude>
+								<exclude>de/alpharogroup/crypto/obfuscation/api/Obfuscatable.class</exclude>
 								<!-- explicit constant classes with only constants -->
 								<exclude>de/alpharogroup/random/Constants.class</exclude>
 								<!-- explicit delegation classes -->

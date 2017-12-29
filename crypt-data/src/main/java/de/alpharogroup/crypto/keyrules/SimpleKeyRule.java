@@ -26,68 +26,31 @@ package de.alpharogroup.crypto.keyrules;
 
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
-
 import de.alpharogroup.check.Check;
+import lombok.Getter;
 
 /**
- * The Class {@link Obfuscator} obfuscates the given {@link SimpleKeyRule}. For an example see the
- * unit test.
+ * The Class {@link SimpleKeyRule} can define a simple rule for encrypt and decrypt a key.
  */
-public class Obfuscator implements Obfuscatable
+public class SimpleKeyRule
 {
 
-	/** The rule. */
-	private final SimpleKeyRule rule;
-
-	/** The key. */
-	private final String key;
+	/**
+	 * The rules for encrypt the key.
+	 */
+	@Getter
+	private final Map<String, String> rules;
 
 	/**
-	 * Instantiates a new {@link Obfuscator}.
+	 * Instantiates a new {@link SimpleKeyRule}.
 	 *
-	 * @param rule
-	 *            the rule
-	 * @param key
-	 *            the key
+	 * @param rules
+	 *            the rules for encrypt the key.
 	 */
-	public Obfuscator(final SimpleKeyRule rule, final String key)
+	public SimpleKeyRule(final Map<String, String> rules)
 	{
-		Check.get().notNull(rule, "rule");
-		Check.get().notEmpty(key, "key");
-		this.rule = rule;
-		this.key = key;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String disentangle()
-	{
-		String clonedKey = obfuscate();
-		final Map<String, String> rules = rule.getRules();
-		for (final Map.Entry<String, String> rule : rules.entrySet())
-		{
-			clonedKey = StringUtils.replace(clonedKey, rule.getValue(), rule.getKey());
-		}
-		return clonedKey;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String obfuscate()
-	{
-		final Map<String, String> rules = rule.getRules();
-		String clonedKey = key;
-		for (final Map.Entry<String, String> rule : rules.entrySet())
-		{
-			clonedKey = StringUtils.replace(clonedKey, rule.getKey(), rule.getValue());
-		}
-		return clonedKey;
-
+		Check.get().notEmpty(rules, "rules");
+		this.rules = rules;
 	}
 
 }

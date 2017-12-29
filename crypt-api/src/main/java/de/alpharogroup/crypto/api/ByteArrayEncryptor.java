@@ -22,30 +22,14 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.interfaces;
+package de.alpharogroup.crypto.api;
 
 /**
- * The generic functional interface {@link Encryptor} can encrypt an object of type &lt;T&gt; and
- * return the encrypted result as object of type &lt;R&gt;.
+ * Interface for decrypt {@link byte[]} objects.
  *
- * @author Asterios Raptis
  * @version 1.0
- * @param <T>
- *            the generic type of the input to encrypt
- * @param <R>
- *            the generic type of the result
+ * @author Asterios Raptis
  */
-public interface Encryptor<T, R>
+public interface ByteArrayEncryptor extends Encryptor<byte[], byte[]>
 {
-	/**
-	 * Encrypt the given object.
-	 *
-	 * @param toEncrypt
-	 *            The object to encrypt.
-	 * @return The encrypted object.
-	 * @throws Exception
-	 *             is thrown if encryption fails.
-	 */
-	public R encrypt(final T toEncrypt) throws Exception;
-
 }

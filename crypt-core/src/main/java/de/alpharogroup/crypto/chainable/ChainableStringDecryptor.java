@@ -24,8 +24,8 @@
  */
 package de.alpharogroup.crypto.chainable;
 
+import de.alpharogroup.crypto.api.Decryptor;
 import de.alpharogroup.crypto.core.ChainableDecryptor;
-import de.alpharogroup.crypto.interfaces.Decryptor;
 
 /**
  * The class {@link ChainableStringDecryptor} can take many {@code Decryptor} objects and decrypts
