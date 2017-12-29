@@ -22,13 +22,11 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.api;
+package de.alpharogroup.crypto.obfuscation.api;
 
 /**
- * The marker interface {@link KeyRule} can define a rule for encrypt and decrypt a key.
- * @deprecated use instead the annotation ObfuscationRule.
+ * The marker interface {@link KeyRule} can define a rule for obfuscate and disentangle over a key.
  */
-@Deprecated
 public interface KeyRule
 {
 }
