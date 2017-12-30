@@ -24,6 +24,7 @@
  */
 package de.alpharogroup.crypto.obfuscation.rule;
 
+import java.io.Serializable;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -35,6 +36,9 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
+/**
+ * The class {@link ComplexObfuscationKeyMapRule} builds a complex rule for obfuscating a single character.
+ */
 @Getter
 @Setter
 @EqualsAndHashCode
@@ -43,11 +47,18 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder(toBuilder = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ComplexObfuscationRule {
+public class ComplexObfuscationKeyMapRule implements Serializable
+{
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 1L;
 
-    Character character;
+	/** The index where this rule will execute. */
+	int index;
 
-	/** The obfuscation rules. */
-    ObfuscationRules replaceWithRules;
+	/** The sort order priority for the obfuscation. */
+	int priority;
+
+	/** The type of operation for the obfuscation. */
+	String operation;
 
 }

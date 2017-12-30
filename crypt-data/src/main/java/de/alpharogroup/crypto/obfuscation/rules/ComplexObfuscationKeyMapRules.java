@@ -24,41 +24,34 @@
  */
 package de.alpharogroup.crypto.obfuscation.rules;
 
-import java.io.Serializable;
+import java.util.Map;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
+import de.alpharogroup.check.Check;
+import de.alpharogroup.crypto.obfuscation.rule.ComplexObfuscationRule;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.FieldDefaults;
 
 /**
- * The class {@link ComplexObfuscationKeyMapRule} builds a complex rule for obfuscating a single character.
+ * The class {@link ComplexObfuscationKeyMapRules} can define a simple rule for encrypt and decrypt a key.
  */
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder(toBuilder = true)
-@FieldDefaults(level = AccessLevel.PRIVATE)
-public class ComplexObfuscationKeyMapRule implements Serializable
+public class ComplexObfuscationKeyMapRules
 {
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
 
-	/** The index where this rule will execute. */
-	int index;
+	/**
+	 * The rules for encrypt the key.
+	 */
+	@Getter
+	private final Map<Character, ComplexObfuscationRule> obfuscationRules;
 
-	/** The sort order priority for the obfuscation. */
-	int priority;
-
-	/** The type of operation for the obfuscation. */
-	String operation;
+	/**
+	 * Instantiates a new {@link ComplexObfuscationKeyMapRules}.
+	 *
+	 * @param obfuscationRules
+	 *            the obfuscation rules for obfuscate and disentangle.
+	 */
+	public ComplexObfuscationKeyMapRules(final Map<Character, ComplexObfuscationRule> obfuscationRules)
+	{
+		Check.get().notEmpty(obfuscationRules, "obfuscationRules");
+		this.obfuscationRules = obfuscationRules;
+	}
 
 }
