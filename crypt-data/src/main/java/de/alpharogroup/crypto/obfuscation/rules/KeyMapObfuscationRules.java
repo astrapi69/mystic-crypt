@@ -24,9 +24,10 @@
  */
 package de.alpharogroup.crypto.obfuscation.rules;
 
-import java.util.Map;
+import java.util.List;
 
 import de.alpharogroup.check.Check;
+import de.alpharogroup.collections.pairs.KeyValuePair;
 import lombok.Getter;
 
 /**
@@ -39,7 +40,7 @@ public class KeyMapObfuscationRules
 	 * The rules for encrypt the key.
 	 */
 	@Getter
-	private final Map<String, String> rules;
+	private final List<KeyValuePair<String, String>> rules;
 
 	/**
 	 * Instantiates a new {@link KeyMapObfuscationRules}.
@@ -47,7 +48,7 @@ public class KeyMapObfuscationRules
 	 * @param rules
 	 *            the rules for encrypt the key.
 	 */
-	public KeyMapObfuscationRules(final Map<String, String> rules)
+	public KeyMapObfuscationRules(final List<KeyValuePair<String, String>> rules)
 	{
 		Check.get().notEmpty(rules, "rules");
 		this.rules = rules;

@@ -24,20 +24,15 @@
  */
 package de.alpharogroup.crypto.obfuscation;
 
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-
 import de.alpharogroup.check.Check;
-import de.alpharogroup.collections.pairs.KeyValuePair;
 import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
 import de.alpharogroup.crypto.obfuscation.rules.KeyMapObfuscationRules;
 
 /**
- * The Class {@link Obfuscator} obfuscates the given {@link KeyMapObfuscationRules}. For an example see the
- * unit test.
+ * The Class {@link StringObfuscator} obfuscates the given {@link KeyMapObfuscationRules}. For an
+ * example see the unit test.
  */
-public class Obfuscator implements Obfuscatable
+public class StringObfuscator implements Obfuscatable
 {
 
 	/** The rule. */
@@ -47,14 +42,14 @@ public class Obfuscator implements Obfuscatable
 	private final String key;
 
 	/**
-	 * Instantiates a new {@link Obfuscator}.
+	 * Instantiates a new {@link StringObfuscator}.
 	 *
 	 * @param rule
 	 *            the rule
 	 * @param key
 	 *            the key
 	 */
-	public Obfuscator(final KeyMapObfuscationRules rule, final String key)
+	public StringObfuscator(final KeyMapObfuscationRules rule, final String key)
 	{
 		Check.get().notNull(rule, "rule");
 		Check.get().notEmpty(key, "key");
@@ -68,13 +63,7 @@ public class Obfuscator implements Obfuscatable
 	@Override
 	public String disentangle()
 	{
-		String clonedKey = obfuscate();
-		final List<KeyValuePair<String, String>> rules = rule.getRules();
-		for (final KeyValuePair<String, String> rule : rules)
-		{
-			clonedKey = StringUtils.replace(clonedKey, rule.getValue(), rule.getKey());
-		}
-		return clonedKey;
+		return ObfuscatorExtensions.disentangle(rule.getRules(), obfuscate());
 	}
 
 	/**
@@ -83,14 +72,7 @@ public class Obfuscator implements Obfuscatable
 	@Override
 	public String obfuscate()
 	{
-		final List<KeyValuePair<String, String>> rules = rule.getRules();
-		String clonedKey = key;
-		for (final KeyValuePair<String, String> rule : rules)
-		{
-			clonedKey = StringUtils.replace(clonedKey, rule.getKey(), rule.getValue());
-		}
-		return clonedKey;
-
+		return ObfuscatorExtensions.obfuscate(rule.getRules(), key);
 	}
 
 }
