@@ -17,7 +17,6 @@ The target of this parent project is to make encryption and decryption as simple
 
 The source code comes under the liberal MIT License, making mystic-crypt great for all types of applications.
 
-
 ## Build status
 
 [![Build Status](https://travis-ci.org/astrapi69/mystic-crypt.svg?branch=master)](https://travis-ci.org/astrapi69/mystic-crypt)
@@ -215,3 +214,9 @@ Here is a list of awesome projects for cryptography:
  * [Apache Shiro](https://github.com/apache/shiro) Apache Shiro is a powerful and easy-to-use Java security framework that performs authentication, authorization, cryptography, and session management.
  * [commons-ssl](http://juliusdavies.ca/commons-ssl/) Not-Yet-Commons-SSL
 
+## Credits
+
+|Travis CI|
+|:-:|
+|![Travis CI](https://travis-ci.com/images/logos/TravisCI-Full-Color.png)|
+|Many thanks to [Travis CI](https://travis-ci.org) for providing a free continuous integration service for open source projects.|
