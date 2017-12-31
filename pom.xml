@@ -27,7 +27,7 @@
 		<!-- NEW EXTENSIONS LIB versions -->
 		<file-worker.version>4.18.0</file-worker.version>
 		<jcommons-lang.version>4.28.1</jcommons-lang.version>
-		<test-objects.version>4.19.0</test-objects.version>
+		<test-objects.version>4.20.1</test-objects.version>
 		<silly-collections.version>4.22.0</silly-collections.version>
 		<vintage-time.version>4.11.0</vintage-time.version>
 		<!-- RESOURCEBUNDLE-CORE versions -->
@@ -48,6 +48,8 @@
 		<bouncycastle.version>1.55</bouncycastle.version>
 		<!-- GUAVA version -->
 		<guava.version>23.0</guava.version>
+		<!-- MEANBEAN version -->
+		<meanbean.version>2.0.3</meanbean.version>
 	</properties>
 
 	<modules>
@@ -190,6 +192,12 @@
 				<groupId>de.alpharogroup</groupId>
 				<artifactId>jobject-core</artifactId>
 				<version>${jobject-core.version}</version>
+			</dependency>
+			<!-- MEANBEAN DEPENDENCY -->
+			<dependency>
+				<groupId>org.meanbean</groupId>
+				<artifactId>meanbean</artifactId>
+				<version>${meanbean.version}</version>
 			</dependency>
 
 		</dependencies>
