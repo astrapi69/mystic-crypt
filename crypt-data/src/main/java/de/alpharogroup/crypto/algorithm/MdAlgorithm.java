@@ -27,7 +27,7 @@ package de.alpharogroup.crypto.algorithm;
 import lombok.Getter;
 
 /**
- * The enum {@link MdAlgorithm} defines the MessageDigest Algorithm.
+ * The enum {@link MdAlgorithm} defines the MessageDigest algorithm.
  *
  * @version 1.0
  * @author Asterios Raptis
