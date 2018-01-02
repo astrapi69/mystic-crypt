@@ -24,24 +24,25 @@
  */
 package de.alpharogroup.crypto.obfuscation;
 
-import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.google.common.collect.BiMap;
+
 import de.alpharogroup.check.Check;
-import de.alpharogroup.collections.pairs.KeyValuePair;
 import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
-import de.alpharogroup.crypto.obfuscation.rules.KeyMapObfuscationRules;
+import de.alpharogroup.crypto.obfuscation.rules.SimpleObfuscationRules;
 
 /**
- * The Class {@link Obfuscator} obfuscates the given {@link KeyMapObfuscationRules}. For an example see the
+ * The Class {@link Obfuscator} obfuscates the given {@link SimpleObfuscationRules}. For an example see the
  * unit test.
  */
 public class Obfuscator implements Obfuscatable
 {
 
 	/** The rule. */
-	private final KeyMapObfuscationRules rule;
+	private final SimpleObfuscationRules rule;
 
 	/** The key. */
 	private final String key;
@@ -54,7 +55,7 @@ public class Obfuscator implements Obfuscatable
 	 * @param key
 	 *            the key
 	 */
-	public Obfuscator(final KeyMapObfuscationRules rule, final String key)
+	public Obfuscator(final SimpleObfuscationRules rule, final String key)
 	{
 		Check.get().notNull(rule, "rule");
 		Check.get().notEmpty(key, "key");
@@ -69,8 +70,8 @@ public class Obfuscator implements Obfuscatable
 	public String disentangle()
 	{
 		String clonedKey = obfuscate();
-		final List<KeyValuePair<String, String>> rules = rule.getRules();
-		for (final KeyValuePair<String, String> rule : rules)
+		final BiMap<String, String> rules = rule.getObfuscationRules();
+		for (final Map.Entry<String, String> rule : rules.entrySet())
 		{
 			clonedKey = StringUtils.replace(clonedKey, rule.getValue(), rule.getKey());
 		}
@@ -83,9 +84,9 @@ public class Obfuscator implements Obfuscatable
 	@Override
 	public String obfuscate()
 	{
-		final List<KeyValuePair<String, String>> rules = rule.getRules();
+		final BiMap<String, String> rules = rule.getObfuscationRules();
 		String clonedKey = key;
-		for (final KeyValuePair<String, String> rule : rules)
+		for (final Map.Entry<String, String> rule : rules.entrySet())
 		{
 			clonedKey = StringUtils.replace(clonedKey, rule.getKey(), rule.getValue());
 		}

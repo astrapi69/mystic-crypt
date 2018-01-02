@@ -25,6 +25,7 @@
 package de.alpharogroup.crypto.obfuscation.rule;
 
 
+import de.alpharogroup.crypto.obfuscation.rules.ObfuscationRules;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -48,6 +49,6 @@ public class ComplexObfuscationRule {
     Character character;
 
 	/** The obfuscation rules. */
-    ObfuscationRules replaceWithRules;
+    ObfuscationRules replaceWith;
 
 }

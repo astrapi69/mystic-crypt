@@ -1,4 +1,4 @@
-package de.alpharogroup.crypto.obfuscation.rule;
+package de.alpharogroup.crypto.obfuscation.rules;
 
 import java.util.List;
 

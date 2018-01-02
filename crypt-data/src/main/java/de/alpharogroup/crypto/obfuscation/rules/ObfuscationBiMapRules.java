@@ -24,34 +24,34 @@
  */
 package de.alpharogroup.crypto.obfuscation.rules;
 
-import java.util.List;
+import com.google.common.collect.BiMap;
 
 import de.alpharogroup.check.Check;
-import de.alpharogroup.collections.pairs.KeyValuePair;
 import lombok.Getter;
 
 /**
- * The class {@link KeyMapObfuscationRules} can define a simple rule for encrypt and decrypt a key.
+ * The class {@link ObfuscationBiMapRules} decorates a {@link BiMap} that defines rules for encrypt
+ * and decrypt given strings.
  */
-public class KeyMapObfuscationRules
+public class ObfuscationBiMapRules<K, V>
 {
 
 	/**
-	 * The rules for encrypt the key.
+	 * The rules for encrypt the string.
 	 */
 	@Getter
-	private final List<KeyValuePair<String, String>> rules;
+	private final BiMap<K, V> obfuscationRules;
 
 	/**
-	 * Instantiates a new {@link KeyMapObfuscationRules}.
+	 * Instantiates a new {@link ObfuscationBiMapRules}.
 	 *
-	 * @param rules
-	 *            the rules for encrypt the key.
+	 * @param obfuscationRules
+	 *            the obfuscation rules for obfuscate and disentangle.
 	 */
-	public KeyMapObfuscationRules(final List<KeyValuePair<String, String>> rules)
+	public ObfuscationBiMapRules(final BiMap<K, V> obfuscationRules)
 	{
-		Check.get().notEmpty(rules, "rules");
-		this.rules = rules;
+		Check.get().notEmpty(obfuscationRules, "obfuscationRules");
+		this.obfuscationRules = obfuscationRules;
 	}
 
 }

@@ -26,17 +26,17 @@ package de.alpharogroup.crypto.obfuscation;
 
 import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
-import de.alpharogroup.crypto.obfuscation.rules.KeyMapObfuscationRules;
+import de.alpharogroup.crypto.obfuscation.rules.SimpleObfuscationRules;
 
 /**
- * The Class {@link StringObfuscator} obfuscates the given {@link KeyMapObfuscationRules}. For an
+ * The Class {@link StringObfuscator} obfuscates the given {@link SimpleObfuscationRules}. For an
  * example see the unit test.
  */
 public class StringObfuscator implements Obfuscatable
 {
 
 	/** The rule. */
-	private final KeyMapObfuscationRules rule;
+	private final SimpleObfuscationRules rule;
 
 	/** The key. */
 	private final String key;
@@ -49,7 +49,7 @@ public class StringObfuscator implements Obfuscatable
 	 * @param key
 	 *            the key
 	 */
-	public StringObfuscator(final KeyMapObfuscationRules rule, final String key)
+	public StringObfuscator(final SimpleObfuscationRules rule, final String key)
 	{
 		Check.get().notNull(rule, "rule");
 		Check.get().notEmpty(key, "key");
@@ -63,7 +63,7 @@ public class StringObfuscator implements Obfuscatable
 	@Override
 	public String disentangle()
 	{
-		return ObfuscatorExtensions.disentangle(rule.getRules(), obfuscate());
+		return ObfuscatorExtensions.disentangle(rule.getObfuscationRules(), obfuscate());
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class StringObfuscator implements Obfuscatable
 	@Override
 	public String obfuscate()
 	{
-		return ObfuscatorExtensions.obfuscate(rule.getRules(), key);
+		return ObfuscatorExtensions.obfuscate(rule.getObfuscationRules(), key);
 	}
 
 }

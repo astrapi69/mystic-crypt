@@ -1,16 +1,16 @@
 package de.alpharogroup.crypto.obfuscation;
 
-
-import java.util.HashMap;
-import java.util.Map;
-
+import static org.testng.AssertJUnit.assertEquals;
 import org.testng.annotations.Test;
+
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
 import de.alpharogroup.collections.list.ListExtensions;
 import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
 import de.alpharogroup.crypto.obfuscation.rule.ComplexObfuscationRule;
-import de.alpharogroup.crypto.obfuscation.rule.ObfuscationRules;
-import de.alpharogroup.crypto.obfuscation.rules.ComplexObfuscationKeyMapRules;
+import de.alpharogroup.crypto.obfuscation.rules.ComplexObfuscationRules;
+import de.alpharogroup.crypto.obfuscation.rules.ObfuscationRules;
 
 /**
  * The unit test class for the class {@link ComplexObfuscator}.
@@ -59,35 +59,37 @@ public class ComplexObfuscatorTest
 	public void testObfuscate()
 	{
 		String actual;
-//		String expected;
+		String expected;
 		// a key for obfuscation
-		String toObfuscatedString = "abcdefghijk";
+		String toObfuscatedString = "abc";
 		// create a rule for obfuscate the key
 
-		Map<Character, ComplexObfuscationRule> obfuscationRules = new HashMap<>();
+		BiMap<Character, ComplexObfuscationRule> obfuscationRules = HashBiMap.create();
 		obfuscationRules.put('a', ComplexObfuscationRule.builder()
 			.character('a')
-			.replaceWithRules(ObfuscationRules.builder()
+			.replaceWith(ObfuscationRules.builder()
 				.rules(ListExtensions.newArrayList("b"))
 				.build())
 			.build());
 		obfuscationRules.put('b', ComplexObfuscationRule.builder()
 			.character('b')
-			.replaceWithRules(ObfuscationRules.builder()
+			.replaceWith(ObfuscationRules.builder()
 				.rules(ListExtensions.newArrayList("c"))
 				.build())
 			.build());
 		obfuscationRules.put('c', ComplexObfuscationRule.builder()
 			.character('c')
-			.replaceWithRules(ObfuscationRules.builder()
+			.replaceWith(ObfuscationRules.builder()
 				.rules(ListExtensions.newArrayList("d"))
 				.build())
 			.build());
-		ComplexObfuscationKeyMapRules replaceKeyRules = new ComplexObfuscationKeyMapRules(obfuscationRules);
+		ComplexObfuscationRules replaceKeyRules = new ComplexObfuscationRules(obfuscationRules);
 		// obfuscate the key
 		Obfuscatable obfuscator = new ComplexObfuscator(replaceKeyRules, toObfuscatedString);
 		actual = obfuscator.obfuscate();
-		System.out.println(actual);
+
+		expected = "bcd";
+		assertEquals(expected, actual);
 	}
 
 }

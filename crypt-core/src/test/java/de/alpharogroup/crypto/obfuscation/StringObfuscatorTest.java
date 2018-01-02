@@ -3,14 +3,15 @@ package de.alpharogroup.crypto.obfuscation;
 import static org.testng.AssertJUnit.assertEquals;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.testng.annotations.Test;
 
-import de.alpharogroup.collections.pairs.KeyValuePair;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+
 import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
-import de.alpharogroup.crypto.obfuscation.rules.KeyMapObfuscationRules;
+import de.alpharogroup.crypto.obfuscation.rules.SimpleObfuscationRules;
 
 public class StringObfuscatorTest
 {
@@ -35,9 +36,9 @@ public class StringObfuscatorTest
 		charmap.put("7", "Se");
 		charmap.put("8", "E");
 		charmap.put("9", "N");
-		List<KeyValuePair<String, String>> keyValuePairs = KeyValuePair.toKeyValuePairs(charmap);
+		BiMap<String, String> obfuscationRules = HashBiMap.create(charmap);
 
-		final KeyMapObfuscationRules charreplaceRule = new KeyMapObfuscationRules(keyValuePairs);
+		final SimpleObfuscationRules charreplaceRule = new SimpleObfuscationRules(obfuscationRules);
 		String toObfuscatedString = "854917632";
 		Obfuscatable obfuscator = new StringObfuscator(charreplaceRule, toObfuscatedString);
 		actual = obfuscator.obfuscate();
@@ -64,9 +65,10 @@ public class StringObfuscatorTest
 		keymap.put("6", "666");
 		keymap.put("T", "t");
 		keymap.put("L", "777");
-		List<KeyValuePair<String, String>> keyValuePairs = KeyValuePair.toKeyValuePairs(keymap);
+		BiMap<String, String> obfuscationRules = HashBiMap.create(keymap);
+
 		// create the rule
-		final KeyMapObfuscationRules replaceKeyRule = new KeyMapObfuscationRules(keyValuePairs);
+		final SimpleObfuscationRules replaceKeyRule = new SimpleObfuscationRules(obfuscationRules);
 		// obfuscate the key
 		Obfuscatable obfuscator = new StringObfuscator(replaceKeyRule, toObfuscatedString);
 		actual = obfuscator.obfuscate();

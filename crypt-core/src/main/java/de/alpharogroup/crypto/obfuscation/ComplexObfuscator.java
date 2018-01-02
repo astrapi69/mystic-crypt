@@ -7,20 +7,19 @@ import de.alpharogroup.check.Check;
 import de.alpharogroup.collections.pairs.ValueBox;
 import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
 import de.alpharogroup.crypto.obfuscation.rule.ComplexObfuscationRule;
-import de.alpharogroup.crypto.obfuscation.rule.ObfuscationRules;
-import de.alpharogroup.crypto.obfuscation.rules.ComplexObfuscationKeyMapRules;
+import de.alpharogroup.crypto.obfuscation.rules.ComplexObfuscationRules;
+import de.alpharogroup.crypto.obfuscation.rules.ObfuscationRules;
 
 public class ComplexObfuscator implements Obfuscatable
 {
-	private final ComplexObfuscationKeyMapRules rules;
+	private final ComplexObfuscationRules rules;
 
 	/** The key. */
 	private final String key;
 
-	public ComplexObfuscator(ComplexObfuscationKeyMapRules rules, final String key)
+	public ComplexObfuscator(ComplexObfuscationRules rules, final String key)
 	{
-		Check.get().notNull(rules, "rule");
-		Check.get().notEmpty(key, "key");
+		Check.get().notNull(rules, "rule").notEmpty(key, "key");
 		this.rules = rules;
 		this.key = key;
 	}
@@ -46,7 +45,7 @@ public class ComplexObfuscator implements Obfuscatable
 			char current = i;
 			ComplexObfuscationRule complexObfuscationRule = obfuscationRules.get(Character.valueOf(current));
 			if(complexObfuscationRule != null) {
-				ObfuscationRules replaceWithRules = complexObfuscationRule.getReplaceWithRules();
+				ObfuscationRules replaceWithRules = complexObfuscationRule.getReplaceWith();
 				if(replaceWithRules != null && replaceWithRules.getRules() != null && !replaceWithRules.getRules().isEmpty()) {
 					List<Object> rules2 = replaceWithRules.getRules();
 					for (Object object : rules2)

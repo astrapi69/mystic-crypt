@@ -24,35 +24,24 @@
  */
 package de.alpharogroup.crypto.obfuscation.rules;
 
-import java.util.Properties;
+import com.google.common.collect.BiMap;
 
-import de.alpharogroup.check.Check;
-import de.alpharogroup.crypto.annotations.ObfuscationRule;
-import lombok.Getter;
+import de.alpharogroup.crypto.obfuscation.rule.ComplexObfuscationRule;
 
 /**
- * The Class {@link KeyPropertiesObfuscationRules} can define a simple rule for encrypt and decrypt a key.
+ * The class {@link ComplexObfuscationRules} can define a simple rule for encrypt and decrypt a key.
  */
-@ObfuscationRule
-public class KeyPropertiesObfuscationRules
+public class ComplexObfuscationRules extends ObfuscationBiMapRules<Character, ComplexObfuscationRule>
 {
 
 	/**
-	 * The rules for encrypt the key.
-	 */
-	@Getter
-	private final Properties rules;
-
-	/**
-	 * Instantiates a new {@link KeyPropertiesObfuscationRules}.
+	 * Instantiates a new {@link ComplexObfuscationRules}
 	 *
-	 * @param rules
-	 *            the rules for encrypt the key.
+	 * @param obfuscationRules the obfuscation rules
 	 */
-	public KeyPropertiesObfuscationRules(final Properties rules)
+	public ComplexObfuscationRules(BiMap<Character, ComplexObfuscationRule> obfuscationRules)
 	{
-		Check.get().notEmpty(rules, "rules");
-		this.rules = rules;
+		super(obfuscationRules);
 	}
 
 }
