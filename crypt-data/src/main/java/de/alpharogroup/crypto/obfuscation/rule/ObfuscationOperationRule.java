@@ -52,7 +52,7 @@ public class ObfuscationOperationRule<C, RW> extends ObfuscationRule<C, RW>
 	private static final long serialVersionUID = 1L;
 
 	/** The index where this rule will execute. */
-	private Set<Integer> indexes;
+	Set<Integer> indexes;
 
 	/** The type of operation for the obfuscation. */
 	Operation operation;

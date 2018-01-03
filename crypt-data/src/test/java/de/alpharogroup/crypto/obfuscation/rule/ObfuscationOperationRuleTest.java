@@ -2,6 +2,7 @@ package de.alpharogroup.crypto.obfuscation.rule;
 
 import static org.testng.AssertJUnit.assertEquals;
 
+import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.collections.set.SetExtensions;
@@ -45,4 +46,10 @@ public class ObfuscationOperationRuleTest
 		EqualsHashCodeAndToStringEvaluator.evaluateEqualsHashcodeAndToString(rule);
 	}
 
+	@Test
+	public void testWithBeanTester()
+	{
+		BeanTester beanTester = new BeanTester();
+		beanTester.testBean(ObfuscationOperationRule.class);
+	}
 }
