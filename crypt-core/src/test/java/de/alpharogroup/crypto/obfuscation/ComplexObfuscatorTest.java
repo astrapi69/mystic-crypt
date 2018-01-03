@@ -1,16 +1,16 @@
 package de.alpharogroup.crypto.obfuscation;
 
 import static org.testng.AssertJUnit.assertEquals;
+
 import org.testng.annotations.Test;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
-import de.alpharogroup.collections.list.ListExtensions;
+import de.alpharogroup.collections.set.SetExtensions;
 import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
-import de.alpharogroup.crypto.obfuscation.rule.ComplexObfuscationRule;
-import de.alpharogroup.crypto.obfuscation.rules.ComplexObfuscationRules;
-import de.alpharogroup.crypto.obfuscation.rules.ObfuscationRules;
+import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
+import de.alpharogroup.crypto.obfuscation.rule.Operation;
 
 /**
  * The unit test class for the class {@link ComplexObfuscator}.
@@ -18,38 +18,55 @@ import de.alpharogroup.crypto.obfuscation.rules.ObfuscationRules;
 public class ComplexObfuscatorTest
 {
 
-
 	/**
 	 * Test method for {@link ComplexObfuscator#disentangle()}.
 	 */
 	@Test
 	public void testDisentangle()
 	{
-//		String actual;
-//		String expected;
 
-//		final Map<String, String> charmap = new HashMap<>();
-//
-//		charmap.put("1", "O");
-//		charmap.put("2", "Tw");
-//		charmap.put("3", "Th");
-//		charmap.put("4", "Fo");
-//		charmap.put("5", "Fi");
-//		charmap.put("6", "Si");
-//		charmap.put("7", "Se");
-//		charmap.put("8", "E");
-//		charmap.put("9", "N");
-//
-//		final KeyMapObfuscationRules charreplaceRule = new KeyMapObfuscationRules(charmap);
-//		String toObfuscatedString = "854917632";
-//		Obfuscatable obfuscator = new Obfuscator(charreplaceRule, toObfuscatedString);
-//		actual = obfuscator.obfuscate();
-//		expected = "EFiFoNOSeSiThTw";
-//		assertEquals(expected, actual);
-//
-//		actual = obfuscator.disentangle();
-//		expected = toObfuscatedString;
-//		assertEquals(expected, actual);
+		String actual;
+		String expected;
+		ObfuscationOperationRule<Character, String> rule;
+		// a key for obfuscation
+		String toObfuscatedString = "abac";
+		// create a rule for obfuscate the key
+
+		BiMap<Character, ObfuscationOperationRule<Character, String>> rules = HashBiMap.create();
+		rule = ObfuscationOperationRule.<Character, String>newRule()
+			.character(Character.valueOf('a'))
+			.replaceWith("bc")
+			.operation(Operation.UPPERCASE)
+			.indexes(SetExtensions.newHashSet(0,2))
+			.build();
+		rules.put(Character.valueOf('a'), rule);
+
+		rule = ObfuscationOperationRule.<Character, String>newRule()
+			.character(Character.valueOf('b'))
+			.replaceWith("cd")
+			.operation(Operation.UPPERCASE)
+			.indexes(SetExtensions.newHashSet(2))
+			.build();
+		rules.put(Character.valueOf('b'), rule);
+
+		rule = ObfuscationOperationRule.<Character, String>newRule()
+			.character(Character.valueOf('c'))
+			.replaceWith("de")
+			.operation(Operation.UPPERCASE)
+			.indexes(SetExtensions.newHashSet(3))
+			.build();
+		rules.put(Character.valueOf('c'), rule);
+
+		// obfuscate the key
+		Obfuscatable obfuscator = new ComplexObfuscator(rules, toObfuscatedString);
+		actual = obfuscator.obfuscate();
+		expected = "AcdAC";
+		assertEquals(expected, actual);
+
+
+		actual = obfuscator.disentangle();
+		expected = toObfuscatedString;
+		assertEquals(expected, actual);
 	}
 
 	/**
@@ -60,35 +77,40 @@ public class ComplexObfuscatorTest
 	{
 		String actual;
 		String expected;
+		ObfuscationOperationRule<Character, String> rule;
 		// a key for obfuscation
-		String toObfuscatedString = "abc";
+		String toObfuscatedString = "abac";
 		// create a rule for obfuscate the key
 
-		BiMap<Character, ComplexObfuscationRule> obfuscationRules = HashBiMap.create();
-		obfuscationRules.put('a', ComplexObfuscationRule.builder()
-			.character('a')
-			.replaceWith(ObfuscationRules.builder()
-				.rules(ListExtensions.newArrayList("b"))
-				.build())
-			.build());
-		obfuscationRules.put('b', ComplexObfuscationRule.builder()
-			.character('b')
-			.replaceWith(ObfuscationRules.builder()
-				.rules(ListExtensions.newArrayList("c"))
-				.build())
-			.build());
-		obfuscationRules.put('c', ComplexObfuscationRule.builder()
-			.character('c')
-			.replaceWith(ObfuscationRules.builder()
-				.rules(ListExtensions.newArrayList("d"))
-				.build())
-			.build());
-		ComplexObfuscationRules replaceKeyRules = new ComplexObfuscationRules(obfuscationRules);
-		// obfuscate the key
-		Obfuscatable obfuscator = new ComplexObfuscator(replaceKeyRules, toObfuscatedString);
-		actual = obfuscator.obfuscate();
+		BiMap<Character, ObfuscationOperationRule<Character, String>> rules = HashBiMap.create();
+		rule = ObfuscationOperationRule.<Character, String>newRule()
+			.character(Character.valueOf('a'))
+			.replaceWith("bc")
+			.operation(Operation.UPPERCASE)
+			.indexes(SetExtensions.newHashSet(0,2))
+			.build();
+		rules.put(Character.valueOf('a'), rule);
 
-		expected = "bcd";
+		rule = ObfuscationOperationRule.<Character, String>newRule()
+			.character(Character.valueOf('b'))
+			.replaceWith("cd")
+			.operation(Operation.UPPERCASE)
+			.indexes(SetExtensions.newHashSet(2))
+			.build();
+		rules.put(Character.valueOf('b'), rule);
+
+		rule = ObfuscationOperationRule.<Character, String>newRule()
+			.character(Character.valueOf('c'))
+			.replaceWith("de")
+			.operation(Operation.UPPERCASE)
+			.indexes(SetExtensions.newHashSet(3))
+			.build();
+		rules.put(Character.valueOf('c'), rule);
+
+		// obfuscate the key
+		Obfuscatable obfuscator = new ComplexObfuscator(rules, toObfuscatedString);
+		actual = obfuscator.obfuscate();
+		expected = "AcdAC";
 		assertEquals(expected, actual);
 	}
 

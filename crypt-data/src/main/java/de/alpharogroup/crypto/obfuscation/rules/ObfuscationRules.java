@@ -2,6 +2,7 @@ package de.alpharogroup.crypto.obfuscation.rules;
 
 import java.util.List;
 
+import de.alpharogroup.crypto.obfuscation.rule.ObfuscationRule;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +10,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.Singular;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
@@ -24,10 +26,11 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder(toBuilder = true)
 @FieldDefaults(level=AccessLevel.PRIVATE)
-public class ObfuscationRules
+public class ObfuscationRules<C, RW, OR extends ObfuscationRule<C, RW>>
 {
 
 	/** The obfuscation rules. */
-	List<Object> rules;
+	@Singular
+	List<ObfuscationRule<C, RW>> rules;
 
 }

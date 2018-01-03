@@ -27,19 +27,30 @@ package de.alpharogroup.crypto.obfuscation.rules;
 import com.google.common.collect.BiMap;
 
 import de.alpharogroup.check.Check;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.FieldDefaults;
 
 /**
  * The class {@link ObfuscationBiMapRules} decorates a {@link BiMap} that defines rules for encrypt
  * and decrypt given strings.
  */
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Builder
 public class ObfuscationBiMapRules<K, V>
 {
 
 	/**
 	 * The rules for encrypt the string.
 	 */
-	@Getter
 	private final BiMap<K, V> obfuscationRules;
 
 	/**

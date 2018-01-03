@@ -24,9 +24,10 @@
  */
 package de.alpharogroup.crypto.obfuscation.rule;
 
+import java.util.Set;
 
+import de.alpharogroup.collections.set.SetExtensions;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -35,17 +36,33 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
+/**
+ * The class {@link ObfuscationOperationRule} builds a complex rule for obfuscating a single
+ * character.
+ */
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString
+@EqualsAndHashCode(callSuper=true)
+@ToString(callSuper=true)
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder(toBuilder = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class SimpleObfuscationRule {
+public class ObfuscationOperationRule<C, RW> extends ObfuscationRule<C, RW>
+{
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 1L;
 
-    String character;
+	/** The index where this rule will execute. */
+	private Set<Integer> indexes;
 
-    String replaceWith;
+	/** The type of operation for the obfuscation. */
+	Operation operation;
+
+	@Builder(builderMethodName="newRule")
+	public ObfuscationOperationRule(C character, RW replaceWith, Operation operation, Set<Integer> indexes)
+	{
+		super(character, replaceWith);
+		this.indexes = SetExtensions.newHashSet(indexes);
+		this.operation = operation;
+	}
+
 }
