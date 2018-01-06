@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mvn-java-parent</artifactId>
-		<version>3.3.0</version>
+		<version>3.4.0</version>
 		<relativePath></relativePath>
 	</parent>
 
@@ -33,7 +33,7 @@
 		<!-- RESOURCEBUNDLE-CORE versions -->
 		<resourcebundle-inspector.version>2.16.1</resourcebundle-inspector.version>
 		<!-- JOBJECT-EXTENSIONS versions -->
-		<jobject-extensions.version>1.6.0</jobject-extensions.version>
+		<jobject-extensions.version>1.7.0</jobject-extensions.version>
 		<jobject-core.version>${jobject-extensions.version}</jobject-core.version>
 		<!-- PARENT PROJECT versions -->
 		<!-- MYSTIC-CRYPT versions -->
@@ -45,7 +45,7 @@
 		<randomizer-api.version>${mystic-crypt.version}</randomizer-api.version>
 		<!-- EXTERNAL LIBRARIES versions -->
 		<commons-codec.version>1.10</commons-codec.version>
-		<bouncycastle.version>1.55</bouncycastle.version>
+		<bouncycastle.version>1.59</bouncycastle.version>
 		<!-- GUAVA version -->
 		<guava.version>23.0</guava.version>
 		<!-- MEANBEAN version -->
