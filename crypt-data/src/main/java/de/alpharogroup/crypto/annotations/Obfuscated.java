@@ -32,8 +32,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * The interface {@link Obfuscated} marks a field that it is obfuscated as the name let
- * assume.
+ * The interface {@link Obfuscated} marks a field that it is obfuscated as the name let assume.
  */
 @Retention(RUNTIME)
 @Target({ TYPE, FIELD })

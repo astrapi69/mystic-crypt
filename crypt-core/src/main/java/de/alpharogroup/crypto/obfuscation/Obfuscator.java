@@ -35,8 +35,8 @@ import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
 import de.alpharogroup.crypto.obfuscation.rules.SimpleObfuscationRules;
 
 /**
- * The Class {@link Obfuscator} obfuscates the given {@link SimpleObfuscationRules}. For an example see the
- * unit test.
+ * The Class {@link Obfuscator} obfuscates the given {@link SimpleObfuscationRules}. For an example
+ * see the unit test.
  */
 public class Obfuscator implements Obfuscatable
 {

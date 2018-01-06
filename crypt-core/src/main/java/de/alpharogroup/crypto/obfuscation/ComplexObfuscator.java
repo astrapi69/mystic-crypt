@@ -1,9 +1,30 @@
+/**
+ * The MIT License
+ *
+ * Copyright (C) 2015 Asterios Raptis
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 package de.alpharogroup.crypto.obfuscation;
 
-import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.collect.BiMap;
 
@@ -14,6 +35,39 @@ import de.alpharogroup.crypto.obfuscation.rule.Operation;
 
 public class ComplexObfuscator implements Obfuscatable
 {
+
+	public static String obfuscateWith(
+		BiMap<Character, ObfuscationOperationRule<Character, String>> rules, String toObfuscate)
+	{
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < toObfuscate.length(); i++)
+		{
+			char currentCharacter = toObfuscate.charAt(i);
+			Character asCharacter = Character.valueOf(currentCharacter);
+			String charAsString = Character.toString(currentCharacter);
+			if (rules.containsKey(asCharacter))
+			{
+				ObfuscationOperationRule<Character, String> obfuscationOperationRule = rules
+					.get(asCharacter);
+				Set<Integer> indexes = obfuscationOperationRule.getIndexes();
+				Operation operation = obfuscationOperationRule.getOperation();
+				if (indexes.contains(Integer.valueOf(i)) && operation != null)
+				{
+					sb.append(Operation.operate(currentCharacter, operation));
+				}
+				else
+				{
+					String replaceWith = obfuscationOperationRule.getReplaceWith();
+					sb.append(replaceWith);
+				}
+			}
+			else
+			{
+				sb.append(charAsString);
+			}
+		}
+		return sb.toString();
+	}
 
 	/** The rule. */
 	private final BiMap<Character, ObfuscationOperationRule<Character, String>> rules;
@@ -36,50 +90,7 @@ public class ComplexObfuscator implements Obfuscatable
 	@Override
 	public String disentangle()
 	{
-		String obfuscated = obfuscate();
-		BiMap<ObfuscationOperationRule<Character, String>, Character> inverse = rules.inverse();
-		// search for replaceWith...
-		for (final Map.Entry<ObfuscationOperationRule<Character, String>, Character> rule : inverse.entrySet())
-		{
-			ObfuscationOperationRule<Character, String> obfuscationOperationRule = rule.getKey();
-			Character character = obfuscationOperationRule.getCharacter();
-			String replaceWith = obfuscationOperationRule.getReplaceWith();
-			Operation operation = obfuscationOperationRule.getOperation();
-			Set<Integer> indexes = obfuscationOperationRule.getIndexes();
-			if (!indexes.isEmpty() && operation != null) {
-				Character operatedCharacter = operate(character, operation);
-				int index = obfuscated.indexOf(replaceWith);
-				if(indexes.contains(index)) {
-					obfuscated = StringUtils.replace(obfuscated, operatedCharacter.toString(), character.toString());
-				} else {
-					obfuscated = StringUtils.replace(obfuscated, replaceWith, character.toString());
-				}
-			} else {
-				obfuscated = StringUtils.replace(obfuscated, replaceWith, character.toString());
-			}
-		}
-		// search for operatedCharacter...
-
-		for (final Map.Entry<ObfuscationOperationRule<Character, String>, Character> rule : inverse.entrySet())
-		{
-			ObfuscationOperationRule<Character, String> obfuscationOperationRule = rule.getKey();
-			Character character = obfuscationOperationRule.getCharacter();
-			String replaceWith = obfuscationOperationRule.getReplaceWith();
-			Operation operation = obfuscationOperationRule.getOperation();
-			Set<Integer> indexes = obfuscationOperationRule.getIndexes();
-			if (!indexes.isEmpty() && operation != null) {
-				Character operatedCharacter = operate(character, operation);
-				int index = obfuscated.indexOf(operatedCharacter.toString());
-				if(indexes.contains(index)) {
-					obfuscated = StringUtils.replace(obfuscated, operatedCharacter.toString(), character.toString());
-				} else {
-					obfuscated = StringUtils.replace(obfuscated, replaceWith, character.toString());
-				}
-			} else {
-				obfuscated = StringUtils.replace(obfuscated, replaceWith, character.toString());
-			}
-		}
-		return obfuscated;
+		return key;
 	}
 
 	/**
@@ -91,52 +102,5 @@ public class ComplexObfuscator implements Obfuscatable
 		String obfuscated = obfuscateWith(rules, this.key);
 		return obfuscated;
 	}
-
-	public static String obfuscateWith(BiMap<Character, ObfuscationOperationRule<Character, String>> rules, String toObfuscate)
-	{
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < toObfuscate.length(); i++)
-		{
-			char currentCharacter = toObfuscate.charAt(i);
-			Character asCharacter = Character.valueOf(currentCharacter);
-			String charAsString = Character.toString(currentCharacter);
-			if (rules.containsKey(asCharacter))
-			{
-				ObfuscationOperationRule<Character, String> obfuscationOperationRule = rules
-					.get(asCharacter);
-				Set<Integer> indexes = obfuscationOperationRule.getIndexes();
-				Operation operation = obfuscationOperationRule.getOperation();
-				if (indexes.contains(Integer.valueOf(i)) && operation != null)
-				{
-					sb.append(operate(currentCharacter, operation));
-				} else {
-					String replaceWith = obfuscationOperationRule.getReplaceWith();
-					sb.append(replaceWith);
-				}
-			}
-			else
-			{
-				sb.append(charAsString);
-			}
-		}
-		return sb.toString();
-	}
-
-	private static Character operate(char currentCharacter,
-		Operation operation)
-	{
-		switch (operation)
-		{
-			case LOWERCASE :
-				return Character.toLowerCase(currentCharacter);
-			case UPPERCASE :
-				return Character.toUpperCase(currentCharacter);
-			case TITLECASE :
-				return Character.toTitleCase(currentCharacter);
-			default :
-				return Character.valueOf(currentCharacter);
-		}
-	}
-
 
 }

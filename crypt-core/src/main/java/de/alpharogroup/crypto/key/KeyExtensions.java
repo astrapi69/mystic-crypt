@@ -48,8 +48,7 @@ import lombok.experimental.UtilityClass;
  * files.
  *
  * @deprecated Use instead the reader classes {@link PublicKeyReader}, {@link PrivateKeyReader} and
- *             {@link PemObjectReader}.
- *             Note: Will be removed in the next minor release!
+ *             {@link PemObjectReader}. Note: Will be removed in the next minor release!
  */
 @UtilityClass
 @Deprecated

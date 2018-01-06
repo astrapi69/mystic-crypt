@@ -28,8 +28,6 @@ import org.apache.log4j.Logger;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.crypto.simple.SimpleCrypt;
-
 /**
  * Test class for the class {@link SimpleCrypt}.
  *

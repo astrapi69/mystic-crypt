@@ -35,7 +35,8 @@ public class SimpleObfuscationRules extends ObfuscationBiMapRules<String, String
 	/**
 	 * Instantiates a new {@link SimpleObfuscationRules}.
 	 *
-	 * @param obfuscationRules the obfuscation rules
+	 * @param obfuscationRules
+	 *            the obfuscation rules
 	 */
 	public SimpleObfuscationRules(BiMap<String, String> obfuscationRules)
 	{

@@ -42,8 +42,8 @@ import lombok.experimental.FieldDefaults;
  */
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper=true)
-@ToString(callSuper=true)
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ObfuscationOperationRule<C, RW> extends ObfuscationRule<C, RW>
@@ -57,8 +57,9 @@ public class ObfuscationOperationRule<C, RW> extends ObfuscationRule<C, RW>
 	/** The type of operation for the obfuscation. */
 	Operation operation;
 
-	@Builder(builderMethodName="newRule")
-	public ObfuscationOperationRule(C character, RW replaceWith, Operation operation, Set<Integer> indexes)
+	@Builder(builderMethodName = "newRule")
+	public ObfuscationOperationRule(C character, RW replaceWith, Operation operation,
+		Set<Integer> indexes)
 	{
 		super(character, replaceWith);
 		this.indexes = SetExtensions.newHashSet(indexes);
