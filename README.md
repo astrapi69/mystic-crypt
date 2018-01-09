@@ -213,6 +213,7 @@ Here is a list of awesome projects for cryptography:
  * [JSch](http://www.jcraft.com/jsch/) JSch is a pure Java implementation of SSH2.
  * [Apache Shiro](https://github.com/apache/shiro) Apache Shiro is a powerful and easy-to-use Java security framework that performs authentication, authorization, cryptography, and session management.
  * [commons-ssl](http://juliusdavies.ca/commons-ssl/) Not-Yet-Commons-SSL
+ * [lockbox-java](https://github.com/eloquent/lockbox-java) Simple, strong encryption. 
 
 ## Credits
 
