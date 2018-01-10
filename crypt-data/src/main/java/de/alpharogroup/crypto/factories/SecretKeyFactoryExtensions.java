@@ -25,10 +25,12 @@
 package de.alpharogroup.crypto.factories;
 
 import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import lombok.experimental.UtilityClass;
@@ -97,7 +99,7 @@ public class SecretKeyFactoryExtensions
 		final SecretKeySpec secretKeySpec = new SecretKeySpec(secretKey, algorithm);
 		return secretKeySpec;
 	}
-	
+
 	/**
 	 * Factory method for creating a new {@link SecretKey} from the given
 	 * password and algorithm.
@@ -113,12 +115,12 @@ public class SecretKeyFactoryExtensions
 	 * @throws InvalidKeySpecException
 	 *             is thrown if generation of the SecretKey object fails.
 	 */
-	public static SecretKey newSecretKey(char[] password, final String algorithm)
+	public static SecretKey newSecretKey(final char[] password, final String algorithm)
 			throws NoSuchAlgorithmException, InvalidKeySpecException {
-		PBEKeySpec pbeKeySpec = new PBEKeySpec(password);
-		SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(algorithm);
-		SecretKey secretKey = secretKeyFactory.generateSecret(pbeKeySpec);
+		final PBEKeySpec pbeKeySpec = new PBEKeySpec(password);
+		final SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(algorithm);
+		final SecretKey secretKey = secretKeyFactory.generateSecret(pbeKeySpec);
 		return secretKey;
 	}
-	
+
 }
