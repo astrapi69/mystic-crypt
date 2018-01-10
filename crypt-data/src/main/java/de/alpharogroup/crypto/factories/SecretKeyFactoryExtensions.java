@@ -97,4 +97,28 @@ public class SecretKeyFactoryExtensions
 		final SecretKeySpec secretKeySpec = new SecretKeySpec(secretKey, algorithm);
 		return secretKeySpec;
 	}
+	
+	/**
+	 * Factory method for creating a new {@link SecretKey} from the given
+	 * password and algorithm.
+	 *
+	 * @param password
+	 *            the password
+	 * @param algorithm
+	 *            the algorithm
+	 * @return the new {@link SecretKey} from the given password and algorithm.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object
+	 *             fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 */
+	public static SecretKey newSecretKey(char[] password, final String algorithm)
+			throws NoSuchAlgorithmException, InvalidKeySpecException {
+		PBEKeySpec pbeKeySpec = new PBEKeySpec(password);
+		SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(algorithm);
+		SecretKey secretKey = secretKeyFactory.generateSecret(pbeKeySpec);
+		return secretKey;
+	}
+	
 }
