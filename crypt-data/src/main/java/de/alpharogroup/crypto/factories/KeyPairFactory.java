@@ -26,6 +26,9 @@ package de.alpharogroup.crypto.factories;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.AlgorithmParameters;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -33,8 +36,18 @@ import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
+import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.InvalidKeySpecException;
+import java.security.spec.InvalidParameterSpecException;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.EncryptedPrivateKeyInfo;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+
+import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.algorithm.Algorithm;
 import de.alpharogroup.crypto.key.KeySize;
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
@@ -183,6 +196,54 @@ public class KeyPairFactory
 		final KeyPairGenerator generator = KeyPairGenerator.getInstance(algorithm);
 		generator.initialize(keySize, secureRandom);
 		return generator;
+	}
+
+	/**
+	 * Factory method for creating a new {@link KeyPair} from the given
+	 * parameters.
+	 *
+	 * @param publicKey
+	 *            the public key
+	 * @param privateKey
+	 *            the private key
+	 * @return the new {@link KeyPair} from the given parameters.
+	 */
+	public static KeyPair newKeyPair(final PublicKey publicKey, final PrivateKey privateKey, String password)
+			throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
+			InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException,
+			InvalidParameterSpecException, IOException, NoSuchProviderException {
+		byte[] encryptedPkcs8 = protectPrivateKeyWithPassword(privateKey, password);
+		final PrivateKey privKey = PrivateKeyReader.readPrivateKey(encryptedPkcs8, "BC");
+
+		final KeyPair keyPair = new KeyPair(publicKey, privKey);
+		return keyPair;
+	}
+
+	private static byte[] protectPrivateKeyWithPassword(PrivateKey privateKey, String password)
+			throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException,
+			InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException,
+			InvalidParameterSpecException, IOException {
+		byte[] privateKeyEncoded = privateKey.getEncoded();
+
+		SecureRandom random = new SecureRandom();
+		byte[] salt = new byte[8];
+		random.nextBytes(salt);
+
+		AlgorithmParameterSpec algorithmParameterSpec = AlgorithmParameterSpecFactory.newPBEParameterSpec(salt, 20);
+			
+		SecretKey secretKey = SecretKeyFactoryExtensions.newSecretKey(password.toCharArray(), CryptConst.PBE_WITH_SHA1_AND_DES_EDE);
+
+		Cipher pbeCipher = Cipher.getInstance(CryptConst.PBE_WITH_SHA1_AND_DES_EDE);
+
+		pbeCipher.init(Cipher.ENCRYPT_MODE, secretKey, algorithmParameterSpec);
+
+		byte[] ciphertext = pbeCipher.doFinal(privateKeyEncoded);
+
+		AlgorithmParameters algparms = AlgorithmParameters.getInstance(CryptConst.PBE_WITH_SHA1_AND_DES_EDE);
+		algparms.init(algorithmParameterSpec);
+		EncryptedPrivateKeyInfo encinfo = new EncryptedPrivateKeyInfo(algparms, ciphertext);
+
+		return encinfo.getEncoded();
 	}
 
 }
