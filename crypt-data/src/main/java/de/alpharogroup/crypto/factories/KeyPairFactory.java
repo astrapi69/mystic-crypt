@@ -199,8 +199,7 @@ public class KeyPairFactory
 	}
 
 	/**
-	 * Factory method for creating a new {@link KeyPair} from the given
-	 * parameters.
+	 * Factory method for creating a new {@link KeyPair} from the given parameters.
 	 *
 	 * @param publicKey
 	 *            the public key
@@ -208,40 +207,73 @@ public class KeyPairFactory
 	 *            the private key
 	 * @return the new {@link KeyPair} from the given parameters.
 	 */
-	public static KeyPair newKeyPair(final PublicKey publicKey, final PrivateKey privateKey, String password)
-			throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
-			InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException,
-			InvalidParameterSpecException, IOException, NoSuchProviderException {
-		byte[] encryptedPkcs8 = protectPrivateKeyWithPassword(privateKey, password);
+	public static KeyPair newKeyPair(final PublicKey publicKey, final PrivateKey privateKey,
+		final String password) throws NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchPaddingException, InvalidAlgorithmParameterException, InvalidKeyException,
+		BadPaddingException, IllegalBlockSizeException, InvalidParameterSpecException, IOException,
+		NoSuchProviderException
+	{
+		final byte[] encryptedPkcs8 = protectPrivateKeyWithPassword(privateKey, password);
 		final PrivateKey privKey = PrivateKeyReader.readPrivateKey(encryptedPkcs8, "BC");
 
 		final KeyPair keyPair = new KeyPair(publicKey, privKey);
 		return keyPair;
 	}
 
-	private static byte[] protectPrivateKeyWithPassword(PrivateKey privateKey, String password)
-			throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException,
-			InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException,
-			InvalidParameterSpecException, IOException {
-		byte[] privateKeyEncoded = privateKey.getEncoded();
+	/**
+	 * Protect private key with password.
+	 *
+	 * @param privateKey
+	 *            the private key
+	 * @param password
+	 *            the password
+	 * @return the byte[]
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchPaddingException
+	 *             the no such padding exception
+	 * @throws InvalidKeyException
+	 *             the invalid key exception
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws IllegalBlockSizeException
+	 *             the illegal block size exception
+	 * @throws BadPaddingException
+	 *             the bad padding exception
+	 * @throws InvalidParameterSpecException
+	 *             the invalid parameter spec exception
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	public static byte[] protectPrivateKeyWithPassword(final PrivateKey privateKey,
+		final String password) throws NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException,
+		IllegalBlockSizeException, BadPaddingException, InvalidParameterSpecException, IOException
+	{
+		final byte[] privateKeyEncoded = privateKey.getEncoded();
 
-		SecureRandom random = new SecureRandom();
-		byte[] salt = new byte[8];
+		final SecureRandom random = new SecureRandom();
+		final byte[] salt = new byte[8];
 		random.nextBytes(salt);
 
-		AlgorithmParameterSpec algorithmParameterSpec = AlgorithmParameterSpecFactory.newPBEParameterSpec(salt, 20);
-			
-		SecretKey secretKey = SecretKeyFactoryExtensions.newSecretKey(password.toCharArray(), CryptConst.PBE_WITH_SHA1_AND_DES_EDE);
+		final AlgorithmParameterSpec algorithmParameterSpec = AlgorithmParameterSpecFactory
+			.newPBEParameterSpec(salt, 20);
 
-		Cipher pbeCipher = Cipher.getInstance(CryptConst.PBE_WITH_SHA1_AND_DES_EDE);
+		final SecretKey secretKey = SecretKeyFactoryExtensions.newSecretKey(password.toCharArray(),
+			CryptConst.PBE_WITH_SHA1_AND_DES_EDE);
+
+		final Cipher pbeCipher = Cipher.getInstance(CryptConst.PBE_WITH_SHA1_AND_DES_EDE);
 
 		pbeCipher.init(Cipher.ENCRYPT_MODE, secretKey, algorithmParameterSpec);
 
-		byte[] ciphertext = pbeCipher.doFinal(privateKeyEncoded);
+		final byte[] ciphertext = pbeCipher.doFinal(privateKeyEncoded);
 
-		AlgorithmParameters algparms = AlgorithmParameters.getInstance(CryptConst.PBE_WITH_SHA1_AND_DES_EDE);
+		final AlgorithmParameters algparms = AlgorithmParameters
+			.getInstance(CryptConst.PBE_WITH_SHA1_AND_DES_EDE);
 		algparms.init(algorithmParameterSpec);
-		EncryptedPrivateKeyInfo encinfo = new EncryptedPrivateKeyInfo(algparms, ciphertext);
+		final EncryptedPrivateKeyInfo encinfo = new EncryptedPrivateKeyInfo(algparms, ciphertext);
 
 		return encinfo.getEncoded();
 	}
