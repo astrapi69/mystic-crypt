@@ -29,6 +29,8 @@ import java.io.IOException;
 import java.security.AlgorithmParameters;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -39,6 +41,7 @@ import java.security.SecureRandom;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.InvalidParameterSpecException;
+import java.security.spec.KeySpec;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -46,6 +49,7 @@ import javax.crypto.EncryptedPrivateKeyInfo;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
 
 import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.algorithm.Algorithm;
@@ -277,5 +281,34 @@ public class KeyPairFactory
 
 		return encinfo.getEncoded();
 	}
+	
+    /**
+     * Decrypts the given byte array that represents a password protected private key.
+     *
+     * @param encryptedPrivateKeyBytes the byte array that represents a password protected private key
+     * @param password the password
+     * @param algorithm the algorithm
+     * @return the private key
+     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws NoSuchAlgorithmException is thrown if instantiation of the SecretKeyFactory object fails.
+     * @throws NoSuchPaddingException the no such padding exception
+     * @throws InvalidKeySpecException is thrown if generation of the SecretKey object fails.
+     * @throws InvalidKeyException the invalid key exception
+     * @throws InvalidAlgorithmParameterException is thrown if initialization of the cypher object fails.
+     */
+    public static PrivateKey decryptPasswordProtectedPrivateKey(byte[] encryptedPrivateKeyBytes, String password, String algorithm) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeySpecException, InvalidKeyException, InvalidAlgorithmParameterException {
+    	EncryptedPrivateKeyInfo encryptedPrivateKeyInfo = new EncryptedPrivateKeyInfo(encryptedPrivateKeyBytes);
+    	String algName = encryptedPrivateKeyInfo.getAlgName();
+    	Cipher cipher = CipherFactory.newCipher(algName);
+    	KeySpec pbeKeySpec = KeySpecFactory.newPBEKeySpec(password);    			
+    	SecretKeyFactory secretKeyFactory = SecretKeyFactoryExtensions.newSecretKeyFactory(algName);
+    	Key pbeKey = secretKeyFactory.generateSecret(pbeKeySpec);
+    	AlgorithmParameters algParameters = encryptedPrivateKeyInfo.getAlgParameters();
+    	cipher.init(Cipher.DECRYPT_MODE, pbeKey, algParameters);
+    	KeySpec pkcs8KeySpec = encryptedPrivateKeyInfo.getKeySpec(cipher);
+    	KeyFactory keyFactory = KeyFactory.getInstance(algorithm);
+    	return keyFactory.generatePrivate(pkcs8KeySpec);
+    }
+
 
 }
