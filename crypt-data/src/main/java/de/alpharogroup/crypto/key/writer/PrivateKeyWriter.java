@@ -30,12 +30,22 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.InvalidParameterSpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 import org.apache.commons.codec.binary.Base64;
 import org.bouncycastle.openssl.jcajce.JcaPEMWriter;
 
+import de.alpharogroup.crypto.factories.KeyPairFactory;
 import de.alpharogroup.crypto.key.KeyFileFormat;
 import de.alpharogroup.crypto.key.KeyFormat;
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
@@ -66,6 +76,14 @@ public class PrivateKeyWriter
 		write(privateKey, new FileOutputStream(file));
 	}
 
+	public static void write(final PrivateKey privateKey, final @NonNull File file, String password)
+		throws IOException, InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException,
+		BadPaddingException, InvalidParameterSpecException
+	{
+		write(privateKey, new FileOutputStream(file), password);
+	}
+
 	/**
 	 * Write the given {@link PrivateKey} into the given {@link OutputStream} in the *.der format.
 	 *
@@ -82,6 +100,46 @@ public class PrivateKeyWriter
 		final byte[] privateKeyBytes = privateKey.getEncoded();
 		final PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
 		outputStream.write(keySpec.getEncoded());
+		outputStream.close();
+	}
+
+	/**
+	 * Write the given {@link PrivateKey} into the given {@link OutputStream} protected with the
+	 * given password(to check in the *.der format.)
+	 *
+	 * @param privateKey
+	 *            the private key
+	 * @param outputStream
+	 *            the output stream to write in
+	 * @param password
+	 *            the password
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws InvalidKeyException
+	 *             the invalid key exception
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchPaddingException
+	 *             the no such padding exception
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws IllegalBlockSizeException
+	 *             the illegal block size exception
+	 * @throws BadPaddingException
+	 *             the bad padding exception
+	 * @throws InvalidParameterSpecException
+	 *             the invalid parameter spec exception
+	 */
+	public static void write(final PrivateKey privateKey, final @NonNull OutputStream outputStream,
+		String password) throws IOException, InvalidKeyException, NoSuchAlgorithmException,
+		InvalidKeySpecException, NoSuchPaddingException, InvalidAlgorithmParameterException,
+		IllegalBlockSizeException, BadPaddingException, InvalidParameterSpecException
+	{
+		byte[] encryptedPrivateKeyWithPassword = KeyPairFactory
+			.protectPrivateKeyWithPassword(privateKey, password);
+		outputStream.write(encryptedPrivateKeyWithPassword);
 		outputStream.close();
 	}
 
