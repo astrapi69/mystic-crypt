@@ -110,8 +110,7 @@ public class KeyHexEncryptDecryptorTest
 		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
 		final File privatekeyPemFile = new File(publickeyPemDir, "private.pem");
 
-		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile,
-			SecurityProvider.BC);
+		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile);
 
 		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile,
 			SecurityProvider.BC);
