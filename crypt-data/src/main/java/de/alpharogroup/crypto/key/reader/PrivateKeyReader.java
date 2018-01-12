@@ -27,17 +27,29 @@ package de.alpharogroup.crypto.key.reader;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.security.AlgorithmParameters;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.Key;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
+
+import javax.crypto.Cipher;
+import javax.crypto.EncryptedPrivateKeyInfo;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKeyFactory;
 
 import org.apache.commons.codec.binary.Base64;
 
 import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
-import de.alpharogroup.crypto.provider.SecurityProvider;
+import de.alpharogroup.crypto.factories.CipherFactory;
+import de.alpharogroup.crypto.factories.KeySpecFactory;
+import de.alpharogroup.crypto.factories.SecretKeyFactoryExtensions;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -83,7 +95,7 @@ public class PrivateKeyReader
 	public static PrivateKey readPrivateKey(final File file) throws IOException,
 		NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
 	{
-		return readPrivateKey(file, "BC");
+		return readPrivateKey(file, KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
 	}
 
 	/**
@@ -91,8 +103,8 @@ public class PrivateKeyReader
 	 *
 	 * @param file
 	 *            the file
-	 * @param provider
-	 *            the security provider
+	 * @param algorithm
+	 *            the algorithm
 	 * @return the private key
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
@@ -104,37 +116,12 @@ public class PrivateKeyReader
 	 *             is thrown if the specified provider is not registered in the security provider
 	 *             list.
 	 */
-	public static PrivateKey readPrivateKey(final File file, final String provider)
+	public static PrivateKey readPrivateKey(final File file, final String algorithm)
 		throws IOException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchProviderException
 	{
 		final byte[] keyBytes = Files.readAllBytes(file.toPath());
-		return readPrivateKey(keyBytes, provider);
-	}
-
-	/**
-	 * Read private key.
-	 *
-	 * @param file
-	 *            the file
-	 * @param securityProvider
-	 *            the security provider
-	 * @return the private key
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the cypher object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchProviderException
-	 *             is thrown if the specified provider is not registered in the security provider
-	 *             list.
-	 */
-	public static PrivateKey readPrivateKey(final File file,
-		final SecurityProvider securityProvider) throws IOException, NoSuchAlgorithmException,
-		InvalidKeySpecException, NoSuchProviderException
-	{
-		return readPrivateKey(file, securityProvider.name());
+		return readPrivateKey(keyBytes, algorithm);
 	}
 
 	/**
@@ -189,10 +176,12 @@ public class PrivateKeyReader
 	/**
 	 * Read private key.
 	 *
-	 * @param privateKeyBytes
-	 *            the private key bytes
+	 * @param encryptedPrivateKeyBytes
+	 *            the encrypted private key bytes
 	 * @param algorithm
 	 *            the algorithm for the {@link KeyFactory}
+	 * @param password
+	 *            the password
 	 * @return the private key
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the cypher object fails.
@@ -201,15 +190,21 @@ public class PrivateKeyReader
 	 * @throws NoSuchProviderException
 	 *             is thrown if the specified provider is not registered in the security provider
 	 *             list.
+	 * @throws InvalidKeyException
+	 *             the invalid key exception
+	 * @throws NoSuchPaddingException
+	 *             the no such padding exception
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
-	public static PrivateKey readEncryptedPrivateKey(final byte[] privateKeyBytes,
-		final String algorithm, String password)
-		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
+	public static PrivateKey readEncryptedPrivateKey(final byte[] encryptedPrivateKeyBytes,
+		final String algorithm, final String password)
+		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException,
+		InvalidKeyException, NoSuchPaddingException, InvalidAlgorithmParameterException, IOException
 	{
-		final PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
-		final KeyFactory keyFactory = KeyFactory.getInstance(algorithm);
-		final PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
-		return privateKey;
+		return decryptPasswordProtectedPrivateKey(encryptedPrivateKeyBytes, password, algorithm);
 	}
 
 	/**
@@ -259,6 +254,49 @@ public class PrivateKeyReader
 				.trim();
 		}
 		return privateKeyAsBase64String;
+	}
+
+	/**
+	 * Decrypts the given byte array that represents a password protected private key.
+	 *
+	 * @param encryptedPrivateKeyBytes
+	 *            the byte array that represents a password protected private key
+	 * @param algorithm
+	 *            the algorithm
+	 * @param password
+	 *            the password
+	 * @return the private key
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws NoSuchPaddingException
+	 *             the no such padding exception
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws InvalidKeyException
+	 *             the invalid key exception
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
+	 */
+	public static PrivateKey decryptPasswordProtectedPrivateKey(
+		final byte[] encryptedPrivateKeyBytes, final String algorithm, final String password)
+		throws IOException, NoSuchAlgorithmException, NoSuchPaddingException,
+		InvalidKeySpecException, InvalidKeyException, InvalidAlgorithmParameterException
+	{
+		final EncryptedPrivateKeyInfo encryptedPrivateKeyInfo = new EncryptedPrivateKeyInfo(
+			encryptedPrivateKeyBytes);
+		final String algName = encryptedPrivateKeyInfo.getAlgName();
+		final Cipher cipher = CipherFactory.newCipher(algName);
+		final KeySpec pbeKeySpec = KeySpecFactory.newPBEKeySpec(password);
+		final SecretKeyFactory secretKeyFactory = SecretKeyFactoryExtensions
+			.newSecretKeyFactory(algName);
+		final Key pbeKey = secretKeyFactory.generateSecret(pbeKeySpec);
+		final AlgorithmParameters algParameters = encryptedPrivateKeyInfo.getAlgParameters();
+		cipher.init(Cipher.DECRYPT_MODE, pbeKey, algParameters);
+		final KeySpec pkcs8KeySpec = encryptedPrivateKeyInfo.getKeySpec(cipher);
+		final KeyFactory keyFactory = KeyFactory.getInstance(algorithm);
+		return keyFactory.generatePrivate(pkcs8KeySpec);
 	}
 
 }

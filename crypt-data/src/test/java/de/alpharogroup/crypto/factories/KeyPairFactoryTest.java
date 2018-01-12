@@ -1,10 +1,10 @@
 package de.alpharogroup.crypto.factories;
 
-import static org.testng.AssertJUnit.assertEquals;
-
 import java.io.File;
 import java.security.PrivateKey;
+import java.security.Security;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
@@ -16,10 +16,7 @@ import de.alpharogroup.file.search.PathFinder;
 public class KeyPairFactoryTest {
 
 	/**
-	 * Test method for
-	 * {@link KeyPairFactory#protectPrivateKeyWithPassword(PrivateKey, String)}
-	 * and
-	 * {@link KeyPairFactory#decryptPasswordProtectedPrivateKey(byte[], String, String)}
+	 * Test method for {@link KeyPairFactory#newKeyPair(java.security.PublicKey, PrivateKey)}
 	 *
 	 * @throws Exception
 	 *             the exception
@@ -29,12 +26,10 @@ public class KeyPairFactoryTest {
 		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
 		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
 
-		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
-		String password = "secret";
-		final byte[] pwprotectedKey = KeyPairFactory.protectPrivateKeyWithPassword(privateKey, password);
+		Security.addProvider(new BouncyCastleProvider());
 
-		PrivateKey privKey = KeyPairFactory.decryptPasswordProtectedPrivateKey(pwprotectedKey, password, "RSA");
-		assertEquals(privateKey, privKey);
+		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
+
 	}
 
 }
