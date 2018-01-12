@@ -115,8 +115,7 @@ public class KeyEncryptDecryptorTest
 		final File privatekeyPemFile = new File(keyPemDir, "private.pem");
 
 		Security.addProvider(new BouncyCastleProvider());
-		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile,
-			SecurityProvider.BC);
+		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile);
 
 		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile,
 			SecurityProvider.BC);
