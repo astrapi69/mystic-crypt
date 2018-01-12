@@ -72,8 +72,8 @@ public class KeyExtensionsTest
 		final File privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
 
 		Security.addProvider(new BouncyCastleProvider());
-		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile,
-			SecurityProvider.BC);
+		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile);
+		
 		AssertJUnit.assertNotNull(privateKey);
 	}
 
