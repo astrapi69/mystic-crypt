@@ -1,36 +1,40 @@
 package de.alpharogroup.crypto.factories;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 import java.io.File;
 import java.security.PrivateKey;
-import java.security.Security;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
-import de.alpharogroup.crypto.provider.SecurityProvider;
 import de.alpharogroup.file.search.PathFinder;
 
-public class KeyPairFactoryTest
-{
+/**
+ * The unit test class for the class {@link KeyPairFactory}.
+ */
+public class KeyPairFactoryTest {
 
+	/**
+	 * Test method for
+	 * {@link KeyPairFactory#protectPrivateKeyWithPassword(PrivateKey, String)}
+	 * and
+	 * {@link KeyPairFactory#decryptPasswordProtectedPrivateKey(byte[], String, String)}
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
 	@Test
-	public void testProtectPrivateKeyWithPassword() throws Exception
-	{
-		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
+	public void testProtectPrivateKeyWithPassword() throws Exception {
+		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
 
-		Security.addProvider(new BouncyCastleProvider());
-		final String privateKeyAsBase64String = PrivateKeyReader
-			.readPemFileAsBase64(privatekeyPemFile);
+		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
+		String password = "secret";
+		final byte[] pwprotectedKey = KeyPairFactory.protectPrivateKeyWithPassword(privateKey, password);
 
-		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile,
-			SecurityProvider.BC);
-
-		final byte[] pwprotectedKey = KeyPairFactory.protectPrivateKeyWithPassword(privateKey,
-			"secret");
-
-
+		PrivateKey privKey = KeyPairFactory.decryptPasswordProtectedPrivateKey(pwprotectedKey, password, "RSA");
+		assertEquals(privateKey, privKey);
 	}
 
 }
