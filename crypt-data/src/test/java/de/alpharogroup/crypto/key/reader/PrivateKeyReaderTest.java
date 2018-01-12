@@ -58,8 +58,7 @@ public class PrivateKeyReaderTest
 		final String privateKeyAsBase64String = PrivateKeyReader
 			.readPemFileAsBase64(privatekeyPemFile);
 
-		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile,
-			SecurityProvider.BC);
+		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile);
 
 		final String base64 = PrivateKeyExtensions.toBase64(privateKey);
 		AssertJUnit.assertNotNull(privateKeyAsBase64String);
@@ -79,8 +78,7 @@ public class PrivateKeyReaderTest
 		final File privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
 
 		Security.addProvider(new BouncyCastleProvider());
-		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile,
-			SecurityProvider.BC);
+		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile);		
 		AssertJUnit.assertNotNull(privateKey);
 	}
 
