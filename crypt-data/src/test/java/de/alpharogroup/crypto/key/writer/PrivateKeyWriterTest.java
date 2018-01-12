@@ -65,18 +65,78 @@ public class PrivateKeyWriterTest
 	public void testWriteFile() throws IOException, NoSuchAlgorithmException,
 		InvalidKeySpecException, NoSuchProviderException
 	{
-		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
+		final File privatekeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		final File privatekeyDerFile = new File(privatekeyDerDir, "private.der");
 
 		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
 
-		final File writtenPrivatekeyDerFile = new File(publickeyDerDir, "written-private.der");
+		final File writtenPrivatekeyDerFile = new File(privatekeyDerDir, "written-private.der");
 		PrivateKeyWriter.write(privateKey, writtenPrivatekeyDerFile);
 		String expected = ChecksumExtensions.getChecksum(privatekeyDerFile, Algorithm.MD5);
 		String actual = ChecksumExtensions.getChecksum(writtenPrivatekeyDerFile, Algorithm.MD5);
 		DeleteFileExtensions.delete(writtenPrivatekeyDerFile);
 		assertEquals(expected, actual);
 	}
+
+	/**
+	 * Read test private key.
+	 *
+	 * @param root
+	 *            the root
+	 * @param dir
+	 *            the dir
+	 * @param fileName
+	 *            the file name
+	 * @return the private key
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             the no such provider exception
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	public static PrivateKey readTestPrivateKey(File root, String dir, String fileName)
+		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException,
+		IOException
+	{
+
+		final File privatekeyDerDir = new File(root, dir);
+		final File privatekeyDerFile = new File(privatekeyDerDir, fileName);
+
+		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
+		return privateKey;
+	}
+
+	/**
+	 * Read test private key.
+	 *
+	 * @param root
+	 *            the root
+	 * @param fileName
+	 *            the file name
+	 * @return the private key
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             the no such provider exception
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	public static PrivateKey readTestPrivateKey(File root, String fileName)
+		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException,
+		IOException
+	{
+
+		final File privatekeyDerFile = new File(root, fileName);
+
+		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
+		return privateKey;
+	}
+
 
 	/**
 	 * Test method for {@link PrivateKeyWriter#writeInPemFormat(PrivateKey, File)}.
