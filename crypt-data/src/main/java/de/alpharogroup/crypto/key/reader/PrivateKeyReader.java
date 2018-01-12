@@ -153,11 +153,10 @@ public class PrivateKeyReader
 	 *             is thrown if the specified provider is not registered in the security provider
 	 *             list.
 	 */
-	public static PrivateKey readPrivateKey(final byte[] privateKeyBytes, final String provider)
+	public static PrivateKey readPrivateKey(final byte[] privateKeyBytes)
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
 	{
-		return readPrivateKey(privateKeyBytes, provider,
-			KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
+		return readPrivateKey(privateKeyBytes, KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
 	}
 
 	/**
@@ -178,8 +177,33 @@ public class PrivateKeyReader
 	 *             is thrown if the specified provider is not registered in the security provider
 	 *             list.
 	 */
-	public static PrivateKey readPrivateKey(final byte[] privateKeyBytes, final String provider,
-		final String algorithm)
+	public static PrivateKey readPrivateKey(final byte[] privateKeyBytes, final String algorithm)
+		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
+	{
+		final PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
+		final KeyFactory keyFactory = KeyFactory.getInstance(algorithm);
+		final PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
+		return privateKey;
+	}
+
+	/**
+	 * Read private key.
+	 *
+	 * @param privateKeyBytes
+	 *            the private key bytes
+	 * @param algorithm
+	 *            the algorithm for the {@link KeyFactory}
+	 * @return the private key
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
+	 */
+	public static PrivateKey readEncryptedPrivateKey(final byte[] privateKeyBytes,
+		final String algorithm, String password)
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
 	{
 		final PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
@@ -199,12 +223,11 @@ public class PrivateKeyReader
 	 * @throws Exception
 	 *             is thrown if if a security error occur
 	 */
-	public static PrivateKey readPemPrivateKey(final File file,
-		final SecurityProvider securityProvider) throws Exception
+	public static PrivateKey readPemPrivateKey(final File file) throws Exception
 	{
 		final String privateKeyAsString = readPemFileAsBase64(file);
 		final byte[] decoded = new Base64().decode(privateKeyAsString);
-		return readPrivateKey(decoded, securityProvider);
+		return readPrivateKey(decoded);
 	}
 
 
@@ -236,29 +259,6 @@ public class PrivateKeyReader
 				.trim();
 		}
 		return privateKeyAsBase64String;
-	}
-
-	/**
-	 * Read private key.
-	 *
-	 * @param privateKeyBytes
-	 *            the private key bytes
-	 * @param securityProvider
-	 *            the security provider
-	 * @return the private key
-	 * @throws NoSuchAlgorithmException
-	 *             the no such algorithm exception
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchProviderException
-	 *             is thrown if the specified provider is not registered in the security provider
-	 *             list.
-	 */
-	public static PrivateKey readPrivateKey(final byte[] privateKeyBytes,
-		final SecurityProvider securityProvider)
-		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
-	{
-		return readPrivateKey(privateKeyBytes, securityProvider.name());
 	}
 
 }
