@@ -24,8 +24,6 @@
  */
 package de.alpharogroup.crypto.key.reader;
 
-import static org.testng.AssertJUnit.assertEquals;
-
 import java.io.File;
 import java.security.PrivateKey;
 import java.security.Security;
@@ -34,10 +32,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
-import de.alpharogroup.crypto.factories.KeyPairFactory;
 import de.alpharogroup.crypto.key.PrivateKeyExtensions;
-import de.alpharogroup.crypto.key.writer.PrivateKeyWriter;
 import de.alpharogroup.crypto.provider.SecurityProvider;
 import de.alpharogroup.file.search.PathFinder;
 
@@ -103,31 +98,6 @@ public class PrivateKeyReaderTest
 		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
 
 		AssertJUnit.assertNotNull(privateKey);
-	}
-
-	/**
-	 * Test method for {@link KeyPairFactory#encryptPrivateKeyWithPassword(PrivateKey, String)} and
-	 * {@link KeyPairFactory#decryptPasswordProtectedPrivateKey(byte[], String, String)}
-	 *
-	 * @throws Exception
-	 *             the exception
-	 */
-	@Test(enabled = false) // TODO
-	public void testProtectPrivateKeyWithPassword() throws Exception
-	{
-		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
-
-		Security.addProvider(new BouncyCastleProvider());
-
-		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
-		final String password = "secret";
-		final byte[] pwprotectedKey = PrivateKeyWriter.encryptPrivateKeyWithPassword(privateKey,
-			password);
-
-		final PrivateKey privKey = PrivateKeyReader.decryptPasswordProtectedPrivateKey(
-			pwprotectedKey, password, KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
-		assertEquals(privateKey, privKey);
 	}
 
 }

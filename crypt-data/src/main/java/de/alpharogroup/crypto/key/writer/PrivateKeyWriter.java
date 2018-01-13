@@ -84,6 +84,35 @@ public class PrivateKeyWriter
 		write(privateKey, new FileOutputStream(file));
 	}
 
+	/**
+	 * Write the given {@link PrivateKey} into the given {@link File} protected with the given
+	 * password(TODO test in the *.der format.)
+	 *
+	 * @param privateKey
+	 *            the private key
+	 * @param file
+	 *            the file
+	 * @param password
+	 *            the password
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cipher object fails
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchPaddingException
+	 *             the no such padding exception
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws IllegalBlockSizeException
+	 *             the illegal block size exception
+	 * @throws BadPaddingException
+	 *             the bad padding exception
+	 * @throws InvalidParameterSpecException
+	 *             the invalid parameter spec exception
+	 */
 	public static void write(final PrivateKey privateKey, final @NonNull File file,
 		final String password) throws IOException, InvalidKeyException, NoSuchAlgorithmException,
 		InvalidKeySpecException, NoSuchPaddingException, InvalidAlgorithmParameterException,
@@ -113,7 +142,7 @@ public class PrivateKeyWriter
 
 	/**
 	 * Write the given {@link PrivateKey} into the given {@link OutputStream} protected with the
-	 * given password(to check in the *.der format.)
+	 * given password(TODO test in the *.der format.)
 	 *
 	 * @param privateKey
 	 *            the private key
@@ -124,7 +153,7 @@ public class PrivateKeyWriter
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws InvalidKeyException
-	 *             the invalid key exception
+	 *             is thrown if initialization of the cipher object fails
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeySpecException
@@ -239,7 +268,7 @@ public class PrivateKeyWriter
 	 * @throws NoSuchPaddingException
 	 *             the no such padding exception
 	 * @throws InvalidKeyException
-	 *             the invalid key exception
+	 *             is thrown if initialization of the cipher object fails
 	 * @throws InvalidAlgorithmParameterException
 	 *             is thrown if initialization of the cypher object fails.
 	 * @throws IllegalBlockSizeException

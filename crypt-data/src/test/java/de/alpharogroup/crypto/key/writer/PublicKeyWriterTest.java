@@ -41,7 +41,6 @@ import org.testng.annotations.Test;
 import de.alpharogroup.crypto.key.PrivateKeyExtensions;
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
-import de.alpharogroup.crypto.provider.SecurityProvider;
 import de.alpharogroup.file.checksum.Algorithm;
 import de.alpharogroup.file.checksum.ChecksumExtensions;
 import de.alpharogroup.file.delete.DeleteFileExtensions;
@@ -58,7 +57,7 @@ public class PublicKeyWriterTest
 	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
-	 * 
+	 *
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the cypher object fails.
 	 * @throws InvalidKeySpecException
@@ -71,6 +70,8 @@ public class PublicKeyWriterTest
 	public void testWriteFile() throws IOException, NoSuchAlgorithmException,
 		InvalidKeySpecException, NoSuchProviderException
 	{
+		String expected;
+		String actual;
 		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
 		final File publickeyDerFile = new File(publickeyDerDir, "public.der");
 
@@ -80,15 +81,15 @@ public class PublicKeyWriterTest
 		final File writtenPublickeyDerFile = new File(keyDerDir, "written-public.der");
 		PublicKeyWriter.write(publicKey, writtenPublickeyDerFile);
 
-		String expected = ChecksumExtensions.getChecksum(publickeyDerFile, Algorithm.MD5);
-		String actual = ChecksumExtensions.getChecksum(writtenPublickeyDerFile, Algorithm.MD5);
+		expected = ChecksumExtensions.getChecksum(publickeyDerFile, Algorithm.MD5);
+		actual = ChecksumExtensions.getChecksum(writtenPublickeyDerFile, Algorithm.MD5);
 		DeleteFileExtensions.delete(writtenPublickeyDerFile);
 		assertEquals(expected, actual);
 	}
 
 	/**
 	 * Test method for {@link PublicKeyWriter#writeInPemFormat(PublicKey, File)}.
-	 * 
+	 *
 	 * @throws Exception
 	 *             is thrown if a security issue occurs
 	 */
@@ -107,8 +108,8 @@ public class PublicKeyWriterTest
 		final File keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
 		final File convertedPublickeyPemFile = new File(keyPemDir, "converted-public.pem");
 		PublicKeyWriter.writeInPemFormat(publicKey, convertedPublickeyPemFile);
-		String expected = ChecksumExtensions.getChecksum(publickeyPemFile, Algorithm.MD5);
-		String actual = ChecksumExtensions.getChecksum(convertedPublickeyPemFile, Algorithm.MD5);
+		final String expected = ChecksumExtensions.getChecksum(publickeyPemFile, Algorithm.MD5);
+		final String actual = ChecksumExtensions.getChecksum(convertedPublickeyPemFile, Algorithm.MD5);
 		DeleteFileExtensions.delete(convertedPublickeyPemFile);
 		assertEquals(expected, actual);
 	}
