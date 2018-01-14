@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.obfuscation;
+package de.alpharogroup.crypto.obfuscation.experimental;
 
 import java.util.Set;
 
@@ -37,33 +37,32 @@ public class ComplexObfuscator implements Obfuscatable
 {
 
 	public static String obfuscateWith(
-		BiMap<Character, ObfuscationOperationRule<Character, String>> rules, String toObfuscate)
+		final BiMap<Character, ObfuscationOperationRule<Character, String>> rules, final String toObfuscate)
 	{
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < toObfuscate.length(); i++)
 		{
-			char currentCharacter = toObfuscate.charAt(i);
-			Character asCharacter = Character.valueOf(currentCharacter);
-			String charAsString = Character.toString(currentCharacter);
+			final char currentCharacter = toObfuscate.charAt(i);
+			final Character asCharacter = Character.valueOf(currentCharacter);
 			if (rules.containsKey(asCharacter))
 			{
-				ObfuscationOperationRule<Character, String> obfuscationOperationRule = rules
+				final ObfuscationOperationRule<Character, String> obfuscationOperationRule = rules
 					.get(asCharacter);
-				Set<Integer> indexes = obfuscationOperationRule.getIndexes();
-				Operation operation = obfuscationOperationRule.getOperation();
+				final Set<Integer> indexes = obfuscationOperationRule.getIndexes();
+				final Operation operation = obfuscationOperationRule.getOperation();
 				if (indexes.contains(Integer.valueOf(i)) && operation != null)
 				{
 					sb.append(Operation.operate(currentCharacter, operation));
 				}
 				else
 				{
-					String replaceWith = obfuscationOperationRule.getReplaceWith();
+					final String replaceWith = obfuscationOperationRule.getReplaceWith();
 					sb.append(replaceWith);
 				}
 			}
 			else
 			{
-				sb.append(charAsString);
+				sb.append(currentCharacter);
 			}
 		}
 		return sb.toString();
@@ -99,7 +98,7 @@ public class ComplexObfuscator implements Obfuscatable
 	@Override
 	public String obfuscate()
 	{
-		String obfuscated = obfuscateWith(rules, this.key);
+		final String obfuscated = obfuscateWith(rules, this.key);
 		return obfuscated;
 	}
 

@@ -63,6 +63,47 @@ public enum Operation
 					return Character.valueOf(character);
 			}
 		}
+		return operate(character, operation, false);
+	}
+
+	/**
+	 * Operation on the given character.
+	 *
+	 * @param character
+	 *            the character to operate
+	 * @param operation
+	 *            the operation
+	 * @return the operated character
+	 */
+	public static Character operate(char character, Operation operation, boolean reverse)
+	{
+		if (operation != null)
+		{
+			switch (operation)
+			{
+				case LOWERCASE :
+					if(reverse) {
+						return Character.toUpperCase(character);
+					}
+					return Character.toLowerCase(character);
+				case UPPERCASE :
+					if(reverse) {
+						return Character.toLowerCase(character);
+					}
+					return Character.toUpperCase(character);
+				case TITLECASE :
+					if(reverse) {
+						if(Character.isUpperCase(character)) {
+							return Character.toLowerCase(character);
+						} else {
+							return Character.toUpperCase(character);
+						}
+					}
+					return Character.toTitleCase(character);
+				default :
+					return Character.valueOf(character);
+			}
+		}
 		return Character.valueOf(character);
 	}
 }

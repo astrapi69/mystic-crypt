@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.obfuscation;
+package de.alpharogroup.crypto.obfuscation.experimental;
 
 import static org.testng.AssertJUnit.assertEquals;
 
@@ -35,6 +35,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
 import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
+import de.alpharogroup.crypto.obfuscation.experimental.Obfuscator;
 import de.alpharogroup.crypto.obfuscation.rules.SimpleObfuscationRules;
 
 /**
