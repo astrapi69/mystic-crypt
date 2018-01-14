@@ -40,7 +40,6 @@ import de.alpharogroup.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.crypto.model.CryptModel;
-import de.alpharogroup.crypto.provider.SecurityProvider;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
@@ -117,8 +116,7 @@ public class KeyEncryptDecryptorTest
 		Security.addProvider(new BouncyCastleProvider());
 		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile);
 
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile,
-			SecurityProvider.BC);
+		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
 		final CryptModel<Cipher, PublicKey> encryptModel = CryptModel.<Cipher, PublicKey> builder()
 			.key(publicKey)

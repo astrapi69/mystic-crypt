@@ -112,8 +112,7 @@ public class KeyHexEncryptDecryptorTest
 
 		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile);
 
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile,
-			SecurityProvider.BC);
+		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
 		final PublicKeyHexEncryptor encryptor = new PublicKeyHexEncryptor(publicKey);
 

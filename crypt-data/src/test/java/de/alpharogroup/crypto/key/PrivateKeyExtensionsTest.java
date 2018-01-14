@@ -35,7 +35,6 @@ import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
-import de.alpharogroup.crypto.provider.SecurityProvider;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
@@ -95,8 +94,7 @@ public class PrivateKeyExtensionsTest
 		Security.addProvider(new BouncyCastleProvider());
 		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile);
 
-		final PublicKey expected = PublicKeyReader.readPemPublicKey(publickeyPemFile,
-			SecurityProvider.BC);
+		final PublicKey expected = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
 		final PublicKey actual = PrivateKeyExtensions.generatePublicKey(privateKey);
 		AssertJUnit.assertEquals(expected, actual);

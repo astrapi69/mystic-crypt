@@ -25,10 +25,13 @@
 package de.alpharogroup.crypto.key.reader;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.security.PrivateKey;
 import java.security.Security;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
@@ -98,6 +101,17 @@ public class PrivateKeyReaderTest
 		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
 
 		AssertJUnit.assertNotNull(privateKey);
+	}
+
+	/**
+	 * Test method for {@link PrivateKeyReader} with {@link BeanTester}
+	 */
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(PrivateKeyReader.class);
 	}
 
 }

@@ -37,7 +37,6 @@ import java.security.spec.X509EncodedKeySpec;
 import org.apache.commons.codec.binary.Base64;
 
 import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
-import de.alpharogroup.crypto.provider.SecurityProvider;
 import lombok.experimental.UtilityClass;
 
 
@@ -74,7 +73,7 @@ public class PublicKeyReader
 		NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
 	{
 		final byte[] keyBytes = Files.readAllBytes(file.toPath());
-		return readPublicKey(keyBytes, "BC");
+		return readPublicKey(keyBytes);
 	}
 
 	/**
@@ -82,8 +81,6 @@ public class PublicKeyReader
 	 *
 	 * @param publicKeyBytes
 	 *            the public key bytes
-	 * @param securityProvider
-	 *            the security provider
 	 * @return the public key
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the cypher object fails.
@@ -93,33 +90,10 @@ public class PublicKeyReader
 	 *             is thrown if the specified provider is not registered in the security provider
 	 *             list.
 	 */
-	public static PublicKey readPublicKey(final byte[] publicKeyBytes,
-		final SecurityProvider securityProvider)
+	public static PublicKey readPublicKey(final byte[] publicKeyBytes)
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
 	{
-		return readPublicKey(publicKeyBytes, securityProvider.name());
-	}
-
-	/**
-	 * Read public key.
-	 *
-	 * @param publicKeyBytes
-	 *            the public key bytes
-	 * @param provider
-	 *            the provider
-	 * @return the public key
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the cypher object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchProviderException
-	 *             is thrown if the specified provider is not registered in the security provider
-	 *             list.
-	 */
-	public static PublicKey readPublicKey(final byte[] publicKeyBytes, final String provider)
-		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
-	{
-		return readPublicKey(publicKeyBytes, provider,
+		return readPublicKey(publicKeyBytes,
 			KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
 	}
 
@@ -128,8 +102,6 @@ public class PublicKeyReader
 	 *
 	 * @param publicKeyBytes
 	 *            the public key bytes
-	 * @param provider
-	 *            the provider
 	 * @param algorithm
 	 *            the algorithm for the {@link KeyFactory}
 	 * @return the public key
@@ -141,7 +113,7 @@ public class PublicKeyReader
 	 *             is thrown if the specified provider is not registered in the security provider
 	 *             list.
 	 */
-	public static PublicKey readPublicKey(final byte[] publicKeyBytes, final String provider,
+	public static PublicKey readPublicKey(final byte[] publicKeyBytes,
 		final String algorithm)
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
 	{
@@ -151,24 +123,20 @@ public class PublicKeyReader
 		return publicKey;
 	}
 
-
 	/**
 	 * reads a public key from a file.
 	 *
 	 * @param file
 	 *            the file
-	 * @param securityProvider
-	 *            the security provider
 	 * @return the public key
 	 * @throws Exception
 	 *             is thrown if if a security error occur
 	 */
-	public static PublicKey readPemPublicKey(final File file,
-		final SecurityProvider securityProvider) throws Exception
+	public static PublicKey readPemPublicKey(final File file) throws Exception
 	{
 		final String publicKeyAsString = readPemFileAsBase64(file);
 		final byte[] decoded = Base64.decodeBase64(publicKeyAsString);
-		return readPublicKey(decoded, securityProvider);
+		return readPublicKey(decoded);
 	}
 
 	/**
@@ -186,20 +154,6 @@ public class PublicKeyReader
 		final String publicKeyAsBase64String = new String(keyBytes)
 			.replace(BEGIN_PUBLIC_KEY_PREFIX, "").replace(END_PUBLIC_KEY_SUFFIX, "");
 		return publicKeyAsBase64String;
-	}
-
-	/**
-	 * reads a public key from a file.
-	 *
-	 * @param file
-	 *            the file
-	 * @return the public key
-	 * @throws Exception
-	 *             is thrown if if a security error occur
-	 */
-	public static PublicKey readPemPublicKey(final File file) throws Exception
-	{
-		return readPemPublicKey(file, SecurityProvider.BC);
 	}
 
 }

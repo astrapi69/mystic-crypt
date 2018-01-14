@@ -34,9 +34,12 @@ import org.bouncycastle.util.io.pem.PemObject;
 import org.bouncycastle.util.io.pem.PemReader;
 import org.bouncycastle.util.io.pem.PemWriter;
 
+import lombok.experimental.UtilityClass;
+
 /**
  * The class {@link PemObjectReader} is a utility class for reading {@link PemObject} from a file.
  */
+@UtilityClass
 public class PemObjectReader
 {
 

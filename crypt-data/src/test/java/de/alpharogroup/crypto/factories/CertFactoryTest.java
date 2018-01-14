@@ -107,8 +107,7 @@ public class CertFactoryTest
 
 		Security.addProvider(new BouncyCastleProvider());
 
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile,
-			SecurityProvider.BC);
+		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
 		final String subject = "CN=Test subject";
 		final String issuer = "CN=Test issue";

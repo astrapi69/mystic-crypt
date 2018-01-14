@@ -40,7 +40,7 @@ import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
 import lombok.experimental.UtilityClass;
 
 /**
- * The class {@link PrivateKeyReader} is a utility class for reading private keys in *.der and *.pem
+ * The class {@link PrivateKeyReader} is a utility class for reading private keys in *.der or *.pem
  * format.
  */
 @UtilityClass
@@ -254,10 +254,10 @@ public class PrivateKeyReader
 		NoSuchProviderException, IOException
 	{
 
-		final File privatekeyDerDir = new File(root, directory);
-		final File privatekeyDerFile = new File(privatekeyDerDir, fileName);
+		final File privatekeyDir = new File(root, directory);
+		final File privatekeyFile = new File(privatekeyDir, fileName);
 
-		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
+		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyFile);
 		return privateKey;
 	}
 

@@ -29,7 +29,7 @@ import lombok.experimental.UtilityClass;
  * that are protected with a password.
  */
 @UtilityClass
-public class EncryptedPrivateKeyReader
+public final class EncryptedPrivateKeyReader
 {
 
 	/**
