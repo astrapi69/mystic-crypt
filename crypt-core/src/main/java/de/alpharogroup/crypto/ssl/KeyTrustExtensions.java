@@ -43,7 +43,7 @@ import lombok.experimental.UtilityClass;
 
 /**
  * The factory class {@link KeyTrustExtensions} holds methods for creating {@link TrustManager}
- * array objects and {@link KeyManager} array objects. The class {@link KeyTrustExtensions}.
+ * array objects and {@link KeyManager} array objects.
  */
 @UtilityClass
 public class KeyTrustExtensions
