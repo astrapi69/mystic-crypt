@@ -67,23 +67,22 @@ public class EncryptedPrivateKeyReaderTest
 
 	/**
 	 * Test method for
-	 * {@link EncryptedPrivateKeyReader#decryptPasswordProtectedPrivateKey(File, String, String)}
+	 * {@link EncryptedPrivateKeyReader#decryptPasswordProtectedPrivateKey(byte[], String, String)}
 	 *
 	 * @throws Exception
 	 *             is thrown if any error occurs on the execution
 	 */
 	@Test
-	public void testDecryptPasswordProtectedPrivateKeyFilePasswordAlgorithm() throws Exception
+	public void testDecryptPasswordProtectedPrivateKeyByteArray() throws Exception
 	{
-		readedPrivateKey = PrivateKeyReader
-			.readPrivateKey(PathFinder.getSrcTestResourcesDir(), "der", "private.der");
+		readedPrivateKey = PrivateKeyReader.readPrivateKey(PathFinder.getSrcTestResourcesDir(),
+			"der", "private.der");
 		password = "secret";
-		EncryptedPrivateKeyWriter.encryptPrivateKeyWithPassword(readedPrivateKey,
-			encryptedPrivateKeyFile, password);
-
+		final byte[] pwprotectedKey = EncryptedPrivateKeyWriter
+			.encryptPrivateKeyWithPassword(readedPrivateKey, password);
 
 		final PrivateKey decryptedPrivateKey = EncryptedPrivateKeyReader
-			.decryptPasswordProtectedPrivateKey(encryptedPrivateKeyFile, password,
+			.decryptPasswordProtectedPrivateKey(pwprotectedKey, password,
 				KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
 		expected = readedPrivateKey;
 		actual = decryptedPrivateKey;
@@ -100,8 +99,8 @@ public class EncryptedPrivateKeyReaderTest
 	@Test
 	public void testDecryptPasswordProtectedPrivateKeyFilePassword() throws Exception
 	{
-		readedPrivateKey = PrivateKeyReader
-			.readPrivateKey(PathFinder.getSrcTestResourcesDir(), "der", "private.der");
+		readedPrivateKey = PrivateKeyReader.readPrivateKey(PathFinder.getSrcTestResourcesDir(),
+			"der", "private.der");
 		password = "secret";
 		EncryptedPrivateKeyWriter.encryptPrivateKeyWithPassword(readedPrivateKey,
 			encryptedPrivateKeyFile, password);
@@ -115,22 +114,25 @@ public class EncryptedPrivateKeyReaderTest
 	}
 
 	/**
-	 * Test method for {@link EncryptedPrivateKeyReader#decryptPasswordProtectedPrivateKey(byte[], String, String)}
+	 * Test method for
+	 * {@link EncryptedPrivateKeyReader#decryptPasswordProtectedPrivateKey(File, String, String)}
 	 *
 	 * @throws Exception
 	 *             is thrown if any error occurs on the execution
 	 */
 	@Test
-	public void testDecryptPasswordProtectedPrivateKeyByteArray() throws Exception
+	public void testDecryptPasswordProtectedPrivateKeyFilePasswordAlgorithm() throws Exception
 	{
-		readedPrivateKey = PrivateKeyReader
-			.readPrivateKey(PathFinder.getSrcTestResourcesDir(), "der", "private.der");
+		readedPrivateKey = PrivateKeyReader.readPrivateKey(PathFinder.getSrcTestResourcesDir(),
+			"der", "private.der");
 		password = "secret";
-		final byte[] pwprotectedKey = EncryptedPrivateKeyWriter.encryptPrivateKeyWithPassword(readedPrivateKey,
-			password);
+		EncryptedPrivateKeyWriter.encryptPrivateKeyWithPassword(readedPrivateKey,
+			encryptedPrivateKeyFile, password);
 
-		final PrivateKey decryptedPrivateKey = EncryptedPrivateKeyReader.decryptPasswordProtectedPrivateKey(
-			pwprotectedKey, password, KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
+
+		final PrivateKey decryptedPrivateKey = EncryptedPrivateKeyReader
+			.decryptPasswordProtectedPrivateKey(encryptedPrivateKeyFile, password,
+				KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
 		expected = readedPrivateKey;
 		actual = decryptedPrivateKey;
 		assertEquals(expected, actual);

@@ -48,34 +48,31 @@ public class PrivateKeyWriterTest
 {
 
 	/**
-	 * Test method for {@link PrivateKeyWriter#write(PrivateKey, File)}.
+	 * Read test private key.
 	 *
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 * 
+	 * @param root
+	 *            the root
+	 * @param fileName
+	 *            the file name
+	 * @return the private key
 	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the cypher object fails.
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeySpecException
 	 *             is thrown if generation of the SecretKey object fails.
 	 * @throws NoSuchProviderException
-	 *             is thrown if the specified provider is not registered in the security provider
-	 *             list.
+	 *             the no such provider exception
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
-	@Test
-	public void testWriteFile() throws IOException, NoSuchAlgorithmException,
-		InvalidKeySpecException, NoSuchProviderException
+	public static PrivateKey readTestPrivateKey(File root, String fileName)
+		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException,
+		IOException
 	{
-		final File privatekeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		final File privatekeyDerFile = new File(privatekeyDerDir, "private.der");
+
+		final File privatekeyDerFile = new File(root, fileName);
 
 		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
-
-		final File writtenPrivatekeyDerFile = new File(privatekeyDerDir, "written-private.der");
-		PrivateKeyWriter.write(privateKey, writtenPrivatekeyDerFile);
-		String expected = ChecksumExtensions.getChecksum(privatekeyDerFile, Algorithm.MD5);
-		String actual = ChecksumExtensions.getChecksum(writtenPrivatekeyDerFile, Algorithm.MD5);
-		DeleteFileExtensions.delete(writtenPrivatekeyDerFile);
-		assertEquals(expected, actual);
+		return privateKey;
 	}
 
 	/**
@@ -110,31 +107,34 @@ public class PrivateKeyWriterTest
 	}
 
 	/**
-	 * Read test private key.
+	 * Test method for {@link PrivateKeyWriter#write(PrivateKey, File)}.
 	 *
-	 * @param root
-	 *            the root
-	 * @param fileName
-	 *            the file name
-	 * @return the private key
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * 
 	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 *             is thrown if instantiation of the cypher object fails.
 	 * @throws InvalidKeySpecException
 	 *             is thrown if generation of the SecretKey object fails.
 	 * @throws NoSuchProviderException
-	 *             the no such provider exception
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
 	 */
-	public static PrivateKey readTestPrivateKey(File root, String fileName)
-		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException,
-		IOException
+	@Test
+	public void testWriteFile() throws IOException, NoSuchAlgorithmException,
+		InvalidKeySpecException, NoSuchProviderException
 	{
-
-		final File privatekeyDerFile = new File(root, fileName);
+		final File privatekeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		final File privatekeyDerFile = new File(privatekeyDerDir, "private.der");
 
 		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
-		return privateKey;
+
+		final File writtenPrivatekeyDerFile = new File(privatekeyDerDir, "written-private.der");
+		PrivateKeyWriter.write(privateKey, writtenPrivatekeyDerFile);
+		String expected = ChecksumExtensions.getChecksum(privatekeyDerFile, Algorithm.MD5);
+		String actual = ChecksumExtensions.getChecksum(writtenPrivatekeyDerFile, Algorithm.MD5);
+		DeleteFileExtensions.delete(writtenPrivatekeyDerFile);
+		assertEquals(expected, actual);
 	}
 
 

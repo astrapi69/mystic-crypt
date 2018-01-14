@@ -185,35 +185,35 @@ public class PrivateKeyWriter
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-//	public static byte[] encryptPrivateKeyWithPassword(final PrivateKey privateKey,
-//		final String password) throws NoSuchAlgorithmException, InvalidKeySpecException,
-//		NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException,
-//		IllegalBlockSizeException, BadPaddingException, InvalidParameterSpecException, IOException
-//	{
-//		final byte[] privateKeyEncoded = privateKey.getEncoded();
-//
-//		final SecureRandom random = new SecureRandom();
-//		final byte[] salt = new byte[8];
-//		random.nextBytes(salt);
-//
-//		final AlgorithmParameterSpec algorithmParameterSpec = AlgorithmParameterSpecFactory
-//			.newPBEParameterSpec(salt, 20);
-//
-//		final SecretKey secretKey = SecretKeyFactoryExtensions.newSecretKey(password.toCharArray(),
-//			CryptConst.PBE_WITH_SHA1_AND_DES_EDE);
-//
-//		final Cipher pbeCipher = Cipher.getInstance(CryptConst.PBE_WITH_SHA1_AND_DES_EDE);
-//
-//		pbeCipher.init(Cipher.ENCRYPT_MODE, secretKey, algorithmParameterSpec);
-//
-//		final byte[] ciphertext = pbeCipher.doFinal(privateKeyEncoded);
-//
-//		final AlgorithmParameters algparms = AlgorithmParameters
-//			.getInstance(CryptConst.PBE_WITH_SHA1_AND_DES_EDE);
-//		algparms.init(algorithmParameterSpec);
-//		final EncryptedPrivateKeyInfo encinfo = new EncryptedPrivateKeyInfo(algparms, ciphertext);
-//
-//		return encinfo.getEncoded();
-//	}
+	// public static byte[] encryptPrivateKeyWithPassword(final PrivateKey privateKey,
+	// final String password) throws NoSuchAlgorithmException, InvalidKeySpecException,
+	// NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException,
+	// IllegalBlockSizeException, BadPaddingException, InvalidParameterSpecException, IOException
+	// {
+	// final byte[] privateKeyEncoded = privateKey.getEncoded();
+	//
+	// final SecureRandom random = new SecureRandom();
+	// final byte[] salt = new byte[8];
+	// random.nextBytes(salt);
+	//
+	// final AlgorithmParameterSpec algorithmParameterSpec = AlgorithmParameterSpecFactory
+	// .newPBEParameterSpec(salt, 20);
+	//
+	// final SecretKey secretKey = SecretKeyFactoryExtensions.newSecretKey(password.toCharArray(),
+	// CryptConst.PBE_WITH_SHA1_AND_DES_EDE);
+	//
+	// final Cipher pbeCipher = Cipher.getInstance(CryptConst.PBE_WITH_SHA1_AND_DES_EDE);
+	//
+	// pbeCipher.init(Cipher.ENCRYPT_MODE, secretKey, algorithmParameterSpec);
+	//
+	// final byte[] ciphertext = pbeCipher.doFinal(privateKeyEncoded);
+	//
+	// final AlgorithmParameters algparms = AlgorithmParameters
+	// .getInstance(CryptConst.PBE_WITH_SHA1_AND_DES_EDE);
+	// algparms.init(algorithmParameterSpec);
+	// final EncryptedPrivateKeyInfo encinfo = new EncryptedPrivateKeyInfo(algparms, ciphertext);
+	//
+	// return encinfo.getEncoded();
+	// }
 
 }

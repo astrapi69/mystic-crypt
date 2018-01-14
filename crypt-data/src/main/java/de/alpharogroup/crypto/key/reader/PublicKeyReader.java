@@ -93,8 +93,7 @@ public class PublicKeyReader
 	public static PublicKey readPublicKey(final byte[] publicKeyBytes)
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
 	{
-		return readPublicKey(publicKeyBytes,
-			KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
+		return readPublicKey(publicKeyBytes, KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
 	}
 
 	/**
@@ -113,8 +112,7 @@ public class PublicKeyReader
 	 *             is thrown if the specified provider is not registered in the security provider
 	 *             list.
 	 */
-	public static PublicKey readPublicKey(final byte[] publicKeyBytes,
-		final String algorithm)
+	public static PublicKey readPublicKey(final byte[] publicKeyBytes, final String algorithm)
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
 	{
 		final X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKeyBytes);

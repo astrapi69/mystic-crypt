@@ -109,7 +109,8 @@ public class PublicKeyWriterTest
 		final File convertedPublickeyPemFile = new File(keyPemDir, "converted-public.pem");
 		PublicKeyWriter.writeInPemFormat(publicKey, convertedPublickeyPemFile);
 		final String expected = ChecksumExtensions.getChecksum(publickeyPemFile, Algorithm.MD5);
-		final String actual = ChecksumExtensions.getChecksum(convertedPublickeyPemFile, Algorithm.MD5);
+		final String actual = ChecksumExtensions.getChecksum(convertedPublickeyPemFile,
+			Algorithm.MD5);
 		DeleteFileExtensions.delete(convertedPublickeyPemFile);
 		assertEquals(expected, actual);
 	}

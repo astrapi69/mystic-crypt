@@ -62,6 +62,31 @@ public class CertificateReaderTest
 
 
 	/**
+	 * Returns a random serial number that can be used for a serial number.
+	 *
+	 * @return a random serial number as a {@link BigInteger} object.
+	 */
+	public static BigInteger randomSerialNumber()
+	{
+		long next = 0;
+		try
+		{
+			next = SecureRandom.getInstance(RngAlgorithm.SHA1PRNG.getAlgorithm()).nextLong();
+		}
+		catch (final NoSuchAlgorithmException e)
+		{
+			e.printStackTrace();
+		}
+		if (next < 0)
+		{
+			next = next * (-1);
+		}
+		final BigInteger serialNumber = BigInteger.valueOf(next);
+		return serialNumber;
+	}
+
+
+	/**
 	 * Test method for {@link CertificateReader#readCertificate(File)}.
 	 *
 	 * @throws Exception
@@ -110,7 +135,6 @@ public class CertificateReaderTest
 
 		DeleteFileExtensions.delete(certificateDerFile);
 	}
-
 
 	/**
 	 * Test method for {@link CertificateReader#readPemCertificate(File)}.
@@ -170,30 +194,6 @@ public class CertificateReaderTest
 	{
 		final BeanTester beanTester = new BeanTester();
 		beanTester.testBean(CertificateReader.class);
-	}
-
-	/**
-	 * Returns a random serial number that can be used for a serial number.
-	 *
-	 * @return a random serial number as a {@link BigInteger} object.
-	 */
-	public static BigInteger randomSerialNumber()
-	{
-		long next = 0;
-		try
-		{
-			next = SecureRandom.getInstance(RngAlgorithm.SHA1PRNG.getAlgorithm()).nextLong();
-		}
-		catch (final NoSuchAlgorithmException e)
-		{
-			e.printStackTrace();
-		}
-		if (next < 0)
-		{
-			next = next * (-1);
-		}
-		final BigInteger serialNumber = BigInteger.valueOf(next);
-		return serialNumber;
 	}
 
 }

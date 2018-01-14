@@ -73,7 +73,7 @@ public class KeyExtensionsTest
 
 		Security.addProvider(new BouncyCastleProvider());
 		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile);
-		
+
 		AssertJUnit.assertNotNull(privateKey);
 	}
 

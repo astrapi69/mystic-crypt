@@ -40,7 +40,8 @@ import de.alpharogroup.file.search.PathFinder;
 /**
  * The unit test class for the class {@link KeyPairFactory}.
  */
-public class KeyPairFactoryTest {
+public class KeyPairFactoryTest
+{
 
 	/**
 	 * Test method for {@link KeyPairFactory#newKeyPair(java.security.PublicKey, PrivateKey)}
@@ -49,7 +50,8 @@ public class KeyPairFactoryTest {
 	 *             the exception
 	 */
 	@Test
-	public void testProtectPrivateKeyWithPassword() throws Exception {
+	public void testProtectPrivateKeyWithPassword() throws Exception
+	{
 
 		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
 		final File publickeyDerFile = new File(publickeyDerDir, "public.der");
