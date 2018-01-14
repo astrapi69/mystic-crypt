@@ -1,3 +1,27 @@
+/**
+ * The MIT License
+ *
+ * Copyright (C) 2015 Asterios Raptis
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 package de.alpharogroup.crypto.obfuscation;
 
 import java.util.Set;
@@ -27,7 +51,7 @@ public class CharacterObfuscator implements Obfuscatable
 	@Override public String disentangle()
 	{
 		final String obfuscated = obfuscateWith(rules, this.key);
-		String disentangled = disentangleWith(rules, obfuscated);
+		final String disentangled = disentangleWith(rules, obfuscated);
 		return disentangled;
 	}
 
@@ -35,19 +59,17 @@ public class CharacterObfuscator implements Obfuscatable
 		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules, final String obfuscated)
 	{
 		final BiMap<ObfuscationOperationRule<Character, Character>, Character> inverse = rules.inverse();
-		Character repl;
-		final Character found = 'x';
 		final StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < obfuscated.length(); i++)
 		{
 			final char currentCharacter = obfuscated.charAt(i);
 			final Character asCharacter = Character.valueOf(currentCharacter);
-			ObfuscationOperationRule<Character, Character> obfuscationOperationRule = get(
+			final ObfuscationOperationRule<Character, Character> obfuscationOperationRule = get(
 				inverse, asCharacter, i);
 			if (obfuscationOperationRule !=null) {
 				final Set<Integer> indexes = obfuscationOperationRule.getIndexes();
 				final Operation operation = obfuscationOperationRule.getOperation();
-				Character character = obfuscationOperationRule.getCharacter();
+				final Character character = obfuscationOperationRule.getCharacter();
 				if (indexes.contains(Integer.valueOf(i)) && operation != null)
 				{
 					sb.append(Operation.operate(currentCharacter, operation, true));
@@ -65,17 +87,17 @@ public class CharacterObfuscator implements Obfuscatable
 		return sb.toString();
 	}
 
-	private ObfuscationOperationRule<Character, Character> get(BiMap<ObfuscationOperationRule<Character, Character>, Character> inverse,
-		Character found, int index)
+	private ObfuscationOperationRule<Character, Character> get(final BiMap<ObfuscationOperationRule<Character, Character>, Character> inverse,
+		final Character found, final int index)
 	{
 		for (final ObfuscationOperationRule<Character, Character> obfuscationOperationRule : inverse
 			.keySet())
 		{
 			final Set<Integer> indexes = obfuscationOperationRule.getIndexes();
 			final Operation operation = obfuscationOperationRule.getOperation();
-			Character character = obfuscationOperationRule.getCharacter();
+			final Character character = obfuscationOperationRule.getCharacter();
 			if (indexes.contains(Integer.valueOf(index)) && operation != null) {
-				Character operated = Operation.operate(found, operation, true);
+				final Character operated = Operation.operate(found, operation, true);
 				if(operated.equals(character)){
 					return obfuscationOperationRule;
 				}
