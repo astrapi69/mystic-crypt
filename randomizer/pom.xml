@@ -30,7 +30,7 @@
 
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
-			<artifactId>crypt-data</artifactId>
+			<artifactId>randomizer-data</artifactId>
 		</dependency>
 
 		<!-- RESOURCEBUNDLE-CORE DEPENDENCIES -->
