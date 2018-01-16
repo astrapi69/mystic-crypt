@@ -13,6 +13,7 @@ ADDED:
 - new classes that declares simple and complex rules for obfuscation of characters
 - moved intefaces to new api projects
 - added new meanbean dependency for better unit testing of beans
+- provide package.html for the javadoc of packages
 
 CHANGED:
 
