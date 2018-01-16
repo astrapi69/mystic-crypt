@@ -22,20 +22,22 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.auth.models;
+package de.alpharogroup.auth.enums;
 
 /**
- * The enum {@link ValidationErrors} holds error constants that can occur over the sign up or sign
- * in process.
+ * The Enum {@link AuthenticationErrors}.
  */
-public enum ValidationErrors
+public enum AuthenticationErrors
 {
-	/** Indicates that the term of use are not accepted. */
-	TERM_OF_USE_ERROR,
-	/** Indicates that the email already exists. */
-	EMAIL_EXISTS_ERROR,
-	/** Indicates that the username already exists. */
-	USERNAME_EXISTS_ERROR,
-	/** Indicates that the passwords are uneqaul. */
-	UNEQAUL_PASSWORDS_ERROR
+
+	/**
+	 * This constant indicates that the given email or username does not exist.
+	 */
+	EMAIL_OR_USERNAME_DOES_NOT_EXIST,
+
+	/** This constant indicates that the given password is invalid. */
+	PASSWORD_INVALID,
+
+	/** This constant indicates that the given user object is not registered. */
+	UNREGISTERED
 };

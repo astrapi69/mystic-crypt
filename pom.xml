@@ -291,6 +291,7 @@
 								<exclude>de/alpharogroup/random/api/**/*.class</exclude>
 								<!-- exceptions -->
 								<exclude>de/alpharogroup/exceptions/**/*.class</exclude>
+								<exclude>de/alpharogroup/auth/exceptions/**/*.class</exclude>
 								<!-- deprecated -->
 								<exclude>de/alpharogroup/crypto/aes/**/*.class</exclude>
 								<!-- constant classes with only constants -->
