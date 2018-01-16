@@ -27,6 +27,7 @@ package de.alpharogroup.crypto.obfuscation;
 import java.util.Set;
 
 import com.google.common.collect.BiMap;
+
 import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
@@ -34,13 +35,48 @@ import de.alpharogroup.crypto.obfuscation.rule.Operation;
 
 public class CharacterObfuscator implements Obfuscatable
 {
+	public static String obfuscateWith(
+		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
+		final String toObfuscate)
+	{
+		final StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < toObfuscate.length(); i++)
+		{
+			final char currentCharacter = toObfuscate.charAt(i);
+			final Character asCharacter = Character.valueOf(currentCharacter);
+			final String charAsString = Character.toString(currentCharacter);
+			if (rules.containsKey(asCharacter))
+			{
+				final ObfuscationOperationRule<Character, Character> obfuscationOperationRule = rules
+					.get(asCharacter);
+				final Set<Integer> indexes = obfuscationOperationRule.getIndexes();
+				final Operation operation = obfuscationOperationRule.getOperation();
+				if (indexes.contains(Integer.valueOf(i)) && operation != null)
+				{
+					sb.append(Operation.operate(currentCharacter, operation));
+					continue;
+				}
+				final Character replaceWith = obfuscationOperationRule.getReplaceWith();
+				sb.append(replaceWith);
+
+			}
+			else
+			{
+				sb.append(charAsString);
+			}
+		}
+		return sb.toString();
+	}
+
 	/** The rule. */
 	private final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules;
 
 	/** The key. */
 	private final String key;
 
-	public CharacterObfuscator(final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules, final String key)
+	public CharacterObfuscator(
+		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
+		final String key)
 	{
 		Check.get().notEmpty(rules, "rules");
 		Check.get().notEmpty(key, "key");
@@ -48,7 +84,8 @@ public class CharacterObfuscator implements Obfuscatable
 		this.key = key;
 	}
 
-	@Override public String disentangle()
+	@Override
+	public String disentangle()
 	{
 		final String obfuscated = obfuscateWith(rules, this.key);
 		final String disentangled = disentangleWith(rules, obfuscated);
@@ -56,9 +93,11 @@ public class CharacterObfuscator implements Obfuscatable
 	}
 
 	private String disentangleWith(
-		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules, final String obfuscated)
+		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
+		final String obfuscated)
 	{
-		final BiMap<ObfuscationOperationRule<Character, Character>, Character> inverse = rules.inverse();
+		final BiMap<ObfuscationOperationRule<Character, Character>, Character> inverse = rules
+			.inverse();
 		final StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < obfuscated.length(); i++)
 		{
@@ -66,7 +105,8 @@ public class CharacterObfuscator implements Obfuscatable
 			final Character asCharacter = Character.valueOf(currentCharacter);
 			final ObfuscationOperationRule<Character, Character> obfuscationOperationRule = get(
 				inverse, asCharacter, i);
-			if (obfuscationOperationRule !=null) {
+			if (obfuscationOperationRule != null)
+			{
 				final Set<Integer> indexes = obfuscationOperationRule.getIndexes();
 				final Operation operation = obfuscationOperationRule.getOperation();
 				final Character character = obfuscationOperationRule.getCharacter();
@@ -87,7 +127,8 @@ public class CharacterObfuscator implements Obfuscatable
 		return sb.toString();
 	}
 
-	private ObfuscationOperationRule<Character, Character> get(final BiMap<ObfuscationOperationRule<Character, Character>, Character> inverse,
+	private ObfuscationOperationRule<Character, Character> get(
+		final BiMap<ObfuscationOperationRule<Character, Character>, Character> inverse,
 		final Character found, final int index)
 	{
 		for (final ObfuscationOperationRule<Character, Character> obfuscationOperationRule : inverse
@@ -96,57 +137,29 @@ public class CharacterObfuscator implements Obfuscatable
 			final Set<Integer> indexes = obfuscationOperationRule.getIndexes();
 			final Operation operation = obfuscationOperationRule.getOperation();
 			final Character character = obfuscationOperationRule.getCharacter();
-			if (indexes.contains(Integer.valueOf(index)) && operation != null) {
+			if (indexes.contains(Integer.valueOf(index)) && operation != null)
+			{
 				final Character operated = Operation.operate(found, operation, true);
-				if(operated.equals(character)){
+				if (operated.equals(character))
+				{
 					return obfuscationOperationRule;
 				}
 			}
 			final Character replaceWith = obfuscationOperationRule.getReplaceWith();
-			if(replaceWith.equals(found)) {
+			if (replaceWith.equals(found))
+			{
 				return obfuscationOperationRule;
 			}
 		}
 		return null;
 	}
 
-	@Override public String obfuscate()
+
+	@Override
+	public String obfuscate()
 	{
 		final String obfuscated = obfuscateWith(rules, this.key);
 		return obfuscated;
-	}
-
-
-	public static String obfuscateWith(
-		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules, final String toObfuscate)
-	{
-		final StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < toObfuscate.length(); i++)
-		{
-			final char currentCharacter = toObfuscate.charAt(i);
-			final Character asCharacter = Character.valueOf(currentCharacter);
-			final String charAsString = Character.toString(currentCharacter);
-			if (rules.containsKey(asCharacter))
-			{
-				final ObfuscationOperationRule<Character, Character> obfuscationOperationRule = rules
-					.get(asCharacter);
-				final Set<Integer> indexes = obfuscationOperationRule.getIndexes();
-				final Operation operation = obfuscationOperationRule.getOperation();
-				if (indexes.contains(Integer.valueOf(i)) && operation != null)
-				{
-					sb.append(Operation.operate(currentCharacter, operation));
-					continue;
-				}
-					final Character replaceWith = obfuscationOperationRule.getReplaceWith();
-					sb.append(replaceWith);
-
-			}
-			else
-			{
-				sb.append(charAsString);
-			}
-		}
-		return sb.toString();
 	}
 
 }

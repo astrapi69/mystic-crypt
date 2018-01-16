@@ -77,7 +77,8 @@ public enum Operation
 	 *            the flag to reverse the operation
 	 * @return the operated character
 	 */
-	public static Character operate(final char character, final Operation operation, final boolean reverse)
+	public static Character operate(final char character, final Operation operation,
+		final boolean reverse)
 	{
 		if (operation != null)
 		{

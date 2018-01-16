@@ -280,6 +280,7 @@ public class CharacterObfuscatorTest
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 	}
+
 	/**
 	 * Tear down method will be invoked after every unit test method in this class
 	 *

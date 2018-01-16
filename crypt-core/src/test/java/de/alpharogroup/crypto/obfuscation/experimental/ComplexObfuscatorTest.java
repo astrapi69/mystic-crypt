@@ -37,7 +37,6 @@ import com.google.common.collect.HashBiMap;
 
 import de.alpharogroup.collections.set.SetExtensions;
 import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
-import de.alpharogroup.crypto.obfuscation.experimental.ComplexObfuscator;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
 import de.alpharogroup.crypto.obfuscation.rule.Operation;
 import lombok.AccessLevel;

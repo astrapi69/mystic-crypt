@@ -37,7 +37,8 @@ public class ComplexObfuscator implements Obfuscatable
 {
 
 	public static String obfuscateWith(
-		final BiMap<Character, ObfuscationOperationRule<Character, String>> rules, final String toObfuscate)
+		final BiMap<Character, ObfuscationOperationRule<Character, String>> rules,
+		final String toObfuscate)
 	{
 		final StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < toObfuscate.length(); i++)

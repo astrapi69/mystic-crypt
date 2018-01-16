@@ -35,7 +35,6 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
 import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
-import de.alpharogroup.crypto.obfuscation.experimental.Obfuscator;
 import de.alpharogroup.crypto.obfuscation.rules.SimpleObfuscationRules;
 
 /**
