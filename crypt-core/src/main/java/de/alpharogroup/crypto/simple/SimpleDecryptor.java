@@ -45,8 +45,8 @@ import org.apache.commons.codec.binary.Base64;
 
 import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.CryptConst;
-import de.alpharogroup.crypto.interfaces.Cryptor;
-import de.alpharogroup.crypto.interfaces.StringDecryptor;
+import de.alpharogroup.crypto.api.Cryptor;
+import de.alpharogroup.crypto.api.StringDecryptor;
 import lombok.AccessLevel;
 import lombok.Getter;
 

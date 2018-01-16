@@ -25,10 +25,13 @@
 package de.alpharogroup.crypto.key.reader;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.security.PrivateKey;
 import java.security.Security;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
@@ -58,8 +61,7 @@ public class PrivateKeyReaderTest
 		final String privateKeyAsBase64String = PrivateKeyReader
 			.readPemFileAsBase64(privatekeyPemFile);
 
-		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile,
-			SecurityProvider.BC);
+		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile);
 
 		final String base64 = PrivateKeyExtensions.toBase64(privateKey);
 		AssertJUnit.assertNotNull(privateKeyAsBase64String);
@@ -79,11 +81,9 @@ public class PrivateKeyReaderTest
 		final File privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
 
 		Security.addProvider(new BouncyCastleProvider());
-		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile,
-			SecurityProvider.BC);
+		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile);
 		AssertJUnit.assertNotNull(privateKey);
 	}
-
 
 	/**
 	 * Test method for {@link PrivateKeyReader#readPrivateKey(File)}.
@@ -96,10 +96,22 @@ public class PrivateKeyReaderTest
 	{
 		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
 		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
+		Security.addProvider(new BouncyCastleProvider());
 
 		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
 
 		AssertJUnit.assertNotNull(privateKey);
+	}
+
+	/**
+	 * Test method for {@link PrivateKeyReader} with {@link BeanTester}
+	 */
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(PrivateKeyReader.class);
 	}
 
 }

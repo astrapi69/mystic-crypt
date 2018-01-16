@@ -33,8 +33,8 @@ import java.security.spec.InvalidKeySpecException;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
+import de.alpharogroup.crypto.api.IntegerDecryptor;
 import de.alpharogroup.crypto.core.BaseCryptor;
-import de.alpharogroup.crypto.interfaces.IntegerDecryptor;
 
 /**
  * The class {@link SimpleBaseDecryptor}.

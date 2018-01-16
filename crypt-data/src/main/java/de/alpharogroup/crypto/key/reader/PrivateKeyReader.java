@@ -37,11 +37,11 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import org.apache.commons.codec.binary.Base64;
 
 import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
-import de.alpharogroup.crypto.provider.SecurityProvider;
 import lombok.experimental.UtilityClass;
 
 /**
- * The class {@link PrivateKeyReader} is a utility class for reading private keys.
+ * The class {@link PrivateKeyReader} is a utility class for reading private keys in *.der or *.pem
+ * format.
  */
 @UtilityClass
 public class PrivateKeyReader
@@ -65,11 +65,12 @@ public class PrivateKeyReader
 		+ "-----";
 
 	/**
-	 * Read private key.
+	 * Reads the given {@link File}( in *.der format) with the default RSA algorithm and returns the
+	 * {@link PrivateKey} object.
 	 *
 	 * @param file
-	 *            the file
-	 * @return the private key
+	 *            the file( in *.der format) that contains the private key
+	 * @return the {@link PrivateKey} object
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws NoSuchAlgorithmException
@@ -83,17 +84,18 @@ public class PrivateKeyReader
 	public static PrivateKey readPrivateKey(final File file) throws IOException,
 		NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
 	{
-		return readPrivateKey(file, "BC");
+		return readPrivateKey(file, KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
 	}
 
 	/**
-	 * Read private key.
+	 * Reads the given {@link File}( in *.der format) with the given algorithm and returns the
+	 * {@link PrivateKey} object.
 	 *
 	 * @param file
-	 *            the file
-	 * @param provider
-	 *            the security provider
-	 * @return the private key
+	 *            the file( in *.der format) that contains the private key
+	 * @param algorithm
+	 *            the algorithm
+	 * @return the {@link PrivateKey} object
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws NoSuchAlgorithmException
@@ -104,47 +106,21 @@ public class PrivateKeyReader
 	 *             is thrown if the specified provider is not registered in the security provider
 	 *             list.
 	 */
-	public static PrivateKey readPrivateKey(final File file, final String provider)
+	public static PrivateKey readPrivateKey(final File file, final String algorithm)
 		throws IOException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchProviderException
 	{
 		final byte[] keyBytes = Files.readAllBytes(file.toPath());
-		return readPrivateKey(keyBytes, provider);
+		return readPrivateKey(keyBytes, algorithm);
 	}
 
 	/**
-	 * Read private key.
-	 *
-	 * @param file
-	 *            the file
-	 * @param securityProvider
-	 *            the security provider
-	 * @return the private key
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the cypher object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchProviderException
-	 *             is thrown if the specified provider is not registered in the security provider
-	 *             list.
-	 */
-	public static PrivateKey readPrivateKey(final File file,
-		final SecurityProvider securityProvider) throws IOException, NoSuchAlgorithmException,
-		InvalidKeySpecException, NoSuchProviderException
-	{
-		return readPrivateKey(file, securityProvider.name());
-	}
-
-	/**
-	 * Read private key.
+	 * Reads the given byte array with the default RSA algorithm and returns the {@link PrivateKey}
+	 * object.
 	 *
 	 * @param privateKeyBytes
-	 *            the private key bytes
-	 * @param provider
-	 *            the provider
-	 * @return the private key
+	 *            the byte array that contains the private key bytes
+	 * @return the {@link PrivateKey} object
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the cypher object fails.
 	 * @throws InvalidKeySpecException
@@ -153,23 +129,21 @@ public class PrivateKeyReader
 	 *             is thrown if the specified provider is not registered in the security provider
 	 *             list.
 	 */
-	public static PrivateKey readPrivateKey(final byte[] privateKeyBytes, final String provider)
+	public static PrivateKey readPrivateKey(final byte[] privateKeyBytes)
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
 	{
-		return readPrivateKey(privateKeyBytes, provider,
-			KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
+		return readPrivateKey(privateKeyBytes, KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
 	}
 
 	/**
-	 * Read private key.
+	 * Reads the given byte array with the given algorithm and returns the {@link PrivateKey}
+	 * object.
 	 *
 	 * @param privateKeyBytes
-	 *            the private key bytes
-	 * @param provider
-	 *            the provider
+	 *            the byte array that contains the private key bytes
 	 * @param algorithm
 	 *            the algorithm for the {@link KeyFactory}
-	 * @return the private key
+	 * @return the {@link PrivateKey} object
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the cypher object fails.
 	 * @throws InvalidKeySpecException
@@ -178,8 +152,7 @@ public class PrivateKeyReader
 	 *             is thrown if the specified provider is not registered in the security provider
 	 *             list.
 	 */
-	public static PrivateKey readPrivateKey(final byte[] privateKeyBytes, final String provider,
-		final String algorithm)
+	public static PrivateKey readPrivateKey(final byte[] privateKeyBytes, final String algorithm)
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
 	{
 		final PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
@@ -189,30 +162,48 @@ public class PrivateKeyReader
 	}
 
 	/**
-	 * Read pem private key.
+	 * Reads the given {@link File}( in *.pem format) with the default RSA algorithm and returns the
+	 * {@link PrivateKey} object.
 	 *
 	 * @param file
-	 *            the file
-	 * @param securityProvider
-	 *            the security provider
-	 * @return the private key
+	 *            the file( in *.pem format) that contains the private key
+	 *
+	 * @return the {@link PrivateKey} object
 	 * @throws Exception
 	 *             is thrown if if a security error occur
 	 */
-	public static PrivateKey readPemPrivateKey(final File file,
-		final SecurityProvider securityProvider) throws Exception
+	public static PrivateKey readPemPrivateKey(final File file) throws Exception
 	{
 		final String privateKeyAsString = readPemFileAsBase64(file);
 		final byte[] decoded = new Base64().decode(privateKeyAsString);
-		return readPrivateKey(decoded, securityProvider);
+		return readPrivateKey(decoded);
 	}
 
+	/**
+	 * Reads the given {@link File}( in *.pem format) with given algorithm and returns the
+	 * {@link PrivateKey} object.
+	 *
+	 * @param file
+	 *            the file( in *.pem format) that contains the private key
+	 * @param algorithm
+	 *            the algorithm
+	 * @return the {@link PrivateKey} object
+	 * @throws Exception
+	 *             is thrown if if a security error occur
+	 */
+	public static PrivateKey readPemPrivateKey(final File file, final String algorithm)
+		throws Exception
+	{
+		final String privateKeyAsString = readPemFileAsBase64(file);
+		final byte[] decoded = new Base64().decode(privateKeyAsString);
+		return readPrivateKey(decoded, algorithm);
+	}
 
 	/**
 	 * Read the private key from a pem file as base64 encoded {@link String} value.
 	 *
 	 * @param file
-	 *            the file in pem format that contains the private key.
+	 *            the file( in *.pem format) that contains the private key
 	 * @return the base64 encoded {@link String} value.
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
@@ -239,26 +230,35 @@ public class PrivateKeyReader
 	}
 
 	/**
-	 * Read private key.
+	 * Constructs from the given root, parent directory and file name the file and reads the private
+	 * key.
 	 *
-	 * @param privateKeyBytes
-	 *            the private key bytes
-	 * @param securityProvider
-	 *            the security provider
+	 * @param root
+	 *            the root directory of the parent directory
+	 * @param directory
+	 *            the parent directory of the private key file
+	 * @param fileName
+	 *            the file name of the file that contains the private key
 	 * @return the private key
 	 * @throws NoSuchAlgorithmException
-	 *             the no such algorithm exception
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeySpecException
 	 *             is thrown if generation of the SecretKey object fails.
 	 * @throws NoSuchProviderException
-	 *             is thrown if the specified provider is not registered in the security provider
-	 *             list.
+	 *             the no such provider exception
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
-	public static PrivateKey readPrivateKey(final byte[] privateKeyBytes,
-		final SecurityProvider securityProvider)
-		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
+	public static PrivateKey readPrivateKey(final File root, final String directory,
+		final String fileName) throws NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchProviderException, IOException
 	{
-		return readPrivateKey(privateKeyBytes, securityProvider.name());
+
+		final File privatekeyDir = new File(root, directory);
+		final File privatekeyFile = new File(privatekeyDir, fileName);
+
+		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyFile);
+		return privateKey;
 	}
 
 }

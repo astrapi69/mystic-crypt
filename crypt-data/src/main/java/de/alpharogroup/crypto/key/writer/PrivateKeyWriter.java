@@ -98,8 +98,8 @@ public class PrivateKeyWriter
 	public static void writeInPemFormat(final PrivateKey privateKey, final @NonNull File file)
 		throws IOException
 	{
-		StringWriter stringWriter = new StringWriter();
-		JcaPEMWriter pemWriter = new JcaPEMWriter(stringWriter);
+		final StringWriter stringWriter = new StringWriter();
+		final JcaPEMWriter pemWriter = new JcaPEMWriter(stringWriter);
 		pemWriter.writeObject(privateKey);
 		pemWriter.close();
 		String pemFormat = stringWriter.toString();
@@ -122,7 +122,7 @@ public class PrivateKeyWriter
 	 *             Signals that an I/O exception has occurred.
 	 */
 	public static void write(final PrivateKey privateKey, final @NonNull OutputStream outputStream,
-		KeyFileFormat fileFormat, KeyFormat keyFormat) throws IOException
+		final KeyFileFormat fileFormat, final KeyFormat keyFormat) throws IOException
 	{
 		final byte[] privateKeyBytes = privateKey.getEncoded();
 		switch (fileFormat)
@@ -157,5 +157,63 @@ public class PrivateKeyWriter
 		}
 		outputStream.close();
 	}
+
+	/**
+	 * Encrypt the given {@link PrivateKey} with the given password.
+	 *
+	 * @param privateKey
+	 *            the private key to encrypt
+	 * @param password
+	 *            the password
+	 * @return the byte[]
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchPaddingException
+	 *             the no such padding exception
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cipher object fails
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws IllegalBlockSizeException
+	 *             the illegal block size exception
+	 * @throws BadPaddingException
+	 *             the bad padding exception
+	 * @throws InvalidParameterSpecException
+	 *             the invalid parameter spec exception
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	// public static byte[] encryptPrivateKeyWithPassword(final PrivateKey privateKey,
+	// final String password) throws NoSuchAlgorithmException, InvalidKeySpecException,
+	// NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException,
+	// IllegalBlockSizeException, BadPaddingException, InvalidParameterSpecException, IOException
+	// {
+	// final byte[] privateKeyEncoded = privateKey.getEncoded();
+	//
+	// final SecureRandom random = new SecureRandom();
+	// final byte[] salt = new byte[8];
+	// random.nextBytes(salt);
+	//
+	// final AlgorithmParameterSpec algorithmParameterSpec = AlgorithmParameterSpecFactory
+	// .newPBEParameterSpec(salt, 20);
+	//
+	// final SecretKey secretKey = SecretKeyFactoryExtensions.newSecretKey(password.toCharArray(),
+	// CryptConst.PBE_WITH_SHA1_AND_DES_EDE);
+	//
+	// final Cipher pbeCipher = Cipher.getInstance(CryptConst.PBE_WITH_SHA1_AND_DES_EDE);
+	//
+	// pbeCipher.init(Cipher.ENCRYPT_MODE, secretKey, algorithmParameterSpec);
+	//
+	// final byte[] ciphertext = pbeCipher.doFinal(privateKeyEncoded);
+	//
+	// final AlgorithmParameters algparms = AlgorithmParameters
+	// .getInstance(CryptConst.PBE_WITH_SHA1_AND_DES_EDE);
+	// algparms.init(algorithmParameterSpec);
+	// final EncryptedPrivateKeyInfo encinfo = new EncryptedPrivateKeyInfo(algparms, ciphertext);
+	//
+	// return encinfo.getEncoded();
+	// }
 
 }

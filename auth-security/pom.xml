@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mystic-crypt</artifactId>
-		<version>4.24.0</version>
+		<version>5.0.0</version>
 	</parent>
 
 	<artifactId>auth-security</artifactId>
@@ -27,6 +27,11 @@
 
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
+			<artifactId>auth-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
 			<artifactId>randomizer</artifactId>
 		</dependency>
 
@@ -38,6 +43,13 @@
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
 			<artifactId>test-objects</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- MEANBEAN DEPENDENCY -->
+		<dependency>
+			<groupId>org.meanbean</groupId>
+			<artifactId>meanbean</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>

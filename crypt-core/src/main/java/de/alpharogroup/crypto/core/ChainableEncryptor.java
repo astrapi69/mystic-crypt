@@ -24,7 +24,7 @@
  */
 package de.alpharogroup.crypto.core;
 
-import de.alpharogroup.crypto.interfaces.Encryptor;
+import de.alpharogroup.crypto.api.Encryptor;
 import lombok.Getter;
 
 /**

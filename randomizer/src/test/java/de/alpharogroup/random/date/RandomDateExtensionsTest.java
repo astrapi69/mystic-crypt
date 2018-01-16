@@ -189,7 +189,7 @@ public class RandomDateExtensionsTest extends BaseTestCase
 		final Date till = CalculateDateExtensions.addDays(this.now, 30);
 		final long endDate = till.getTime();
 		final long startDate = from.getTime();
-		final String format = DatePatterns.DOT_DD_MM_YY;
+		final String format = DatePatterns.DOT_DD_MM_YYYY_HH_MM_SS;
 		final String randomDate = RandomDateExtensions.randomDatebetween(startDate, endDate,
 			format);
 		final Date compare = ParseDateExtensions.parseToDate(randomDate, format);

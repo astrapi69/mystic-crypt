@@ -6,12 +6,12 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mvn-java-parent</artifactId>
-		<version>3.3.0</version>
+		<version>3.5.0</version>
 		<relativePath></relativePath>
 	</parent>
 
 	<artifactId>mystic-crypt</artifactId>
-	<version>4.24.0</version>
+	<version>5.0.0</version>
 	<packaging>pom</packaging>
 	<inceptionYear>2015</inceptionYear>
 
@@ -26,30 +26,42 @@
 	<properties>
 		<!-- NEW EXTENSIONS LIB versions -->
 		<file-worker.version>4.18.0</file-worker.version>
-		<jcommons-lang.version>4.28.0</jcommons-lang.version>
-		<test-objects.version>4.17.0</test-objects.version>
-		<silly-collections.version>4.21.0</silly-collections.version>
+		<jcommons-lang.version>4.28.1</jcommons-lang.version>
+		<test-objects.version>4.21.0</test-objects.version>
+		<silly-collections.version>4.22.0</silly-collections.version>
 		<vintage-time.version>4.11.0</vintage-time.version>
 		<!-- RESOURCEBUNDLE-CORE versions -->
-		<resourcebundle-inspector.version>2.16.0</resourcebundle-inspector.version>
+		<resourcebundle-inspector.version>2.16.1</resourcebundle-inspector.version>
 		<!-- JOBJECT-EXTENSIONS versions -->
-		<jobject-extensions.version>1.5.0</jobject-extensions.version>
+		<jobject-extensions.version>1.7.0</jobject-extensions.version>
 		<jobject-core.version>${jobject-extensions.version}</jobject-core.version>
 		<!-- PARENT PROJECT versions -->
-		<randomizer.version>${project.version}</randomizer.version>
-		<crypt-data.version>${project.version}</crypt-data.version>
+		<!-- MYSTIC-CRYPT versions -->
+		<mystic-crypt.version>${project.version}</mystic-crypt.version>
+		<auth-api.version>${mystic-crypt.version}</auth-api.version>
+		<crypt-api.version>${mystic-crypt.version}</crypt-api.version>
+		<crypt-data.version>${mystic-crypt.version}</crypt-data.version>
+		<randomizer.version>${mystic-crypt.version}</randomizer.version>
+		<randomizer-api.version>${mystic-crypt.version}</randomizer-api.version>
+		<randomizer-data.version>${mystic-crypt.version}</randomizer-data.version>
 		<!-- EXTERNAL LIBRARIES versions -->
 		<commons-codec.version>1.10</commons-codec.version>
-		<bouncycastle.version>1.55</bouncycastle.version>
+		<bouncycastle.version>1.59</bouncycastle.version>
 		<!-- GUAVA version -->
 		<guava.version>23.0</guava.version>
+		<!-- MEANBEAN version -->
+		<meanbean.version>2.0.3</meanbean.version>
 	</properties>
 
 	<modules>
+		<module>auth-api</module>
 		<module>auth-security</module>
+		<module>crypt-api</module>
 		<module>crypt-core</module>
-		<module>randomizer</module>
 		<module>crypt-data</module>
+		<module>randomizer</module>
+		<module>randomizer-api</module>
+		<module>randomizer-data</module>
 	</modules>
 
 	<developers>
@@ -125,14 +137,38 @@
 
 			<dependency>
 				<groupId>de.alpharogroup</groupId>
-				<artifactId>randomizer</artifactId>
-				<version>${randomizer.version}</version>
+				<artifactId>auth-api</artifactId>
+				<version>${auth-api.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>crypt-api</artifactId>
+				<version>${crypt-api.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>de.alpharogroup</groupId>
 				<artifactId>crypt-data</artifactId>
 				<version>${crypt-data.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>randomizer</artifactId>
+				<version>${randomizer.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>randomizer-api</artifactId>
+				<version>${randomizer-api.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>randomizer-data</artifactId>
+				<version>${randomizer-data.version}</version>
 			</dependency>
 
 			<dependency>
@@ -164,6 +200,12 @@
 				<groupId>de.alpharogroup</groupId>
 				<artifactId>jobject-core</artifactId>
 				<version>${jobject-core.version}</version>
+			</dependency>
+			<!-- MEANBEAN DEPENDENCY -->
+			<dependency>
+				<groupId>org.meanbean</groupId>
+				<artifactId>meanbean</artifactId>
+				<version>${meanbean.version}</version>
 			</dependency>
 
 		</dependencies>
@@ -243,9 +285,9 @@
 								<exclude>de/alpharogroup/auth/token/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/model/**/*.class</exclude>
 								<!-- interfaces -->
-								<exclude>de/alpharogroup/auth/interfaces/**/*.class</exclude>
+								<exclude>de/alpharogroup/auth/api/**/*.class</exclude>
 								<exclude>de/alpharogroup/auth/usermanagement/**/*.class</exclude>
-								<exclude>de/alpharogroup/crypto/interfaces/**/*.class</exclude>
+								<exclude>de/alpharogroup/crypto/api/**/*.class</exclude>
 								<exclude>de/alpharogroup/random/api/**/*.class</exclude>
 								<!-- exceptions -->
 								<exclude>de/alpharogroup/exceptions/**/*.class</exclude>
@@ -253,18 +295,18 @@
 								<exclude>de/alpharogroup/crypto/aes/**/*.class</exclude>
 								<!-- constant classes with only constants -->
 								<exclude>de/alpharogroup/random/address/**/*.class</exclude>
-								<!-- bean classes -->
+								<!-- explicit bean classes -->
 								<exclude>de/alpharogroup/auth/Credentials.class</exclude>
 								<exclude>de/alpharogroup/auth/SimplePermission.class</exclude>
 								<exclude>de/alpharogroup/auth/SimpleRole.class</exclude>
 								<exclude>de/alpharogroup/auth/SimpleUser.class</exclude>
-								<!-- deprecated -->
+								<!-- explicit deprecated classes -->
 								<exclude>de/alpharogroup/crypto/key/KeyExtensions.class</exclude>
-								<!-- interfaces -->
-								<exclude>de/alpharogroup/crypto/keyrules/Obfuscatable.class</exclude>
-								<!-- constant classes with only constants -->
+								<!-- explicit interfaces -->
+								<exclude>de/alpharogroup/crypto/obfuscation/api/Obfuscatable.class</exclude>
+								<!-- explicit constant classes with only constants -->
 								<exclude>de/alpharogroup/random/Constants.class</exclude>
-								<!-- delegation classes -->
+								<!-- explicit delegation classes -->
 								<exclude>de/alpharogroup/random/DataGenerator.class</exclude>
 							</excludes>
 						</instrumentation>

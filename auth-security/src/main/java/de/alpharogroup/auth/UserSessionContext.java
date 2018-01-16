@@ -27,8 +27,8 @@ package de.alpharogroup.auth;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import de.alpharogroup.auth.interfaces.Session;
-import de.alpharogroup.auth.interfaces.SessionContext;
+import de.alpharogroup.auth.api.Session;
+import de.alpharogroup.auth.api.SessionContext;
 
 /**
  * The class {@link UserSessionContext}. Singleton object.

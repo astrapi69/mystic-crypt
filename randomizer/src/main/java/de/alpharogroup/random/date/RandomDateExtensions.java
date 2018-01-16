@@ -226,10 +226,10 @@ public class RandomDateExtensions
 	public static String randomDatebetween(final long startDate, final long endDate,
 		final String format)
 	{
-		final Random secrand = new SecureRandom();
 		final SimpleDateFormat sdf = new SimpleDateFormat(format);
-		final long randomLong = (long)(startDate + (secrand.nextDouble() * (endDate - startDate)));
-		return sdf.format(new Date(randomLong));
+		long randomLongBetween = RandomExtensions.randomLongBetween(startDate, endDate);
+		Date between = new Date(randomLongBetween);
+		return sdf.format(between);
 	}
 
 

@@ -6,12 +6,17 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mystic-crypt</artifactId>
-		<version>4.24.0</version>
+		<version>5.0.0</version>
 	</parent>
 
 	<artifactId>crypt-data</artifactId>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>crypt-api</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>commons-codec</groupId>
@@ -36,6 +41,18 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>test-objects</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- MEANBEAN DEPENDENCY -->
+		<dependency>
+			<groupId>org.meanbean</groupId>
+			<artifactId>meanbean</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>

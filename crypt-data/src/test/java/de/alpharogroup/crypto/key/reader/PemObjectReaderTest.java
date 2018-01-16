@@ -28,8 +28,11 @@ import static org.testng.AssertJUnit.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 import org.bouncycastle.util.io.pem.PemObject;
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
@@ -57,9 +60,9 @@ public class PemObjectReaderTest
 		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
 		final File privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
 
-		PemObject pemObject = PemObjectReader.getPemObject(privatekeyPemFile);
-		String actual = pemObject.getType();
-		String expected = "RSA PRIVATE KEY";
+		final PemObject pemObject = PemObjectReader.getPemObject(privatekeyPemFile);
+		final String actual = pemObject.getType();
+		final String expected = "RSA PRIVATE KEY";
 		assertEquals(expected, actual);
 
 	}
@@ -76,9 +79,20 @@ public class PemObjectReaderTest
 		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
 		final File privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
 
-		PemObject pemObject = PemObjectReader.getPemObject(privatekeyPemFile);
-		String foo = PemObjectReader.toPemFormat(pemObject);
+		final PemObject pemObject = PemObjectReader.getPemObject(privatekeyPemFile);
+		final String foo = PemObjectReader.toPemFormat(pemObject);
 		logger.debug("\n" + foo);
+	}
+
+	/**
+	 * Test method for {@link PemObjectReader} with {@link BeanTester}
+	 */
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(PemObjectReader.class);
 	}
 
 }

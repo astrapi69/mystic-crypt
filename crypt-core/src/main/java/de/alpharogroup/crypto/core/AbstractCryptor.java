@@ -40,9 +40,9 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.CryptConst;
+import de.alpharogroup.crypto.api.Cryptor;
 import de.alpharogroup.crypto.factories.AlgorithmParameterSpecFactory;
 import de.alpharogroup.crypto.factories.SecretKeyFactoryExtensions;
-import de.alpharogroup.crypto.interfaces.Cryptor;
 import de.alpharogroup.crypto.model.CryptModel;
 import lombok.Getter;
 
