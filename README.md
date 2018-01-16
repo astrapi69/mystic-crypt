@@ -22,16 +22,26 @@ The source code comes under the liberal MIT License, making mystic-crypt great f
 [![Build Status](https://travis-ci.org/astrapi69/mystic-crypt.svg?branch=master)](https://travis-ci.org/astrapi69/mystic-crypt)
 
 ## Coverage Status
+
 [![Coverage Status](https://coveralls.io/repos/github/astrapi69/mystic-crypt/badge.svg?branch=develop)](https://coveralls.io/github/astrapi69/mystic-crypt?branch=develop)
 
 ## Javadoc
+
+auth-api [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/auth-security/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/auth-api)
+
 auth-security [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/auth-security/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/auth-security)
+
+crypt-api [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/crypt-core/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-api)
 
 crypt-core [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/crypt-core/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-core)
 
 crypt-data [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/crypt-data/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-data)
 
 randomizer [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/randomizer/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/randomizer)
+
+randomizer-api [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/randomizer/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/randomizer-api)
+
+randomizer-data [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/randomizer/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/randomizer-data)
 
 ## Maven Central
 
@@ -51,7 +61,7 @@ You can first define the version properties:
 	<properties>
 			...
 		<!-- MYSTIC-CRYPT versions -->
-		<mystic-crypt.version>4.24.0</mystic-crypt.version>
+		<mystic-crypt.version>5.0.0</mystic-crypt.version>
 		<auth-api.version>${mystic-crypt.version}</auth-api.version>
 		<auth-security.version>${mystic-crypt.version}</auth-security.version>
 		<crypt-api.version>${mystic-crypt.version}</crypt-api.version>
@@ -59,6 +69,7 @@ You can first define the version properties:
 		<crypt-data.version>${mystic-crypt.version}</crypt-data.version>
 		<randomizer.version>${mystic-crypt.version}</randomizer.version>
 		<randomizer-api.version>${mystic-crypt.version}</randomizer-api.version>
+		<randomizer-data.version>${mystic-crypt.version}</randomizer-data.version>
 			...
 	</properties>
 	
@@ -153,6 +164,20 @@ Add the following maven dependency to your project `pom.xml` if you want to impo
 				<groupId>de.alpharogroup</groupId>
 				<artifactId>randomizer-api</artifactId>
 				<version>${randomizer-api.version}</version>
+			</dependency>
+			...
+		</dependencies>
+
+
+Add the following maven dependency to your project `pom.xml` if you want to import the functionality of randomizer-data:
+
+		<dependencies>
+			...
+			<!-- RANDOMIZER DEPENDENCY -->
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>randomizer-data</artifactId>
+				<version>${randomizer-data.version}</version>
 			</dependency>
 			...
 		</dependencies>

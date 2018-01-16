@@ -3,7 +3,7 @@
   <parent>
     <groupId>de.alpharogroup</groupId>
     <artifactId>mystic-crypt</artifactId>
-    <version>4.25.0-SNAPSHOT</version>
+    <version>5.0.0</version>
   </parent>
   <artifactId>crypt-api</artifactId>
 </project>
