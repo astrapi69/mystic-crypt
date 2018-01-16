@@ -32,11 +32,13 @@ import java.security.PrivateKey;
 
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
 import de.alpharogroup.crypto.key.writer.EncryptedPrivateKeyWriter;
+import de.alpharogroup.file.delete.DeleteFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
@@ -63,6 +65,21 @@ public class EncryptedPrivateKeyReaderTest
 	{
 		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
 		encryptedPrivateKeyFile = new File(derDir, "encryptedPrivate.der");
+	}
+
+	/**
+	 * Tear down method will be invoked after every unit test method in this class.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
+	@AfterMethod
+	protected void tearDown() throws Exception
+	{
+		if (encryptedPrivateKeyFile.exists())
+		{
+			DeleteFileExtensions.delete(encryptedPrivateKeyFile);
+		}
 	}
 
 	/**

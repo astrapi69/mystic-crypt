@@ -29,11 +29,14 @@ import static org.testng.AssertJUnit.assertEquals;
 import java.io.File;
 import java.security.PrivateKey;
 
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
 import de.alpharogroup.crypto.key.reader.EncryptedPrivateKeyReader;
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
+import de.alpharogroup.file.delete.DeleteFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
@@ -41,6 +44,41 @@ import de.alpharogroup.file.search.PathFinder;
  */
 public class EncryptedPrivateKeyWriterTest
 {
+	PrivateKey expected;
+	PrivateKey actual;
+
+	File derDir;
+	File encryptedPrivateKeyFile;
+	PrivateKey readedPrivateKey;
+	String password;
+
+	/**
+	 * Sets up method will be invoked before every unit test method in this class.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
+	@BeforeMethod
+	protected void setUp() throws Exception
+	{
+		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		encryptedPrivateKeyFile = new File(derDir, "encryptedPrivate.der");
+	}
+
+	/**
+	 * Tear down method will be invoked after every unit test method in this class.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
+	@AfterMethod
+	protected void tearDown() throws Exception
+	{
+		if (encryptedPrivateKeyFile.exists())
+		{
+			DeleteFileExtensions.delete(encryptedPrivateKeyFile);
+		}
+	}
 
 	/**
 	 * Test encrypt private key with password private key file string.
@@ -51,11 +89,6 @@ public class EncryptedPrivateKeyWriterTest
 	@Test
 	public void testEncryptPrivateKeyWithPasswordPrivateKeyFileString() throws Exception
 	{
-		PrivateKey expected;
-		PrivateKey actual;
-		final File derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		final File encryptedPrivateKeyFile = new File(derDir, "encryptedPrivate.der");
-
 		final PrivateKey readedPrivateKey = PrivateKeyReader
 			.readPrivateKey(PathFinder.getSrcTestResourcesDir(), "der", "private.der");
 		final String password = "secret";
@@ -68,6 +101,7 @@ public class EncryptedPrivateKeyWriterTest
 		expected = readedPrivateKey;
 		actual = decryptedPrivateKey;
 		assertEquals(expected, actual);
+
 	}
 
 }
