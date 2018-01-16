@@ -47,7 +47,7 @@ public enum Operation
 	 *            the operation
 	 * @return the operated character
 	 */
-	public static Character operate(char character, Operation operation)
+	public static Character operate(final char character, final Operation operation)
 	{
 		if (operation != null)
 		{
@@ -73,29 +73,37 @@ public enum Operation
 	 *            the character to operate
 	 * @param operation
 	 *            the operation
+	 * @param reverse
+	 *            the flag to reverse the operation
 	 * @return the operated character
 	 */
-	public static Character operate(char character, Operation operation, boolean reverse)
+	public static Character operate(final char character, final Operation operation, final boolean reverse)
 	{
 		if (operation != null)
 		{
 			switch (operation)
 			{
 				case LOWERCASE :
-					if(reverse) {
+					if (reverse)
+					{
 						return Character.toUpperCase(character);
 					}
 					return Character.toLowerCase(character);
 				case UPPERCASE :
-					if(reverse) {
+					if (reverse)
+					{
 						return Character.toLowerCase(character);
 					}
 					return Character.toUpperCase(character);
 				case TITLECASE :
-					if(reverse) {
-						if(Character.isUpperCase(character)) {
+					if (reverse)
+					{
+						if (Character.isUpperCase(character))
+						{
 							return Character.toLowerCase(character);
-						} else {
+						}
+						else
+						{
 							return Character.toUpperCase(character);
 						}
 					}
