@@ -271,8 +271,8 @@
 						<instrumentation>
 							<excludes>
 								<!-- enums -->
-								<exclude>de/alpharogroup/crypto/enums/**/*.class</exclude>
 								<exclude>de/alpharogroup/auth/enums/**/*.class</exclude>
+								<exclude>de/alpharogroup/crypto/enums/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/algorithm/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/enums/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/mechanisms/**/*.class</exclude>
