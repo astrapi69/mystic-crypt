@@ -22,44 +22,26 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.auth.models;
-
-import java.io.Serializable;
+package de.alpharogroup.auth.sign.in;
 
 /**
- * The interface {@link SignInModel} for sign in.
+ * The interface {@link UsernameSignInModel} extended with the user name.
  */
-public interface SignInModel extends Serializable
+public interface UsernameSignInModel extends SignInModel
 {
 
 	/**
-	 * Gets the email.
+	 * Gets the username.
 	 *
-	 * @return the email
+	 * @return the username
 	 */
-	String getEmail();
+	String getUsername();
 
 	/**
-	 * Gets the password.
+	 * Sets the username.
 	 *
-	 * @return the password
+	 * @param username
+	 *            the new username
 	 */
-	String getPassword();
-
-	/**
-	 * Sets the email.
-	 *
-	 * @param email
-	 *            the new email
-	 */
-	void setEmail(final String email);
-
-	/**
-	 * Sets the password.
-	 *
-	 * @param password
-	 *            the new password
-	 */
-	void setPassword(final String password);
-
+	void setUsername(final String username);
 }

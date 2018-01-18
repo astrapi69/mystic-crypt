@@ -22,12 +22,35 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.auth.models;
+package de.alpharogroup.auth.sign.in;
+
+import de.alpharogroup.auth.sign.in.UsernameSignInModel;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
- * The interface {@link UsernameSignUpModel} extended with the user name.
+ * The class {@link BaseUsernameSignInModel} is an implementation from the interface
+ * {@link UsernameSignInModel}.
  */
-public interface UsernameSignUpModel extends SimpleSignUpModel, UsernameSignInModel
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+@NoArgsConstructor
+@AllArgsConstructor
+public class BaseUsernameSignInModel extends BaseSignInModel implements UsernameSignInModel
 {
+
+	/**
+	 * The Constant serialVersionUID.
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/** The username. */
+	private String username;
 
 }

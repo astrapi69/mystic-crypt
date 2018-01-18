@@ -22,26 +22,46 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.auth.models;
+package de.alpharogroup.auth.sign.in;
+
+import de.alpharogroup.auth.sign.in.SignInModel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
- * The interface {@link UsernameSignInModel} extended with the user name.
+ * The class {@link BaseSignInModel} is an implementation from the interface {@link SignInModel}.
+ *
+ * @author Asterios Raptis
  */
-public interface UsernameSignInModel extends SignInModel
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder(toBuilder = true)
+public class BaseSignInModel implements SignInModel
 {
 
 	/**
-	 * Gets the username.
-	 *
-	 * @return the username
+	 * The serialVersionUID.
 	 */
-	String getUsername();
+	private static final long serialVersionUID = 1L;
 
-	/**
-	 * Sets the username.
-	 *
-	 * @param username
-	 *            the new username
-	 */
-	void setUsername(final String username);
+	/** The Constant EMAIL. */
+	public static final String EMAIL = "email";
+	/** The Constant PASSWORD. */
+	public static final String PASSWORD = "password";
+
+	/** The email. */
+	private String email;
+
+	/** The password. */
+	private String password;
+
 }

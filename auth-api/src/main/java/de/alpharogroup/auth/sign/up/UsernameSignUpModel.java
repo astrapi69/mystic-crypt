@@ -22,41 +22,14 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.auth.models;
+package de.alpharogroup.auth.sign.up;
 
-import java.util.Set;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import de.alpharogroup.auth.sign.in.UsernameSignInModel;
 
 /**
- * The class {@link AuthenticationResult} holds the user object and a set of authentication errors
- * if occurred.
- *
- * @param <U>
- *            the generic type of the user object
- * @param <E>
- *            the generic element type of the authentication errors
+ * The interface {@link UsernameSignUpModel} extended with the user name.
  */
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder(toBuilder = true)
-public class AuthenticationResult<U, E>
+public interface UsernameSignUpModel extends SimpleSignUpModel, UsernameSignInModel
 {
-
-	/** The authentication errors. */
-	private Set<E> validationErrors;
-
-	/** The user object. */
-	private U user;
 
 }

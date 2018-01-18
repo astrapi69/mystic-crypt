@@ -22,10 +22,10 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.auth.models;
+package de.alpharogroup.auth.sign.up;
 
+import de.alpharogroup.auth.sign.up.UsernameSignUpModel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,33 +33,22 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * The Class {@link SignInWithRedirectionModel} captures the data for sign in action with
- * redirection feature.
- *
- * @author Asterios Raptis
+ * The class {@link BaseUsernameSignUpModel} is an implementation from the interface
+ * {@link UsernameSignUpModel}.
  */
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder(toBuilder = true)
-public class SignInWithRedirectionModel<T> implements UsernameSignInModel
+public class BaseUsernameSignUpModel extends BaseSignUpModel implements UsernameSignUpModel
 {
+
 	/**
-	 * The serialVersionUID.
+	 * The Constant serialVersionUID.
 	 */
 	private static final long serialVersionUID = 1L;
-
-	/** The email. */
-	private String email;
-
-	/** The password. */
-	private String password;
-
-	/** The redirect page. */
-	private Class<? extends T> redirectPage;
 
 	/** The username. */
 	private String username;

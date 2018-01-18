@@ -22,33 +22,45 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.auth.models;
+package de.alpharogroup.auth.sign.up;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import de.alpharogroup.auth.sign.in.SignInModel;
 
 /**
- * The class {@link BaseUsernameSignUpModel} is an implementation from the interface
- * {@link UsernameSignUpModel}.
+ * The interface {@link SimpleSignUpModel} extends the {@link SignInModel} and adds the repeat
+ * password of the member and the term of use flag.
  */
-@Getter
-@Setter
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-@NoArgsConstructor
-@AllArgsConstructor
-public class BaseUsernameSignUpModel extends BaseSignUpModel implements UsernameSignUpModel
+public interface SimpleSignUpModel extends SignInModel
 {
 
 	/**
-	 * The Constant serialVersionUID.
+	 * Gets the repeat password.
+	 *
+	 * @return the repeat password
 	 */
-	private static final long serialVersionUID = 1L;
+	String getRepeatPassword();
 
-	/** The username. */
-	private String username;
+	/**
+	 * Gets the term of use accepted.
+	 *
+	 * @return the term of use accepted
+	 */
+	Boolean getTermOfUseAccepted();
+
+	/**
+	 * Sets the repeat password.
+	 *
+	 * @param repeatPassword
+	 *            the new repeat password
+	 */
+	void setRepeatPassword(final String repeatPassword);
+
+	/**
+	 * Sets the term of use accepted.
+	 *
+	 * @param termOfUseAccepted
+	 *            the new term of use accepted
+	 */
+	void setTermOfUseAccepted(final Boolean termOfUseAccepted);
+
 }

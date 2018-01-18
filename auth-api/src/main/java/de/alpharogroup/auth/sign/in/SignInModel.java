@@ -22,37 +22,44 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.auth.models;
+package de.alpharogroup.auth.sign.in;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import java.io.Serializable;
 
 /**
- * The class {@link BaseSignUpModel} is an implementation from the interface
- * {@link SimpleSignUpModel}.
+ * The interface {@link SignInModel} for sign in.
  */
-@Getter
-@Setter
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-@NoArgsConstructor
-@AllArgsConstructor
-public class BaseSignUpModel extends BaseSignInModel implements SimpleSignUpModel
+public interface SignInModel extends Serializable
 {
 
 	/**
-	 * The Constant serialVersionUID.
+	 * Gets the email.
+	 *
+	 * @return the email
 	 */
-	private static final long serialVersionUID = 1L;
+	String getEmail();
 
-	/** The repeatpassword. */
-	private String repeatPassword;
+	/**
+	 * Gets the password.
+	 *
+	 * @return the password
+	 */
+	String getPassword();
 
-	/** The term of use accepted. */
-	private Boolean termOfUseAccepted = Boolean.TRUE;
+	/**
+	 * Sets the email.
+	 *
+	 * @param email
+	 *            the new email
+	 */
+	void setEmail(final String email);
+
+	/**
+	 * Sets the password.
+	 *
+	 * @param password
+	 *            the new password
+	 */
+	void setPassword(final String password);
 
 }

@@ -22,8 +22,9 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.auth.models;
+package de.alpharogroup.auth.sign.in;
 
+import de.alpharogroup.auth.sign.in.UsernameSignInModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -33,7 +34,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * The class {@link BaseSignInModel} is an implementation from the interface {@link SignInModel}.
+ * The Class {@link SignInWithRedirectionModel} captures the data for sign in action with
+ * redirection feature.
  *
  * @author Asterios Raptis
  */
@@ -44,18 +46,12 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-public class BaseSignInModel implements SignInModel
+public class SignInWithRedirectionModel<T> implements UsernameSignInModel
 {
-
 	/**
 	 * The serialVersionUID.
 	 */
 	private static final long serialVersionUID = 1L;
-
-	/** The Constant EMAIL. */
-	public static final String EMAIL = "email";
-	/** The Constant PASSWORD. */
-	public static final String PASSWORD = "password";
 
 	/** The email. */
 	private String email;
@@ -63,4 +59,9 @@ public class BaseSignInModel implements SignInModel
 	/** The password. */
 	private String password;
 
+	/** The redirect page. */
+	private Class<? extends T> redirectPage;
+
+	/** The username. */
+	private String username;
 }
