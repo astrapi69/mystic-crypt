@@ -272,7 +272,6 @@
 							<excludes>
 								<!-- enums -->
 								<exclude>de/alpharogroup/auth/enums/**/*.class</exclude>
-								<exclude>de/alpharogroup/crypto/enums/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/algorithm/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/enums/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/mechanisms/**/*.class</exclude>
@@ -290,10 +289,8 @@
 								<exclude>de/alpharogroup/crypto/api/**/*.class</exclude>
 								<exclude>de/alpharogroup/random/api/**/*.class</exclude>
 								<!-- exceptions -->
-								<exclude>de/alpharogroup/exceptions/**/*.class</exclude>
 								<exclude>de/alpharogroup/auth/exceptions/**/*.class</exclude>
 								<!-- deprecated -->
-								<exclude>de/alpharogroup/crypto/aes/**/*.class</exclude>
 								<!-- constant classes with only constants -->
 								<exclude>de/alpharogroup/random/address/**/*.class</exclude>
 								<!-- explicit bean classes -->
