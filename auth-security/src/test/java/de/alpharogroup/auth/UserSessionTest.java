@@ -24,6 +24,8 @@
  */
 package de.alpharogroup.auth;
 
+import static org.testng.AssertJUnit.assertNotNull;
+
 import java.io.File;
 import java.util.HashSet;
 import java.util.List;
@@ -31,11 +33,13 @@ import java.util.Set;
 
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import de.alpharogroup.auth.api.Permission;
 import de.alpharogroup.auth.api.Role;
 import de.alpharogroup.auth.api.Session;
 import de.alpharogroup.auth.api.User;
+import de.alpharogroup.collections.set.SetExtensions;
 import de.alpharogroup.file.csv.CsvFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
@@ -110,10 +114,8 @@ public class UserSessionTest
 		this.testrole2 = new SimpleRole();
 		this.testrole2.setPermissions(this.ars2);
 
-		this.testuser = new SimpleUser();
+		this.testuser = SimpleUser.builder().roles(SetExtensions.newHashSet(testrole, testrole2)).build();
 		this.testuser.setUsername("Leonidas");
-		this.testuser.addRole(this.testrole);
-		this.testuser.addRole(this.testrole2);
 
 		this.testsession = new UserSession(this.testuser);
 
@@ -128,6 +130,20 @@ public class UserSessionTest
 	@AfterMethod
 	protected void tearDown() throws Exception
 	{
+	}
+
+
+	@Test
+	public void testUserSessionConstructor()
+	{
+		testsession = new UserSession(testuser);
+		assertNotNull(testsession);
+	}
+
+	@Test(expectedExceptions=IllegalArgumentException.class)
+	public void testUserSessionConstructorNull()
+	{
+		testsession = new UserSession(null);
 	}
 
 }

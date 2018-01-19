@@ -29,7 +29,6 @@ import static org.testng.AssertJUnit.assertTrue;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.collections.pairs.ValueBox;
 import de.alpharogroup.test.objects.evaluations.EqualsEvaluator;
 import de.alpharogroup.test.objects.evaluations.HashcodeEvaluator;
 import de.alpharogroup.test.objects.evaluations.ToStringEvaluator;
@@ -55,12 +54,12 @@ public class CredentialsTest
 	}
 
 	/**
-	 * Test method for {@link ValueBox}
+	 * Test method for {@link Credentials}
 	 */
 	@Test
 	public void testWithBeanTester()
 	{
-		BeanTester beanTester = new BeanTester();
+		final BeanTester beanTester = new BeanTester();
 		beanTester.testBean(Credentials.class);
 	}
 
