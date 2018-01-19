@@ -356,9 +356,14 @@ Version 3.10.0
 ADDED:
  
 - initial version of mystic-crypt
-  moved from project jaulp.core 
-  adoption of version from jaulp.core
+- moved from project jaulp.core 
+- adoption of version from jaulp.core
 
 CHANGED:
 
 - javadoc extended and improved
+
+-------------
+
+Notable links:
+[keep a changelog](http://keepachangelog.com/en/1.0.0/) Don’t let your friends dump git logs into changelogs
