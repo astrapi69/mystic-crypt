@@ -1,6 +1,14 @@
 ## Change log
 ----------------------
 
+Version 5.1.0-SNAPSHOT
+-------------
+
+ADDED:
+ 
+- moved intefaces to new packages
+- provide new package.html for the javadoc of new packages
+
 Version 5.0.0
 -------------
 
