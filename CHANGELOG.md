@@ -6,8 +6,18 @@ Version 5.1.0-SNAPSHOT
 
 ADDED:
  
-- moved intefaces to new packages
+- moved all left intefaces to the api projects 
+- moved all enums to the api projects 
 - provide new package.html for the javadoc of new packages
+
+CHANGED:
+
+- update of dependency version of silly-collections
+- update of dependency version of jcommons-lang
+- update of dependency version of file-worker 
+- update of dependency version of resourcebundle-inspector 
+- update of dependency version of jobject-extensions 
+
 
 Version 5.0.0
 -------------
