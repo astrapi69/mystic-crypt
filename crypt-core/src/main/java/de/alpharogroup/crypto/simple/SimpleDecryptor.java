@@ -31,6 +31,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
+import java.util.Base64;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -40,8 +41,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
-
-import org.apache.commons.codec.binary.Base64;
 
 import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.CryptConst;
@@ -100,7 +99,7 @@ public class SimpleDecryptor implements StringDecryptor, Cryptor
 		NoSuchPaddingException, InvalidAlgorithmParameterException
 	{
 		initialize();
-		final byte[] dec = Base64.decodeBase64(encypted);
+		final byte[] dec = Base64.getDecoder().decode(encypted);
 		final byte[] utf8 = this.cipher.doFinal(dec);
 		return new String(utf8, CryptConst.ENCODING);
 	}

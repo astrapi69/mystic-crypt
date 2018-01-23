@@ -31,6 +31,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
+import java.util.Base64;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -40,8 +41,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
-
-import org.apache.commons.codec.binary.Base64;
 
 import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.CryptConst;
@@ -102,7 +101,7 @@ public class SimpleEncryptor implements StringEncryptor, Cryptor
 		initialize();
 		final byte[] utf8 = string.getBytes(CryptConst.ENCODING);
 		final byte[] encrypt = this.cipher.doFinal(utf8);
-		final String encrypted = new Base64().encodeToString(encrypt);
+		final String encrypted = Base64.getEncoder().encodeToString(encrypt);
 		return encrypted;
 	}
 

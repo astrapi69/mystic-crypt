@@ -114,7 +114,8 @@ public class UserSessionTest
 		this.testrole2 = new SimpleRole();
 		this.testrole2.setPermissions(this.ars2);
 
-		this.testuser = SimpleUser.builder().roles(SetExtensions.newHashSet(testrole, testrole2)).build();
+		this.testuser = SimpleUser.builder().roles(SetExtensions.newHashSet(testrole, testrole2))
+			.build();
 		this.testuser.setUsername("Leonidas");
 
 		this.testsession = new UserSession(this.testuser);
@@ -140,7 +141,7 @@ public class UserSessionTest
 		assertNotNull(testsession);
 	}
 
-	@Test(expectedExceptions=IllegalArgumentException.class)
+	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void testUserSessionConstructorNull()
 	{
 		testsession = new UserSession(null);

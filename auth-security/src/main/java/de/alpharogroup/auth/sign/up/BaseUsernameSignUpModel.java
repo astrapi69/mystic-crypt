@@ -24,7 +24,6 @@
  */
 package de.alpharogroup.auth.sign.up;
 
-import de.alpharogroup.auth.sign.up.UsernameSignUpModel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
