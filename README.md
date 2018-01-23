@@ -1,5 +1,9 @@
 # Overview
 
+[![Build Status](https://travis-ci.org/astrapi69/mystic-crypt.svg?branch=master)](https://travis-ci.org/astrapi69/mystic-crypt)
+[![Coverage Status](https://coveralls.io/repos/github/astrapi69/mystic-crypt/badge.svg?branch=develop)](https://coveralls.io/github/astrapi69/mystic-crypt?branch=develop)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.alpharogroup/mystic-crypt/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.alpharogroup/mystic-crypt)
+
 The target of this parent project is to make encryption and decryption as simple as possible.
 
 ## Key features:
@@ -17,35 +21,23 @@ The target of this parent project is to make encryption and decryption as simple
 
 The source code comes under the liberal MIT License, making mystic-crypt great for all types of applications.
 
-## Build status
-
-[![Build Status](https://travis-ci.org/astrapi69/mystic-crypt.svg?branch=master)](https://travis-ci.org/astrapi69/mystic-crypt)
-
-## Coverage Status
-
-[![Coverage Status](https://coveralls.io/repos/github/astrapi69/mystic-crypt/badge.svg?branch=develop)](https://coveralls.io/github/astrapi69/mystic-crypt?branch=develop)
-
 ## Javadoc
 
-auth-api [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/auth-security/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/auth-api)
+[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/auth-security/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/auth-api) auth-api
 
-auth-security [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/auth-security/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/auth-security)
+[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/auth-security/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/auth-security) auth-security
 
-crypt-api [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/crypt-core/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-api)
+[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/crypt-core/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-api) crypt-api 
 
-crypt-core [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/crypt-core/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-core)
+[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/crypt-core/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-core) crypt-core
 
-crypt-data [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/crypt-data/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-data)
+[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/crypt-data/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-data) crypt-data
 
-randomizer [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/randomizer/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/randomizer)
+[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/randomizer/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/randomizer) randomizer
 
-randomizer-api [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/randomizer/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/randomizer-api)
+[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/randomizer/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/randomizer-api) randomizer-api
 
-randomizer-data [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/randomizer/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/randomizer-data)
-
-## Maven Central
-
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.alpharogroup/mystic-crypt/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.alpharogroup/mystic-crypt)
+[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/randomizer/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/randomizer-data) randomizer-data
 
 ## Maven dependency
 
