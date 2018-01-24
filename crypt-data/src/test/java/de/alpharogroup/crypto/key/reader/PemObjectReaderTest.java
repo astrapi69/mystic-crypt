@@ -97,6 +97,8 @@ public class PemObjectReaderTest
 
 	/**
 	 * Test method for {@link PemObjectReader#readPemPrivateKey(File, String)}.
+	 * you can create the file id_rsa with following command:
+	 * ssh-keygen -t rsa -b 4096 -f ~/.ssh-tmp/id_rsa
 	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
