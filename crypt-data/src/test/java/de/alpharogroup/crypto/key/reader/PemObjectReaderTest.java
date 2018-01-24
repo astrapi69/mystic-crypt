@@ -93,6 +93,22 @@ public class PemObjectReaderTest
 	{
 		final BeanTester beanTester = new BeanTester();
 		beanTester.testBean(PemObjectReader.class);
+	}	
+
+	/**
+	 * Test method for {@link PemObjectReader#readPemPrivateKey(File, String)}.
+	 *
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	@Test
+	public void testReadPemPrivateKey() throws IOException
+	{
+		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		final File privatekeyPemFile = new File(privatekeyPemDir, "id_rsa");
+
+		 PrivateKey privateKey = PemObjectReader.readPemPrivateKey(privatekeyPemFile, "secret");
+		 assertNotNull(privateKey);		
 	}
 
 }
