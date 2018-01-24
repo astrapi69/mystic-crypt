@@ -29,11 +29,21 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
+import java.security.PrivateKey;
+import java.security.Security;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.openssl.PEMDecryptorProvider;
+import org.bouncycastle.openssl.PEMEncryptedKeyPair;
+import org.bouncycastle.openssl.PEMKeyPair;
+import org.bouncycastle.openssl.PEMParser;
+import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
+import org.bouncycastle.openssl.jcajce.JcePEMDecryptorProviderBuilder;
 import org.bouncycastle.util.io.pem.PemObject;
 import org.bouncycastle.util.io.pem.PemReader;
 import org.bouncycastle.util.io.pem.PemWriter;
 
+import de.alpharogroup.crypto.provider.SecurityProvider;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -65,6 +75,35 @@ public class PemObjectReader
 			pemReader.close();
 		}
 		return pemObject;
+	}
+
+	/**
+	 * Reads the given {@link File}( in *.pem format) that contains a password protected private
+	 * key.
+	 *
+	 * @param keyFile
+	 *            the file with the password protected private key
+	 * @param password
+	 *            the password
+	 * @return the {@link PrivateKey} object
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	public static PrivateKey readPemPrivateKey(File keyFile, String password) throws IOException
+	{
+		Security.addProvider(new BouncyCastleProvider());
+		try (PEMParser pemParser = new PEMParser(
+			new InputStreamReader(new FileInputStream(keyFile)));)
+		{
+
+			PEMEncryptedKeyPair encryptedKeyPair = (PEMEncryptedKeyPair)pemParser.readObject();
+			PEMDecryptorProvider decryptorProvider = new JcePEMDecryptorProviderBuilder()
+				.build(password.toCharArray());
+			PEMKeyPair pemKeyPair = encryptedKeyPair.decryptKeyPair(decryptorProvider);
+
+			JcaPEMKeyConverter converter = new JcaPEMKeyConverter().setProvider(SecurityProvider.BC.name());
+			return converter.getPrivateKey(pemKeyPair.getPrivateKeyInfo());
+		}
 	}
 
 	/**
