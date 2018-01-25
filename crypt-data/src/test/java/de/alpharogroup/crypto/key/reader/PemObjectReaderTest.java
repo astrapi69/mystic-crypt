@@ -24,11 +24,12 @@
  */
 package de.alpharogroup.crypto.key.reader;
 
-import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.security.PrivateKey;
 
 import org.bouncycastle.util.io.pem.PemObject;
 import org.meanbean.test.BeanTestException;
