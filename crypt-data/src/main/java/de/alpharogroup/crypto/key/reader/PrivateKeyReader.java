@@ -195,6 +195,29 @@ public class PrivateKeyReader
 		throws Exception
 	{
 		final String privateKeyAsString = readPemFileAsBase64(file);
+		return readPemPrivateKey(privateKeyAsString, algorithm);
+	}
+
+	/**
+	 * Reads the given {@link String}( in *.pem format) with given algorithm and returns the
+	 * {@link PrivateKey} object.
+	 *
+	 * @param privateKeyAsString
+	 *            the private key as string( in *.pem format)
+	 * @param algorithm
+	 *            the algorithm
+	 * @return the {@link PrivateKey} object
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             the no such provider exception
+	 */
+	public static PrivateKey readPemPrivateKey(final String privateKeyAsString,
+		final String algorithm)
+		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
+	{
 		final byte[] decoded = new Base64().decode(privateKeyAsString);
 		return readPrivateKey(decoded, algorithm);
 	}
