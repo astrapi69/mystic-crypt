@@ -34,7 +34,7 @@ import org.testng.annotations.Test;
 import de.alpharogroup.crypto.algorithm.HashAlgorithm;
 
 /**
- * Test class for the class {@link HashExtensions}.
+ * The unit test class for the class {@link HashExtensions}.
  */
 public class HashExtensionsTest
 {

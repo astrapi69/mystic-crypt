@@ -38,7 +38,7 @@ import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * Test class for the class {@link PrivateKeyExtensions}.
+ * The unit test class for the class {@link PrivateKeyExtensions}.
  */
 public class PrivateKeyExtensionsTest
 {

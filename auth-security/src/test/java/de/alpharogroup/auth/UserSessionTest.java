@@ -44,7 +44,7 @@ import de.alpharogroup.file.csv.CsvFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * Test class for the class {@link UserSession}.
+ * The unit test class for the class {@link UserSession}.
  *
  * @version 1.0
  * @author Asterios Raptis

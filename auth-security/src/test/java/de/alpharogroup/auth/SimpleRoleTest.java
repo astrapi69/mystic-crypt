@@ -41,7 +41,7 @@ import de.alpharogroup.file.csv.CsvFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * Test class for the class {@link SimpleRole}.
+ * The unit test class for the class {@link SimpleRole}.
  *
  * @version 1.1
  * @author Asterios Raptis

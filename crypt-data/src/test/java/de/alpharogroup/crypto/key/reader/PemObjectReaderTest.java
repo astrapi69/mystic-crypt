@@ -42,7 +42,7 @@ import de.alpharogroup.file.search.PathFinder;
 
 
 /**
- * Test class for the class {@link PemObjectReader}.
+ * The unit test class for the class {@link PemObjectReader}.
  */
 public class PemObjectReaderTest
 {

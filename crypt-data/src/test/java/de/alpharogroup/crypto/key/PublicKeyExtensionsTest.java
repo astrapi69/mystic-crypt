@@ -38,7 +38,7 @@ import de.alpharogroup.file.read.ReadFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * Test class for the class {@link PublicKeyExtensions}.
+ * The unit test class for the class {@link PublicKeyExtensions}.
  */
 public class PublicKeyExtensionsTest
 {

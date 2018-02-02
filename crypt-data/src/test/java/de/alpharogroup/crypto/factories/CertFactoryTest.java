@@ -55,7 +55,7 @@ import de.alpharogroup.file.delete.DeleteFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * Test class for the class {@link CertFactory}.
+ * The unit test class for the class {@link CertFactory}.
  */
 public class CertFactoryTest
 {

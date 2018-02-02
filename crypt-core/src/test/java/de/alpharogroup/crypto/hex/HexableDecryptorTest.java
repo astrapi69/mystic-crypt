@@ -29,7 +29,7 @@ import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
 /**
- * Test class for the class {@link HexableEncryptor} and {@link HexableDecryptor}.
+ * The unit test class for the class {@link HexableEncryptor} and {@link HexableDecryptor}.
  */
 public class HexableDecryptorTest
 {
