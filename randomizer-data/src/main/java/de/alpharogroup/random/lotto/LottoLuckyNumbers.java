@@ -50,6 +50,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class LottoLuckyNumbers
 {
+	/** The id. */
+	Integer id;
 
 	/** The lucky lotto numbers. */
 	Set<Integer> lottoNumbers;
