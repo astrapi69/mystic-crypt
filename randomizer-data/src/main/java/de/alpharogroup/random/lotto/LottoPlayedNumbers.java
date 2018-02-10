@@ -24,6 +24,7 @@
  */
 package de.alpharogroup.random.lotto;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -50,15 +51,16 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class LottoPlayedNumbers
 {
+	Integer id;
 
 	/** The played lotto numbers. */
-	Map<String, Set<Integer>> playedLottoNumbers;
+	Map<String, List<Set<Integer>>> playedLottoNumbers;
 
 	/** The super six number. */
 	Integer superSixNumber;
 
-	/** The bonus number. */
-	Integer bonusNumber;
+	/** The super number. */
+	Integer superNumber;
 
 	/** The game seventy seven. */
 	Integer gameSeventySevenNumber;

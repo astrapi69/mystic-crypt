@@ -57,8 +57,8 @@ public class LottoLuckyNumbers
 	/** The super six number. */
 	Integer superSixNumber;
 
-	/** The bonus number. */
-	Integer bonusNumber;
+	/** The super number. */
+	Integer superNumber;
 
 	/** The game seventy seven. */
 	Integer gameSeventySeven;

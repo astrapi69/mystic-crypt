@@ -28,7 +28,7 @@
 		<file-worker.version>4.19.0</file-worker.version>
 		<jcommons-lang.version>4.29.0</jcommons-lang.version>
 		<test-objects.version>4.21.0</test-objects.version>
-		<silly-collections.version>4.23.0</silly-collections.version>
+		<silly-collections.version>4.24.0</silly-collections.version>
 		<vintage-time.version>4.11.0</vintage-time.version>
 		<!-- RESOURCEBUNDLE-CORE versions -->
 		<resourcebundle-inspector.version>2.17.0</resourcebundle-inspector.version>
@@ -270,6 +270,7 @@
 					<configuration>
 						<instrumentation>
 							<excludes>
+								<!-- abstract classes -->
 								<!-- enums -->
 								<exclude>de/alpharogroup/auth/enums/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/algorithm/**/*.class</exclude>
@@ -283,6 +284,8 @@
 								<exclude>de/alpharogroup/auth/models/**/*.class</exclude>
 								<exclude>de/alpharogroup/auth/token/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/model/**/*.class</exclude>
+								<!-- constant classes with only constants -->
+								<exclude>de/alpharogroup/random/address/**/*.class</exclude>
 								<!-- interfaces -->
 								<exclude>de/alpharogroup/auth/api/**/*.class</exclude>
 								<exclude>de/alpharogroup/auth/usermanagement/**/*.class</exclude>
@@ -290,9 +293,8 @@
 								<exclude>de/alpharogroup/random/api/**/*.class</exclude>
 								<!-- exceptions -->
 								<exclude>de/alpharogroup/auth/exceptions/**/*.class</exclude>
-								<!-- deprecated -->
-								<!-- constant classes with only constants -->
-								<exclude>de/alpharogroup/random/address/**/*.class</exclude>
+								<!-- deprecated classes -->
+								<!-- explicit abstract classes -->
 								<!-- explicit bean classes -->
 								<exclude>de/alpharogroup/auth/Credentials.class</exclude>
 								<exclude>de/alpharogroup/auth/SimplePermission.class</exclude>
