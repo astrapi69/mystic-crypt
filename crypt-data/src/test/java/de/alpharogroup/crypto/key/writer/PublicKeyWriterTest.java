@@ -47,7 +47,7 @@ import de.alpharogroup.file.delete.DeleteFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * Test class for the class {@link PublicKeyWriter}.
+ * The unit test class for the class {@link PublicKeyWriter}.
  */
 public class PublicKeyWriterTest
 {

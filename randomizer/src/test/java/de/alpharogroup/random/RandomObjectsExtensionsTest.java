@@ -36,7 +36,7 @@ import org.testng.annotations.Test;
 import de.alpharogroup.BaseTestCase;
 
 /**
- * Test class for the class {@link RandomObjectsExtensions}.
+ * The unit test class for the class {@link RandomObjectsExtensions}.
  *
  * @version 1.0
  * @author Asterios Raptis

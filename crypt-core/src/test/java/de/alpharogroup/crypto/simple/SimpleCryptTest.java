@@ -29,7 +29,7 @@ import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
 /**
- * Test class for the class {@link SimpleCrypt}.
+ * The unit test class for the class {@link SimpleCrypt}.
  *
  * @author Asterios Raptis
  * @version 1.0

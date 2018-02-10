@@ -40,7 +40,7 @@ import de.alpharogroup.resourcebundle.properties.PropertiesFileExtensions;
 import de.alpharogroup.string.StringExtensions;
 
 /**
- * Test class for the class {@link RandomAddressExtensions}.
+ * The unit test class for the class {@link RandomAddressExtensions}.
  *
  * @version 1.0
  * @author Asterios Raptis

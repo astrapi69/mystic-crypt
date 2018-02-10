@@ -46,7 +46,7 @@ import de.alpharogroup.math.MathExtensions;
 import de.alpharogroup.test.objects.enums.Gender;
 
 /**
- * Test class for the class {@link RandomExtensions}.
+ * The unit test class for the class {@link RandomExtensions}.
  *
  * @version 1.0
  * @author Asterios Raptis
