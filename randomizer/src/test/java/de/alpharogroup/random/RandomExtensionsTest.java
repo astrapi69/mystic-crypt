@@ -330,4 +330,18 @@ public class RandomExtensionsTest extends BaseTestCase
 		AssertJUnit.assertNotNull(randomToken);
 	}
 
+
+	/**
+	 * Test method for {@link de.alpharogroup.random.RandomExtensions#randomIntBetween(int, int)}.
+	 */
+	@Test
+	public void testRandomIntBetween()
+	{
+		for (int i = 0; i < 1000; i++)
+		{
+			final int randomIntBetween = RandomExtensions.randomIntBetween(1, 10);
+			System.out.println(randomIntBetween);
+		}
+	}
+
 }

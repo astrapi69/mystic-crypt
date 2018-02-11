@@ -42,6 +42,8 @@ public class SecureRandomBean
 
 	/** The Constant DEFAULT_ALGORITHM. */
 	public static final String DEFAULT_ALGORITHM = "SHA1PRNG";
+	/** The Constant DEFAULT_ALGORITHM. */
+	public static final String DEFAULT_PROVIDER = "SUN";
 	/** The Constant logger. */
 	private static final Logger logger = Logger.getLogger(SecureRandomBean.class.getName());
 
@@ -112,7 +114,7 @@ public class SecureRandomBean
 	 *
 	 * @return the new {@link SecureRandom} object
 	 */
-	public SecureRandom buildQueitly()
+	public SecureRandom buildQuietly()
 	{
 		SecureRandom secureRandom = null;
 		try

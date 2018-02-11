@@ -57,7 +57,7 @@ public class RandomExtensions
 	private static SecureRandom secureRandom;
 	static
 	{
-		secureRandom = SecureRandomBean.builder().buildQueitly();
+		secureRandom = SecureRandomBean.builder().buildQuietly();
 	}
 
 
