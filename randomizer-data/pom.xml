@@ -21,13 +21,12 @@
 
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
-			<artifactId>test-objects</artifactId>
-			<scope>test</scope>
+			<artifactId>silly-collections</artifactId>
 		</dependency>
 
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
-			<artifactId>silly-collections</artifactId>
+			<artifactId>test-objects</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<!-- MEANBEAN DEPENDENCY -->
