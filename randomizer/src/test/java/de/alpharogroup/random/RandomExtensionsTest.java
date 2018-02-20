@@ -261,6 +261,19 @@ public class RandomExtensionsTest extends BaseTestCase
 	}
 
 	/**
+	 * Test method for {@link de.alpharogroup.random.RandomExtensions#randomIntBetween(int, int)}.
+	 */
+	@Test
+	public void testRandomIntBetween()
+	{
+		for (int i = 0; i < 1000; i++)
+		{
+			final int randomIntBetween = RandomExtensions.randomIntBetween(1, 10);
+			System.out.println(randomIntBetween);
+		}
+	}
+
+	/**
 	 * Test method for {@link RandomExtensions#randomLong(long)}.
 	 */
 	@Test(enabled = true)
@@ -320,6 +333,7 @@ public class RandomExtensionsTest extends BaseTestCase
 		}
 	}
 
+
 	/**
 	 * Test method for {@link RandomExtensions#randomToken()} .
 	 */
@@ -328,20 +342,6 @@ public class RandomExtensionsTest extends BaseTestCase
 	{
 		final String randomToken = RandomExtensions.randomToken();
 		AssertJUnit.assertNotNull(randomToken);
-	}
-
-
-	/**
-	 * Test method for {@link de.alpharogroup.random.RandomExtensions#randomIntBetween(int, int)}.
-	 */
-	@Test
-	public void testRandomIntBetween()
-	{
-		for (int i = 0; i < 1000; i++)
-		{
-			final int randomIntBetween = RandomExtensions.randomIntBetween(1, 10);
-			System.out.println(randomIntBetween);
-		}
 	}
 
 }
