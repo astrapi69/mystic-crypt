@@ -41,9 +41,11 @@
 		<auth-api.version>${mystic-crypt.version}</auth-api.version>
 		<crypt-api.version>${mystic-crypt.version}</crypt-api.version>
 		<crypt-data.version>${mystic-crypt.version}</crypt-data.version>
-		<randomizer.version>${mystic-crypt.version}</randomizer.version>
-		<randomizer-api.version>${mystic-crypt.version}</randomizer-api.version>
-		<randomizer-data.version>${mystic-crypt.version}</randomizer-data.version>
+		<!-- RANDOMIZER versions -->
+		<randomizer.version>5.1.0</randomizer.version>
+		<randomizer-core.version>${randomizer.version}</randomizer-core.version>
+		<randomizer-api.version>${randomizer.version}</randomizer-api.version>
+		<randomizer-data.version>${randomizer.version}</randomizer-data.version>
 		<!-- EXTERNAL LIBRARIES versions -->
 		<commons-codec.version>1.11</commons-codec.version>
 		<bouncycastle.version>1.59</bouncycastle.version>
@@ -59,9 +61,6 @@
 		<module>crypt-api</module>
 		<module>crypt-core</module>
 		<module>crypt-data</module>
-		<module>randomizer</module>
-		<module>randomizer-api</module>
-		<module>randomizer-data</module>
 	</modules>
 
 	<developers>
@@ -155,8 +154,8 @@
 
 			<dependency>
 				<groupId>de.alpharogroup</groupId>
-				<artifactId>randomizer</artifactId>
-				<version>${randomizer.version}</version>
+				<artifactId>randomizer-core</artifactId>
+				<version>${randomizer-core.version}</version>
 			</dependency>
 
 			<dependency>
@@ -285,12 +284,10 @@
 								<exclude>de/alpharogroup/auth/token/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/model/**/*.class</exclude>
 								<!-- constant classes with only constants -->
-								<exclude>de/alpharogroup/random/address/**/*.class</exclude>
 								<!-- interfaces -->
 								<exclude>de/alpharogroup/auth/api/**/*.class</exclude>
 								<exclude>de/alpharogroup/auth/usermanagement/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/api/**/*.class</exclude>
-								<exclude>de/alpharogroup/random/api/**/*.class</exclude>
 								<!-- exceptions -->
 								<exclude>de/alpharogroup/auth/exceptions/**/*.class</exclude>
 								<!-- deprecated classes -->
@@ -305,9 +302,7 @@
 								<!-- explicit interfaces -->
 								<exclude>de/alpharogroup/crypto/obfuscation/api/Obfuscatable.class</exclude>
 								<!-- explicit constant classes with only constants -->
-								<exclude>de/alpharogroup/random/Constants.class</exclude>
 								<!-- explicit delegation classes -->
-								<exclude>de/alpharogroup/random/DataGenerator.class</exclude>
 							</excludes>
 						</instrumentation>
 					</configuration>

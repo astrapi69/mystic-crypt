@@ -20,7 +20,7 @@
 
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
-			<artifactId>randomizer</artifactId>
+			<artifactId>randomizer-core</artifactId>
 		</dependency>
 
 		<dependency>
