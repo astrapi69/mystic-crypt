@@ -1,8 +1,12 @@
 # Overview
 
+<div align="center">
+
 [![Build Status](https://travis-ci.org/astrapi69/mystic-crypt.svg?branch=master)](https://travis-ci.org/astrapi69/mystic-crypt)
 [![Coverage Status](https://coveralls.io/repos/github/astrapi69/mystic-crypt/badge.svg?branch=develop)](https://coveralls.io/github/astrapi69/mystic-crypt?branch=develop)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.alpharogroup/mystic-crypt/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.alpharogroup/mystic-crypt)
+
+</div>
 
 The target of this parent project is to make encryption and decryption as simple as possible.
 
@@ -33,20 +37,10 @@ The source code comes under the liberal MIT License, making mystic-crypt great f
 
 [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/crypt-data/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-data) crypt-data
 
-[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/randomizer/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/randomizer) randomizer
-
-[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/randomizer/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/randomizer-api) randomizer-api
-
-[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/randomizer/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/randomizer-data) randomizer-data
-
 ## Maven dependency
 
 Maven dependency is now on sonatype.
 Check out [sonatype repository](https://oss.sonatype.org/index.html#nexus-search;quick~mystic-crypt) for latest snapshots and releases.
-
-![maven-dependencies-diagramm](https://github.com/astrapi69/mystic-crypt/blob/develop/src/main/resources/imgs/mystic-crypt-mvn-dependencies.png)
-
-This erd-diagramm was created with with [netbeans](https://netbeans.org/).
 
 You can first define the version properties:
 
@@ -59,14 +53,10 @@ You can first define the version properties:
 		<crypt-api.version>${mystic-crypt.version}</crypt-api.version>
 		<crypt-core.version>${mystic-crypt.version}</crypt-core.version>
 		<crypt-data.version>${mystic-crypt.version}</crypt-data.version>
-		<randomizer.version>${mystic-crypt.version}</randomizer.version>
-		<randomizer-api.version>${mystic-crypt.version}</randomizer-api.version>
-		<randomizer-data.version>${mystic-crypt.version}</randomizer-data.version>
 			...
 	</properties>
 	
 You can add the following dependencies to your project for use the functionality of mystic-crypt.
-
 
 Add the following maven dependency to your project `pom.xml` if you want to import the functionality of auth-api:
 
@@ -134,46 +124,6 @@ Add the following maven dependency to your project `pom.xml` if you want to impo
 			...
 		</dependencies>
 
-Add the following maven dependency to your project `pom.xml` if you want to import the functionality of randomizer:
-
-		<dependencies>
-			...
-			<!-- RANDOMIZER DEPENDENCY -->
-			<dependency>
-				<groupId>de.alpharogroup</groupId>
-				<artifactId>randomizer</artifactId>
-				<version>${randomizer.version}</version>
-			</dependency>
-			...
-		</dependencies>
-
-Add the following maven dependency to your project `pom.xml` if you want to import the functionality of randomizer-api:
-
-		<dependencies>
-			...
-			<!-- RANDOMIZER DEPENDENCY -->
-			<dependency>
-				<groupId>de.alpharogroup</groupId>
-				<artifactId>randomizer-api</artifactId>
-				<version>${randomizer-api.version}</version>
-			</dependency>
-			...
-		</dependencies>
-
-
-Add the following maven dependency to your project `pom.xml` if you want to import the functionality of randomizer-data:
-
-		<dependencies>
-			...
-			<!-- RANDOMIZER DEPENDENCY -->
-			<dependency>
-				<groupId>de.alpharogroup</groupId>
-				<artifactId>randomizer-data</artifactId>
-				<version>${randomizer-data.version}</version>
-			</dependency>
-			...
-		</dependencies>
-
 ## Semantic Versioning
 
 The versions of mystic-crypt are maintained with the Semantic Versioning guidelines.
@@ -225,7 +175,6 @@ or over flattr: <a href="http://flattr.com/thing/4152938/astrapi69mystic-crypt-o
 # Similar projects
 
 Here is a list of awesome projects for cryptography:
-
 
  * [cryptacular](https://github.com/vt-middleware/cryptacular) The friendly complement to the BouncyCastle crypto API for Java.
  * [JSch](http://www.jcraft.com/jsch/) JSch is a pure Java implementation of SSH2.

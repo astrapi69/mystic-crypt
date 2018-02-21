@@ -12,6 +12,7 @@ ADDED:
 
 CHANGED:
 
+- moved random relevant projects to own project
 - update of dependency version of silly-collections
 - update of dependency version of jcommons-lang
 - update of dependency version of file-worker 
