@@ -46,8 +46,8 @@ public class SimpleObfuscationRulesTest
 {
 
 	/**
-	 * Test method for {@link ObfuscationBiMapRules#equals(Object)} , {@link ObfuscationBiMapRules#hashCode()} and
-	 * {@link ObfuscationBiMapRules#toString()}
+	 * Test method for {@link ObfuscationBiMapRules#equals(Object)} ,
+	 * {@link ObfuscationBiMapRules#hashCode()} and {@link ObfuscationBiMapRules#toString()}
 	 */
 	@Test
 	public void testEqualsHashcodeAndToString()
@@ -69,16 +69,18 @@ public class SimpleObfuscationRulesTest
 		charmap.put("9", "N");
 		BiMap<String, String> obfuscationRules = HashBiMap.create(charmap);
 
-		Map<String, String> map =MapExtensions.newHashMap();
+		Map<String, String> map = MapExtensions.newHashMap();
 
 		map.put("1", "O");
 
-		final ObfuscationBiMapRules<String, String> first = ObfuscationBiMapRules.<String, String>builder()
-			.obfuscationRules(obfuscationRules)
-			.build();
-		final ObfuscationBiMapRules<String, String> second = new ObfuscationBiMapRules<>(HashBiMap.create(map));
-		final ObfuscationBiMapRules<String, String> third = new ObfuscationBiMapRules<>(obfuscationRules);
-		final ObfuscationBiMapRules<String, String> fourth = new ObfuscationBiMapRules<>(obfuscationRules);
+		final ObfuscationBiMapRules<String, String> first = ObfuscationBiMapRules
+			.<String, String> builder().obfuscationRules(obfuscationRules).build();
+		final ObfuscationBiMapRules<String, String> second = new ObfuscationBiMapRules<>(
+			HashBiMap.create(map));
+		final ObfuscationBiMapRules<String, String> third = new ObfuscationBiMapRules<>(
+			obfuscationRules);
+		final ObfuscationBiMapRules<String, String> fourth = new ObfuscationBiMapRules<>(
+			obfuscationRules);
 
 		actual = EqualsHashCodeAndToStringEvaluator.evaluateEqualsHashcodeAndToString(first, second,
 			third, fourth);

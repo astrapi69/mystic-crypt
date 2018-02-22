@@ -24,62 +24,22 @@
  */
 package de.alpharogroup.crypto.obfuscation.rule;
 
-import static org.testng.AssertJUnit.assertEquals;
-
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.collections.set.SetExtensions;
-import de.alpharogroup.test.objects.evaluations.EqualsHashCodeAndToStringEvaluator;
-
 /**
- * The unit test class for the class {@link ObfuscationOperationRule}
+ * The unit test class for the class {@link ObfuscationRule}.
  */
-public class ObfuscationOperationRuleTest
+public class ObfuscationRuleTest
 {
 
 	/**
-	 * Test method for {@link ObfuscationOperationRule}
-	 */
-	@Test
-	public void testObfuscationOperationRuleContent()
-	{
-		Object expected;
-		Object actual;
-		ObfuscationOperationRule<Character, String> rule = ObfuscationOperationRule
-			.<Character, String> newRule().character(Character.valueOf('a')).replaceWith("bc")
-			.operation(Operation.UPPERCASE).indexes(SetExtensions.newHashSet(0, 2)).build();
-
-		expected = Character.valueOf('a');
-		actual = rule.getCharacter();
-
-		assertEquals(actual, expected);
-
-		expected = "bc";
-		actual = rule.getReplaceWith();
-
-		assertEquals(actual, expected);
-
-		expected = Operation.UPPERCASE;
-		actual = rule.getOperation();
-
-		assertEquals(actual, expected);
-
-		expected = SetExtensions.newHashSet(0, 2);
-		actual = rule.getIndexes();
-
-		assertEquals(actual, expected);
-
-		EqualsHashCodeAndToStringEvaluator.evaluateEqualsHashcodeAndToString(rule);
-	}
-
-	/**
-	 * Test method for {@link ObfuscationOperationRule}
+	 * Test method for {@link ObfuscationRule}
 	 */
 	@Test
 	public void testWithBeanTester()
 	{
 		BeanTester beanTester = new BeanTester();
-		beanTester.testBean(ObfuscationOperationRule.class);
+		beanTester.testBean(ObfuscationRule.class);
 	}
 }

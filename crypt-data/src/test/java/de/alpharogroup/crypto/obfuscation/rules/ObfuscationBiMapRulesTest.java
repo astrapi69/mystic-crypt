@@ -46,8 +46,8 @@ public class ObfuscationBiMapRulesTest
 {
 
 	/**
-	 * Test method for {@link SimpleObfuscationRules#equals(Object)} , {@link SimpleObfuscationRules#hashCode()} and
-	 * {@link SimpleObfuscationRules#toString()}
+	 * Test method for {@link SimpleObfuscationRules#equals(Object)} ,
+	 * {@link SimpleObfuscationRules#hashCode()} and {@link SimpleObfuscationRules#toString()}
 	 */
 	@Test
 	public void testEqualsHashcodeAndToString()
@@ -69,13 +69,12 @@ public class ObfuscationBiMapRulesTest
 		charmap.put("9", "N");
 		BiMap<String, String> obfuscationRules = HashBiMap.create(charmap);
 
-		Map<String, String> map =MapExtensions.newHashMap();
+		Map<String, String> map = MapExtensions.newHashMap();
 
 		map.put("1", "O");
 
 		final SimpleObfuscationRules first = SimpleObfuscationRules.buildRule()
-			.obfuscationRules(obfuscationRules)
-			.build();
+			.obfuscationRules(obfuscationRules).build();
 		final SimpleObfuscationRules second = new SimpleObfuscationRules(HashBiMap.create(map));
 		final SimpleObfuscationRules third = new SimpleObfuscationRules(obfuscationRules);
 		final SimpleObfuscationRules fourth = new SimpleObfuscationRules(obfuscationRules);
