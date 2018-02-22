@@ -24,44 +24,55 @@
  */
 package de.alpharogroup.crypto.key;
 
-import lombok.Getter;
+import static org.testng.AssertJUnit.assertEquals;
+
+import java.lang.reflect.InvocationTargetException;
+
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
+import org.testng.annotations.Test;
 
 /**
- * The enum {@link KeyType} can discriminate the type, if it is a private or public key or a
- * certificate.
+ * The unit test class for the class {@link KeySize}.
  */
-public enum KeyType
+public class KeySizeTest
 {
 
-	/** The certificate type. */
-	CERTIFICATE("Certificate"),
-
-	/** The private key type. */
-	PRIVATE_KEY("Private key"),
-
-	/** The public key type. */
-	PUBLIC_KEY("Public key");
-
-	@Getter
-	private final String displayValue;
-
 	/**
-	 * Instantiates a new {@link KeyType} object.
-	 *
-	 * @param displayValue
-	 *            the display value
+	 * Test method for {@link KeySize#getKeySize()}.
 	 */
-	private KeyType(final String displayValue)
+	@Test
+	public void testGetKeySize() throws Exception
 	{
-		this.displayValue = displayValue;
+		Integer expected;
+		Integer actual;
+
+		actual = KeySize.KEYSIZE_1024.getKeySize();
+		expected = 1024;
+		assertEquals(actual, expected);
+
+		actual = KeySize.KEYSIZE_2048.getKeySize();
+		expected = 2048;
+		assertEquals(actual, expected);
+
+		actual = KeySize.KEYSIZE_4096.getKeySize();
+		expected = 4096;
+		assertEquals(actual, expected);
+
+		actual = KeySize.KEYSIZE_8192.getKeySize();
+		expected = 8192;
+		assertEquals(actual, expected);
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Test method for {@link KeySize}
 	 */
-	@Override
-	public String toString()
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
 	{
-		return this.displayValue;
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(KeySize.class);
 	}
+
 }

@@ -24,44 +24,51 @@
  */
 package de.alpharogroup.crypto.key;
 
-import lombok.Getter;
+import static org.testng.AssertJUnit.assertEquals;
+
+import java.lang.reflect.InvocationTargetException;
+
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
+import org.testng.annotations.Test;
 
 /**
- * The enum {@link KeyType} can discriminate the type, if it is a private or public key or a
- * certificate.
+ * The unit test class for the class {@link KeyType}.
  */
-public enum KeyType
+public class KeyTypeTest
 {
 
-	/** The certificate type. */
-	CERTIFICATE("Certificate"),
-
-	/** The private key type. */
-	PRIVATE_KEY("Private key"),
-
-	/** The public key type. */
-	PUBLIC_KEY("Public key");
-
-	@Getter
-	private final String displayValue;
-
 	/**
-	 * Instantiates a new {@link KeyType} object.
-	 *
-	 * @param displayValue
-	 *            the display value
+	 * Test method for {@link KeyType#getDisplayValue()}
 	 */
-	private KeyType(final String displayValue)
+	@Test
+	public void testDisplayValue()
 	{
-		this.displayValue = displayValue;
+		String expected;
+		String actual;
+
+		actual = KeyType.CERTIFICATE.getDisplayValue();
+		expected = "Certificate";
+		assertEquals(actual, expected);
+
+		actual = KeyType.PRIVATE_KEY.getDisplayValue();
+		expected = "Private key";
+		assertEquals(actual, expected);
+
+		actual = KeyType.PUBLIC_KEY.getDisplayValue();
+		expected = "Public key";
+		assertEquals(actual, expected);
 	}
 
+
 	/**
-	 * {@inheritDoc}
+	 * Test method for {@link KeyType}
 	 */
-	@Override
-	public String toString()
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
 	{
-		return this.displayValue;
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(KeyType.class);
 	}
 }
