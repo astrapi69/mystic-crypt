@@ -24,9 +24,10 @@
  */
 package de.alpharogroup.crypto.key;
 
-import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
@@ -52,17 +53,17 @@ public class KeyFileFormatTest
 		actual = KeyFileFormat.DER.getFileExtensions();
 
 		expected = ArrayExtensions.newArray("der");
-		assertEquals(actual, expected);
+		assertTrue(Arrays.equals(actual, expected));
 
 		actual = KeyFileFormat.PEM.getFileExtensions();
 
 		expected = ArrayExtensions.newArray("cer", "crt", "pem");
-		assertEquals(actual, expected);
+		assertTrue(Arrays.equals(actual, expected));
 
 		actual = KeyFileFormat.P7B.getFileExtensions();
 
 		expected = ArrayExtensions.newArray("p7b", "p7c");
-		assertEquals(actual, expected);
+		assertTrue(Arrays.equals(actual, expected));
 
 	}
 
