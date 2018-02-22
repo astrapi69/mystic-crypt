@@ -24,31 +24,23 @@
  */
 package de.alpharogroup.crypto.obfuscation.rules;
 
-import com.google.common.collect.BiMap;
-
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import org.meanbean.test.BeanTester;
+import org.testng.annotations.Test;
 
 /**
- * The class {@link SimpleObfuscationRules} can define a simple rule for encrypt and decrypt a key.
+ * The unit test class for the class {@link ObfuscationRules}.
  */
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class SimpleObfuscationRules extends ObfuscationBiMapRules<String, String>
+public class ObfuscationRulesTest
 {
 
 	/**
-	 * Instantiates a new {@link SimpleObfuscationRules}.
-	 *
-	 * @param obfuscationRules
-	 *            the obfuscation rules
+	 * Test method for {@link ObfuscationRules}
 	 */
-
-	@Builder(builderMethodName = "buildRule")
-	public SimpleObfuscationRules(BiMap<String, String> obfuscationRules)
+	@Test
+	public void testWithBeanTester()
 	{
-		super(obfuscationRules);
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(ObfuscationRules.class);
 	}
 
 }
