@@ -41,7 +41,7 @@ import lombok.experimental.UtilityClass;
  * CertificateBuilder.
  */
 @UtilityClass
-public class CertificateBuilderFactory
+public final class CertificateBuilderFactory
 {
 
 	/**

@@ -48,12 +48,24 @@
 			<artifactId>test-objects</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>vintage-time</artifactId>
+		</dependency>
 		<!-- MEANBEAN DEPENDENCY -->
 		<dependency>
 			<groupId>org.meanbean</groupId>
 			<artifactId>meanbean</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>io.github.benas</groupId>
+			<artifactId>random-beans</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 
 	</dependencies>
 
