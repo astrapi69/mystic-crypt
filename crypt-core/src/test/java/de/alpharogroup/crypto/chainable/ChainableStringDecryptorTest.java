@@ -31,7 +31,8 @@ import de.alpharogroup.crypto.hex.HexableDecryptor;
 import de.alpharogroup.crypto.hex.HexableEncryptor;
 
 /**
- * The unit test class for the class {@link ChainableStringEncryptor} and {@link ChainableStringDecryptor}.
+ * The unit test class for the class {@link ChainableStringEncryptor} and
+ * {@link ChainableStringDecryptor}.
  */
 public class ChainableStringDecryptorTest
 {

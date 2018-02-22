@@ -101,7 +101,8 @@ public class PemObjectReader
 				.build(password.toCharArray());
 			PEMKeyPair pemKeyPair = encryptedKeyPair.decryptKeyPair(decryptorProvider);
 
-			JcaPEMKeyConverter converter = new JcaPEMKeyConverter().setProvider(SecurityProvider.BC.name());
+			JcaPEMKeyConverter converter = new JcaPEMKeyConverter()
+				.setProvider(SecurityProvider.BC.name());
 			return converter.getPrivateKey(pemKeyPair.getPrivateKeyInfo());
 		}
 	}

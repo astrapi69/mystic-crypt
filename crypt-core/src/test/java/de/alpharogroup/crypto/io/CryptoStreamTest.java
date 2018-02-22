@@ -47,8 +47,9 @@ import de.alpharogroup.file.delete.DeleteFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * The unit test class for the classes {@link SimpleBaseEncryptor} and {@link CryptoCipherInputStream} and
- * the classes {@link SimpleBaseDecryptor} and {@link CryptoCipherOutputStream}.
+ * The unit test class for the classes {@link SimpleBaseEncryptor} and
+ * {@link CryptoCipherInputStream} and the classes {@link SimpleBaseDecryptor} and
+ * {@link CryptoCipherOutputStream}.
  */
 public class CryptoStreamTest
 {

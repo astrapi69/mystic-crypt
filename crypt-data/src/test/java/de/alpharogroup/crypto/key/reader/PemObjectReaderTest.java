@@ -24,7 +24,8 @@
  */
 package de.alpharogroup.crypto.key.reader;
 
-import static org.testng.AssertJUnit.*;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -69,6 +70,23 @@ public class PemObjectReaderTest
 	}
 
 	/**
+	 * Test method for {@link PemObjectReader#readPemPrivateKey(File, String)}. you can create the
+	 * file id_rsa with following command: ssh-keygen -t rsa -b 4096 -f ~/.ssh-tmp/id_rsa
+	 *
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	@Test
+	public void testReadPemPrivateKey() throws IOException
+	{
+		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		final File privatekeyPemFile = new File(privatekeyPemDir, "id_rsa");
+
+		PrivateKey privateKey = PemObjectReader.readPemPrivateKey(privatekeyPemFile, "secret");
+		assertNotNull(privateKey);
+	}
+
+	/**
 	 * Test method for {@link PemObjectReader#toPemFormat(PemObject)}.
 	 *
 	 * @throws IOException
@@ -94,24 +112,6 @@ public class PemObjectReaderTest
 	{
 		final BeanTester beanTester = new BeanTester();
 		beanTester.testBean(PemObjectReader.class);
-	}	
-
-	/**
-	 * Test method for {@link PemObjectReader#readPemPrivateKey(File, String)}.
-	 * you can create the file id_rsa with following command:
-	 * ssh-keygen -t rsa -b 4096 -f ~/.ssh-tmp/id_rsa
-	 *
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 */
-	@Test
-	public void testReadPemPrivateKey() throws IOException
-	{
-		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File privatekeyPemFile = new File(privatekeyPemDir, "id_rsa");
-
-		 PrivateKey privateKey = PemObjectReader.readPemPrivateKey(privatekeyPemFile, "secret");
-		 assertNotNull(privateKey);		
 	}
 
 }
