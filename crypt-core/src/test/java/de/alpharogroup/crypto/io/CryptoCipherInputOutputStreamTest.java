@@ -24,6 +24,8 @@
  */
 package de.alpharogroup.crypto.io;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -44,6 +46,7 @@ import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.simple.SimpleBaseDecryptor;
 import de.alpharogroup.crypto.simple.SimpleBaseEncryptor;
 import de.alpharogroup.file.delete.DeleteFileExtensions;
+import de.alpharogroup.file.read.ReadFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
@@ -51,7 +54,7 @@ import de.alpharogroup.file.search.PathFinder;
  * {@link CryptoCipherInputStream} and the classes {@link SimpleBaseDecryptor} and
  * {@link CryptoCipherOutputStream}.
  */
-public class CryptoStreamTest
+public class CryptoCipherInputOutputStreamTest
 {
 
 	/**
@@ -144,6 +147,12 @@ public class CryptoStreamTest
 
 		encryptedFis.close();
 		cos.close();
+
+		// Verify the enryption and decryption process by compare the content of files...
+
+		String expected = ReadFileExtensions.readFromFile(toEncrypt);
+		String actual = ReadFileExtensions.readFromFile(outputDecrypted);
+		assertEquals(expected, actual);
 		// clean up...
 		DeleteFileExtensions.delete(encryptedFile);
 		DeleteFileExtensions.delete(outputDecrypted);
