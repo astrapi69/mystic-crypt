@@ -53,6 +53,12 @@
 			<artifactId>jobject-core</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>io.github.benas</groupId>
+			<artifactId>random-beans</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 </project>

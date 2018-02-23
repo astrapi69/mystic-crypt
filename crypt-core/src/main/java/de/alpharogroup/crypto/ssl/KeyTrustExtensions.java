@@ -53,8 +53,8 @@ public class KeyTrustExtensions
 	 * Resolve the {@link TrustManager} array from the keystore that is resolved from the given
 	 * parameters.
 	 *
-	 * @param type
-	 *            the type
+	 * @param keystoreType
+	 *            the keystore type
 	 * @param password
 	 *            the password
 	 * @param keystoreFile
@@ -73,12 +73,12 @@ public class KeyTrustExtensions
 	 * @throws KeyStoreException
 	 *             the key store exception
 	 */
-	public static TrustManager[] resolveTrustManagers(final String type, final String password,
+	public static TrustManager[] resolveTrustManagers(final String keystoreType, final String password,
 		final File keystoreFile, final String trustManagerAlgorithm)
 		throws NoSuchAlgorithmException, CertificateException, FileNotFoundException, IOException,
 		KeyStoreException
 	{
-		final KeyStore keyStore = KeyStoreFactory.newKeyStore(type, password, keystoreFile);
+		final KeyStore keyStore = KeyStoreFactory.newKeyStore(keystoreType, password, keystoreFile);
 		final TrustManagerFactory trustFactory = TrustManagerFactory
 			.getInstance(trustManagerAlgorithm);
 		trustFactory.init(keyStore);
@@ -90,8 +90,8 @@ public class KeyTrustExtensions
 	 * Resolve the {@link KeyManager} array from the keystore that is resolved from the given
 	 * parameters.
 	 *
-	 * @param type
-	 *            the type
+	 * @param keystoreType
+	 *            the keystore type
 	 * @param password
 	 *            the password
 	 * @param keystoreFile
@@ -112,12 +112,12 @@ public class KeyTrustExtensions
 	 * @throws UnrecoverableKeyException
 	 *             the unrecoverable key exception
 	 */
-	public static KeyManager[] resolveKeyManagers(final String type, final String password,
+	public static KeyManager[] resolveKeyManagers(final String keystoreType, final String password,
 		final File keystoreFile, final String keyManagerAlgorithm)
 		throws NoSuchAlgorithmException, CertificateException, FileNotFoundException, IOException,
 		KeyStoreException, UnrecoverableKeyException
 	{
-		final KeyStore keyStore = KeyStoreFactory.newKeyStore(type, password, keystoreFile);
+		final KeyStore keyStore = KeyStoreFactory.newKeyStore(keystoreType, password, keystoreFile);
 		final KeyManagerFactory keyFactory = KeyManagerFactory.getInstance(keyManagerAlgorithm);
 		keyFactory.init(keyStore, password.toCharArray());
 		final KeyManager[] keyManagers = keyFactory.getKeyManagers();

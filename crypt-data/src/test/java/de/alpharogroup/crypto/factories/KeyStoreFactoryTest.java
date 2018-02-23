@@ -35,6 +35,7 @@ import java.security.cert.CertificateException;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
+import de.alpharogroup.crypto.algorithm.KeystoreType;
 import de.alpharogroup.file.delete.DeleteFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
@@ -46,7 +47,7 @@ public class KeyStoreFactoryTest
 
 	/**
 	 * Test method for {@link KeyStoreFactory#newKeyStore(String, String, File, boolean)}.
-	 * 
+	 *
 	 * @throws NoSuchAlgorithmException
 	 *             if the algorithm used to check the integrity of the keystore cannot be found
 	 * @throws CertificateException
@@ -55,7 +56,7 @@ public class KeyStoreFactoryTest
 	 *             if the file not found
 	 * @throws KeyStoreException
 	 *             if the keystore has not been initialized (loaded).
-	 * 
+	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
@@ -66,7 +67,7 @@ public class KeyStoreFactoryTest
 		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
 		final File privatekeyDerFile = new File(publickeyDerDir, "keystore.jks");
 
-		KeyStore keystore = KeyStoreFactory.newKeyStore("jks", "foobar-secret-pw",
+		KeyStore keystore = KeyStoreFactory.newKeyStore(KeystoreType.JKS.name(), "foobar-secret-pw",
 			privatekeyDerFile, true);
 		AssertJUnit.assertNotNull(keystore);
 		DeleteFileExtensions.delete(privatekeyDerFile);
