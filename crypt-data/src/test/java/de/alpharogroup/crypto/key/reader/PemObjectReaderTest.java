@@ -33,6 +33,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.security.PrivateKey;
 
 import org.bouncycastle.util.io.pem.PemObject;
+import org.meanbean.factories.ObjectCreationException;
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
 import org.slf4j.Logger;
@@ -107,7 +108,7 @@ public class PemObjectReaderTest
 	 * Test method for {@link PemObjectReader} with {@link BeanTester}
 	 */
 	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
-			UnsupportedOperationException.class })
+			UnsupportedOperationException.class, ObjectCreationException.class })
 	public void testWithBeanTester()
 	{
 		final BeanTester beanTester = new BeanTester();

@@ -85,7 +85,7 @@ public class SecretKeyFactoryExtensionsTest
 	@Test
 	public void testNewSecretKey() throws Exception
 	{
-		String algorithm = SunJCEAlgorithm.DES.getAlgorithm();
+		String algorithm = SunJCEAlgorithm.PBEWithMD5AndDES.getAlgorithm();
 		SecretKey secretKey = SecretKeyFactoryExtensions.newSecretKey("secret".toCharArray(), algorithm);
 		assertNotNull(secretKey);
 	}
