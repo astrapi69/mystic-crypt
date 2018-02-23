@@ -53,7 +53,8 @@ public class GoogleMapsUrlSignerTest
 	@Test
 	public void testSignRequestStringStringString() throws Exception
 	{
-		String signRequest = GoogleMapsUrlSigner.signRequest("YOUR_PRIVATE_KEY", "/alpha/beta", "quest");
+		String signRequest = GoogleMapsUrlSigner.signRequest("YOUR_PRIVATE_KEY", "/alpha/beta",
+			"quest");
 		assertNotNull(signRequest);
 	}
 

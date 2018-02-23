@@ -86,11 +86,12 @@ public class BruteForceProcessorTest
 		}
 		final long end = System.currentTimeMillis();
 
-		long elapsedMilliSeconds = end-start;
+		long elapsedMilliSeconds = end - start;
 		assertTrue(found);
 
-		logger.debug("Started brute force attack for the password '"+ password+"'.");
-		logger.debug("Needed milliseconds for crack the password with brute force attack: " + elapsedMilliSeconds);
+		logger.debug("Started brute force attack for the password '" + password + "'.");
+		logger.debug("Needed milliseconds for crack the password with brute force attack: "
+			+ elapsedMilliSeconds);
 		logger.debug("Password found: " + found);
 	}
 

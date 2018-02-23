@@ -73,8 +73,8 @@ public class KeyTrustExtensions
 	 * @throws KeyStoreException
 	 *             the key store exception
 	 */
-	public static TrustManager[] resolveTrustManagers(final String keystoreType, final String password,
-		final File keystoreFile, final String trustManagerAlgorithm)
+	public static TrustManager[] resolveTrustManagers(final String keystoreType,
+		final String password, final File keystoreFile, final String trustManagerAlgorithm)
 		throws NoSuchAlgorithmException, CertificateException, FileNotFoundException, IOException,
 		KeyStoreException
 	{

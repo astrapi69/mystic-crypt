@@ -22,52 +22,41 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.auth.sign.in;
+package de.alpharogroup.crypto.factories;
 
-import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.Assert.assertNotNull;
 
-import org.meanbean.test.BeanTester;
+import java.security.spec.KeySpec;
+
 import org.testng.annotations.Test;
 
-import de.alpharogroup.test.objects.evaluations.EqualsHashCodeAndToStringEvaluator;
+import de.alpharogroup.crypto.CryptConst;
 
 /**
- * The class {@link BaseSignInModel}.
+ * The class {@link KeySpecFactory}.
  */
-public class BaseSignInModelTest
+public class KeySpecFactoryTest
 {
 
 	/**
-	 * Test method for {@link BaseSignInModel#equals(Object)} , {@link BaseSignInModel#hashCode()}
-	 * and {@link BaseSignInModel#toString()}
+	 * Test method for {@link KeySpecFactory#newPBEKeySpec(String)}.
 	 */
 	@Test
-	public void testEqualsHashcodeAndToString()
+	public void testNewPBEKeySpecString() throws Exception
 	{
-
-		boolean expected;
-		boolean actual;
-		final BaseSignInModel first = BaseSignInModel.builder().email("foo@bar.org")
-			.password("secret").build();
-		final BaseSignInModel second = new BaseSignInModel();
-		final BaseSignInModel third = new BaseSignInModel("foo@bar.org", "secret");
-		final BaseSignInModel fourth = BaseSignInModel.builder().email("foo@bar.org")
-			.password("secret").build();
-
-		actual = EqualsHashCodeAndToStringEvaluator.evaluateEqualsHashcodeAndToString(first, second,
-			third, fourth);
-		expected = true;
-		assertEquals(expected, actual);
+		KeySpec keySpec = KeySpecFactory.newPBEKeySpec(CryptConst.PRIVATE_KEY);
+		assertNotNull(keySpec);
 	}
 
 	/**
-	 * Test method for {@link BaseSignInModel}
+	 * Test method for {@link KeySpecFactory#newPBEKeySpec(String, byte[], int)}.
 	 */
 	@Test
-	public void testWithBeanTester()
+	public void testNewPBEKeySpecStringByteArrayInt() throws Exception
 	{
-		final BeanTester beanTester = new BeanTester();
-		beanTester.testBean(BaseSignInModel.class);
+		final KeySpec keySpec = KeySpecFactory.newPBEKeySpec(CryptConst.PRIVATE_KEY,
+			CryptConst.SALT, CryptConst.ITERATIONCOUNT);
+		assertNotNull(keySpec);
 	}
 
 }

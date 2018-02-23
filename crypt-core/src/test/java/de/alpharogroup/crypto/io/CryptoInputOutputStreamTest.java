@@ -42,9 +42,8 @@ import de.alpharogroup.file.read.ReadFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * The unit test class for the classes {@link HexableEncryptor} and
- * {@link CryptoInputStream} and the classes {@link HexableDecryptor} and
- * {@link CryptoOutputStream}.
+ * The unit test class for the classes {@link HexableEncryptor} and {@link CryptoInputStream} and
+ * the classes {@link HexableDecryptor} and {@link CryptoOutputStream}.
  */
 public class CryptoInputOutputStreamTest
 {

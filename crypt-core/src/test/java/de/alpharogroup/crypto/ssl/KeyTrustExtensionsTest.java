@@ -46,30 +46,6 @@ public class KeyTrustExtensionsTest
 {
 
 	/**
-	 * Test method for
-	 * {@link KeyTrustExtensions#resolveTrustManagers(String, String, File, String)}.
-	 */
-	@Test
-	public void testResolveTrustManagers() throws Exception
-	{
-		final File derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		final File keystoreFile = new File(derDir, "keystore.jks");
-
-		final String keystoreType = KeystoreType.JKS.name();
-
-		String password = "secret-pw";
-		KeyStoreFactory.newKeyStore(keystoreType, password, keystoreFile, true);
-
-		final String trustManagerAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
-		TrustManager[] trustManagers = KeyTrustExtensions.resolveTrustManagers(keystoreType, password,
-			keystoreFile, trustManagerAlgorithm);
-
-		assertNotNull(trustManagers);
-		// cleanup...
-		keystoreFile.delete();
-	}
-
-	/**
 	 * Test method for {@link KeyTrustExtensions#resolveKeyManagers(String, String, File, String)}.
 	 */
 	@Test
@@ -88,6 +64,30 @@ public class KeyTrustExtensionsTest
 			keystoreFile, keyManagerAlgorithm);
 
 		assertNotNull(keyManagers);
+		// cleanup...
+		keystoreFile.delete();
+	}
+
+	/**
+	 * Test method for
+	 * {@link KeyTrustExtensions#resolveTrustManagers(String, String, File, String)}.
+	 */
+	@Test
+	public void testResolveTrustManagers() throws Exception
+	{
+		final File derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		final File keystoreFile = new File(derDir, "keystore.jks");
+
+		final String keystoreType = KeystoreType.JKS.name();
+
+		String password = "secret-pw";
+		KeyStoreFactory.newKeyStore(keystoreType, password, keystoreFile, true);
+
+		final String trustManagerAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+		TrustManager[] trustManagers = KeyTrustExtensions.resolveTrustManagers(keystoreType,
+			password, keystoreFile, trustManagerAlgorithm);
+
+		assertNotNull(trustManagers);
 		// cleanup...
 		keystoreFile.delete();
 	}

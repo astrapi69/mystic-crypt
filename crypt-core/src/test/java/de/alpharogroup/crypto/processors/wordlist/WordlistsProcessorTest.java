@@ -78,11 +78,12 @@ public class WordlistsProcessorTest
 		final long start = System.currentTimeMillis();
 		final boolean found = processor.process();
 		final long end = System.currentTimeMillis();
-		long elapsedMilliSeconds = end-start;
+		long elapsedMilliSeconds = end - start;
 		assertTrue(found);
 
-		logger.debug("Started wordlist attack for the password '"+ password+"'.");
-		logger.debug("Needed milliseconds for crack the password with the given wordlists: " + elapsedMilliSeconds);
+		logger.debug("Started wordlist attack for the password '" + password + "'.");
+		logger.debug("Needed milliseconds for crack the password with the given wordlists: "
+			+ elapsedMilliSeconds);
 		logger.debug("Password found: " + found);
 
 	}

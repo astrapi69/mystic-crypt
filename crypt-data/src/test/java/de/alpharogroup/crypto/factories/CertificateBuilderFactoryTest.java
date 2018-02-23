@@ -64,14 +64,15 @@ public class CertificateBuilderFactoryTest
 
 		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
-		X500Name issuer =  new X500Name("C=DE");
+		X500Name issuer = new X500Name("C=DE");
 		BigInteger serial = random(BigInteger.class);
 
-		Date notBefore =  new Date();
+		Date notBefore = new Date();
 		Date notAfter = CalculateDateExtensions.addYears(notBefore, 10);
 		X500Name subject = new X500Name("O=foo-company");
 
-		X509v1CertificateBuilder certificateBuilder = CertificateBuilderFactory.newX509v1CertificateBuilder(issuer, serial, notBefore, notAfter, subject, publicKey);
+		X509v1CertificateBuilder certificateBuilder = CertificateBuilderFactory
+			.newX509v1CertificateBuilder(issuer, serial, notBefore, notAfter, subject, publicKey);
 
 		assertNotNull(certificateBuilder);
 	}
@@ -90,16 +91,19 @@ public class CertificateBuilderFactoryTest
 
 		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
-		X500Name issuer =  new X500Name("C=DE");
+		X500Name issuer = new X500Name("C=DE");
 		BigInteger serial = random(BigInteger.class);
 
-		Date notBefore =  new Date();
+		Date notBefore = new Date();
 		Date notAfter = CalculateDateExtensions.addYears(notBefore, 10);
 		X500Name subject = new X500Name("O=foo-company");
 
-		SubjectPublicKeyInfo publicKeyInfo = SubjectPublicKeyInfo.getInstance(publicKey.getEncoded());
+		SubjectPublicKeyInfo publicKeyInfo = SubjectPublicKeyInfo
+			.getInstance(publicKey.getEncoded());
 
-		X509v3CertificateBuilder certificateBuilder = CertificateBuilderFactory.newX509v3CertificateBuilder(issuer, serial, notBefore, notAfter, subject, publicKeyInfo);
+		X509v3CertificateBuilder certificateBuilder = CertificateBuilderFactory
+			.newX509v3CertificateBuilder(issuer, serial, notBefore, notAfter, subject,
+				publicKeyInfo);
 
 		assertNotNull(certificateBuilder);
 	}

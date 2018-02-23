@@ -46,14 +46,40 @@ public class SecretKeyFactoryExtensionsTest
 {
 
 	/**
+	 * Test method for {@link SecretKeyFactoryExtensions#newSecretKey(char[], String)}
+	 */
+	@Test
+	public void testNewSecretKey() throws Exception
+	{
+		String algorithm = SunJCEAlgorithm.PBEWithMD5AndDES.getAlgorithm();
+		SecretKey secretKey = SecretKeyFactoryExtensions.newSecretKey("secret".toCharArray(),
+			algorithm);
+		assertNotNull(secretKey);
+	}
+
+	/**
 	 * Test method for {@link SecretKeyFactoryExtensions#newSecretKeyFactory(String)}
 	 */
 	@Test
 	public void testNewSecretKeyFactory() throws Exception
 	{
 		final String algorithm = CryptConst.PBE_WITH_MD5_AND_DES;
-		SecretKeyFactory secretKeyFactory = SecretKeyFactoryExtensions.newSecretKeyFactory(algorithm);
+		SecretKeyFactory secretKeyFactory = SecretKeyFactoryExtensions
+			.newSecretKeyFactory(algorithm);
 		assertNotNull(secretKeyFactory);
+	}
+
+	/**
+	 * Test method for {@link SecretKeyFactoryExtensions#newSecretKeySpec(byte[], String)}
+	 */
+	@Test
+	public void testNewSecretKeySpecByteArrayString() throws Exception
+	{
+		final String algorithm = AesAlgorithm.AES.getAlgorithm();
+		final String key = "1234567890123456";
+		SecretKeySpec secretKeySpec = SecretKeyFactoryExtensions.newSecretKeySpec(key.getBytes(),
+			algorithm);
+		assertNotNull(secretKeySpec);
 	}
 
 	/**
@@ -65,29 +91,6 @@ public class SecretKeyFactoryExtensionsTest
 		final String algorithm = AesAlgorithm.AES.getAlgorithm();
 		SecretKeySpec secretKeySpec = SecretKeyFactoryExtensions.newSecretKeySpec(algorithm, 128);
 		assertNotNull(secretKeySpec);
-	}
-
-	/**
-	 * Test method for {@link SecretKeyFactoryExtensions#newSecretKeySpec(byte[], String)}
-	 */
-	@Test
-	public void testNewSecretKeySpecByteArrayString() throws Exception
-	{
-		final String algorithm = AesAlgorithm.AES.getAlgorithm();
-		final String key = "1234567890123456";
-		SecretKeySpec secretKeySpec = SecretKeyFactoryExtensions.newSecretKeySpec(key.getBytes(), algorithm);
-		assertNotNull(secretKeySpec);
-	}
-
-	/**
-	 * Test method for {@link SecretKeyFactoryExtensions#newSecretKey(char[], String)}
-	 */
-	@Test
-	public void testNewSecretKey() throws Exception
-	{
-		String algorithm = SunJCEAlgorithm.PBEWithMD5AndDES.getAlgorithm();
-		SecretKey secretKey = SecretKeyFactoryExtensions.newSecretKey("secret".toCharArray(), algorithm);
-		assertNotNull(secretKey);
 	}
 
 }
