@@ -277,6 +277,7 @@
 						<instrumentation>
 							<excludes>
 								<!-- abstract classes -->
+								<exclude>de/alpharogroup/crypto/core/**/*.class</exclude>
 								<!-- enums -->
 								<exclude>de/alpharogroup/auth/enums/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/algorithm/**/*.class</exclude>
