@@ -35,13 +35,13 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.auth.interfaces.Permission;
-import de.alpharogroup.auth.interfaces.Role;
+import de.alpharogroup.auth.api.Permission;
+import de.alpharogroup.auth.api.Role;
 import de.alpharogroup.file.csv.CsvFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * Test class for the class {@link SimpleRole}.
+ * The unit test class for the class {@link SimpleRole}.
  *
  * @version 1.1
  * @author Asterios Raptis

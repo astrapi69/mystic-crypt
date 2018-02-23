@@ -31,7 +31,7 @@ import org.apache.commons.codec.binary.StringUtils;
 import org.testng.annotations.Test;
 
 /**
- * Test class for the class {@link HexExtensions}.
+ * The unit test class for the class {@link HexExtensions}.
  */
 public class HexExtensionsTest
 {

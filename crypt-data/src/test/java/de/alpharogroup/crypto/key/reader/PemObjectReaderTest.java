@@ -25,11 +25,17 @@
 package de.alpharogroup.crypto.key.reader;
 
 import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.security.PrivateKey;
 
 import org.bouncycastle.util.io.pem.PemObject;
+import org.meanbean.factories.ObjectCreationException;
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
@@ -38,7 +44,7 @@ import de.alpharogroup.file.search.PathFinder;
 
 
 /**
- * Test class for the class {@link PemObjectReader}.
+ * The unit test class for the class {@link PemObjectReader}.
  */
 public class PemObjectReaderTest
 {
@@ -57,11 +63,28 @@ public class PemObjectReaderTest
 		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
 		final File privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
 
-		PemObject pemObject = PemObjectReader.getPemObject(privatekeyPemFile);
-		String actual = pemObject.getType();
-		String expected = "RSA PRIVATE KEY";
+		final PemObject pemObject = PemObjectReader.getPemObject(privatekeyPemFile);
+		final String actual = pemObject.getType();
+		final String expected = "RSA PRIVATE KEY";
 		assertEquals(expected, actual);
 
+	}
+
+	/**
+	 * Test method for {@link PemObjectReader#readPemPrivateKey(File, String)}. you can create the
+	 * file id_rsa with following command: ssh-keygen -t rsa -b 4096 -f ~/.ssh-tmp/id_rsa
+	 *
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	@Test
+	public void testReadPemPrivateKey() throws IOException
+	{
+		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		final File privatekeyPemFile = new File(privatekeyPemDir, "id_rsa");
+
+		PrivateKey privateKey = PemObjectReader.readPemPrivateKey(privatekeyPemFile, "secret");
+		assertNotNull(privateKey);
 	}
 
 	/**
@@ -76,9 +99,20 @@ public class PemObjectReaderTest
 		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
 		final File privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
 
-		PemObject pemObject = PemObjectReader.getPemObject(privatekeyPemFile);
-		String foo = PemObjectReader.toPemFormat(pemObject);
+		final PemObject pemObject = PemObjectReader.getPemObject(privatekeyPemFile);
+		final String foo = PemObjectReader.toPemFormat(pemObject);
 		logger.debug("\n" + foo);
+	}
+
+	/**
+	 * Test method for {@link PemObjectReader} with {@link BeanTester}
+	 */
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class, ObjectCreationException.class })
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(PemObjectReader.class);
 	}
 
 }

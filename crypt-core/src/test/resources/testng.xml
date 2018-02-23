@@ -4,7 +4,6 @@
   <test name="Test">
     <classes>
 		<class name="de.alpharogroup.crypto.aes.ChainedEncryptDecryptorTest"/>
-		<class name="de.alpharogroup.crypto.aes.HexDumpTest"/>
 		<class name="de.alpharogroup.crypto.aes.HexEncryptDecryptorTest"/>
 		<class name="de.alpharogroup.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithmTest"/>
 		<class name="de.alpharogroup.crypto.algorithm.MacAlgorithmTest"/>

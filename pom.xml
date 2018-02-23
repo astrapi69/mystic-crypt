@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -5,52 +6,77 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mvn-java-parent</artifactId>
-		<version>2.27.0</version>
+		<version>3.7.0</version>
 		<relativePath></relativePath>
 	</parent>
 
 	<artifactId>mystic-crypt</artifactId>
-	<version>4.22.0</version>
+	<version>5.1.0</version>
 	<packaging>pom</packaging>
 	<inceptionYear>2015</inceptionYear>
 
 	<name>${project.artifactId}</name>
 
-	<url>https://github.com/astrapi69/mystic-crypt</url>
-
 	<description>
-		Cpyptograhic library parent project.
+		The target of this parent project is to make encryption and decryption as simple as possible.
 	</description>
 
-	<licenses>
+	<url>https://github.com/astrapi69/mystic-crypt</url>
 
-		<license>
-			<name>The Apache Software License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt
-			</url>
-			<distribution>repo</distribution>
-		</license>
+	<properties>
+		<!-- NEW EXTENSIONS LIB versions -->
+		<file-worker.version>4.19.0</file-worker.version>
+		<jcommons-lang.version>4.29.0</jcommons-lang.version>
+		<test-objects.version>4.22.0</test-objects.version>
+		<silly-collections.version>4.25.0</silly-collections.version>
+		<vintage-time.version>4.11.0</vintage-time.version>
+		<!-- RESOURCEBUNDLE-CORE versions -->
+		<resourcebundle-inspector.version>2.18.0</resourcebundle-inspector.version>
+		<!-- JOBJECT-EXTENSIONS versions -->
+		<jobject-extensions.version>1.8.0</jobject-extensions.version>
+		<jobject-core.version>${jobject-extensions.version}</jobject-core.version>
+		<!-- PARENT PROJECT versions -->
+		<!-- MYSTIC-CRYPT versions -->
+		<mystic-crypt.version>${project.version}</mystic-crypt.version>
+		<auth-api.version>${mystic-crypt.version}</auth-api.version>
+		<crypt-api.version>${mystic-crypt.version}</crypt-api.version>
+		<crypt-data.version>${mystic-crypt.version}</crypt-data.version>
+		<!-- RANDOMIZER versions -->
+		<randomizer.version>5.1.0</randomizer.version>
+		<randomizer-core.version>${randomizer.version}</randomizer-core.version>
+		<randomizer-api.version>${randomizer.version}</randomizer-api.version>
+		<randomizer-data.version>${randomizer.version}</randomizer-data.version>
+		<!-- EXTERNAL LIBRARIES versions -->
+		<commons-codec.version>1.11</commons-codec.version>
+		<bouncycastle.version>1.59</bouncycastle.version>
+		<!-- GUAVA version -->
+		<guava.version>24.0-jre</guava.version>
+		<!-- MEANBEAN version -->
+		<meanbean.version>2.0.3</meanbean.version>
+		<random-beans.version>3.7.0</random-beans.version>
+	</properties>
 
-	</licenses>
+	<modules>
+		<module>auth-api</module>
+		<module>auth-security</module>
+		<module>crypt-api</module>
+		<module>crypt-core</module>
+		<module>crypt-data</module>
+	</modules>
 
 	<developers>
 
 		<developer>
 			<id>astrapi69</id>
 			<name>Asterios Raptis</name>
-			<timezone>Berlin</timezone>
 			<roles>
 				<role>Project manager</role>
 				<role>Developer</role>
 			</roles>
+			<timezone>Berlin</timezone>
 		</developer>
 
 	</developers>
-
-	<organization>
-		<name>Alpha Ro Group UG (haftungsbeschrängt)</name>
-		<url>http://www.alpharogroup.de/</url>
-	</organization>
 
 	<scm>
 		<connection>scm:git:git:@github.com:astrapi69/mystic-crypt.git</connection>
@@ -59,33 +85,9 @@
 	</scm>
 
 	<issueManagement>
-		<url>https://github.com/astrapi69/mystic-crypt/issues</url>
 		<system>github.com</system>
+		<url>https://github.com/astrapi69/mystic-crypt/issues</url>
 	</issueManagement>
-
-	<modules>
-		<module>auth-security</module>
-		<module>crypt-core</module>
-		<module>randomizer</module>
-		<module>crypt-data</module>
-	</modules>
-
-	<properties>
-		<!-- NEW EXTENSIONS LIB versions -->
-		<file-worker.version>4.15.0</file-worker.version>
-		<jcommons-lang.version>4.19.0</jcommons-lang.version>
-		<test-objects.version>4.16.0</test-objects.version>
-		<silly-collections.version>4.15.0</silly-collections.version>
-		<vintage-time.version>4.11.0</vintage-time.version>
-		<!-- RESOURCEBUNDLE-CORE versions -->
-		<resourcebundle-inspector.version>2.12.0</resourcebundle-inspector.version>
-		<!-- PARENT PROJECT versions -->
-		<randomizer.version>${project.version}</randomizer.version>
-		<crypt-data.version>${project.version}</crypt-data.version>
-		<!-- EXTERNAL LIBRARIES versions -->
-		<commons-codec.version>1.10</commons-codec.version>
-		<bouncycastle.version>1.55</bouncycastle.version>
-	</properties>
 
 	<dependencyManagement>
 
@@ -135,14 +137,38 @@
 
 			<dependency>
 				<groupId>de.alpharogroup</groupId>
-				<artifactId>randomizer</artifactId>
-				<version>${randomizer.version}</version>
+				<artifactId>auth-api</artifactId>
+				<version>${auth-api.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>crypt-api</artifactId>
+				<version>${crypt-api.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>de.alpharogroup</groupId>
 				<artifactId>crypt-data</artifactId>
 				<version>${crypt-data.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>randomizer-core</artifactId>
+				<version>${randomizer-core.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>randomizer-api</artifactId>
+				<version>${randomizer-api.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>randomizer-data</artifactId>
+				<version>${randomizer-data.version}</version>
 			</dependency>
 
 			<dependency>
@@ -161,6 +187,31 @@
 				<groupId>org.bouncycastle</groupId>
 				<artifactId>bcpkix-jdk15on</artifactId>
 				<version>${bouncycastle.version}</version>
+			</dependency>
+			<!-- GUAVA DEPENDENCY -->
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>${guava.version}</version>
+			</dependency>
+			<!-- JOBJECT-EXTENSIONS DEPENDENCIES -->
+			<!-- JOBJECT-CORE DEPENDENCY -->
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>jobject-core</artifactId>
+				<version>${jobject-core.version}</version>
+			</dependency>
+			<!-- MEANBEAN DEPENDENCY -->
+			<dependency>
+				<groupId>org.meanbean</groupId>
+				<artifactId>meanbean</artifactId>
+				<version>${meanbean.version}</version>
+			</dependency>
+			<!-- RANDOM-BEANS DEPENDENCIES -->
+			<dependency>
+				<groupId>io.github.benas</groupId>
+				<artifactId>random-beans</artifactId>
+				<version>${random-beans.version}</version>
 			</dependency>
 
 		</dependencies>
@@ -225,8 +276,9 @@
 					<configuration>
 						<instrumentation>
 							<excludes>
+								<!-- abstract classes -->
+								<exclude>de/alpharogroup/crypto/core/**/*.class</exclude>
 								<!-- enums -->
-								<exclude>de/alpharogroup/crypto/enums/**/*.class</exclude>
 								<exclude>de/alpharogroup/auth/enums/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/algorithm/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/enums/**/*.class</exclude>
@@ -239,30 +291,26 @@
 								<exclude>de/alpharogroup/auth/models/**/*.class</exclude>
 								<exclude>de/alpharogroup/auth/token/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/model/**/*.class</exclude>
-								<!-- interfaces -->
-								<exclude>de/alpharogroup/auth/interfaces/**/*.class</exclude>
-								<exclude>de/alpharogroup/auth/usermanagement/**/*.class</exclude>
-								<exclude>de/alpharogroup/crypto/interfaces/**/*.class</exclude>
-								<exclude>de/alpharogroup/random/api/**/*.class</exclude>
-								<!-- exceptions -->
-								<exclude>de/alpharogroup/exceptions/**/*.class</exclude>
-								<!-- deprecated -->
-								<exclude>de/alpharogroup/crypto/aes/**/*.class</exclude>
 								<!-- constant classes with only constants -->
-								<exclude>de/alpharogroup/random/address/**/*.class</exclude>
-								<!-- bean classes -->
+								<!-- interfaces -->
+								<exclude>de/alpharogroup/auth/api/**/*.class</exclude>
+								<exclude>de/alpharogroup/auth/usermanagement/**/*.class</exclude>
+								<exclude>de/alpharogroup/crypto/api/**/*.class</exclude>
+								<!-- exceptions -->
+								<exclude>de/alpharogroup/auth/exceptions/**/*.class</exclude>
+								<!-- deprecated classes -->
+								<!-- explicit abstract classes -->
+								<!-- explicit bean classes -->
 								<exclude>de/alpharogroup/auth/Credentials.class</exclude>
 								<exclude>de/alpharogroup/auth/SimplePermission.class</exclude>
 								<exclude>de/alpharogroup/auth/SimpleRole.class</exclude>
 								<exclude>de/alpharogroup/auth/SimpleUser.class</exclude>
-								<!-- deprecated -->
+								<!-- explicit deprecated classes -->
 								<exclude>de/alpharogroup/crypto/key/KeyExtensions.class</exclude>
-								<!-- interfaces -->
-								<exclude>de/alpharogroup/crypto/keyrules/Obfuscatable.class</exclude>
-								<!-- constant classes with only constants -->
-								<exclude>de/alpharogroup/random/Constants.class</exclude>
-								<!-- delegation classes -->
-								<exclude>de/alpharogroup/random/DataGenerator.class</exclude>
+								<!-- explicit interfaces -->
+								<exclude>de/alpharogroup/crypto/obfuscation/api/Obfuscatable.class</exclude>
+								<!-- explicit constant classes with only constants -->
+								<!-- explicit delegation classes -->
 							</excludes>
 						</instrumentation>
 					</configuration>

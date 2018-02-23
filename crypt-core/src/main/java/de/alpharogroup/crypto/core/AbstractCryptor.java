@@ -36,13 +36,13 @@ import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKeyFactory;
 
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 
 import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.CryptConst;
+import de.alpharogroup.crypto.api.Cryptor;
 import de.alpharogroup.crypto.factories.AlgorithmParameterSpecFactory;
 import de.alpharogroup.crypto.factories.SecretKeyFactoryExtensions;
-import de.alpharogroup.crypto.interfaces.Cryptor;
 import de.alpharogroup.crypto.model.CryptModel;
 import lombok.Getter;
 
@@ -92,8 +92,7 @@ public abstract class AbstractCryptor<C, K> implements Serializable, Cryptor
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		Check.get().notNull(model, "model");
-		Check.get().notNull(model.getKey(), "model.getKey()");
+		Check.get().notNull(model, "model").notNull(model.getKey(), "model.getKey()");
 		this.model = model;
 		onInitialize();
 	}

@@ -24,7 +24,7 @@
  */
 package de.alpharogroup.auth;
 
-import de.alpharogroup.auth.interfaces.Permission;
+import de.alpharogroup.auth.api.Permission;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

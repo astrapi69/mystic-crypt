@@ -27,6 +27,7 @@ package de.alpharogroup.crypto.model;
 import java.io.Serializable;
 
 import de.alpharogroup.crypto.algorithm.Algorithm;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -34,6 +35,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.FieldDefaults;
 
 /**
  * The class {@link CryptModel} holds data for the encryption or decryption process.
@@ -50,6 +52,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CryptModel<C, K> implements Serializable
 {
 
@@ -57,19 +60,19 @@ public class CryptModel<C, K> implements Serializable
 	private static final long serialVersionUID = 1L;
 
 	/** The cipher. */
-	private C cipher;
+	C cipher;
 
 	/** The key. */
-	private K key;
+	K key;
 
 	/** The algorithm. */
-	private Algorithm algorithm;
+	Algorithm algorithm;
 
 	/** The operation mode that indicates if an encryption or decryption process will start. */
-	private int operationMode;
+	int operationMode;
 
 	/** The iteration count. */
-	private Integer iterationCount;
+	Integer iterationCount;
 
 	/** The salt byte array. */
 	byte[] salt;
@@ -77,5 +80,5 @@ public class CryptModel<C, K> implements Serializable
 	/**
 	 * The flag initialized that indicates if the cipher is initialized.
 	 */
-	private boolean initialized;
+	boolean initialized;
 }

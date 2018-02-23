@@ -33,7 +33,7 @@ import java.security.spec.InvalidKeySpecException;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
-import de.alpharogroup.crypto.interfaces.Cryptor;
+import de.alpharogroup.crypto.api.Cryptor;
 import de.alpharogroup.crypto.model.CryptModel;
 
 /**

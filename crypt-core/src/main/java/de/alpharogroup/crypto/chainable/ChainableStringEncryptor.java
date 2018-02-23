@@ -24,8 +24,8 @@
  */
 package de.alpharogroup.crypto.chainable;
 
+import de.alpharogroup.crypto.api.Encryptor;
 import de.alpharogroup.crypto.core.ChainableEncryptor;
-import de.alpharogroup.crypto.interfaces.Encryptor;
 
 /**
  * The class {@link ChainableStringEncryptor} can take many {@code Encryptor} objects and encrypts

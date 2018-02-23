@@ -35,9 +35,9 @@ import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
 import de.alpharogroup.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
+import de.alpharogroup.crypto.api.ByteArrayDecryptor;
 import de.alpharogroup.crypto.core.AbstractDecryptor;
 import de.alpharogroup.crypto.factories.CipherFactory;
-import de.alpharogroup.crypto.interfaces.ByteArrayDecryptor;
 import de.alpharogroup.crypto.model.CryptModel;
 
 /**

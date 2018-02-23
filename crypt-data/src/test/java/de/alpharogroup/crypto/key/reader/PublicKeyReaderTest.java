@@ -25,15 +25,17 @@
 package de.alpharogroup.crypto.key.reader;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.security.PublicKey;
 import java.security.Security;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.key.PublicKeyExtensions;
-import de.alpharogroup.crypto.provider.SecurityProvider;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
@@ -58,12 +60,22 @@ public class PublicKeyReaderTest
 		final String publicKeyAsBase64String = PublicKeyReader
 			.readPemFileAsBase64(publickeyPemFile);
 
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile,
-			SecurityProvider.BC);
+		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
 		final String base64 = PublicKeyExtensions.toBase64(publicKey);
 		AssertJUnit.assertNotNull(publicKeyAsBase64String);
 		AssertJUnit.assertNotNull(base64);
+	}
+
+	/**
+	 * Test method for {@link PublicKeyReader} with {@link BeanTester}
+	 */
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(PublicKeyReader.class);
 	}
 
 

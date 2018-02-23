@@ -44,7 +44,7 @@ import lombok.experimental.UtilityClass;
  * The factory class {@link CipherFactory} holds methods for creating {@link Cipher} objects.
  */
 @UtilityClass
-public class CipherFactory
+public final class CipherFactory
 {
 
 	/**

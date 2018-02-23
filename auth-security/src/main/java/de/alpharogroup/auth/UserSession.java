@@ -28,11 +28,11 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
-import de.alpharogroup.auth.interfaces.Permission;
-import de.alpharogroup.auth.interfaces.Role;
-import de.alpharogroup.auth.interfaces.Session;
-import de.alpharogroup.auth.interfaces.User;
-import de.alpharogroup.collections.InsertionOrderMap;
+import de.alpharogroup.auth.api.Permission;
+import de.alpharogroup.auth.api.Role;
+import de.alpharogroup.auth.api.Session;
+import de.alpharogroup.auth.api.User;
+import de.alpharogroup.collections.map.InsertionOrderMap;
 import de.alpharogroup.random.RandomObjectsExtensions;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

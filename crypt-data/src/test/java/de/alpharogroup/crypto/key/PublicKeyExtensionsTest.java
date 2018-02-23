@@ -34,12 +34,11 @@ import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
-import de.alpharogroup.crypto.provider.SecurityProvider;
 import de.alpharogroup.file.read.ReadFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * Test class for the class {@link PublicKeyExtensions}.
+ * The unit test class for the class {@link PublicKeyExtensions}.
  */
 public class PublicKeyExtensionsTest
 {
@@ -81,8 +80,7 @@ public class PublicKeyExtensionsTest
 
 		Security.addProvider(new BouncyCastleProvider());
 
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile,
-			SecurityProvider.BC);
+		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
 		final int actual = PublicKeyExtensions.getKeyLength(publicKey);
 		final int expected = 2048;
@@ -103,8 +101,7 @@ public class PublicKeyExtensionsTest
 
 		Security.addProvider(new BouncyCastleProvider());
 
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile,
-			SecurityProvider.BC);
+		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
 		final String base64 = PublicKeyExtensions.toBase64(publicKey);
 		AssertJUnit.assertEquals(PUBLIC_KEY_BASE64_ENCODED, base64);
@@ -125,8 +122,7 @@ public class PublicKeyExtensionsTest
 
 		Security.addProvider(new BouncyCastleProvider());
 
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile,
-			SecurityProvider.BC);
+		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
 		final String actual = PublicKeyExtensions.toHexString(publicKey);
 		final String expected = HEX_STRING_ENCODED;
@@ -149,8 +145,7 @@ public class PublicKeyExtensionsTest
 
 		Security.addProvider(new BouncyCastleProvider());
 
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile,
-			SecurityProvider.BC);
+		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
 		final String actual = PublicKeyExtensions.toHexString(publicKey, false);
 		final String expected = HEX_STRING_ENCODED.toUpperCase();
@@ -171,8 +166,7 @@ public class PublicKeyExtensionsTest
 
 		Security.addProvider(new BouncyCastleProvider());
 
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile,
-			SecurityProvider.BC);
+		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
 		final String pemFormat = PublicKeyExtensions.toPemFormat(publicKey);
 		final String expected = ReadFileExtensions.readFromFile(publickeyPemFile);

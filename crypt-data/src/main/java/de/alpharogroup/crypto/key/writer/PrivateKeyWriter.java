@@ -98,8 +98,8 @@ public class PrivateKeyWriter
 	public static void writeInPemFormat(final PrivateKey privateKey, final @NonNull File file)
 		throws IOException
 	{
-		StringWriter stringWriter = new StringWriter();
-		JcaPEMWriter pemWriter = new JcaPEMWriter(stringWriter);
+		final StringWriter stringWriter = new StringWriter();
+		final JcaPEMWriter pemWriter = new JcaPEMWriter(stringWriter);
 		pemWriter.writeObject(privateKey);
 		pemWriter.close();
 		String pemFormat = stringWriter.toString();
@@ -122,7 +122,7 @@ public class PrivateKeyWriter
 	 *             Signals that an I/O exception has occurred.
 	 */
 	public static void write(final PrivateKey privateKey, final @NonNull OutputStream outputStream,
-		KeyFileFormat fileFormat, KeyFormat keyFormat) throws IOException
+		final KeyFileFormat fileFormat, final KeyFormat keyFormat) throws IOException
 	{
 		final byte[] privateKeyBytes = privateKey.getEncoded();
 		switch (fileFormat)

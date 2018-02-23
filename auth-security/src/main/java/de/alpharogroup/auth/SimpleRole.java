@@ -26,8 +26,8 @@ package de.alpharogroup.auth;
 
 import java.util.Set;
 
-import de.alpharogroup.auth.interfaces.Permission;
-import de.alpharogroup.auth.interfaces.Role;
+import de.alpharogroup.auth.api.Permission;
+import de.alpharogroup.auth.api.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
