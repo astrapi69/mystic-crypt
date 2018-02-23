@@ -18,6 +18,7 @@ CHANGED:
 - update of dependency version of file-worker 
 - update of dependency version of resourcebundle-inspector 
 - update of dependency version of jobject-extensions 
+- unit tests extended for improve code coverage
 
 
 Version 5.0.0
