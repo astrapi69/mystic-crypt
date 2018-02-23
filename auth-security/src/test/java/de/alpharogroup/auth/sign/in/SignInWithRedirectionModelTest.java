@@ -22,25 +22,30 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.auth.beans;
+package de.alpharogroup.auth.sign.in;
 
 import org.meanbean.test.BeanTester;
+import org.meanbean.test.Configuration;
+import org.meanbean.test.ConfigurationBuilder;
 import org.testng.annotations.Test;
 
 /**
- * The class {@link AuthenticationResult}.
+ * The class {@link SignInWithRedirectionModel}.
  */
-public class AuthenticationResultTest
+public class SignInWithRedirectionModelTest
 {
 
 	/**
-	 * Test method for {@link AuthenticationResult}
+	 * Test method for {@link SignInWithRedirectionModel}
 	 */
 	@Test
 	public void testWithBeanTester()
 	{
+		final Configuration configuration = new ConfigurationBuilder()
+			.ignoreProperty("redirectPage").build();
 		final BeanTester beanTester = new BeanTester();
-		beanTester.testBean(AuthenticationResult.class);
+		beanTester.addCustomConfiguration(SignInWithRedirectionModel.class, configuration);
+		beanTester.testBean(SignInWithRedirectionModel.class);
 	}
 
 }

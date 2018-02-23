@@ -22,25 +22,24 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.auth.beans;
+package de.alpharogroup.auth.token;
 
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
 /**
- * The class {@link AuthenticationResult}.
+ * The class {@link AuthToken}.
  */
-public class AuthenticationResultTest
+public class AuthTokenTest
 {
 
 	/**
-	 * Test method for {@link AuthenticationResult}
+	 * Test method for {@link AuthToken}
 	 */
 	@Test
 	public void testWithBeanTester()
 	{
 		final BeanTester beanTester = new BeanTester();
-		beanTester.testBean(AuthenticationResult.class);
+		beanTester.testBean(AuthToken.class);
 	}
-
 }
