@@ -24,9 +24,10 @@
  */
 package de.alpharogroup.crypto.processors.wordlist;
 
+import static org.testng.Assert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -41,11 +42,11 @@ import de.alpharogroup.file.search.PathFinder;
 /**
  * Test class for {@link WordlistsProcessor}.
  */
-public class WordlistProcessorTest
+public class WordlistsProcessorTest
 {
 
 	/** The Constant logger. */
-	private static final Logger logger = Logger.getLogger(WordlistProcessorTest.class.getName());
+	private static final Logger logger = Logger.getLogger(WordlistsProcessorTest.class.getName());
 
 	/**
 	 * Test method for test the class {@link WordlistsProcessor}.
@@ -53,7 +54,7 @@ public class WordlistProcessorTest
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	@Test(enabled = false)
+	@Test(enabled = true)
 	public void test() throws IOException
 	{
 		final File wordlistDir = new File(PathFinder.getSrcTestResourcesDir(), "wordlists");
@@ -77,9 +78,11 @@ public class WordlistProcessorTest
 		final long start = System.currentTimeMillis();
 		final boolean found = processor.process();
 		final long end = System.currentTimeMillis();
+		long elapsedMilliSeconds = end-start;
+		assertTrue(found);
 
-		logger.debug("Started wordlist attack for the password: " + new Date(start));
-		logger.debug("Ended of the wordlist attack for the password: " + new Date(end));
+		logger.debug("Started wordlist attack for the password '"+ password+"'.");
+		logger.debug("Needed milliseconds for crack the password with the given wordlists: " + elapsedMilliSeconds);
 		logger.debug("Password found: " + found);
 
 	}

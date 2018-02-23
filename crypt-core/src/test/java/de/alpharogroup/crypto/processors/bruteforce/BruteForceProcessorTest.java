@@ -24,12 +24,12 @@
  */
 package de.alpharogroup.crypto.processors.bruteforce;
 
+import static org.testng.AssertJUnit.assertTrue;
+
 import java.io.IOException;
-import java.sql.Date;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.lang.PackageExtensions;
@@ -49,7 +49,7 @@ public class BruteForceProcessorTest
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	@Test(enabled = false)
+	@Test(enabled = true)
 	public void test() throws IOException
 	{
 
@@ -86,9 +86,12 @@ public class BruteForceProcessorTest
 		}
 		final long end = System.currentTimeMillis();
 
-		logger.debug("Started of the brute force attack for the password: " + new Date(start));
-		logger.debug("Ended of the brute force attack for the password: " + new Date(end));
-		AssertJUnit.assertTrue(found);
+		long elapsedMilliSeconds = end-start;
+		assertTrue(found);
+
+		logger.debug("Started brute force attack for the password '"+ password+"'.");
+		logger.debug("Needed milliseconds for crack the password with brute force attack: " + elapsedMilliSeconds);
+		logger.debug("Password found: " + found);
 	}
 
 }
