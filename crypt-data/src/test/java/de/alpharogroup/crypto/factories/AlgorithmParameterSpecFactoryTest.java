@@ -44,7 +44,8 @@ public class AlgorithmParameterSpecFactoryTest
 	@Test
 	public void testNewPBEParameterSpec() throws Exception
 	{
-		AlgorithmParameterSpec pbeParameterSpec = AlgorithmParameterSpecFactory.newPBEParameterSpec(CryptConst.SALT, CryptConst.ITERATIONCOUNT);
+		AlgorithmParameterSpec pbeParameterSpec = AlgorithmParameterSpecFactory
+			.newPBEParameterSpec(CryptConst.SALT, CryptConst.ITERATIONCOUNT);
 		assertNotNull(pbeParameterSpec);
 	}
 

@@ -25,8 +25,8 @@
 package de.alpharogroup.auth;
 
 import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertNull;
 import static org.testng.AssertJUnit.assertNotNull;
+import static org.testng.AssertJUnit.assertNull;
 
 import java.io.File;
 import java.util.List;
@@ -80,6 +80,23 @@ public class UserSessionContextTest
 	}
 
 	/**
+	 * Test method for {@link UserSessionContext#addSession(Session)}.
+	 */
+	@Test
+	public void testaddSession()
+	{
+		final SessionContext<String, String, String> sessionContext = UserSessionContext
+			.getInstance();
+		assertNotNull(sessionContext);
+		UserSession session = UserSession.builder().id(RandomObjectsExtensions.newRandomId())
+			.build();
+		assertNotNull(session);
+		sessionContext.addSession(session);
+		Session<String, String> session2 = sessionContext.getSession(session.getId());
+		assertEquals(session, session2);
+	}
+
+	/**
 	 * Test method for {@link UserSessionContext#getInstance()}.
 	 */
 	@Test
@@ -91,24 +108,6 @@ public class UserSessionContextTest
 	}
 
 	/**
-	 * Test method for {@link UserSessionContext#addSession(Session)}.
-	 */
-	@Test
-	public void testaddSession()
-	{
-		final SessionContext<String, String, String> sessionContext = UserSessionContext
-			.getInstance();
-		assertNotNull(sessionContext);
-		UserSession session = UserSession.builder()
-			.id(RandomObjectsExtensions.newRandomId())
-			.build();
-		assertNotNull(session);
-		sessionContext.addSession(session);
-		Session<String, String> session2 = sessionContext.getSession(session.getId());
-		assertEquals(session, session2);
-	}
-
-	/**
 	 * Test method for {@link UserSessionContext#removeSession(Session)}.
 	 */
 	@Test
@@ -117,8 +116,7 @@ public class UserSessionContextTest
 		final SessionContext<String, String, String> sessionContext = UserSessionContext
 			.getInstance();
 		assertNotNull(sessionContext);
-		UserSession session = UserSession.builder()
-			.id(RandomObjectsExtensions.newRandomId())
+		UserSession session = UserSession.builder().id(RandomObjectsExtensions.newRandomId())
 			.build();
 		assertNotNull(session);
 		sessionContext.addSession(session);
