@@ -41,7 +41,7 @@ import lombok.experimental.UtilityClass;
  * The class {@link KeyStoreExtensions}.
  */
 @UtilityClass
-public class KeyStoreExtensions
+public final class KeyStoreExtensions
 {
 
 	/**
@@ -70,6 +70,7 @@ public class KeyStoreExtensions
 	{
 		KeyStore keyStore = KeyStoreFactory.newKeyStore(KeystoreType.JKS.name(), password,
 			keystoreFile);
+
 		keyStore.deleteEntry(alias);
 		keyStore.store(new FileOutputStream(keystoreFile), password.toCharArray());
 	}

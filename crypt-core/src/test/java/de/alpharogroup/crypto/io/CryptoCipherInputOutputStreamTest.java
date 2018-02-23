@@ -84,7 +84,7 @@ public class CryptoCipherInputOutputStreamTest
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, IOException
 	{
-		final String algorythm = CryptConst.PBE_WITH_MD5_AND_DES;
+		final String alg = CryptConst.PBE_WITH_MD5_AND_DES;
 
 		final String firstKey = "D1D15ED36B887AF1";
 		final File cryptDir = new File(PathFinder.getSrcTestResourcesDir(), "crypt");
@@ -101,7 +101,7 @@ public class CryptoCipherInputOutputStreamTest
 			protected SecretKeyFactory newSecretKeyFactory(final String algorithm)
 				throws NoSuchAlgorithmException
 			{
-				return super.newSecretKeyFactory(algorythm);
+				return super.newSecretKeyFactory(alg);
 			}
 		};
 		final CryptoCipherInputStream cis = new CryptoCipherInputStream(fis,
@@ -133,7 +133,7 @@ public class CryptoCipherInputOutputStreamTest
 			protected SecretKeyFactory newSecretKeyFactory(final String algorithm)
 				throws NoSuchAlgorithmException
 			{
-				return super.newSecretKeyFactory(algorythm);
+				return super.newSecretKeyFactory(alg);
 			}
 		};
 		final CryptoCipherOutputStream cos = new CryptoCipherOutputStream(decryptedOut,
