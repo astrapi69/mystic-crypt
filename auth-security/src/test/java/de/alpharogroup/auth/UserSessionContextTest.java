@@ -24,17 +24,22 @@
  */
 package de.alpharogroup.auth;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNull;
+import static org.testng.AssertJUnit.assertNotNull;
+
 import java.io.File;
 import java.util.List;
 
-import org.testng.AssertJUnit;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import de.alpharogroup.auth.api.Session;
 import de.alpharogroup.auth.api.SessionContext;
 import de.alpharogroup.file.csv.CsvFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
+import de.alpharogroup.random.RandomObjectsExtensions;
 
 /**
  * The unit test class for the class {@link UserSessionContext}.
@@ -75,14 +80,54 @@ public class UserSessionContextTest
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.auth.UserSessionContext#getInstance()}.
+	 * Test method for {@link UserSessionContext#getInstance()}.
 	 */
 	@Test
 	public void testGetInstance()
 	{
 		final SessionContext<String, String, String> sessionContext = UserSessionContext
 			.getInstance();
-		AssertJUnit.assertNotNull(sessionContext);
+		assertNotNull(sessionContext);
+	}
+
+	/**
+	 * Test method for {@link UserSessionContext#addSession(Session)}.
+	 */
+	@Test
+	public void testaddSession()
+	{
+		final SessionContext<String, String, String> sessionContext = UserSessionContext
+			.getInstance();
+		assertNotNull(sessionContext);
+		UserSession session = UserSession.builder()
+			.id(RandomObjectsExtensions.newRandomId())
+			.build();
+		assertNotNull(session);
+		sessionContext.addSession(session);
+		Session<String, String> session2 = sessionContext.getSession(session.getId());
+		assertEquals(session, session2);
+	}
+
+	/**
+	 * Test method for {@link UserSessionContext#removeSession(Session)}.
+	 */
+	@Test
+	public void testRemoveSession()
+	{
+		final SessionContext<String, String, String> sessionContext = UserSessionContext
+			.getInstance();
+		assertNotNull(sessionContext);
+		UserSession session = UserSession.builder()
+			.id(RandomObjectsExtensions.newRandomId())
+			.build();
+		assertNotNull(session);
+		sessionContext.addSession(session);
+		Session<String, String> session2 = sessionContext.getSession(session.getId());
+		assertEquals(session, session2);
+		sessionContext.removeSession(session.getId());
+		session2 = sessionContext.getSession(session.getId());
+		assertNull(session2);
+
 	}
 
 }
