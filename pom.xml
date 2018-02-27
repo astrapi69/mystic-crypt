@@ -52,7 +52,8 @@
 		<!-- GUAVA version -->
 		<guava.version>24.0-jre</guava.version>
 		<!-- MEANBEAN version -->
-		<meanbean.version>2.0.3</meanbean.version>
+		<meanbean.version>2.0.3</meanbean.version>		
+		<!-- RANDOM-BEANS version -->
 		<random-beans.version>3.7.0</random-beans.version>
 	</properties>
 
@@ -207,7 +208,7 @@
 				<artifactId>meanbean</artifactId>
 				<version>${meanbean.version}</version>
 			</dependency>
-			<!-- RANDOM-BEANS DEPENDENCIES -->
+			<!-- RANDOM-BEANS DEPENDENCY -->
 			<dependency>
 				<groupId>io.github.benas</groupId>
 				<artifactId>random-beans</artifactId>
