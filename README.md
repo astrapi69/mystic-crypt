@@ -183,7 +183,7 @@ Here is a list of awesome projects for cryptography:
  * [Apache Shiro](https://github.com/apache/shiro) Apache Shiro is a powerful and easy-to-use Java security framework that performs authentication, authorization, cryptography, and session management.
  * [commons-ssl](http://juliusdavies.ca/commons-ssl/) Not-Yet-Commons-SSL
  * [lockbox-java](https://github.com/eloquent/lockbox-java) Simple, strong encryption. 
- * [jsql-injection](https://github.com/ron190/jsql-injection)
+ * [jsql-injection](https://github.com/ron190/jsql-injection) jSQL Injection is a Java application for automatic SQL database injection.
 
 ## Credits
 
