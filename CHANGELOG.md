@@ -1,9 +1,18 @@
 ## Change log
 ----------------------
 
-Version 5.2.0-SNAPSHOT
+Version 5.2-SNAPSHOT
 -------------
 
+CHANGED:
+
+- update of parent version to 3.11
+- removed unneeded .0 at the end of version
+- update of silly-collections version to 4.28.0
+- update of file-worker version to 4.20
+- update of jcommons-lang version to 4.32
+- update of test-objects version to 4.24.0
+- update of jobject-extensions version to 1.10.0
 
 Version 5.1.0
 -------------
