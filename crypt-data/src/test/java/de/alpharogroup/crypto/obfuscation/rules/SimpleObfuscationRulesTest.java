@@ -36,7 +36,7 @@ import org.testng.annotations.Test;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
-import de.alpharogroup.collections.map.MapExtensions;
+import de.alpharogroup.collections.map.MapFactory;
 import de.alpharogroup.test.objects.evaluations.EqualsHashCodeAndToStringEvaluator;
 
 /**
@@ -56,7 +56,7 @@ public class SimpleObfuscationRulesTest
 		boolean expected;
 		boolean actual;
 
-		final Map<String, String> charmap = MapExtensions.newHashMap();
+		final Map<String, String> charmap = MapFactory.newHashMap();
 
 		charmap.put("1", "O");
 		charmap.put("2", "Tw");
@@ -69,7 +69,7 @@ public class SimpleObfuscationRulesTest
 		charmap.put("9", "N");
 		BiMap<String, String> obfuscationRules = HashBiMap.create(charmap);
 
-		Map<String, String> map = MapExtensions.newHashMap();
+		Map<String, String> map = MapFactory.newHashMap();
 
 		map.put("1", "O");
 
