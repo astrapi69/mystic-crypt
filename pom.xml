@@ -6,12 +6,12 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mvn-java-parent</artifactId>
-		<version>3.7.0</version>
+		<version>3.11</version>
 		<relativePath></relativePath>
 	</parent>
 
 	<artifactId>mystic-crypt</artifactId>
-	<version>5.2.0-SNAPSHOT</version>
+	<version>5.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<inceptionYear>2015</inceptionYear>
 
@@ -25,15 +25,15 @@
 
 	<properties>
 		<!-- NEW EXTENSIONS LIB versions -->
-		<file-worker.version>4.19.0</file-worker.version>
-		<jcommons-lang.version>4.29.0</jcommons-lang.version>
-		<test-objects.version>4.22.0</test-objects.version>
-		<silly-collections.version>4.25.0</silly-collections.version>
+		<file-worker.version>4.20</file-worker.version>
+		<jcommons-lang.version>4.32</jcommons-lang.version>
+		<test-objects.version>4.24.0</test-objects.version>
+		<silly-collections.version>4.28.0</silly-collections.version>
 		<vintage-time.version>4.11.0</vintage-time.version>
 		<!-- RESOURCEBUNDLE-CORE versions -->
-		<resourcebundle-inspector.version>2.18.0</resourcebundle-inspector.version>
+		<resourcebundle-inspector.version>2.21</resourcebundle-inspector.version>
 		<!-- JOBJECT-EXTENSIONS versions -->
-		<jobject-extensions.version>1.8.0</jobject-extensions.version>
+		<jobject-extensions.version>1.10.0</jobject-extensions.version>
 		<jobject-core.version>${jobject-extensions.version}</jobject-core.version>
 		<!-- PARENT PROJECT versions -->
 		<!-- MYSTIC-CRYPT versions -->
@@ -42,7 +42,7 @@
 		<crypt-api.version>${mystic-crypt.version}</crypt-api.version>
 		<crypt-data.version>${mystic-crypt.version}</crypt-data.version>
 		<!-- RANDOMIZER versions -->
-		<randomizer.version>5.1.0</randomizer.version>
+		<randomizer.version>5.3</randomizer.version>
 		<randomizer-core.version>${randomizer.version}</randomizer-core.version>
 		<randomizer-api.version>${randomizer.version}</randomizer-api.version>
 		<randomizer-data.version>${randomizer.version}</randomizer-data.version>
@@ -50,7 +50,7 @@
 		<commons-codec.version>1.11</commons-codec.version>
 		<bouncycastle.version>1.59</bouncycastle.version>
 		<!-- GUAVA version -->
-		<guava.version>24.0-jre</guava.version>
+		<guava.version>25.0-jre</guava.version>
 		<!-- MEANBEAN version -->
 		<meanbean.version>2.0.3</meanbean.version>		
 		<!-- RANDOM-BEANS version -->
@@ -301,6 +301,7 @@
 								<exclude>de/alpharogroup/auth/exceptions/**/*.class</exclude>
 								<!-- deprecated classes -->
 								<!-- explicit abstract classes -->
+								<!-- explicit annotations -->
 								<!-- explicit bean classes -->
 								<exclude>de/alpharogroup/auth/Credentials.class</exclude>
 								<exclude>de/alpharogroup/auth/SimplePermission.class</exclude>
