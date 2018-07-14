@@ -3,24 +3,20 @@
  *
  * Copyright (C) 2015 Asterios Raptis
  *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
- * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
- * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package de.alpharogroup.crypto.key.writer;
 
@@ -35,8 +31,9 @@ import java.security.spec.InvalidKeySpecException;
 
 import org.testng.annotations.Test;
 
+import de.alpharogroup.crypto.algorithm.MdAlgorithm;
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
-import de.alpharogroup.file.checksum.Algorithm;
+// import de.alpharogroup.file.checksum.Algorithm;
 import de.alpharogroup.file.checksum.ChecksumExtensions;
 import de.alpharogroup.file.delete.DeleteFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
@@ -131,8 +128,8 @@ public class PrivateKeyWriterTest
 
 		final File writtenPrivatekeyDerFile = new File(privatekeyDerDir, "written-private.der");
 		PrivateKeyWriter.write(privateKey, writtenPrivatekeyDerFile);
-		String expected = ChecksumExtensions.getChecksum(privatekeyDerFile, Algorithm.MD5);
-		String actual = ChecksumExtensions.getChecksum(writtenPrivatekeyDerFile, Algorithm.MD5);
+		String expected = ChecksumExtensions.getChecksum(privatekeyDerFile, MdAlgorithm.MD5);
+		String actual = ChecksumExtensions.getChecksum(writtenPrivatekeyDerFile, MdAlgorithm.MD5);
 		DeleteFileExtensions.delete(writtenPrivatekeyDerFile);
 		assertEquals(expected, actual);
 	}
@@ -165,8 +162,8 @@ public class PrivateKeyWriterTest
 		final File keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
 		final File convertedPrivatekeyPemFile = new File(keyPemDir, "converted-private.pem");
 		PrivateKeyWriter.writeInPemFormat(privateKey, convertedPrivatekeyPemFile);
-		String expected = ChecksumExtensions.getChecksum(privatekeyPemFile, Algorithm.MD5);
-		String actual = ChecksumExtensions.getChecksum(convertedPrivatekeyPemFile, Algorithm.MD5);
+		String expected = ChecksumExtensions.getChecksum(privatekeyPemFile, MdAlgorithm.MD5);
+		String actual = ChecksumExtensions.getChecksum(convertedPrivatekeyPemFile, MdAlgorithm.MD5);
 		DeleteFileExtensions.delete(convertedPrivatekeyPemFile);
 		assertEquals(expected, actual);
 	}

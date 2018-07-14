@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mvn-java-parent</artifactId>
-		<version>3.11</version>
+		<version>4</version>
 		<relativePath></relativePath>
 	</parent>
 
@@ -25,16 +25,17 @@
 
 	<properties>
 		<!-- NEW EXTENSIONS LIB versions -->
-		<file-worker.version>4.20</file-worker.version>
-		<jcommons-lang.version>4.32</jcommons-lang.version>
-		<test-objects.version>4.24.0</test-objects.version>
-		<silly-collections.version>4.28.0</silly-collections.version>
-		<vintage-time.version>4.11.0</vintage-time.version>
+		<file-worker.version>4.22</file-worker.version>
+		<jcommons-lang.version>4.34</jcommons-lang.version>
+		<test-objects.version>4.28</test-objects.version>
+		<silly-collections.version>4.31</silly-collections.version>
+		<vintage-time.version>4.12</vintage-time.version>
 		<!-- RESOURCEBUNDLE-CORE versions -->
-		<resourcebundle-inspector.version>2.21</resourcebundle-inspector.version>
+		<resourcebundle-inspector.version>2.22</resourcebundle-inspector.version>
 		<!-- JOBJECT-EXTENSIONS versions -->
-		<jobject-extensions.version>1.10.0</jobject-extensions.version>
+		<jobject-extensions.version>1.11</jobject-extensions.version>
 		<jobject-core.version>${jobject-extensions.version}</jobject-core.version>
+		<jobject-evaluate.version>${jobject-extensions.version}</jobject-evaluate.version>
 		<!-- PARENT PROJECT versions -->
 		<!-- MYSTIC-CRYPT versions -->
 		<mystic-crypt.version>${project.version}</mystic-crypt.version>
@@ -42,7 +43,7 @@
 		<crypt-api.version>${mystic-crypt.version}</crypt-api.version>
 		<crypt-data.version>${mystic-crypt.version}</crypt-data.version>
 		<!-- RANDOMIZER versions -->
-		<randomizer.version>5.3</randomizer.version>
+		<randomizer.version>5.4</randomizer.version>
 		<randomizer-core.version>${randomizer.version}</randomizer-core.version>
 		<randomizer-api.version>${randomizer.version}</randomizer-api.version>
 		<randomizer-data.version>${randomizer.version}</randomizer-data.version>
@@ -50,7 +51,7 @@
 		<commons-codec.version>1.11</commons-codec.version>
 		<bouncycastle.version>1.59</bouncycastle.version>
 		<!-- GUAVA version -->
-		<guava.version>25.0-jre</guava.version>
+		<guava.version>25.1-jre</guava.version>
 		<!-- MEANBEAN version -->
 		<meanbean.version>2.0.3</meanbean.version>		
 		<!-- RANDOM-BEANS version -->
@@ -214,10 +215,26 @@
 				<artifactId>random-beans</artifactId>
 				<version>${random-beans.version}</version>
 			</dependency>
+			<!-- JOBJECT-EVALUATE DEPENDENCY -->
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>jobject-evaluate</artifactId>
+				<version>${jobject-evaluate.version}</version>
+			</dependency>
 
 		</dependencies>
 
 	</dependencyManagement>
+	
+	<dependencies>
+			<!-- JOBJECT-EVALUATE DEPENDENCY -->
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>jobject-evaluate</artifactId>
+				<scope>test</scope>
+			</dependency>
+	
+	</dependencies>
 
 	<build>
 
