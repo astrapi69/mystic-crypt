@@ -20,18 +20,18 @@
  */
 package de.alpharogroup.crypto.hex;
 
-import org.apache.log4j.Logger;
-import org.testng.AssertJUnit;
+import static org.testng.AssertJUnit.assertTrue;
+
 import org.testng.annotations.Test;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
- * The unit test class for the class {@link HexableEncryptor} and {@link HexableDecryptor}.
+ * The unit test class for the class {@link HexableEncryptor} and {@link HexableDecryptor}
  */
+@Slf4j
 public class HexableDecryptorTest
 {
-
-	/** The Constant logger. */
-	private static final Logger logger = Logger.getLogger(HexableDecryptorTest.class.getName());
 
 	/**
 	 * Test chained encrypt and decrypt with {@link HexableEncryptor#encrypt(String)} and
@@ -47,12 +47,12 @@ public class HexableDecryptorTest
 		final String key = "1234567890123456";
 		final HexableEncryptor encryptor = new HexableEncryptor(key);
 		final String encrypted = encryptor.encrypt(test);
-		logger.debug("String after encryption:" + encrypted);
+		log.debug("String after encryption:" + encrypted);
 
 		final HexableDecryptor decryptor = new HexableDecryptor(key);
 		final String decryted = decryptor.decrypt(encrypted);
-		logger.debug("String after decryption:" + decryted);
-		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
+		log.debug("String after decryption:" + decryted);
+		assertTrue("String before encryption is not equal after decryption.",
 			test.equals(decryted));
 	}
 

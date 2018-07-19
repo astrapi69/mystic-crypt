@@ -39,7 +39,7 @@ import de.alpharogroup.file.search.PathFinder;
 
 /**
  * The unit test class for the classes {@link HexableEncryptor} and {@link CryptoInputStream} and
- * the classes {@link HexableDecryptor} and {@link CryptoOutputStream}.
+ * the classes {@link HexableDecryptor} and {@link CryptoOutputStream}
  */
 public class CryptoInputOutputStreamTest
 {
@@ -47,7 +47,7 @@ public class CryptoInputOutputStreamTest
 	/**
 	 * Test method for
 	 * {@link CryptoOutputStream#CryptoOutputStream(OutputStream, AbstractStringDecryptor)} for read
-	 * and write to decrypted file with cipher IO.
+	 * and write to decrypted file with cipher IO
 	 */
 	@Test
 	public void testCryptoOutputStream() throws Exception

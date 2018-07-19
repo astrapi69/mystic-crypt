@@ -67,6 +67,7 @@ public class PrivateKeyReader
 	 * @param file
 	 *            the file( in *.der format) that contains the private key
 	 * @return the {@link PrivateKey} object
+	 * 
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws NoSuchAlgorithmException
@@ -117,6 +118,7 @@ public class PrivateKeyReader
 	 * @param privateKeyBytes
 	 *            the byte array that contains the private key bytes
 	 * @return the {@link PrivateKey} object
+	 * 
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the cypher object fails.
 	 * @throws InvalidKeySpecException
@@ -163,12 +165,20 @@ public class PrivateKeyReader
 	 *
 	 * @param file
 	 *            the file( in *.pem format) that contains the private key
-	 *
 	 * @return the {@link PrivateKey} object
-	 * @throws Exception
-	 *             is thrown if if a security error occur
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
 	 */
-	public static PrivateKey readPemPrivateKey(final File file) throws Exception
+	public static PrivateKey readPemPrivateKey(final File file) throws IOException,
+		NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
 	{
 		final String privateKeyAsString = readPemFileAsBase64(file);
 		final byte[] decoded = new Base64().decode(privateKeyAsString);

@@ -39,7 +39,7 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 
 /**
- * The unit test class for the class {@link ComplexObfuscator}.
+ * The unit test class for the class {@link ComplexObfuscator}
  */
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ComplexObfuscatorTest
@@ -299,7 +299,7 @@ public class ComplexObfuscatorTest
 	}
 
 	/**
-	 * Test method for {@link ComplexObfuscator#disentangle()}.
+	 * Test method for {@link ComplexObfuscator#disentangle()}
 	 */
 	@Test(enabled = false) // TODO inspect and fix...
 	public void testDisentangle()
@@ -317,7 +317,7 @@ public class ComplexObfuscatorTest
 	}
 
 	/**
-	 * Test method for {@link ComplexObfuscator#obfuscate()}.
+	 * Test method for {@link ComplexObfuscator#obfuscate()}
 	 */
 	@Test(enabled = false) // TODO inspect and fix...
 	public void testObfuscate()
@@ -333,7 +333,7 @@ public class ComplexObfuscatorTest
 	}
 
 	/**
-	 * Test method for {@link ComplexObfuscator#obfuscate()}.
+	 * Test method for {@link ComplexObfuscator#obfuscate()}
 	 */
 	@Test(enabled = false) // TODO inspect and fix...
 	public void testObfuscateEightChars()

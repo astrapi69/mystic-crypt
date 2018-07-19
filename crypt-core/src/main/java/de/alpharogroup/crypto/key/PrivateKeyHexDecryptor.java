@@ -93,7 +93,7 @@ public class PrivateKeyHexDecryptor
 	 *             is thrown if instantiation of the cypher object fails.
 	 * @throws InvalidKeyException
 	 *             the invalid key exception is thrown if initialization of the cypher object fails.
-	 * @throws org.apache.commons.codec.DecoderException
+	 * @throws DecoderException
 	 *             is thrown if an odd number or illegal of characters is supplied
 	 * @throws IllegalBlockSizeException
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.

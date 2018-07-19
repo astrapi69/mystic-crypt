@@ -37,7 +37,7 @@ public class StringObfuscatorTest
 {
 
 	/**
-	 * Test method for {@link Obfuscator#disentangle()}.
+	 * Test method for {@link Obfuscator#disentangle()}
 	 */
 	@Test
 	public void testDisentangle()
@@ -71,7 +71,7 @@ public class StringObfuscatorTest
 	}
 
 	/**
-	 * Test method for {@link Obfuscator#obfuscate()}.
+	 * Test method for {@link Obfuscator#obfuscate()}
 	 */
 	@Test
 	public void testObfuscate()

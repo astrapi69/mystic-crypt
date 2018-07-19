@@ -32,7 +32,7 @@ import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
 /**
- * The unit test class for the class {@link KeyFormatTest}.
+ * The unit test class for the class {@link KeyFormatTest}
  */
 public class KeyFormatTest
 {

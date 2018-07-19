@@ -27,7 +27,12 @@ import de.alpharogroup.crypto.obfuscation.rules.SimpleObfuscationRules;
 /**
  * The Class {@link StringObfuscator} obfuscates the given {@link SimpleObfuscationRules}. For an
  * example see the unit test.
+ * 
+ * @deprecated use instead the {@link CharacterObfuscator} <br>
+ *             <br>
+ *             Note: will be removed on next minor release.
  */
+@Deprecated
 public class StringObfuscator implements Obfuscatable
 {
 

@@ -29,6 +29,9 @@ import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
 import de.alpharogroup.crypto.obfuscation.rule.Operation;
 
+/**
+ * The class {@link CharacterObfuscator}.
+ */
 public class CharacterObfuscator implements Obfuscatable
 {
 	public static String obfuscateWith(

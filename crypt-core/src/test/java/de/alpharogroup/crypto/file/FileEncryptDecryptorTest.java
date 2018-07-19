@@ -32,7 +32,7 @@ import de.alpharogroup.file.delete.DeleteFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * The unit test class for the class {@link FileEncryptor} and the class {@link FileDecryptor}.
+ * The unit test class for the class {@link FileEncryptor} and the class {@link FileDecryptor}
  */
 public class FileEncryptDecryptorTest
 {
@@ -70,7 +70,7 @@ public class FileEncryptDecryptorTest
 
 	/**
 	 * Test method for the encrpytion with the class {@link FileEncryptor} and decryption with the
-	 * class {@link FileDecryptor} with the default file name convention.
+	 * class {@link FileDecryptor} with the default file name convention
 	 *
 	 * @throws Exception
 	 *             is thrown if any error occurs on the execution
@@ -99,7 +99,7 @@ public class FileEncryptDecryptorTest
 
 	/**
 	 * Test method for the encrpytion with the class {@link FileEncryptor} and decryption with the
-	 * class {@link FileDecryptor} with factory injection.
+	 * class {@link FileDecryptor} with factory injection
 	 *
 	 * @throws Exception
 	 *             is thrown if any error occurs on the execution

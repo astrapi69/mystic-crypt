@@ -123,10 +123,18 @@ public class PublicKeyReader
 	 * @param file
 	 *            the file
 	 * @return the public key
-	 * @throws Exception
-	 *             is thrown if if a security error occur
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
 	 */
-	public static PublicKey readPemPublicKey(final File file) throws Exception
+	public static PublicKey readPemPublicKey(final File file) throws IOException,
+		NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
 	{
 		final String publicKeyAsString = readPemFileAsBase64(file);
 		final byte[] decoded = Base64.decodeBase64(publicKeyAsString);

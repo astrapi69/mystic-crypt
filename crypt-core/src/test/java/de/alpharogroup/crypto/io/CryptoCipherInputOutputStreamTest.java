@@ -48,13 +48,13 @@ import de.alpharogroup.file.search.PathFinder;
 /**
  * The unit test class for the classes {@link SimpleBaseEncryptor} and
  * {@link CryptoCipherInputStream} and the classes {@link SimpleBaseDecryptor} and
- * {@link CryptoCipherOutputStream}.
+ * {@link CryptoCipherOutputStream}
  */
 public class CryptoCipherInputOutputStreamTest
 {
 
 	/**
-	 * Test read and write to decrypted file with cipher IO.
+	 * Test read and write to decrypted file with cipher IO
 	 *
 	 * @throws InvalidKeySpecException
 	 *             is thrown if generation of the SecretKey object fails.

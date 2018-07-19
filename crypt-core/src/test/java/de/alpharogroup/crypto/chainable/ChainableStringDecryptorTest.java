@@ -20,7 +20,8 @@
  */
 package de.alpharogroup.crypto.chainable;
 
-import org.testng.AssertJUnit;
+import static org.testng.AssertJUnit.assertTrue;
+
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.hex.HexableDecryptor;
@@ -28,17 +29,17 @@ import de.alpharogroup.crypto.hex.HexableEncryptor;
 
 /**
  * The unit test class for the class {@link ChainableStringEncryptor} and
- * {@link ChainableStringDecryptor}.
+ * {@link ChainableStringDecryptor}
  */
 public class ChainableStringDecryptorTest
 {
 
 	/**
 	 * Test chained encrypt and decrypt with {@link ChainableStringEncryptor#encrypt(String)} and
-	 * {@link ChainableStringDecryptor#decrypt(String)}.
+	 * {@link ChainableStringDecryptor#decrypt(String)}
 	 *
 	 * @throws Exception
-	 *             is thrown if any security exception occured.
+	 *             is thrown if any security exception occured
 	 */
 	@Test
 	public void testChainedEncryptDecrypt() throws Exception
@@ -61,7 +62,7 @@ public class ChainableStringDecryptorTest
 			secondDecryptor, firstDecryptor);
 
 		final String decryted = decryptor.decrypt(encrypted);
-		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
+		assertTrue("String before encryption is not equal after decryption.",
 			secretMessage.equals(decryted));
 	}
 

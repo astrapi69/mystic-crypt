@@ -28,13 +28,13 @@ import java.net.URL;
 import org.testng.annotations.Test;
 
 /**
- * The class {@link GoogleMapsUrlSigner}.
+ * The class {@link GoogleMapsUrlSigner}
  */
 public class GoogleMapsUrlSignerTest
 {
 
 	/**
-	 * Test method for {@link GoogleMapsUrlSigner#convertToKeyByteArray(String)}.
+	 * Test method for {@link GoogleMapsUrlSigner#convertToKeyByteArray(String)}
 	 */
 	@Test
 	public void testConvertToKeyByteArray() throws Exception
@@ -44,7 +44,7 @@ public class GoogleMapsUrlSignerTest
 	}
 
 	/**
-	 * Test method for {@link GoogleMapsUrlSigner#signRequest(String, String, String)}.
+	 * Test method for {@link GoogleMapsUrlSigner#signRequest(String, String, String)}
 	 */
 	@Test
 	public void testSignRequestStringStringString() throws Exception
@@ -55,7 +55,7 @@ public class GoogleMapsUrlSignerTest
 	}
 
 	/**
-	 * Test method for {@link GoogleMapsUrlSigner#signRequest(URL, String)}.
+	 * Test method for {@link GoogleMapsUrlSigner#signRequest(URL, String)}
 	 */
 	@Test
 	public void testSignRequestURLString() throws Exception

@@ -29,13 +29,13 @@ import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
 /**
- * The unit test class for the class {@link Operation}.
+ * The unit test class for the class {@link Operation}
  */
 public class OperationTest
 {
 
 	/**
-	 * Test method for {@link Operation#operate(char, Operation)}.
+	 * Test method for {@link Operation#operate(char, Operation)}
 	 */
 	@Test
 	public void testOperateCharOperation() throws Exception
@@ -57,7 +57,7 @@ public class OperationTest
 	}
 
 	/**
-	 * Test method for {@link Operation#operate(char, Operation, boolean)}.
+	 * Test method for {@link Operation#operate(char, Operation, boolean)}
 	 */
 	@Test
 	public void testOperateCharOperationBoolean() throws Exception

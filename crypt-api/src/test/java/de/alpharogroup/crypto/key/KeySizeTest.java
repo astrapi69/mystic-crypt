@@ -29,13 +29,13 @@ import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
 /**
- * The unit test class for the class {@link KeySize}.
+ * The unit test class for the class {@link KeySize}
  */
 public class KeySizeTest
 {
 
 	/**
-	 * Test method for {@link KeySize#getKeySize()}.
+	 * Test method for {@link KeySize#getKeySize()}
 	 */
 	@Test
 	public void testGetKeySize() throws Exception

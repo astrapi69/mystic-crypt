@@ -20,52 +20,81 @@
  */
 package de.alpharogroup.crypto.key;
 
+import static org.testng.AssertJUnit.assertTrue;
 
 import java.io.File;
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Security;
+import java.security.spec.InvalidKeySpecException;
 
-import org.apache.log4j.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
+import org.apache.commons.codec.DecoderException;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.testng.AssertJUnit;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.file.search.PathFinder;
+import lombok.extern.slf4j.Slf4j;
 
 /**
- * Test class for {@link PublicKeyHexEncryptor} and {@link PrivateKeyHexDecryptor}.
+ * Test class for {@link PublicKeyHexEncryptor} and {@link PrivateKeyHexDecryptor}
  */
+@Slf4j
 public class KeyHexEncryptDecryptorTest
 {
-	/** The Constant logger. */
-	private static final Logger logger = Logger
-		.getLogger(KeyHexEncryptDecryptorTest.class.getName());
 
 	/**
-	 * Sets up method will be invoked before every unit test method in this class.
-	 *
-	 * @throws Exception
-	 *             the exception
+	 * Sets up method will be invoked before every unit test method in this class
 	 */
 	@BeforeMethod
-	protected void setUp() throws Exception
+	protected void setUp()
 	{
 		Security.addProvider(new BouncyCastleProvider());
 	}
 
 	/**
 	 * Test encrypt and decrypt with {@link PublicKeyHexEncryptor#encrypt(String)} and
-	 * {@link PrivateKeyHexDecryptor#decrypt(String)} loaded from pem files.
-	 *
-	 * @throws Exception
-	 *             is thrown if any security exception occured.
+	 * {@link PrivateKeyHexDecryptor#decrypt(String)} loaded from pem files
+	 * 
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws InvalidKeyException
+	 *             the invalid key exception is thrown if initialization of the cypher object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the cypher object fails.
+	 * @throws IllegalBlockSizeException
+	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
+	 * @throws BadPaddingException
+	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws DecoderException
+	 *             is thrown if an odd number or illegal of characters is supplied
 	 */
 	@Test(enabled = true)
-	public void testEncryptDecrypt() throws Exception
+	public void testEncryptDecrypt()
+		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException,
+		IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException,
+		BadPaddingException, InvalidAlgorithmParameterException, DecoderException
 	{
 		final String test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
 
@@ -81,25 +110,47 @@ public class KeyHexEncryptDecryptorTest
 
 		final String encrypted = encryptor.encrypt(test);
 
-		logger.debug("String after encryption:" + encrypted);
+		log.debug("String after encryption:" + encrypted);
 		final PrivateKeyHexDecryptor decryptor = new PrivateKeyHexDecryptor(privateKey);
 		final String decryted = decryptor.decrypt(encrypted);
-		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
+		assertTrue("String before encryption is not equal after decryption.",
 			test.equals(decryted));
 	}
 
 	/**
 	 * Test encrypt and decrypt with {@link PublicKeyHexEncryptor#encrypt(String)} and
 	 * {@link PrivateKeyHexDecryptor#decrypt(String)} loaded from pem files.
-	 *
-	 * @throws Exception
-	 *             is thrown if any security exception occured.
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
+	 * @throws InvalidKeyException
+	 *             the invalid key exception is thrown if initialization of the cypher object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the cypher object fails.
+	 * @throws IllegalBlockSizeException
+	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
+	 * @throws BadPaddingException
+	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
+	 * @throws DecoderException
+	 *             is thrown if an odd number or illegal of characters is supplied
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
 	 */
 	@Test(enabled = true)
-	public void testEncryptDecryptPemFiles() throws Exception
+	public void testEncryptDecryptPemFiles()
+		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException,
+		IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException,
+		BadPaddingException, InvalidAlgorithmParameterException, DecoderException
 	{
 		final String test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
-		logger.debug("String before encryption:" + test);
+		log.debug("String before encryption:" + test);
 
 		final File publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
 		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
@@ -112,11 +163,11 @@ public class KeyHexEncryptDecryptorTest
 		final PublicKeyHexEncryptor encryptor = new PublicKeyHexEncryptor(publicKey);
 
 		final String encrypted = encryptor.encrypt(test);
-		logger.debug("String after encryption:" + encrypted);
+		log.debug("String after encryption:" + encrypted);
 		final PrivateKeyHexDecryptor decryptor = new PrivateKeyHexDecryptor(privateKey);
 		final String decryted = decryptor.decrypt(encrypted);
-		logger.debug("String after decryption:" + decryted);
-		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
+		log.debug("String after decryption:" + decryted);
+		assertTrue("String before encryption is not equal after decryption.",
 			test.equals(decryted));
 	}
 

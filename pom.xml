@@ -310,13 +310,15 @@
 								<exclude>de/alpharogroup/auth/token/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/model/**/*.class</exclude>
 								<!-- constant classes with only constants -->
+								<!-- deprecated classes -->
 								<!-- interfaces -->
 								<exclude>de/alpharogroup/auth/api/**/*.class</exclude>
 								<exclude>de/alpharogroup/auth/usermanagement/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/api/**/*.class</exclude>
 								<!-- exceptions -->
 								<exclude>de/alpharogroup/auth/exceptions/**/*.class</exclude>
-								<!-- deprecated classes -->
+								<!-- experimental classes -->
+								<exclude>de/alpharogroup/crypto/obfuscation/experimental/**/*.class</exclude>
 								<!-- explicit abstract classes -->
 								<!-- explicit annotations -->
 								<!-- explicit bean classes -->

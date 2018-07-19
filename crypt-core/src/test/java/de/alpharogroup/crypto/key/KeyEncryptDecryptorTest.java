@@ -27,7 +27,6 @@ import java.security.Security;
 
 import javax.crypto.Cipher;
 
-import org.apache.log4j.Logger;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
@@ -37,16 +36,15 @@ import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.crypto.model.CryptModel;
 import de.alpharogroup.file.search.PathFinder;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * The unit test class for the class {@link PublicKeyEncryptor} and the class
- * {@link PrivateKeyDecryptor}.
+ * {@link PrivateKeyDecryptor}
  */
+@Slf4j
 public class KeyEncryptDecryptorTest
 {
-
-	/** The Constant logger. */
-	private static final Logger logger = Logger.getLogger(KeyEncryptDecryptorTest.class.getName());
 
 	/**
 	 * Test encrypt and decrypt with {@link PublicKeyEncryptor#encrypt(byte[])} and
@@ -133,7 +131,7 @@ public class KeyEncryptDecryptorTest
 		byte[] decrypted = decryptor.decrypt(encrypted);
 
 		String decryptedString = new String(decrypted, "UTF-8");
-		logger.debug(decryptedString);
+		log.debug(decryptedString);
 		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
 			test.equals(decryptedString));
 		for (int i = 0; i < 100; i++)
@@ -144,7 +142,7 @@ public class KeyEncryptDecryptorTest
 			decryptedString = new String(decrypted, "UTF-8");
 			AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
 				test.equals(decryptedString));
-			logger.debug(decryptedString);
+			log.debug(decryptedString);
 		}
 	}
 

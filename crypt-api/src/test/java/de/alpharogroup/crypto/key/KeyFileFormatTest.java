@@ -32,13 +32,13 @@ import org.testng.annotations.Test;
 import de.alpharogroup.collections.array.ArrayFactory;
 
 /**
- * The unit test class for the class {@link KeyFileFormat}.
+ * The unit test class for the class {@link KeyFileFormat}
  */
 public class KeyFileFormatTest
 {
 
 	/**
-	 * Test method for {@link KeyFileFormat#getFileExtensions()}.
+	 * Test method for {@link KeyFileFormat#getFileExtensions()}
 	 */
 	@Test
 	public void testGetFileExtensions() throws Exception
