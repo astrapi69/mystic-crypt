@@ -36,13 +36,13 @@ import de.alpharogroup.crypto.factories.KeyStoreFactory;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * The class {@link KeyTrustExtensions}.
+ * The unit test class for the class {@link KeyTrustExtensions}
  */
 public class KeyTrustExtensionsTest
 {
 
 	/**
-	 * Test method for {@link KeyTrustExtensions#resolveKeyManagers(String, String, File, String)}.
+	 * Test method for {@link KeyTrustExtensions#resolveKeyManagers(String, String, File, String)}
 	 */
 	@Test
 	public void testResolveKeyManagers() throws Exception
@@ -66,7 +66,7 @@ public class KeyTrustExtensionsTest
 
 	/**
 	 * Test method for
-	 * {@link KeyTrustExtensions#resolveTrustManagers(String, String, File, String)}.
+	 * {@link KeyTrustExtensions#resolveTrustManagers(String, String, File, String)}
 	 */
 	@Test
 	public void testResolveTrustManagers() throws Exception

@@ -37,14 +37,14 @@ import org.testng.annotations.Test;
 import de.alpharogroup.crypto.CryptConst;
 
 /**
- * Test class for the {@link SimpleEncryptor} and {@link SimpleDecryptor}.
+ * Test class for the {@link SimpleEncryptor} and {@link SimpleDecryptor}
  */
 public class SimpleEnDecryptorTest
 {
 
 	/**
 	 * Test encrypt and decrypt with {@link SimpleEncryptor#encrypt(String)} and
-	 * {@link SimpleDecryptor#decrypt(String)}.
+	 * {@link SimpleDecryptor#decrypt(String)}
 	 *
 	 * @throws BadPaddingException
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.

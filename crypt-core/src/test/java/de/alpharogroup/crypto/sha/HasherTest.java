@@ -32,22 +32,19 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import org.apache.log4j.Logger;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.algorithm.HashAlgorithm;
 import de.alpharogroup.random.RandomExtensions;
+import lombok.extern.slf4j.Slf4j;
 
 /**
- * Test class for {@link Hasher}.
+ * The unit test class for the class {@link Hasher}
  */
+@Slf4j
 public class HasherTest
 {
-
-	/** The Constant logger. */
-	private static final Logger logger = Logger.getLogger(HasherTest.class.getName());
-
 
 	/**
 	 * Test method for {@link Hasher#hashAndHex(String, String, HashAlgorithm, Charset)}
@@ -81,9 +78,9 @@ public class HasherTest
 		final HashAlgorithm hashAlgorithm = HashAlgorithm.SHA_512;
 		final String expected = Hasher.hashAndHex(password, salt, hashAlgorithm, charset);
 		final String actual = Hasher.hashAndHex(newInsertPassword, salt, hashAlgorithm, charset);
-		logger.debug("salt:" + salt);
-		logger.debug("expected:" + expected);
-		logger.debug("actual:" + actual);
+		log.debug("salt:" + salt);
+		log.debug("expected:" + expected);
+		log.debug("actual:" + actual);
 		AssertJUnit.assertTrue("'expected' should be equal with 'actual'.",
 			expected.equals(actual));
 	}

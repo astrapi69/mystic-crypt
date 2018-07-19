@@ -29,20 +29,18 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.log4j.Logger;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.file.read.ReadFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
+import lombok.extern.slf4j.Slf4j;
 
 /**
- * Test class for {@link WordlistsProcessor}.
+ * The unit test class for the class {@link WordlistsProcessor}
  */
+@Slf4j
 public class WordlistsProcessorTest
 {
-
-	/** The Constant logger. */
-	private static final Logger logger = Logger.getLogger(WordlistsProcessorTest.class.getName());
 
 	/**
 	 * Test method for test the class {@link WordlistsProcessor}.
@@ -77,10 +75,10 @@ public class WordlistsProcessorTest
 		long elapsedMilliSeconds = end - start;
 		assertTrue(found);
 
-		logger.debug("Started wordlist attack for the password '" + password + "'.");
-		logger.debug("Needed milliseconds for crack the password with the given wordlists: "
+		log.debug("Started wordlist attack for the password '" + password + "'.");
+		log.debug("Needed milliseconds for crack the password with the given wordlists: "
 			+ elapsedMilliSeconds);
-		logger.debug("Password found: " + found);
+		log.debug("Password found: " + found);
 
 	}
 }

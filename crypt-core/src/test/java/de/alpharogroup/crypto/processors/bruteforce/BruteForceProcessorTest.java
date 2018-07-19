@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 import de.alpharogroup.lang.PackageExtensions;
 
 /**
- * Test class for {@link BruteForceProcessor}.
+ * The unit test class for the class {@link BruteForceProcessor}
  */
 public class BruteForceProcessorTest
 {
