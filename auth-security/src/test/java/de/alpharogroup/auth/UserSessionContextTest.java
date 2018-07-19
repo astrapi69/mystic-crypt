@@ -27,6 +27,7 @@ import static org.testng.AssertJUnit.assertNull;
 import java.io.File;
 import java.util.List;
 
+import org.meanbean.test.BeanTester;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -38,7 +39,7 @@ import de.alpharogroup.file.search.PathFinder;
 import de.alpharogroup.random.RandomObjectsExtensions;
 
 /**
- * The unit test class for the class {@link UserSessionContext}.
+ * The unit test class for the class {@link UserSessionContext}
  *
  * @version 1.0
  * @author Asterios Raptis
@@ -76,7 +77,7 @@ public class UserSessionContextTest
 	}
 
 	/**
-	 * Test method for {@link UserSessionContext#addSession(Session)}.
+	 * Test method for {@link UserSessionContext#addSession(Session)}
 	 */
 	@Test
 	public void testaddSession()
@@ -93,7 +94,7 @@ public class UserSessionContextTest
 	}
 
 	/**
-	 * Test method for {@link UserSessionContext#getInstance()}.
+	 * Test method for {@link UserSessionContext#getInstance()}
 	 */
 	@Test
 	public void testGetInstance()
@@ -104,7 +105,7 @@ public class UserSessionContextTest
 	}
 
 	/**
-	 * Test method for {@link UserSessionContext#removeSession(Session)}.
+	 * Test method for {@link UserSessionContext#removeSession(Session)}
 	 */
 	@Test
 	public void testRemoveSession()
@@ -121,7 +122,16 @@ public class UserSessionContextTest
 		sessionContext.removeSession(session.getId());
 		session2 = sessionContext.getSession(session.getId());
 		assertNull(session2);
-
+	}
+	
+	/**
+	 * Test method for {@link UserSessionContext}
+	 */
+	@Test
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(UserSessionContext.class);
 	}
 
 }

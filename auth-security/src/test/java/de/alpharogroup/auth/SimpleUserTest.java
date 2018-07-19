@@ -20,12 +20,14 @@
  */
 package de.alpharogroup.auth;
 
+import static org.testng.Assert.assertTrue;
+
 import java.io.File;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.testng.AssertJUnit;
+import org.meanbean.test.BeanTester;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -118,7 +120,7 @@ public class SimpleUserTest
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.auth.SimpleUser#getRoles()}.
+	 * Test method for {@link SimpleUser#getRoles()}.
 	 */
 	@Test(enabled = true)
 	public void testGetRoles()
@@ -134,13 +136,13 @@ public class SimpleUserTest
 			for (final Permission object : ar)
 			{
 				final boolean result = expected.contains(object);
-				AssertJUnit.assertTrue("", result);
+				assertTrue(result);
 			}
 		}
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.auth.SimpleUser#getUsername()}.
+	 * Test method for {@link SimpleUser#getUsername()}.
 	 */
 	@Test
 	public void testGetUsername()
@@ -148,7 +150,17 @@ public class SimpleUserTest
 		final String expected = "Leonidas";
 		final String compare = this.testuser.getUsername();
 		final boolean result = expected.equals(compare);
-		AssertJUnit.assertTrue("", result);
+		assertTrue(result);
+	}
+	
+	/**
+	 * Test method for {@link SimpleUser}
+	 */
+	@Test
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(SimpleUser.class);
 	}
 
 }

@@ -26,7 +26,7 @@ import org.meanbean.test.ConfigurationBuilder;
 import org.testng.annotations.Test;
 
 /**
- * The class {@link SignInWithRedirectionModel}.
+ * The unit test class for the class {@link SignInWithRedirectionModel}
  */
 public class SignInWithRedirectionModelTest
 {

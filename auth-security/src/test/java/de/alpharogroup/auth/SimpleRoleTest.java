@@ -20,13 +20,15 @@
  */
 package de.alpharogroup.auth;
 
+import static org.testng.Assert.assertTrue;
+
 import java.io.File;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.testng.AssertJUnit;
+import org.meanbean.test.BeanTester;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -37,7 +39,7 @@ import de.alpharogroup.file.csv.CsvFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * The unit test class for the class {@link SimpleRole}.
+ * The unit test class for the class {@link SimpleRole}
  *
  * @version 1.1
  * @author Asterios Raptis
@@ -88,7 +90,7 @@ public class SimpleRoleTest
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.auth.SimpleRole#getPermissions()}.
+	 * Test method for {@link SimpleRole#getPermissions()}.
 	 */
 	@Test
 	public void testGetPermissions()
@@ -97,13 +99,13 @@ public class SimpleRoleTest
 		for (final Permission object : compare)
 		{
 			final boolean result = this.permissions.contains(object.getPermissionName());
-			AssertJUnit.assertTrue("", result);
+			assertTrue(result);
 
 		}
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.auth.SimpleRole#getRolename()}.
+	 * Test method for {@link SimpleRole#getRolename()}.
 	 */
 	@Test
 	public void testGetRolename()
@@ -112,7 +114,17 @@ public class SimpleRoleTest
 		this.testrole.setRolename("testrole");
 		final String compare = this.testrole.getRolename();
 		final boolean result = expected.equals(compare);
-		AssertJUnit.assertTrue("", result);
+		assertTrue(result);
+	}
+	
+	/**
+	 * Test method for {@link SimpleRole}
+	 */
+	@Test
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(SimpleRole.class);
 	}
 
 }

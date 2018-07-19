@@ -20,25 +20,28 @@
  */
 package de.alpharogroup.auth;
 
+import static org.testng.Assert.assertTrue;
+
 import java.io.File;
 import java.util.List;
 
-import org.testng.AssertJUnit;
+import org.meanbean.test.BeanTester;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import de.alpharogroup.BaseTestCase;
 import de.alpharogroup.auth.api.Permission;
 import de.alpharogroup.file.csv.CsvFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * The unit test class for the class {@link SimplePermission}.
+ * The unit test class for the class {@link SimplePermission}
  *
  * @version 1.0
  * @author Asterios Raptis
  */
-public class SimplePermissionTest
+public class SimplePermissionTest extends BaseTestCase
 {
 
 	/** The permissions. */
@@ -51,8 +54,10 @@ public class SimplePermissionTest
 	 *             the exception
 	 */
 	@BeforeMethod
+	@Override
 	protected void setUp() throws Exception
 	{
+		super.setUp();
 		final File srctestresDir = PathFinder.getSrcTestResourcesDir();
 		final File resources = new File(srctestresDir, "resources");
 		final File userrole = new File(resources, "userrole");
@@ -66,12 +71,14 @@ public class SimplePermissionTest
 	 *             the exception
 	 */
 	@AfterMethod
+	@Override
 	protected void tearDown() throws Exception
 	{
+		super.tearDown();
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.auth.SimplePermission#getDescription()}.
+	 * Test method for {@link SimplePermission#getDescription()}
 	 */
 	@Test
 	public void testGetDescription()
@@ -82,12 +89,12 @@ public class SimplePermissionTest
 		ar.setDescription(far);
 		ar.setPermissionName(far);
 		final String compare = far;
-		final boolean result = expected.equals(compare);
-		AssertJUnit.assertTrue("", result);
+		actual = expected.equals(compare);
+		assertTrue(actual);
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.auth.SimplePermission#getPermissionName()}.
+	 * Test method for {@link SimplePermission#getPermissionName()}
 	 */
 	@Test
 	public void testGetName()
@@ -98,8 +105,18 @@ public class SimplePermissionTest
 		ar.setDescription(far);
 		ar.setPermissionName(far);
 		final String compare = far;
-		final boolean result = expected.equals(compare);
-		AssertJUnit.assertTrue("", result);
+		actual = expected.equals(compare);
+		assertTrue(actual);
+	}
+	
+	/**
+	 * Test method for {@link SimplePermission}
+	 */
+	@Test
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(SimplePermission.class);
 	}
 
 }

@@ -12,7 +12,7 @@ CHANGED:
 - update of file-worker version to 4.20
 - update of jcommons-lang version to 4.32
 - update of test-objects version to 4.24.0
-- update of jobject-extensions version to 1.10.0
+- update of jobject-extensions version to 1.11
 
 Version 5.1.0
 -------------

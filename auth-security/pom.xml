@@ -51,6 +51,12 @@
 			<artifactId>meanbean</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- MEANBEAN-FACTORIES DEPENDENCY -->
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>meanbean-factories</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 	</dependencies>
 

@@ -27,6 +27,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.meanbean.lang.Factory;
+import org.meanbean.test.BeanTester;
+import org.meanbean.test.Configuration;
+import org.meanbean.test.ConfigurationBuilder;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -38,6 +42,7 @@ import de.alpharogroup.auth.api.User;
 import de.alpharogroup.collections.set.SetFactory;
 import de.alpharogroup.file.csv.CsvFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
+import de.alpharogroup.meanbean.factories.LocaleFactory;
 
 /**
  * The unit test class for the class {@link UserSession}.
@@ -141,6 +146,31 @@ public class UserSessionTest
 	public void testUserSessionConstructorNull()
 	{
 		testsession = new UserSession(null);
+	}
+
+	/**
+	 * Test method for {@link UserSession}
+	 */
+	@Test
+	public void testWithBeanTester()
+	{
+		Configuration configuration = new ConfigurationBuilder()
+			.overrideFactory("locale", new LocaleFactory())
+			.overrideFactory("user", new Factory<User<Permission, Role<Permission>>>()
+			{
+
+				@Override
+				public User<Permission, Role<Permission>> create()
+				{
+					return SimpleUser.builder().roles(SetFactory.newHashSet()).username("Leonidas")
+						.build();
+				}
+
+			}).build();
+		final BeanTester beanTester = new BeanTester();
+		beanTester.addCustomConfiguration(UserSession.class, configuration);
+		beanTester.testBean(UserSession.class);
+
 	}
 
 }

@@ -24,7 +24,7 @@ import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
 /**
- * The class {@link AuthToken}.
+ * The unit test class for the class {@link AuthToken}
  */
 public class AuthTokenTest
 {

@@ -24,7 +24,7 @@ import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
 /**
- * The class {@link AuthenticationResult}.
+ * The unit test class for the class {@link AuthenticationResult}
  */
 public class AuthenticationResultTest
 {

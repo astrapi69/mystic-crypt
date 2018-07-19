@@ -33,7 +33,7 @@
 		<!-- RESOURCEBUNDLE-CORE versions -->
 		<resourcebundle-inspector.version>2.22</resourcebundle-inspector.version>
 		<!-- JOBJECT-EXTENSIONS versions -->
-		<jobject-extensions.version>1.11</jobject-extensions.version>
+		<jobject-extensions.version>1.12</jobject-extensions.version>
 		<jobject-core.version>${jobject-extensions.version}</jobject-core.version>
 		<jobject-evaluate.version>${jobject-extensions.version}</jobject-evaluate.version>
 		<!-- PARENT PROJECT versions -->
@@ -49,7 +49,7 @@
 		<randomizer-data.version>${randomizer.version}</randomizer-data.version>
 		<!-- EXTERNAL LIBRARIES versions -->
 		<commons-codec.version>1.11</commons-codec.version>
-		<bouncycastle.version>1.59</bouncycastle.version>
+		<bouncycastle.version>1.60</bouncycastle.version>
 		<!-- GUAVA version -->
 		<guava.version>25.1-jre</guava.version>
 		<!-- MEANBEAN version -->

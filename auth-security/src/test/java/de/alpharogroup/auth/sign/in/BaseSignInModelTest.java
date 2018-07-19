@@ -25,10 +25,10 @@ import static org.testng.AssertJUnit.assertEquals;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.evaluate.object.EqualsHashCodeAndToStringEvaluator;
+import de.alpharogroup.evaluate.object.evaluators.EqualsHashCodeAndToStringEvaluator;
 
 /**
- * The class {@link BaseSignInModel}.
+ * The unit test class for the class {@link BaseSignInModel}
  */
 public class BaseSignInModelTest
 {
