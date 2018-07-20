@@ -36,6 +36,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.CryptConst;
+import de.alpharogroup.crypto.algorithm.SunJCEAlgorithm;
 import de.alpharogroup.crypto.api.Cryptor;
 import de.alpharogroup.crypto.factories.AlgorithmParameterSpecFactory;
 import de.alpharogroup.crypto.factories.SecretKeyFactoryExtensions;
@@ -132,7 +133,7 @@ public abstract class AbstractCryptor<C, K> implements Serializable, Cryptor
 	{
 		if (getModel().getAlgorithm() == null)
 		{
-			return CryptConst.PBE_WITH_MD5_AND_DES;
+			return SunJCEAlgorithm.PBEWithMD5AndDES.getAlgorithm();
 		}
 		return getModel().getAlgorithm().getAlgorithm();
 	}

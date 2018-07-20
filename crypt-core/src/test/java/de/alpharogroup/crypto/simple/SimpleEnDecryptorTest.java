@@ -20,6 +20,8 @@
  */
 package de.alpharogroup.crypto.simple;
 
+import static org.testng.AssertJUnit.assertTrue;
+
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -31,7 +33,6 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.CryptConst;
@@ -75,7 +76,7 @@ public class SimpleEnDecryptorTest
 		final String encrypted = encryptor.encrypt(test);
 		final SimpleDecryptor decryptor = new SimpleDecryptor(CryptConst.PRIVATE_KEY);
 		final String decryted = decryptor.decrypt(encrypted);
-		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
+		assertTrue("String before encryption is not equal after decryption.",
 			test.equals(decryted));
 	}
 

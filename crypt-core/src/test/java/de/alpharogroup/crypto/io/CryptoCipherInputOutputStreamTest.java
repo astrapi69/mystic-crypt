@@ -33,21 +33,21 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
+import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKeyFactory;
 
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.CryptConst;
-import de.alpharogroup.crypto.simple.SimpleBaseDecryptor;
-import de.alpharogroup.crypto.simple.SimpleBaseEncryptor;
+import de.alpharogroup.crypto.algorithm.SunJCEAlgorithm;
+import de.alpharogroup.crypto.factories.CipherFactory;
+import de.alpharogroup.crypto.model.CryptModel;
 import de.alpharogroup.file.delete.DeleteFileExtensions;
 import de.alpharogroup.file.read.ReadFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * The unit test class for the classes {@link SimpleBaseEncryptor} and
- * {@link CryptoCipherInputStream} and the classes {@link SimpleBaseDecryptor} and
+ * The unit test class for the classes {@link CryptoCipherInputStream} and the classes
  * {@link CryptoCipherOutputStream}
  */
 public class CryptoCipherInputOutputStreamTest
@@ -80,28 +80,19 @@ public class CryptoCipherInputOutputStreamTest
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, IOException
 	{
-		final String alg = CryptConst.PBE_WITH_MD5_AND_DES;
-
-		final String firstKey = "D1D15ED36B887AF1";
+		final String privateKey = "D1D15ED36B887AF1";
 		final File cryptDir = new File(PathFinder.getSrcTestResourcesDir(), "crypt");
 		final File toEncrypt = new File(cryptDir, "test.txt");
 
 		final InputStream fis = new FileInputStream(toEncrypt);
-		final SimpleBaseEncryptor encryptor = new SimpleBaseEncryptor(firstKey)
-		{
 
-			/** The Constant serialVersionUID. */
-			private static final long serialVersionUID = 1L;
+		CryptModel<Cipher, String> encryptorModel = CryptModel.<Cipher, String> builder()
+			.key(privateKey).algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).salt(CryptConst.SALT)
+			.iterationCount(19).operationMode(Cipher.ENCRYPT_MODE).build();
 
-			@Override
-			protected SecretKeyFactory newSecretKeyFactory(final String algorithm)
-				throws NoSuchAlgorithmException
-			{
-				return super.newSecretKeyFactory(alg);
-			}
-		};
-		final CryptoCipherInputStream cis = new CryptoCipherInputStream(fis,
-			encryptor.getModel().getCipher());
+		Cipher encryptorCipher = CipherFactory.newCipher(encryptorModel);
+
+		final CryptoCipherInputStream cis = new CryptoCipherInputStream(fis, encryptorCipher);
 		final File encryptedFile = new File(cryptDir, "encrypted.txt");
 
 		final FileOutputStream out = new FileOutputStream(encryptedFile);
@@ -119,21 +110,15 @@ public class CryptoCipherInputOutputStreamTest
 		final File outputDecrypted = new File(cryptDir, "decrypted.txt");
 
 		final FileOutputStream decryptedOut = new FileOutputStream(outputDecrypted);
-		final SimpleBaseDecryptor decryptor = new SimpleBaseDecryptor(firstKey)
-		{
 
-			/** The Constant serialVersionUID. */
-			private static final long serialVersionUID = 1L;
+		CryptModel<Cipher, String> decryptorModel = encryptorModel.toBuilder()
+			.operationMode(Cipher.DECRYPT_MODE).build();
 
-			@Override
-			protected SecretKeyFactory newSecretKeyFactory(final String algorithm)
-				throws NoSuchAlgorithmException
-			{
-				return super.newSecretKeyFactory(alg);
-			}
-		};
+
+		Cipher decryptorCipher = CipherFactory.newCipher(decryptorModel);
+
 		final CryptoCipherOutputStream cos = new CryptoCipherOutputStream(decryptedOut,
-			decryptor.getModel().getCipher());
+			decryptorCipher);
 		final FileInputStream encryptedFis = new FileInputStream(encryptedFile);
 
 		while ((c = encryptedFis.read()) != -1)

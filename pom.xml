@@ -308,6 +308,8 @@
 								<!-- explicit abstract classes -->
 								<!-- explicit annotations -->
 								<!-- explicit bean classes -->
+								<exclude>de/alpharogroup/crypto/simple/SimpleBaseDecryptor.class</exclude>
+								<exclude>de/alpharogroup/crypto/simple/SimpleBaseEncryptor.class</exclude>
 								<!-- explicit deprecated classes -->
 								<exclude>de/alpharogroup/crypto/key/KeyExtensions.class</exclude>
 								<!-- explicit interfaces -->
