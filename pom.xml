@@ -39,7 +39,6 @@
 		<!-- PARENT PROJECT versions -->
 		<!-- MYSTIC-CRYPT versions -->
 		<mystic-crypt.version>${project.version}</mystic-crypt.version>
-		<auth-api.version>${mystic-crypt.version}</auth-api.version>
 		<crypt-api.version>${mystic-crypt.version}</crypt-api.version>
 		<crypt-data.version>${mystic-crypt.version}</crypt-data.version>
 		<!-- RANDOMIZER versions -->
@@ -59,8 +58,6 @@
 	</properties>
 
 	<modules>
-		<module>auth-api</module>
-		<module>auth-security</module>
 		<module>crypt-api</module>
 		<module>crypt-core</module>
 		<module>crypt-data</module>
@@ -135,12 +132,6 @@
 				<groupId>de.alpharogroup</groupId>
 				<artifactId>vintage-time</artifactId>
 				<version>${vintage-time.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>de.alpharogroup</groupId>
-				<artifactId>auth-api</artifactId>
-				<version>${auth-api.version}</version>
 			</dependency>
 
 			<dependency>
@@ -297,7 +288,6 @@
 								<!-- abstract classes -->
 								<exclude>de/alpharogroup/crypto/core/**/*.class</exclude>
 								<!-- enums -->
-								<exclude>de/alpharogroup/auth/enums/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/algorithm/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/enums/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/mechanisms/**/*.class</exclude>
@@ -306,14 +296,10 @@
 								<exclude>de/alpharogroup/crypto/provider/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/pw/**/*.class</exclude>
 								<!-- beans -->
-								<exclude>de/alpharogroup/auth/models/**/*.class</exclude>
-								<exclude>de/alpharogroup/auth/token/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/model/**/*.class</exclude>
 								<!-- constant classes with only constants -->
 								<!-- deprecated classes -->
 								<!-- interfaces -->
-								<exclude>de/alpharogroup/auth/api/**/*.class</exclude>
-								<exclude>de/alpharogroup/auth/usermanagement/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/api/**/*.class</exclude>
 								<!-- exceptions -->
 								<exclude>de/alpharogroup/auth/exceptions/**/*.class</exclude>
@@ -322,10 +308,6 @@
 								<!-- explicit abstract classes -->
 								<!-- explicit annotations -->
 								<!-- explicit bean classes -->
-								<exclude>de/alpharogroup/auth/Credentials.class</exclude>
-								<exclude>de/alpharogroup/auth/SimplePermission.class</exclude>
-								<exclude>de/alpharogroup/auth/SimpleRole.class</exclude>
-								<exclude>de/alpharogroup/auth/SimpleUser.class</exclude>
 								<!-- explicit deprecated classes -->
 								<exclude>de/alpharogroup/crypto/key/KeyExtensions.class</exclude>
 								<!-- explicit interfaces -->

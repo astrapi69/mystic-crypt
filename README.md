@@ -29,10 +29,6 @@ The source code comes under the liberal MIT License, making mystic-crypt great f
 
 ## Javadoc
 
-[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/auth-security/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/auth-api) auth-api
-
-[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/auth-security/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/auth-security) auth-security
-
 [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/crypt-core/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-api) crypt-api 
 
 [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/crypt-core/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-core) crypt-core
@@ -50,8 +46,6 @@ You can first define the version properties:
 			...
 		<!-- MYSTIC-CRYPT versions -->
 		<mystic-crypt.version>5.1.0</mystic-crypt.version>
-		<auth-api.version>${mystic-crypt.version}</auth-api.version>
-		<auth-security.version>${mystic-crypt.version}</auth-security.version>
 		<crypt-api.version>${mystic-crypt.version}</crypt-api.version>
 		<crypt-core.version>${mystic-crypt.version}</crypt-core.version>
 		<crypt-data.version>${mystic-crypt.version}</crypt-data.version>
@@ -59,33 +53,6 @@ You can first define the version properties:
 	</properties>
 	
 You can add the following dependencies to your project for use the functionality of mystic-crypt.
-
-Add the following maven dependency to your project `pom.xml` if you want to import the functionality of auth-api:
-
-		<dependencies>
-			...
-			<!-- AUTH-API DEPENDENCY -->
-			<dependency>
-				<groupId>de.alpharogroup</groupId>
-				<artifactId>auth-api</artifactId>
-				<version>${auth-api.version}</version>
-			</dependency>
-			...
-		</dependencies>
-
-
-Add the following maven dependency to your project `pom.xml` if you want to import the functionality of auth-security:
-
-		<dependencies>
-			...
-			<!-- AUTH-SECURITY DEPENDENCY -->
-			<dependency>
-				<groupId>de.alpharogroup</groupId>
-				<artifactId>auth-security</artifactId>
-				<version>${auth-security.version}</version>
-			</dependency>
-			...
-		</dependencies>
 
 Add the following maven dependency to your project `pom.xml` if you want to import the core functionality of mystic-api:
 
@@ -134,7 +101,7 @@ Release version numbers will be incremented in the following format:
 
 `<major>.<minor>.<patch>`
 
-For more information on SemVer you can visit [semver.org](http://semver.org/).
+For detailed information on versioning you can visit the [wiki page](https://github.com/lightblueseas/mvn-parent-projects/wiki/Semantic-Versioning).
 
 ## Want to Help and improve it? ###
 
