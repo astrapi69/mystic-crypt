@@ -25,10 +25,19 @@ import java.util.Set;
 import com.google.common.collect.BiMap;
 
 import de.alpharogroup.check.Check;
+import de.alpharogroup.crypto.obfuscation.CharacterObfuscator;
 import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
 import de.alpharogroup.crypto.obfuscation.rule.Operation;
 
+/**
+ * The class {@link ComplexObfuscator}.
+ * 
+ * @deprecated use instead the {@link CharacterObfuscator} <br>
+ *             <br>
+ *             Note: will be removed on next minor release.
+ */
+@Deprecated
 public class ComplexObfuscator implements Obfuscatable
 {
 

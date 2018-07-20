@@ -21,6 +21,7 @@
 package de.alpharogroup.crypto.obfuscation.experimental;
 
 import de.alpharogroup.check.Check;
+import de.alpharogroup.crypto.obfuscation.CharacterObfuscator;
 import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
 import de.alpharogroup.crypto.obfuscation.rules.SimpleObfuscationRules;
 

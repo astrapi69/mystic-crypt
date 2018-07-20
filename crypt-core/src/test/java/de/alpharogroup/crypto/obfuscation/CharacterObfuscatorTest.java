@@ -31,6 +31,7 @@ import org.testng.annotations.Test;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
+import de.alpharogroup.AbstractTestCase;
 import de.alpharogroup.collections.set.SetFactory;
 import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
@@ -42,11 +43,9 @@ import lombok.experimental.FieldDefaults;
  * The unit test class for the class {@link CharacterObfuscator}
  */
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CharacterObfuscatorTest
+public class CharacterObfuscatorTest extends AbstractTestCase<String, String>
 {
 
-	String actual;
-	String expected;
 	String stringToObfuscate;
 	BiMap<Character, ObfuscationOperationRule<Character, Character>> rules;
 	Character character;
@@ -65,6 +64,7 @@ public class CharacterObfuscatorTest
 	@BeforeMethod
 	protected void setUp() throws Exception
 	{
+		super.setUp();
 		// create a rule for obfuscate the key
 		rules = HashBiMap.create();
 
@@ -286,6 +286,7 @@ public class CharacterObfuscatorTest
 	@AfterMethod
 	protected void tearDown() throws Exception
 	{
+		super.tearDown();
 		actual = null;
 		expected = null;
 		stringToObfuscate = null;
@@ -301,7 +302,7 @@ public class CharacterObfuscatorTest
 	/**
 	 * Test method for {@link CharacterObfuscator#disentangle()}
 	 */
-	@Test(enabled = false) // TODO inspect and fix...
+	@Test(enabled = true)
 	public void testDisentangle()
 	{
 		stringToObfuscate = "abac";
@@ -316,7 +317,7 @@ public class CharacterObfuscatorTest
 		assertEquals(expected, actual);
 	}
 
-	@Test(enabled = false) // TODO inspect and fix...
+	@Test(enabled = true)
 	public void testObfuscate()
 	{
 		// a key for obfuscation
@@ -336,7 +337,7 @@ public class CharacterObfuscatorTest
 	/**
 	 * Test method for {@link CharacterObfuscator#obfuscate()}
 	 */
-	@Test(enabled = false) // TODO inspect and fix...
+	@Test(enabled = true) // TODO inspect and fix...
 	public void testObfuscateEightChars()
 	{
 		// a key for obfuscation

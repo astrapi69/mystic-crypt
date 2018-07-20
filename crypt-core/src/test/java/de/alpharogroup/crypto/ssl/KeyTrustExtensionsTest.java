@@ -65,8 +65,7 @@ public class KeyTrustExtensionsTest
 	}
 
 	/**
-	 * Test method for
-	 * {@link KeyTrustExtensions#resolveTrustManagers(String, String, File, String)}
+	 * Test method for {@link KeyTrustExtensions#resolveTrustManagers(String, String, File, String)}
 	 */
 	@Test
 	public void testResolveTrustManagers() throws Exception

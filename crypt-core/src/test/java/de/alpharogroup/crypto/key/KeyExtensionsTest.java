@@ -57,7 +57,8 @@ public class KeyExtensionsTest
 	 *             list.
 	 */
 	@Test
-	public void testReadDerPrivateKey() throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException, IOException 
+	public void testReadDerPrivateKey() throws NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchProviderException, IOException
 	{
 		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
 		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
@@ -82,7 +83,8 @@ public class KeyExtensionsTest
 	 *
 	 */
 	@Test
-	public void testReadPemPrivateKey() throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException, IOException
+	public void testReadPemPrivateKey() throws NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchProviderException, IOException
 	{
 		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
 		final File privatekeyPemFile = new File(privatekeyPemDir, "private.pem");

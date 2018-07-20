@@ -12,7 +12,7 @@ CHANGED:
 - update of file-worker version to 4.22
 - update of jcommons-lang version to 4.34
 - update of test-objects version to 4.28
-- update of silly-collections version to 4.31
+- update of silly-collections version to 4.33
 - update of jobject-extensions version to 1.12
 - update of resourcebundle-inspector version to 2.22
 - update of randomizer version to 5.4

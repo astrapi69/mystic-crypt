@@ -27,13 +27,19 @@ import org.apache.commons.lang3.StringUtils;
 import com.google.common.collect.BiMap;
 
 import de.alpharogroup.check.Check;
+import de.alpharogroup.crypto.obfuscation.CharacterObfuscator;
 import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
 import de.alpharogroup.crypto.obfuscation.rules.SimpleObfuscationRules;
 
 /**
  * The Class {@link Obfuscator} obfuscates the given {@link SimpleObfuscationRules}. For an example
  * see the unit test.
+ * 
+ * @deprecated use instead the {@link CharacterObfuscator} <br>
+ *             <br>
+ *             Note: will be removed on next minor release.
  */
+@Deprecated
 public class Obfuscator implements Obfuscatable
 {
 
