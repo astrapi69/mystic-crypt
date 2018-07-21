@@ -52,10 +52,15 @@ public class CertificateReader
 	 * @param file
 	 *            the file
 	 * @return the certificate
-	 * @throws Exception
-	 *             is thrown if if a security error occur
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws CertificateException
+	 *             is thrown if no Provider supports a CertificateFactorySpi implementation for the
+	 *             specified type.
 	 */
-	public static X509Certificate readPemCertificate(final File file) throws Exception
+	public static X509Certificate readPemCertificate(final File file)
+		throws IOException, CertificateException
 	{
 		final String privateKeyAsString = readPemFileAsBase64(file);
 		final byte[] decoded = new Base64().decode(privateKeyAsString);
@@ -68,6 +73,7 @@ public class CertificateReader
 	 * @param file
 	 *            the file in pem format that contains the public key.
 	 * @return the base64 encoded {@link String} value.
+	 * 
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
@@ -85,6 +91,7 @@ public class CertificateReader
 	 * @param file
 	 *            the file
 	 * @return the {@link X509Certificate} object from the given byte array.
+	 * 
 	 * @throws CertificateException
 	 *             is thrown if no Provider supports a CertificateFactorySpi implementation for the
 	 *             specified type.
@@ -104,6 +111,7 @@ public class CertificateReader
 	 * @param decoded
 	 *            the decoded
 	 * @return the {@link X509Certificate} object from the given byte array.
+	 * 
 	 * @throws CertificateException
 	 *             is thrown if no Provider supports a CertificateFactorySpi implementation for the
 	 *             specified type.

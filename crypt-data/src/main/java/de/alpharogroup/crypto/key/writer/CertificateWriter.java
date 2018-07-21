@@ -33,11 +33,13 @@ import org.apache.commons.codec.binary.Base64;
 import de.alpharogroup.crypto.key.KeyFileFormat;
 import de.alpharogroup.crypto.key.reader.CertificateReader;
 import lombok.NonNull;
+import lombok.experimental.UtilityClass;
 
 /**
  * The class {@link CertificateWriter} is a utility class for write certificates in files or streams
  * in several file formats.
  */
+@UtilityClass
 public class CertificateWriter
 {
 
@@ -84,9 +86,6 @@ public class CertificateWriter
 		final byte[] certificateBytes = certificate.getEncoded();
 		switch (fileFormat)
 		{
-			case DER :
-				outputStream.write(certificateBytes);
-				break;
 			case PEM :
 				outputStream.write(
 					CertificateReader.BEGIN_CERTIFICATE_PREFIX.getBytes(StandardCharsets.US_ASCII));

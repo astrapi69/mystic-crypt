@@ -20,78 +20,87 @@
  */
 package de.alpharogroup.crypto.key.writer;
 
+import static org.testng.AssertJUnit.assertNotNull;
+
 import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
+import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.SecureRandom;
 import java.security.Security;
+import java.security.SignatureException;
+import java.security.cert.CertificateEncodingException;
+import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.security.spec.InvalidKeySpecException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.ZoneId;
 import java.util.Date;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.testng.AssertJUnit;
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.algorithm.HashAlgorithm;
 import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
-import de.alpharogroup.crypto.algorithm.RngAlgorithm;
 import de.alpharogroup.crypto.factories.CertFactory;
 import de.alpharogroup.crypto.key.KeyFileFormat;
+import de.alpharogroup.crypto.key.reader.CertificateReader;
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.file.delete.DeleteFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
+import de.alpharogroup.random.RandomExtensions;
 
 /**
- * The class {@link CertificateWriterTest}.
+ * The unit test class for the class {@link CertificateWriter}
  */
 public class CertificateWriterTest
 {
 
+	PrivateKey actual;
+
+	File pemDir;
+
+	File derDir;
+
+	X509Certificate cert;
+
 	/**
-	 * Returns a random serial number that can be used for a serial number.
-	 *
-	 * @return a random serial number as a {@link BigInteger} object.
+	 * Sets up method will be invoked before every unit test method in this class
+	 * 
+	 * @throws IOException
+	 * @throws NoSuchProviderException
+	 * @throws InvalidKeySpecException
+	 * @throws NoSuchAlgorithmException
+	 * @throws SignatureException
+	 * @throws IllegalStateException
+	 * @throws InvalidKeyException
+	 * @throws CertificateEncodingException
 	 */
-	public static BigInteger randomSerialNumber()
+	@BeforeMethod
+	protected void setUp() throws NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchProviderException, IOException, CertificateEncodingException, InvalidKeyException,
+		IllegalStateException, SignatureException
 	{
-		long next = 0;
-		try
-		{
-			next = SecureRandom.getInstance(RngAlgorithm.SHA1PRNG.getAlgorithm()).nextLong();
-		}
-		catch (final NoSuchAlgorithmException e)
-		{
-			e.printStackTrace();
-		}
-		if (next < 0)
-		{
-			next = next * (-1);
-		}
-		final BigInteger serialNumber = BigInteger.valueOf(next);
-		return serialNumber;
-	}
-
-	@Test
-	public void test() throws Exception
-	{
-		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
-
 		Security.addProvider(new BouncyCastleProvider());
+
+		pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+
+		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		final File privatekeyPemFile = new File(pemDir, "private.pem");
 
 		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile);
 
-		final File publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
-
-		Security.addProvider(new BouncyCastleProvider());
+		final File publickeyPemFile = new File(pemDir, "public.pem");
 
 		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
@@ -104,19 +113,102 @@ public class CertificateWriterTest
 			LocalDate.of(2017, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
 		final Date end = Date.from(
 			LocalDate.of(2027, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		final BigInteger serialNumber = randomSerialNumber();
+		final BigInteger serialNumber = RandomExtensions.randomSerialNumber();
 		// create certificate
-		final X509Certificate cert = CertFactory.newX509Certificate(publicKey, privateKey,
-			serialNumber, subject, issuer, signatureAlgorithm, start, end);
-		AssertJUnit.assertNotNull(cert);
+		cert = CertFactory.newX509Certificate(publicKey, privateKey, serialNumber, subject, issuer,
+			signatureAlgorithm, start, end);
+		assertNotNull(cert);
+	}
 
-		final File pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+	/**
+	 * Test method for {@link CertificateWriter#write(X509Certificate, File, KeyFileFormat)}
+	 * 
+	 * @throws IOException
+	 * @throws CertificateException
+	 */
+	@Test
+	public void testWrite() throws IOException, CertificateException
+	{
+		X509Certificate certificate;
+
 		final File certificateFile = new File(pemDir, "certificate.cert");
 		// save it ...
 		CertificateWriter.write(cert, certificateFile, KeyFileFormat.PEM);
 
+		certificate = CertificateReader.readPemCertificate(certificateFile);
+		assertNotNull(certificate);
+
 		DeleteFileExtensions.delete(certificateFile);
 
+		// ======================================================================================
+
+		final File certificateDerFile = new File(derDir, "certificate.der");
+		// save it ...
+		CertificateWriter.write(cert, certificateDerFile, KeyFileFormat.DER);
+
+		certificate = CertificateReader.readCertificate(certificateDerFile);
+		assertNotNull(certificate);
+
+		DeleteFileExtensions.delete(certificateDerFile);
+	}
+
+	/**
+	 * Test method for {@link CertificateWriter#writeInDerFormat(X509Certificate, File)}
+	 * 
+	 * @throws CertificateException
+	 *             is thrown if no Provider supports a CertificateFactorySpi implementation for the
+	 *             specified type.
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	@Test
+	public void testWriteInDerFormatX509CertificateFile() throws IOException, CertificateException
+	{
+		X509Certificate certificate;
+
+		final File certificateDerFile = new File(derDir, "certificate.der");
+		// save it ...
+		CertificateWriter.writeInDerFormat(cert, certificateDerFile);
+
+		certificate = CertificateReader.readCertificate(certificateDerFile);
+		assertNotNull(certificate);
+
+		DeleteFileExtensions.delete(certificateDerFile);
+	}
+
+	/**
+	 * Test method for {@link CertificateWriter#writeInPemFormat(X509Certificate, File)}
+	 * 
+	 * @throws CertificateException
+	 *             is thrown if no Provider supports a CertificateFactorySpi implementation for the
+	 *             specified type.
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	@Test
+	public void testWriteInPemFormatX509CertificateFile() throws IOException, CertificateException
+	{
+		X509Certificate certificate;
+
+		final File certificateFile = new File(pemDir, "certificate.cert");
+		// save it ...
+		CertificateWriter.writeInPemFormat(cert, certificateFile);
+
+		certificate = CertificateReader.readPemCertificate(certificateFile);
+		assertNotNull(certificate);
+
+		DeleteFileExtensions.delete(certificateFile);
+	}
+
+	/**
+	 * Test method for {@link CertificateWriter} with {@link BeanTester}
+	 */
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(CertificateWriter.class);
 	}
 
 }
