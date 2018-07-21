@@ -25,10 +25,14 @@ package de.alpharogroup.crypto.factories;
 
 import static org.testng.Assert.assertNotNull;
 
+import java.lang.reflect.InvocationTargetException;
+
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.CryptConst;
@@ -36,7 +40,7 @@ import de.alpharogroup.crypto.algorithm.AesAlgorithm;
 import de.alpharogroup.crypto.algorithm.SunJCEAlgorithm;
 
 /**
- * The class {@link SecretKeyFactoryExtensions}.
+ * The class {@link SecretKeyFactoryExtensions}
  */
 public class SecretKeyFactoryExtensionsTest
 {
@@ -87,6 +91,17 @@ public class SecretKeyFactoryExtensionsTest
 		final String algorithm = AesAlgorithm.AES.getAlgorithm();
 		SecretKeySpec secretKeySpec = SecretKeyFactoryExtensions.newSecretKeySpec(algorithm, 128);
 		assertNotNull(secretKeySpec);
+	}
+	
+	/**
+	 * Test method for {@link SecretKeyFactoryExtensions} with {@link BeanTester}
+	 */
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(SecretKeyFactoryExtensions.class);
 	}
 
 }

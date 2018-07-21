@@ -23,10 +23,13 @@ package de.alpharogroup.crypto.factories;
 import static org.testng.Assert.assertNotNull;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
@@ -34,7 +37,7 @@ import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * The unit test class for the class {@link KeyPairFactory}.
+ * The unit test class for the class {@link KeyPairFactory}
  */
 public class KeyPairFactoryTest
 {
@@ -59,6 +62,17 @@ public class KeyPairFactoryTest
 
 		final KeyPair keyPair = KeyPairFactory.newKeyPair(publicKey, privateKey);
 		assertNotNull(keyPair);
+	}
+	
+	/**
+	 * Test method for {@link KeyPairFactory} with {@link BeanTester}
+	 */
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(KeyPairFactory.class);
 	}
 
 }

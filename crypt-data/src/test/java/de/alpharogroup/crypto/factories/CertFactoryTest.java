@@ -148,7 +148,7 @@ public class CertFactoryTest
 	}
 
 	/**
-	 * Test method for {@link CertFactory#newX509Certificate(String, byte[])}.
+	 * Test method for {@link CertFactory#newX509Certificate(String, byte[])}
 	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
@@ -174,7 +174,7 @@ public class CertFactoryTest
 
 	/**
 	 * Test method for
-	 * {@link CertFactory#newIntermediateX509CertificateV3(KeyPair, X500Name, BigInteger, Date, Date, X500Name, String, X509Certificate)}.
+	 * {@link CertFactory#newIntermediateX509CertificateV3(KeyPair, X500Name, BigInteger, Date, Date, X500Name, String, X509Certificate)}
 	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.

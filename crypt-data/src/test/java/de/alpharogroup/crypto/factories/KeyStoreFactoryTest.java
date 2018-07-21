@@ -23,11 +23,14 @@ package de.alpharogroup.crypto.factories;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
@@ -36,13 +39,13 @@ import de.alpharogroup.file.delete.DeleteFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * The unit test class for the class {@link KeyStoreFactory}.
+ * The unit test class for the class {@link KeyStoreFactory}
  */
 public class KeyStoreFactoryTest
 {
 
 	/**
-	 * Test method for {@link KeyStoreFactory#newKeyStore(String, String, File, boolean)}.
+	 * Test method for {@link KeyStoreFactory#newKeyStore(String, String, File, boolean)}
 	 *
 	 * @throws NoSuchAlgorithmException
 	 *             if the algorithm used to check the integrity of the keystore cannot be found
@@ -67,6 +70,17 @@ public class KeyStoreFactoryTest
 			privatekeyDerFile, true);
 		AssertJUnit.assertNotNull(keystore);
 		DeleteFileExtensions.delete(privatekeyDerFile);
+	}
+	
+	/**
+	 * Test method for {@link KeyStoreFactory} with {@link BeanTester}
+	 */
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(KeyStoreFactory.class);
 	}
 
 }

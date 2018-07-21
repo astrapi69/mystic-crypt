@@ -22,6 +22,7 @@ package de.alpharogroup.crypto.factories;
 
 import static org.testng.Assert.assertNotNull;
 
+import java.lang.reflect.InvocationTargetException;
 import java.security.Security;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.KeySpec;
@@ -31,20 +32,22 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.provider.SecurityProvider;
 
 /**
- * The class {@link CipherFactory}.
+ * The class {@link CipherFactory}
  */
 public class CipherFactoryTest
 {
 
 	/**
 	 * Test method for
-	 * {@link CipherFactory#newCipher(int, SecretKey, AlgorithmParameterSpec, String)}.
+	 * {@link CipherFactory#newCipher(int, SecretKey, AlgorithmParameterSpec, String)}
 	 */
 	@Test
 	public void testNewCipherIntSecretKeyAlgorithmParameterSpecString() throws Exception
@@ -63,7 +66,7 @@ public class CipherFactoryTest
 	}
 
 	/**
-	 * Test method for {@link CipherFactory#newCipher(String)}.
+	 * Test method for {@link CipherFactory#newCipher(String)}
 	 */
 	@Test
 	public void testNewCipherString() throws Exception
@@ -74,7 +77,7 @@ public class CipherFactoryTest
 	}
 
 	/**
-	 * Test method for {@link CipherFactory#newCipher(String, String)}.
+	 * Test method for {@link CipherFactory#newCipher(String, String)}
 	 */
 	@Test
 	public void testNewCipherStringString() throws Exception
@@ -86,7 +89,7 @@ public class CipherFactoryTest
 	}
 
 	/**
-	 * Test method for {@link CipherFactory#newCipher(String, String, byte[], int, int)}.
+	 * Test method for {@link CipherFactory#newCipher(String, String, byte[], int, int)}
 	 */
 	@Test
 	public void testNewCipherStringStringByteArrayIntInt() throws Exception
@@ -98,6 +101,17 @@ public class CipherFactoryTest
 		Cipher cipher = CipherFactory.newCipher(CryptConst.PRIVATE_KEY, algorithm, CryptConst.SALT,
 			CryptConst.ITERATIONCOUNT, operationMode);
 		assertNotNull(cipher);
+	}
+	
+	/**
+	 * Test method for {@link CipherFactory} with {@link BeanTester}
+	 */
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(CipherFactory.class);
 	}
 
 }

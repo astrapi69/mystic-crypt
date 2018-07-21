@@ -22,20 +22,23 @@ package de.alpharogroup.crypto.factories;
 
 import static org.testng.Assert.assertNotNull;
 
+import java.lang.reflect.InvocationTargetException;
 import java.security.spec.KeySpec;
 
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.CryptConst;
 
 /**
- * The class {@link KeySpecFactory}.
+ * The class {@link KeySpecFactory}
  */
 public class KeySpecFactoryTest
 {
 
 	/**
-	 * Test method for {@link KeySpecFactory#newPBEKeySpec(String)}.
+	 * Test method for {@link KeySpecFactory#newPBEKeySpec(String)}
 	 */
 	@Test
 	public void testNewPBEKeySpecString() throws Exception
@@ -45,7 +48,7 @@ public class KeySpecFactoryTest
 	}
 
 	/**
-	 * Test method for {@link KeySpecFactory#newPBEKeySpec(String, byte[], int)}.
+	 * Test method for {@link KeySpecFactory#newPBEKeySpec(String, byte[], int)}
 	 */
 	@Test
 	public void testNewPBEKeySpecStringByteArrayInt() throws Exception
@@ -53,6 +56,17 @@ public class KeySpecFactoryTest
 		final KeySpec keySpec = KeySpecFactory.newPBEKeySpec(CryptConst.PRIVATE_KEY,
 			CryptConst.SALT, CryptConst.ITERATIONCOUNT);
 		assertNotNull(keySpec);
+	}
+	
+	/**
+	 * Test method for {@link KeySpecFactory} with {@link BeanTester}
+	 */
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(KeySpecFactory.class);
 	}
 
 }
