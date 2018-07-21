@@ -123,7 +123,6 @@ public class PrivateKeyWriter
 		final byte[] privateKeyBytes = privateKey.getEncoded();
 		switch (fileFormat)
 		{
-			case DER :
 			case PEM :
 				if (keyFormat != null)
 				{

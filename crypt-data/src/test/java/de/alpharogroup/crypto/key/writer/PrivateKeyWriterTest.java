@@ -24,19 +24,29 @@ import static org.testng.AssertJUnit.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
+import java.security.Security;
 import java.security.spec.InvalidKeySpecException;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.algorithm.MdAlgorithm;
+import de.alpharogroup.crypto.key.KeyFileFormat;
+import de.alpharogroup.crypto.key.KeyFormat;
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 // import de.alpharogroup.file.checksum.Algorithm;
 import de.alpharogroup.file.checksum.ChecksumExtensions;
 import de.alpharogroup.file.delete.DeleteFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
+import de.alpharogroup.io.StreamExtensions;
 
 /**
  * The unit test class for the class {@link PrivateKeyWriter}.
@@ -44,63 +54,31 @@ import de.alpharogroup.file.search.PathFinder;
 public class PrivateKeyWriterTest
 {
 
-	/**
-	 * Read test private key.
-	 *
-	 * @param root
-	 *            the root
-	 * @param fileName
-	 *            the file name
-	 * @return the private key
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchProviderException
-	 *             the no such provider exception
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 */
-	public static PrivateKey readTestPrivateKey(File root, String fileName)
-		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException,
-		IOException
-	{
+	PrivateKey actual;
 
-		final File privatekeyDerFile = new File(root, fileName);
+	File pemDir;
 
-		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
-		return privateKey;
-	}
+	File derDir;
+	File privateKeyPemFile;
+
+	File privateKeyDerFile;
 
 	/**
-	 * Read test private key.
+	 * Sets up method will be invoked before every unit test method in this class.
 	 *
-	 * @param root
-	 *            the root
-	 * @param dir
-	 *            the dir
-	 * @param fileName
-	 *            the file name
-	 * @return the private key
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchProviderException
-	 *             the no such provider exception
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
+	 * @throws Exception
+	 *             the exception
 	 */
-	public static PrivateKey readTestPrivateKey(File root, String dir, String fileName)
-		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException,
-		IOException
+	@BeforeMethod
+	protected void setUp() throws Exception
 	{
+		Security.addProvider(new BouncyCastleProvider());
 
-		final File privatekeyDerDir = new File(root, dir);
-		final File privatekeyDerFile = new File(privatekeyDerDir, fileName);
-
-		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
-		return privateKey;
+		pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		privateKeyPemFile = new File(pemDir, "private.pem");
+		
+		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		privateKeyDerFile = new File(derDir, "private.der");
 	}
 
 	/**
@@ -121,19 +99,15 @@ public class PrivateKeyWriterTest
 	public void testWriteFile() throws IOException, NoSuchAlgorithmException,
 		InvalidKeySpecException, NoSuchProviderException
 	{
-		final File privatekeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		final File privatekeyDerFile = new File(privatekeyDerDir, "private.der");
+		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privateKeyDerFile);
 
-		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
-
-		final File writtenPrivatekeyDerFile = new File(privatekeyDerDir, "written-private.der");
+		final File writtenPrivatekeyDerFile = new File(derDir, "written-private.der");
 		PrivateKeyWriter.write(privateKey, writtenPrivatekeyDerFile);
-		String expected = ChecksumExtensions.getChecksum(privatekeyDerFile, MdAlgorithm.MD5);
+		String expected = ChecksumExtensions.getChecksum(privateKeyDerFile, MdAlgorithm.MD5);
 		String actual = ChecksumExtensions.getChecksum(writtenPrivatekeyDerFile, MdAlgorithm.MD5);
 		DeleteFileExtensions.delete(writtenPrivatekeyDerFile);
 		assertEquals(expected, actual);
 	}
-
 
 	/**
 	 * Test method for {@link PrivateKeyWriter#writeInPemFormat(PrivateKey, File)}.
@@ -153,19 +127,52 @@ public class PrivateKeyWriterTest
 	public void testWriteInPemFormat() throws IOException, NoSuchAlgorithmException,
 		InvalidKeySpecException, NoSuchProviderException
 	{
-		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
-		final File privatekeyPemFile = new File(publickeyDerDir, "private.pem");
+		final File privatekeyPemFile = new File(derDir, "private.pem");
 
-		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
+		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privateKeyDerFile);
 
-		final File keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File convertedPrivatekeyPemFile = new File(keyPemDir, "converted-private.pem");
+		final File convertedPrivatekeyPemFile = new File(pemDir, "converted-private.pem");
 		PrivateKeyWriter.writeInPemFormat(privateKey, convertedPrivatekeyPemFile);
 		String expected = ChecksumExtensions.getChecksum(privatekeyPemFile, MdAlgorithm.MD5);
 		String actual = ChecksumExtensions.getChecksum(convertedPrivatekeyPemFile, MdAlgorithm.MD5);
 		DeleteFileExtensions.delete(convertedPrivatekeyPemFile);
 		assertEquals(expected, actual);
+	}
+	
+	/**
+	 * Test method for {@link PrivateKeyWriter#write(PrivateKey, OutputStream, KeyFileFormat, KeyFormat)}
+	 * @throws IOException 
+	 * @throws NoSuchProviderException 
+	 * @throws InvalidKeySpecException 
+	 * @throws NoSuchAlgorithmException 
+	 */
+	@Test(enabled = false) // TODO check
+	public void testWritePrivateKeyOutputStreamKeyFileFormatKeyFormat() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
+	{
+		// TODO implement ...
+
+		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privateKeyDerFile);
+
+		final File convertedPrivatekeyPemFile = new File(pemDir, "converted-private.pem");
+		
+		convertedPrivatekeyPemFile.createNewFile();
+		OutputStream outputStream = StreamExtensions.getOutputStream(convertedPrivatekeyPemFile);
+		PrivateKeyWriter.write(privateKey, outputStream, KeyFileFormat.PEM, KeyFormat.PKCS_1);
+//		String expected = ChecksumExtensions.getChecksum(privateKeyPemFile, MdAlgorithm.MD5);
+//		String actual = ChecksumExtensions.getChecksum(convertedPrivatekeyPemFile, MdAlgorithm.MD5);
+//		DeleteFileExtensions.delete(convertedPrivatekeyPemFile);
+//		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test method for {@link PrivateKeyWriter} with {@link BeanTester}
+	 */
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(PrivateKeyWriter.class);
 	}
 
 }

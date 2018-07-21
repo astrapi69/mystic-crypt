@@ -23,10 +23,8 @@ package de.alpharogroup.crypto.key.reader;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
-import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.SecureRandom;
 import java.security.Security;
 import java.security.cert.X509Certificate;
 import java.time.LocalDate;
@@ -43,44 +41,18 @@ import org.testng.annotations.Test;
 import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.algorithm.HashAlgorithm;
 import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
-import de.alpharogroup.crypto.algorithm.RngAlgorithm;
 import de.alpharogroup.crypto.factories.CertFactory;
 import de.alpharogroup.crypto.key.KeyFileFormat;
 import de.alpharogroup.crypto.key.writer.CertificateWriter;
 import de.alpharogroup.file.delete.DeleteFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
+import de.alpharogroup.random.RandomExtensions;
 
 /**
  * The class {@link CertificateReaderTest}.
  */
 public class CertificateReaderTest
 {
-
-
-	/**
-	 * Returns a random serial number that can be used for a serial number.
-	 *
-	 * @return a random serial number as a {@link BigInteger} object.
-	 */
-	public static BigInteger randomSerialNumber()
-	{
-		long next = 0;
-		try
-		{
-			next = SecureRandom.getInstance(RngAlgorithm.SHA1PRNG.getAlgorithm()).nextLong();
-		}
-		catch (final NoSuchAlgorithmException e)
-		{
-			e.printStackTrace();
-		}
-		if (next < 0)
-		{
-			next = next * (-1);
-		}
-		final BigInteger serialNumber = BigInteger.valueOf(next);
-		return serialNumber;
-	}
-
 
 	/**
 	 * Test method for {@link CertificateReader#readCertificate(File)}.
@@ -115,7 +87,7 @@ public class CertificateReaderTest
 			LocalDate.of(2017, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
 		final Date end = Date.from(
 			LocalDate.of(2027, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		final BigInteger serialNumber = randomSerialNumber();
+		final BigInteger serialNumber = RandomExtensions.randomSerialNumber();
 		// create certificate
 		final X509Certificate cert = CertFactory.newX509Certificate(publicKey, privateKey,
 			serialNumber, subject, issuer, signatureAlgorithm, start, end);
@@ -164,7 +136,7 @@ public class CertificateReaderTest
 			LocalDate.of(2017, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
 		final Date end = Date.from(
 			LocalDate.of(2027, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		final BigInteger serialNumber = randomSerialNumber();
+		final BigInteger serialNumber = RandomExtensions.randomSerialNumber();
 		// create certificate
 		final X509Certificate cert = CertFactory.newX509Certificate(publicKey, privateKey,
 			serialNumber, subject, issuer, signatureAlgorithm, start, end);
