@@ -43,8 +43,13 @@ public class KeySpecFactoryTest
 	@Test
 	public void testNewPBEKeySpecString() throws Exception
 	{
-		KeySpec keySpec = KeySpecFactory.newPBEKeySpec(CryptConst.PRIVATE_KEY);
-		assertNotNull(keySpec);
+		KeySpec actual;
+
+		actual = KeySpecFactory.newPBEKeySpec(CryptConst.PRIVATE_KEY);
+		assertNotNull(actual);
+
+		actual = KeySpecFactory.newPBEKeySpec(null);
+		assertNotNull(actual);
 	}
 
 	/**
@@ -53,11 +58,17 @@ public class KeySpecFactoryTest
 	@Test
 	public void testNewPBEKeySpecStringByteArrayInt() throws Exception
 	{
-		final KeySpec keySpec = KeySpecFactory.newPBEKeySpec(CryptConst.PRIVATE_KEY,
-			CryptConst.SALT, CryptConst.ITERATIONCOUNT);
-		assertNotNull(keySpec);
+		KeySpec actual;
+
+		actual = KeySpecFactory.newPBEKeySpec(CryptConst.PRIVATE_KEY, CryptConst.SALT,
+			CryptConst.ITERATIONCOUNT);
+		assertNotNull(actual);
+
+		actual = KeySpecFactory.newPBEKeySpec(null, CryptConst.SALT,
+			CryptConst.ITERATIONCOUNT);
+		assertNotNull(actual);
 	}
-	
+
 	/**
 	 * Test method for {@link KeySpecFactory} with {@link BeanTester}
 	 */

@@ -46,15 +46,17 @@ public class KeyPairFactory
 
 	/**
 	 * Factory method for creating a new {@link KeyPair} from the given algorithm and
-	 * {@link KeySize}.
+	 * {@link KeySize}
 	 *
 	 * @param algorithm
 	 *            the algorithm
 	 * @param keySize
 	 *            the key size as enum
-	 * @return the new {@link KeyPair} from the given salt and iteration count.
+	 * @return the new {@link KeyPair} from the given salt and iteration count
+	 * 
 	 * @throws NoSuchAlgorithmException
-	 *             the no such algorithm exception
+	 *             is thrown if no Provider supports a KeyPairGeneratorSpi implementation for the
+	 *             specified algorithm
 	 */
 	public static KeyPair newKeyPair(final Algorithm algorithm, final KeySize keySize)
 		throws NoSuchAlgorithmException
@@ -69,9 +71,11 @@ public class KeyPairFactory
 	 *            the algorithm
 	 * @param keySize
 	 *            the key size
-	 * @return the new {@link KeyPair} from the given salt and iteration count.
+	 * @return the new {@link KeyPair} from the given salt and iteration count
+	 * 
 	 * @throws NoSuchAlgorithmException
-	 *             the no such algorithm exception
+	 *             is thrown if no Provider supports a KeyPairGeneratorSpi implementation for the
+	 *             specified algorithm
 	 */
 	public static KeyPair newKeyPair(final Algorithm algorithm, final int keySize)
 		throws NoSuchAlgorithmException
@@ -86,9 +90,11 @@ public class KeyPairFactory
 	 *            the algorithm
 	 * @param keySize
 	 *            the key size
-	 * @return the new {@link KeyPair} from the given parameters.
+	 * @return the new {@link KeyPair} from the given parameters
+	 * 
 	 * @throws NoSuchAlgorithmException
-	 *             the no such algorithm exception
+	 *             is thrown if no Provider supports a KeyPairGeneratorSpi implementation for the
+	 *             specified algorithm
 	 */
 	public static KeyPair newKeyPair(final String algorithm, final int keySize)
 		throws NoSuchAlgorithmException
@@ -119,16 +125,18 @@ public class KeyPairFactory
 	 *            the public key der file
 	 * @param privateKeyDerFile
 	 *            the private key der file
-	 * @return the new {@link KeyPair} from the given parameters. *
+	 * @return the new {@link KeyPair} from the given parameters. 
+	 * 
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the cypher object fails.
+	 *             is thrown if no Provider supports a KeyPairGeneratorSpi implementation for the
+	 *             specified algorithm
 	 * @throws InvalidKeySpecException
 	 *             is thrown if generation of the SecretKey object fails.
 	 * @throws NoSuchProviderException
 	 *             is thrown if the specified provider is not registered in the security provider
-	 *             list.
+	 *             list
 	 */
 	public static KeyPair newKeyPair(final File publicKeyDerFile, final File privateKeyDerFile)
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException,
@@ -146,10 +154,11 @@ public class KeyPairFactory
 	 *            the algorithm
 	 * @param keySize
 	 *            the key size
-	 * @return the new {@link KeyPairGenerator} from the given parameters.
+	 * @return the new {@link KeyPairGenerator} from the given parameters
+	 * 
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if no Provider supports a KeyPairGeneratorSpi implementation for the
-	 *             specified algorithm.
+	 *             specified algorithm
 	 */
 	public static KeyPairGenerator newKeyPairGenerator(final String algorithm, final int keySize)
 		throws NoSuchAlgorithmException
@@ -168,10 +177,11 @@ public class KeyPairFactory
 	 *            the key size
 	 * @param secureRandom
 	 *            the secure random
-	 * @return the new {@link KeyPairGenerator} from the given parameters.
+	 * @return the new {@link KeyPairGenerator} from the given parameters
+	 * 
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if no Provider supports a KeyPairGeneratorSpi implementation for the
-	 *             specified algorithm.
+	 *             specified algorithm
 	 */
 	public static KeyPairGenerator newKeyPairGenerator(final String algorithm, final int keySize,
 		final SecureRandom secureRandom) throws NoSuchAlgorithmException
