@@ -22,8 +22,12 @@ package de.alpharogroup.crypto.hex;
 
 import static org.junit.Assert.assertEquals;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.StringUtils;
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
 /**
@@ -134,6 +138,16 @@ public class HexExtensionsTest
 		actual = HexExtensions.toHex(10);
 		org.junit.Assert.assertTrue(actual == 'A');
 	}
-
+	
+	/**
+	 * Test method for {@link HexExtensions} with {@link BeanTester}
+	 */
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(HexExtensions.class);
+	}
 
 }
