@@ -174,17 +174,17 @@ public class CipherFactory
 	 * @return the cipher
 	 *
 	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 *             is thrown if instantiation of the SecretKeyFactory object fails
 	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
+	 *             is thrown if generation of the SecretKey object fails
 	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cypher object fails.
+	 *             is thrown if instantiation of the cypher object fails
 	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cypher object fails.
+	 *             is thrown if initialization of the cypher object fails
 	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
+	 *             is thrown if initialization of the cypher object fails
 	 * @throws UnsupportedEncodingException
-	 *             is thrown if the named charset is not supported.
+	 *             is thrown if the named charset is not supported
 	 */
 	public static Cipher newCipher(final CryptModel<Cipher, String> model)
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,

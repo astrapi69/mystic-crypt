@@ -22,12 +22,18 @@ package de.alpharogroup.crypto.factories;
 
 import static org.testng.Assert.assertNotNull;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.security.Security;
 import java.security.spec.AlgorithmParameterSpec;
+import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 
 import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 
@@ -37,6 +43,8 @@ import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.CryptConst;
+import de.alpharogroup.crypto.algorithm.SunJCEAlgorithm;
+import de.alpharogroup.crypto.model.CryptModel;
 import de.alpharogroup.crypto.provider.SecurityProvider;
 
 /**
@@ -101,6 +109,37 @@ public class CipherFactoryTest
 		Cipher cipher = CipherFactory.newCipher(CryptConst.PRIVATE_KEY, algorithm, CryptConst.SALT,
 			CryptConst.ITERATIONCOUNT, operationMode);
 		assertNotNull(cipher);
+	}
+	
+	/**
+	 * Test method for {@link CipherFactory#newCipher(CryptModel)}
+	 * 
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the cypher object fails
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cypher object fails
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported
+	 */
+	@Test
+	public void testNewCipherCryptModelOfCipherString() throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+	{
+		Cipher actual;
+		String privateKey;
+		
+		privateKey = "D1D15ED36B887AF1";
+		CryptModel<Cipher, String> encryptorModel = CryptModel.<Cipher, String> builder()
+			.key(privateKey).algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).salt(CryptConst.SALT)
+			.iterationCount(19).operationMode(Cipher.ENCRYPT_MODE).build();
+
+		actual = CipherFactory.newCipher(encryptorModel);
+		assertNotNull(actual);
 	}
 	
 	/**
