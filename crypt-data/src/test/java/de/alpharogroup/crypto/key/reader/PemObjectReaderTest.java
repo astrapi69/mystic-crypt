@@ -32,20 +32,18 @@ import org.bouncycastle.util.io.pem.PemObject;
 import org.meanbean.factories.ObjectCreationException;
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.file.search.PathFinder;
+import lombok.extern.slf4j.Slf4j;
 
 
 /**
  * The unit test class for the class {@link PemObjectReader}.
  */
+@Slf4j
 public class PemObjectReaderTest
 {
-	/** The LOGGER. */
-	static final Logger logger = LoggerFactory.getLogger(PemObjectReaderTest.class.getName());
 
 	/**
 	 * Test method for {@link PemObjectReader#getPemObject(File)}.
@@ -97,7 +95,7 @@ public class PemObjectReaderTest
 
 		final PemObject pemObject = PemObjectReader.getPemObject(privatekeyPemFile);
 		final String foo = PemObjectReader.toPemFormat(pemObject);
-		logger.debug("\n" + foo);
+		log.debug("\n" + foo);
 	}
 
 	/**

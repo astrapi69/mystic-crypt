@@ -20,83 +20,185 @@
  */
 package de.alpharogroup.crypto.key.reader;
 
+import static org.testng.AssertJUnit.assertNotNull;
+
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.Security;
+import java.security.spec.InvalidKeySpecException;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
-import org.testng.AssertJUnit;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
 import de.alpharogroup.crypto.key.PrivateKeyExtensions;
 import de.alpharogroup.crypto.provider.SecurityProvider;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * Test class for {@link PrivateKeyReader}.
+ * The unit test class for the class {@link PrivateKeyReader}
  */
 public class PrivateKeyReaderTest
 {
 
+	PrivateKey actual;
+
+	File pemDir;
+	File privateKeyPemFile;
+	File privateKeyPemFile2;
+
+	File derDir;
+	File privateKeyDerFile;
+
 	/**
-	 * Test method for {@link PrivateKeyReader#readPrivateKey(File)}.
-	 *
-	 * @throws Exception
-	 *             the exception
+	 * Sets up method will be invoked before every unit test method in this class
 	 */
-	@Test
-	public void testReadPemFileAsBase64() throws Exception
+	@BeforeMethod
+	protected void setUp()
 	{
-		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
-
 		Security.addProvider(new BouncyCastleProvider());
-		final String privateKeyAsBase64String = PrivateKeyReader
-			.readPemFileAsBase64(privatekeyPemFile);
 
-		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile);
+		pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		privateKeyPemFile = new File(pemDir, "private.pem");
+		privateKeyPemFile2 = new File(pemDir, "private2.pem");
 
-		final String base64 = PrivateKeyExtensions.toBase64(privateKey);
-		AssertJUnit.assertNotNull(privateKeyAsBase64String);
-		AssertJUnit.assertNotNull(base64);
+		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		privateKeyDerFile = new File(derDir, "private.der");
 	}
 
 	/**
-	 * Test method for {@link PrivateKeyReader#readPemPrivateKey(File, SecurityProvider)}.
-	 *
-	 * @throws Exception
-	 *             the exception
+	 * Test method for {@link PrivateKeyReader#readPrivateKey(File)}
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
+	 */
+	@Test
+	public void testReadPemFileAsBase64() throws IOException, NoSuchAlgorithmException,
+		InvalidKeySpecException, NoSuchProviderException
+	{
+		String privateKeyAsBase64String;
+		String base64;
+		
+		privateKeyAsBase64String = PrivateKeyReader
+			.readPemFileAsBase64(privateKeyPemFile);
+
+		actual = PrivateKeyReader.readPemPrivateKey(privateKeyPemFile);
+
+		base64 = PrivateKeyExtensions.toBase64(actual);
+		assertNotNull(privateKeyAsBase64String);
+		assertNotNull(base64);
+		
+		privateKeyAsBase64String = PrivateKeyReader
+			.readPemFileAsBase64(privateKeyPemFile2);
+
+		actual = PrivateKeyReader.readPemPrivateKey(privateKeyPemFile);
+
+		base64 = PrivateKeyExtensions.toBase64(actual);
+		assertNotNull(privateKeyAsBase64String);
+		assertNotNull(base64);
+	}
+
+	/**
+	 * Test method for {@link PrivateKeyReader#readPemPrivateKey(File, SecurityProvider)}
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
 	 */
 	@Test(enabled = true)
-	public void testReadPemPrivateKey() throws Exception
+	public void testReadPemPrivateKey() throws NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchProviderException, IOException
 	{
-		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
-
-		Security.addProvider(new BouncyCastleProvider());
-		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile);
-		AssertJUnit.assertNotNull(privateKey);
+		actual = PrivateKeyReader.readPemPrivateKey(privateKeyPemFile);
+		assertNotNull(actual);
 	}
 
 	/**
-	 * Test method for {@link PrivateKeyReader#readPrivateKey(File)}.
-	 *
-	 * @throws Exception
-	 *             the exception
+	 * Test method for {@link PrivateKeyReader#readPrivateKey(File)}
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
 	 */
 	@Test
-	public void testReadPrivateKey() throws Exception
+	public void testReadPrivateKey() throws NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchProviderException, IOException
 	{
-		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
-		Security.addProvider(new BouncyCastleProvider());
+		actual = PrivateKeyReader.readPrivateKey(privateKeyDerFile);
+		assertNotNull(actual);
+	}
 
-		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
+	/**
+	 * Test method for {@link PrivateKeyReader#readPemPrivateKey(File, String)}
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
+	 */
+	@Test
+	public void testReadPemPrivateKeyFileString() throws NoSuchAlgorithmException,
+		InvalidKeySpecException, NoSuchProviderException, IOException
+	{
+		actual = PrivateKeyReader.readPemPrivateKey(privateKeyPemFile,
+			KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
+		assertNotNull(actual);
+	}
 
-		AssertJUnit.assertNotNull(privateKey);
+	/**
+	 * Test method for {@link PrivateKeyReader#readPemPrivateKey(String, String)}.
+	 *
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred. *
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
+	 */
+	@Test
+	public void testReadPemPrivateKeyStringString() throws IOException, NoSuchAlgorithmException,
+		InvalidKeySpecException, NoSuchProviderException
+	{
+		final String privateKeyAsBase64String = PrivateKeyReader
+			.readPemFileAsBase64(privateKeyPemFile);
+
+		actual = PrivateKeyReader.readPemPrivateKey(privateKeyAsBase64String,
+			KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
+		assertNotNull(actual);
 	}
 
 	/**
