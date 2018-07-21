@@ -160,7 +160,7 @@ public class PrivateKeyWriterTest
 		PrivateKeyWriter.write(privateKey, outputStream, KeyFileFormat.PEM, KeyFormat.PKCS_1);
 //		String expected = ChecksumExtensions.getChecksum(privateKeyPemFile, MdAlgorithm.MD5);
 //		String actual = ChecksumExtensions.getChecksum(convertedPrivatekeyPemFile, MdAlgorithm.MD5);
-//		DeleteFileExtensions.delete(convertedPrivatekeyPemFile);
+		DeleteFileExtensions.delete(convertedPrivatekeyPemFile);
 //		assertEquals(expected, actual);
 	}
 

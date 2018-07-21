@@ -36,17 +36,6 @@ public class CryptoCipherInputStream extends CipherInputStream
 	 *
 	 * @param inputStream
 	 *            the input stream
-	 */
-	public CryptoCipherInputStream(final InputStream inputStream)
-	{
-		super(inputStream);
-	}
-
-	/**
-	 * Instantiates a new {@link CryptoCipherInputStream} object.
-	 *
-	 * @param inputStream
-	 *            the input stream
 	 * @param cipher
 	 *            the cipher
 	 */
