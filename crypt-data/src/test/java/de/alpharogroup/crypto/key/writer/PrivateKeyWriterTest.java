@@ -64,13 +64,10 @@ public class PrivateKeyWriterTest
 	File privateKeyDerFile;
 
 	/**
-	 * Sets up method will be invoked before every unit test method in this class.
-	 *
-	 * @throws Exception
-	 *             the exception
+	 * Sets up method will be invoked before every unit test method in this class
 	 */
 	@BeforeMethod
-	protected void setUp() throws Exception
+	protected void setUp() 
 	{
 		Security.addProvider(new BouncyCastleProvider());
 
@@ -99,12 +96,17 @@ public class PrivateKeyWriterTest
 	public void testWriteFile() throws IOException, NoSuchAlgorithmException,
 		InvalidKeySpecException, NoSuchProviderException
 	{
+
+		String expected;
+		String actual;
+		File writtenPrivatekeyDerFile;
+		// new scenario...		
 		privateKey = PrivateKeyReader.readPrivateKey(privateKeyDerFile);
 
-		final File writtenPrivatekeyDerFile = new File(derDir, "written-private.der");
+		writtenPrivatekeyDerFile = new File(derDir, "written-private.der");
 		PrivateKeyWriter.write(privateKey, writtenPrivatekeyDerFile);
-		String expected = ChecksumExtensions.getChecksum(privateKeyDerFile, MdAlgorithm.MD5);
-		String actual = ChecksumExtensions.getChecksum(writtenPrivatekeyDerFile, MdAlgorithm.MD5);
+		expected = ChecksumExtensions.getChecksum(privateKeyDerFile, MdAlgorithm.MD5);
+		actual = ChecksumExtensions.getChecksum(writtenPrivatekeyDerFile, MdAlgorithm.MD5);
 		DeleteFileExtensions.delete(writtenPrivatekeyDerFile);
 		assertEquals(expected, actual);
 	}
@@ -127,16 +129,19 @@ public class PrivateKeyWriterTest
 	public void testWriteInPemFormat() throws IOException, NoSuchAlgorithmException,
 		InvalidKeySpecException, NoSuchProviderException
 	{
+		String expected;
+		String actual;
 		File privatekeyPemFileInDerDir;
-		
+		File convertedPrivatekeyPemFile;
+		// new scenario...		
 		privateKey = PrivateKeyReader.readPrivateKey(privateKeyDerFile);
 
-		final File convertedPrivatekeyPemFile = new File(pemDir, "converted-private.pem");
+		convertedPrivatekeyPemFile = new File(pemDir, "converted-private.pem");
 		PrivateKeyWriter.writeInPemFormat(privateKey, convertedPrivatekeyPemFile);
 
 		privatekeyPemFileInDerDir = new File(derDir, "private.pem");
-		String expected = ChecksumExtensions.getChecksum(privatekeyPemFileInDerDir, MdAlgorithm.MD5);
-		String actual = ChecksumExtensions.getChecksum(convertedPrivatekeyPemFile, MdAlgorithm.MD5);
+		expected = ChecksumExtensions.getChecksum(privatekeyPemFileInDerDir, MdAlgorithm.MD5);
+		actual = ChecksumExtensions.getChecksum(convertedPrivatekeyPemFile, MdAlgorithm.MD5);
 		DeleteFileExtensions.delete(convertedPrivatekeyPemFile);
 		assertEquals(expected, actual);
 	}
