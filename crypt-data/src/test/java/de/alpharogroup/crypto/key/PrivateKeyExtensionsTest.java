@@ -24,6 +24,7 @@ import static org.testng.AssertJUnit.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
@@ -32,9 +33,13 @@ import java.security.Security;
 import java.security.spec.InvalidKeySpecException;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
+import de.alpharogroup.crypto.factories.KeyPairFactory;
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.file.search.PathFinder;
@@ -131,6 +136,12 @@ public class PrivateKeyExtensionsTest
 
 		actual = PrivateKeyExtensions.generatePublicKey(privateKey);
 		assertEquals(expected, actual);
+		// new scenario...		
+		privateKey = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.DSA, KeySize.KEYSIZE_1024).getPrivate();
+
+		expected = null;
+		actual = PrivateKeyExtensions.generatePublicKey(privateKey);
+		assertEquals(expected, actual);
 	}
 
 	/**
@@ -156,6 +167,65 @@ public class PrivateKeyExtensionsTest
 
 		actual = PrivateKeyExtensions.getKeyLength(privateKey);
 		expected = 2048;
+		assertEquals(expected, actual);
+		// new scenario...
+		actual = PrivateKeyExtensions.getKeyLength(null);
+		expected = -1;
+		assertEquals(expected, actual);
+		// new scenario...		
+		privateKey = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.DSA, KeySize.KEYSIZE_1024).getPrivate();
+		actual = PrivateKeyExtensions.getKeyLength(privateKey);
+		expected = 160;
+		assertEquals(expected, actual);
+		// new scenario...		
+		privateKey = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.EC, KeySize.KEYSIZE_4096).getPrivate();
+		actual = PrivateKeyExtensions.getKeyLength(privateKey);
+		expected = 239;
+		assertEquals(expected, actual);
+	}
+	
+	/**
+	 * Test method for {@link PrivateKeyExtensions#getKeySize(PrivateKey)}
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
+	 */
+	@Test(enabled = true)
+	public void testGetKeySize() throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException, IOException 
+	{
+		KeySize actual;
+		KeySize expected;
+		// new scenario...
+		privateKey = PrivateKeyReader.readPemPrivateKey(privateKeyPemFile);
+
+		actual = PrivateKeyExtensions.getKeySize(privateKey);
+		expected = KeySize.KEYSIZE_2048;
+		assertEquals(expected, actual);
+		// new scenario...
+		actual = PrivateKeyExtensions.getKeySize(null);
+		expected = null;
+		assertEquals(expected, actual);
+		// new scenario...		
+		privateKey = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, KeySize.KEYSIZE_1024).getPrivate();
+		actual = PrivateKeyExtensions.getKeySize(privateKey);
+		expected = KeySize.KEYSIZE_1024;
+		assertEquals(expected, actual);
+		// new scenario...		
+		privateKey = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, KeySize.KEYSIZE_4096).getPrivate();
+		actual = PrivateKeyExtensions.getKeySize(privateKey);
+		expected = KeySize.KEYSIZE_4096;
+		assertEquals(expected, actual);
+		// new scenario...		
+		privateKey = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, KeySize.KEYSIZE_8192).getPrivate();
+		actual = PrivateKeyExtensions.getKeySize(privateKey);
+		expected = KeySize.KEYSIZE_8192;
 		assertEquals(expected, actual);
 	}
 
@@ -259,6 +329,17 @@ public class PrivateKeyExtensionsTest
 		actual = PrivateKeyExtensions.toPemFormat(privateKey);
 		expected = PRIVATE_KEY_BASE64_ENCODED;
 		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test method for {@link PrivateKeyExtensions} with {@link BeanTester}
+	 */
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(PrivateKeyExtensions.class);
 	}
 
 }

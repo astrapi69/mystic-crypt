@@ -29,6 +29,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Security;
@@ -185,10 +186,13 @@ public class CertFactoryTest
 	 *             available from the specified provider.
 	 * @throws OperatorCreationException
 	 *             is thrown if a security error occur on creation of {@link ContentSigner}
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list
 	 */
 	@Test
 	public void testNewIntermediateX509CertificateV3() throws IOException, CertificateException,
-		NoSuchAlgorithmException, OperatorCreationException
+		NoSuchAlgorithmException, OperatorCreationException, NoSuchProviderException
 	{
 		X509Certificate actual;
 		X509Certificate caCert;
@@ -229,10 +233,13 @@ public class CertFactoryTest
 	 *             available from the specified provider.
 	 * @throws OperatorCreationException
 	 *             is thrown if a security error occur on creation of {@link ContentSigner}
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list
 	 */
 	@Test
 	public void testNewEndEntityX509CertificateV3() throws IOException, CertificateException,
-		NoSuchAlgorithmException, OperatorCreationException
+		NoSuchAlgorithmException, OperatorCreationException, NoSuchProviderException
 	{
 		X509Certificate actual;
 		X509Certificate caCert;

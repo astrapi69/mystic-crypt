@@ -25,7 +25,6 @@ import static org.testng.AssertJUnit.assertNotNull;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.security.InvalidParameterException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -33,8 +32,10 @@ import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
+import java.security.Security;
 import java.security.spec.InvalidKeySpecException;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
@@ -79,12 +80,16 @@ public class KeyPairFactoryTest
 	 * 
 	 * @throws NoSuchAlgorithmException
 	 *             the no such algorithm exception
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list
 	 */
 	@Test
-	public void testNewKeyPairAlgorithmKeySize() throws NoSuchAlgorithmException
+	public void testNewKeyPairAlgorithmKeySize() throws NoSuchAlgorithmException, NoSuchProviderException
 	{
 		KeyPair actual;
 
+		Security.addProvider(new BouncyCastleProvider());
 		actual = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.DIFFIE_HELLMAN,
 			KeySize.KEYSIZE_2048);
 		assertNotNull(actual);
@@ -94,19 +99,9 @@ public class KeyPairFactoryTest
 
 		actual = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, KeySize.KEYSIZE_2048);
 		assertNotNull(actual);
-	}
 
-	/**
-	 * Test method for {@link KeyPairFactory#newKeyPair(Algorithm, KeySize)}
-	 * 
-	 * @throws NoSuchAlgorithmException
-	 *             the no such algorithm exception
-	 */
-	@Test(expectedExceptions = InvalidParameterException.class)
-	public void testNewKeyPairAlgorithmKeySizeInvalidParameterException()
-		throws NoSuchAlgorithmException
-	{
-		KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.EC, KeySize.KEYSIZE_2048);
+		actual = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.EC, KeySize.KEYSIZE_2048);
+		assertNotNull(actual);
 	}
 
 	/**

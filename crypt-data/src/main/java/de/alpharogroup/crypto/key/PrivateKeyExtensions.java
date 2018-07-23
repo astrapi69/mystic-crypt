@@ -232,17 +232,20 @@ public class PrivateKeyExtensions
 	}
 
 	/**
-	 * Transform the given byte array(of private key in PKCS#1 format) to a PEM formatted {@link String}
+	 * Transform the given byte array(of private key in PKCS#1 format) to a PEM formatted
+	 * {@link String}.
 	 *
-	 * @param privateKey
-	 *            the private key
+	 * @param privateKeyPKCS1Formatted
+	 *            the byte array(of private key in PKCS#1 format)
 	 * @return the byte array formatted in PKCS#1
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred
 	 */
-	public static String fromPKCS1ToPemFormat(final byte[] privateKeyPKCS1Formatted) throws IOException
+	public static String fromPKCS1ToPemFormat(final byte[] privateKeyPKCS1Formatted)
+		throws IOException
 	{
-		PemObject pemObject = new PemObject(PrivateKeyReader.RSA_PRIVATE_KEY, privateKeyPKCS1Formatted);
+		PemObject pemObject = new PemObject(PrivateKeyReader.RSA_PRIVATE_KEY,
+			privateKeyPKCS1Formatted);
 		StringWriter stringWriter = new StringWriter();
 		PemWriter pemWriter = new PemWriter(stringWriter);
 		pemWriter.writeObject(pemObject);
@@ -250,7 +253,6 @@ public class PrivateKeyExtensions
 		String string = stringWriter.toString();
 		return string;
 	}
-	
-	
+
 
 }

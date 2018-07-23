@@ -57,9 +57,12 @@ public class KeyPairFactory
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if no Provider supports a KeyPairGeneratorSpi implementation for the
 	 *             specified algorithm
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list
 	 */
 	public static KeyPair newKeyPair(final Algorithm algorithm, final KeySize keySize)
-		throws NoSuchAlgorithmException
+		throws NoSuchAlgorithmException, NoSuchProviderException
 	{
 		return newKeyPair(algorithm.getAlgorithm(), keySize.getKeySize());
 	}
@@ -76,9 +79,12 @@ public class KeyPairFactory
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if no Provider supports a KeyPairGeneratorSpi implementation for the
 	 *             specified algorithm
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list
 	 */
 	public static KeyPair newKeyPair(final Algorithm algorithm, final int keySize)
-		throws NoSuchAlgorithmException
+		throws NoSuchAlgorithmException, NoSuchProviderException
 	{
 		return newKeyPair(algorithm.getAlgorithm(), keySize);
 	}
@@ -95,9 +101,12 @@ public class KeyPairFactory
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if no Provider supports a KeyPairGeneratorSpi implementation for the
 	 *             specified algorithm
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list
 	 */
 	public static KeyPair newKeyPair(final String algorithm, final int keySize)
-		throws NoSuchAlgorithmException
+		throws NoSuchAlgorithmException, NoSuchProviderException
 	{
 		final KeyPairGenerator generator = newKeyPairGenerator(algorithm, keySize);
 		return generator.generateKeyPair();
@@ -125,7 +134,7 @@ public class KeyPairFactory
 	 *            the public key der file
 	 * @param privateKeyDerFile
 	 *            the private key der file
-	 * @return the new {@link KeyPair} from the given parameters. 
+	 * @return the new {@link KeyPair} from the given parameters.
 	 * 
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
@@ -159,12 +168,23 @@ public class KeyPairFactory
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if no Provider supports a KeyPairGeneratorSpi implementation for the
 	 *             specified algorithm
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list
 	 */
 	public static KeyPairGenerator newKeyPairGenerator(final String algorithm, final int keySize)
-		throws NoSuchAlgorithmException
+		throws NoSuchAlgorithmException, NoSuchProviderException
 	{
-		final KeyPairGenerator generator = KeyPairGenerator.getInstance(algorithm);
-		generator.initialize(keySize);
+		KeyPairGenerator generator;
+		if ("EC".equals(algorithm))
+		{
+			generator = KeyPairGenerator.getInstance(algorithm, "BC");
+		}
+		else
+		{
+			generator = KeyPairGenerator.getInstance(algorithm);
+			generator.initialize(keySize);
+		}
 		return generator;
 	}
 
