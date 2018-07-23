@@ -150,11 +150,10 @@ public class PrivateKeyWriterTest
 	 * @throws InvalidKeySpecException
 	 * @throws NoSuchAlgorithmException
 	 */
-	@Test(enabled = true) // TODO check
+	@Test(enabled = true) 
 	public void testWritePrivateKeyOutputStreamKeyFileFormatKeyFormat() throws IOException,
 		NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
 	{
-		// TODO implement ...
 		String expected;
 		String actual;
 		OutputStream outputStream;

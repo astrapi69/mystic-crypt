@@ -24,17 +24,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 
-import org.bouncycastle.openssl.jcajce.JcaPEMWriter;
-
 import de.alpharogroup.crypto.key.KeyFileFormat;
 import de.alpharogroup.crypto.key.KeyFormat;
 import de.alpharogroup.crypto.key.PrivateKeyExtensions;
-import de.alpharogroup.file.write.WriteFileQuietlyExtensions;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
@@ -93,13 +89,7 @@ public class PrivateKeyWriter
 	public static void writeInPemFormat(final PrivateKey privateKey, final @NonNull File file)
 		throws IOException
 	{
-		final StringWriter stringWriter = new StringWriter();
-		final JcaPEMWriter pemWriter = new JcaPEMWriter(stringWriter);
-		pemWriter.writeObject(privateKey);
-		pemWriter.close();
-		String pemFormat = stringWriter.toString();
-		pemFormat = pemFormat.replaceAll("\\r\\n", "\\\n");
-		WriteFileQuietlyExtensions.string2File(file, pemFormat);
+		KeyWriter.writeInPemFormat(privateKey, file);
 	}
 
 	/**

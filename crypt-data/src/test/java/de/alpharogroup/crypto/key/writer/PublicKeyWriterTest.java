@@ -24,6 +24,7 @@ import static org.testng.AssertJUnit.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
@@ -32,6 +33,8 @@ import java.security.Security;
 import java.security.spec.InvalidKeySpecException;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.algorithm.MdAlgorithm;
@@ -109,6 +112,17 @@ public class PublicKeyWriterTest
 			MdAlgorithm.MD5);
 		DeleteFileExtensions.delete(convertedPublickeyPemFile);
 		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test method for {@link PublicKeyWriter} with {@link BeanTester}
+	 */
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(PublicKeyWriter.class);
 	}
 
 }
