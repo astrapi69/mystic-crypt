@@ -3,32 +3,43 @@
  *
  * Copyright (C) 2015 Asterios Raptis
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
- * associated documentation files (the "Software"), to deal in the Software without restriction,
- * including without limitation the rights to use, copy, modify, merge, publish, distribute,
- * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all copies or
- * substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
- * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
- * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package de.alpharogroup.crypto.key;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Security;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.testng.AssertJUnit;
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
+import de.alpharogroup.crypto.factories.KeyPairFactory;
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.file.read.ReadFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
@@ -61,6 +72,31 @@ public class PublicKeyExtensionsTest
 	/** The hex string encoded for use in tests. */
 	public static String HEX_STRING_ENCODED = "30820122300d06092a864886f70d01010105000382010f003082010a0282010100de9ad9316a7690eeab7c434ee29ed728d2bd3868ac26cc78286d6019f49cb337507c8c56ffa29a0045a08544a17759f6b725fa2e8dd4a80e6df4eca1c949ed5e7010d8264f63936ad9ae4709b1f67bd408cc97623c13425d3b37c08a6b20626fd93d0ef6a90e1bb088aa16638ab9e168650002a312d21bd50e7f80029cefd0570989d68ee6a5f9e8bb28e653e93960910441eac10c9b5e116b0e96d36d8d2ed0a857a200e743e8c6b7d94c12cf121af287d05b96dd3b97b03351938b874bdc3f8db6f1d430b5b2314cbf78cd1e8e13acaa29bd195c2f60f7b87a7f880008794f835de6525081118bf155910c4835125fd9b01dbd134381316d0945b8250766610203010001";
 
+	PublicKey publicKey;
+
+	File pemDir;
+
+	File derDir;
+	File privateKeyPemFile;
+	File privateKeyDerFile;
+	File publicKeyPemFile;
+
+	/**
+	 * Sets up method will be invoked before every unit test method in this class
+	 */
+	@BeforeMethod
+	protected void setUp() 
+	{
+		Security.addProvider(new BouncyCastleProvider());
+
+		pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		privateKeyPemFile = new File(pemDir, "private.pem");
+		publicKeyPemFile = new File(pemDir, "public.pem");
+
+		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		privateKeyDerFile = new File(derDir, "private.der");
+	}
+	
 	/**
 	 * Test method for {@link PublicKeyExtensions#getKeyLength(PrivateKey)}.
 	 *
@@ -70,17 +106,28 @@ public class PublicKeyExtensionsTest
 	@Test(enabled = true)
 	public void testGetKeyLength() throws Exception
 	{
+		int actual;
+		int expected;
+		// new scenario...
+		publicKey = PublicKeyReader.readPemPublicKey(publicKeyPemFile);
 
-		final File keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File publickeyPemFile = new File(keyPemDir, "public.pem");
-
-		Security.addProvider(new BouncyCastleProvider());
-
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
-
-		final int actual = PublicKeyExtensions.getKeyLength(publicKey);
-		final int expected = 2048;
-		AssertJUnit.assertEquals(expected, actual);
+		actual = PublicKeyExtensions.getKeyLength(publicKey);
+		expected = 2048;
+		assertEquals(expected, actual);
+		// new scenario...
+		actual = PublicKeyExtensions.getKeyLength(null);
+		expected = -1;
+		assertEquals(expected, actual);
+		// new scenario...		
+		publicKey = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.DSA, KeySize.KEYSIZE_1024).getPublic();
+		actual = PublicKeyExtensions.getKeyLength(publicKey);
+		expected = 1024;
+		assertEquals(expected, actual);
+		// new scenario...		
+		publicKey = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.EC, KeySize.KEYSIZE_4096).getPublic();
+		actual = PublicKeyExtensions.getKeyLength(publicKey);
+		expected = 239;
+		assertEquals(expected, actual);
 	}
 
 	/**
@@ -92,15 +139,13 @@ public class PublicKeyExtensionsTest
 	@Test
 	public void testToBase64() throws Exception
 	{
-		final File keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File publickeyPemFile = new File(keyPemDir, "public.pem");
-
-		Security.addProvider(new BouncyCastleProvider());
-
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
-
-		final String base64 = PublicKeyExtensions.toBase64(publicKey);
-		AssertJUnit.assertEquals(PUBLIC_KEY_BASE64_ENCODED, base64);
+		String actual;
+		String expected;
+		// new scenario...
+		publicKey = PublicKeyReader.readPemPublicKey(publicKeyPemFile);
+		actual = PublicKeyExtensions.toBase64(publicKey);
+		expected = PUBLIC_KEY_BASE64_ENCODED;
+		assertEquals(expected, actual);
 	}
 
 	/**
@@ -112,17 +157,14 @@ public class PublicKeyExtensionsTest
 	@Test(enabled = true)
 	public void testToHexString() throws Exception
 	{
+		String actual;
+		String expected;
+		// new scenario...
+		publicKey = PublicKeyReader.readPemPublicKey(publicKeyPemFile);
 
-		final File keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File publickeyPemFile = new File(keyPemDir, "public.pem");
-
-		Security.addProvider(new BouncyCastleProvider());
-
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
-
-		final String actual = PublicKeyExtensions.toHexString(publicKey);
-		final String expected = HEX_STRING_ENCODED;
-		AssertJUnit.assertEquals(expected, actual);
+		actual = PublicKeyExtensions.toHexString(publicKey);
+		expected = HEX_STRING_ENCODED;
+		assertEquals(expected, actual);
 	}
 
 
@@ -136,16 +178,14 @@ public class PublicKeyExtensionsTest
 	public void testToHexStringBoolean() throws Exception
 	{
 
-		final File keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File publickeyPemFile = new File(keyPemDir, "public.pem");
+		String actual;
+		String expected;
+		// new scenario...
+		publicKey = PublicKeyReader.readPemPublicKey(publicKeyPemFile);
 
-		Security.addProvider(new BouncyCastleProvider());
-
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
-
-		final String actual = PublicKeyExtensions.toHexString(publicKey, false);
-		final String expected = HEX_STRING_ENCODED.toUpperCase();
-		AssertJUnit.assertEquals(expected, actual);
+		actual = PublicKeyExtensions.toHexString(publicKey, false);
+		expected = HEX_STRING_ENCODED.toUpperCase();
+		assertEquals(expected, actual);
 	}
 
 	/**
@@ -157,16 +197,25 @@ public class PublicKeyExtensionsTest
 	@Test
 	public void testToPemFormat() throws Exception
 	{
-		final File keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File publickeyPemFile = new File(keyPemDir, "public.pem");
+		String actual;
+		String expected;
+		// new scenario...
+		publicKey = PublicKeyReader.readPemPublicKey(publicKeyPemFile);
 
-		Security.addProvider(new BouncyCastleProvider());
+		actual = PublicKeyExtensions.toPemFormat(publicKey);
+		expected = ReadFileExtensions.readFromFile(publicKeyPemFile);
+		assertEquals(actual, expected);
+	}
 
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
-
-		final String pemFormat = PublicKeyExtensions.toPemFormat(publicKey);
-		final String expected = ReadFileExtensions.readFromFile(publickeyPemFile);
-		AssertJUnit.assertEquals(pemFormat, expected);
+	/**
+	 * Test method for {@link PublicKeyExtensions} with {@link BeanTester}
+	 */
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(PublicKeyExtensions.class);
 	}
 
 }
