@@ -37,8 +37,13 @@ import de.alpharogroup.crypto.api.IntegerEncryptor;
 import de.alpharogroup.crypto.core.BaseCryptor;
 
 /**
- * The class {@link SimpleBaseEncryptor}.
+ * The class {@link SimpleBaseEncryptor}
+ * 
+ * @deprecated use instead {@link SimpleDecryptor} <br>
+ *             <br>
+ *             Note: will be removed in next minor release
  */
+@Deprecated
 public class SimpleBaseEncryptor extends BaseCryptor implements IntegerEncryptor
 {
 

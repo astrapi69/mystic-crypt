@@ -3,7 +3,7 @@
 <div align="center">
 
 [![Build Status](https://travis-ci.org/astrapi69/mystic-crypt.svg?branch=master)](https://travis-ci.org/astrapi69/mystic-crypt)
-[![Coverage Status](https://coveralls.io/repos/github/astrapi69/mystic-crypt/badge.svg?branch=develop)](https://coveralls.io/github/astrapi69/mystic-crypt?branch=develop)
+[![Coverage Status](https://coveralls.io/repos/github/astrapi69/mystic-crypt/badge.svg?branch=master)](https://coveralls.io/github/astrapi69/mystic-crypt?branch=master)
 [![Open Issues](https://img.shields.io/github/issues/astrapi69/mystic-crypt.svg?style=flat)](https://github.com/astrapi69/mystic-crypt/issues) 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.alpharogroup/mystic-crypt/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.alpharogroup/mystic-crypt)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT)
@@ -29,10 +29,6 @@ The source code comes under the liberal MIT License, making mystic-crypt great f
 
 ## Javadoc
 
-[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/auth-security/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/auth-api) auth-api
-
-[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/auth-security/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/auth-security) auth-security
-
 [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/crypt-core/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-api) crypt-api 
 
 [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/crypt-core/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-core) crypt-core
@@ -49,9 +45,7 @@ You can first define the version properties:
 	<properties>
 			...
 		<!-- MYSTIC-CRYPT versions -->
-		<mystic-crypt.version>5.1.0</mystic-crypt.version>
-		<auth-api.version>${mystic-crypt.version}</auth-api.version>
-		<auth-security.version>${mystic-crypt.version}</auth-security.version>
+		<mystic-crypt.version>5.2</mystic-crypt.version>
 		<crypt-api.version>${mystic-crypt.version}</crypt-api.version>
 		<crypt-core.version>${mystic-crypt.version}</crypt-core.version>
 		<crypt-data.version>${mystic-crypt.version}</crypt-data.version>
@@ -59,33 +53,6 @@ You can first define the version properties:
 	</properties>
 	
 You can add the following dependencies to your project for use the functionality of mystic-crypt.
-
-Add the following maven dependency to your project `pom.xml` if you want to import the functionality of auth-api:
-
-		<dependencies>
-			...
-			<!-- AUTH-API DEPENDENCY -->
-			<dependency>
-				<groupId>de.alpharogroup</groupId>
-				<artifactId>auth-api</artifactId>
-				<version>${auth-api.version}</version>
-			</dependency>
-			...
-		</dependencies>
-
-
-Add the following maven dependency to your project `pom.xml` if you want to import the functionality of auth-security:
-
-		<dependencies>
-			...
-			<!-- AUTH-SECURITY DEPENDENCY -->
-			<dependency>
-				<groupId>de.alpharogroup</groupId>
-				<artifactId>auth-security</artifactId>
-				<version>${auth-security.version}</version>
-			</dependency>
-			...
-		</dependencies>
 
 Add the following maven dependency to your project `pom.xml` if you want to import the core functionality of mystic-api:
 
@@ -134,7 +101,7 @@ Release version numbers will be incremented in the following format:
 
 `<major>.<minor>.<patch>`
 
-For more information on SemVer you can visit [semver.org](http://semver.org/).
+For detailed information on versioning you can visit the [wiki page](https://github.com/lightblueseas/mvn-parent-projects/wiki/Semantic-Versioning).
 
 ## Want to Help and improve it? ###
 
@@ -183,6 +150,7 @@ Here is a list of awesome projects for cryptography:
  * [Apache Shiro](https://github.com/apache/shiro) Apache Shiro is a powerful and easy-to-use Java security framework that performs authentication, authorization, cryptography, and session management.
  * [commons-ssl](http://juliusdavies.ca/commons-ssl/) Not-Yet-Commons-SSL
  * [lockbox-java](https://github.com/eloquent/lockbox-java) Simple, strong encryption. 
+ * [jsql-injection](https://github.com/ron190/jsql-injection) jSQL Injection is a Java application for automatic SQL database injection.
 
 ## Credits
 

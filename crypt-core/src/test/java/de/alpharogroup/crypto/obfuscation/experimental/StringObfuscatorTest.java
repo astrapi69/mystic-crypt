@@ -41,8 +41,9 @@ public class StringObfuscatorTest
 {
 
 	/**
-	 * Test method for {@link Obfuscator#disentangle()}.
+	 * Test method for {@link Obfuscator#disentangle()}
 	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testDisentangle()
 	{
@@ -75,8 +76,9 @@ public class StringObfuscatorTest
 	}
 
 	/**
-	 * Test method for {@link Obfuscator#obfuscate()}.
+	 * Test method for {@link Obfuscator#obfuscate()}
 	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testObfuscate()
 	{

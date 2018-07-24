@@ -37,7 +37,11 @@ import de.alpharogroup.crypto.api.IntegerDecryptor;
 import de.alpharogroup.crypto.core.BaseCryptor;
 
 /**
- * The class {@link SimpleBaseDecryptor}.
+ * The class {@link SimpleBaseDecryptor}
+ * 
+ * @deprecated use instead {@link SimpleDecryptor} <br>
+ *             <br>
+ *             Note: will be removed in next minor release
  */
 public class SimpleBaseDecryptor extends BaseCryptor implements IntegerDecryptor
 {
@@ -50,6 +54,7 @@ public class SimpleBaseDecryptor extends BaseCryptor implements IntegerDecryptor
 	 *
 	 * @param privateKey
 	 *            The private key.
+	 * 
 	 * @throws InvalidAlgorithmParameterException
 	 *             is thrown if initialization of the cypher object fails.
 	 * @throws NoSuchPaddingException

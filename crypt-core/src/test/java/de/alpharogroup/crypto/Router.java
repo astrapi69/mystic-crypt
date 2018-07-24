@@ -35,29 +35,29 @@ import lombok.Data;
 public class Router
 {
 
-	/** The vendor. */
-	private String vendor;
+	/** The access type. */
+	private String accessType;
 
 	/** The model. */
 	private String model;
 
-	/** The version. */
-	private String version;
-
-	/** The access type. */
-	private String accessType;
-
-	/** The username. */
-	private String username;
-
-	/** The pw. */
-	private String pw;
+	/** The notes. */
+	private String notes;
 
 	/** The permissions. */
 	private String permissions;
 
-	/** The notes. */
-	private String notes;
+	/** The pw. */
+	private String pw;
+
+	/** The username. */
+	private String username;
+
+	/** The vendor. */
+	private String vendor;
+
+	/** The version. */
+	private String version;
 
 	/**
 	 * To line.

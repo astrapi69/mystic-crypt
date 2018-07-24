@@ -24,12 +24,17 @@
  */
 package de.alpharogroup.crypto.key;
 
+import static org.testng.AssertJUnit.assertNotNull;
+
 import java.io.File;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.Security;
+import java.security.spec.InvalidKeySpecException;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
@@ -37,36 +42,53 @@ import de.alpharogroup.crypto.provider.SecurityProvider;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * Test class for {@link KeyExtensions}.
+ * The unit test class for the class {@link KeyExtensions}
  */
 public class KeyExtensionsTest
 {
 
 	/**
-	 * Test method for {@link KeyExtensions#readPrivateKey(File, SecurityProvider)}.
-	 *
-	 * @throws Exception
-	 *             the exception
+	 * Test method for {@link KeyExtensions#readPrivateKey(File, SecurityProvider)}
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
 	 */
 	@Test
-	public void testReadDerPrivateKey() throws Exception
+	public void testReadDerPrivateKey() throws NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchProviderException, IOException
 	{
 		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
 		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
 
 		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
 
-		AssertJUnit.assertNotNull(privateKey);
+		assertNotNull(privateKey);
 	}
 
 	/**
-	 * Test method for {@link KeyExtensions#readPemPrivateKey(File, SecurityProvider)}.
+	 * Test method for {@link KeyExtensions#readPemPrivateKey(File, SecurityProvider)}
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
 	 *
-	 * @throws Exception
-	 *             the exception
 	 */
 	@Test
-	public void testReadPemPrivateKey() throws Exception
+	public void testReadPemPrivateKey() throws NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchProviderException, IOException
 	{
 		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
 		final File privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
@@ -74,7 +96,7 @@ public class KeyExtensionsTest
 		Security.addProvider(new BouncyCastleProvider());
 		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile);
 
-		AssertJUnit.assertNotNull(privateKey);
+		assertNotNull(privateKey);
 	}
 
 }

@@ -24,6 +24,8 @@
  */
 package de.alpharogroup.crypto.simple;
 
+import static org.testng.AssertJUnit.assertTrue;
+
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -35,20 +37,19 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.CryptConst;
 
 /**
- * Test class for the {@link SimpleEncryptor} and {@link SimpleDecryptor}.
+ * Test class for the {@link SimpleEncryptor} and {@link SimpleDecryptor}
  */
 public class SimpleEnDecryptorTest
 {
 
 	/**
 	 * Test encrypt and decrypt with {@link SimpleEncryptor#encrypt(String)} and
-	 * {@link SimpleDecryptor#decrypt(String)}.
+	 * {@link SimpleDecryptor#decrypt(String)}
 	 *
 	 * @throws BadPaddingException
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
@@ -79,7 +80,7 @@ public class SimpleEnDecryptorTest
 		final String encrypted = encryptor.encrypt(test);
 		final SimpleDecryptor decryptor = new SimpleDecryptor(CryptConst.PRIVATE_KEY);
 		final String decryted = decryptor.decrypt(encrypted);
-		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
+		assertTrue("String before encryption is not equal after decryption.",
 			test.equals(decryted));
 	}
 

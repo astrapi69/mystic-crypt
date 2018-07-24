@@ -26,22 +26,23 @@ package de.alpharogroup.crypto.obfuscation.rule;
 
 import java.util.Comparator;
 
+/**
+ * The class {@link ObfuscationOperationRuleComparator} can compare {@link ObfuscationOperationRule}
+ * objects
+ */
 public class ObfuscationOperationRuleComparator
 	implements
-		Comparator<ObfuscationOperationRule<Character, String>>
+		Comparator<ObfuscationOperationRule<Character, Character>>
 {
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public int compare(ObfuscationOperationRule<Character, String> o1,
-		ObfuscationOperationRule<Character, String> o2)
+	public int compare(ObfuscationOperationRule<Character, Character> o1,
+		ObfuscationOperationRule<Character, Character> o2)
 	{
-		int length1 = o1.getReplaceWith().length();
-		int length2 = o2.getReplaceWith().length();
-		if (length1 == length2)
-		{
-			return o1.getReplaceWith().compareTo(o2.getReplaceWith());
-		}
-		return length2 - length1;
+		return o1.getCharacter().compareTo(o2.getCharacter());
 	}
 
 }

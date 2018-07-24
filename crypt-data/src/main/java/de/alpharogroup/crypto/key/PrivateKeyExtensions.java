@@ -25,6 +25,7 @@
 package de.alpharogroup.crypto.key;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -43,6 +44,7 @@ import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.util.io.pem.PemObject;
+import org.bouncycastle.util.io.pem.PemWriter;
 
 import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
 import de.alpharogroup.crypto.hex.HexExtensions;
@@ -198,7 +200,6 @@ public class PrivateKeyExtensions
 		return null;
 	}
 
-
 	/**
 	 * Transform the given private key that is in PKCS1 format and returns a {@link String} object
 	 * in pem format.
@@ -211,13 +212,56 @@ public class PrivateKeyExtensions
 	 */
 	public static String toPemFormat(final PrivateKey privateKey) throws IOException
 	{
-		final byte[] encoded = privateKey.getEncoded();
-		final PrivateKeyInfo privateKeyInfo = PrivateKeyInfo.getInstance(encoded);
-		final ASN1Encodable asn1Encodable = privateKeyInfo.parsePrivateKey();
-		final ASN1Primitive asn1Primitive = asn1Encodable.toASN1Primitive();
-		final byte[] privateKeyPKCS1Formatted = asn1Primitive.getEncoded();
-		return PemObjectReader
-			.toPemFormat(new PemObject(PrivateKeyReader.RSA_PRIVATE_KEY, privateKeyPKCS1Formatted));
+		return PemObjectReader.toPemFormat(
+			new PemObject(PrivateKeyReader.RSA_PRIVATE_KEY, toPKCS1Format(privateKey)));
 	}
+
+	/**
+	 * Transform the given private key to PKCS#1 format and returns it as an byte array
+	 *
+	 * @param privateKey
+	 *            the private key
+	 * @return the byte array formatted in PKCS#1
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred
+	 */
+	public static byte[] toPKCS1Format(final PrivateKey privateKey) throws IOException
+	{
+		String keyFormat = privateKey.getFormat();
+		if (KeyFormat.PKCS_8.getFormat().equals(keyFormat))
+		{
+			final byte[] encoded = privateKey.getEncoded();
+			final PrivateKeyInfo privateKeyInfo = PrivateKeyInfo.getInstance(encoded);
+			final ASN1Encodable asn1Encodable = privateKeyInfo.parsePrivateKey();
+			final ASN1Primitive asn1Primitive = asn1Encodable.toASN1Primitive();
+			final byte[] privateKeyPKCS1Formatted = asn1Primitive.getEncoded();
+			return privateKeyPKCS1Formatted;
+		}
+		return privateKey.getEncoded();
+	}
+
+	/**
+	 * Transform the given byte array(of private key in PKCS#1 format) to a PEM formatted
+	 * {@link String}.
+	 *
+	 * @param privateKeyPKCS1Formatted
+	 *            the byte array(of private key in PKCS#1 format)
+	 * @return the byte array formatted in PKCS#1
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred
+	 */
+	public static String fromPKCS1ToPemFormat(final byte[] privateKeyPKCS1Formatted)
+		throws IOException
+	{
+		PemObject pemObject = new PemObject(PrivateKeyReader.RSA_PRIVATE_KEY,
+			privateKeyPKCS1Formatted);
+		StringWriter stringWriter = new StringWriter();
+		PemWriter pemWriter = new PemWriter(stringWriter);
+		pemWriter.writeObject(pemObject);
+		pemWriter.close();
+		String string = stringWriter.toString();
+		return string;
+	}
+
 
 }

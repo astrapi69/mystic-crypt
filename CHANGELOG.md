@@ -1,6 +1,25 @@
 ## Change log
 ----------------------
 
+Version 5.2
+-------------
+
+CHANGED:
+
+- moved auth relevant projects to own [project](https://github.com/astrapi69/auth)
+- update of parent version to 4
+- removed unneeded .0 at the end of version
+- update of file-worker version to 4.22
+- update of jcommons-lang version to 4.34
+- update of test-objects version to 4.28
+- update of silly-collections version to 4.33
+- update of jobject-extensions version to 1.12
+- update of resourcebundle-inspector version to 2.22
+- update of randomizer version to 5.4
+- update of bouncycastle version to 1.60
+- update of guava version to 25.1-jre
+- unit tests extended for improve code coverage
+
 Version 5.1.0
 -------------
 

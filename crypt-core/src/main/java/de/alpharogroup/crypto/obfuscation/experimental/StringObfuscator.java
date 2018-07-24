@@ -25,21 +25,27 @@
 package de.alpharogroup.crypto.obfuscation.experimental;
 
 import de.alpharogroup.check.Check;
+import de.alpharogroup.crypto.obfuscation.CharacterObfuscator;
 import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
 import de.alpharogroup.crypto.obfuscation.rules.SimpleObfuscationRules;
 
 /**
  * The Class {@link StringObfuscator} obfuscates the given {@link SimpleObfuscationRules}. For an
  * example see the unit test.
+ * 
+ * @deprecated use instead the {@link CharacterObfuscator} <br>
+ *             <br>
+ *             Note: will be removed on next minor release.
  */
+@Deprecated
 public class StringObfuscator implements Obfuscatable
 {
 
-	/** The rule. */
-	private final SimpleObfuscationRules rule;
-
 	/** The key. */
 	private final String key;
+
+	/** The rule. */
+	private final SimpleObfuscationRules rule;
 
 	/**
 	 * Instantiates a new {@link StringObfuscator}.

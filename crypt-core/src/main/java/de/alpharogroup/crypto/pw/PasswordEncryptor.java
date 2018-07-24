@@ -53,13 +53,13 @@ import de.alpharogroup.random.RandomObjectsExtensions;
 public class PasswordEncryptor implements Serializable
 {
 
+	/** The single instance from the {@link PasswordEncryptor}. */
+	private static final PasswordEncryptor instance = new PasswordEncryptor();
+
 	/**
 	 * The serialVersionUID.
 	 */
 	private static final long serialVersionUID = -4667877106378932018L;
-
-	/** The single instance from the {@link PasswordEncryptor}. */
-	private static final PasswordEncryptor instance = new PasswordEncryptor();
 
 	/**
 	 * Gets the single instance of the {@link PasswordEncryptor} object.

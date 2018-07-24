@@ -26,20 +26,23 @@ package de.alpharogroup.crypto.factories;
 
 import static org.testng.Assert.assertNotNull;
 
+import java.lang.reflect.InvocationTargetException;
 import java.security.spec.AlgorithmParameterSpec;
 
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.CryptConst;
 
 /**
- * The class {@link AlgorithmParameterSpecFactory}.
+ * The class {@link AlgorithmParameterSpecFactory}
  */
 public class AlgorithmParameterSpecFactoryTest
 {
 
 	/**
-	 * Test method for {@link AlgorithmParameterSpecFactory#newPBEParameterSpec(byte[], int)}.
+	 * Test method for {@link AlgorithmParameterSpecFactory#newPBEParameterSpec(byte[], int)}
 	 */
 	@Test
 	public void testNewPBEParameterSpec() throws Exception
@@ -47,6 +50,17 @@ public class AlgorithmParameterSpecFactoryTest
 		AlgorithmParameterSpec pbeParameterSpec = AlgorithmParameterSpecFactory
 			.newPBEParameterSpec(CryptConst.SALT, CryptConst.ITERATIONCOUNT);
 		assertNotNull(pbeParameterSpec);
+	}
+
+	/**
+	 * Test method for {@link AlgorithmParameterSpecFactory} with {@link BeanTester}
+	 */
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(AlgorithmParameterSpecFactory.class);
 	}
 
 }

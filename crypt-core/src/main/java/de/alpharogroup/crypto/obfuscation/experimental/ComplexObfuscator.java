@@ -29,10 +29,19 @@ import java.util.Set;
 import com.google.common.collect.BiMap;
 
 import de.alpharogroup.check.Check;
+import de.alpharogroup.crypto.obfuscation.CharacterObfuscator;
 import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
 import de.alpharogroup.crypto.obfuscation.rule.Operation;
 
+/**
+ * The class {@link ComplexObfuscator}.
+ * 
+ * @deprecated use instead the {@link CharacterObfuscator} <br>
+ *             <br>
+ *             Note: will be removed on next minor release.
+ */
+@Deprecated
 public class ComplexObfuscator implements Obfuscatable
 {
 
@@ -69,11 +78,11 @@ public class ComplexObfuscator implements Obfuscatable
 		return sb.toString();
 	}
 
-	/** The rule. */
-	private final BiMap<Character, ObfuscationOperationRule<Character, String>> rules;
-
 	/** The key. */
 	private final String key;
+
+	/** The rule. */
+	private final BiMap<Character, ObfuscationOperationRule<Character, String>> rules;
 
 	public ComplexObfuscator(
 		final BiMap<Character, ObfuscationOperationRule<Character, String>> rules, final String key)

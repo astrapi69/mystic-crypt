@@ -188,7 +188,7 @@ public final class EncryptedPrivateKeyWriter
 	 * @throws InvalidParameterSpecException
 	 *             the invalid parameter spec exception
 	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
+	 *             Signals that an I/O exception has occurred
 	 */
 	public static void encryptPrivateKeyWithPassword(final PrivateKey privateKey, final File file,
 		final String password) throws NoSuchAlgorithmException, InvalidKeySpecException,

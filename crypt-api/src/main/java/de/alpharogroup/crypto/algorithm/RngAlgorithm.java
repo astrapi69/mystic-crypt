@@ -40,16 +40,16 @@ import lombok.Getter;
 public enum RngAlgorithm implements Algorithm
 {
 
-	/** The pkcs11. */
-	PKCS11("PKCS11"),
 	/** The Native PRNG. */
 	NativePRNG("NativePRNG"),
-	/** The sha1prng. */
-	SHA1PRNG("SHA1PRNG"),
 	/** The Native PRNG blocking. */
 	NativePRNGBlocking("NativePRNGBlocking"),
 	/** The Native PRNG non blocking. */
 	NativePRNGNonBlocking("NativePRNGNonBlocking"),
+	/** The pkcs11. */
+	PKCS11("PKCS11"),
+	/** The sha1prng. */
+	SHA1PRNG("SHA1PRNG"),
 	/** The Windows PRNG. */
 	Windows_PRNG("Windows-PRNG");
 	/** The algorithm. */

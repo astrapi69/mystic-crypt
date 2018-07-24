@@ -33,16 +33,16 @@ import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.collections.array.ArrayExtensions;
+import de.alpharogroup.collections.array.ArrayFactory;
 
 /**
- * The unit test class for the class {@link KeyFileFormat}.
+ * The unit test class for the class {@link KeyFileFormat}
  */
 public class KeyFileFormatTest
 {
 
 	/**
-	 * Test method for {@link KeyFileFormat#getFileExtensions()}.
+	 * Test method for {@link KeyFileFormat#getFileExtensions()}
 	 */
 	@Test
 	public void testGetFileExtensions() throws Exception
@@ -52,17 +52,17 @@ public class KeyFileFormatTest
 
 		actual = KeyFileFormat.DER.getFileExtensions();
 
-		expected = ArrayExtensions.newArray("der");
+		expected = ArrayFactory.newArray("der");
 		assertTrue(Arrays.equals(actual, expected));
 
 		actual = KeyFileFormat.PEM.getFileExtensions();
 
-		expected = ArrayExtensions.newArray("cer", "crt", "pem");
+		expected = ArrayFactory.newArray("cer", "crt", "pem");
 		assertTrue(Arrays.equals(actual, expected));
 
 		actual = KeyFileFormat.P7B.getFileExtensions();
 
-		expected = ArrayExtensions.newArray("p7b", "p7c");
+		expected = ArrayFactory.newArray("p7b", "p7c");
 		assertTrue(Arrays.equals(actual, expected));
 
 	}

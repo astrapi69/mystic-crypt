@@ -30,14 +30,14 @@ package de.alpharogroup.crypto.modes;
 public enum Mode
 {
 
-	/** The ECB operation mode. */
-	ECB,
-
 	/** The CBC operation mode. */
 	CBC,
 
 	/** The CFB operation mode. */
 	CFB,
+
+	/** The ECB operation mode. */
+	ECB,
 
 	/** The OFB operation mode. */
 	OFB,

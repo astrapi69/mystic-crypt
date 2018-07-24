@@ -38,13 +38,14 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 
+import de.alpharogroup.crypto.model.CryptModel;
 import lombok.experimental.UtilityClass;
 
 /**
  * The factory class {@link CipherFactory} holds methods for creating {@link Cipher} objects.
  */
 @UtilityClass
-public final class CipherFactory
+public class CipherFactory
 {
 
 	/**
@@ -165,6 +166,42 @@ public final class CipherFactory
 		final AlgorithmParameterSpec paramSpec = AlgorithmParameterSpecFactory
 			.newPBEParameterSpec(salt, iterationCount);
 		return newCipher(operationMode, key, paramSpec, key.getAlgorithm());
+	}
+
+	/**
+	 * Factory method for creating a new {@link Cipher} from the given parameters. This method is
+	 * invoked in the constructor from the derived classes and can be overridden so users can
+	 * provide their own version of a new {@link Cipher} from the given parameters.
+	 *
+	 * @param model
+	 *            the model bean for create the cipher
+	 * @return the cipher
+	 *
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the cypher object fails
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cypher object fails
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported
+	 */
+	public static Cipher newCipher(final CryptModel<Cipher, String> model)
+		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
+		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+	{
+		final KeySpec keySpec = KeySpecFactory.newPBEKeySpec(model.getKey(), model.getSalt(),
+			model.getIterationCount());
+		final SecretKeyFactory factory = SecretKeyFactoryExtensions
+			.newSecretKeyFactory(model.getAlgorithm().getAlgorithm());
+		final SecretKey key = factory.generateSecret(keySpec);
+		final AlgorithmParameterSpec paramSpec = AlgorithmParameterSpecFactory
+			.newPBEParameterSpec(model.getSalt(), model.getIterationCount());
+		return newCipher(model.getOperationMode(), key, paramSpec, key.getAlgorithm());
 	}
 
 }

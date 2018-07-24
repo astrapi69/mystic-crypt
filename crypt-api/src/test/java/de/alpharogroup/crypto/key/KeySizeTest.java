@@ -33,13 +33,13 @@ import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
 /**
- * The unit test class for the class {@link KeySize}.
+ * The unit test class for the class {@link KeySize}
  */
 public class KeySizeTest
 {
 
 	/**
-	 * Test method for {@link KeySize#getKeySize()}.
+	 * Test method for {@link KeySize#getKeySize()}
 	 */
 	@Test
 	public void testGetKeySize() throws Exception
@@ -50,18 +50,22 @@ public class KeySizeTest
 		actual = KeySize.KEYSIZE_1024.getKeySize();
 		expected = 1024;
 		assertEquals(actual, expected);
+		assertEquals(KeySize.KEYSIZE_1024.toString(), expected.toString());
 
 		actual = KeySize.KEYSIZE_2048.getKeySize();
 		expected = 2048;
 		assertEquals(actual, expected);
+		assertEquals(KeySize.KEYSIZE_2048.toString(), expected.toString());
 
 		actual = KeySize.KEYSIZE_4096.getKeySize();
 		expected = 4096;
 		assertEquals(actual, expected);
+		assertEquals(KeySize.KEYSIZE_4096.toString(), expected.toString());
 
 		actual = KeySize.KEYSIZE_8192.getKeySize();
 		expected = 8192;
 		assertEquals(actual, expected);
+		assertEquals(KeySize.KEYSIZE_8192.toString(), expected.toString());
 	}
 
 	/**

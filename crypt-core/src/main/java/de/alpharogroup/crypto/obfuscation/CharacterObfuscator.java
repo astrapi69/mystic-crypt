@@ -30,53 +30,26 @@ import com.google.common.collect.BiMap;
 
 import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
+import de.alpharogroup.crypto.obfuscation.experimental.ObfuscatorExtensions;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
 import de.alpharogroup.crypto.obfuscation.rule.Operation;
+import lombok.NonNull;
 
+/**
+ * The class {@link CharacterObfuscator}
+ */
 public class CharacterObfuscator implements Obfuscatable
 {
-	public static String obfuscateWith(
-		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
-		final String toObfuscate)
-	{
-		final StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < toObfuscate.length(); i++)
-		{
-			final char currentCharacter = toObfuscate.charAt(i);
-			final Character asCharacter = Character.valueOf(currentCharacter);
-			final String charAsString = Character.toString(currentCharacter);
-			if (rules.containsKey(asCharacter))
-			{
-				final ObfuscationOperationRule<Character, Character> obfuscationOperationRule = rules
-					.get(asCharacter);
-				final Set<Integer> indexes = obfuscationOperationRule.getIndexes();
-				final Operation operation = obfuscationOperationRule.getOperation();
-				if (indexes.contains(Integer.valueOf(i)) && operation != null)
-				{
-					sb.append(Operation.operate(currentCharacter, operation));
-					continue;
-				}
-				final Character replaceWith = obfuscationOperationRule.getReplaceWith();
-				sb.append(replaceWith);
-
-			}
-			else
-			{
-				sb.append(charAsString);
-			}
-		}
-		return sb.toString();
-	}
-
-	/** The rule. */
-	private final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules;
 
 	/** The key. */
 	private final String key;
 
+	/** The rule. */
+	private final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules;
+
 	public CharacterObfuscator(
-		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
-		final String key)
+		final @NonNull BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
+		final @NonNull String key)
 	{
 		Check.get().notEmpty(rules, "rules");
 		Check.get().notEmpty(key, "key");
@@ -87,7 +60,7 @@ public class CharacterObfuscator implements Obfuscatable
 	@Override
 	public String disentangle()
 	{
-		final String obfuscated = obfuscateWith(rules, this.key);
+		final String obfuscated = ObfuscatorExtensions.obfuscateWith(rules, this.key);
 		final String disentangled = disentangleWith(rules, obfuscated);
 		return disentangled;
 	}
@@ -154,11 +127,13 @@ public class CharacterObfuscator implements Obfuscatable
 		return null;
 	}
 
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String obfuscate()
 	{
-		final String obfuscated = obfuscateWith(rules, this.key);
+		final String obfuscated = ObfuscatorExtensions.obfuscateWith(rules, this.key);
 		return obfuscated;
 	}
 

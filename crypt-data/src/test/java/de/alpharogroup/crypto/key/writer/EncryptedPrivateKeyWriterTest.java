@@ -27,8 +27,22 @@ package de.alpharogroup.crypto.key.writer;
 import static org.testng.AssertJUnit.assertEquals;
 
 import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.InvalidParameterSpecException;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -44,22 +58,19 @@ import de.alpharogroup.file.search.PathFinder;
  */
 public class EncryptedPrivateKeyWriterTest
 {
-	PrivateKey expected;
 	PrivateKey actual;
-
 	File derDir;
+
 	File encryptedPrivateKeyFile;
-	PrivateKey readedPrivateKey;
+	PrivateKey expected;
 	String password;
+	PrivateKey readedPrivateKey;
 
 	/**
 	 * Sets up method will be invoked before every unit test method in this class.
-	 *
-	 * @throws Exception
-	 *             the exception
 	 */
 	@BeforeMethod
-	protected void setUp() throws Exception
+	protected void setUp()
 	{
 		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
 		encryptedPrivateKeyFile = new File(derDir, "encryptedPrivate.der");
@@ -68,11 +79,11 @@ public class EncryptedPrivateKeyWriterTest
 	/**
 	 * Tear down method will be invoked after every unit test method in this class.
 	 *
-	 * @throws Exception
-	 *             the exception
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	@AfterMethod
-	protected void tearDown() throws Exception
+	protected void tearDown() throws IOException
 	{
 		if (encryptedPrivateKeyFile.exists())
 		{
@@ -81,13 +92,39 @@ public class EncryptedPrivateKeyWriterTest
 	}
 
 	/**
+	 * Test method for
+	 * {@link EncryptedPrivateKeyWriter#encryptPrivateKeyWithPassword(PrivateKey, File, String)}
+	 * 
 	 * Test encrypt private key with password private key file string.
+	 * 
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchPaddingException
+	 *             the no such padding exception
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cipher object fails
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws IllegalBlockSizeException
+	 *             the illegal block size exception
+	 * @throws BadPaddingException
+	 *             the bad padding exception
+	 * @throws InvalidParameterSpecException
+	 *             the invalid parameter spec exception
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred
 	 *
 	 * @throws Exception
 	 *             is thrown if any error occurs on the execution
 	 */
 	@Test
-	public void testEncryptPrivateKeyWithPasswordPrivateKeyFileString() throws Exception
+	public void testEncryptPrivateKeyWithPasswordPrivateKeyFileString()
+		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException,
+		IOException, InvalidKeyException, NoSuchPaddingException,
+		InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException,
+		InvalidParameterSpecException
 	{
 		final PrivateKey readedPrivateKey = PrivateKeyReader
 			.readPrivateKey(PathFinder.getSrcTestResourcesDir(), "der", "private.der");
@@ -101,7 +138,17 @@ public class EncryptedPrivateKeyWriterTest
 		expected = readedPrivateKey;
 		actual = decryptedPrivateKey;
 		assertEquals(expected, actual);
+	}
 
+	/**
+	 * Test method for {@link EncryptedPrivateKeyWriter} with {@link BeanTester}
+	 */
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(EncryptedPrivateKeyWriter.class);
 	}
 
 }

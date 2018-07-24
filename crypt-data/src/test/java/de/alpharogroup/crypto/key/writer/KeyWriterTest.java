@@ -22,22 +22,29 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.auth.enums;
+package de.alpharogroup.crypto.key.writer;
+
+import java.lang.reflect.InvocationTargetException;
+
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
+import org.testng.annotations.Test;
 
 /**
- * The Enum {@link AuthenticationErrors}.
+ * The unit test class for the class {@link KeyWriter}
  */
-public enum AuthenticationErrors
+public class KeyWriterTest
 {
 
 	/**
-	 * This constant indicates that the given email or username does not exist.
+	 * Test method for {@link KeyWriter} with {@link BeanTester}
 	 */
-	EMAIL_OR_USERNAME_DOES_NOT_EXIST,
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(KeyWriter.class);
+	}
 
-	/** This constant indicates that the given password is invalid. */
-	PASSWORD_INVALID,
-
-	/** This constant indicates that the given user object is not registered. */
-	UNREGISTERED
-};
+}

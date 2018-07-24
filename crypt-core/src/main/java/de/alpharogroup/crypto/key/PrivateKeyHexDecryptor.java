@@ -59,19 +59,19 @@ public class PrivateKeyHexDecryptor
 	private Cipher cipher = null;
 
 	/**
-	 * The private key.
-	 */
-	@Getter
-	@Setter
-	private PrivateKey privateKey = null;
-
-	/**
 	 * The flag initialized that indicates if the cypher is initialized for decryption.
 	 *
 	 * @return true, if is initialized
 	 */
 	@Getter(value = AccessLevel.PRIVATE)
 	private boolean initialized;
+
+	/**
+	 * The private key.
+	 */
+	@Getter
+	@Setter
+	private PrivateKey privateKey = null;
 
 	/**
 	 * Instantiates a new {@link PrivateKeyHexDecryptor} with the given {@link PrivateKey}.
@@ -97,7 +97,7 @@ public class PrivateKeyHexDecryptor
 	 *             is thrown if instantiation of the cypher object fails.
 	 * @throws InvalidKeyException
 	 *             the invalid key exception is thrown if initialization of the cypher object fails.
-	 * @throws org.apache.commons.codec.DecoderException
+	 * @throws DecoderException
 	 *             is thrown if an odd number or illegal of characters is supplied
 	 * @throws IllegalBlockSizeException
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.

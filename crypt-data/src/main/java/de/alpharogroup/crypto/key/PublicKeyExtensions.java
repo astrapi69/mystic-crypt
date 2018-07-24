@@ -35,6 +35,7 @@ import org.apache.commons.codec.binary.Base64;
 
 import de.alpharogroup.crypto.hex.HexExtensions;
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
+import de.alpharogroup.string.StringExtensions;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -110,7 +111,7 @@ public class PublicKeyExtensions
 	public static String toPemFormat(final PublicKey publicKey)
 	{
 		final String publicKeyAsBase64String = toBase64(publicKey);
-		final List<String> parts = splitByFixedLength(publicKeyAsBase64String, 64);
+		final List<String> parts = StringExtensions.splitByFixedLength(publicKeyAsBase64String, 64);
 
 		final StringBuilder sb = new StringBuilder();
 		sb.append(PublicKeyReader.BEGIN_PUBLIC_KEY_PREFIX);
@@ -147,7 +148,9 @@ public class PublicKeyExtensions
 	 * @param fixedLength
 	 *            the fixed length
 	 * @return the list with the splitted {@link String} objects
-	 * @deprecated use instead the same name method from StringExtensions
+	 * @deprecated use instead the same name method from StringExtensions <br>
+	 *             <br>
+	 *             Note: will be removed on next minor release
 	 */
 	@Deprecated
 	public static List<String> splitByFixedLength(final String input, final int fixedLength)

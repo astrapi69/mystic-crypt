@@ -40,17 +40,6 @@ public class CryptoCipherOutputStream extends CipherOutputStream
 	 *
 	 * @param outputStream
 	 *            the output stream
-	 */
-	public CryptoCipherOutputStream(final OutputStream outputStream)
-	{
-		super(outputStream);
-	}
-
-	/**
-	 * Instantiates a new {@link CryptoCipherOutputStream}.
-	 *
-	 * @param outputStream
-	 *            the output stream
 	 * @param cipher
 	 *            the cipher
 	 */

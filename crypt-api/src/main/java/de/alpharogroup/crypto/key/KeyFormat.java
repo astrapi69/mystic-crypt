@@ -24,15 +24,29 @@
  */
 package de.alpharogroup.crypto.key;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.experimental.FieldDefaults;
+
 /**
- * The enum {@link KeyFormat} for the format of the private keys.
+ * The enum {@link KeyFormat} represents the key format of the private keys
  */
+@Getter
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public enum KeyFormat
 {
+	/** The key format pkcs 1. */
+	PKCS_1("PKCS#1"),
 
 	/** The key format pkcs 8. */
-	PKCS_8,
+	PKCS_8("PKCS#8");
 
-	/** The key format pkcs 1. */
-	PKCS_1;
+	String format;
+
+	private KeyFormat(final @NonNull String format)
+	{
+		this.format = format;
+	}
+
 }

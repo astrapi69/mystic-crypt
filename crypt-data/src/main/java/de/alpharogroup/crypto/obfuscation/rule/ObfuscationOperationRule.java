@@ -26,7 +26,7 @@ package de.alpharogroup.crypto.obfuscation.rule;
 
 import java.util.Set;
 
-import de.alpharogroup.collections.set.SetExtensions;
+import de.alpharogroup.collections.set.SetFactory;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -62,7 +62,7 @@ public class ObfuscationOperationRule<C, RW> extends ObfuscationRule<C, RW>
 		Set<Integer> indexes)
 	{
 		super(character, replaceWith);
-		this.indexes = SetExtensions.newHashSet(indexes);
+		this.indexes = SetFactory.newHashSet(indexes);
 		this.operation = operation;
 	}
 

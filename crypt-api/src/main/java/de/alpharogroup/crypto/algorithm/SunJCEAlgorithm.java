@@ -35,6 +35,9 @@ import lombok.Getter;
 public enum SunJCEAlgorithm implements Algorithm
 {
 
+	/** The Blowfish algorithm. */
+	Blowfish("Blowfish"),
+
 	/** The DES algorithm. */
 	DES("DES"),
 
@@ -42,10 +45,7 @@ public enum SunJCEAlgorithm implements Algorithm
 	DESede("DESede"),
 
 	/** The PBEWithMD5AndDES algorithm. */
-	PBEWithMD5AndDES("PBEWithMD5AndDES"),
-
-	/** The Blowfish algorithm. */
-	Blowfish("Blowfish");
+	PBEWithMD5AndDES("PBEWithMD5AndDES");
 
 	/** The algorithm. */
 	@Getter

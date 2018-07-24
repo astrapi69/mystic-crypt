@@ -27,6 +27,7 @@ package de.alpharogroup.crypto.key;
 import static org.testng.AssertJUnit.assertEquals;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
@@ -35,6 +36,8 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 
 import org.bouncycastle.asn1.x500.style.BCStyle;
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
 import org.testng.AssertJUnit;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -45,7 +48,7 @@ import de.alpharogroup.crypto.key.reader.CertificateReader;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * The class {@link CertificateExtensionsTest}.
+ * The unit test class for the class {@link CertificateExtensions}
  */
 public class CertificateExtensionsTest
 {
@@ -73,7 +76,7 @@ public class CertificateExtensionsTest
 	}
 
 	/**
-	 * Test method for {@link CertificateExtensions#getCountry(X509Certificate)}.
+	 * Test method for {@link CertificateExtensions#getCountry(X509Certificate)}
 	 *
 	 * @throws CertificateEncodingException
 	 *             is thrown if an encoding error occurs.
@@ -87,7 +90,7 @@ public class CertificateExtensionsTest
 	}
 
 	/**
-	 * Test method for {@link CertificateExtensions#getFingerprint(X509Certificate, HashAlgorithm)}.
+	 * Test method for {@link CertificateExtensions#getFingerprint(X509Certificate, HashAlgorithm)}
 	 *
 	 * @throws CertificateEncodingException
 	 *             is thrown if an encoding error occurs.
@@ -116,7 +119,7 @@ public class CertificateExtensionsTest
 
 	/**
 	 * Test method for
-	 * {@link CertificateExtensions#getFirstValueOf(X509Certificate, org.bouncycastle.asn1.ASN1ObjectIdentifier)}.
+	 * {@link CertificateExtensions#getFirstValueOf(X509Certificate, org.bouncycastle.asn1.ASN1ObjectIdentifier)}
 	 *
 	 * @throws CertificateEncodingException
 	 *             is thrown if an encoding error occurs.
@@ -130,7 +133,7 @@ public class CertificateExtensionsTest
 	}
 
 	/**
-	 * Test method for {@link CertificateExtensions#getIssuedBy(X509Certificate)}.
+	 * Test method for {@link CertificateExtensions#getIssuedBy(X509Certificate)}
 	 */
 	@Test
 	public void testGetIssuedBy()
@@ -141,7 +144,7 @@ public class CertificateExtensionsTest
 	}
 
 	/**
-	 * Test method for {@link CertificateExtensions#getIssuedTo(X509Certificate)}.
+	 * Test method for {@link CertificateExtensions#getIssuedTo(X509Certificate)}
 	 */
 	@Test
 	public void testGetIssuedTo()
@@ -152,7 +155,7 @@ public class CertificateExtensionsTest
 	}
 
 	/**
-	 * Test method for {@link CertificateExtensions#getLocality(X509Certificate)}.
+	 * Test method for {@link CertificateExtensions#getLocality(X509Certificate)}
 	 *
 	 * @throws CertificateEncodingException
 	 *             is thrown if an encoding error occurs.
@@ -166,7 +169,7 @@ public class CertificateExtensionsTest
 	}
 
 	/**
-	 * Test method for {@link CertificateExtensions#getOrganization(X509Certificate)}.
+	 * Test method for {@link CertificateExtensions#getOrganization(X509Certificate)}
 	 *
 	 * @throws CertificateEncodingException
 	 *             is thrown if an encoding error occurs.
@@ -180,7 +183,7 @@ public class CertificateExtensionsTest
 	}
 
 	/**
-	 * Test method for {@link CertificateExtensions#getSignatureAlgorithm(X509Certificate)}.
+	 * Test method for {@link CertificateExtensions#getSignatureAlgorithm(X509Certificate)}
 	 */
 	@Test
 	public void testGetSignatureAlgorithm()
@@ -191,7 +194,7 @@ public class CertificateExtensionsTest
 	}
 
 	/**
-	 * Test method for {@link CertificateExtensions#getValidFrom(X509Certificate)}.
+	 * Test method for {@link CertificateExtensions#getValidFrom(X509Certificate)}
 	 */
 	@Test
 	public void testGetValidFrom()
@@ -203,7 +206,7 @@ public class CertificateExtensionsTest
 	}
 
 	/**
-	 * Test method for {@link CertificateExtensions#getValidUntil(X509Certificate)}.
+	 * Test method for {@link CertificateExtensions#getValidUntil(X509Certificate)}
 	 */
 	@Test
 	public void testGetValidUntil()
@@ -212,6 +215,17 @@ public class CertificateExtensionsTest
 			.from(ZonedDateTime.of(2026, 12, 31, 23, 0, 0, 0, ZoneId.of("UTC")).toInstant());
 		final Date actual = CertificateExtensions.getValidUntil(certificate);
 		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test method for {@link CertificateExtensions} with {@link BeanTester}
+	 */
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(CertificateExtensions.class);
 	}
 
 }

@@ -28,18 +28,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 
-import org.apache.commons.codec.binary.Base64;
-import org.bouncycastle.openssl.jcajce.JcaPEMWriter;
-
 import de.alpharogroup.crypto.key.KeyFileFormat;
 import de.alpharogroup.crypto.key.KeyFormat;
-import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
-import de.alpharogroup.file.write.WriteFileExtensions;
+import de.alpharogroup.crypto.key.PrivateKeyExtensions;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
@@ -98,13 +93,7 @@ public class PrivateKeyWriter
 	public static void writeInPemFormat(final PrivateKey privateKey, final @NonNull File file)
 		throws IOException
 	{
-		final StringWriter stringWriter = new StringWriter();
-		final JcaPEMWriter pemWriter = new JcaPEMWriter(stringWriter);
-		pemWriter.writeObject(privateKey);
-		pemWriter.close();
-		String pemFormat = stringWriter.toString();
-		pemFormat = pemFormat.replaceAll("\\r\\n", "\\\n");
-		WriteFileExtensions.string2File(file, pemFormat);
+		KeyWriter.writeInPemFormat(privateKey, file);
 	}
 
 	/**
@@ -127,28 +116,22 @@ public class PrivateKeyWriter
 		final byte[] privateKeyBytes = privateKey.getEncoded();
 		switch (fileFormat)
 		{
-			case DER :
 			case PEM :
-				if (keyFormat != null)
+				if (keyFormat == null || keyFormat.equals(KeyFormat.PKCS_8))
 				{
-					if (keyFormat.equals(KeyFormat.PKCS_8))
-					{
-						outputStream.write(PrivateKeyReader.BEGIN_PRIVATE_KEY_PREFIX
-							.getBytes(StandardCharsets.US_ASCII));
-						outputStream.write(Base64.encodeBase64(privateKeyBytes, true));
-						outputStream.write(PrivateKeyReader.END_PRIVATE_KEY_SUFFIX
-							.getBytes(StandardCharsets.US_ASCII));
-						break;
-					}
-					else if (keyFormat.equals(KeyFormat.PKCS_1))
-					{
-						outputStream.write(PrivateKeyReader.BEGIN_RSA_PRIVATE_KEY_PREFIX
-							.getBytes(StandardCharsets.US_ASCII));
-						outputStream.write(Base64.encodeBase64(privateKeyBytes, true));
-						outputStream.write(PrivateKeyReader.END_RSA_PRIVATE_KEY_SUFFIX
-							.getBytes(StandardCharsets.US_ASCII));
-						break;
-					}
+					String privateKeyAsBase64String = PrivateKeyExtensions.toPemFormat(privateKey);
+					outputStream
+						.write(privateKeyAsBase64String.getBytes(StandardCharsets.US_ASCII));
+					break;
+				}
+				else if (keyFormat.equals(KeyFormat.PKCS_1))
+				{
+					final byte[] privateKeyPKCS1Formatted = PrivateKeyExtensions
+						.toPKCS1Format(privateKey);
+					String pemFormat = PrivateKeyExtensions
+						.fromPKCS1ToPemFormat(privateKeyPKCS1Formatted);
+					outputStream.write(pemFormat.getBytes(StandardCharsets.US_ASCII));
+					break;
 				}
 			default : // DER is default
 				final PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateKeyBytes);

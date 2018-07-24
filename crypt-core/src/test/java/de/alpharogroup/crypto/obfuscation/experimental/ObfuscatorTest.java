@@ -38,14 +38,15 @@ import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
 import de.alpharogroup.crypto.obfuscation.rules.SimpleObfuscationRules;
 
 /**
- * The unit test class for the class {@link Obfuscator}.
+ * The unit test class for the class {@link Obfuscator}
  */
 public class ObfuscatorTest
 {
 
 	/**
-	 * Test method for {@link Obfuscator#disentangle()}.
+	 * Test method for {@link Obfuscator#disentangle()}
 	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testDisentangle()
 	{
@@ -78,8 +79,9 @@ public class ObfuscatorTest
 	}
 
 	/**
-	 * Test method for {@link Obfuscator#obfuscate()}.
+	 * Test method for {@link Obfuscator#obfuscate()}
 	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testObfuscate()
 	{

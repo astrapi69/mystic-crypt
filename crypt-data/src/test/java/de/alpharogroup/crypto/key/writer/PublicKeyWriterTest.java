@@ -28,6 +28,7 @@ import static org.testng.AssertJUnit.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
@@ -36,24 +37,65 @@ import java.security.Security;
 import java.security.spec.InvalidKeySpecException;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import de.alpharogroup.crypto.algorithm.MdAlgorithm;
 import de.alpharogroup.crypto.key.PrivateKeyExtensions;
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
-import de.alpharogroup.file.checksum.Algorithm;
 import de.alpharogroup.file.checksum.ChecksumExtensions;
 import de.alpharogroup.file.delete.DeleteFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * The unit test class for the class {@link PublicKeyWriter}.
+ * The unit test class for the class {@link PublicKeyWriter}
  */
 public class PublicKeyWriterTest
 {
 
+	File derDir;
+	File pemDir;
+
+	PrivateKey privateKey;
+
+	File privateKeyPemFile;
+	PublicKey publicKey;
+	File publicKeyDerFile;
+
+	File publicKeyPemFile;
+
 	/**
-	 * Test method for {@link PublicKeyWriter#write(PublicKey, File)}.
+	 * Sets up method will be invoked before every unit test method in this class
+	 */
+	@BeforeMethod
+	protected void setUp()
+	{
+		Security.addProvider(new BouncyCastleProvider());
+
+		pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		publicKeyPemFile = new File(pemDir, "public.pem");
+		privateKeyPemFile = new File(pemDir, "private.pem");
+
+		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		publicKeyDerFile = new File(derDir, "public.der");
+	}
+
+	/**
+	 * Test method for {@link PublicKeyWriter} with {@link BeanTester}
+	 */
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(PublicKeyWriter.class);
+	}
+
+	/**
+	 * Test method for {@link PublicKeyWriter#write(PublicKey, File)}
 	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
@@ -72,23 +114,20 @@ public class PublicKeyWriterTest
 	{
 		String expected;
 		String actual;
-		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		final File publickeyDerFile = new File(publickeyDerDir, "public.der");
-
-		final PublicKey publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
-
-		final File keyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		final File writtenPublickeyDerFile = new File(keyDerDir, "written-public.der");
+		File writtenPublickeyDerFile;
+		// new scenario...
+		publicKey = PublicKeyReader.readPublicKey(publicKeyDerFile);
+		writtenPublickeyDerFile = new File(derDir, "written-public.der");
 		PublicKeyWriter.write(publicKey, writtenPublickeyDerFile);
 
-		expected = ChecksumExtensions.getChecksum(publickeyDerFile, Algorithm.MD5);
-		actual = ChecksumExtensions.getChecksum(writtenPublickeyDerFile, Algorithm.MD5);
-		DeleteFileExtensions.delete(writtenPublickeyDerFile);
+		expected = ChecksumExtensions.getChecksum(publicKeyDerFile, MdAlgorithm.MD5);
+		actual = ChecksumExtensions.getChecksum(writtenPublickeyDerFile, MdAlgorithm.MD5);
 		assertEquals(expected, actual);
+		DeleteFileExtensions.delete(writtenPublickeyDerFile);
 	}
 
 	/**
-	 * Test method for {@link PublicKeyWriter#writeInPemFormat(PublicKey, File)}.
+	 * Test method for {@link PublicKeyWriter#writeInPemFormat(PublicKey, File)}
 	 *
 	 * @throws Exception
 	 *             is thrown if a security issue occurs
@@ -96,23 +135,18 @@ public class PublicKeyWriterTest
 	@Test
 	public void testWriteInPemFormat() throws Exception
 	{
-		Security.addProvider(new BouncyCastleProvider());
-		final File publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
-		final File privatekeyPemFile = new File(publickeyPemDir, "private.pem");
-
-		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile);
-
-		final PublicKey publicKey = PrivateKeyExtensions.generatePublicKey(privateKey);
-
-		final File keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File convertedPublickeyPemFile = new File(keyPemDir, "converted-public.pem");
+		String expected;
+		String actual;
+		File convertedPublickeyPemFile;
+		// new scenario...
+		privateKey = PrivateKeyReader.readPemPrivateKey(privateKeyPemFile);
+		publicKey = PrivateKeyExtensions.generatePublicKey(privateKey);
+		convertedPublickeyPemFile = new File(pemDir, "converted-public.pem");
 		PublicKeyWriter.writeInPemFormat(publicKey, convertedPublickeyPemFile);
-		final String expected = ChecksumExtensions.getChecksum(publickeyPemFile, Algorithm.MD5);
-		final String actual = ChecksumExtensions.getChecksum(convertedPublickeyPemFile,
-			Algorithm.MD5);
-		DeleteFileExtensions.delete(convertedPublickeyPemFile);
+		expected = ChecksumExtensions.getChecksum(publicKeyPemFile, MdAlgorithm.MD5);
+		actual = ChecksumExtensions.getChecksum(convertedPublickeyPemFile, MdAlgorithm.MD5);
 		assertEquals(expected, actual);
+		DeleteFileExtensions.delete(convertedPublickeyPemFile);
 	}
 
 }

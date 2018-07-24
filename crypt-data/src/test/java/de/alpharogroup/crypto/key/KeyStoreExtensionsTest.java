@@ -29,9 +29,12 @@ import static org.testng.AssertJUnit.assertFalse;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.security.KeyStore;
 import java.security.cert.X509Certificate;
 
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
 import org.testng.AssertJUnit;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -43,19 +46,19 @@ import de.alpharogroup.crypto.key.reader.CertificateReader;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * The class {@link KeyStoreExtensions}.
+ * The unit test class for the class {@link KeyStoreExtensions}
  */
 public class KeyStoreExtensionsTest
 {
 
+	String alias = "alias-for-delete";
 	/** The certificate for tests. */
 	X509Certificate certificate;
-	String password = "foobar-secret-pw";
-	String alias = "alias-for-delete";
 	String newAlias = "new-alias";
+	String password = "foobar-secret-pw";
 
-	File publickeyDerDir;
 	File privatekeyDerFile;
+	File publickeyDerDir;
 
 	/**
 	 * Sets up method will be invoked before every unit test method in this class.
@@ -100,7 +103,7 @@ public class KeyStoreExtensionsTest
 	}
 
 	/**
-	 * Test method for {@link KeyStoreExtensions#deleteAlias(File, String, String)}.
+	 * Test method for {@link KeyStoreExtensions#deleteAlias(File, String, String)}
 	 */
 	@Test
 	public void testDeleteAlias() throws Exception
@@ -112,6 +115,17 @@ public class KeyStoreExtensionsTest
 		boolean containsAlias = keyStore.containsAlias(alias);
 
 		assertFalse(containsAlias);
+	}
+
+	/**
+	 * Test method for {@link KeyStoreExtensions} with {@link BeanTester}
+	 */
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(KeyStoreExtensions.class);
 	}
 
 }

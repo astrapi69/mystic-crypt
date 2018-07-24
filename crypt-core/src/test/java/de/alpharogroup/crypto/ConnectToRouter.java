@@ -32,16 +32,14 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * The class {@link ConnectToRouter} connects to a router.
  */
+@Slf4j
 public class ConnectToRouter
 {
-
-	/** The Constant logger. */
-	private static final Logger logger = Logger.getLogger(ConnectToRouter.class.getName());
 
 	/**
 	 * The main method connects to a router.
@@ -69,7 +67,7 @@ public class ConnectToRouter
 
 		while ((inputLine = in.readLine()) != null)
 		{
-			logger.debug(inputLine);
+			log.debug(inputLine);
 		}
 
 		in.close();

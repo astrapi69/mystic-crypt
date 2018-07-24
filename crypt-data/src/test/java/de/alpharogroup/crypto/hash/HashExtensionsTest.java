@@ -24,17 +24,20 @@
  */
 package de.alpharogroup.crypto.hash;
 
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.algorithm.HashAlgorithm;
 
 /**
- * The unit test class for the class {@link HashExtensions}.
+ * The unit test class for the class {@link HashExtensions}
  */
 public class HashExtensionsTest
 {
@@ -133,5 +136,15 @@ public class HashExtensionsTest
 			Arrays.equals(expected, actual));
 	}
 
-}
+	/**
+	 * Test method for {@link HashExtensions} with {@link BeanTester}
+	 */
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(HashExtensions.class);
+	}
 
+}

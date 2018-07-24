@@ -22,24 +22,45 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.auth.sign.up;
+package de.alpharogroup.crypto.key.writer;
 
-import org.meanbean.test.BeanTester;
-import org.testng.annotations.Test;
+import java.io.File;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.security.Key;
+
+import org.bouncycastle.openssl.jcajce.JcaPEMWriter;
+
+import de.alpharogroup.file.write.WriteFileQuietlyExtensions;
+import lombok.NonNull;
+import lombok.experimental.UtilityClass;
 
 /**
- * The class {@link BaseUsernameSignUpModel}.
+ * The class {@link KeyWriter} is a utility class for write security keys in files.
  */
-public class BaseUsernameSignUpModelTest
+@UtilityClass
+public class KeyWriter
 {
 
 	/**
-	 * Test method for {@link BaseUsernameSignUpModel}
+	 * Write the given {@link Key} into the given {@link File}.
+	 *
+	 * @param key
+	 *            the security key
+	 * @param file
+	 *            the file to write in
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
-	@Test
-	public void testWithBeanTester()
+	public static void writeInPemFormat(final Key key, final @NonNull File file) throws IOException
 	{
-		final BeanTester beanTester = new BeanTester();
-		beanTester.testBean(BaseUsernameSignUpModel.class);
+		StringWriter stringWriter = new StringWriter();
+		JcaPEMWriter pemWriter = new JcaPEMWriter(stringWriter);
+		pemWriter.writeObject(key);
+		pemWriter.close();
+		String pemFormat = stringWriter.toString();
+		pemFormat = pemFormat.replaceAll("\\r\\n", "\\\n");
+		WriteFileQuietlyExtensions.string2File(file, pemFormat);
 	}
+
 }

@@ -37,10 +37,10 @@ public enum KeyPairGeneratorAlgorithm implements Algorithm
 	/** The enum constant for DIFFIE_HELLMAN algorithm. */
 	DIFFIE_HELLMAN("DiffieHellman"),
 
-	/** The enum constant for EC algorithm. */
-	EC("EC"),
 	/** The enum constant for DSA algorithm. */
 	DSA("DSA"),
+	/** The enum constant for EC algorithm. */
+	EC("EC"),
 	/** The enum constant for RSA algorithm. */
 	RSA("RSA");
 

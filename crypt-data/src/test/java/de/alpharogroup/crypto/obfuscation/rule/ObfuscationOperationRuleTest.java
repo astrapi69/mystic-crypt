@@ -29,8 +29,8 @@ import static org.testng.AssertJUnit.assertEquals;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.collections.set.SetExtensions;
-import de.alpharogroup.test.objects.evaluations.EqualsHashCodeAndToStringEvaluator;
+import de.alpharogroup.collections.set.SetFactory;
+import de.alpharogroup.evaluate.object.evaluators.EqualsHashCodeAndToStringEvaluator;
 
 /**
  * The unit test class for the class {@link ObfuscationOperationRule}
@@ -48,7 +48,7 @@ public class ObfuscationOperationRuleTest
 		Object actual;
 		ObfuscationOperationRule<Character, String> rule = ObfuscationOperationRule
 			.<Character, String> newRule().character(Character.valueOf('a')).replaceWith("bc")
-			.operation(Operation.UPPERCASE).indexes(SetExtensions.newHashSet(0, 2)).build();
+			.operation(Operation.UPPERCASE).indexes(SetFactory.newHashSet(0, 2)).build();
 
 		expected = Character.valueOf('a');
 		actual = rule.getCharacter();
@@ -65,7 +65,7 @@ public class ObfuscationOperationRuleTest
 
 		assertEquals(actual, expected);
 
-		expected = SetExtensions.newHashSet(0, 2);
+		expected = SetFactory.newHashSet(0, 2);
 		actual = rule.getIndexes();
 
 		assertEquals(actual, expected);

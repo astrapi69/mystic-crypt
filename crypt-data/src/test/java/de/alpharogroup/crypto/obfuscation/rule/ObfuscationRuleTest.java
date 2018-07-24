@@ -24,14 +24,63 @@
  */
 package de.alpharogroup.crypto.obfuscation.rule;
 
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Optional;
+
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
+
+import de.alpharogroup.evaluate.object.api.ContractViolation;
+import de.alpharogroup.evaluate.object.checkers.EqualsHashCodeAndToStringCheck;
 
 /**
  * The unit test class for the class {@link ObfuscationRule}.
  */
 public class ObfuscationRuleTest
 {
+
+	/**
+	 * Test method for {@link ObfuscationRule} constructors and builders
+	 */
+	@Test
+	public final void testConstructors()
+	{
+		ObfuscationRule<Character, Character> model = new ObfuscationRule<>();
+		assertNotNull(model);
+		model = ObfuscationRule.<Character, Character> builder().build();
+		assertNotNull(model);
+	}
+
+
+	/**
+	 * Test method for {@link ObfuscationRule#equals(Object)} , {@link ObfuscationRule#hashCode()}
+	 * and {@link ObfuscationRule#toString()}
+	 *
+	 * @throws IllegalAccessException
+	 *             if the caller does not have access to the property accessor method
+	 * @throws InstantiationException
+	 *             if a new instance of the bean's class cannot be instantiated
+	 * @throws InvocationTargetException
+	 *             if the property accessor method throws an exception
+	 * @throws NoSuchMethodException
+	 *             if an accessor method for this property cannot be found
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred
+	 */
+	@Test
+	public void testEqualsHashcodeAndToStringWithClass() throws NoSuchMethodException,
+		IllegalAccessException, InvocationTargetException, InstantiationException, IOException
+	{
+		Optional<ContractViolation> expected;
+		Optional<ContractViolation> actual;
+		actual = EqualsHashCodeAndToStringCheck.equalsHashcodeAndToString(ObfuscationRule.class);
+		expected = Optional.empty();
+		assertEquals(expected, actual);
+	}
 
 	/**
 	 * Test method for {@link ObfuscationRule}
