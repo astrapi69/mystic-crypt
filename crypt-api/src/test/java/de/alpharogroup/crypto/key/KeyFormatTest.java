@@ -49,8 +49,16 @@ public class KeyFormatTest
 		expected = "PKCS_1";
 		assertEquals(actual, expected);
 
+		actual = KeyFormat.PKCS_1.getFormat();
+		expected = "PKCS#1";
+		assertEquals(actual, expected);
+
 		actual = KeyFormat.PKCS_8.name();
 		expected = "PKCS_8";
+		assertEquals(actual, expected);
+
+		actual = KeyFormat.PKCS_8.getFormat();
+		expected = "PKCS#8";
 		assertEquals(actual, expected);
 	}
 

@@ -46,14 +46,17 @@ public class KeyTypeTest
 		actual = KeyType.CERTIFICATE.getDisplayValue();
 		expected = "Certificate";
 		assertEquals(actual, expected);
+		assertEquals(KeyType.CERTIFICATE.toString(), expected);
 
 		actual = KeyType.PRIVATE_KEY.getDisplayValue();
 		expected = "Private key";
 		assertEquals(actual, expected);
+		assertEquals(KeyType.PRIVATE_KEY.toString(), expected);
 
 		actual = KeyType.PUBLIC_KEY.getDisplayValue();
 		expected = "Public key";
 		assertEquals(actual, expected);
+		assertEquals(KeyType.PUBLIC_KEY.toString(), expected);
 	}
 
 

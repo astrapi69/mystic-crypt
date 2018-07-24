@@ -46,18 +46,22 @@ public class KeySizeTest
 		actual = KeySize.KEYSIZE_1024.getKeySize();
 		expected = 1024;
 		assertEquals(actual, expected);
+		assertEquals(KeySize.KEYSIZE_1024.toString(), expected.toString());
 
 		actual = KeySize.KEYSIZE_2048.getKeySize();
 		expected = 2048;
 		assertEquals(actual, expected);
+		assertEquals(KeySize.KEYSIZE_2048.toString(), expected.toString());
 
 		actual = KeySize.KEYSIZE_4096.getKeySize();
 		expected = 4096;
 		assertEquals(actual, expected);
+		assertEquals(KeySize.KEYSIZE_4096.toString(), expected.toString());
 
 		actual = KeySize.KEYSIZE_8192.getKeySize();
 		expected = 8192;
 		assertEquals(actual, expected);
+		assertEquals(KeySize.KEYSIZE_8192.toString(), expected.toString());
 	}
 
 	/**
