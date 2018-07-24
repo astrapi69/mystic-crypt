@@ -3,24 +3,20 @@
  *
  * Copyright (C) 2015 Asterios Raptis
  *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
- * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
- * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package de.alpharogroup.crypto.key;
 
@@ -87,7 +83,7 @@ public class PublicKeyExtensionsTest
 	 * Sets up method will be invoked before every unit test method in this class
 	 */
 	@BeforeMethod
-	protected void setUp() 
+	protected void setUp()
 	{
 		Security.addProvider(new BouncyCastleProvider());
 
@@ -98,7 +94,7 @@ public class PublicKeyExtensionsTest
 		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
 		privateKeyDerFile = new File(derDir, "private.der");
 	}
-	
+
 	/**
 	 * Test method for {@link PublicKeyExtensions#getKeyLength(PrivateKey)}.
 	 *
@@ -120,16 +116,33 @@ public class PublicKeyExtensionsTest
 		actual = PublicKeyExtensions.getKeyLength(null);
 		expected = -1;
 		assertEquals(expected, actual);
-		// new scenario...		
-		publicKey = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.DSA, KeySize.KEYSIZE_1024).getPublic();
+		// new scenario...
+		publicKey = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.DSA, KeySize.KEYSIZE_1024)
+			.getPublic();
 		actual = PublicKeyExtensions.getKeyLength(publicKey);
 		expected = 1024;
 		assertEquals(expected, actual);
-		// new scenario...		
-		publicKey = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.EC, KeySize.KEYSIZE_4096).getPublic();
+		// new scenario...
+		publicKey = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.EC, KeySize.KEYSIZE_4096)
+			.getPublic();
 		actual = PublicKeyExtensions.getKeyLength(publicKey);
 		expected = 239;
 		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test method for {@link PublicKeyExtensions#splitByFixedLength(String, int)}
+	 */
+	@SuppressWarnings("deprecation")
+	@Test
+	public void testSplitByLength()
+	{
+		final String input = "HickoryDickoryDockxxxmousexranxupxthexclockxThexcom.foo.barxstruckxonexThexxyxranxdownBlogBarFooEEE";
+
+		final List<String> output = PublicKeyExtensions.splitByFixedLength(input, 7);
+
+		assertTrue(output.size() == 15);
+		assertEquals(output.get(1), "Dickory");
 	}
 
 	/**
@@ -150,6 +163,7 @@ public class PublicKeyExtensionsTest
 		assertEquals(expected, actual);
 	}
 
+
 	/**
 	 * Test method for {@link PrivateKeyExtensions#toHexString(PrivateKey)}.
 	 *
@@ -169,7 +183,6 @@ public class PublicKeyExtensionsTest
 		assertEquals(expected, actual);
 	}
 
-
 	/**
 	 * Test method for {@link PrivateKeyExtensions#toHexString(PrivateKey)}.
 	 *
@@ -188,21 +201,6 @@ public class PublicKeyExtensionsTest
 		actual = PublicKeyExtensions.toHexString(publicKey, false);
 		expected = HEX_STRING_ENCODED.toUpperCase();
 		assertEquals(expected, actual);
-	}
-
-	/**
-	 * Test method for {@link PublicKeyExtensions#splitByFixedLength(String, int)}
-	 */
-	@SuppressWarnings("deprecation")
-	@Test
-	public void testSplitByLength()
-	{
-		final String input = "HickoryDickoryDockxxxmousexranxupxthexclockxThexcom.foo.barxstruckxonexThexxyxranxdownBlogBarFooEEE";
-		
-		final List<String> output = PublicKeyExtensions.splitByFixedLength(input, 7);
-
-		assertTrue(output.size() == 15);
-		assertEquals(output.get(1), "Dickory");
 	}
 
 	/**

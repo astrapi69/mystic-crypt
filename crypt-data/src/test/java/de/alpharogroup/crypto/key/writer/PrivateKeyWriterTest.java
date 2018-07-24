@@ -3,24 +3,20 @@
  *
  * Copyright (C) 2015 Asterios Raptis
  *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
- * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
- * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package de.alpharogroup.crypto.key.writer;
 
@@ -71,7 +67,7 @@ public class PrivateKeyWriterTest
 	 * Sets up method will be invoked before every unit test method in this class
 	 */
 	@BeforeMethod
-	protected void setUp() 
+	protected void setUp()
 	{
 		Security.addProvider(new BouncyCastleProvider());
 
@@ -80,6 +76,17 @@ public class PrivateKeyWriterTest
 
 		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
 		privateKeyDerFile = new File(derDir, "private.der");
+	}
+
+	/**
+	 * Test method for {@link PrivateKeyWriter} with {@link BeanTester}
+	 */
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(PrivateKeyWriter.class);
 	}
 
 	/**
@@ -104,7 +111,7 @@ public class PrivateKeyWriterTest
 		String expected;
 		String actual;
 		File writtenPrivatekeyDerFile;
-		// new scenario...		
+		// new scenario...
 		privateKey = PrivateKeyReader.readPrivateKey(privateKeyDerFile);
 
 		writtenPrivatekeyDerFile = new File(derDir, "written-private.der");
@@ -137,7 +144,7 @@ public class PrivateKeyWriterTest
 		String actual;
 		File privatekeyPemFileInDerDir;
 		File convertedPrivatekeyPemFile;
-		// new scenario...		
+		// new scenario...
 		privateKey = PrivateKeyReader.readPrivateKey(privateKeyDerFile);
 
 		convertedPrivatekeyPemFile = new File(pemDir, "converted-private.pem");
@@ -159,7 +166,7 @@ public class PrivateKeyWriterTest
 	 * @throws InvalidKeySpecException
 	 * @throws NoSuchAlgorithmException
 	 */
-	@Test(enabled = true) 
+	@Test(enabled = true)
 	public void testWritePrivateKeyOutputStreamKeyFileFormatKeyFormat() throws IOException,
 		NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException
 	{
@@ -174,7 +181,7 @@ public class PrivateKeyWriterTest
 
 		newWrittenPrivatekeyPemFile = new File(pemDir, "new-written-private.pem");
 		newWrittenPrivatekeyPemFile.createNewFile();
-		
+
 		outputStream = StreamExtensions.getOutputStream(newWrittenPrivatekeyPemFile);
 		PrivateKeyWriter.write(privateKey, outputStream, KeyFileFormat.PEM, KeyFormat.PKCS_8);
 		expected = ChecksumExtensions.getChecksum(privatekeyPemFileInDerDir, MdAlgorithm.MD5);
@@ -185,7 +192,7 @@ public class PrivateKeyWriterTest
 		// new scenario...
 		newWrittenPrivatekeyPemFile = new File(pemDir, "new-written-private.pem");
 		newWrittenPrivatekeyPemFile.createNewFile();
-		
+
 		outputStream = StreamExtensions.getOutputStream(newWrittenPrivatekeyPemFile);
 		PrivateKeyWriter.write(privateKey, outputStream, KeyFileFormat.PEM, KeyFormat.PKCS_1);
 		expected = ChecksumExtensions.getChecksum(privatekeyPemFileInDerDir, MdAlgorithm.MD5);
@@ -199,7 +206,7 @@ public class PrivateKeyWriterTest
 
 		newWrittenPrivatekeyPemFile = new File(pemDir, "new-written-private.pem");
 		newWrittenPrivatekeyPemFile.createNewFile();
-		
+
 		outputStream = StreamExtensions.getOutputStream(newWrittenPrivatekeyPemFile);
 		PrivateKeyWriter.write(privateKey, outputStream, KeyFileFormat.PEM, null);
 		expected = ChecksumExtensions.getChecksum(privatekeyPemFileInDerDir, MdAlgorithm.MD5);
@@ -210,7 +217,7 @@ public class PrivateKeyWriterTest
 		// new scenario...
 		newWrittenPrivatekeyPemFile = new File(pemDir, "new-written-private.pem");
 		newWrittenPrivatekeyPemFile.createNewFile();
-		
+
 		outputStream = StreamExtensions.getOutputStream(newWrittenPrivatekeyPemFile);
 		PrivateKeyWriter.write(privateKey, outputStream, KeyFileFormat.DER, null);
 		expected = ChecksumExtensions.getChecksum(privateKeyDerFile, MdAlgorithm.MD5);
@@ -218,18 +225,7 @@ public class PrivateKeyWriterTest
 		assertEquals(expected, actual);
 
 		DeleteFileExtensions.delete(newWrittenPrivatekeyPemFile);
-		
-	}
 
-	/**
-	 * Test method for {@link PrivateKeyWriter} with {@link BeanTester}
-	 */
-	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
-			UnsupportedOperationException.class })
-	public void testWithBeanTester()
-	{
-		final BeanTester beanTester = new BeanTester();
-		beanTester.testBean(PrivateKeyWriter.class);
 	}
 
 }

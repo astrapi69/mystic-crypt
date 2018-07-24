@@ -3,24 +3,20 @@
  *
  * Copyright (C) 2015 Asterios Raptis
  *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
- * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
- * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package de.alpharogroup.crypto.key.reader;
 
@@ -96,18 +92,16 @@ public class PrivateKeyReaderTest
 	{
 		String privateKeyAsBase64String;
 		String base64;
-		
-		privateKeyAsBase64String = PrivateKeyReader
-			.readPemFileAsBase64(privateKeyPemFile);
+
+		privateKeyAsBase64String = PrivateKeyReader.readPemFileAsBase64(privateKeyPemFile);
 
 		actual = PrivateKeyReader.readPemPrivateKey(privateKeyPemFile);
 
 		base64 = PrivateKeyExtensions.toBase64(actual);
 		assertNotNull(privateKeyAsBase64String);
 		assertNotNull(base64);
-		
-		privateKeyAsBase64String = PrivateKeyReader
-			.readPemFileAsBase64(privateKeyPemFile2);
+
+		privateKeyAsBase64String = PrivateKeyReader.readPemFileAsBase64(privateKeyPemFile2);
 
 		actual = PrivateKeyReader.readPemPrivateKey(privateKeyPemFile);
 
@@ -134,27 +128,6 @@ public class PrivateKeyReaderTest
 		NoSuchProviderException, IOException
 	{
 		actual = PrivateKeyReader.readPemPrivateKey(privateKeyPemFile);
-		assertNotNull(actual);
-	}
-
-	/**
-	 * Test method for {@link PrivateKeyReader#readPrivateKey(File)}
-	 * 
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the cypher object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchProviderException
-	 *             is thrown if the specified provider is not registered in the security provider
-	 *             list.
-	 */
-	@Test
-	public void testReadPrivateKey() throws NoSuchAlgorithmException, InvalidKeySpecException,
-		NoSuchProviderException, IOException
-	{
-		actual = PrivateKeyReader.readPrivateKey(privateKeyDerFile);
 		assertNotNull(actual);
 	}
 
@@ -202,6 +175,27 @@ public class PrivateKeyReaderTest
 
 		actual = PrivateKeyReader.readPemPrivateKey(privateKeyAsBase64String,
 			KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
+		assertNotNull(actual);
+	}
+
+	/**
+	 * Test method for {@link PrivateKeyReader#readPrivateKey(File)}
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
+	 */
+	@Test
+	public void testReadPrivateKey() throws NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchProviderException, IOException
+	{
+		actual = PrivateKeyReader.readPrivateKey(privateKeyDerFile);
 		assertNotNull(actual);
 	}
 
