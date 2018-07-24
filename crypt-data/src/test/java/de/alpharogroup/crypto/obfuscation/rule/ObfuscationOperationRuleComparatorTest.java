@@ -67,14 +67,14 @@ public class ObfuscationOperationRuleComparatorTest
 	int actual;
 
 	/** The comparator. */
-	Comparator<ObfuscationOperationRule<Character, String>> comparator;
+	Comparator<ObfuscationOperationRule<Character, Character>> comparator;
 
 	Character character;
-	String replaceWith;
+	Character replaceWith;
 	Operation operation;
 	Set<Integer> indexes;
-	ObfuscationOperationRule<Character, String> o1;
-	ObfuscationOperationRule<Character, String> o2;
+	ObfuscationOperationRule<Character, Character> o1;
+	ObfuscationOperationRule<Character, Character> o2;
 
 	/**
 	 * Test method for
@@ -87,14 +87,14 @@ public class ObfuscationOperationRuleComparatorTest
 		comparator = new ObfuscationOperationRuleComparator();
 
 		character = Character.valueOf('a');
-		replaceWith = "b";
+		replaceWith = Character.valueOf('b');
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(0, 2);
 
-		o1 = ObfuscationOperationRule.<Character, String> newRule().character(character)
+		o1 = ObfuscationOperationRule.<Character, Character> newRule().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 
-		o2 = ObfuscationOperationRule.<Character, String> newRule().character(character)
+		o2 = ObfuscationOperationRule.<Character, Character> newRule().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 
 		actual = comparator.compare(o1, o2);
@@ -102,11 +102,11 @@ public class ObfuscationOperationRuleComparatorTest
 		assertTrue(expected);
 
 		character = Character.valueOf('b');
-		replaceWith = "c";
+		replaceWith = Character.valueOf('c');
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(2);
 
-		o2 = ObfuscationOperationRule.<Character, String> newRule().character(character)
+		o2 = ObfuscationOperationRule.<Character, Character> newRule().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 
 		actual = comparator.compare(o1, o2);
