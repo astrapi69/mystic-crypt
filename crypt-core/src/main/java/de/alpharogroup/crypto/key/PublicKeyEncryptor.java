@@ -92,7 +92,8 @@ public class PublicKeyEncryptor extends AbstractEncryptor<Cipher, PublicKey>
 	{
 		if (getModel().getAlgorithm() == null)
 		{
-			getModel().setAlgorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding);
+			getModel().setAlgorithm(
+				KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding);
 		}
 		return getModel().getAlgorithm().getAlgorithm();
 	}
