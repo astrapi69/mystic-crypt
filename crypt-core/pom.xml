@@ -65,6 +65,12 @@
 			<artifactId>test-objects</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- MEANBEAN DEPENDENCY -->
+		<dependency>
+			<groupId>org.meanbean</groupId>
+			<artifactId>meanbean</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 	</dependencies>
 

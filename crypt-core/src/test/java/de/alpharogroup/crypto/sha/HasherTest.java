@@ -21,6 +21,7 @@
 package de.alpharogroup.crypto.sha;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -32,6 +33,8 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
@@ -83,6 +86,17 @@ public class HasherTest
 		log.debug("actual:" + actual);
 		AssertJUnit.assertTrue("'expected' should be equal with 'actual'.",
 			expected.equals(actual));
+	}
+
+	/**
+	 * Test method for {@link Hasher} with {@link BeanTester}
+	 */
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(Hasher.class);
 	}
 
 }

@@ -39,7 +39,7 @@ import de.alpharogroup.crypto.hex.HexableEncryptor;
 import lombok.experimental.UtilityClass;
 
 /**
- * The class {@link Hasher}.
+ * The class {@link Hasher}
  *
  * @author Asterios Raptis
  */
