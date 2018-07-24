@@ -301,6 +301,7 @@ public class ComplexObfuscatorTest
 	/**
 	 * Test method for {@link ComplexObfuscator#disentangle()}
 	 */
+	@SuppressWarnings("deprecation")
 	@Test(enabled = false) // TODO inspect and fix...
 	public void testDisentangle()
 	{
@@ -319,6 +320,7 @@ public class ComplexObfuscatorTest
 	/**
 	 * Test method for {@link ComplexObfuscator#obfuscate()}
 	 */
+	@SuppressWarnings("deprecation")
 	@Test(enabled = false) // TODO inspect and fix...
 	public void testObfuscate()
 	{
@@ -335,6 +337,7 @@ public class ComplexObfuscatorTest
 	/**
 	 * Test method for {@link ComplexObfuscator#obfuscate()}
 	 */
+	@SuppressWarnings("deprecation")
 	@Test(enabled = false) // TODO inspect and fix...
 	public void testObfuscateEightChars()
 	{
