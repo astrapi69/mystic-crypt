@@ -24,19 +24,23 @@
  */
 package de.alpharogroup.crypto.key;
 
+import static org.junit.Assert.assertNotNull;
 import static org.testng.AssertJUnit.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Security;
 import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.util.io.pem.PemObject;
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.BeforeMethod;
@@ -268,8 +272,8 @@ public class PrivateKeyExtensionsTest
 	@Test(enabled = true)
 	public void testToBase64Binary() throws Exception
 	{
-		String expected;
 		String actual;
+		String expected;
 		// new scenario...
 		privateKey = PrivateKeyReader.readPemPrivateKey(privateKeyPemFile);
 
@@ -287,8 +291,8 @@ public class PrivateKeyExtensionsTest
 	@Test(enabled = true)
 	public void testToHexString() throws Exception
 	{
-		String expected;
 		String actual;
+		String expected;
 		// new scenario...
 		privateKey = PrivateKeyReader.readPemPrivateKey(privateKeyPemFile);
 
@@ -306,8 +310,8 @@ public class PrivateKeyExtensionsTest
 	@Test(enabled = true)
 	public void testToHexStringBoolean() throws Exception
 	{
-		String expected;
 		String actual;
+		String expected;
 		// new scenario...
 		privateKey = PrivateKeyReader.readPemPrivateKey(privateKeyPemFile);
 
@@ -333,6 +337,36 @@ public class PrivateKeyExtensionsTest
 		actual = PrivateKeyExtensions.toPemFormat(privateKey);
 		expected = PRIVATE_KEY_BASE64_ENCODED;
 		assertEquals(expected, actual);
+		
+	}
+
+	/**
+	 * Test method for {@link PrivateKeyExtensions#toPKCS8Format(PrivateKey)}
+	 * 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
+	 */
+	@Test
+	public void testToPKCS1Format() throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException, IOException
+	{
+		// new scenario...		
+		privateKey = PrivateKeyReader.readPemPrivateKey(privateKeyPemFile);
+		byte[] pkcs1Format = PrivateKeyExtensions.toPKCS1Format(privateKey);
+		assertNotNull(pkcs1Format);
+		
+		PemObject pemObject = new PemObject("RSA PUBLIC KEY", pkcs1Format);
+		
+		PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(pemObject.getContent());
+        KeyFactory kf = KeyFactory.getInstance("RSA");
+        PrivateKey privateKey1 = kf.generatePrivate(keySpec);
+        assertEquals(privateKey1, privateKey);		
 	}
 
 	/**

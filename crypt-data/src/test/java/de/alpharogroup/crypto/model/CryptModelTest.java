@@ -89,4 +89,5 @@ public class CryptModelTest
 		expected = true;
 		assertEquals(expected, actual);
 	}
+	
 }

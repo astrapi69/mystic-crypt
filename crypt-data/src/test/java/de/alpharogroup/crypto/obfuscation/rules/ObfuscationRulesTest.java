@@ -24,8 +24,18 @@
  */
 package de.alpharogroup.crypto.obfuscation.rules;
 
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Optional;
+
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
+
+import de.alpharogroup.evaluate.object.api.ContractViolation;
+import de.alpharogroup.evaluate.object.checkers.EqualsHashCodeAndToStringCheck;
 
 /**
  * The unit test class for the class {@link ObfuscationRules}.
@@ -33,6 +43,52 @@ import org.testng.annotations.Test;
 public class ObfuscationRulesTest
 {
 
+	/**
+	 * Test method for {@link ObfuscationRules} constructors and builders
+	 */
+	@Test
+	public final void testConstructors()
+	{
+		ObfuscationRules<Character, Character> model = new ObfuscationRules<>();
+		assertNotNull(model);
+		model = ObfuscationRules.<Character, Character>builder().build();
+		assertNotNull(model);
+	}
+
+
+	/**
+	 * Test method for {@link ObfuscationRules#equals(Object)} ,
+	 * {@link ObfuscationRules#hashCode()} and {@link ObfuscationRules#toString()}
+	 *
+	 * @throws IllegalAccessException
+	 *             if the caller does not have access to the property accessor method
+	 * @throws InstantiationException
+	 *             if a new instance of the bean's class cannot be instantiated
+	 * @throws InvocationTargetException
+	 *             if the property accessor method throws an exception
+	 * @throws NoSuchMethodException
+	 *             if an accessor method for this property cannot be found
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred
+	 */
+	@Test
+	public void testEqualsHashcodeAndToStringWithClass() throws NoSuchMethodException,
+		IllegalAccessException, InvocationTargetException, InstantiationException, IOException
+	{
+		Optional<ContractViolation> expected;
+		Optional<ContractViolation> actual;
+		
+		ObfuscationRules<Character, Character> first = new ObfuscationRules<>();
+		ObfuscationRules<Character, Character> second = ObfuscationRules.<Character, Character>builder().build();
+		ObfuscationRules<Character, Character> third = new ObfuscationRules<>();
+		ObfuscationRules<Character, Character> fourth = new ObfuscationRules<>();
+		
+		actual = EqualsHashCodeAndToStringCheck
+			.equalsHashcodeAndToString(first, second, third, fourth);
+		expected = Optional.empty();
+		assertEquals(expected, actual);
+	}
+	
 	/**
 	 * Test method for {@link ObfuscationRules}
 	 */

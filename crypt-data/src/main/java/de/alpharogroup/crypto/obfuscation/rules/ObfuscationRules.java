@@ -50,7 +50,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder(toBuilder = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ObfuscationRules<C, RW, OR extends ObfuscationRule<C, RW>>
+public class ObfuscationRules<C, RW>
 {
 
 	/** The obfuscation rules. */
