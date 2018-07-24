@@ -74,11 +74,11 @@ public class ComplexObfuscator implements Obfuscatable
 		return sb.toString();
 	}
 
-	/** The rule. */
-	private final BiMap<Character, ObfuscationOperationRule<Character, String>> rules;
-
 	/** The key. */
 	private final String key;
+
+	/** The rule. */
+	private final BiMap<Character, ObfuscationOperationRule<Character, String>> rules;
 
 	public ComplexObfuscator(
 		final BiMap<Character, ObfuscationOperationRule<Character, String>> rules, final String key)

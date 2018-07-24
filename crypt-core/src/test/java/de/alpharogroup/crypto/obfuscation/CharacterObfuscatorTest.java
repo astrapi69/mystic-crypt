@@ -46,14 +46,14 @@ import lombok.experimental.FieldDefaults;
 public class CharacterObfuscatorTest extends AbstractTestCase<String, String>
 {
 
-	String stringToObfuscate;
-	BiMap<Character, ObfuscationOperationRule<Character, Character>> rules;
 	Character character;
-	Character replaceWith;
-	Operation operation;
 	Set<Integer> indexes;
-	ObfuscationOperationRule<Character, Character> rule;
 	Obfuscatable obfuscator;
+	Operation operation;
+	Character replaceWith;
+	ObfuscationOperationRule<Character, Character> rule;
+	BiMap<Character, ObfuscationOperationRule<Character, Character>> rules;
+	String stringToObfuscate;
 
 	/**
 	 * Sets up method will be invoked before every unit test method in this class

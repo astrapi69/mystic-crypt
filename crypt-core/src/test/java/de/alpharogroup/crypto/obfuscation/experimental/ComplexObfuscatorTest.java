@@ -46,15 +46,15 @@ public class ComplexObfuscatorTest
 {
 
 	String actual;
-	String expected;
-	String stringToObfuscate;
-	BiMap<Character, ObfuscationOperationRule<Character, String>> rules;
 	Character character;
-	String replaceWith;
-	Operation operation;
+	String expected;
 	Set<Integer> indexes;
-	ObfuscationOperationRule<Character, String> rule;
 	Obfuscatable obfuscator;
+	Operation operation;
+	String replaceWith;
+	ObfuscationOperationRule<Character, String> rule;
+	BiMap<Character, ObfuscationOperationRule<Character, String>> rules;
+	String stringToObfuscate;
 
 	/**
 	 * Sets up method will be invoked before every unit test method in this class

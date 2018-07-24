@@ -68,11 +68,11 @@ public class CertificateWriterTest
 
 	PrivateKey actual;
 
-	File pemDir;
+	X509Certificate cert;
 
 	File derDir;
 
-	X509Certificate cert;
+	File pemDir;
 
 	/**
 	 * Sets up method will be invoked before every unit test method in this class

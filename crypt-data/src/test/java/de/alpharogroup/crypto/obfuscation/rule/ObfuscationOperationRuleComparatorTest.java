@@ -56,21 +56,21 @@ import de.alpharogroup.collections.set.SetFactory;
 public class ObfuscationOperationRuleComparatorTest
 {
 
-	/** For use of the expected result. */
-	boolean expected;
-
 	/** For use of the result of the comparator. */
 	int actual;
+
+	Character character;
 
 	/** The comparator. */
 	Comparator<ObfuscationOperationRule<Character, Character>> comparator;
 
-	Character character;
-	Character replaceWith;
-	Operation operation;
+	/** For use of the expected result. */
+	boolean expected;
 	Set<Integer> indexes;
 	ObfuscationOperationRule<Character, Character> o1;
 	ObfuscationOperationRule<Character, Character> o2;
+	Operation operation;
+	Character replaceWith;
 
 	/**
 	 * Test method for

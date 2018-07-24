@@ -52,16 +52,16 @@ import de.alpharogroup.file.search.PathFinder;
 public class PublicKeyWriterTest
 {
 
-	PrivateKey privateKey;
-	PublicKey publicKey;
-
+	File derDir;
 	File pemDir;
 
-	File derDir;
-	File publicKeyDerFile;
-	File publicKeyPemFile;
+	PrivateKey privateKey;
 
 	File privateKeyPemFile;
+	PublicKey publicKey;
+	File publicKeyDerFile;
+
+	File publicKeyPemFile;
 
 	/**
 	 * Sets up method will be invoked before every unit test method in this class

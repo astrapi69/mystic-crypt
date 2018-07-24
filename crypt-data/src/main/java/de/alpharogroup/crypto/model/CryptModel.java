@@ -55,26 +55,26 @@ public class CryptModel<C, K> implements Serializable
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	/** The cipher. */
-	C cipher;
-
-	/** The key. */
-	K key;
-
 	/** The algorithm. */
 	Algorithm algorithm;
 
-	/** The operation mode that indicates if an encryption or decryption process will start. */
-	int operationMode;
-
-	/** The iteration count. */
-	Integer iterationCount;
-
-	/** The salt byte array. */
-	byte[] salt;
+	/** The cipher. */
+	C cipher;
 
 	/**
 	 * The flag initialized that indicates if the cipher is initialized.
 	 */
 	boolean initialized;
+
+	/** The iteration count. */
+	Integer iterationCount;
+
+	/** The key. */
+	K key;
+
+	/** The operation mode that indicates if an encryption or decryption process will start. */
+	int operationMode;
+
+	/** The salt byte array. */
+	byte[] salt;
 }

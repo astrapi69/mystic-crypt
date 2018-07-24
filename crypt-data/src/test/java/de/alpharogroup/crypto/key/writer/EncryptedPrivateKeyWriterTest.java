@@ -54,13 +54,13 @@ import de.alpharogroup.file.search.PathFinder;
  */
 public class EncryptedPrivateKeyWriterTest
 {
-	PrivateKey expected;
 	PrivateKey actual;
-
 	File derDir;
+
 	File encryptedPrivateKeyFile;
-	PrivateKey readedPrivateKey;
+	PrivateKey expected;
 	String password;
+	PrivateKey readedPrivateKey;
 
 	/**
 	 * Sets up method will be invoked before every unit test method in this class.

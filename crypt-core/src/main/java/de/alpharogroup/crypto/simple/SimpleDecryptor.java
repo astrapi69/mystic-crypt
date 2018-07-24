@@ -60,18 +60,18 @@ public class SimpleDecryptor implements StringDecryptor, Cryptor
 	private Cipher cipher;
 
 	/**
-	 * The private key.
-	 */
-	@Getter
-	private final String privateKey;
-
-	/**
 	 * The flag initialized that indicates if the cypher is initialized for decryption.
 	 *
 	 * @return true, if is initialized
 	 */
 	@Getter(value = AccessLevel.PRIVATE)
 	private boolean initialized;
+
+	/**
+	 * The private key.
+	 */
+	@Getter
+	private final String privateKey;
 
 	/**
 	 * Instantiates a new {@link SimpleDecryptor} with the given private key.

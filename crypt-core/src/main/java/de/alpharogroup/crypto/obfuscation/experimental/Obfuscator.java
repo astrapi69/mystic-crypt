@@ -43,11 +43,11 @@ import de.alpharogroup.crypto.obfuscation.rules.SimpleObfuscationRules;
 public class Obfuscator implements Obfuscatable
 {
 
-	/** The rule. */
-	private final SimpleObfuscationRules rule;
-
 	/** The key. */
 	private final String key;
+
+	/** The rule. */
+	private final SimpleObfuscationRules rule;
 
 	/**
 	 * Instantiates a new {@link Obfuscator}.

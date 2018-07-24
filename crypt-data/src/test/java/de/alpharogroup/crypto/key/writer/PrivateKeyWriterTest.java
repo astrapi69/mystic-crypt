@@ -54,14 +54,14 @@ public class PrivateKeyWriterTest
 {
 
 	PrivateKey actual;
-	PrivateKey privateKey;
+	File derDir;
 
 	File pemDir;
 
-	File derDir;
-	File privateKeyPemFile;
-
+	PrivateKey privateKey;
 	File privateKeyDerFile;
+
+	File privateKeyPemFile;
 
 	/**
 	 * Sets up method will be invoked before every unit test method in this class

@@ -47,14 +47,14 @@ import de.alpharogroup.file.search.PathFinder;
 public class KeyStoreExtensionsTest
 {
 
+	String alias = "alias-for-delete";
 	/** The certificate for tests. */
 	X509Certificate certificate;
-	String password = "foobar-secret-pw";
-	String alias = "alias-for-delete";
 	String newAlias = "new-alias";
+	String password = "foobar-secret-pw";
 
-	File publickeyDerDir;
 	File privatekeyDerFile;
+	File publickeyDerDir;
 
 	/**
 	 * Sets up method will be invoked before every unit test method in this class.

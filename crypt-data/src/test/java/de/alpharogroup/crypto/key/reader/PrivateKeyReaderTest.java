@@ -50,12 +50,12 @@ public class PrivateKeyReaderTest
 
 	PrivateKey actual;
 
+	File derDir;
 	File pemDir;
+	File privateKeyDerFile;
+
 	File privateKeyPemFile;
 	File privateKeyPemFile2;
-
-	File derDir;
-	File privateKeyDerFile;
 
 	/**
 	 * Sets up method will be invoked before every unit test method in this class

@@ -55,19 +55,19 @@ public class PrivateKeyHexDecryptor
 	private Cipher cipher = null;
 
 	/**
-	 * The private key.
-	 */
-	@Getter
-	@Setter
-	private PrivateKey privateKey = null;
-
-	/**
 	 * The flag initialized that indicates if the cypher is initialized for decryption.
 	 *
 	 * @return true, if is initialized
 	 */
 	@Getter(value = AccessLevel.PRIVATE)
 	private boolean initialized;
+
+	/**
+	 * The private key.
+	 */
+	@Getter
+	@Setter
+	private PrivateKey privateKey = null;
 
 	/**
 	 * Instantiates a new {@link PrivateKeyHexDecryptor} with the given {@link PrivateKey}.

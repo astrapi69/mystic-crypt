@@ -35,16 +35,16 @@ public enum KeyFileFormat
 	DER("der"),
 
 	/**
-	 * The constant for the file format PEM. The PEM file format is encoded in Base64 ASCII format.
-	 * PEM formatted files usually have the file extension '*.cer', '*.crt' and '*.pem'.
-	 */
-	PEM("cer", "crt", "pem"),
-
-	/**
 	 * The constant for the file format P7B. The P7B file format is encoded in Base64 ASCII format.
 	 * PEM formatted files usually have the file extension '*.p7b' and '*.p7c'.
 	 */
-	P7B("p7b", "p7c");
+	P7B("p7b", "p7c"),
+
+	/**
+	 * The constant for the file format PEM. The PEM file format is encoded in Base64 ASCII format.
+	 * PEM formatted files usually have the file extension '*.cer', '*.crt' and '*.pem'.
+	 */
+	PEM("cer", "crt", "pem");
 
 	/** The file extensions. */
 	@Getter

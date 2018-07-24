@@ -27,12 +27,12 @@ package de.alpharogroup.crypto.obfuscation.rule;
 public enum Operation
 {
 
-	/** The uppercase. */
-	UPPERCASE,
 	/** The lowercase. */
 	LOWERCASE,
 	/** The titlecase. */
-	TITLECASE;
+	TITLECASE,
+	/** The uppercase. */
+	UPPERCASE;
 
 	/**
 	 * Operation on the given character.

@@ -37,11 +37,11 @@ import lombok.NonNull;
 public class CharacterObfuscator implements Obfuscatable
 {
 
-	/** The rule. */
-	private final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules;
-
 	/** The key. */
 	private final String key;
+
+	/** The rule. */
+	private final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules;
 
 	public CharacterObfuscator(
 		final @NonNull BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,

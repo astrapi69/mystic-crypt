@@ -38,9 +38,6 @@ public class WordlistsProcessor
 	/** The Constant logger. */
 	private static final Logger logger = Logger.getLogger(WordlistsProcessor.class.getName());
 
-	/** The word list. */
-	private final List<String> words;
-
 	/** The current index. */
 	private int currentIndex;
 
@@ -48,6 +45,9 @@ public class WordlistsProcessor
 	@Getter
 	@Setter
 	private String toCheckAgainst;
+
+	/** The word list. */
+	private final List<String> words;
 
 	/**
 	 * Instantiates a new {@link WordlistsProcessor} object.
