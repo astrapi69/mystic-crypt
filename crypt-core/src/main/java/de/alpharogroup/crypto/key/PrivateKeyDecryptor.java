@@ -93,8 +93,7 @@ public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey>
 	{
 		if (getModel().getAlgorithm() == null)
 		{
-			return KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding
-				.getAlgorithm();
+			getModel().setAlgorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding);
 		}
 		return getModel().getAlgorithm().getAlgorithm();
 	}
