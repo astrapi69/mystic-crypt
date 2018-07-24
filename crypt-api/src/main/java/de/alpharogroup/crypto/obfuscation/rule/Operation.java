@@ -55,8 +55,6 @@ public enum Operation
 					return Character.toUpperCase(character);
 				case TITLECASE :
 					return Character.toTitleCase(character);
-				default :
-					return Character.valueOf(character);
 			}
 		}
 		return operate(character, operation, false);
@@ -105,8 +103,6 @@ public enum Operation
 						}
 					}
 					return Character.toTitleCase(character);
-				default :
-					return Character.valueOf(character);
 			}
 		}
 		return Character.valueOf(character);

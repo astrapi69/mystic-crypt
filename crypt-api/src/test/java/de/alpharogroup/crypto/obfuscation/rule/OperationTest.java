@@ -54,6 +54,10 @@ public class OperationTest
 		actual = Operation.operate('A', Operation.LOWERCASE);
 		expected = 'a';
 		assertEquals(expected, actual);
+
+		actual = Operation.operate('A', null);
+		expected = 'A';
+		assertEquals(expected, actual);
 	}
 
 	/**
@@ -87,6 +91,10 @@ public class OperationTest
 
 		actual = Operation.operate('A', Operation.LOWERCASE, true);
 		expected = 'A';
+		assertEquals(expected, actual);
+
+		actual = Operation.operate('A', Operation.TITLECASE, true);
+		expected = 'a';
 		assertEquals(expected, actual);
 	}
 
