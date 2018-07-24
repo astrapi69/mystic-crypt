@@ -1,7 +1,7 @@
 ## Change log
 ----------------------
 
-Version 5.2-SNAPSHOT
+Version 5.2
 -------------
 
 CHANGED:
@@ -18,6 +18,7 @@ CHANGED:
 - update of randomizer version to 5.4
 - update of bouncycastle version to 1.60
 - update of guava version to 25.1-jre
+- unit tests extended for improve code coverage
 
 Version 5.1.0
 -------------
