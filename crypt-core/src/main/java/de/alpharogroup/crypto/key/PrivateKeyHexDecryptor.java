@@ -40,26 +40,24 @@ import org.apache.commons.codec.DecoderException;
 
 import de.alpharogroup.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
 import de.alpharogroup.crypto.hex.HexExtensions;
-import de.alpharogroup.crypto.simple.SimpleDecryptor;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NonNull;
 
 /**
  * The class {@link PrivateKeyHexDecryptor} decrypts encrypted characters the was encrypted with the
  * public key of the pendant private key of this class.
  */
-public class PrivateKeyHexDecryptor
+public final class PrivateKeyHexDecryptor
 {
 	/**
-	 * The Cipher object.
+	 * The Cipher object
 	 */
 	@Getter
-	@Setter
-	private Cipher cipher = null;
+	private Cipher cipher;
 
 	/**
-	 * The flag initialized that indicates if the cypher is initialized for decryption.
+	 * The flag initialized that indicates if the cipher is initialized for decryption.
 	 *
 	 * @return true, if is initialized
 	 */
@@ -67,29 +65,28 @@ public class PrivateKeyHexDecryptor
 	private boolean initialized;
 
 	/**
-	 * The private key.
+	 * The private key
 	 */
 	@Getter
-	@Setter
-	private PrivateKey privateKey = null;
+	private final PrivateKey privateKey;
 
 	/**
-	 * Instantiates a new {@link PrivateKeyHexDecryptor} with the given {@link PrivateKey}.
+	 * Instantiates a new {@link PrivateKeyHexDecryptor} with the given {@link PrivateKey}
 	 *
 	 * @param privateKey
-	 *            The private key.
+	 *            The private key
 	 */
-	public PrivateKeyHexDecryptor(final PrivateKey privateKey)
+	public PrivateKeyHexDecryptor(final @NonNull PrivateKey privateKey)
 	{
-		this.setPrivateKey(privateKey);
+		this.privateKey = privateKey;
 	}
 
 	/**
-	 * Decrypt the given encrypted String.
+	 * Decrypt the given encrypted {@link String}
 	 *
 	 * @param encypted
-	 *            The String to decrypt.
-	 * @return The decrypted String
+	 *            The encrypted {@link String} to decrypt
+	 * @return The decrypted {@link String}
 	 *
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the cypher object fails.
@@ -122,7 +119,7 @@ public class PrivateKeyHexDecryptor
 	}
 
 	/**
-	 * Initializes the {@link SimpleDecryptor} object.
+	 * Initializes the {@link PrivateKeyHexDecryptor} object
 	 *
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the cypher object fails.
@@ -131,8 +128,11 @@ public class PrivateKeyHexDecryptor
 	 * @throws InvalidKeyException
 	 *             the invalid key exception is thrown if initialization of the cypher object fails.
 	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
 	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
 	 */
 	private void initialize()
 		throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
@@ -144,6 +144,7 @@ public class PrivateKeyHexDecryptor
 				.getInstance(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding
 					.getAlgorithm());
 			cipher.init(Cipher.DECRYPT_MODE, privateKey);
+			initialized = true;
 		}
 	}
 

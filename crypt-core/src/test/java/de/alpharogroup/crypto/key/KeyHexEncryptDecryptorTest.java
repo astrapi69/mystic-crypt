@@ -102,9 +102,9 @@ public class KeyHexEncryptDecryptorTest
 	{
 		final String test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
 
-		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		final File publickeyDerFile = new File(publickeyDerDir, "public.der");
-		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
+		final File derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		final File publickeyDerFile = new File(derDir, "public.der");
+		final File privatekeyDerFile = new File(derDir, "private.der");
 
 		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
 
