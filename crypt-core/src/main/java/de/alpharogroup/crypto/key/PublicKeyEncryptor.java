@@ -56,6 +56,7 @@ public class PublicKeyEncryptor extends AbstractEncryptor<Cipher, PublicKey>
 	 *
 	 * @param model
 	 *            The crypt model.
+	 *            
 	 * @throws InvalidAlgorithmParameterException
 	 *             is thrown if initialization of the cypher object fails.
 	 * @throws NoSuchPaddingException
