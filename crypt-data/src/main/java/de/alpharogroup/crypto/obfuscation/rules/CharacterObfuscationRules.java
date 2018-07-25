@@ -31,27 +31,22 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
- * The class {@link SimpleObfuscationRules} can define a simple rule for encrypt and decrypt a key.
- * 
- * @deprecated use instead the {@link CharacterObfuscationRules} <br>
- *             <br>
- *             Note: will be removed on next minor release.
+ * The class {@link CharacterObfuscationRules} can define a simple rule for encrypt and decrypt a key.
  */
-@Deprecated
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class SimpleObfuscationRules extends ObfuscationBiMapRules<String, String>
+public class CharacterObfuscationRules extends ObfuscationBiMapRules<Character, Character>
 {
 
 	/**
-	 * Instantiates a new {@link SimpleObfuscationRules}.
+	 * Instantiates a new {@link CharacterObfuscationRules}.
 	 *
 	 * @param obfuscationRules
 	 *            the obfuscation rules
 	 */
 
 	@Builder(builderMethodName = "buildRule")
-	public SimpleObfuscationRules(BiMap<String, String> obfuscationRules)
+	public CharacterObfuscationRules(BiMap<Character, Character> obfuscationRules)
 	{
 		super(obfuscationRules);
 	}

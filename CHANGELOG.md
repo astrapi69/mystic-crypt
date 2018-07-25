@@ -4,6 +4,10 @@
 Version 5.3-SNAPSHOT
 -------------
 
+CHANGED:
+
+- javadoc improved and extended 
+- deleted deprecated classes
 
 Version 5.2
 -------------

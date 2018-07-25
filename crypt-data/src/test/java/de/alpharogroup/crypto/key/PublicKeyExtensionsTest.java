@@ -135,21 +135,6 @@ public class PublicKeyExtensionsTest
 	}
 
 	/**
-	 * Test method for {@link PublicKeyExtensions#splitByFixedLength(String, int)}
-	 */
-	@SuppressWarnings("deprecation")
-	@Test
-	public void testSplitByLength()
-	{
-		final String input = "HickoryDickoryDockxxxmousexranxupxthexclockxThexcom.foo.barxstruckxonexThexxyxranxdownBlogBarFooEEE";
-
-		final List<String> output = PublicKeyExtensions.splitByFixedLength(input, 7);
-
-		assertTrue(output.size() == 15);
-		assertEquals(output.get(1), "Dickory");
-	}
-
-	/**
 	 * Test method for {@link PublicKeyExtensions#toBase64(PublicKey)}
 	 *
 	 * @throws Exception
