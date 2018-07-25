@@ -31,7 +31,8 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
- * The class {@link CharacterObfuscationRules} can define a simple rule for encrypt and decrypt a key.
+ * The class {@link CharacterObfuscationRules} can define a simple rule for encrypt and decrypt a
+ * key.
  */
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)

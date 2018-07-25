@@ -81,7 +81,10 @@ public class PrivateKeyHexDecryptorTest
 	 * 
 	 */
 	@Test
-	public final void testConstructors() throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException, DecoderException 
+	public final void testConstructors()
+		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException,
+		IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException,
+		BadPaddingException, InvalidAlgorithmParameterException, DecoderException
 	{
 		PrivateKey privateKey;
 
@@ -89,7 +92,7 @@ public class PrivateKeyHexDecryptorTest
 		final File privatekeyDerFile = new File(derDir, "private.der");
 
 		privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
-		
+
 		PrivateKeyHexDecryptor decryptor = new PrivateKeyHexDecryptor(privateKey);
 		assertNotNull(decryptor);
 		assertEquals(privateKey, decryptor.getPrivateKey());

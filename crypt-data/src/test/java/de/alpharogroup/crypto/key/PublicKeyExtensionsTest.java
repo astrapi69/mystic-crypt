@@ -24,7 +24,6 @@
  */
 package de.alpharogroup.crypto.key;
 
-import static org.testng.Assert.assertTrue;
 import static org.testng.AssertJUnit.assertEquals;
 
 import java.io.File;
@@ -32,7 +31,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Security;
-import java.util.List;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.meanbean.test.BeanTestException;

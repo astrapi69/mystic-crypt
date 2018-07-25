@@ -97,18 +97,18 @@ public class CharacterObfuscationRulesTest
 		charmap2.put(Character.valueOf('4'), Character.valueOf('A'));
 		charmap2.put(Character.valueOf('5'), Character.valueOf('S'));
 		charmap2.put(Character.valueOf('6'), Character.valueOf('G'));
-		
+
 		BiMap<Character, Character> obfuscationRules = HashBiMap.create(charmap);
-		
+
 
 		final CharacterObfuscationRules first = new CharacterObfuscationRules(obfuscationRules);
 		final CharacterObfuscationRules second = new CharacterObfuscationRules(
 			HashBiMap.create(MapFactory.newHashMap(charmap2)));
 		final CharacterObfuscationRules third = new CharacterObfuscationRules(obfuscationRules);
 		final CharacterObfuscationRules fourth = new CharacterObfuscationRules(obfuscationRules);
-		
-		actual = EqualsHashCodeAndToStringCheck
-			.equalsHashcodeAndToString(first, second, third, fourth);
+
+		actual = EqualsHashCodeAndToStringCheck.equalsHashcodeAndToString(first, second, third,
+			fourth);
 		expected = Optional.empty();
 		assertEquals(expected, actual);
 	}

@@ -65,7 +65,7 @@ public class PublicKeyHexEncryptorTest
 	 *             is thrown if generation of the SecretKey object fails.
 	 * @throws NoSuchProviderException
 	 *             is thrown if the specified provider is not registered in the security provider
-	 *             list. 
+	 *             list.
 	 * @throws InvalidKeyException
 	 *             the invalid key exception is thrown if initialization of the cypher object fails.
 	 * @throws NoSuchPaddingException
@@ -76,7 +76,9 @@ public class PublicKeyHexEncryptorTest
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
 	 */
 	@Test
-	public final void testConstructors() throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException
+	public final void testConstructors() throws NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchProviderException, IOException, InvalidKeyException, NoSuchPaddingException,
+		IllegalBlockSizeException, BadPaddingException
 	{
 		PublicKey publicKey;
 		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");

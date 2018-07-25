@@ -52,29 +52,31 @@ public class PrivateKeyDecryptorTest
 	 *             is thrown if a security error occurs
 	 */
 	@Test
-	public final void testConstructors() throws Exception 
+	public final void testConstructors() throws Exception
 	{
 		PrivateKey privateKey;
 		CryptModel<Cipher, PrivateKey> decryptModel;
 		String test;
 		byte[] testBytes;
-		
+
 		test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
 		testBytes = test.getBytes("UTF-8");
-		
+
 		final File derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
 		final File privatekeyDerFile = new File(derDir, "private.der");
 
 		privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
 
 		decryptModel = CryptModel.<Cipher, PrivateKey> builder().key(privateKey).build();
-		PublicKeyEncryptor encryptor = new PublicKeyEncryptor(CryptModel.<Cipher, PublicKey> builder().key(PrivateKeyExtensions.generatePublicKey(privateKey)).build());
-		
+		PublicKeyEncryptor encryptor = new PublicKeyEncryptor(
+			CryptModel.<Cipher, PublicKey> builder()
+				.key(PrivateKeyExtensions.generatePublicKey(privateKey)).build());
+
 		PrivateKeyDecryptor decryptor = new PrivateKeyDecryptor(decryptModel);
 		assertNotNull(decryptor);
 		byte[] decrypted = decryptor.decrypt(encryptor.encrypt(testBytes));
 		assertNotNull(decrypted);
 		assertEquals(new String(decrypted, "UTF-8"), test);
 	}
-	
+
 }
