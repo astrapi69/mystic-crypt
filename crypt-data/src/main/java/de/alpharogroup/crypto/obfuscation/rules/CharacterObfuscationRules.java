@@ -45,7 +45,7 @@ public class CharacterObfuscationRules extends ObfuscationBiMapRules<Character, 
 	 *            the obfuscation rules
 	 */
 
-	@Builder(builderMethodName = "buildRule")
+	@Builder(builderMethodName = "rulesBuilder")
 	public CharacterObfuscationRules(BiMap<Character, Character> obfuscationRules)
 	{
 		super(obfuscationRules);
