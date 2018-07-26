@@ -11,7 +11,7 @@
 	</parent>
 
 	<artifactId>mystic-crypt</artifactId>
-	<version>5.3</version>
+	<version>5.4</version>
 	<packaging>pom</packaging>
 	<inceptionYear>2015</inceptionYear>
 
@@ -289,29 +289,22 @@
 								<exclude>de/alpharogroup/crypto/core/**/*.class</exclude>
 								<!-- enums -->
 								<exclude>de/alpharogroup/crypto/algorithm/**/*.class</exclude>
-								<exclude>de/alpharogroup/crypto/enums/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/mechanisms/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/modes/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/padding/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/provider/**/*.class</exclude>
 								<exclude>de/alpharogroup/crypto/pw/**/*.class</exclude>
 								<!-- beans -->
-								<exclude>de/alpharogroup/crypto/model/**/*.class</exclude>
 								<!-- constant classes with only constants -->
 								<!-- deprecated classes -->
 								<!-- interfaces -->
 								<exclude>de/alpharogroup/crypto/api/**/*.class</exclude>
 								<!-- exceptions -->
-								<exclude>de/alpharogroup/auth/exceptions/**/*.class</exclude>
 								<!-- experimental classes -->
-								<exclude>de/alpharogroup/crypto/obfuscation/experimental/**/*.class</exclude>
 								<!-- explicit abstract classes -->
 								<!-- explicit annotations -->
 								<!-- explicit bean classes -->
-								<exclude>de/alpharogroup/crypto/simple/SimpleBaseDecryptor.class</exclude>
-								<exclude>de/alpharogroup/crypto/simple/SimpleBaseEncryptor.class</exclude>
 								<!-- explicit deprecated classes -->
-								<exclude>de/alpharogroup/crypto/key/KeyExtensions.class</exclude>
 								<!-- explicit interfaces -->
 								<exclude>de/alpharogroup/crypto/obfuscation/api/Obfuscatable.class</exclude>
 								<!-- explicit constant classes with only constants -->

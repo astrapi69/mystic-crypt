@@ -1,6 +1,19 @@
 ## Change log
 ----------------------
 
+Version 5.4
+-------------
+
+ADDED:
+ 
+- new unit tests created
+
+CHANGED:
+
+- deleted deprecated class
+- deleted unit test class deprecated class
+- cleaned up of exclude classes in code coverage maven plugin
+
 Version 5.3
 -------------
 
