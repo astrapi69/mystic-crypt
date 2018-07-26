@@ -23,6 +23,10 @@ The target of this parent project is to make encryption and decryption as simple
  * Brute-force processing
  * Wordlist processing
  
+Encryption and decryption processes are always executed in the backround so it is a black box for the user. If you want to 
+see this library in action you can download this [gui client](https://github.com/astrapi69/mystic-crypt-ui) and see some features
+described above.
+ 
 ## License
 
 The source code comes under the liberal MIT License, making mystic-crypt great for all types of applications.
