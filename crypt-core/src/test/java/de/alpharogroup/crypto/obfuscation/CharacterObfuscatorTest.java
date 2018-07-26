@@ -291,8 +291,6 @@ public class CharacterObfuscatorTest extends AbstractTestCase<String, String>
 	protected void tearDown() throws Exception
 	{
 		super.tearDown();
-		actual = null;
-		expected = null;
 		stringToObfuscate = null;
 		rules = null;
 		character = null;
