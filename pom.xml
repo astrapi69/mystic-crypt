@@ -11,7 +11,7 @@
 	</parent>
 
 	<artifactId>mystic-crypt</artifactId>
-	<version>5.3-SNAPSHOT</version>
+	<version>5.3</version>
 	<packaging>pom</packaging>
 	<inceptionYear>2015</inceptionYear>
 
