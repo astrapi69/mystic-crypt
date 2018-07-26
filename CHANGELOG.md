@@ -4,6 +4,9 @@
 Version 5.4-SNAPSHOT
 -------------
 
+CHANGED:
+
+- deleted deprecated class
 
 Version 5.3
 -------------
