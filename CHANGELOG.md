@@ -8,6 +8,7 @@ CHANGED:
 
 - javadoc improved and extended 
 - deleted deprecated classes
+- unit tests extended for improve code coverage
 
 Version 5.2
 -------------
