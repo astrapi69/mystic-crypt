@@ -32,7 +32,12 @@ import lombok.ToString;
 
 /**
  * The class {@link SimpleObfuscationRules} can define a simple rule for encrypt and decrypt a key.
+ * 
+ * @deprecated use instead the {@link CharacterObfuscationRules} <br>
+ *             <br>
+ *             Note: will be removed on next minor release.
  */
+@Deprecated
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class SimpleObfuscationRules extends ObfuscationBiMapRules<String, String>

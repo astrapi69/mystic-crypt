@@ -41,23 +41,22 @@ import org.apache.commons.codec.binary.Hex;
 import de.alpharogroup.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NonNull;
 
 /**
  * The class {@link PublicKeyHexEncryptor} can encrypt characters with his public key.
  */
-public class PublicKeyHexEncryptor
+public final class PublicKeyHexEncryptor
 {
 
 	/**
-	 * The Cipher object.
+	 * the Cipher object
 	 */
 	@Getter
-	@Setter
 	private Cipher cipher;
 
 	/**
-	 * The flag initialized that indicates if the cypher is initialized for decryption.
+	 * the flag initialized that indicates if the cipher is initialized for encryption.
 	 *
 	 * @return true, if is initialized
 	 */
@@ -65,28 +64,29 @@ public class PublicKeyHexEncryptor
 	private boolean initialized;
 
 	/**
-	 * The public key.
+	 * the public key
 	 */
 	@Getter
 	private final PublicKey publicKey;
 
 	/**
-	 * Instantiates a new {@link PublicKeyHexEncryptor} with the given {@link PublicKey}.
+	 * Instantiates a new {@link PublicKeyHexEncryptor} object with the given {@link PublicKey}
 	 *
 	 * @param publicKey
-	 *            The public key.
+	 *            the public key
 	 */
-	public PublicKeyHexEncryptor(final PublicKey publicKey)
+	public PublicKeyHexEncryptor(final @NonNull PublicKey publicKey)
 	{
 		this.publicKey = publicKey;
 	}
 
 	/**
-	 * Encrypt the given String.
+	 * Encrypt the given {@link String} object
 	 *
 	 * @param string
-	 *            The String to encrypt.
-	 * @return The encrypted String.
+	 *            The {@link String} to encrypt
+	 * @return The encrypted {@link String}
+	 * 
 	 * @throws InvalidKeyException
 	 *             the invalid key exception is thrown if initialization of the cypher object fails.
 	 * @throws NoSuchAlgorithmException
@@ -114,7 +114,7 @@ public class PublicKeyHexEncryptor
 	}
 
 	/**
-	 * Initializes the {@link PublicKeyHexEncryptor} object.
+	 * Initializes this {@link PublicKeyHexEncryptor} object
 	 *
 	 * @throws UnsupportedEncodingException
 	 *             is thrown by get the byte array of the private key String object fails.
@@ -136,6 +136,7 @@ public class PublicKeyHexEncryptor
 				.getInstance(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding
 					.getAlgorithm());
 			cipher.init(Cipher.ENCRYPT_MODE, this.publicKey);
+			initialized = true;
 		}
 	}
 

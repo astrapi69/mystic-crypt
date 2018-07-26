@@ -1,6 +1,15 @@
 ## Change log
 ----------------------
 
+Version 5.3
+-------------
+
+CHANGED:
+
+- javadoc improved and extended 
+- deleted deprecated methods and classes
+- unit tests extended for improve code coverage
+
 Version 5.2
 -------------
 

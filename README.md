@@ -37,7 +37,7 @@ The source code comes under the liberal MIT License, making mystic-crypt great f
 
 ## Maven dependency
 
-Maven dependency is now on sonatype.
+Maven dependency is now available on sonatype.
 Check out [sonatype repository](https://oss.sonatype.org/index.html#nexus-search;quick~mystic-crypt) for latest snapshots and releases.
 
 You can first define the version properties:
@@ -45,7 +45,7 @@ You can first define the version properties:
 	<properties>
 			...
 		<!-- MYSTIC-CRYPT versions -->
-		<mystic-crypt.version>5.2</mystic-crypt.version>
+		<mystic-crypt.version>5.3</mystic-crypt.version>
 		<crypt-api.version>${mystic-crypt.version}</crypt-api.version>
 		<crypt-core.version>${mystic-crypt.version}</crypt-core.version>
 		<crypt-data.version>${mystic-crypt.version}</crypt-data.version>
@@ -54,7 +54,7 @@ You can first define the version properties:
 	
 You can add the following dependencies to your project for use the functionality of mystic-crypt.
 
-Add the following maven dependency to your project `pom.xml` if you want to import the core functionality of mystic-api:
+Add the following maven dependency to your project `pom.xml` if you want to import the core functionality of crypt-api:
 
 		<dependencies>
 			...
@@ -67,7 +67,7 @@ Add the following maven dependency to your project `pom.xml` if you want to impo
 			...
 		</dependencies>
 
-Add the following maven dependency to your project `pom.xml` if you want to import the core functionality of mystic-core:
+Add the following maven dependency to your project `pom.xml` if you want to import the core functionality of crypt-core:
 
 		<dependencies>
 			...

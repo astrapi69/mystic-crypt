@@ -59,6 +59,7 @@ public class PublicKeyReader
 	 * @param file
 	 *            the file
 	 * @return the public key
+	 * 
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws NoSuchAlgorithmException

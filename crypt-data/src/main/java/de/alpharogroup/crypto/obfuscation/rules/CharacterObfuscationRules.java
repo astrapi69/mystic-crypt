@@ -22,37 +22,34 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.obfuscation.rule;
+package de.alpharogroup.crypto.obfuscation.rules;
 
-import java.io.Serializable;
+import com.google.common.collect.BiMap;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.FieldDefaults;
 
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder(toBuilder = true)
-@FieldDefaults(level = AccessLevel.PRIVATE)
-public class ObfuscationRule<C, RW> implements Serializable
+/**
+ * The class {@link CharacterObfuscationRules} can define a simple rule for encrypt and decrypt a
+ * key.
+ */
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public class CharacterObfuscationRules extends ObfuscationBiMapRules<Character, Character>
 {
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
 
-	/** The character. */
-	C character;
+	/**
+	 * Instantiates a new {@link CharacterObfuscationRules}.
+	 *
+	 * @param obfuscationRules
+	 *            the obfuscation rules
+	 */
 
-	/** The character(s) that will be replaced with. */
-	RW replaceWith;
+	@Builder(builderMethodName = "rulesBuilder")
+	public CharacterObfuscationRules(BiMap<Character, Character> obfuscationRules)
+	{
+		super(obfuscationRules);
+	}
 
 }

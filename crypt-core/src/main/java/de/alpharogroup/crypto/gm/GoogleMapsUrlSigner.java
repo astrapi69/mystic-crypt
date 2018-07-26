@@ -34,11 +34,14 @@ import java.util.Base64;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
+import lombok.experimental.UtilityClass;
+
 /**
  * The class {@link GoogleMapsUrlSigner} can sign urls with the private key. This class is inspired
  * from this
  * <a href= "https://github.com/googlemaps/url-signing/blob/gh-pages/UrlSigner.java">class</a>
  */
+@UtilityClass
 public class GoogleMapsUrlSigner
 {
 

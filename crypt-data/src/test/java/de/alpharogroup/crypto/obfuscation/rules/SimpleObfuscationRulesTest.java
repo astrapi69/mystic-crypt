@@ -40,15 +40,16 @@ import de.alpharogroup.collections.map.MapFactory;
 import de.alpharogroup.evaluate.object.evaluators.EqualsHashCodeAndToStringEvaluator;
 
 /**
- * The unit test class for the class {@link ObfuscationBiMapRules}.
+ * The unit test class for the class {@link SimpleObfuscationRules}
  */
 public class SimpleObfuscationRulesTest
 {
 
 	/**
-	 * Test method for {@link ObfuscationBiMapRules#equals(Object)} ,
-	 * {@link ObfuscationBiMapRules#hashCode()} and {@link ObfuscationBiMapRules#toString()}
+	 * Test method for {@link SimpleObfuscationRules#equals(Object)} ,
+	 * {@link SimpleObfuscationRules#hashCode()} and {@link SimpleObfuscationRules#toString()}
 	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testEqualsHashcodeAndToString()
 	{
@@ -73,14 +74,11 @@ public class SimpleObfuscationRulesTest
 
 		map.put("1", "O");
 
-		final ObfuscationBiMapRules<String, String> first = ObfuscationBiMapRules
-			.<String, String> builder().obfuscationRules(obfuscationRules).build();
-		final ObfuscationBiMapRules<String, String> second = new ObfuscationBiMapRules<>(
-			HashBiMap.create(map));
-		final ObfuscationBiMapRules<String, String> third = new ObfuscationBiMapRules<>(
-			obfuscationRules);
-		final ObfuscationBiMapRules<String, String> fourth = new ObfuscationBiMapRules<>(
-			obfuscationRules);
+		final SimpleObfuscationRules first = SimpleObfuscationRules.buildRule()
+			.obfuscationRules(obfuscationRules).build();
+		final SimpleObfuscationRules second = new SimpleObfuscationRules(HashBiMap.create(map));
+		final SimpleObfuscationRules third = new SimpleObfuscationRules(obfuscationRules);
+		final SimpleObfuscationRules fourth = new SimpleObfuscationRules(obfuscationRules);
 
 		actual = EqualsHashCodeAndToStringEvaluator.evaluateEqualsHashcodeAndToString(first, second,
 			third, fourth);
@@ -89,14 +87,15 @@ public class SimpleObfuscationRulesTest
 	}
 
 	/**
-	 * Test method for {@link ObfuscationBiMapRules}
+	 * Test method for {@link SimpleObfuscationRules}
 	 */
+	@SuppressWarnings("deprecation")
 	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
 			UnsupportedOperationException.class })
 	public void testWithBeanTester()
 	{
 		final BeanTester beanTester = new BeanTester();
-		beanTester.testBean(ObfuscationBiMapRules.class);
+		beanTester.testBean(SimpleObfuscationRules.class);
 	}
 
 }

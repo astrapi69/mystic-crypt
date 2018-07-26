@@ -24,7 +24,6 @@
  */
 package de.alpharogroup.crypto.key;
 
-import static org.testng.Assert.assertTrue;
 import static org.testng.AssertJUnit.assertEquals;
 
 import java.io.File;
@@ -32,7 +31,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Security;
-import java.util.List;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.meanbean.test.BeanTestException;
@@ -132,21 +130,6 @@ public class PublicKeyExtensionsTest
 		actual = PublicKeyExtensions.getKeyLength(publicKey);
 		expected = 239;
 		assertEquals(expected, actual);
-	}
-
-	/**
-	 * Test method for {@link PublicKeyExtensions#splitByFixedLength(String, int)}
-	 */
-	@SuppressWarnings("deprecation")
-	@Test
-	public void testSplitByLength()
-	{
-		final String input = "HickoryDickoryDockxxxmousexranxupxthexclockxThexcom.foo.barxstruckxonexThexxyxranxdownBlogBarFooEEE";
-
-		final List<String> output = PublicKeyExtensions.splitByFixedLength(input, 7);
-
-		assertTrue(output.size() == 15);
-		assertEquals(output.get(1), "Dickory");
 	}
 
 	/**

@@ -27,8 +27,11 @@ package de.alpharogroup.crypto.gm;
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
 import static org.testng.Assert.assertNotNull;
 
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
 /**
@@ -67,6 +70,17 @@ public class GoogleMapsUrlSignerTest
 		final URL url = random(URL.class);
 		String signRequest = GoogleMapsUrlSigner.signRequest(url, "YOUR_PRIVATE_KEY");
 		assertNotNull(signRequest);
+	}
+
+	/**
+	 * Test method for {@link GoogleMapsUrlSigner} with {@link BeanTester}
+	 */
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(GoogleMapsUrlSigner.class);
 	}
 
 }

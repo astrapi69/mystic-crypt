@@ -24,6 +24,10 @@
  */
 package de.alpharogroup.crypto.simple;
 
+import java.lang.reflect.InvocationTargetException;
+
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
@@ -44,14 +48,14 @@ public class SimpleCryptTest
 	 * {@link SimpleCrypt#decode(String)}.
 	 */
 	@Test
-	public void testCryptoUtils()
+	public void testSimpleCrypt()
 	{
 		final String testString = "top secret";
 		final String expected = testString;
 		final String encrypted = SimpleCrypt.encode(testString);
 		final String decrypted = SimpleCrypt.decode(encrypted);
 		AssertJUnit.assertTrue(decrypted.equals(expected));
-		testCryptoUtils(testString, 4);
+		testSimpleCrypt(testString, 4);
 	}
 
 	/**
@@ -63,7 +67,7 @@ public class SimpleCryptTest
 	 * @param verschiebe
 	 *            the relocate
 	 */
-	protected void testCryptoUtils(final String testString, final int verschiebe)
+	protected void testSimpleCrypt(final String testString, final int verschiebe)
 	{
 		log.debug("original:--------\n" + testString + "\n--------");
 		final String expected = new StringBuffer(testString).toString().trim();
@@ -72,6 +76,17 @@ public class SimpleCryptTest
 		final String decrypted = SimpleCrypt.decode(encrypted, verschiebe);
 		AssertJUnit.assertTrue(decrypted.equals(expected));
 		log.debug("decrypted:--------\n" + decrypted + "\n--------");
+	}
+
+	/**
+	 * Test method for {@link SimpleCrypt} with {@link BeanTester}
+	 */
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(SimpleCrypt.class);
 	}
 
 
