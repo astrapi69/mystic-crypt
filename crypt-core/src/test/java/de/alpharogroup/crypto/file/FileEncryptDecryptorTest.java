@@ -49,15 +49,15 @@ public class FileEncryptDecryptorTest extends AbstractTestCase<String, String>
 {
 
 	File cryptDir;
-	File toEncrypt;
-	String firstKey;
 	CryptModel<Cipher, String> cryptModel;
-	FileEncryptor encryptor;
-	File encrypted;
-	File dirToEncrypt;
-	FileDecryptor decryptor;
 	File decrypted;
-	
+	FileDecryptor decryptor;
+	File dirToEncrypt;
+	File encrypted;
+	FileEncryptor encryptor;
+	String firstKey;
+	File toEncrypt;
+
 	/**
 	 * Sets up method will be invoked before every unit test method in this class
 	 */
@@ -68,10 +68,10 @@ public class FileEncryptDecryptorTest extends AbstractTestCase<String, String>
 		toEncrypt = new File(cryptDir, "test.txt");
 		dirToEncrypt = new File(cryptDir, "food");
 		firstKey = "D1D15ED36B887AF1";
-		cryptModel = CryptModel.<Cipher, String> builder()
-			.key(firstKey).algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).build();
+		cryptModel = CryptModel.<Cipher, String> builder().key(firstKey)
+			.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).build();
 	}
-	
+
 	/**
 	 * Test method for the encrpytion with the class {@link FileEncryptor} and decryption with the
 	 * class {@link FileDecryptor} with given constructor files.
@@ -83,40 +83,34 @@ public class FileEncryptDecryptorTest extends AbstractTestCase<String, String>
 	public void testEncryptDecryptConstructorFiles() throws Exception
 	{
 		// new scenario...
-		encryptor = new FileEncryptor(cryptModel,
-			new File(cryptDir, "encryptedCnstr.enc"));
+		encryptor = new FileEncryptor(cryptModel, new File(cryptDir, "encryptedCnstr.enc"));
 		encrypted = encryptor.encrypt(toEncrypt);
 
-		decryptor = new FileDecryptor(cryptModel,
-			new File(cryptDir, "decryptedCnstr.decrypted"));
+		decryptor = new FileDecryptor(cryptModel, new File(cryptDir, "decryptedCnstr.decrypted"));
 
-		decrypted = decryptor.decrypt(encrypted);		
+		decrypted = decryptor.decrypt(encrypted);
 
 		expected = ChecksumExtensions.getChecksum(toEncrypt, MdAlgorithm.MD5);
 		actual = ChecksumExtensions.getChecksum(decrypted, MdAlgorithm.MD5);
 		assertEquals(actual, expected);
-		// clean up...		
+		// clean up...
 		DeleteFileExtensions.delete(encrypted);
 		DeleteFileExtensions.delete(decrypted);
-		// new scenario...
-		encryptor = new FileEncryptor(cryptModel,
-			new File(cryptDir, "foodenc"));
-		encrypted = encryptor.encrypt(dirToEncrypt);
 	}
-	
+
 	/**
 	 * Test method for the encrpytion with the class {@link FileEncryptor} and decryption with the
-	 * class {@link FileDecryptor} with given constructor files that throws a {@link FileNotFoundException}
+	 * class {@link FileDecryptor} with given constructor files that throws a
+	 * {@link FileNotFoundException}
 	 *
 	 * @throws Exception
 	 *             is thrown if any error occurs on the execution
 	 */
-	@Test(expectedExceptions=FileNotFoundException.class)
+	@Test(expectedExceptions = FileNotFoundException.class)
 	public void testEncryptDecryptConstructorFilesThrowFileNotFoundException() throws Exception
 	{
 		// new scenario...
-		encryptor = new FileEncryptor(cryptModel,
-			new File(cryptDir, "foodenc"));
+		encryptor = new FileEncryptor(cryptModel, new File(cryptDir, "foodenc"));
 		encrypted = encryptor.encrypt(dirToEncrypt);
 	}
 
@@ -135,7 +129,7 @@ public class FileEncryptDecryptorTest extends AbstractTestCase<String, String>
 
 		decryptor = new FileDecryptor(cryptModel);
 
-		decrypted = decryptor.decrypt(encrypted);		
+		decrypted = decryptor.decrypt(encrypted);
 
 		expected = ChecksumExtensions.getChecksum(toEncrypt, MdAlgorithm.MD5);
 		actual = ChecksumExtensions.getChecksum(decrypted, MdAlgorithm.MD5);
@@ -182,12 +176,12 @@ public class FileEncryptDecryptorTest extends AbstractTestCase<String, String>
 			}
 		};
 
-		decrypted = decryptor.decrypt(encrypted);	
+		decrypted = decryptor.decrypt(encrypted);
 
 		expected = ChecksumExtensions.getChecksum(toEncrypt, MdAlgorithm.MD5);
 		actual = ChecksumExtensions.getChecksum(decrypted, MdAlgorithm.MD5);
 		assertEquals(actual, expected);
-		
+
 		// clean up...
 		DeleteFileExtensions.delete(encrypted);
 		DeleteFileExtensions.delete(decrypted);
