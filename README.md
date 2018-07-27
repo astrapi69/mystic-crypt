@@ -18,8 +18,7 @@ The target of this parent project is to make encryption and decryption as simple
  * Encryption and decryption from .pem, .der files that was generated with openssl
  * Hashing passwords
  * Obfuscate text with specified map
- * Hex en- and decryption
- * Creation of randomized data
+ * Hex encryption and decryption
  * Brute-force processing
  * Wordlist processing
  
