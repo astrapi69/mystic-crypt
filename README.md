@@ -14,13 +14,18 @@ The target of this parent project is to make encryption and decryption as simple
 
 ## Key features:
 
+ * Chain multiply encryptors for securely encrypting your data
+ * Encryption and decryption of single files
+ * Sign requests for your google maps urls
+ * Hex encryption and decryption
  * Encryption with PublicKey and decryption with PrivateKey objects that was generated with openssl or java
  * Encryption and decryption from .pem, .der files that was generated with openssl
- * Hashing passwords
  * Obfuscate text with specified map
- * Hex encryption and decryption
- * Brute-force processing
- * Wordlist processing
+ * Brute-force processing for crack passwords
+ * Wordlist processing for crack passwords
+ * Hash byte arrays, strings such as passwords
+ * Simple encode and decode of string objects with relocation
+ * Resolve the TrustManagers and KeyManagers from keystore files
  
 Encryption and decryption processes are always executed in the backround so it is a black box for the user. If you want to 
 see this library in action you can download this [gui client](https://github.com/astrapi69/mystic-crypt-ui) and see some features
