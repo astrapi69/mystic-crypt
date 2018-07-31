@@ -4,6 +4,12 @@
 Version 5.5-SNAPSHOT
 -------------
 
+CHANGED:
+
+- update of parent version to 4.1
+- update of file-worker version to 4.23
+- update of jcommons-lang version to 4.35
+- update of resourcebundle-inspector version to 3
 
 Version 5.4
 -------------

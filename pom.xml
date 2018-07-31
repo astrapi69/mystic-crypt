@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mvn-java-parent</artifactId>
-		<version>4</version>
+		<version>4.1</version>
 		<relativePath></relativePath>
 	</parent>
 
@@ -25,13 +25,13 @@
 
 	<properties>
 		<!-- NEW EXTENSIONS LIB versions -->
-		<file-worker.version>4.22</file-worker.version>
-		<jcommons-lang.version>4.34</jcommons-lang.version>
+		<file-worker.version>4.23</file-worker.version>
+		<jcommons-lang.version>4.35</jcommons-lang.version>
 		<test-objects.version>4.28</test-objects.version>
 		<silly-collections.version>4.33</silly-collections.version>
 		<vintage-time.version>4.12</vintage-time.version>
 		<!-- RESOURCEBUNDLE-CORE versions -->
-		<resourcebundle-inspector.version>2.22</resourcebundle-inspector.version>
+		<resourcebundle-inspector.version>3</resourcebundle-inspector.version>
 		<!-- JOBJECT-EXTENSIONS versions -->
 		<jobject-extensions.version>1.12</jobject-extensions.version>
 		<jobject-core.version>${jobject-extensions.version}</jobject-core.version>
