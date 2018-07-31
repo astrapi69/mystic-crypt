@@ -4,6 +4,10 @@
 Version 5.5-SNAPSHOT
 -------------
 
+ADDED:
+ 
+- new methods for encode and decode string objects in HexExtensions class created
+
 CHANGED:
 
 - update of parent version to 4.1
