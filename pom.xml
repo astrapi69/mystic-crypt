@@ -24,6 +24,10 @@
 	<url>https://github.com/astrapi69/mystic-crypt</url>
 
 	<properties>
+		<!-- MYSTIC-CRYPT versions -->
+		<mystic-crypt.version>${project.version}</mystic-crypt.version>
+		<crypt-api.version>${mystic-crypt.version}</crypt-api.version>
+		<crypt-data.version>${mystic-crypt.version}</crypt-data.version>
 		<!-- NEW EXTENSIONS LIB versions -->
 		<file-worker.version>4.23</file-worker.version>
 		<jcommons-lang.version>4.35</jcommons-lang.version>
@@ -36,11 +40,6 @@
 		<jobject-extensions.version>1.12</jobject-extensions.version>
 		<jobject-core.version>${jobject-extensions.version}</jobject-core.version>
 		<jobject-evaluate.version>${jobject-extensions.version}</jobject-evaluate.version>
-		<!-- PARENT PROJECT versions -->
-		<!-- MYSTIC-CRYPT versions -->
-		<mystic-crypt.version>${project.version}</mystic-crypt.version>
-		<crypt-api.version>${mystic-crypt.version}</crypt-api.version>
-		<crypt-data.version>${mystic-crypt.version}</crypt-data.version>
 		<!-- RANDOMIZER versions -->
 		<randomizer.version>5.4</randomizer.version>
 		<randomizer-core.version>${randomizer.version}</randomizer-core.version>
