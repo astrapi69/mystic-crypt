@@ -142,13 +142,16 @@ public class FileEncryptor extends AbstractFileEncryptor
 	}
 
 	/**
-	 * New encrypted file.
+	 * 
+	 * Factory method for creating the new decrypted {@link File} if it is not exists. This method
+	 * is invoked in the constructor from the derived classes and can be overridden so users can
+	 * provide their own version of creating the new decrypted {@link File}
 	 *
 	 * @param parent
-	 *            the parent
+	 *            the parent directory
 	 * @param child
-	 *            the child
-	 * @return the file
+	 *            the file name
+	 * @return the new {@link File} object
 	 */
 	protected File newEncryptedFile(final String parent, final String child)
 	{

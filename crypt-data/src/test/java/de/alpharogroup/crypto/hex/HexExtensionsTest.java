@@ -27,6 +27,7 @@ package de.alpharogroup.crypto.hex;
 import static org.junit.Assert.assertEquals;
 
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.Charset;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.StringUtils;
@@ -73,6 +74,26 @@ public class HexExtensionsTest
 	}
 
 	/**
+	 * Test method for {@link HexExtensions#decodeHex(String)}
+	 * 
+	 * @throws DecoderException
+	 */
+	@Test
+	public void testDecodeHexString() throws DecoderException
+	{
+		String actual;
+		String expected;
+		String hexString;
+		String secretMessage;
+
+		secretMessage = "Secret message";
+		hexString = "536563726574206d657373616765";
+		actual = HexExtensions.decodeHex(hexString);
+		expected = secretMessage;
+		assertEquals(expected, actual);
+	}
+
+	/**
 	 * Test method for {@link HexExtensions#decodeHexToString(char[])}
 	 *
 	 * @throws DecoderException
@@ -89,15 +110,21 @@ public class HexExtensionsTest
 
 	/**
 	 * Test method for {@link HexExtensions#encodeHex(byte[])}
+	 * 
+	 * @throws DecoderException
 	 */
 	@Test
-	public void testEncodeHex()
+	public void testEncodeHex() throws DecoderException
 	{
-		final String secretMessage = "Secret message";
-		final String expected = "536563726574206d657373616765";
-		final char[] actualCharArray = HexExtensions
-			.encodeHex(StringUtils.getBytesUtf8(secretMessage));
-		final String actual = new String(actualCharArray);
+		String actual;
+		String expected;
+		String secretMessage;
+		char[] actualCharArray;
+
+		secretMessage = "Secret message";
+		expected = "536563726574206d657373616765";
+		actualCharArray = HexExtensions.encodeHex(StringUtils.getBytesUtf8(secretMessage));
+		actual = new String(actualCharArray);
 		assertEquals(expected, actual);
 	}
 
@@ -116,6 +143,36 @@ public class HexExtensionsTest
 		actualCharArray = HexExtensions.encodeHex(StringUtils.getBytesUtf8(secretMessage), false);
 		actual = new String(actualCharArray);
 		assertEquals(expected.toUpperCase(), actual);
+	}
+
+	/**
+	 * Test method for {@link HexExtensions#encodeHex(String, Charset, boolean)}
+	 */
+	@Test
+	public void testEncodeHexStringCharsetBoolean()
+	{
+		String actual;
+		String expected;
+		String hexString;
+		String secretMessage;
+
+		secretMessage = "Secret message";
+		hexString = "536563726574206d657373616765";
+		actual = HexExtensions.encodeHex(secretMessage, Charset.forName("UTF-8"), true);
+		expected = hexString;
+		assertEquals(expected, actual);
+
+		secretMessage = "Secret message";
+		hexString = "536563726574206D657373616765";
+		actual = HexExtensions.encodeHex(secretMessage, Charset.forName("UTF-8"), false);
+		expected = hexString;
+		assertEquals(expected, actual);
+
+		secretMessage = "Secret message";
+		hexString = "536563726574206D657373616765";
+		actual = HexExtensions.encodeHex(secretMessage, null, false);
+		expected = hexString;
+		assertEquals(expected, actual);
 	}
 
 	/**

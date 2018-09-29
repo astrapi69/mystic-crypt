@@ -111,9 +111,8 @@ public class PrivateKeyWriterTest
 	public void testWriteFile() throws IOException, NoSuchAlgorithmException,
 		InvalidKeySpecException, NoSuchProviderException
 	{
-
-		String expected;
 		String actual;
+		String expected;
 		File writtenPrivatekeyDerFile;
 		// new scenario...
 		privateKey = PrivateKeyReader.readPrivateKey(privateKeyDerFile);
@@ -123,7 +122,7 @@ public class PrivateKeyWriterTest
 		expected = ChecksumExtensions.getChecksum(privateKeyDerFile, MdAlgorithm.MD5);
 		actual = ChecksumExtensions.getChecksum(writtenPrivatekeyDerFile, MdAlgorithm.MD5);
 		DeleteFileExtensions.delete(writtenPrivatekeyDerFile);
-		assertEquals(expected, actual);
+		assertEquals(actual, expected);
 	}
 
 	/**

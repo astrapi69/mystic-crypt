@@ -14,14 +14,22 @@ The target of this parent project is to make encryption and decryption as simple
 
 ## Key features:
 
+ * Chain multiply encryptors for securely encrypting your data
+ * Encryption and decryption of single files
+ * Sign requests for your google maps urls
+ * Hex encryption and decryption
  * Encryption with PublicKey and decryption with PrivateKey objects that was generated with openssl or java
  * Encryption and decryption from .pem, .der files that was generated with openssl
- * Hashing passwords
  * Obfuscate text with specified map
- * Hex en- and decryption
- * Creation of randomized data
- * Brute-force processing
- * Wordlist processing
+ * Brute-force processing for crack passwords
+ * Wordlist processing for crack passwords
+ * Hash byte arrays, strings such as passwords
+ * Simple encode and decode of string objects with relocation
+ * Resolve the TrustManagers and KeyManagers from keystore files
+ 
+Encryption and decryption processes are always executed in the backround so it is a black box for the user. If you want to 
+see this library in action you can download this [gui client](https://github.com/astrapi69/mystic-crypt-ui) and see some features
+described above.
  
 ## License
 
@@ -45,7 +53,7 @@ You can first define the version properties:
 	<properties>
 			...
 		<!-- MYSTIC-CRYPT versions -->
-		<mystic-crypt.version>5.4</mystic-crypt.version>
+		<mystic-crypt.version>5.5</mystic-crypt.version>
 		<crypt-api.version>${mystic-crypt.version}</crypt-api.version>
 		<crypt-core.version>${mystic-crypt.version}</crypt-core.version>
 		<crypt-data.version>${mystic-crypt.version}</crypt-data.version>
@@ -151,6 +159,7 @@ Here is a list of awesome projects for cryptography:
  * [commons-ssl](http://juliusdavies.ca/commons-ssl/) Not-Yet-Commons-SSL
  * [lockbox-java](https://github.com/eloquent/lockbox-java) Simple, strong encryption. 
  * [jsql-injection](https://github.com/ron190/jsql-injection) jSQL Injection is a Java application for automatic SQL database injection.
+ * [curve25519](https://github.com/signalapp/curve25519-java) Pure Java and JNI backed Curve25519 implementation
 
 ## Credits
 

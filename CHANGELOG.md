@@ -1,6 +1,22 @@
 ## Change log
 ----------------------
 
+Version 5.5
+-------------
+
+ADDED:
+ 
+- new methods for encode and decode string objects in HexExtensions class created
+- new enum created that holds union words for chaining algorithms
+
+CHANGED:
+
+- update of parent version to 4.1
+- update of file-worker version to 4.23
+- update of jcommons-lang version to 4.35
+- update of resourcebundle-inspector version to 3
+- update of guava version to 26.0-jre
+
 Version 5.4
 -------------
 

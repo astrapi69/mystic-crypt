@@ -24,9 +24,12 @@
  */
 package de.alpharogroup.crypto.hex;
 
+import java.nio.charset.Charset;
+
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 
+import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -60,12 +63,30 @@ public class HexExtensions
 	 * @param data
 	 *            the array of characters
 	 * @return A byte array that contains the binary data decoded from the given char array.
+	 * 
 	 * @throws DecoderException
 	 *             is thrown if an odd number or illegal of characters is supplied
 	 */
 	public static byte[] decodeHex(final char[] data) throws DecoderException
 	{
 		return Hex.decodeHex(data);
+	}
+
+	/**
+	 * Decode the given hexadecimal {@link String} object
+	 *
+	 * @param hexString
+	 *            the hexadecimal {@link String} object
+	 * @return the decoded {@link String}
+	 * 
+	 * @throws DecoderException
+	 *             is thrown if an odd number or illegal of characters is supplied
+	 */
+	public static String decodeHex(final String hexString) throws DecoderException
+	{
+		byte[] decodedBytes = HexExtensions.decodeHex(hexString.toCharArray());
+		String decodedString = HexExtensions.decodeHex(decodedBytes);
+		return decodedString;
 	}
 
 	/**
@@ -125,6 +146,34 @@ public class HexExtensions
 	}
 
 	/**
+	 * Transform the given plain {@link String} object into a hexadecimal {@link String} object.
+	 *
+	 * @param string
+	 *            the plain {@link String} object
+	 * @param charset
+	 *            the optional {@link Charset} to get the bytes from the plain {@link String} object
+	 * @param lowerCase
+	 *            the flag if the result shell be transform in lower case. If true the result is
+	 *            lowercase otherwise uppercase.
+	 * @return the hexadecimal {@link String} object
+	 */
+	public static String encodeHex(final @NonNull String string, final Charset charset,
+		final boolean lowerCase)
+	{
+		char[] encodedCharArray;
+		if (charset != null)
+		{
+			encodedCharArray = HexExtensions.encodeHex(string.getBytes(charset), lowerCase);
+		}
+		else
+		{
+			encodedCharArray = HexExtensions.encodeHex(string.getBytes(), lowerCase);
+		}
+		final String encodedString = new String(encodedCharArray);
+		return encodedString;
+	}
+
+	/**
 	 * Transform the given {@code int} to a hexadecimal value.
 	 *
 	 * @param i
@@ -155,6 +204,7 @@ public class HexExtensions
 	 *            the byte array
 	 * @param lowerCase
 	 *            the flag if the result shell be transform in lower case. If true the result is
+	 *            lowercase otherwise uppercase.
 	 * @return the new hexadecimal {@link String} value.
 	 */
 	public static String toHexString(final byte[] data, final boolean lowerCase)

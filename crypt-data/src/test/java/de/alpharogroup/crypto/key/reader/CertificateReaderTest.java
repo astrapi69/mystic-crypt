@@ -42,9 +42,9 @@ import org.meanbean.test.BeanTester;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.algorithm.HashAlgorithm;
 import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
+import de.alpharogroup.crypto.algorithm.UnionWord;
 import de.alpharogroup.crypto.factories.CertFactory;
 import de.alpharogroup.crypto.key.KeyFileFormat;
 import de.alpharogroup.crypto.key.writer.CertificateWriter;
@@ -84,8 +84,8 @@ public class CertificateReaderTest
 
 		final String subject = "CN=Test subject";
 		final String issuer = "CN=Test issue";
-		final String signatureAlgorithm = HashAlgorithm.SHA256.getAlgorithm() + CryptConst.WITH
-			+ KeyPairGeneratorAlgorithm.RSA.getAlgorithm();
+		final String signatureAlgorithm = HashAlgorithm.SHA256.getAlgorithm()
+			+ UnionWord.With.name() + KeyPairGeneratorAlgorithm.RSA.getAlgorithm();
 
 		final Date start = Date.from(
 			LocalDate.of(2017, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
@@ -133,8 +133,8 @@ public class CertificateReaderTest
 
 		final String subject = "CN=Test subject";
 		final String issuer = "CN=Test issue";
-		final String signatureAlgorithm = HashAlgorithm.SHA256.getAlgorithm() + CryptConst.WITH
-			+ KeyPairGeneratorAlgorithm.RSA.getAlgorithm();
+		final String signatureAlgorithm = HashAlgorithm.SHA256.getAlgorithm()
+			+ UnionWord.With.name() + KeyPairGeneratorAlgorithm.RSA.getAlgorithm();
 
 		final Date start = Date.from(
 			LocalDate.of(2017, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
