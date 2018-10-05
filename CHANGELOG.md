@@ -4,6 +4,10 @@
 Version 5.6-SNAPSHOT
 -------------
 
+ADDED:
+ 
+- new enum value NEGATECASE in Operation class that indicates to negate the case of the given character value
+
 Version 5.5
 -------------
 

@@ -59,6 +59,14 @@ public class OperationTest
 		expected = 'a';
 		assertEquals(expected, actual);
 
+		actual = Operation.operate('A', Operation.NEGATECASE);
+		expected = 'a';
+		assertEquals(expected, actual);
+
+		actual = Operation.operate('a', Operation.NEGATECASE);
+		expected = 'A';
+		assertEquals(expected, actual);
+
 		actual = Operation.operate('A', null);
 		expected = 'A';
 		assertEquals(expected, actual);
@@ -85,6 +93,10 @@ public class OperationTest
 		expected = 'a';
 		assertEquals(expected, actual);
 
+		actual = Operation.operate('A', Operation.NEGATECASE, false);
+		expected = 'a';
+		assertEquals(expected, actual);
+
 		actual = Operation.operate('a', Operation.UPPERCASE, true);
 		expected = 'a';
 		assertEquals(expected, actual);
@@ -99,6 +111,10 @@ public class OperationTest
 
 		actual = Operation.operate('A', Operation.TITLECASE, true);
 		expected = 'a';
+		assertEquals(expected, actual);
+		// double negation does nothing to character
+		actual = Operation.operate('A', Operation.NEGATECASE, true); 
+		expected = 'A';
 		assertEquals(expected, actual);
 	}
 
