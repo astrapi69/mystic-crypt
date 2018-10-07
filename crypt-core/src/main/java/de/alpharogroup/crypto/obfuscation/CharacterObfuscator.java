@@ -61,11 +61,11 @@ public class CharacterObfuscator implements Obfuscatable
 	public String disentangle()
 	{
 		final String obfuscated = ObfuscatorExtensions.obfuscateWith(rules, this.key);
-		final String disentangled = disentangleWith(rules, obfuscated);
+		final String disentangled = ObfuscatorExtensions.disentangle(rules, obfuscated);
 		return disentangled;
 	}
 
-	private String disentangleWith(
+	protected String disentangleWith(
 		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
 		final String obfuscated)
 	{

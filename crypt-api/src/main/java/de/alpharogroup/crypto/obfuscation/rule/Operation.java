@@ -33,10 +33,10 @@ public enum Operation
 
 	/** The lower case. */
 	LOWERCASE,
-	/** The title case. */
-	TITLECASE,
 	/** The negate case. */
 	NEGATECASE,
+	/** The title case. */
+	TITLECASE,
 	/** The upper case. */
 	UPPERCASE;
 
@@ -85,11 +85,11 @@ public enum Operation
 					}
 					return Character.toUpperCase(character);
 
-				case NEGATECASE:
+				case NEGATECASE :
 					if (reverse)
 					{
 						return Character.valueOf(character);
-					}						
+					}
 					if (Character.isUpperCase(character))
 					{
 						return Character.toLowerCase(character);

@@ -24,6 +24,7 @@
  */
 package de.alpharogroup.crypto.obfuscation.experimental;
 
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.google.common.collect.BiMap;
@@ -76,6 +77,82 @@ public class ObfuscatorExtensions
 			else
 			{
 				sb.append(charAsString);
+			}
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * Disentangle the given obfuscated text with the given {@link BiMap} rules
+	 *
+	 * @param rules
+	 *            the rules
+	 * @param obfuscated
+	 *            the obfuscated text
+	 * @return the string
+	 */
+	public static String disentangle(
+		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
+		final String obfuscated)
+	{
+		boolean processed = false;
+		char currentChar;
+		boolean upperCase;
+		boolean lowerCase;
+		Character currentCharacter;
+		final StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < obfuscated.length(); i++)
+		{
+			processed = false;
+			currentChar = obfuscated.charAt(i);
+			upperCase = Character.isUpperCase(currentChar);
+			lowerCase = Character.isLowerCase(currentChar);
+			currentCharacter = Character.valueOf(currentChar);
+
+			for (final Entry<Character, ObfuscationOperationRule<Character, Character>> entry : rules
+				.entrySet())
+			{
+				ObfuscationOperationRule<Character, Character> obfuscationOperationRule = entry
+					.getValue();
+				Set<Integer> indexes = obfuscationOperationRule.getIndexes();
+				Operation operation = obfuscationOperationRule.getOperation();
+				Character character = obfuscationOperationRule.getCharacter();
+				Character replaceWith = obfuscationOperationRule.getReplaceWith();
+				if (!indexes.isEmpty() && indexes.contains(Integer.valueOf(i)) && operation != null)
+				{
+					Character operatedCharacter = Operation.operate(character, operation);
+					if (currentCharacter.equals(operatedCharacter))
+					{
+						if ((operation.equals(Operation.UPPERCASE) && upperCase)
+							|| (operation.equals(Operation.LOWERCASE) && lowerCase))
+						{
+							sb.append(Operation.operate(currentChar, operation, true));
+						}
+						else
+						{
+							sb.append(Operation.operate(currentChar, operation, false));
+
+						}
+						processed = true;
+						continue;
+					}
+					if (currentCharacter.equals(replaceWith))
+					{
+						sb.append(character);
+						processed = true;
+						continue;
+					}
+				}
+				if (currentCharacter.equals(replaceWith) && rules.containsKey(replaceWith))
+				{
+					sb.append(character);
+					processed = true;
+					continue;
+				}
+			}
+			if (!processed && !rules.containsKey(currentCharacter))
+			{
+				sb.append(currentChar);
 			}
 		}
 		return sb.toString();

@@ -22,17 +22,38 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.algorithm;
+package de.alpharogroup.crypto.obfuscation.experimental;
+
+import lombok.experimental.UtilityClass;
 
 /**
- * The enum {@link UnionWord} hold union words for chain algorithms
+ * The class {@link CharacterExtensions} provides utility methods for {@link Character} objects
  */
-public enum UnionWord
+@UtilityClass
+public class CharacterExtensions
 {
 
-	/** The And enum value for chain algorithms */
-	And,
+	/**
+	 * Compares this {@code Character} to another {@code Character}, ignoring case considerations.
+	 *
+	 * @param character
+	 *            the character
+	 * @param another
+	 *            the other
+	 * @return true, if successful
+	 */
+	public static boolean equalsIgnoreCase(Character character, Character another)
+	{
+		if (character == null && another == null)
+		{
+			return true;
+		}
+		if (character == null && another != null || character != null && another == null)
+		{
+			return false;
+		}
+		return Character.valueOf(Character.toLowerCase(character.charValue()))
+			.equals(Character.valueOf(Character.toLowerCase(another.charValue())));
 
-	/** The With enum value for chain algorithms */
-	With;
+	}
 }

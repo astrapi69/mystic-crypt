@@ -113,7 +113,7 @@ public class OperationTest
 		expected = 'a';
 		assertEquals(expected, actual);
 		// double negation does nothing to character
-		actual = Operation.operate('A', Operation.NEGATECASE, true); 
+		actual = Operation.operate('A', Operation.NEGATECASE, true);
 		expected = 'A';
 		assertEquals(expected, actual);
 	}
