@@ -56,6 +56,8 @@ public class ObfuscationOperationRule<C, RW> extends ObfuscationRule<C, RW>
 
 	/** The type of operation for the obfuscation. */
 	Operation operation;
+	
+	C operatedCharacter;
 
 	@Builder(builderMethodName = "newRule")
 	public ObfuscationOperationRule(C character, RW replaceWith, Operation operation,
