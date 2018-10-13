@@ -31,6 +31,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
@@ -59,7 +60,7 @@ public class ObfuscationBiMapRules<K, V>
 	 * @param obfuscationRules
 	 *            the obfuscation rules for obfuscate and disentangle.
 	 */
-	public ObfuscationBiMapRules(final BiMap<K, V> obfuscationRules)
+	public ObfuscationBiMapRules(@NonNull final BiMap<K, V> obfuscationRules)
 	{
 		Check.get().notEmpty(obfuscationRules, "obfuscationRules");
 		this.obfuscationRules = obfuscationRules;
