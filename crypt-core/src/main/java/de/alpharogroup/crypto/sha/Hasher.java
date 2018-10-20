@@ -42,10 +42,6 @@ import de.alpharogroup.crypto.hash.HashExtensions;
 import de.alpharogroup.crypto.hex.HexableEncryptor;
 import lombok.experimental.UtilityClass;
 
-import com.google.common.primitives.Longs;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.ArrayUtils;
-
 /**
  * The class {@link Hasher}
  *
@@ -93,20 +89,5 @@ public class Hasher
 		final HexableEncryptor hexEncryptor = new HexableEncryptor(CryptConst.PRIVATE_KEY);
 		return hexEncryptor.encrypt(HashExtensions.hash(hashIt, salt, hashAlgorithm, charset));
 	}
-	
-    /**
-     * Calculates the SHA256-hash as byte array from the given fields
-     * @param input the input hash
-     * @param  hash the merkle
-     * @param signature the signature
-     * @param timestamp the timestamp
-     * @return the calculated SHA256-hash as byte array
-     */
-    public static byte[] calculateHashValue(byte[] input, byte[] hash, byte[] signature, long timestamp) {
-        byte[] hashValue = ArrayUtils.addAll(input, hash);
-        hashValue = ArrayUtils.addAll(hashValue, signature);
-        hashValue = ArrayUtils.addAll(hashValue, Longs.toByteArray(timestamp));
-        return DigestUtils.sha256(hashValue);
-    }
 
 }

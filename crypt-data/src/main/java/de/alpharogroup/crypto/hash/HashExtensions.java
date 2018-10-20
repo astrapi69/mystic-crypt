@@ -29,8 +29,13 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.ArrayUtils;
+
+import com.google.common.primitives.Longs;
 
 import de.alpharogroup.crypto.algorithm.HashAlgorithm;
+import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -134,6 +139,50 @@ public class HashExtensions
 		final String hashedAndBase64 = new Base64()
 			.encodeToString(hash(hashIt, salt, hashAlgorithm, charset).getBytes(charset));
 		return hashedAndBase64;
+	}
+
+	/**
+	 * Calculates the SHA256-hash as byte array from the given fields.
+	 *
+	 * @param input
+	 *            the input hash
+	 * @param hash
+	 *            the merkle
+	 * @param signature
+	 *            the signature
+	 * @param timestamp
+	 *            the timestamp
+	 * @param algorithm
+	 *            the hash algorithm
+	 * @return the calculated SHA256-hash as byte array
+	 */
+	public static byte[] hash(byte[] input, byte[] hash, byte[] signature, long timestamp,
+		@NonNull HashAlgorithm algorithm)
+	{
+		byte[] hashValue = ArrayUtils.addAll(input, hash);
+		hashValue = ArrayUtils.addAll(hashValue, signature);
+		hashValue = ArrayUtils.addAll(hashValue, Longs.toByteArray(timestamp));
+		switch (algorithm)
+		{
+			case SHA1 :
+				return DigestUtils.sha1(hashValue);
+			case SHA256 :
+				return DigestUtils.sha256(hashValue);
+			case SHA384 :
+				return DigestUtils.sha384(hashValue);
+			case SHA512 :
+				return DigestUtils.sha512(hashValue);
+			case SHA_1 :
+				return DigestUtils.sha1(hashValue);
+			case SHA_256 :
+				return DigestUtils.sha256(hashValue);
+			case SHA_384 :
+				return DigestUtils.sha384(hashValue);
+			case SHA_512 :
+				return DigestUtils.sha512(hashValue);
+			default :
+				return DigestUtils.sha256(hashValue);
+		}
 	}
 
 }
