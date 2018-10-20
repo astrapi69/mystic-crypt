@@ -22,37 +22,47 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.blockchain.api;
+package de.alpharogroup.crypto.blockchain;
 
-import java.util.List;
+import de.alpharogroup.crypto.algorithm.HashAlgorithm;
+import de.alpharogroup.crypto.blockchain.api.IAddress;
+import de.alpharogroup.crypto.hash.HashExtensions;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
-public interface IBlock
+/**
+ * The class {@link Address}
+ */
+@Getter
+@Setter
+@EqualsAndHashCode
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class Address implements IAddress
 {
 
-	byte[] getHash();
+    /** The hash. */
+    byte[] hash;
 
-	int getLeadingZerosCount();
+    /** The name. */
+    String name;
 
-	byte[] getMerkleRoot();
+    /** The public key. */
+    byte[] publicKey;
 
-	byte[] getPreviousBlockHash();
-
-	long getTimestamp();
-
-	List<ITransaction> getTransactions();
-
-	long getTries();
-
-	void setHash(byte[] hash);
-
-	void setMerkleRoot(byte[] merkleRoot);
-
-	void setPreviousBlockHash(byte[] previousBlockHash);
-
-	void setTimestamp(long timestamp);
-
-	void setTransactions(List<ITransaction> transactions);
-
-	void setTries(long tries);
-
+    /**
+     * Instantiates a new {@link Address}
+     *
+     * @param name the name
+     * @param publicKey the public key
+     */
+    public Address(String name, byte[] publicKey) {
+        this.name = name;
+        this.publicKey = publicKey;
+        this.hash = HashExtensions.hash(name.getBytes(), publicKey, HashAlgorithm.SHA256);
+    }
 }

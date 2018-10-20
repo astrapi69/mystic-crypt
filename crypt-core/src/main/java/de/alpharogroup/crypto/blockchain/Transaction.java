@@ -22,37 +22,49 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.blockchain.api;
+package de.alpharogroup.crypto.blockchain;
 
-import java.util.List;
+import de.alpharogroup.crypto.algorithm.HashAlgorithm;
+import de.alpharogroup.crypto.blockchain.api.ITransaction;
+import de.alpharogroup.crypto.hash.HashExtensions;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
-public interface IBlock
+/**
+ * The class {@link Transaction}
+ */
+@Getter
+@Setter
+@EqualsAndHashCode
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class Transaction implements ITransaction
 {
 
-	byte[] getHash();
+    byte[] hash;
 
-	int getLeadingZerosCount();
+    String text;
 
-	byte[] getMerkleRoot();
+    byte[] senderHash;
 
-	byte[] getPreviousBlockHash();
+    byte[] signature;
 
-	long getTimestamp();
+    long timestamp;
 
-	List<ITransaction> getTransactions();
+    public Transaction(String text, byte[] senderHash, byte[] signature) {
+        this.text = text;
+        this.senderHash = senderHash;
+        this.signature = signature;
+        this.timestamp = System.currentTimeMillis();
+        this.hash = HashExtensions.hash(text.getBytes(), senderHash, signature, timestamp, HashAlgorithm.SHA256);
+    }
 
-	long getTries();
-
-	void setHash(byte[] hash);
-
-	void setMerkleRoot(byte[] merkleRoot);
-
-	void setPreviousBlockHash(byte[] previousBlockHash);
-
-	void setTimestamp(long timestamp);
-
-	void setTransactions(List<ITransaction> transactions);
-
-	void setTries(long tries);
-
+    public byte[] getSignableData() {
+        return text.getBytes();
+    }
+    
 }

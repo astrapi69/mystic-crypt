@@ -27,8 +27,6 @@ package de.alpharogroup.crypto.blockchain.api;
 public interface ITransaction
 {
 
-	byte[] calculateHash();
-
 	byte[] getHash();
 
 	byte[] getSenderHash();
