@@ -46,15 +46,27 @@ public class CharacterObfuscator implements Obfuscatable
 
 	/** The rule. */
 	private final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules;
+	
+	boolean disentanglable;
 
 	public CharacterObfuscator(
 		final @NonNull BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
 		final @NonNull String key)
 	{
+		this(rules, key, false);
+	}
+
+	public CharacterObfuscator(
+		final @NonNull BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
+		final @NonNull String key, final boolean validate)
+	{
 		Check.get().notEmpty(rules, "rules");
 		Check.get().notEmpty(key, "key");
 		this.rules = rules;
 		this.key = key;
+		if(validate) {
+			this.disentanglable = ObfuscatorExtensions.validate(this.rules);
+		}
 	}
 
 	@Override

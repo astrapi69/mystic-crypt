@@ -135,6 +135,27 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 	}
 
 	/**
+	 * Test method for {@link ObfuscatorExtensions#validate(BiMap)}
+	 */
+	@Test
+	public void testValidate()
+	{
+		boolean actual;
+		boolean expected;
+		BiMap<Character,ObfuscationOperationRule<Character,Character>> biMap;
+		
+		biMap = ObfuscationTestData.getFirstBiMapObfuscationOperationRules();
+		actual = ObfuscatorExtensions.validate(biMap);
+		expected = true;
+		assertEquals(expected, actual);
+		
+		biMap = ObfuscationTestData.getSmallBiMapObfuscationOperationRules();
+		actual = ObfuscatorExtensions.validate(biMap);
+		expected = true;
+		assertEquals(expected, actual);
+	}
+
+	/**
 	 * Test method for {@link ObfuscatorExtensions} with {@link BeanTester}
 	 */
 	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
