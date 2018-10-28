@@ -22,38 +22,34 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.obfuscation.experimental;
+package de.alpharogroup.crypto.obfuscation.character;
 
-import lombok.experimental.UtilityClass;
+import static org.testng.AssertJUnit.assertEquals;
+
+import org.testng.annotations.Test;
+
+import de.alpharogroup.AbstractTestCase;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 
 /**
- * The class {@link CharacterExtensions} provides utility methods for {@link Character} objects
+ * The unit test class for the class {@link CharacterExtensions}
  */
-@UtilityClass
-public class CharacterExtensions
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class CharacterExtensionsTest extends AbstractTestCase<Boolean, Boolean>
 {
 
 	/**
-	 * Compares this {@code Character} to another {@code Character}, ignoring case considerations.
-	 *
-	 * @param character
-	 *            the character
-	 * @param another
-	 *            the other
-	 * @return true, if successful
+	 * Test method for {@link CharacterExtensions#equalsIgnoreCase(Character, Character)}
 	 */
-	public static boolean equalsIgnoreCase(Character character, Character another)
+	@Test(enabled = true)
+	public void testEqualsIgnoreCase()
 	{
-		if (character == null && another == null)
-		{
-			return true;
-		}
-		if (character == null && another != null || character != null && another == null)
-		{
-			return false;
-		}
-		return Character.valueOf(Character.toLowerCase(character.charValue()))
-			.equals(Character.valueOf(Character.toLowerCase(another.charValue())));
 
+		expected = true;
+		actual = CharacterExtensions.equalsIgnoreCase(Character.valueOf('C'),
+			Character.valueOf('c'));
+		assertEquals(expected, actual);
 	}
+
 }

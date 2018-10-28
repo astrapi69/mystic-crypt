@@ -22,17 +22,14 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.obfuscation;
-
-import java.util.Set;
+package de.alpharogroup.crypto.obfuscation.character;
 
 import com.google.common.collect.BiMap;
 
 import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
-import de.alpharogroup.crypto.obfuscation.experimental.ObfuscatorExtensions;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
-import de.alpharogroup.crypto.obfuscation.rule.Operation;
+import lombok.Getter;
 import lombok.NonNull;
 
 /**
@@ -40,14 +37,14 @@ import lombok.NonNull;
  */
 public class CharacterObfuscator implements Obfuscatable
 {
+	@Getter
+	boolean disentanglable;
 
 	/** The key. */
 	private final String key;
 
 	/** The rule. */
 	private final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules;
-	
-	boolean disentanglable;
 
 	public CharacterObfuscator(
 		final @NonNull BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
@@ -64,7 +61,8 @@ public class CharacterObfuscator implements Obfuscatable
 		Check.get().notEmpty(key, "key");
 		this.rules = rules;
 		this.key = key;
-		if(validate) {
+		if (validate)
+		{
 			this.disentanglable = ObfuscatorExtensions.validate(this.rules);
 		}
 	}
@@ -75,68 +73,6 @@ public class CharacterObfuscator implements Obfuscatable
 		final String obfuscated = ObfuscatorExtensions.obfuscateWith(rules, this.key);
 		final String disentangled = ObfuscatorExtensions.disentangle(rules, obfuscated);
 		return disentangled;
-	}
-
-	protected String disentangleWith(
-		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
-		final String obfuscated)
-	{
-		final BiMap<ObfuscationOperationRule<Character, Character>, Character> inverse = rules
-			.inverse();
-		final StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < obfuscated.length(); i++)
-		{
-			final char currentCharacter = obfuscated.charAt(i);
-			final Character asCharacter = Character.valueOf(currentCharacter);
-			final ObfuscationOperationRule<Character, Character> obfuscationOperationRule = get(
-				inverse, asCharacter, i);
-			if (obfuscationOperationRule != null)
-			{
-				final Set<Integer> indexes = obfuscationOperationRule.getIndexes();
-				final Operation operation = obfuscationOperationRule.getOperation();
-				final Character character = obfuscationOperationRule.getCharacter();
-				if (indexes.contains(Integer.valueOf(i)) && operation != null)
-				{
-					sb.append(Operation.operate(currentCharacter, operation, true));
-				}
-				else
-				{
-					sb.append(character);
-				}
-			}
-			else
-			{
-				sb.append(currentCharacter);
-			}
-		}
-		return sb.toString();
-	}
-
-	private ObfuscationOperationRule<Character, Character> get(
-		final BiMap<ObfuscationOperationRule<Character, Character>, Character> inverse,
-		final Character found, final int index)
-	{
-		for (final ObfuscationOperationRule<Character, Character> obfuscationOperationRule : inverse
-			.keySet())
-		{
-			final Set<Integer> indexes = obfuscationOperationRule.getIndexes();
-			final Operation operation = obfuscationOperationRule.getOperation();
-			final Character character = obfuscationOperationRule.getCharacter();
-			if (indexes.contains(Integer.valueOf(index)) && operation != null)
-			{
-				final Character operated = Operation.operate(found, operation, true);
-				if (operated.equals(character))
-				{
-					return obfuscationOperationRule;
-				}
-			}
-			final Character replaceWith = obfuscationOperationRule.getReplaceWith();
-			if (replaceWith.equals(found))
-			{
-				return obfuscationOperationRule;
-			}
-		}
-		return null;
 	}
 
 	/**

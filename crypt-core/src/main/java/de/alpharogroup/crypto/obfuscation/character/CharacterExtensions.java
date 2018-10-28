@@ -22,50 +22,38 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.blockchain;
+package de.alpharogroup.crypto.obfuscation.character;
 
-import de.alpharogroup.crypto.algorithm.HashAlgorithm;
-import de.alpharogroup.crypto.blockchain.api.IAddress;
-import de.alpharogroup.crypto.hash.HashExtensions;
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.experimental.FieldDefaults;
+import lombok.experimental.UtilityClass;
 
 /**
- * The class {@link Address}
+ * The class {@link CharacterExtensions} provides utility methods for {@link Character} objects
  */
-@Getter
-@Setter
-@EqualsAndHashCode
-@NoArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
-public class Address implements IAddress
+@UtilityClass
+public class CharacterExtensions
 {
 
-	/** The hash. */
-	byte[] hash;
-
-	/** The name. */
-	String name;
-
-	/** The public key. */
-	byte[] publicKey;
-
 	/**
-	 * Instantiates a new {@link Address}
+	 * Compares this {@code Character} to another {@code Character}, ignoring case considerations.
 	 *
-	 * @param name
-	 *            the name
-	 * @param publicKey
-	 *            the public key
+	 * @param character
+	 *            the character
+	 * @param another
+	 *            the other
+	 * @return true, if successful
 	 */
-	public Address(String name, byte[] publicKey)
+	public static boolean equalsIgnoreCase(Character character, Character another)
 	{
-		this.name = name;
-		this.publicKey = publicKey;
-		this.hash = HashExtensions.hash(name.getBytes(), publicKey, HashAlgorithm.SHA256);
+		if (character == null && another == null)
+		{
+			return true;
+		}
+		if (character == null && another != null || character != null && another == null)
+		{
+			return false;
+		}
+		return Character.valueOf(Character.toLowerCase(character.charValue()))
+			.equals(Character.valueOf(Character.toLowerCase(another.charValue())));
+
 	}
 }

@@ -1,4 +1,28 @@
-package de.alpharogroup.crypto.obfuscation.experimental;
+/**
+ * The MIT License
+ *
+ * Copyright (C) 2015 Asterios Raptis
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+package de.alpharogroup.crypto.obfuscation.simple;
 
 import static org.testng.AssertJUnit.assertEquals;
 
@@ -40,7 +64,7 @@ public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, Str
 		super.setUp();
 		// create a rule for obfuscate the key
 		rules = ObfuscationTestData.getFirstBiMapObfuscationRules();
-	}	
+	}
 
 	/**
 	 * Test method for {@link SimpleObfuscatorExtensions#disentangle(BiMap, String)}
@@ -51,11 +75,12 @@ public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, Str
 		// new scenario...
 		stringToDisentangle = "d";
 
-//		actual = SimpleObfuscatorExtensions.disentangle(rules, stringToDisentangle);
-//		expected = "d";
-//		assertEquals(expected, actual);
+		actual = SimpleObfuscatorExtensions.disentangle(rules, stringToDisentangle);
+		expected = "c";
+		assertEquals(expected, actual);
 
 		// new scenario...
+
 		stringToDisentangle = "bcbd";
 
 		actual = SimpleObfuscatorExtensions.disentangle(rules, stringToDisentangle);
@@ -64,26 +89,24 @@ public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, Str
 		// new scenario...
 		stringToDisentangle = "Lfpobsep";
 
-		actual = SimpleObfuscatorExtensions.disentangle(
-			ObfuscationTestData.getFirstBiMapObfuscationRules(), stringToDisentangle);
-		expected = "Lfpoasep";
+		actual = SimpleObfuscatorExtensions
+			.disentangle(ObfuscationTestData.getFirstBiMapObfuscationRules(), stringToDisentangle);
+		expected = "Leonardo";
 		assertEquals(expected, actual);
 		// new scenario...
-		stringToDisentangle = "Lfpobsep Lpsfn jqtvn epmps tju bnfu, tfb dpotvm wfsufsfn qfsgfdup je. Amjj qspnqub fmfdusbn uf ofd, bu njojnvn dpqjptbf rvp. Ept jvejdp opnjobuj pqpsufsf fj, vtv bu ejdub mfhfoept. Io optusvn jotpmfot ejtqvuboep qsp, jvtup frvjefn jvt je.";
 
-		actual = SimpleObfuscatorExtensions.disentangle(
-			ObfuscationTestData.getFirstBiMapObfuscationRules(), stringToDisentangle);
-		expected = "leonardo Lorem ipsum dolor sit amet, sea consul verterem perfecto id. Alii prompta electram te nec, at minimum copiosae quo. Eos iudico nominati oportere ei, usu at dicta legendos. In nostrum insolens disputando pro, iusto equidem ius id.";
+		stringToDisentangle = "Lpsfn jqtvn epmps tju bnfu, tfb dpotvm wfsufsfn qfsgfdup je. Amjj qspnqub fmfdusbn uf ofd, bu njojnvn dpqjptbf rvp. Ept jvejdp opnjobuj pqpsufsf fj, vtv bu ejdub mfhfoept. Io optusvn jotpmfot ejtqvuboep qsp, jvtup frvjefn jvt je.";
+
+		actual = SimpleObfuscatorExtensions.disentangle(rules, stringToDisentangle);
+		expected = "Lorem ipsum dolor sit amet, sea consul verterem perfecto id. Alii prompta electram te nec, at minimum copiosae quo. Eos iudico nominati oportere ei, usu at dicta legendos. In nostrum insolens disputando pro, iusto equidem ius id.";
 		assertEquals(expected, actual);
 
 		// new scenario...
-		stringToDisentangle = "AcACd";
+		stringToDisentangle = "bcbde";
 
 		actual = SimpleObfuscatorExtensions.disentangle(rules, stringToDisentangle);
 		expected = "abacd";
 		assertEquals(expected, actual);
-		// new scenario...
-		stringToDisentangle = "Lfpobsep";
 	}
 
 	/**
@@ -104,18 +127,26 @@ public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, Str
 		actual = SimpleObfuscatorExtensions.obfuscateWith(rules, stringToObfuscate);
 		expected = "bcbde";
 		assertEquals(expected, actual);
+		// new scenario...
+		stringToObfuscate = "Lorem ipsum dolor sit amet, sea consul verterem perfecto id. Alii prompta electram te nec, at minimum copiosae quo."
+			+ " Eos iudico nominati oportere ei, usu at dicta legendos. In nostrum insolens disputando pro, iusto equidem ius id.";
+
+		actual = SimpleObfuscatorExtensions.obfuscateWith(rules, stringToObfuscate);
+		expected = "Lpsfn jqtvn epmps tju bnfu, tfb dpotvm wfsufsfn qfsgfdup je. Amjj qspnqub fmfdusbn uf ofd, bu njojnvn dpqjptbf rvp."
+			+ " Ept jvejdp opnjobuj pqpsufsf fj, vtv bu ejdub mfhfoept. Io optusvn jotpmfot ejtqvuboep qsp, jvtup frvjefn jvt je.";
+		assertEquals(expected, actual);
 	}
 
 	/**
 	 * Test method for {@link SimpleObfuscatorExtensions#validate(BiMap)}
 	 */
-	@Test
+	@Test(enabled = false)
 	public void testValidate()
 	{
 		boolean actual;
 		boolean expected;
-		BiMap<Character,ObfuscationRule<Character,Character>> biMap;
-		
+		BiMap<Character, ObfuscationRule<Character, Character>> biMap;
+
 		biMap = ObfuscationTestData.getFirstBiMapObfuscationRules();
 		actual = SimpleObfuscatorExtensions.validate(biMap);
 		expected = true;

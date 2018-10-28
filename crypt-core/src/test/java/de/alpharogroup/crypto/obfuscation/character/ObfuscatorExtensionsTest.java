@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.obfuscation.experimental;
+package de.alpharogroup.crypto.obfuscation.character;
 
 import static org.testng.AssertJUnit.assertEquals;
 
@@ -142,13 +142,13 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 	{
 		boolean actual;
 		boolean expected;
-		BiMap<Character,ObfuscationOperationRule<Character,Character>> biMap;
-		
+		BiMap<Character, ObfuscationOperationRule<Character, Character>> biMap;
+
 		biMap = ObfuscationTestData.getFirstBiMapObfuscationOperationRules();
 		actual = ObfuscatorExtensions.validate(biMap);
 		expected = true;
 		assertEquals(expected, actual);
-		
+
 		biMap = ObfuscationTestData.getSmallBiMapObfuscationOperationRules();
 		actual = ObfuscatorExtensions.validate(biMap);
 		expected = true;

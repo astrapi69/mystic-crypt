@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.obfuscation.experimental;
+package de.alpharogroup.crypto.obfuscation.simple;
 
 import java.util.Map.Entry;
 import java.util.Set;
@@ -86,6 +86,7 @@ public class SimpleObfuscatorExtensions
 		final BiMap<Character, ObfuscationRule<Character, Character>> rules,
 		final String obfuscated)
 	{
+		boolean processed = false;
 		char currentChar;
 		Character currentCharacter;
 		final StringBuilder sb = new StringBuilder();
@@ -93,24 +94,27 @@ public class SimpleObfuscatorExtensions
 		{
 			currentChar = obfuscated.charAt(i);
 			currentCharacter = Character.valueOf(currentChar);
+
 			for (final Entry<Character, ObfuscationRule<Character, Character>> entry : rules
 				.entrySet())
 			{
-				ObfuscationRule<Character, Character> obfuscationRule = entry
-					.getValue();
+				ObfuscationRule<Character, Character> obfuscationRule = entry.getValue();
 				Character replaceWith = obfuscationRule.getReplaceWith();
-				Character character = obfuscationRule.getCharacter();				
-				if (currentCharacter.equals(replaceWith))
+				Character character = obfuscationRule.getCharacter();
+				if (currentCharacter.equals(replaceWith) && rules.containsKey(replaceWith))
 				{
 					sb.append(character);
-					break;
-				} else {
-					sb.append(currentChar);
+					processed = true;
 					break;
 				}
 			}
+			if (!processed)
+			{
+				sb.append(currentChar);
+			}
+			processed = false;
 		}
-		return sb.toString();		
+		return sb.toString();
 	}
 
 	/**
@@ -122,47 +126,50 @@ public class SimpleObfuscatorExtensions
 	 *            the obfuscated text
 	 * @return the string
 	 */
-	public static String disentangleBiMap(
-		final BiMap<Character, Character> rules,
-		final String obfuscated)
-	{
-		char currentChar;
-		Character currentCharacter;
-		final StringBuilder sb = new StringBuilder();
-		BiMap<Character, Character> inversedRules = rules.inverse();
-		Set<Character> keySet = rules.keySet();
-		
-		
-		for (int i = 0; i < obfuscated.length(); i++)
-		{
-			currentChar = obfuscated.charAt(i);
-			currentCharacter = Character.valueOf(currentChar);
-			for(Character c : keySet) {
-				if(inversedRules.containsKey(currentCharacter)) {
-					sb.append(c);
-					break;
-				}
-			}			
-		}
-		return sb.toString();		
-	}
+	// public static String disentangleBiMap(
+	// final BiMap<Character, Character> rules,
+	// final String obfuscated)
+	// {
+	// char currentChar;
+	// Character currentCharacter;
+	// final StringBuilder sb = new StringBuilder();
+	// BiMap<Character, Character> inversedRules = rules.inverse();
+	// Set<Character> keySet = rules.keySet();
+	//
+	//
+	// for (int i = 0; i < obfuscated.length(); i++)
+	// {
+	// currentChar = obfuscated.charAt(i);
+	// currentCharacter = Character.valueOf(currentChar);
+	// for(Character c : keySet) {
+	// if(inversedRules.containsKey(currentCharacter)) {
+	// sb.append(c);
+	// break;
+	// }
+	// }
+	// }
+	// return sb.toString();
+	// }
 
 	/**
 	 * Validate the given {@link BiMap} if a before obfuscated String can be disentangled
 	 *
-	 * @param rules the rules
+	 * @param rules
+	 *            the rules
 	 * @return if true is returned the given {@link BiMap} is disentanglable
 	 */
 	public static boolean validate(BiMap<Character, ObfuscationRule<Character, Character>> rules)
 	{
 		Set<Character> keySet = rules.keySet();
-		for(Entry<Character,ObfuscationRule<Character,Character>> entry: rules.entrySet()) {
-			ObfuscationRule<Character,Character> value = entry.getValue();
-			if(keySet.contains(value.getReplaceWith())) {
+		for (Entry<Character, ObfuscationRule<Character, Character>> entry : rules.entrySet())
+		{
+			ObfuscationRule<Character, Character> value = entry.getValue();
+			if (keySet.contains(value.getReplaceWith()))
+			{
 				return false;
 			}
 		}
-		return true;		
+		return true;
 	}
 
 }

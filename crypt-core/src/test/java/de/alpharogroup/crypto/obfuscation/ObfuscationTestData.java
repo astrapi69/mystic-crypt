@@ -102,7 +102,7 @@ public class ObfuscationTestData
 
 		character = Character.valueOf('a');
 		replaceWith = 'b';
-		rule = ObfuscationRule.<Character, Character>builder().character(character)
+		rule = ObfuscationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).build();
 		rules.put(character, rule);
 
@@ -345,7 +345,6 @@ public class ObfuscationTestData
 		rules.put(character, rule);
 		return rules;
 	}
-	
 
 
 	/**

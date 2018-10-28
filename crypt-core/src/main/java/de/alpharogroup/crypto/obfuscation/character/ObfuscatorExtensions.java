@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.obfuscation.experimental;
+package de.alpharogroup.crypto.obfuscation.character;
 
 import java.util.Map.Entry;
 import java.util.Set;
@@ -161,20 +161,26 @@ public class ObfuscatorExtensions
 	/**
 	 * Validate the given {@link BiMap} if a before obfuscated String can be disentangled
 	 *
-	 * @param rules the rules
+	 * @param rules
+	 *            the rules
 	 * @return if true is returned the given {@link BiMap} is disentanglable
 	 */
-	public static boolean validate(BiMap<Character, ObfuscationOperationRule<Character, Character>> rules)
+	public static boolean validate(
+		BiMap<Character, ObfuscationOperationRule<Character, Character>> rules)
 	{
 		Set<Character> keySet = rules.keySet();
-		for(Entry<Character,ObfuscationOperationRule<Character,Character>> entry: rules.entrySet()) {
-			ObfuscationOperationRule<Character,Character> value = entry.getValue();
-			Character operatedCharacter = Operation.operate(value.getCharacter(), value.getOperation());
-			if(keySet.contains(operatedCharacter)) {
+		for (Entry<Character, ObfuscationOperationRule<Character, Character>> entry : rules
+			.entrySet())
+		{
+			ObfuscationOperationRule<Character, Character> value = entry.getValue();
+			Character operatedCharacter = Operation.operate(value.getCharacter(),
+				value.getOperation());
+			if (keySet.contains(operatedCharacter))
+			{
 				return false;
 			}
 		}
-		return true;		
+		return true;
 	}
 
 }

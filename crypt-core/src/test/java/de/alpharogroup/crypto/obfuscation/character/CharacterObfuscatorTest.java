@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.obfuscation;
+package de.alpharogroup.crypto.obfuscation.character;
 
 import static org.testng.AssertJUnit.assertEquals;
 
@@ -33,6 +33,7 @@ import org.testng.annotations.Test;
 import com.google.common.collect.BiMap;
 
 import de.alpharogroup.AbstractTestCase;
+import de.alpharogroup.crypto.obfuscation.ObfuscationTestData;
 import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
 import lombok.AccessLevel;
@@ -96,6 +97,9 @@ public class CharacterObfuscatorTest extends AbstractTestCase<String, String>
 		assertEquals(expected, actual);
 	}
 
+	/**
+	 * Test method for {@link CharacterObfuscator#obfuscate()}
+	 */
 	@Test(enabled = true)
 	public void testObfuscate()
 	{
@@ -158,7 +162,7 @@ public class CharacterObfuscatorTest extends AbstractTestCase<String, String>
 		assertEquals(expected, actual);
 
 		actual = obfuscator.disentangle();
-		expected = stringToObfuscate;
+		expected = "numbers are only part of the data a typical Java program needs to read and write. Most programs also need to handle text, which is composed of characters. Since computers only really understand numbers, characters are encoded by matching each character in a given script to a particular number. For example, in the common ASCII encoding, the character A is mapped to the number 65; the character B is mapped to the number 66; the character C is mapped to the number 67; and so on. Different encodings may encode different scripts or may encode the same or similar scripts in different ways.";
 		assertEquals(expected, actual);
 	}
 

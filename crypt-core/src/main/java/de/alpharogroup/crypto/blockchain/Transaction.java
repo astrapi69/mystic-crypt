@@ -45,26 +45,29 @@ import lombok.experimental.FieldDefaults;
 public class Transaction implements ITransaction
 {
 
-    byte[] hash;
+	byte[] hash;
 
-    String text;
+	byte[] senderHash;
 
-    byte[] senderHash;
+	byte[] signature;
 
-    byte[] signature;
+	String text;
 
-    long timestamp;
+	long timestamp;
 
-    public Transaction(String text, byte[] senderHash, byte[] signature) {
-        this.text = text;
-        this.senderHash = senderHash;
-        this.signature = signature;
-        this.timestamp = System.currentTimeMillis();
-        this.hash = HashExtensions.hash(text.getBytes(), senderHash, signature, timestamp, HashAlgorithm.SHA256);
-    }
+	public Transaction(String text, byte[] senderHash, byte[] signature)
+	{
+		this.text = text;
+		this.senderHash = senderHash;
+		this.signature = signature;
+		this.timestamp = System.currentTimeMillis();
+		this.hash = HashExtensions.hash(text.getBytes(), senderHash, signature, timestamp,
+			HashAlgorithm.SHA256);
+	}
 
-    public byte[] getSignableData() {
-        return text.getBytes();
-    }
-    
+	public byte[] getSignableData()
+	{
+		return text.getBytes();
+	}
+
 }

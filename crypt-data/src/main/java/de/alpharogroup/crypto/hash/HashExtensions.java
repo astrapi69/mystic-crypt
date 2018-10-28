@@ -265,17 +265,21 @@ public class HashExtensions
 			default :
 				return DigestUtils.sha256(hashValue);
 		}
-	}	
+	}
 
 	/**
 	 * Gets the hash value of the given queue and the given algorithm.
+	 * 
 	 * @see <a href="https://en.wikipedia.org/wiki/Merkle_tree">wikipedia Merkle tree</a>
 	 *
-	 * @param hashQueue the hash queue
-	 * @param algorithm the algorithm
+	 * @param hashQueue
+	 *            the hash queue
+	 * @param algorithm
+	 *            the algorithm
 	 * @return the merkle root tree
 	 */
-	public static byte[] getMerkleRootHash(Queue<byte[]> hashQueue, @NonNull HashAlgorithm algorithm)
+	public static byte[] getMerkleRootHash(Queue<byte[]> hashQueue,
+		@NonNull HashAlgorithm algorithm)
 	{
 		while (hashQueue.size() > 1)
 		{
