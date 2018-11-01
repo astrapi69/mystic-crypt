@@ -31,10 +31,10 @@ import de.alpharogroup.crypto.obfuscation.rule.Operation;
 import lombok.experimental.UtilityClass;
 
 /**
- * The class {@link ObfuscationTestData} provides test data for test the obfuscation rules
+ * The class {@link ObfuscationOperationTestData} provides test data for test the obfuscation rules
  */
 @UtilityClass
-public class ObfuscationTestData
+public class ObfuscationOperationTestData
 {
 
 	/**

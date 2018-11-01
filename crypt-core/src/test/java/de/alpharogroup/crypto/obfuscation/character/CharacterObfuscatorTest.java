@@ -60,7 +60,7 @@ public class CharacterObfuscatorTest extends AbstractTestCase<String, String>
 	{
 		super.setUp();
 		// create a rule for obfuscate the key
-		rules = ObfuscationTestData.getFirstBiMapObfuscationOperationRules();
+		rules = ObfuscationOperationTestData.getFirstBiMapObfuscationOperationRules();
 	}
 
 	/**

@@ -171,8 +171,9 @@ public class SimpleObfuscatorExtensions
 		@NonNull BiMap<Character, ObfuscationRule<Character, Character>> rules)
 	{
 		BiMap<Character, Character> biMap = HashBiMap.create();
-		rules.keySet().parallelStream().forEach(
-			key -> biMap.put(rules.get(key).getCharacter(), rules.get(key).getReplaceWith()));
+		rules.keySet().stream().forEach(
+			key -> biMap.put(rules.get(key).getCharacter(), rules.get(key).getReplaceWith())
+			);
 		return biMap;
 	}
 

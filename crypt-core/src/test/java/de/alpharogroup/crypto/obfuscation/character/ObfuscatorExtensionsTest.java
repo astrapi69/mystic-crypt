@@ -66,7 +66,7 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 	{
 		super.setUp();
 		// create a rule for obfuscate the key
-		rules = ObfuscationTestData.getSmallBiMapObfuscationOperationRules();
+		rules = ObfuscationOperationTestData.getSmallBiMapObfuscationOperationRules();
 	}
 
 	/**
@@ -92,14 +92,14 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 		stringToDisentangle = "Lfpobsep";
 
 		actual = ObfuscatorExtensions.disentangle(
-			ObfuscationTestData.getFirstBiMapObfuscationOperationRules(), stringToDisentangle);
+			ObfuscationOperationTestData.getFirstBiMapObfuscationOperationRules(), stringToDisentangle);
 		expected = "leonardo";
 		assertEquals(expected, actual);
 		// new scenario...
 		stringToDisentangle = "Lfpobsep Lpsfn jqtvn epmps tju bnfu, tfb dpotvm wfsufsfn qfsgfdup je. Amjj qspnqub fmfdusbn uf ofd, bu njojnvn dpqjptbf rvp. Ept jvejdp opnjobuj pqpsufsf fj, vtv bu ejdub mfhfoept. Io optusvn jotpmfot ejtqvuboep qsp, jvtup frvjefn jvt je.";
 
 		actual = ObfuscatorExtensions.disentangle(
-			ObfuscationTestData.getFirstBiMapObfuscationOperationRules(), stringToDisentangle);
+			ObfuscationOperationTestData.getFirstBiMapObfuscationOperationRules(), stringToDisentangle);
 		expected = "leonardo Lorem ipsum dolor sit amet, sea consul verterem perfecto id. Alii prompta electram te nec, at minimum copiosae quo. Eos iudico nominati oportere ei, usu at dicta legendos. In nostrum insolens disputando pro, iusto equidem ius id.";
 		assertEquals(expected, actual);
 
@@ -143,12 +143,12 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 		boolean expected;
 		BiMap<Character, ObfuscationOperationRule<Character, Character>> biMap;
 
-		biMap = ObfuscationTestData.getFirstBiMapObfuscationOperationRules();
+		biMap = ObfuscationOperationTestData.getFirstBiMapObfuscationOperationRules();
 		actual = ObfuscatorExtensions.validate(biMap);
 		expected = true;
 		assertEquals(expected, actual);
 
-		biMap = ObfuscationTestData.getSmallBiMapObfuscationOperationRules();
+		biMap = ObfuscationOperationTestData.getSmallBiMapObfuscationOperationRules();
 		actual = ObfuscatorExtensions.validate(biMap);
 		expected = true;
 		assertEquals(expected, actual);

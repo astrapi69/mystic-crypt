@@ -45,15 +45,15 @@ public class ObfuscationBiMapTestData
 		BiMap<Character, Character> rules;
 		rules = HashBiMap.create();
 
-		character = Character.valueOf('a');
+		character = 'a';
 		replaceWith = 'b';
 		rules.put(character, replaceWith);
 
-		character = Character.valueOf('b');
+		character = 'b';
 		replaceWith = 'c';		
 		rules.put(character, replaceWith);
 
-		character = Character.valueOf('c');
+		character = 'c';
 		replaceWith = 'd';		
 		rules.put(character, replaceWith);
 		return rules;

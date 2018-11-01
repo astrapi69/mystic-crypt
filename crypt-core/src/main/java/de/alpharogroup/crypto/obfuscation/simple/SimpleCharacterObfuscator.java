@@ -74,8 +74,7 @@ public class SimpleCharacterObfuscator implements Obfuscatable
 	public String disentangle()
 	{
 		final String obfuscated = SimpleObfuscatorExtensions.obfuscateWith(rules, this.key);
-		final String disentangled = SimpleObfuscatorExtensions.disentangle(rules, obfuscated);
-		return disentangled;
+		return disentangle(obfuscated);
 	}
 
 	/**
@@ -86,6 +85,12 @@ public class SimpleCharacterObfuscator implements Obfuscatable
 	{
 		final String obfuscated = SimpleObfuscatorExtensions.obfuscateWith(rules, this.key);
 		return obfuscated;
+	}
+	
+	public String disentangle(String obfuscated)
+	{
+		final String disentangled = SimpleObfuscatorExtensions.disentangleBiMap(biMap, obfuscated);
+		return disentangled;
 	}
 
 }
