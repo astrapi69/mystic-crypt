@@ -3,20 +3,24 @@
  *
  * Copyright (C) 2015 Asterios Raptis
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
- * associated documentation files (the "Software"), to deal in the Software without restriction,
- * including without limitation the rights to use, copy, modify, merge, publish, distribute,
- * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all copies or
- * substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
- * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
- * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package de.alpharogroup.crypto.obfuscation.simple;
 
@@ -143,15 +147,45 @@ public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, Str
 
 		stringToDisentangle = "Lpsfn jqtvn epmps tju bnfu, tfb dpotvm wfsufsfn qfsgfdup je. Amjj qspnqub fmfdusbn uf ofd, bu njojnvn dpqjptbf rvp. Ept jvejdp opnjobuj pqpsufsf fj, vtv bu ejdub mfhfoept. Io optusvn jotpmfot ejtqvuboep qsp, jvtup frvjefn jvt je.";
 
-		actual = SimpleObfuscatorExtensions.disentangleBiMap(SimpleObfuscatorExtensions.toCharacterBiMap(rules), stringToDisentangle);
+		actual = SimpleObfuscatorExtensions.disentangleBiMap(
+			SimpleObfuscatorExtensions.toCharacterBiMap(rules), stringToDisentangle);
 		expected = "Lorem ipsum dolor sit amet, sea consul verterem perfecto id. Alii prompta electram te nec, at minimum copiosae quo. Eos iudico nominati oportere ei, usu at dicta legendos. In nostrum insolens disputando pro, iusto equidem ius id.";
 		assertEquals(expected, actual);
 
 		// new scenario...
 		stringToDisentangle = "bcbde";
 
-		actual = SimpleObfuscatorExtensions.disentangleBiMap(SimpleObfuscatorExtensions.toCharacterBiMap(rules), stringToDisentangle);
+		actual = SimpleObfuscatorExtensions.disentangleBiMap(
+			SimpleObfuscatorExtensions.toCharacterBiMap(rules), stringToDisentangle);
 		expected = "abacd";
+		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test method for {@link SimpleObfuscatorExtensions#obfuscateWith(BiMap, String)}
+	 */
+	@Test
+	public void testObfuscateWith()
+	{
+		// new scenario...
+		stringToObfuscate = "abac";
+
+		actual = SimpleObfuscatorExtensions.obfuscateWith(rules, stringToObfuscate);
+		expected = "bcbd";
+		assertEquals(expected, actual);
+		// new scenario...
+		stringToObfuscate = "abacd";
+
+		actual = SimpleObfuscatorExtensions.obfuscateWith(rules, stringToObfuscate);
+		expected = "bcbde";
+		assertEquals(expected, actual);
+		// new scenario...
+		stringToObfuscate = "Lorem ipsum dolor sit amet, sea consul verterem perfecto id. Alii prompta electram te nec, at minimum copiosae quo."
+			+ " Eos iudico nominati oportere ei, usu at dicta legendos. In nostrum insolens disputando pro, iusto equidem ius id.";
+
+		actual = SimpleObfuscatorExtensions.obfuscateWith(rules, stringToObfuscate);
+		expected = "Lpsfn jqtvn epmps tju bnfu, tfb dpotvm wfsufsfn qfsgfdup je. Amjj qspnqub fmfdusbn uf ofd, bu njojnvn dpqjptbf rvp."
+			+ " Ept jvejdp opnjobuj pqpsufsf fj, vtv bu ejdub mfhfoept. Io optusvn jotpmfot ejtqvuboep qsp, jvtup frvjefn jvt je.";
 		assertEquals(expected, actual);
 	}
 
@@ -183,34 +217,6 @@ public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, Str
 
 		assertEquals(expected.size(), actual.size());
 		assertTrue(actual.equals(expected));
-	}
-
-	/**
-	 * Test method for {@link SimpleObfuscatorExtensions#obfuscateWith(BiMap, String)}
-	 */
-	@Test
-	public void testObfuscateWith()
-	{
-		// new scenario...
-		stringToObfuscate = "abac";
-
-		actual = SimpleObfuscatorExtensions.obfuscateWith(rules, stringToObfuscate);
-		expected = "bcbd";
-		assertEquals(expected, actual);
-		// new scenario...
-		stringToObfuscate = "abacd";
-
-		actual = SimpleObfuscatorExtensions.obfuscateWith(rules, stringToObfuscate);
-		expected = "bcbde";
-		assertEquals(expected, actual);
-		// new scenario...
-		stringToObfuscate = "Lorem ipsum dolor sit amet, sea consul verterem perfecto id. Alii prompta electram te nec, at minimum copiosae quo."
-			+ " Eos iudico nominati oportere ei, usu at dicta legendos. In nostrum insolens disputando pro, iusto equidem ius id.";
-
-		actual = SimpleObfuscatorExtensions.obfuscateWith(rules, stringToObfuscate);
-		expected = "Lpsfn jqtvn epmps tju bnfu, tfb dpotvm wfsufsfn qfsgfdup je. Amjj qspnqub fmfdusbn uf ofd, bu njojnvn dpqjptbf rvp."
-			+ " Ept jvejdp opnjobuj pqpsufsf fj, vtv bu ejdub mfhfoept. Io optusvn jotpmfot ejtqvuboep qsp, jvtup frvjefn jvt je.";
-		assertEquals(expected, actual);
 	}
 
 	/**

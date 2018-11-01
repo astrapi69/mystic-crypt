@@ -92,14 +92,16 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 		stringToDisentangle = "Lfpobsep";
 
 		actual = ObfuscatorExtensions.disentangle(
-			ObfuscationOperationTestData.getFirstBiMapObfuscationOperationRules(), stringToDisentangle);
+			ObfuscationOperationTestData.getFirstBiMapObfuscationOperationRules(),
+			stringToDisentangle);
 		expected = "leonardo";
 		assertEquals(expected, actual);
 		// new scenario...
 		stringToDisentangle = "Lfpobsep Lpsfn jqtvn epmps tju bnfu, tfb dpotvm wfsufsfn qfsgfdup je. Amjj qspnqub fmfdusbn uf ofd, bu njojnvn dpqjptbf rvp. Ept jvejdp opnjobuj pqpsufsf fj, vtv bu ejdub mfhfoept. Io optusvn jotpmfot ejtqvuboep qsp, jvtup frvjefn jvt je.";
 
 		actual = ObfuscatorExtensions.disentangle(
-			ObfuscationOperationTestData.getFirstBiMapObfuscationOperationRules(), stringToDisentangle);
+			ObfuscationOperationTestData.getFirstBiMapObfuscationOperationRules(),
+			stringToDisentangle);
 		expected = "leonardo Lorem ipsum dolor sit amet, sea consul verterem perfecto id. Alii prompta electram te nec, at minimum copiosae quo. Eos iudico nominati oportere ei, usu at dicta legendos. In nostrum insolens disputando pro, iusto equidem ius id.";
 		assertEquals(expected, actual);
 

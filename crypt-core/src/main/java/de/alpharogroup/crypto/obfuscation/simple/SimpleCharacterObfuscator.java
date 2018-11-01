@@ -40,13 +40,13 @@ import lombok.experimental.FieldDefaults;
 public class SimpleCharacterObfuscator implements Obfuscatable
 {
 
+	BiMap<Character, Character> biMap;
+
 	/** The key. */
 	String key;
 
 	/** The rule. */
 	BiMap<Character, ObfuscationRule<Character, Character>> rules;
-	
-	BiMap<Character, Character> biMap;
 
 	/**
 	 * Instantiates a new {@link SimpleCharacterObfuscator}
@@ -77,6 +77,12 @@ public class SimpleCharacterObfuscator implements Obfuscatable
 		return disentangle(obfuscated);
 	}
 
+	public String disentangle(String obfuscated)
+	{
+		final String disentangled = SimpleObfuscatorExtensions.disentangleBiMap(biMap, obfuscated);
+		return disentangled;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -85,12 +91,6 @@ public class SimpleCharacterObfuscator implements Obfuscatable
 	{
 		final String obfuscated = SimpleObfuscatorExtensions.obfuscateWith(rules, this.key);
 		return obfuscated;
-	}
-	
-	public String disentangle(String obfuscated)
-	{
-		final String disentangled = SimpleObfuscatorExtensions.disentangleBiMap(biMap, obfuscated);
-		return disentangled;
 	}
 
 }

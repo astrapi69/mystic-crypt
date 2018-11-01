@@ -3,20 +3,24 @@
  *
  * Copyright (C) 2015 Asterios Raptis
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
- * associated documentation files (the "Software"), to deal in the Software without restriction,
- * including without limitation the rights to use, copy, modify, merge, publish, distribute,
- * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all copies or
- * substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
- * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
- * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package de.alpharogroup.crypto.obfuscation.simple;
 
@@ -129,7 +133,7 @@ public class SimpleObfuscatorExtensions
 	{
 		return obfuscateBiMap(rules.inverse(), obfuscated);
 	}
-	
+
 	/**
 	 * Obfuscate with the given {@link BiMap}
 	 *
@@ -140,14 +144,14 @@ public class SimpleObfuscatorExtensions
 	 * @return the string
 	 */
 	public static String obfuscateBiMap(final BiMap<Character, Character> rules,
-		final String obfuscated)
+		final String toObfuscate)
 	{
 		char currentChar;
 		Character currentCharacter;
 		final StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < obfuscated.length(); i++)
+		for (int i = 0; i < toObfuscate.length(); i++)
 		{
-			currentChar = obfuscated.charAt(i);
+			currentChar = toObfuscate.charAt(i);
 			currentCharacter = Character.valueOf(currentChar);
 			if (rules.containsKey(currentCharacter))
 			{
@@ -164,7 +168,8 @@ public class SimpleObfuscatorExtensions
 	/**
 	 * Transforms the given obfuscation rules {@link BiMap} to a simple character {@link BiMap}
 	 *
-	 * @param rules the rules
+	 * @param rules
+	 *            the rules
 	 * @return the simple character {@link BiMap}
 	 */
 	public static BiMap<Character, Character> toCharacterBiMap(
@@ -172,8 +177,7 @@ public class SimpleObfuscatorExtensions
 	{
 		BiMap<Character, Character> biMap = HashBiMap.create();
 		rules.keySet().stream().forEach(
-			key -> biMap.put(rules.get(key).getCharacter(), rules.get(key).getReplaceWith())
-			);
+			key -> biMap.put(rules.get(key).getCharacter(), rules.get(key).getReplaceWith()));
 		return biMap;
 	}
 
