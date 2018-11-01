@@ -3,27 +3,24 @@
  *
  * Copyright (C) 2015 Asterios Raptis
  *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
- * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
- * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package de.alpharogroup.crypto.obfuscation.simple;
 
+import static org.junit.Assert.assertTrue;
 import static org.testng.AssertJUnit.assertEquals;
 
 import java.lang.reflect.InvocationTargetException;
@@ -34,9 +31,10 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
 import de.alpharogroup.AbstractTestCase;
-import de.alpharogroup.crypto.obfuscation.ObfuscationTestData;
+import de.alpharogroup.crypto.obfuscation.ObfuscationBiMapTestData;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationRule;
 
 /**
@@ -63,7 +61,7 @@ public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, Str
 	{
 		super.setUp();
 		// create a rule for obfuscate the key
-		rules = ObfuscationTestData.getFirstBiMapObfuscationRules();
+		rules = SimpleObfuscationTestData.getFirstBiMapObfuscationRules();
 	}
 
 	/**
@@ -90,7 +88,7 @@ public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, Str
 		stringToDisentangle = "Lfpobsep";
 
 		actual = SimpleObfuscatorExtensions
-			.disentangle(ObfuscationTestData.getFirstBiMapObfuscationRules(), stringToDisentangle);
+			.disentangle(SimpleObfuscationTestData.getFirstBiMapObfuscationRules(), stringToDisentangle);
 		expected = "Leonardo";
 		assertEquals(expected, actual);
 		// new scenario...
@@ -107,6 +105,47 @@ public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, Str
 		actual = SimpleObfuscatorExtensions.disentangle(rules, stringToDisentangle);
 		expected = "abacd";
 		assertEquals(expected, actual);
+	}
+
+
+	/**
+	 * Test method for {@link SimpleObfuscatorExtensions#disentangleBiMap(BiMap)}
+	 */
+	@Test(enabled = true)
+	public void testDisentangleBiMap()
+	{
+
+		BiMap<Character, Character> biMap = HashBiMap.create();
+		biMap.put('a', 'b');
+		biMap.put('c', 'e');		
+		// new scenario...
+		stringToDisentangle = "be";
+
+		actual = SimpleObfuscatorExtensions.disentangleBiMap(biMap, stringToDisentangle);
+		expected = "ac";
+		assertEquals(expected, actual);
+	}
+	
+	/**
+	 * Test method for {@link SimpleObfuscatorExtensions#toCharacterBiMap(BiMap)}
+	 */
+	@Test(enabled = true)
+	public void testToCharacterBiMap() {
+		BiMap<Character,Character> actual;
+		BiMap<Character,Character> expected;
+		BiMap<Character,ObfuscationRule<Character,Character>> obfuscationRules;	
+		// new scenario...
+		obfuscationRules = SimpleObfuscationTestData.getSmallBiMapObfuscationRules();
+		actual = SimpleObfuscatorExtensions.toCharacterBiMap(obfuscationRules);
+		expected = ObfuscationBiMapTestData.getSmallBiMapRules();
+		assertEquals(expected.size(), actual.size());
+		assertTrue(actual.equals(expected));
+		// new scenario...
+		obfuscationRules = SimpleObfuscationTestData.getSmallestBiMapObfuscationRules();
+		actual = SimpleObfuscatorExtensions.toCharacterBiMap(obfuscationRules);
+		expected = ObfuscationBiMapTestData.getSmallestBiMapObfuscationRules();
+		assertEquals(expected.size(), actual.size());
+		assertTrue(actual.equals(expected));
 	}
 
 	/**
@@ -147,7 +186,7 @@ public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, Str
 		boolean expected;
 		BiMap<Character, ObfuscationRule<Character, Character>> biMap;
 
-		biMap = ObfuscationTestData.getFirstBiMapObfuscationRules();
+		biMap = SimpleObfuscationTestData.getFirstBiMapObfuscationRules();
 		actual = SimpleObfuscatorExtensions.validate(biMap);
 		expected = true;
 		assertEquals(expected, actual);

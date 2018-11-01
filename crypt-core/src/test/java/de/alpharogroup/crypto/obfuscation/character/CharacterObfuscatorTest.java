@@ -33,7 +33,6 @@ import org.testng.annotations.Test;
 import com.google.common.collect.BiMap;
 
 import de.alpharogroup.AbstractTestCase;
-import de.alpharogroup.crypto.obfuscation.ObfuscationTestData;
 import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
 import lombok.AccessLevel;

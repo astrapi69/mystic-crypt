@@ -29,19 +29,24 @@ import com.google.common.collect.BiMap;
 import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationRule;
+import lombok.AccessLevel;
 import lombok.NonNull;
+import lombok.experimental.FieldDefaults;
 
 /**
  * The class {@link SimpleCharacterObfuscator} provide as the name says obfuscation of a given text
  */
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SimpleCharacterObfuscator implements Obfuscatable
 {
 
 	/** The key. */
-	private final String key;
+	String key;
 
 	/** The rule. */
-	private final BiMap<Character, ObfuscationRule<Character, Character>> rules;
+	BiMap<Character, ObfuscationRule<Character, Character>> rules;
+	
+	BiMap<Character, Character> biMap;
 
 	/**
 	 * Instantiates a new {@link SimpleCharacterObfuscator}
@@ -55,26 +60,10 @@ public class SimpleCharacterObfuscator implements Obfuscatable
 		final @NonNull BiMap<Character, ObfuscationRule<Character, Character>> rules,
 		final @NonNull String key)
 	{
-		this(rules, key, false);
-	}
-
-	/**
-	 * Instantiates a new {@link SimpleCharacterObfuscator}
-	 *
-	 * @param rules
-	 *            the rules
-	 * @param key
-	 *            the key
-	 * @param validate
-	 *            the validate
-	 */
-	public SimpleCharacterObfuscator(
-		final @NonNull BiMap<Character, ObfuscationRule<Character, Character>> rules,
-		final @NonNull String key, final boolean validate)
-	{
 		Check.get().notEmpty(rules, "rules");
 		Check.get().notEmpty(key, "key");
 		this.rules = rules;
+		this.biMap = SimpleObfuscatorExtensions.toCharacterBiMap(rules);
 		this.key = key;
 	}
 
