@@ -110,7 +110,6 @@ public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, Str
 		assertEquals(expected, actual);
 	}
 
-
 	/**
 	 * Test method for {@link SimpleObfuscatorExtensions#disentangleBiMap(BiMap)}
 	 */
