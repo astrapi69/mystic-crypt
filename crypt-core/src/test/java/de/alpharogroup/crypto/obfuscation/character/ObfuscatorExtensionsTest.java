@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.obfuscation.experimental;
+package de.alpharogroup.crypto.obfuscation.character;
 
 import static org.testng.AssertJUnit.assertEquals;
 
@@ -35,10 +35,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 
 import de.alpharogroup.AbstractTestCase;
-import de.alpharogroup.collections.set.SetFactory;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
 import de.alpharogroup.crypto.obfuscation.rule.Operation;
 
@@ -54,6 +52,7 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 	Character replaceWith;
 	ObfuscationOperationRule<Character, Character> rule;
 	BiMap<Character, ObfuscationOperationRule<Character, Character>> rules;
+	String stringToDisentangle;
 	String stringToObfuscate;
 
 	/**
@@ -67,32 +66,53 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 	{
 		super.setUp();
 		// create a rule for obfuscate the key
-		rules = HashBiMap.create();
+		rules = ObfuscationOperationTestData.getSmallBiMapObfuscationOperationRules();
+	}
 
-		character = Character.valueOf('a');
-		replaceWith = 'b';
-		operation = Operation.UPPERCASE;
-		indexes = SetFactory.newHashSet(0, 2);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
-			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
-		rules.put(character, rule);
+	/**
+	 * Test method for {@link ObfuscatorExtensions#disentangle(BiMap, String)}
+	 */
+	@Test
+	public void testDisentangle()
+	{
+		// new scenario...
+		stringToDisentangle = "d";
 
-		character = Character.valueOf('b');
-		replaceWith = 'c';
-		operation = Operation.UPPERCASE;
-		indexes = SetFactory.newHashSet(2);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
-			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
-		rules.put(character, rule);
+		actual = ObfuscatorExtensions.disentangle(rules, stringToDisentangle);
+		expected = "d";
+		assertEquals(expected, actual);
 
-		character = Character.valueOf('c');
-		replaceWith = 'd';
-		operation = Operation.UPPERCASE;
-		indexes = SetFactory.newHashSet(3);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
-			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
-		rules.put(character, rule);
+		// new scenario...
+		stringToDisentangle = "AcACd";
 
+		actual = ObfuscatorExtensions.disentangle(rules, stringToDisentangle);
+		expected = "abacd";
+		assertEquals(expected, actual);
+		// new scenario...
+		stringToDisentangle = "Lfpobsep";
+
+		actual = ObfuscatorExtensions.disentangle(
+			ObfuscationOperationTestData.getFirstBiMapObfuscationOperationRules(),
+			stringToDisentangle);
+		expected = "leonardo";
+		assertEquals(expected, actual);
+		// new scenario...
+		stringToDisentangle = "Lfpobsep Lpsfn jqtvn epmps tju bnfu, tfb dpotvm wfsufsfn qfsgfdup je. Amjj qspnqub fmfdusbn uf ofd, bu njojnvn dpqjptbf rvp. Ept jvejdp opnjobuj pqpsufsf fj, vtv bu ejdub mfhfoept. Io optusvn jotpmfot ejtqvuboep qsp, jvtup frvjefn jvt je.";
+
+		actual = ObfuscatorExtensions.disentangle(
+			ObfuscationOperationTestData.getFirstBiMapObfuscationOperationRules(),
+			stringToDisentangle);
+		expected = "leonardo Lorem ipsum dolor sit amet, sea consul verterem perfecto id. Alii prompta electram te nec, at minimum copiosae quo. Eos iudico nominati oportere ei, usu at dicta legendos. In nostrum insolens disputando pro, iusto equidem ius id.";
+		assertEquals(expected, actual);
+
+		// new scenario...
+		stringToDisentangle = "AcACd";
+
+		actual = ObfuscatorExtensions.disentangle(rules, stringToDisentangle);
+		expected = "abacd";
+		assertEquals(expected, actual);
+		// new scenario...
+		stringToDisentangle = "Lfpobsep";
 	}
 
 	/**
@@ -112,6 +132,27 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 
 		actual = ObfuscatorExtensions.obfuscateWith(rules, stringToObfuscate);
 		expected = "AcACd";
+		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test method for {@link ObfuscatorExtensions#validate(BiMap)}
+	 */
+	@Test
+	public void testValidate()
+	{
+		boolean actual;
+		boolean expected;
+		BiMap<Character, ObfuscationOperationRule<Character, Character>> biMap;
+
+		biMap = ObfuscationOperationTestData.getFirstBiMapObfuscationOperationRules();
+		actual = ObfuscatorExtensions.validate(biMap);
+		expected = true;
+		assertEquals(expected, actual);
+
+		biMap = ObfuscationOperationTestData.getSmallBiMapObfuscationOperationRules();
+		actual = ObfuscatorExtensions.validate(biMap);
+		expected = true;
 		assertEquals(expected, actual);
 	}
 

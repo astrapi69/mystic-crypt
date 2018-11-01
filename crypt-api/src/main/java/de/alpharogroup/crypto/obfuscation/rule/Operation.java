@@ -31,11 +31,13 @@ package de.alpharogroup.crypto.obfuscation.rule;
 public enum Operation
 {
 
-	/** The lowercase. */
+	/** The lower case. */
 	LOWERCASE,
-	/** The titlecase. */
+	/** The negate case. */
+	NEGATECASE,
+	/** The title case. */
 	TITLECASE,
-	/** The uppercase. */
+	/** The upper case. */
 	UPPERCASE;
 
 	/**
@@ -49,18 +51,6 @@ public enum Operation
 	 */
 	public static Character operate(final char character, final Operation operation)
 	{
-		if (operation != null)
-		{
-			switch (operation)
-			{
-				case LOWERCASE :
-					return Character.toLowerCase(character);
-				case UPPERCASE :
-					return Character.toUpperCase(character);
-				case TITLECASE :
-					return Character.toTitleCase(character);
-			}
-		}
 		return operate(character, operation, false);
 	}
 
@@ -94,6 +84,20 @@ public enum Operation
 						return Character.toLowerCase(character);
 					}
 					return Character.toUpperCase(character);
+
+				case NEGATECASE :
+					if (reverse)
+					{
+						return Character.valueOf(character);
+					}
+					if (Character.isUpperCase(character))
+					{
+						return Character.toLowerCase(character);
+					}
+					else
+					{
+						return Character.toUpperCase(character);
+					}
 				case TITLECASE :
 					if (reverse)
 					{

@@ -29,10 +29,6 @@ import java.util.List;
 public interface IBlock
 {
 
-	byte[] calculateHash();
-
-	byte[] calculateMerkleRoot();
-
 	byte[] getHash();
 
 	int getLeadingZerosCount();

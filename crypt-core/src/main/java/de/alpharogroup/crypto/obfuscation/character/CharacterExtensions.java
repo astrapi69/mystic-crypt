@@ -22,48 +22,38 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.obfuscation.rules;
+package de.alpharogroup.crypto.obfuscation.character;
 
-import com.google.common.collect.BiMap;
-
-import de.alpharogroup.check.Check;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.FieldDefaults;
+import lombok.experimental.UtilityClass;
 
 /**
- * The class {@link ObfuscationBiMapRules} decorates a {@link BiMap} that defines rules for encrypt
- * and decrypt given strings.
+ * The class {@link CharacterExtensions} provides utility methods for {@link Character} objects
  */
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
-@FieldDefaults(level = AccessLevel.PRIVATE)
-@Builder
-public class ObfuscationBiMapRules<K, V>
+@UtilityClass
+public class CharacterExtensions
 {
 
 	/**
-	 * The rules for encrypt the string.
-	 */
-	private final BiMap<K, V> obfuscationRules;
-
-	/**
-	 * Instantiates a new {@link ObfuscationBiMapRules}.
+	 * Compares this {@code Character} to another {@code Character}, ignoring case considerations.
 	 *
-	 * @param obfuscationRules
-	 *            the obfuscation rules for obfuscate and disentangle.
+	 * @param character
+	 *            the character
+	 * @param another
+	 *            the other
+	 * @return true, if successful
 	 */
-	public ObfuscationBiMapRules(@NonNull final BiMap<K, V> obfuscationRules)
+	public static boolean equalsIgnoreCase(Character character, Character another)
 	{
-		Check.get().notEmpty(obfuscationRules, "obfuscationRules");
-		this.obfuscationRules = obfuscationRules;
-	}
+		if (character == null && another == null)
+		{
+			return true;
+		}
+		if (character == null && another != null || character != null && another == null)
+		{
+			return false;
+		}
+		return Character.valueOf(Character.toLowerCase(character.charValue()))
+			.equals(Character.valueOf(Character.toLowerCase(another.charValue())));
 
+	}
 }

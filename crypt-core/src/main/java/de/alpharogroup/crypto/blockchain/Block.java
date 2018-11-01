@@ -22,48 +22,72 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.obfuscation.rules;
+package de.alpharogroup.crypto.blockchain;
 
-import com.google.common.collect.BiMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import de.alpharogroup.check.Check;
+import de.alpharogroup.crypto.algorithm.HashAlgorithm;
+import de.alpharogroup.crypto.blockchain.api.IBlock;
+import de.alpharogroup.crypto.blockchain.api.ITransaction;
+import de.alpharogroup.crypto.hash.HashExtensions;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NonNull;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 /**
- * The class {@link ObfuscationBiMapRules} decorates a {@link BiMap} that defines rules for encrypt
- * and decrypt given strings.
+ * The class {@link Block}
  */
 @Getter
 @Setter
 @EqualsAndHashCode
-@ToString
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Builder
-public class ObfuscationBiMapRules<K, V>
+public class Block implements IBlock
 {
 
-	/**
-	 * The rules for encrypt the string.
-	 */
-	private final BiMap<K, V> obfuscationRules;
+	byte[] hash;
 
-	/**
-	 * Instantiates a new {@link ObfuscationBiMapRules}.
-	 *
-	 * @param obfuscationRules
-	 *            the obfuscation rules for obfuscate and disentangle.
-	 */
-	public ObfuscationBiMapRules(@NonNull final BiMap<K, V> obfuscationRules)
+	byte[] merkleRoot;
+
+	byte[] previousBlockHash;
+
+	long timestamp;
+
+	List<ITransaction> transactions;
+
+	long tries;
+
+	public Block(byte[] previousBlockHash, List<ITransaction> transactions, long tries)
 	{
-		Check.get().notEmpty(obfuscationRules, "obfuscationRules");
-		this.obfuscationRules = obfuscationRules;
+		this.previousBlockHash = previousBlockHash;
+		this.transactions = transactions;
+		this.tries = tries;
+		this.timestamp = System.currentTimeMillis();
+		this.merkleRoot = HashExtensions.getMerkleRootHash(
+			new LinkedList<>(
+				transactions.stream().map(ITransaction::getHash).collect(Collectors.toList())),
+			HashAlgorithm.SHA256);
+		this.hash = HashExtensions.hash(previousBlockHash, merkleRoot, tries, timestamp,
+			HashAlgorithm.SHA256);
 	}
+
+	@Override
+	public int getLeadingZerosCount()
+	{
+		for (int i = 0; i < getHash().length; i++)
+		{
+			if (getHash()[i] != 0)
+			{
+				return i;
+			}
+		}
+		return getHash().length;
+	}
+
 
 }

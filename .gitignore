@@ -9,6 +9,7 @@
 *.iml
 .idea
 */.idea
+!/.idea/runConfigurations
 
 #################
 # eclipse files #

@@ -1,6 +1,25 @@
 ## Change log
 ----------------------
 
+Version 5.6
+-------------
+
+ADDED:
+ 
+- new enum value NEGATECASE in Operation class that indicates to negate the case of the given character value
+- new blockchain classes created for Block, Address and Transaction
+- new extension created class for simple obfuscation
+- new hash methods created for hash blocks in a blockchain and calculate the merkle root hash
+- new obfuscation test data for unit test 
+- new lombok.config files added to projects
+
+CHANGED:
+
+- moved obfuscation classes to appropriate packages
+- update of silly-collections version to 4.34.1
+- unit tests extended for improve code coverage
+- simple obfuscation implementation improved
+
 Version 5.5
 -------------
 

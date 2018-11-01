@@ -29,10 +29,10 @@ package de.alpharogroup.crypto.algorithm;
  */
 public enum UnionWord
 {
-	
+
 	/** The And enum value for chain algorithms */
-	And, 
-	
+	And,
+
 	/** The With enum value for chain algorithms */
 	With;
 }

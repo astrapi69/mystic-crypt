@@ -54,6 +54,9 @@ public class ObfuscationOperationRule<C, RW> extends ObfuscationRule<C, RW>
 	/** The index where this rule will execute. */
 	Set<Integer> indexes;
 
+	/** The operated character. */
+	C operatedCharacter;
+
 	/** The type of operation for the obfuscation. */
 	Operation operation;
 

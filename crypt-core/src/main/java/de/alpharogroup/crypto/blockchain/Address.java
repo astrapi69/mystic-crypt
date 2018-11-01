@@ -22,48 +22,50 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.obfuscation.rules;
+package de.alpharogroup.crypto.blockchain;
 
-import com.google.common.collect.BiMap;
-
-import de.alpharogroup.check.Check;
+import de.alpharogroup.crypto.algorithm.HashAlgorithm;
+import de.alpharogroup.crypto.blockchain.api.IAddress;
+import de.alpharogroup.crypto.hash.HashExtensions;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NonNull;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 /**
- * The class {@link ObfuscationBiMapRules} decorates a {@link BiMap} that defines rules for encrypt
- * and decrypt given strings.
+ * The class {@link Address}
  */
 @Getter
 @Setter
 @EqualsAndHashCode
-@ToString
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Builder
-public class ObfuscationBiMapRules<K, V>
+public class Address implements IAddress
 {
 
-	/**
-	 * The rules for encrypt the string.
-	 */
-	private final BiMap<K, V> obfuscationRules;
+	/** The hash. */
+	byte[] hash;
+
+	/** The name. */
+	String name;
+
+	/** The public key. */
+	byte[] publicKey;
 
 	/**
-	 * Instantiates a new {@link ObfuscationBiMapRules}.
+	 * Instantiates a new {@link Address}
 	 *
-	 * @param obfuscationRules
-	 *            the obfuscation rules for obfuscate and disentangle.
+	 * @param name
+	 *            the name
+	 * @param publicKey
+	 *            the public key
 	 */
-	public ObfuscationBiMapRules(@NonNull final BiMap<K, V> obfuscationRules)
+	public Address(String name, byte[] publicKey)
 	{
-		Check.get().notEmpty(obfuscationRules, "obfuscationRules");
-		this.obfuscationRules = obfuscationRules;
+		this.name = name;
+		this.publicKey = publicKey;
+		this.hash = HashExtensions.hash(name.getBytes(), publicKey, HashAlgorithm.SHA256);
 	}
-
 }

@@ -27,10 +27,16 @@ package de.alpharogroup.crypto.hash;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Queue;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.ArrayUtils;
+
+import com.google.common.primitives.Longs;
 
 import de.alpharogroup.crypto.algorithm.HashAlgorithm;
+import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -134,6 +140,173 @@ public class HashExtensions
 		final String hashedAndBase64 = new Base64()
 			.encodeToString(hash(hashIt, salt, hashAlgorithm, charset).getBytes(charset));
 		return hashedAndBase64;
+	}
+
+	/**
+	 * Calculates the hash value as byte array from the given fields
+	 *
+	 * @param input
+	 *            the input hash
+	 * @param hash
+	 *            the merkle
+	 * @param signature
+	 *            the signature
+	 * @param timestamp
+	 *            the timestamp
+	 * @param algorithm
+	 *            the hash algorithm
+	 * @return the calculated hash as byte array
+	 */
+	public static byte[] hash(byte[] input, byte[] hash, byte[] signature, long timestamp,
+		@NonNull HashAlgorithm algorithm)
+	{
+		byte[] hashValue = ArrayUtils.addAll(input, hash);
+		hashValue = ArrayUtils.addAll(hashValue, signature);
+		hashValue = ArrayUtils.addAll(hashValue, Longs.toByteArray(timestamp));
+		switch (algorithm)
+		{
+			case SHA1 :
+				return DigestUtils.sha1(hashValue);
+			case SHA256 :
+				return DigestUtils.sha256(hashValue);
+			case SHA384 :
+				return DigestUtils.sha384(hashValue);
+			case SHA512 :
+				return DigestUtils.sha512(hashValue);
+			case SHA_1 :
+				return DigestUtils.sha1(hashValue);
+			case SHA_256 :
+				return DigestUtils.sha256(hashValue);
+			case SHA_384 :
+				return DigestUtils.sha384(hashValue);
+			case SHA_512 :
+				return DigestUtils.sha512(hashValue);
+			default :
+				return DigestUtils.sha256(hashValue);
+		}
+	}
+
+	/**
+	 * Calculates the hash value as byte array from the given fields
+	 *
+	 * @param input
+	 *            the input hash
+	 * @param hash
+	 *            the merkle
+	 * @param signature
+	 *            the signature
+	 * @param timestamp
+	 *            the timestamp
+	 * @param algorithm
+	 *            the hash algorithm
+	 * @return the calculated hash as byte array
+	 */
+	public static byte[] hash(byte[] input, byte[] hash, long signature, long timestamp,
+		@NonNull HashAlgorithm algorithm)
+	{
+		byte[] hashValue = ArrayUtils.addAll(input, hash);
+		hashValue = ArrayUtils.addAll(hashValue, Longs.toByteArray(signature));
+		hashValue = ArrayUtils.addAll(hashValue, Longs.toByteArray(timestamp));
+		switch (algorithm)
+		{
+			case SHA1 :
+				return DigestUtils.sha1(hashValue);
+			case SHA256 :
+				return DigestUtils.sha256(hashValue);
+			case SHA384 :
+				return DigestUtils.sha384(hashValue);
+			case SHA512 :
+				return DigestUtils.sha512(hashValue);
+			case SHA_1 :
+				return DigestUtils.sha1(hashValue);
+			case SHA_256 :
+				return DigestUtils.sha256(hashValue);
+			case SHA_384 :
+				return DigestUtils.sha384(hashValue);
+			case SHA_512 :
+				return DigestUtils.sha512(hashValue);
+			default :
+				return DigestUtils.sha256(hashValue);
+		}
+	}
+
+	/**
+	 * Calculates the hash value as byte array from the given fields
+	 *
+	 * @param input
+	 *            the input hash
+	 * @param publicKey
+	 *            the public key
+	 * @param algorithm
+	 *            the algorithm
+	 * @return the calculated hash as byte array
+	 */
+	public static byte[] hash(byte[] input, byte[] publicKey, @NonNull HashAlgorithm algorithm)
+	{
+		byte[] hashValue = ArrayUtils.addAll(input, publicKey);
+		switch (algorithm)
+		{
+			case SHA1 :
+				return DigestUtils.sha1(hashValue);
+			case SHA256 :
+				return DigestUtils.sha256(hashValue);
+			case SHA384 :
+				return DigestUtils.sha384(hashValue);
+			case SHA512 :
+				return DigestUtils.sha512(hashValue);
+			case SHA_1 :
+				return DigestUtils.sha1(hashValue);
+			case SHA_256 :
+				return DigestUtils.sha256(hashValue);
+			case SHA_384 :
+				return DigestUtils.sha384(hashValue);
+			case SHA_512 :
+				return DigestUtils.sha512(hashValue);
+			default :
+				return DigestUtils.sha256(hashValue);
+		}
+	}
+
+	/**
+	 * Gets the hash value of the given queue and the given algorithm.
+	 * 
+	 * @see <a href="https://en.wikipedia.org/wiki/Merkle_tree">wikipedia Merkle tree</a>
+	 *
+	 * @param hashQueue
+	 *            the hash queue
+	 * @param algorithm
+	 *            the algorithm
+	 * @return the merkle root tree
+	 */
+	public static byte[] getMerkleRootHash(Queue<byte[]> hashQueue,
+		@NonNull HashAlgorithm algorithm)
+	{
+		while (hashQueue.size() > 1)
+		{
+			byte[] hashValue = ArrayUtils.addAll(hashQueue.poll(), hashQueue.poll());
+			switch (algorithm)
+			{
+				case SHA1 :
+					hashQueue.add(DigestUtils.sha1(hashValue));
+				case SHA256 :
+					hashQueue.add(DigestUtils.sha256(hashValue));
+				case SHA384 :
+					hashQueue.add(DigestUtils.sha384(hashValue));
+				case SHA512 :
+					hashQueue.add(DigestUtils.sha512(hashValue));
+				case SHA_1 :
+					hashQueue.add(DigestUtils.sha1(hashValue));
+				case SHA_256 :
+					hashQueue.add(DigestUtils.sha256(hashValue));
+				case SHA_384 :
+					hashQueue.add(DigestUtils.sha384(hashValue));
+				case SHA_512 :
+					hashQueue.add(DigestUtils.sha512(hashValue));
+				default :
+					hashQueue.add(DigestUtils.sha256(hashValue));
+			}
+		}
+		return hashQueue.poll();
 	}
 
 }

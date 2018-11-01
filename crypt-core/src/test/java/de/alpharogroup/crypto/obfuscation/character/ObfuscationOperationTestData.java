@@ -22,54 +22,82 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.obfuscation;
-
-import static org.testng.AssertJUnit.assertEquals;
+package de.alpharogroup.crypto.obfuscation.character;
 
 import java.util.Set;
-
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
-import de.alpharogroup.AbstractTestCase;
 import de.alpharogroup.collections.set.SetFactory;
-import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
 import de.alpharogroup.crypto.obfuscation.rule.Operation;
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
+import lombok.experimental.UtilityClass;
 
 /**
- * The unit test class for the class {@link CharacterObfuscator}
+ * The class {@link ObfuscationOperationTestData} provides test data for test the obfuscation rules
  */
-@FieldDefaults(level = AccessLevel.PRIVATE)
-public class CharacterObfuscatorTest extends AbstractTestCase<String, String>
+@UtilityClass
+public class ObfuscationOperationTestData
 {
 
-	Character character;
-	Set<Integer> indexes;
-	Obfuscatable obfuscator;
-	Operation operation;
-	Character replaceWith;
-	ObfuscationOperationRule<Character, Character> rule;
-	BiMap<Character, ObfuscationOperationRule<Character, Character>> rules;
-	String stringToObfuscate;
+	/**
+	 * Gets the {@link BiMap} for obfuscation operation rules with only three operation rules for
+	 * use in unit tests.
+	 *
+	 * @return the {@link BiMap} for obfuscation operation rules with only three operation rules
+	 */
+	public static BiMap<Character, ObfuscationOperationRule<Character, Character>> getSmallBiMapObfuscationOperationRules()
+	{
+		Character character;
+		Set<Integer> indexes;
+		Operation operation;
+		Character replaceWith;
+		ObfuscationOperationRule<Character, Character> rule;
+		BiMap<Character, ObfuscationOperationRule<Character, Character>> rules;
+
+		rules = HashBiMap.create();
+
+		character = Character.valueOf('a');
+		replaceWith = 'b';
+		operation = Operation.UPPERCASE;
+		indexes = SetFactory.newHashSet(0, 2);
+		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
+		rules.put(character, rule);
+
+		character = Character.valueOf('b');
+		replaceWith = 'c';
+		operation = Operation.UPPERCASE;
+		indexes = SetFactory.newHashSet(2);
+		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
+		rules.put(character, rule);
+
+		character = Character.valueOf('c');
+		replaceWith = 'd';
+		operation = Operation.UPPERCASE;
+		indexes = SetFactory.newHashSet(3);
+		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
+		rules.put(character, rule);
+		return rules;
+	}
 
 	/**
-	 * Sets up method will be invoked before every unit test method in this class
+	 * Gets the {@link BiMap} for obfuscation operation rules with 25 rules for use in unit tests.
 	 *
-	 * @throws Exception
-	 *             is thrown if an exception occurs
+	 * @return the {@link BiMap} for obfuscation operation rules with 25 rules
 	 */
-	@BeforeMethod
-	protected void setUp() throws Exception
+	public static BiMap<Character, ObfuscationOperationRule<Character, Character>> getFirstBiMapObfuscationOperationRules()
 	{
-		super.setUp();
-		// create a rule for obfuscate the key
+		Character character;
+		Set<Integer> indexes;
+		Operation operation;
+		Character replaceWith;
+		ObfuscationOperationRule<Character, Character> rule;
+		BiMap<Character, ObfuscationOperationRule<Character, Character>> rules;
+
 		rules = HashBiMap.create();
 
 		character = Character.valueOf('a');
@@ -279,81 +307,7 @@ public class CharacterObfuscatorTest extends AbstractTestCase<String, String>
 		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
-	}
-
-	/**
-	 * Tear down method will be invoked after every unit test method in this class
-	 *
-	 * @throws Exception
-	 *             is thrown if an exception occurs
-	 */
-	@AfterMethod
-	protected void tearDown() throws Exception
-	{
-		super.tearDown();
-		stringToObfuscate = null;
-		rules = null;
-		character = null;
-		replaceWith = null;
-		operation = null;
-		indexes = null;
-		rule = null;
-		obfuscator = null;
-	}
-
-	/**
-	 * Test method for {@link CharacterObfuscator#disentangle()}
-	 */
-	@Test(enabled = true)
-	public void testDisentangle()
-	{
-		stringToObfuscate = "abac";
-		// obfuscate the key
-		obfuscator = new CharacterObfuscator(rules, stringToObfuscate);
-		actual = obfuscator.obfuscate();
-		expected = "AcAC";
-		assertEquals(expected, actual);
-
-		actual = obfuscator.disentangle();
-		expected = stringToObfuscate;
-		assertEquals(expected, actual);
-	}
-
-	@Test(enabled = true)
-	public void testObfuscate()
-	{
-		// a key for obfuscation
-		stringToObfuscate = "abac";
-
-		// obfuscate the key
-		obfuscator = new CharacterObfuscator(rules, stringToObfuscate);
-		actual = obfuscator.obfuscate();
-		expected = "AcAC";
-		assertEquals(expected, actual);
-
-		actual = obfuscator.disentangle();
-		expected = stringToObfuscate;
-		assertEquals(expected, actual);
-	}
-
-	/**
-	 * Test method for {@link CharacterObfuscator#obfuscate()}
-	 */
-	@Test(enabled = true) // TODO inspect and fix...
-	public void testObfuscateEightChars()
-	{
-		// a key for obfuscation
-		stringToObfuscate = "leonardo";
-
-		// obfuscate the key
-		obfuscator = new CharacterObfuscator(rules, stringToObfuscate);
-		actual = obfuscator.obfuscate();
-		expected = "Lfpobsep";
-		assertEquals(expected, actual);
-
-		actual = obfuscator.disentangle();
-		expected = stringToObfuscate;
-		assertEquals(expected, actual);
+		return rules;
 	}
 
 }

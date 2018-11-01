@@ -22,48 +22,34 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.obfuscation.rules;
+package de.alpharogroup.crypto.obfuscation.character;
 
-import com.google.common.collect.BiMap;
+import static org.testng.AssertJUnit.assertEquals;
 
-import de.alpharogroup.check.Check;
+import org.testng.annotations.Test;
+
+import de.alpharogroup.AbstractTestCase;
 import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
-import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 /**
- * The class {@link ObfuscationBiMapRules} decorates a {@link BiMap} that defines rules for encrypt
- * and decrypt given strings.
+ * The unit test class for the class {@link CharacterExtensions}
  */
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Builder
-public class ObfuscationBiMapRules<K, V>
+public class CharacterExtensionsTest extends AbstractTestCase<Boolean, Boolean>
 {
 
 	/**
-	 * The rules for encrypt the string.
+	 * Test method for {@link CharacterExtensions#equalsIgnoreCase(Character, Character)}
 	 */
-	private final BiMap<K, V> obfuscationRules;
-
-	/**
-	 * Instantiates a new {@link ObfuscationBiMapRules}.
-	 *
-	 * @param obfuscationRules
-	 *            the obfuscation rules for obfuscate and disentangle.
-	 */
-	public ObfuscationBiMapRules(@NonNull final BiMap<K, V> obfuscationRules)
+	@Test(enabled = true)
+	public void testEqualsIgnoreCase()
 	{
-		Check.get().notEmpty(obfuscationRules, "obfuscationRules");
-		this.obfuscationRules = obfuscationRules;
+
+		expected = true;
+		actual = CharacterExtensions.equalsIgnoreCase(Character.valueOf('C'),
+			Character.valueOf('c'));
+		assertEquals(expected, actual);
 	}
 
 }
