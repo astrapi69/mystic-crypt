@@ -65,25 +65,74 @@ public class PrivateKeyReader
 	/** The Constant END_RSA_PRIVATE_KEY_SUFFIX. */
 	public static final String END_RSA_PRIVATE_KEY_SUFFIX = "\n-----END " + RSA_PRIVATE_KEY
 		+ "-----";
-	
+
 	/**
 	 * Checks if the given {@link File}( in *.der format) is password protected
 	 *
 	 * @param file
 	 *            the file( in *.der format) that contains the private key
-	 * @return true, if if the given {@link File}( in *.der format) is password protected otherwise false
+	 * @return true, if if the given {@link File}( in *.der format) is password protected otherwise
+	 *         false
+	 * @throws IOException
 	 */
-	public static boolean isPasswordProtected(final File file)
+	public static boolean isPrivateKeyPasswordProtected(final File file) throws IOException
 	{
-		try{
-			readPrivateKey(file);			
-		}catch (Exception e) {
-			e.printStackTrace();
-			return true;
+		boolean result = false;
+		if (isPemFormat(file))
+		{
+			try
+			{
+				readPemPrivateKey(file);
+			}
+			catch (Exception e)
+			{
+				log.error(e.getMessage(), e);
+				result = true;
+			}
 		}
-		return false;
+		else
+		{
+			try
+			{
+				readPrivateKey(file);
+			}
+			catch (Exception e)
+			{
+				log.error(e.getMessage(), e);
+				result = true;
+			}
+		}
+
+
+		return result;
 	}
-	
+
+	/**
+	 * Checks if the given {@link File} is in pem format.
+	 *
+	 * @param file
+	 *            the file
+	 * @return true, if the given {@link File} is in pem format otherwise false
+	 * @throws IOException
+	 */
+	public static boolean isPemFormat(final File file) throws IOException
+	{
+		boolean result = false;
+		final byte[] keyBytes = Files.readAllBytes(file.toPath());
+		final String privateKeyPem = new String(keyBytes);
+		if (privateKeyPem.indexOf(BEGIN_PRIVATE_KEY_PREFIX) != -1)
+		{
+			result = true;
+			return result;
+		}
+		if (privateKeyPem.indexOf(BEGIN_RSA_PRIVATE_KEY_PREFIX) != -1)
+		{
+			result = true;
+			return result;
+		}
+		return result;
+	}
+
 	/**
 	 * Reads the given {@link File}( in *.der format) with the default RSA algorithm and returns the
 	 * {@link PrivateKey} object.
