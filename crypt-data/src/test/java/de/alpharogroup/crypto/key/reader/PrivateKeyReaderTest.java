@@ -24,6 +24,7 @@
  */
 package de.alpharogroup.crypto.key.reader;
 
+import static org.testng.Assert.assertEquals;
 import static org.testng.AssertJUnit.assertNotNull;
 
 import java.io.File;
@@ -57,6 +58,7 @@ public class PrivateKeyReaderTest
 	File derDir;
 	File pemDir;
 	File privateKeyDerFile;
+	File passwordProtectedPrivateKeyDerFile;
 
 	File privateKeyPemFile;
 	File privateKeyPemFile2;
@@ -75,6 +77,27 @@ public class PrivateKeyReaderTest
 
 		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
 		privateKeyDerFile = new File(derDir, "private.der");
+		passwordProtectedPrivateKeyDerFile = new File(derDir, "pwp-private-key-pw-is-secret");
+	}
+
+	/**
+	 * Test method for {@link PrivateKeyReader#isPasswordProtected(File)} 
+	 */
+	@Test
+	public void testIsPasswordProtected() throws Exception {
+		boolean actual;
+		boolean expected;
+		// new scenario
+		actual = PrivateKeyReader.isPasswordProtected(privateKeyDerFile);
+		expected = false;
+		assertEquals(actual, expected);
+		
+		PrivateKey passwordProtectedPrivateKey = EncryptedPrivateKeyReader.decryptPasswordProtectedPrivateKey(passwordProtectedPrivateKeyDerFile, "secret");
+		assertNotNull(passwordProtectedPrivateKey);
+		// new scenario
+		actual = PrivateKeyReader.isPasswordProtected(passwordProtectedPrivateKeyDerFile);
+		expected = true;
+		assertEquals(actual, expected);
 	}
 
 	/**

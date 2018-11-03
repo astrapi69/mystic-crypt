@@ -38,12 +38,14 @@ import org.apache.commons.codec.binary.Base64;
 
 import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * The class {@link PrivateKeyReader} is a utility class for reading private keys in *.der or *.pem
  * format.
  */
 @UtilityClass
+@Slf4j
 public class PrivateKeyReader
 {
 
@@ -63,7 +65,25 @@ public class PrivateKeyReader
 	/** The Constant END_RSA_PRIVATE_KEY_SUFFIX. */
 	public static final String END_RSA_PRIVATE_KEY_SUFFIX = "\n-----END " + RSA_PRIVATE_KEY
 		+ "-----";
-
+	
+	/**
+	 * Checks if the given {@link File}( in *.der format) is password protected
+	 *
+	 * @param file
+	 *            the file( in *.der format) that contains the private key
+	 * @return true, if if the given {@link File}( in *.der format) is password protected otherwise false
+	 */
+	public static boolean isPasswordProtected(final File file)
+	{
+		try{
+			readPrivateKey(file);			
+		}catch (Exception e) {
+			e.printStackTrace();
+			return true;
+		}
+		return false;
+	}
+	
 	/**
 	 * Reads the given {@link File}( in *.der format) with the default RSA algorithm and returns the
 	 * {@link PrivateKey} object.
