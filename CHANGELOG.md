@@ -4,6 +4,10 @@
 Version 5.7-SNAPSHOT
 -------------
 
+CHANGED:
+
+- update of silly-collections version to 4.35
+
 Version 5.6
 -------------
 
