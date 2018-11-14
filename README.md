@@ -160,6 +160,7 @@ Here is a list of awesome projects for cryptography:
  * [lockbox-java](https://github.com/eloquent/lockbox-java) Simple, strong encryption. 
  * [jsql-injection](https://github.com/ron190/jsql-injection) jSQL Injection is a Java application for automatic SQL database injection.
  * [curve25519](https://github.com/signalapp/curve25519-java) Pure Java and JNI backed Curve25519 implementation
+ * [vault](https://github.com/hashicorp/vault) A tool for secrets management, encryption as a service, and privileged access management
 
 ## Credits
 
