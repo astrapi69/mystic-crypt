@@ -206,33 +206,13 @@ public final class EncryptedPrivateKeyReader
 		boolean pemFormat = PrivateKeyReader.isPemFormat(encryptedPrivateKeyFile);
 		if (pemFormat)
 		{
-			PEMParser pemParser = new PEMParser(new FileReader(encryptedPrivateKeyFile));
-			Object pemObject = pemParser.readObject();
-			pemParser.close();
-			PEMDecryptorProvider decryptorProvider = new JcePEMDecryptorProviderBuilder()
-				.build(password.toCharArray());
-			JcaPEMKeyConverter keyConverter = new JcaPEMKeyConverter().setProvider("BC");
-			KeyPair keyPair;
-			if (pemObject instanceof PEMEncryptedKeyPair)
-			{
-				keyPair = keyConverter
-					.getKeyPair(((PEMEncryptedKeyPair)pemObject).decryptKeyPair(decryptorProvider));
-			}
-			else
-			{
-				keyPair = keyConverter.getKeyPair((PEMKeyPair)pemObject);
-			}
-			if (keyPair != null)
-			{
-				return keyPair.getPrivate();
-			}
+			return  PemObjectReader.readPemPrivateKey(encryptedPrivateKeyFile, password);
 		}
 		else
 		{
 			encryptedPrivateKeyBytes = Files.readAllBytes(encryptedPrivateKeyFile.toPath());
 			return readPasswordProtectedPrivateKey(encryptedPrivateKeyBytes, password, algorithm);
 		}
-		return null;
 	}
 
 	/**
