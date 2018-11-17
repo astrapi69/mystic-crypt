@@ -126,7 +126,6 @@ public class PrivateKeyReaderTest
 		assertEquals(actual, expected);
 
 		// new scenario
-		// check if the pk is pwp...
 		passwordProtectedPrivateKey = EncryptedPrivateKeyReader
 			.readPasswordProtectedPrivateKey(passwordProtectedPrivateKeyPemFile, "secret");
 
@@ -135,11 +134,16 @@ public class PrivateKeyReaderTest
 		actual = PrivateKeyReader.isPrivateKeyPasswordProtected(passwordProtectedPrivateKeyDerFile);
 		expected = true;
 		assertEquals(actual, expected);
+
+		// new scenario
+		actual = PrivateKeyReader.isPrivateKeyPasswordProtected(privateKeyPemFile);
+		expected = false;
+		assertEquals(actual, expected);
 	}
 
 	/**
 	 * Test method for {@link PrivateKeyReader#readPrivateKey(File)}
-	 * 
+	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws NoSuchAlgorithmException
@@ -176,7 +180,7 @@ public class PrivateKeyReaderTest
 
 	/**
 	 * Test method for {@link PrivateKeyReader#readPemPrivateKey(File, SecurityProvider)}
-	 * 
+	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws NoSuchAlgorithmException
@@ -197,7 +201,7 @@ public class PrivateKeyReaderTest
 
 	/**
 	 * Test method for {@link PrivateKeyReader#readPemPrivateKey(File, String)}
-	 * 
+	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws NoSuchAlgorithmException
@@ -244,7 +248,7 @@ public class PrivateKeyReaderTest
 
 	/**
 	 * Test method for {@link PrivateKeyReader#readPrivateKey(File)}
-	 * 
+	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws NoSuchAlgorithmException
