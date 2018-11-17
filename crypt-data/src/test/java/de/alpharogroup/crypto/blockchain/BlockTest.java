@@ -73,6 +73,8 @@ public class BlockTest
 
 		block = new Block();
 		assertNotNull(block);
+		block.setHash(new byte[] {});
+		assertNotNull(block.getLeadingZerosCount());
 		Transaction transaction;
 		String text;
 
