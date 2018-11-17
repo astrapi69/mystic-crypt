@@ -50,6 +50,17 @@ public class CharacterExtensionsTest extends AbstractTestCase<Boolean, Boolean>
 		actual = CharacterExtensions.equalsIgnoreCase(Character.valueOf('C'),
 			Character.valueOf('c'));
 		assertEquals(expected, actual);
+
+		expected = false;
+		actual = CharacterExtensions.equalsIgnoreCase(null,
+			Character.valueOf('c'));
+		assertEquals(expected, actual);
+
+		expected = true;
+		actual = CharacterExtensions.equalsIgnoreCase(null,
+			null);
+
+		assertEquals(expected, actual);
 	}
 
 }
