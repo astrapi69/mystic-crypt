@@ -26,6 +26,10 @@ package de.alpharogroup.crypto.obfuscation.character;
 
 import static org.testng.AssertJUnit.assertEquals;
 
+import java.lang.reflect.InvocationTargetException;
+
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.AbstractTestCase;
@@ -61,6 +65,17 @@ public class CharacterExtensionsTest extends AbstractTestCase<Boolean, Boolean>
 			null);
 
 		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test method for {@link CharacterExtensions} with {@link BeanTester}
+	 */
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(CharacterExtensions.class);
 	}
 
 }
