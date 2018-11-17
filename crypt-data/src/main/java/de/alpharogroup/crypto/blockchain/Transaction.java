@@ -65,6 +65,7 @@ public class Transaction implements ITransaction
 			HashAlgorithm.SHA256);
 	}
 
+	@Override
 	public byte[] getSignableData()
 	{
 		return text.getBytes();

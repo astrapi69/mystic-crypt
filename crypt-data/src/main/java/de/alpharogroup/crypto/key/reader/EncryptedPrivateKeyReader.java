@@ -90,6 +90,7 @@ public final class EncryptedPrivateKeyReader
 	 * @deprecated use instead the read method<br>
 	 *             Note: will be removed in next minor release
 	 */
+	@Deprecated
 	public static PrivateKey decryptPasswordProtectedPrivateKey(
 		final byte[] encryptedPrivateKeyBytes, final String password, final String algorithm)
 		throws IOException, NoSuchAlgorithmException, NoSuchPaddingException,
@@ -166,6 +167,7 @@ public final class EncryptedPrivateKeyReader
 	 * @deprecated use instead the read method<br>
 	 *             Note: will be removed in next minor release
 	 */
+	@Deprecated
 	public static PrivateKey decryptPasswordProtectedPrivateKey(final File encryptedPrivateKeyFile,
 		final String password, final String algorithm)
 		throws IOException, NoSuchAlgorithmException, NoSuchPaddingException,
@@ -258,6 +260,7 @@ public final class EncryptedPrivateKeyReader
 	 * @deprecated use instead the read method<br>
 	 *             Note: will be removed in next minor release
 	 */
+	@Deprecated
 	public static PrivateKey decryptPasswordProtectedPrivateKey(final File encryptedPrivateKeyFile,
 		final String password) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException,
 		InvalidKeySpecException, InvalidKeyException, InvalidAlgorithmParameterException

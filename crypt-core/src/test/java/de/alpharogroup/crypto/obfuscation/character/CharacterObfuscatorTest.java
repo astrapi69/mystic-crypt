@@ -55,6 +55,7 @@ public class CharacterObfuscatorTest extends AbstractTestCase<String, String>
 	 * @throws Exception
 	 *             is thrown if an exception occurs
 	 */
+	@Override
 	@BeforeMethod
 	protected void setUp() throws Exception
 	{
@@ -69,6 +70,7 @@ public class CharacterObfuscatorTest extends AbstractTestCase<String, String>
 	 * @throws Exception
 	 *             is thrown if an exception occurs
 	 */
+	@Override
 	@AfterMethod
 	protected void tearDown() throws Exception
 	{

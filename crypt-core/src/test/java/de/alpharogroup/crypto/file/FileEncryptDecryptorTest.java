@@ -61,6 +61,7 @@ public class FileEncryptDecryptorTest extends AbstractTestCase<String, String>
 	/**
 	 * Sets up method will be invoked before every unit test method in this class
 	 */
+	@Override
 	@BeforeMethod
 	protected void setUp()
 	{
