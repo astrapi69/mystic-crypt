@@ -73,7 +73,9 @@ public class PrivateKeyReader
 	 *            the file( in *.der format) that contains the private key
 	 * @return true, if if the given {@link File}( in *.der format) is password protected otherwise
 	 *         false
+	 * 
 	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	public static boolean isPrivateKeyPasswordProtected(final File file) throws IOException
 	{
@@ -113,7 +115,9 @@ public class PrivateKeyReader
 	 * @param file
 	 *            the file
 	 * @return true, if the given {@link File} is in pem format otherwise false
+	 * 
 	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	public static boolean isPemFormat(final File file) throws IOException
 	{

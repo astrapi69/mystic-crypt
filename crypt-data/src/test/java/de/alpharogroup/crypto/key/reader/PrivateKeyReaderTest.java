@@ -117,7 +117,7 @@ public class PrivateKeyReaderTest
 		// new scenario
 		// check if the pk is pwp...
 		passwordProtectedPrivateKey = EncryptedPrivateKeyReader
-			.decryptPasswordProtectedPrivateKey(passwordProtectedPrivateKeyDerFile, "secret");
+			.readPasswordProtectedPrivateKey(passwordProtectedPrivateKeyDerFile, "secret");
 
 		assertNotNull(passwordProtectedPrivateKey);
 
@@ -128,7 +128,7 @@ public class PrivateKeyReaderTest
 		// new scenario
 		// check if the pk is pwp...
 		passwordProtectedPrivateKey = EncryptedPrivateKeyReader
-			.decryptPasswordProtectedPrivateKey(passwordProtectedPrivateKeyPemFile, "secret");
+			.readPasswordProtectedPrivateKey(passwordProtectedPrivateKeyPemFile, "secret");
 
 		assertNotNull(passwordProtectedPrivateKey);
 

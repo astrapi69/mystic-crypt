@@ -133,7 +133,7 @@ public class EncryptedPrivateKeyWriterTest
 			encryptedPrivateKeyFile, password);
 
 		final PrivateKey decryptedPrivateKey = EncryptedPrivateKeyReader
-			.decryptPasswordProtectedPrivateKey(encryptedPrivateKeyFile, password,
+			.readPasswordProtectedPrivateKey(encryptedPrivateKeyFile, password,
 				KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
 		expected = readedPrivateKey;
 		actual = decryptedPrivateKey;

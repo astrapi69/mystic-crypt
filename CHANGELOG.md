@@ -6,7 +6,12 @@ Version 5.7-SNAPSHOT
 
 CHANGED:
 
+- update of parent version to 4.2
+- update of file-worker version to 5
+- update of jcommons-lang version to 5
 - update of silly-collections version to 4.35
+- update of randomizer version to 5.5
+- update of guava version to 27.0-jre
 
 Version 5.6
 -------------

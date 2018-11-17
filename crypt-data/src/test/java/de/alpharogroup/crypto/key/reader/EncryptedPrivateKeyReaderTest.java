@@ -99,7 +99,7 @@ public class EncryptedPrivateKeyReaderTest
 			.encryptPrivateKeyWithPassword(readedPrivateKey, password);
 
 		final PrivateKey decryptedPrivateKey = EncryptedPrivateKeyReader
-			.decryptPasswordProtectedPrivateKey(pwprotectedKey, password,
+			.readPasswordProtectedPrivateKey(pwprotectedKey, password,
 				KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
 		expected = readedPrivateKey;
 		actual = decryptedPrivateKey;
@@ -124,7 +124,7 @@ public class EncryptedPrivateKeyReaderTest
 
 
 		final PrivateKey decryptedPrivateKey = EncryptedPrivateKeyReader
-			.decryptPasswordProtectedPrivateKey(encryptedPrivateKeyFile, password);
+			.readPasswordProtectedPrivateKey(encryptedPrivateKeyFile, password);
 		expected = readedPrivateKey;
 		actual = decryptedPrivateKey;
 		assertEquals(expected, actual);
@@ -148,7 +148,7 @@ public class EncryptedPrivateKeyReaderTest
 
 
 		final PrivateKey decryptedPrivateKey = EncryptedPrivateKeyReader
-			.decryptPasswordProtectedPrivateKey(encryptedPrivateKeyFile, password,
+			.readPasswordProtectedPrivateKey(encryptedPrivateKeyFile, password,
 				KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
 		expected = readedPrivateKey;
 		actual = decryptedPrivateKey;
