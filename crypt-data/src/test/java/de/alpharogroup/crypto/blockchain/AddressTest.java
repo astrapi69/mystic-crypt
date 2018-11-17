@@ -51,7 +51,7 @@ public class AddressTest
 
 	/**
 	 * Test method for {@link Address} constructors
-	 * 
+	 *
 	 * @throws IOException
 	 * @throws NoSuchProviderException
 	 * @throws InvalidKeySpecException
