@@ -246,7 +246,7 @@ public class PrivateKeyExtensions
 	 *
 	 * @param privateKeyPKCS1Formatted
 	 *            the byte array(of private key in PKCS#1 format)
-	 * @return the byte array formatted in PKCS#1
+	 * @return the String in PEM-Format
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred
 	 */
