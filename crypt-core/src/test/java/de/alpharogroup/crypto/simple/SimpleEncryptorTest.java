@@ -22,9 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.obfuscation.character;
-
-import static org.testng.AssertJUnit.assertEquals;
+package de.alpharogroup.crypto.simple;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -32,48 +30,20 @@ import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.AbstractTestCase;
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
-
 /**
- * The unit test class for the class {@link CharacterExtensions}
+ * The unit test class for the class {@link SimpleEncryptor}
  */
-@FieldDefaults(level = AccessLevel.PRIVATE)
-public class CharacterExtensionsTest extends AbstractTestCase<Boolean, Boolean>
+public class SimpleEncryptorTest
 {
 
 	/**
-	 * Test method for {@link CharacterExtensions#equalsIgnoreCase(Character, Character)}
-	 */
-	@Test(enabled = true)
-	public void testEqualsIgnoreCase()
-	{
-
-		expected = true;
-		actual = CharacterExtensions.equalsIgnoreCase(Character.valueOf('C'),
-			Character.valueOf('c'));
-		assertEquals(expected, actual);
-
-		expected = false;
-		actual = CharacterExtensions.equalsIgnoreCase(null, Character.valueOf('c'));
-		assertEquals(expected, actual);
-
-		expected = true;
-		actual = CharacterExtensions.equalsIgnoreCase(null, null);
-
-		assertEquals(expected, actual);
-	}
-
-	/**
-	 * Test method for {@link CharacterExtensions} with {@link BeanTester}
+	 * Test method for {@link SimpleEncryptor} with {@link BeanTester}
 	 */
 	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
 			UnsupportedOperationException.class })
 	public void testWithBeanTester()
 	{
 		final BeanTester beanTester = new BeanTester();
-		beanTester.testBean(CharacterExtensions.class);
+		beanTester.testBean(SimpleEncryptor.class);
 	}
-
 }

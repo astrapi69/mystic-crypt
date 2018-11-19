@@ -99,19 +99,17 @@ public class EncryptedPrivateKeyReaderTest
 		readedPrivateKey = PrivateKeyReader.readPrivateKey(PathFinder.getSrcTestResourcesDir(),
 			"der", "private.der");
 		password = "secret";
-		pwprotectedKey = EncryptedPrivateKeyWriter
-			.encryptPrivateKeyWithPassword(readedPrivateKey, password);
+		pwprotectedKey = EncryptedPrivateKeyWriter.encryptPrivateKeyWithPassword(readedPrivateKey,
+			password);
 
-		decryptedPrivateKey = EncryptedPrivateKeyReader
-			.readPasswordProtectedPrivateKey(pwprotectedKey, password,
-				KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
+		decryptedPrivateKey = EncryptedPrivateKeyReader.readPasswordProtectedPrivateKey(
+			pwprotectedKey, password, KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
 		expected = readedPrivateKey;
 		actual = decryptedPrivateKey;
 		assertEquals(expected, actual);
 
-		decryptedPrivateKey = EncryptedPrivateKeyReader
-			.decryptPasswordProtectedPrivateKey(pwprotectedKey, password,
-				KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
+		decryptedPrivateKey = EncryptedPrivateKeyReader.decryptPasswordProtectedPrivateKey(
+			pwprotectedKey, password, KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
 		expected = readedPrivateKey;
 		actual = decryptedPrivateKey;
 		assertEquals(expected, actual);
@@ -170,16 +168,14 @@ public class EncryptedPrivateKeyReaderTest
 		EncryptedPrivateKeyWriter.encryptPrivateKeyWithPassword(readedPrivateKey,
 			encryptedPrivateKeyFile, password);
 
-		decryptedPrivateKey = EncryptedPrivateKeyReader
-			.readPasswordProtectedPrivateKey(encryptedPrivateKeyFile, password,
-				KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
+		decryptedPrivateKey = EncryptedPrivateKeyReader.readPasswordProtectedPrivateKey(
+			encryptedPrivateKeyFile, password, KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
 		expected = readedPrivateKey;
 		actual = decryptedPrivateKey;
 		assertEquals(expected, actual);
 
-		decryptedPrivateKey = EncryptedPrivateKeyReader
-			.decryptPasswordProtectedPrivateKey(encryptedPrivateKeyFile, password,
-				KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
+		decryptedPrivateKey = EncryptedPrivateKeyReader.decryptPasswordProtectedPrivateKey(
+			encryptedPrivateKeyFile, password, KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
 		expected = readedPrivateKey;
 		actual = decryptedPrivateKey;
 		assertEquals(expected, actual);
