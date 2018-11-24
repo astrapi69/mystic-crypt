@@ -168,3 +168,10 @@ Here is a list of awesome projects for cryptography:
 |:-:|
 |![Travis CI](https://travis-ci.com/images/logos/TravisCI-Full-Color.png)|
 |Many thanks to [Travis CI](https://travis-ci.org) for providing a free continuous integration service for open source projects.|
+|![sonatype repository](https://avatars1.githubusercontent.com/u/33330803?s=200&v=4)|
+|Many thanks to [sonatype repository](https://oss.sonatype.org) for providing a free maven repository service for open source projects.|
+|![Coverage Status](https://coveralls.io/repos/github/astrapi69/mystic-crypt/badge.svg)|
+|Many thanks to [coveralls.io](https://coveralls.io) for providing a free code coverage for open source projects.|
+|[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/crypt-core/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-api) crypt-api  [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/crypt-core/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-core) crypt-core  [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/de.alpharogroup/crypt-data/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-data) crypt-data|
+|Many thanks to [javadoc.io](http://www.javadoc.io) for providing a free javadoc documentation for open source projects.|
+
