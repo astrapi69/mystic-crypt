@@ -26,8 +26,6 @@ package de.alpharogroup.crypto.processors.wordlist;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
 import de.alpharogroup.check.Check;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,9 +36,6 @@ import lombok.Setter;
  */
 public class WordlistsProcessor
 {
-
-	/** The Constant logger. */
-	private static final Logger logger = Logger.getLogger(WordlistsProcessor.class.getName());
 
 	/** The current index. */
 	private int currentIndex;
@@ -127,12 +122,10 @@ public class WordlistsProcessor
 		{
 			if (attempt.equals(toCheckAgainst))
 			{
-				logger.debug("Password Found: " + attempt);
 				found = true;
 				break;
 			}
 			attempt = getCurrentAttempt();
-			logger.debug("Tried: " + attempt);
 			continueIterate = increment();
 		}
 		return found;

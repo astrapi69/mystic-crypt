@@ -31,7 +31,7 @@ import java.security.Key;
 
 import org.bouncycastle.openssl.jcajce.JcaPEMWriter;
 
-import de.alpharogroup.file.write.WriteFileQuietlyExtensions;
+import de.alpharogroup.file.write.WriteFileExtensions;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
@@ -60,7 +60,7 @@ public class KeyWriter
 		pemWriter.close();
 		String pemFormat = stringWriter.toString();
 		pemFormat = pemFormat.replaceAll("\\r\\n", "\\\n");
-		WriteFileQuietlyExtensions.string2File(file, pemFormat);
+		WriteFileExtensions.string2File(file, pemFormat);
 	}
 
 }

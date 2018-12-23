@@ -120,7 +120,7 @@ public class PrivateKeyExtensionsTest
 
 	/**
 	 * Test method for {@link PrivateKeyExtensions#generatePublicKey(PrivateKey)}
-	 * 
+	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws NoSuchAlgorithmException
@@ -156,7 +156,7 @@ public class PrivateKeyExtensionsTest
 
 	/**
 	 * Test method for {@link PrivateKeyExtensions#getKeyLength(PrivateKey)}
-	 * 
+	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws NoSuchAlgorithmException
@@ -199,7 +199,7 @@ public class PrivateKeyExtensionsTest
 
 	/**
 	 * Test method for {@link PrivateKeyExtensions#getKeySize(PrivateKey)}
-	 * 
+	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws NoSuchAlgorithmException
@@ -248,7 +248,7 @@ public class PrivateKeyExtensionsTest
 
 	/**
 	 * Test method for {@link PrivateKeyExtensions#toBase64(PrivateKey)}
-	 * 
+	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws NoSuchAlgorithmException
@@ -352,7 +352,7 @@ public class PrivateKeyExtensionsTest
 
 	/**
 	 * Test method for {@link PrivateKeyExtensions#toPKCS8Format(PrivateKey)}
-	 * 
+	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws NoSuchAlgorithmException
@@ -367,17 +367,24 @@ public class PrivateKeyExtensionsTest
 	public void testToPKCS1Format() throws NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchProviderException, IOException
 	{
+		byte[] pkcs1Format;
+		PemObject pemObject;
+		PKCS8EncodedKeySpec keySpec;
+		KeyFactory kf;
+		PrivateKey privateKey1;
+
 		// new scenario...
 		privateKey = PrivateKeyReader.readPemPrivateKey(privateKeyPemFile);
-		byte[] pkcs1Format = PrivateKeyExtensions.toPKCS1Format(privateKey);
+		pkcs1Format = PrivateKeyExtensions.toPKCS1Format(privateKey);
 		assertNotNull(pkcs1Format);
 
-		PemObject pemObject = new PemObject("RSA PUBLIC KEY", pkcs1Format);
 
-		PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(pemObject.getContent());
-		KeyFactory kf = KeyFactory.getInstance("RSA");
-		PrivateKey privateKey1 = kf.generatePrivate(keySpec);
+		pemObject = new PemObject("RSA PUBLIC KEY", pkcs1Format);
+		keySpec = new PKCS8EncodedKeySpec(pemObject.getContent());
+		kf = KeyFactory.getInstance("RSA");
+		privateKey1 = kf.generatePrivate(keySpec);
 		assertEquals(privateKey1, privateKey);
+
 	}
 
 	/**

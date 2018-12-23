@@ -39,13 +39,11 @@ import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.file.search.PathFinder;
-import lombok.extern.slf4j.Slf4j;
 
 
 /**
- * The unit test class for the class {@link PemObjectReader}.
+ * The unit test class for the class {@link PemObjectReader}
  */
-@Slf4j
 public class PemObjectReaderTest
 {
 
@@ -99,7 +97,7 @@ public class PemObjectReaderTest
 
 		final PemObject pemObject = PemObjectReader.getPemObject(privatekeyPemFile);
 		final String foo = PemObjectReader.toPemFormat(pemObject);
-		log.debug("\n" + foo);
+		System.out.println(foo);
 	}
 
 	/**

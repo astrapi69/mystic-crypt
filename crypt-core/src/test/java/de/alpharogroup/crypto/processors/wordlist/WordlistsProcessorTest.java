@@ -38,12 +38,10 @@ import de.alpharogroup.collections.list.ListFactory;
 import de.alpharogroup.collections.set.SetFactory;
 import de.alpharogroup.file.read.ReadFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * The unit test class for the class {@link WordlistsProcessor}
  */
-@Slf4j
 public class WordlistsProcessorTest
 {
 
@@ -57,10 +55,7 @@ public class WordlistsProcessorTest
 	public void test() throws IOException
 	{
 		WordlistsProcessor processor;
-		long start;
 		boolean found;
-		long end;
-		long elapsedMilliSeconds;
 		String toCheckAgainst;
 		String password;
 
@@ -84,25 +79,14 @@ public class WordlistsProcessorTest
 		List<String> words = ListFactory.newArrayList(set);
 
 		processor = new WordlistsProcessor(words, password);
-		start = System.currentTimeMillis();
 		found = processor.process();
-		end = System.currentTimeMillis();
-		elapsedMilliSeconds = end - start;
 		assertTrue(found);
 		toCheckAgainst = processor.getToCheckAgainst();
 		assertEquals(toCheckAgainst, password);
 
-		log.debug("Started wordlist attack for the password '" + password + "'.");
-		log.debug("Needed milliseconds for crack the password with the given wordlists: "
-			+ elapsedMilliSeconds);
-		log.debug("Password found: " + found);
-
 		processor = new WordlistsProcessor(words);
 		processor.setToCheckAgainst(password);
-		start = System.currentTimeMillis();
 		found = processor.process();
-		end = System.currentTimeMillis();
-		elapsedMilliSeconds = end - start;
 		assertTrue(found);
 
 	}

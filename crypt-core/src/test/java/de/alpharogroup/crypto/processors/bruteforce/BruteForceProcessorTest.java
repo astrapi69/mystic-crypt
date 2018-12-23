@@ -29,7 +29,6 @@ import static org.testng.AssertJUnit.assertTrue;
 import java.io.IOException;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.lang.PackageExtensions;
@@ -39,9 +38,6 @@ import de.alpharogroup.lang.PackageExtensions;
  */
 public class BruteForceProcessorTest
 {
-
-	/** The Constant logger. */
-	private static final Logger logger = Logger.getLogger(BruteForceProcessorTest.class.getName());
 
 	/**
 	 * Test method for test the class {@link BruteForceProcessor}.
@@ -58,7 +54,7 @@ public class BruteForceProcessorTest
 		{
 			if (string.endsWith("Test"))
 			{
-				logger.debug("<class name=\"" + string + "\"/>");
+				System.out.println("<class name=\"" + string + "\"/>");
 			}
 		}
 
@@ -76,12 +72,12 @@ public class BruteForceProcessorTest
 		{
 			if (attempt.equals(password))
 			{
-				logger.debug("Password Found: " + attempt);
+				System.out.println("Password Found: " + attempt);
 				found = true;
 				break;
 			}
 			attempt = processor.getCurrentAttempt();
-			logger.debug("Tried: " + attempt);
+			System.out.println("Tried: " + attempt);
 			processor.increment();
 		}
 		final long end = System.currentTimeMillis();
@@ -89,10 +85,10 @@ public class BruteForceProcessorTest
 		long elapsedMilliSeconds = end - start;
 		assertTrue(found);
 
-		logger.debug("Started brute force attack for the password '" + password + "'.");
-		logger.debug("Needed milliseconds for crack the password with brute force attack: "
+		System.out.println("Started brute force attack for the password '" + password + "'.");
+		System.out.println("Needed milliseconds for crack the password with brute force attack: "
 			+ elapsedMilliSeconds);
-		logger.debug("Password found: " + found);
+		System.out.println("Password found: " + found);
 	}
 
 }

@@ -25,6 +25,7 @@
 package de.alpharogroup.crypto.key.reader;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.security.AlgorithmParameters;
@@ -32,6 +33,7 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.KeyFactory;
+import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.spec.InvalidKeySpecException;
@@ -41,6 +43,13 @@ import javax.crypto.Cipher;
 import javax.crypto.EncryptedPrivateKeyInfo;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKeyFactory;
+
+import org.bouncycastle.openssl.PEMDecryptorProvider;
+import org.bouncycastle.openssl.PEMEncryptedKeyPair;
+import org.bouncycastle.openssl.PEMKeyPair;
+import org.bouncycastle.openssl.PEMParser;
+import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
+import org.bouncycastle.openssl.jcajce.JcePEMDecryptorProviderBuilder;
 
 import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
 import de.alpharogroup.crypto.factories.CipherFactory;
@@ -57,7 +66,41 @@ public final class EncryptedPrivateKeyReader
 {
 
 	/**
-	 * Decrypts the given byte array that contains a password protected private key.
+	 * Reads the given byte array that contains a password protected private key.
+	 *
+	 * @param encryptedPrivateKeyBytes
+	 *            the byte array that contains the password protected private key
+	 * @param password
+	 *            the password
+	 * @param algorithm
+	 *            the algorithm
+	 * @return the {@link PrivateKey} object
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws NoSuchPaddingException
+	 *             the no such padding exception
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @deprecated use instead the read method<br>
+	 *             Note: will be removed in next minor release
+	 */
+	@Deprecated
+	public static PrivateKey decryptPasswordProtectedPrivateKey(
+		final byte[] encryptedPrivateKeyBytes, final String password, final String algorithm)
+		throws IOException, NoSuchAlgorithmException, NoSuchPaddingException,
+		InvalidKeySpecException, InvalidKeyException, InvalidAlgorithmParameterException
+	{
+		return readPasswordProtectedPrivateKey(encryptedPrivateKeyBytes, password, algorithm);
+	}
+
+	/**
+	 * Reads the given byte array that contains a password protected private key.
 	 *
 	 * @param encryptedPrivateKeyBytes
 	 *            the byte array that contains the password protected private key
@@ -79,8 +122,8 @@ public final class EncryptedPrivateKeyReader
 	 * @throws InvalidAlgorithmParameterException
 	 *             is thrown if initialization of the cipher object fails.
 	 */
-	public static PrivateKey decryptPasswordProtectedPrivateKey(
-		final byte[] encryptedPrivateKeyBytes, final String password, final String algorithm)
+	public static PrivateKey readPasswordProtectedPrivateKey(final byte[] encryptedPrivateKeyBytes,
+		final String password, final String algorithm)
 		throws IOException, NoSuchAlgorithmException, NoSuchPaddingException,
 		InvalidKeySpecException, InvalidKeyException, InvalidAlgorithmParameterException
 	{
@@ -100,7 +143,41 @@ public final class EncryptedPrivateKeyReader
 	}
 
 	/**
-	 * Decrypts the given {@link File} that contains a password protected private key.
+	 * Reads the given {@link File} that contains a password protected private key.
+	 *
+	 * @param encryptedPrivateKeyFile
+	 *            the file that contains the password protected private key
+	 * @param password
+	 *            the password
+	 * @param algorithm
+	 *            the algorithm
+	 * @return the {@link PrivateKey} object
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws NoSuchPaddingException
+	 *             the no such padding exception
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @deprecated use instead the read method<br>
+	 *             Note: will be removed in next minor release
+	 */
+	@Deprecated
+	public static PrivateKey decryptPasswordProtectedPrivateKey(final File encryptedPrivateKeyFile,
+		final String password, final String algorithm)
+		throws IOException, NoSuchAlgorithmException, NoSuchPaddingException,
+		InvalidKeySpecException, InvalidKeyException, InvalidAlgorithmParameterException
+	{
+		return readPasswordProtectedPrivateKey(encryptedPrivateKeyFile, password, algorithm);
+	}
+
+	/**
+	 * Reads the given {@link File} that contains a password protected private key.
 	 *
 	 * @param encryptedPrivateKeyFile
 	 *            the file that contains the password protected private key
@@ -122,18 +199,77 @@ public final class EncryptedPrivateKeyReader
 	 * @throws InvalidAlgorithmParameterException
 	 *             is thrown if initialization of the cipher object fails.
 	 */
-	public static PrivateKey decryptPasswordProtectedPrivateKey(final File encryptedPrivateKeyFile,
+	public static PrivateKey readPasswordProtectedPrivateKey(final File encryptedPrivateKeyFile,
 		final String password, final String algorithm)
 		throws IOException, NoSuchAlgorithmException, NoSuchPaddingException,
 		InvalidKeySpecException, InvalidKeyException, InvalidAlgorithmParameterException
 	{
-		final byte[] encryptedPrivateKeyBytes = Files
-			.readAllBytes(encryptedPrivateKeyFile.toPath());
-		return decryptPasswordProtectedPrivateKey(encryptedPrivateKeyBytes, password, algorithm);
+		byte[] encryptedPrivateKeyBytes = null;
+		boolean pemFormat = PrivateKeyReader.isPemFormat(encryptedPrivateKeyFile);
+		if (pemFormat)
+		{
+			PEMParser pemParser = new PEMParser(new FileReader(encryptedPrivateKeyFile));
+			Object pemObject = pemParser.readObject();
+			pemParser.close();
+			PEMDecryptorProvider decryptorProvider = new JcePEMDecryptorProviderBuilder()
+				.build(password.toCharArray());
+			JcaPEMKeyConverter keyConverter = new JcaPEMKeyConverter().setProvider("BC");
+			KeyPair keyPair;
+			if (pemObject instanceof PEMEncryptedKeyPair)
+			{
+				keyPair = keyConverter
+					.getKeyPair(((PEMEncryptedKeyPair)pemObject).decryptKeyPair(decryptorProvider));
+			}
+			else
+			{
+				keyPair = keyConverter.getKeyPair((PEMKeyPair)pemObject);
+			}
+			if (keyPair != null)
+			{
+				return keyPair.getPrivate();
+			}
+		}
+		else
+		{
+			encryptedPrivateKeyBytes = Files.readAllBytes(encryptedPrivateKeyFile.toPath());
+			return readPasswordProtectedPrivateKey(encryptedPrivateKeyBytes, password, algorithm);
+		}
+		return null;
 	}
 
 	/**
-	 * Decrypts the given {@link File} that contains a password protected private key.
+	 * Reads the given {@link File} that contains a password protected private key.
+	 *
+	 * @param encryptedPrivateKeyFile
+	 *            the file that contains the password protected private key
+	 * @param password
+	 *            the password
+	 * @return the {@link PrivateKey} object
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws NoSuchPaddingException
+	 *             the no such padding exception
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @deprecated use instead the read method<br>
+	 *             Note: will be removed in next minor release
+	 */
+	@Deprecated
+	public static PrivateKey decryptPasswordProtectedPrivateKey(final File encryptedPrivateKeyFile,
+		final String password) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException,
+		InvalidKeySpecException, InvalidKeyException, InvalidAlgorithmParameterException
+	{
+		return readPasswordProtectedPrivateKey(encryptedPrivateKeyFile, password);
+	}
+
+	/**
+	 * Reads the given {@link File} that contains a password protected private key.
 	 *
 	 * @param encryptedPrivateKeyFile
 	 *            the file that contains the password protected private key
@@ -153,11 +289,11 @@ public final class EncryptedPrivateKeyReader
 	 * @throws InvalidAlgorithmParameterException
 	 *             is thrown if initialization of the cipher object fails.
 	 */
-	public static PrivateKey decryptPasswordProtectedPrivateKey(final File encryptedPrivateKeyFile,
+	public static PrivateKey readPasswordProtectedPrivateKey(final File encryptedPrivateKeyFile,
 		final String password) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException,
 		InvalidKeySpecException, InvalidKeyException, InvalidAlgorithmParameterException
 	{
-		return decryptPasswordProtectedPrivateKey(encryptedPrivateKeyFile, password,
+		return readPasswordProtectedPrivateKey(encryptedPrivateKeyFile, password,
 			KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
 	}
 

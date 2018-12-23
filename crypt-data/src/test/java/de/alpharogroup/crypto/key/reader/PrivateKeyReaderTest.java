@@ -24,6 +24,7 @@
  */
 package de.alpharogroup.crypto.key.reader;
 
+import static org.testng.Assert.assertEquals;
 import static org.testng.AssertJUnit.assertNotNull;
 
 import java.io.File;
@@ -55,9 +56,11 @@ public class PrivateKeyReaderTest
 	PrivateKey actual;
 
 	File derDir;
+	File passwordProtectedPrivateKeyDerFile;
+	File passwordProtectedPrivateKeyPemFile;
 	File pemDir;
-	File privateKeyDerFile;
 
+	File privateKeyDerFile;
 	File privateKeyPemFile;
 	File privateKeyPemFile2;
 
@@ -72,14 +75,75 @@ public class PrivateKeyReaderTest
 		pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
 		privateKeyPemFile = new File(pemDir, "private.pem");
 		privateKeyPemFile2 = new File(pemDir, "private2.pem");
+		passwordProtectedPrivateKeyPemFile = new File(pemDir, "pwp-private-key-pw-is-secret.pem");
 
 		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
 		privateKeyDerFile = new File(derDir, "private.der");
+		passwordProtectedPrivateKeyDerFile = new File(derDir, "pwp-private-key-pw-is-secret.der");
+	}
+
+	/**
+	 * Test method for {@link PrivateKeyReader#isPemFormat(File)}
+	 */
+	@Test
+	public void testIsPemFormat() throws Exception
+	{
+		boolean actual;
+		boolean expected;
+		// new scenario
+		actual = PrivateKeyReader.isPemFormat(privateKeyDerFile);
+		expected = false;
+		assertEquals(actual, expected);
+
+		// new scenario
+		actual = PrivateKeyReader.isPemFormat(privateKeyPemFile);
+		expected = true;
+		assertEquals(actual, expected);
+	}
+
+	/**
+	 * Test method for {@link PrivateKeyReader#isPrivateKeyPasswordProtected(File)}
+	 */
+	@Test
+	public void testIsPrivateKeyPasswordProtected() throws Exception
+	{
+		boolean actual;
+		boolean expected;
+		PrivateKey passwordProtectedPrivateKey;
+		// new scenario
+		actual = PrivateKeyReader.isPrivateKeyPasswordProtected(privateKeyDerFile);
+		expected = false;
+		assertEquals(actual, expected);
+		// new scenario
+		// check if the pk is pwp...
+		passwordProtectedPrivateKey = EncryptedPrivateKeyReader
+			.readPasswordProtectedPrivateKey(passwordProtectedPrivateKeyDerFile, "secret");
+
+		assertNotNull(passwordProtectedPrivateKey);
+
+		actual = PrivateKeyReader.isPrivateKeyPasswordProtected(passwordProtectedPrivateKeyDerFile);
+		expected = true;
+		assertEquals(actual, expected);
+
+		// new scenario
+		passwordProtectedPrivateKey = EncryptedPrivateKeyReader
+			.readPasswordProtectedPrivateKey(passwordProtectedPrivateKeyPemFile, "secret");
+
+		assertNotNull(passwordProtectedPrivateKey);
+
+		actual = PrivateKeyReader.isPrivateKeyPasswordProtected(passwordProtectedPrivateKeyDerFile);
+		expected = true;
+		assertEquals(actual, expected);
+
+		// new scenario
+		actual = PrivateKeyReader.isPrivateKeyPasswordProtected(privateKeyPemFile);
+		expected = false;
+		assertEquals(actual, expected);
 	}
 
 	/**
 	 * Test method for {@link PrivateKeyReader#readPrivateKey(File)}
-	 * 
+	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws NoSuchAlgorithmException
@@ -116,7 +180,7 @@ public class PrivateKeyReaderTest
 
 	/**
 	 * Test method for {@link PrivateKeyReader#readPemPrivateKey(File, SecurityProvider)}
-	 * 
+	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws NoSuchAlgorithmException
@@ -137,7 +201,7 @@ public class PrivateKeyReaderTest
 
 	/**
 	 * Test method for {@link PrivateKeyReader#readPemPrivateKey(File, String)}
-	 * 
+	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws NoSuchAlgorithmException
@@ -184,7 +248,7 @@ public class PrivateKeyReaderTest
 
 	/**
 	 * Test method for {@link PrivateKeyReader#readPrivateKey(File)}
-	 * 
+	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws NoSuchAlgorithmException

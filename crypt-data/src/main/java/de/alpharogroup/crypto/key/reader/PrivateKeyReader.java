@@ -65,13 +65,82 @@ public class PrivateKeyReader
 		+ "-----";
 
 	/**
+	 * Checks if the given {@link File}( in *.der format) is password protected
+	 *
+	 * @param file
+	 *            the file( in *.der format) that contains the private key
+	 * @return true, if if the given {@link File}( in *.der format) is password protected otherwise
+	 *         false
+	 *
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	public static boolean isPrivateKeyPasswordProtected(final File file) throws IOException
+	{
+		boolean result = false;
+		if (isPemFormat(file))
+		{
+			try
+			{
+				readPemPrivateKey(file);
+			}
+			catch (Exception e)
+			{
+				result = true;
+			}
+		}
+		else
+		{
+			try
+			{
+				readPrivateKey(file);
+			}
+			catch (Exception e)
+			{
+				result = true;
+			}
+		}
+
+
+		return result;
+	}
+
+	/**
+	 * Checks if the given {@link File} is in pem format.
+	 *
+	 * @param file
+	 *            the file
+	 * @return true, if the given {@link File} is in pem format otherwise false
+	 *
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	public static boolean isPemFormat(final File file) throws IOException
+	{
+		boolean result = false;
+		final byte[] keyBytes = Files.readAllBytes(file.toPath());
+		final String privateKeyPem = new String(keyBytes);
+		if (privateKeyPem.indexOf(BEGIN_PRIVATE_KEY_PREFIX) != -1)
+		{
+			result = true;
+			return result;
+		}
+		if (privateKeyPem.indexOf(BEGIN_RSA_PRIVATE_KEY_PREFIX) != -1)
+		{
+			result = true;
+			return result;
+		}
+		return result;
+	}
+
+	/**
 	 * Reads the given {@link File}( in *.der format) with the default RSA algorithm and returns the
 	 * {@link PrivateKey} object.
 	 *
 	 * @param file
 	 *            the file( in *.der format) that contains the private key
 	 * @return the {@link PrivateKey} object
-	 * 
+	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws NoSuchAlgorithmException
@@ -122,7 +191,7 @@ public class PrivateKeyReader
 	 * @param privateKeyBytes
 	 *            the byte array that contains the private key bytes
 	 * @return the {@link PrivateKey} object
-	 * 
+	 *
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the cypher object fails.
 	 * @throws InvalidKeySpecException
@@ -170,7 +239,7 @@ public class PrivateKeyReader
 	 * @param file
 	 *            the file( in *.pem format) that contains the private key
 	 * @return the {@link PrivateKey} object
-	 * 
+	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws NoSuchAlgorithmException
@@ -198,7 +267,7 @@ public class PrivateKeyReader
 	 * @param algorithm
 	 *            the algorithm
 	 * @return the {@link PrivateKey} object
-	 * 
+	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws NoSuchAlgorithmException
@@ -226,7 +295,7 @@ public class PrivateKeyReader
 	 * @param algorithm
 	 *            the algorithm
 	 * @return the {@link PrivateKey} object
-	 * 
+	 *
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeySpecException

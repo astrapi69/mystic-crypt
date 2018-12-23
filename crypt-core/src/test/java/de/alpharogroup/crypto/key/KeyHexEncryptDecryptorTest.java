@@ -50,12 +50,10 @@ import org.testng.annotations.Test;
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.file.search.PathFinder;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * Test class for {@link PublicKeyHexEncryptor} and {@link PrivateKeyHexDecryptor}
  */
-@Slf4j
 public class KeyHexEncryptDecryptorTest
 {
 
@@ -114,7 +112,6 @@ public class KeyHexEncryptDecryptorTest
 
 		final String encrypted = encryptor.encrypt(test);
 
-		log.debug("String after encryption:" + encrypted);
 		final PrivateKeyHexDecryptor decryptor = new PrivateKeyHexDecryptor(privateKey);
 		final String decryted = decryptor.decrypt(encrypted);
 		assertTrue("String before encryption is not equal after decryption.",
@@ -154,7 +151,6 @@ public class KeyHexEncryptDecryptorTest
 		BadPaddingException, InvalidAlgorithmParameterException, DecoderException
 	{
 		final String test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
-		log.debug("String before encryption:" + test);
 
 		final File publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
 		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
@@ -167,10 +163,8 @@ public class KeyHexEncryptDecryptorTest
 		final PublicKeyHexEncryptor encryptor = new PublicKeyHexEncryptor(publicKey);
 
 		final String encrypted = encryptor.encrypt(test);
-		log.debug("String after encryption:" + encrypted);
 		final PrivateKeyHexDecryptor decryptor = new PrivateKeyHexDecryptor(privateKey);
 		final String decryted = decryptor.decrypt(encrypted);
-		log.debug("String after decryption:" + decryted);
 		assertTrue("String before encryption is not equal after decryption.",
 			test.equals(decryted));
 	}

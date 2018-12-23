@@ -89,18 +89,27 @@ public class EncryptedPrivateKeyReaderTest
 	 * @throws Exception
 	 *             is thrown if any error occurs on the execution
 	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testDecryptPasswordProtectedPrivateKeyByteArray() throws Exception
 	{
+		byte[] pwprotectedKey;
+		PrivateKey decryptedPrivateKey;
+
 		readedPrivateKey = PrivateKeyReader.readPrivateKey(PathFinder.getSrcTestResourcesDir(),
 			"der", "private.der");
 		password = "secret";
-		final byte[] pwprotectedKey = EncryptedPrivateKeyWriter
-			.encryptPrivateKeyWithPassword(readedPrivateKey, password);
+		pwprotectedKey = EncryptedPrivateKeyWriter.encryptPrivateKeyWithPassword(readedPrivateKey,
+			password);
 
-		final PrivateKey decryptedPrivateKey = EncryptedPrivateKeyReader
-			.decryptPasswordProtectedPrivateKey(pwprotectedKey, password,
-				KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
+		decryptedPrivateKey = EncryptedPrivateKeyReader.readPasswordProtectedPrivateKey(
+			pwprotectedKey, password, KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
+		expected = readedPrivateKey;
+		actual = decryptedPrivateKey;
+		assertEquals(expected, actual);
+
+		decryptedPrivateKey = EncryptedPrivateKeyReader.decryptPasswordProtectedPrivateKey(
+			pwprotectedKey, password, KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
 		expected = readedPrivateKey;
 		actual = decryptedPrivateKey;
 		assertEquals(expected, actual);
@@ -113,17 +122,26 @@ public class EncryptedPrivateKeyReaderTest
 	 * @throws Exception
 	 *             is thrown if any error occurs on the execution
 	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testDecryptPasswordProtectedPrivateKeyFilePassword() throws Exception
 	{
+
+		PrivateKey decryptedPrivateKey;
+
 		readedPrivateKey = PrivateKeyReader.readPrivateKey(PathFinder.getSrcTestResourcesDir(),
 			"der", "private.der");
 		password = "secret";
 		EncryptedPrivateKeyWriter.encryptPrivateKeyWithPassword(readedPrivateKey,
 			encryptedPrivateKeyFile, password);
 
+		decryptedPrivateKey = EncryptedPrivateKeyReader
+			.readPasswordProtectedPrivateKey(encryptedPrivateKeyFile, password);
+		expected = readedPrivateKey;
+		actual = decryptedPrivateKey;
+		assertEquals(expected, actual);
 
-		final PrivateKey decryptedPrivateKey = EncryptedPrivateKeyReader
+		decryptedPrivateKey = EncryptedPrivateKeyReader
 			.decryptPasswordProtectedPrivateKey(encryptedPrivateKeyFile, password);
 		expected = readedPrivateKey;
 		actual = decryptedPrivateKey;
@@ -137,19 +155,27 @@ public class EncryptedPrivateKeyReaderTest
 	 * @throws Exception
 	 *             is thrown if any error occurs on the execution
 	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testDecryptPasswordProtectedPrivateKeyFilePasswordAlgorithm() throws Exception
 	{
+
+		PrivateKey decryptedPrivateKey;
+
 		readedPrivateKey = PrivateKeyReader.readPrivateKey(PathFinder.getSrcTestResourcesDir(),
 			"der", "private.der");
 		password = "secret";
 		EncryptedPrivateKeyWriter.encryptPrivateKeyWithPassword(readedPrivateKey,
 			encryptedPrivateKeyFile, password);
 
+		decryptedPrivateKey = EncryptedPrivateKeyReader.readPasswordProtectedPrivateKey(
+			encryptedPrivateKeyFile, password, KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
+		expected = readedPrivateKey;
+		actual = decryptedPrivateKey;
+		assertEquals(expected, actual);
 
-		final PrivateKey decryptedPrivateKey = EncryptedPrivateKeyReader
-			.decryptPasswordProtectedPrivateKey(encryptedPrivateKeyFile, password,
-				KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
+		decryptedPrivateKey = EncryptedPrivateKeyReader.decryptPasswordProtectedPrivateKey(
+			encryptedPrivateKeyFile, password, KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
 		expected = readedPrivateKey;
 		actual = decryptedPrivateKey;
 		assertEquals(expected, actual);

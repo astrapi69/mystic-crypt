@@ -36,6 +36,7 @@ import org.testng.annotations.Test;
 
 import de.alpharogroup.evaluate.object.api.ContractViolation;
 import de.alpharogroup.evaluate.object.checkers.EqualsHashCodeAndToStringCheck;
+import de.alpharogroup.random.RandomExtensions;
 
 /**
  * The unit test class for the class {@link ObfuscationRule}.
@@ -70,14 +71,19 @@ public class ObfuscationRuleTest
 	 *             if an accessor method for this property cannot be found
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred
+	 * @throws ClassNotFoundException
+	 *             occurs if a given class cannot be located by the specified class loader
 	 */
 	@Test
-	public void testEqualsHashcodeAndToStringWithClass() throws NoSuchMethodException,
-		IllegalAccessException, InvocationTargetException, InstantiationException, IOException
+	public void testEqualsHashcodeAndToStringWithClass()
+		throws NoSuchMethodException, IllegalAccessException, InvocationTargetException,
+		InstantiationException, IOException, ClassNotFoundException
 	{
 		Optional<ContractViolation> expected;
 		Optional<ContractViolation> actual;
-		actual = EqualsHashCodeAndToStringCheck.equalsHashcodeAndToString(ObfuscationRule.class);
+		actual = EqualsHashCodeAndToStringCheck.equalsHashcodeAndToString(ObfuscationRule.class,
+			clazz -> ObfuscationRule.<Character, Character> builder()
+				.character(RandomExtensions.randomChar()).build());
 		expected = Optional.empty();
 		assertEquals(expected, actual);
 	}

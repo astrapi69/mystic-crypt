@@ -42,12 +42,12 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
-import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.api.Cryptor;
 import de.alpharogroup.crypto.api.StringEncryptor;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NonNull;
 
 /**
  * The class {@link SimpleEncryptor} is a simple {@link StringEncryptor} implementation.
@@ -83,9 +83,8 @@ public class SimpleEncryptor implements StringEncryptor, Cryptor
 	 * @param privateKey
 	 *            The private key.
 	 */
-	public SimpleEncryptor(final String privateKey)
+	public SimpleEncryptor(final @NonNull String privateKey)
 	{
-		Check.get().notEmpty(privateKey, "privateKey");
 		this.privateKey = privateKey;
 	}
 
@@ -124,15 +123,8 @@ public class SimpleEncryptor implements StringEncryptor, Cryptor
 	{
 		if (!isInitialized())
 		{
-			final KeySpec keySpec;
-			if (this.getPrivateKey() != null)
-			{
-				keySpec = new PBEKeySpec(this.getPrivateKey().toCharArray());
-			}
-			else
-			{
-				keySpec = new PBEKeySpec(CryptConst.PRIVATE_KEY.toCharArray());
-			}
+			final KeySpec keySpec = new PBEKeySpec(this.getPrivateKey().toCharArray());
+
 			final SecretKeyFactory factory = SecretKeyFactory
 				.getInstance(CryptConst.PBE_WITH_MD5_AND_DES);
 			final SecretKey key = factory.generateSecret(keySpec);

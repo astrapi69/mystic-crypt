@@ -33,7 +33,8 @@ import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.algorithm.SunJCEAlgorithm;
-import de.alpharogroup.evaluate.object.evaluators.EqualsHashCodeAndToStringEvaluator;
+import de.alpharogroup.evaluate.object.evaluators.SilentEqualsHashCodeAndToStringEvaluator;
+import de.alpharogroup.random.RandomExtensions;
 
 /**
  * The unit test class for the class {@link CryptModel}
@@ -69,23 +70,16 @@ public class CryptModelTest
 	@Test
 	public void testEqualsHashcodeAndToStringWithClass()
 	{
-		final boolean expected;
-		final boolean actual;
+		boolean expected;
+		boolean actual;
 
-		String privateKey = "D1D15ED36B887AF1";
-		CryptModel<Cipher, String> first = CryptModel.<Cipher, String> builder().key(privateKey)
-			.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).salt(CryptConst.SALT).iterationCount(19)
-			.operationMode(Cipher.ENCRYPT_MODE).build();
-		CryptModel<Cipher, String> second = CryptModel.<Cipher, String> builder().build();
-		CryptModel<Cipher, String> third = CryptModel.<Cipher, String> builder().key(privateKey)
-			.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).salt(CryptConst.SALT).iterationCount(19)
-			.operationMode(Cipher.ENCRYPT_MODE).build();
-		CryptModel<Cipher, String> fourth = CryptModel.<Cipher, String> builder().key(privateKey)
-			.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).salt(CryptConst.SALT).iterationCount(19)
-			.operationMode(Cipher.ENCRYPT_MODE).build();
-
-		actual = EqualsHashCodeAndToStringEvaluator.evaluateEqualsHashcodeAndToString(first, second,
-			third, fourth);
+		actual = SilentEqualsHashCodeAndToStringEvaluator
+			.evaluateEqualsHashcodeAndToStringQuietly(CryptModel.class, clazz -> {
+				return CryptModel.<Cipher, String> builder()
+					.key(RandomExtensions.getRandomHexString(16).toUpperCase())
+					.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).salt(CryptConst.SALT)
+					.iterationCount(19).operationMode(Cipher.ENCRYPT_MODE).build();
+			});
 		expected = true;
 		assertEquals(expected, actual);
 	}

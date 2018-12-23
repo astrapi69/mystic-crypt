@@ -39,8 +39,14 @@ public enum KeyType
 	/** The private key type. */
 	PRIVATE_KEY("Private key"),
 
+	/** The password protected private key type. */
+	PRIVATE_KEY_PASSWORD_PROTECTED("Password protected private key"),
+
 	/** The public key type. */
-	PUBLIC_KEY("Public key");
+	PUBLIC_KEY("Public key"),
+
+	/** The password protected public key type. */
+	PUBLIC_KEY_PASSWORD_PROTECTED("Password protected public key");
 
 	@Getter
 	private final String displayValue;

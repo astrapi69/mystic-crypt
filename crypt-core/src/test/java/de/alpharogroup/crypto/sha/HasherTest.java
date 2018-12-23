@@ -44,12 +44,10 @@ import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.algorithm.HashAlgorithm;
 import de.alpharogroup.random.RandomExtensions;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * The unit test class for the class {@link Hasher}
  */
-@Slf4j
 public class HasherTest
 {
 
@@ -85,9 +83,6 @@ public class HasherTest
 		final HashAlgorithm hashAlgorithm = HashAlgorithm.SHA_512;
 		final String expected = Hasher.hashAndHex(password, salt, hashAlgorithm, charset);
 		final String actual = Hasher.hashAndHex(newInsertPassword, salt, hashAlgorithm, charset);
-		log.debug("salt:" + salt);
-		log.debug("expected:" + expected);
-		log.debug("actual:" + actual);
 		AssertJUnit.assertTrue("'expected' should be equal with 'actual'.",
 			expected.equals(actual));
 	}

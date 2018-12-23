@@ -22,46 +22,53 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.obfuscation.rules;
+package de.alpharogroup.crypto.blockchain;
 
-import com.google.common.collect.BiMap;
-
+import de.alpharogroup.crypto.algorithm.HashAlgorithm;
+import de.alpharogroup.crypto.blockchain.api.ITransaction;
+import de.alpharogroup.crypto.hash.HashExtensions;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NonNull;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 /**
- * The class {@link ObfuscationBiMapRules} decorates a {@link BiMap} that defines rules for encrypt
- * and decrypt given strings.
+ * The class {@link Transaction}
  */
 @Getter
 @Setter
 @EqualsAndHashCode
-@ToString
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Builder
-public class ObfuscationBiMapRules<K, V>
+public class Transaction implements ITransaction
 {
 
-	/**
-	 * The rules for encrypt the string.
-	 */
-	private final BiMap<K, V> obfuscationRules;
+	byte[] hash;
 
-	/**
-	 * Instantiates a new {@link ObfuscationBiMapRules}.
-	 *
-	 * @param obfuscationRules
-	 *            the obfuscation rules for obfuscate and disentangle.
-	 */
-	public ObfuscationBiMapRules(@NonNull final BiMap<K, V> obfuscationRules)
+	byte[] senderHash;
+
+	byte[] signature;
+
+	String text;
+
+	long timestamp;
+
+	public Transaction(String text, byte[] senderHash, byte[] signature)
 	{
-		this.obfuscationRules = obfuscationRules;
+		this.text = text;
+		this.senderHash = senderHash;
+		this.signature = signature;
+		this.timestamp = System.currentTimeMillis();
+		this.hash = HashExtensions.hash(text.getBytes(), senderHash, signature, timestamp,
+			HashAlgorithm.SHA256);
+	}
+
+	@Override
+	public byte[] getSignableData()
+	{
+		return text.getBytes();
 	}
 
 }

@@ -93,7 +93,7 @@ public class PemObjectReader
 	{
 		Security.addProvider(new BouncyCastleProvider());
 		try (PEMParser pemParser = new PEMParser(
-			new InputStreamReader(new FileInputStream(keyFile)));)
+			new InputStreamReader(new FileInputStream(keyFile))))
 		{
 
 			PEMEncryptedKeyPair encryptedKeyPair = (PEMEncryptedKeyPair)pemParser.readObject();

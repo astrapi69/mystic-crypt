@@ -59,6 +59,7 @@ public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, Str
 	 * @throws Exception
 	 *             is thrown if an exception occurs
 	 */
+	@Override
 	@BeforeMethod
 	protected void setUp() throws Exception
 	{

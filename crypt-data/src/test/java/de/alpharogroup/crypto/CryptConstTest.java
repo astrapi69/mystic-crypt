@@ -26,6 +26,10 @@ package de.alpharogroup.crypto;
 
 import static org.testng.AssertJUnit.assertEquals;
 
+import java.lang.reflect.InvocationTargetException;
+
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
 /**
@@ -54,4 +58,14 @@ public class CryptConstTest
 		assertEquals(CryptConst.SHA256_WITH_RSA, "SHA256withRSA");
 	}
 
+	/**
+	 * Test method for {@link CryptConst} with {@link BeanTester}
+	 */
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
+	{
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(CryptConst.class);
+	}
 }

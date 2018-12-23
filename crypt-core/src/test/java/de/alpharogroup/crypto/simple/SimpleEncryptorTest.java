@@ -22,52 +22,28 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.blockchain;
+package de.alpharogroup.crypto.simple;
 
-import de.alpharogroup.crypto.algorithm.HashAlgorithm;
-import de.alpharogroup.crypto.blockchain.api.ITransaction;
-import de.alpharogroup.crypto.hash.HashExtensions;
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.experimental.FieldDefaults;
+import java.lang.reflect.InvocationTargetException;
+
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
+import org.testng.annotations.Test;
 
 /**
- * The class {@link Transaction}
+ * The unit test class for the class {@link SimpleEncryptor}
  */
-@Getter
-@Setter
-@EqualsAndHashCode
-@NoArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
-public class Transaction implements ITransaction
+public class SimpleEncryptorTest
 {
 
-	byte[] hash;
-
-	byte[] senderHash;
-
-	byte[] signature;
-
-	String text;
-
-	long timestamp;
-
-	public Transaction(String text, byte[] senderHash, byte[] signature)
+	/**
+	 * Test method for {@link SimpleEncryptor} with {@link BeanTester}
+	 */
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
 	{
-		this.text = text;
-		this.senderHash = senderHash;
-		this.signature = signature;
-		this.timestamp = System.currentTimeMillis();
-		this.hash = HashExtensions.hash(text.getBytes(), senderHash, signature, timestamp,
-			HashAlgorithm.SHA256);
+		final BeanTester beanTester = new BeanTester();
+		beanTester.testBean(SimpleEncryptor.class);
 	}
-
-	public byte[] getSignableData()
-	{
-		return text.getBytes();
-	}
-
 }
