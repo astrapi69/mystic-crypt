@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mvn-java-parent</artifactId>
-		<version>4.4</version>
+		<version>4.5</version>
 		<relativePath></relativePath>
 	</parent>
 
@@ -35,13 +35,13 @@
 		<silly-collections.version>5</silly-collections.version>
 		<vintage-time.version>5.1</vintage-time.version>
 		<!-- RESOURCEBUNDLE-CORE versions -->
-		<resourcebundle-inspector.version>3</resourcebundle-inspector.version>
+		<resourcebundle-inspector.version>3.0.1</resourcebundle-inspector.version>
 		<!-- JOBJECT-EXTENSIONS versions -->
 		<jobject-extensions.version>2.5</jobject-extensions.version>
 		<jobject-core.version>${jobject-extensions.version}</jobject-core.version>
 		<jobject-evaluate.version>${jobject-extensions.version}</jobject-evaluate.version>
 		<!-- RANDOMIZER versions -->
-		<randomizer.version>5.5</randomizer.version>
+		<randomizer.version>5.6</randomizer.version>
 		<randomizer-core.version>${randomizer.version}</randomizer-core.version>
 		<randomizer-api.version>${randomizer.version}</randomizer-api.version>
 		<randomizer-data.version>${randomizer.version}</randomizer-data.version>
@@ -49,7 +49,7 @@
 		<commons-codec.version>1.11</commons-codec.version>
 		<bouncycastle.version>1.60</bouncycastle.version>
 		<!-- GUAVA version -->
-		<guava.version>27.0-jre</guava.version>
+		<guava.version>27.0.1-jre</guava.version>
 		<!-- MEANBEAN version -->
 		<meanbean.version>2.0.3</meanbean.version>		
 		<!-- RANDOM-BEANS version -->

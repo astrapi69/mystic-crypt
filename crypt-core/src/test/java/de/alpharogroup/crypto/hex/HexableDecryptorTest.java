@@ -28,12 +28,9 @@ import static org.testng.AssertJUnit.assertTrue;
 
 import org.testng.annotations.Test;
 
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * The unit test class for the class {@link HexableEncryptor} and {@link HexableDecryptor}
  */
-@Slf4j
 public class HexableDecryptorTest
 {
 
@@ -51,11 +48,9 @@ public class HexableDecryptorTest
 		final String key = "1234567890123456";
 		final HexableEncryptor encryptor = new HexableEncryptor(key);
 		final String encrypted = encryptor.encrypt(test);
-		log.debug("String after encryption:" + encrypted);
 
 		final HexableDecryptor decryptor = new HexableDecryptor(key);
 		final String decryted = decryptor.decrypt(encrypted);
-		log.debug("String after decryption:" + decryted);
 		assertTrue("String before encryption is not equal after decryption.",
 			test.equals(decryted));
 	}

@@ -45,12 +45,10 @@ import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.file.search.PathFinder;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * The unit test class for the class {@link PublicKeyHexEncryptor}
  */
-@Slf4j
 public class PublicKeyHexEncryptorTest
 {
 
@@ -89,7 +87,6 @@ public class PublicKeyHexEncryptorTest
 		assertEquals(publicKey, encryptor.getPublicKey());
 		assertNull(encryptor.getCipher());
 		final String encrypted = encryptor.encrypt("foo");
-		log.debug("String after encryption:" + encrypted);
 		assertNotNull(encrypted);
 		assertNotNull(encryptor.getCipher());
 	}

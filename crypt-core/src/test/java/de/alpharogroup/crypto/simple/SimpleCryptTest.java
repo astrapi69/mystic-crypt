@@ -26,12 +26,11 @@ package de.alpharogroup.crypto.simple;
 
 import java.lang.reflect.InvocationTargetException;
 
+import lombok.extern.java.Log;
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
 import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
-
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * The unit test class for the class {@link SimpleCrypt}
@@ -39,7 +38,6 @@ import lombok.extern.slf4j.Slf4j;
  * @author Asterios Raptis
  * @version 1.0
  */
-@Slf4j
 public class SimpleCryptTest
 {
 
@@ -69,13 +67,10 @@ public class SimpleCryptTest
 	 */
 	protected void testSimpleCrypt(final String testString, final int verschiebe)
 	{
-		log.debug("original:--------\n" + testString + "\n--------");
 		final String expected = new StringBuffer(testString).toString().trim();
 		final String encrypted = SimpleCrypt.encode(testString, verschiebe);
-		log.debug("encrypted:--------\n" + encrypted + "\n--------");
 		final String decrypted = SimpleCrypt.decode(encrypted, verschiebe);
 		AssertJUnit.assertTrue(decrypted.equals(expected));
-		log.debug("decrypted:--------\n" + decrypted + "\n--------");
 	}
 
 	/**
