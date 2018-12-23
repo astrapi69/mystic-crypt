@@ -45,7 +45,6 @@ import lombok.extern.slf4j.Slf4j;
  * format.
  */
 @UtilityClass
-@Slf4j
 public class PrivateKeyReader
 {
 
@@ -73,7 +72,7 @@ public class PrivateKeyReader
 	 *            the file( in *.der format) that contains the private key
 	 * @return true, if if the given {@link File}( in *.der format) is password protected otherwise
 	 *         false
-	 * 
+	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
@@ -88,7 +87,6 @@ public class PrivateKeyReader
 			}
 			catch (Exception e)
 			{
-				log.error(e.getMessage(), e);
 				result = true;
 			}
 		}
@@ -100,7 +98,6 @@ public class PrivateKeyReader
 			}
 			catch (Exception e)
 			{
-				log.error(e.getMessage(), e);
 				result = true;
 			}
 		}
@@ -115,7 +112,7 @@ public class PrivateKeyReader
 	 * @param file
 	 *            the file
 	 * @return true, if the given {@link File} is in pem format otherwise false
-	 * 
+	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
@@ -144,7 +141,7 @@ public class PrivateKeyReader
 	 * @param file
 	 *            the file( in *.der format) that contains the private key
 	 * @return the {@link PrivateKey} object
-	 * 
+	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws NoSuchAlgorithmException
@@ -195,7 +192,7 @@ public class PrivateKeyReader
 	 * @param privateKeyBytes
 	 *            the byte array that contains the private key bytes
 	 * @return the {@link PrivateKey} object
-	 * 
+	 *
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the cypher object fails.
 	 * @throws InvalidKeySpecException
@@ -243,7 +240,7 @@ public class PrivateKeyReader
 	 * @param file
 	 *            the file( in *.pem format) that contains the private key
 	 * @return the {@link PrivateKey} object
-	 * 
+	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws NoSuchAlgorithmException
@@ -271,7 +268,7 @@ public class PrivateKeyReader
 	 * @param algorithm
 	 *            the algorithm
 	 * @return the {@link PrivateKey} object
-	 * 
+	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws NoSuchAlgorithmException
@@ -299,7 +296,7 @@ public class PrivateKeyReader
 	 * @param algorithm
 	 *            the algorithm
 	 * @return the {@link PrivateKey} object
-	 * 
+	 *
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeySpecException

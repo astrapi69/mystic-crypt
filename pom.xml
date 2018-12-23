@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mvn-java-parent</artifactId>
-		<version>4.2</version>
+		<version>4.4</version>
 		<relativePath></relativePath>
 	</parent>
 
@@ -29,15 +29,15 @@
 		<crypt-api.version>${mystic-crypt.version}</crypt-api.version>
 		<crypt-data.version>${mystic-crypt.version}</crypt-data.version>
 		<!-- NEW EXTENSIONS LIB versions -->
-		<file-worker.version>5</file-worker.version>
-		<jcommons-lang.version>5</jcommons-lang.version>
-		<test-objects.version>4.28</test-objects.version>
-		<silly-collections.version>4.35</silly-collections.version>
-		<vintage-time.version>4.12</vintage-time.version>
+		<file-worker.version>5.0.1</file-worker.version>
+		<jcommons-lang.version>5.1</jcommons-lang.version>
+		<test-objects.version>5</test-objects.version>
+		<silly-collections.version>5</silly-collections.version>
+		<vintage-time.version>5.1</vintage-time.version>
 		<!-- RESOURCEBUNDLE-CORE versions -->
 		<resourcebundle-inspector.version>3</resourcebundle-inspector.version>
 		<!-- JOBJECT-EXTENSIONS versions -->
-		<jobject-extensions.version>2</jobject-extensions.version>
+		<jobject-extensions.version>2.5</jobject-extensions.version>
 		<jobject-core.version>${jobject-extensions.version}</jobject-core.version>
 		<jobject-evaluate.version>${jobject-extensions.version}</jobject-evaluate.version>
 		<!-- RANDOMIZER versions -->

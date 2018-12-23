@@ -26,7 +26,6 @@ package de.alpharogroup.crypto.obfuscation.rules;
 
 import com.google.common.collect.BiMap;
 
-import de.alpharogroup.check.Check;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -62,7 +61,6 @@ public class ObfuscationBiMapRules<K, V>
 	 */
 	public ObfuscationBiMapRules(@NonNull final BiMap<K, V> obfuscationRules)
 	{
-		Check.get().notEmpty(obfuscationRules, "obfuscationRules");
 		this.obfuscationRules = obfuscationRules;
 	}
 
