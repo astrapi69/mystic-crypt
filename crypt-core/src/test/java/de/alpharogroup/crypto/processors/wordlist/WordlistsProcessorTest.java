@@ -55,10 +55,7 @@ public class WordlistsProcessorTest
 	public void test() throws IOException
 	{
 		WordlistsProcessor processor;
-		long start;
 		boolean found;
-		long end;
-		long elapsedMilliSeconds;
 		String toCheckAgainst;
 		String password;
 
@@ -82,20 +79,14 @@ public class WordlistsProcessorTest
 		List<String> words = ListFactory.newArrayList(set);
 
 		processor = new WordlistsProcessor(words, password);
-		start = System.currentTimeMillis();
 		found = processor.process();
-		end = System.currentTimeMillis();
-		elapsedMilliSeconds = end - start;
 		assertTrue(found);
 		toCheckAgainst = processor.getToCheckAgainst();
 		assertEquals(toCheckAgainst, password);
 
 		processor = new WordlistsProcessor(words);
 		processor.setToCheckAgainst(password);
-		start = System.currentTimeMillis();
 		found = processor.process();
-		end = System.currentTimeMillis();
-		elapsedMilliSeconds = end - start;
 		assertTrue(found);
 
 	}

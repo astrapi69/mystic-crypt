@@ -24,20 +24,21 @@
  */
 package de.alpharogroup.crypto.key.reader;
 
-import de.alpharogroup.file.search.PathFinder;
-import org.bouncycastle.util.io.pem.PemObject;
-import org.meanbean.factories.ObjectCreationException;
-import org.meanbean.test.BeanTestException;
-import org.meanbean.test.BeanTester;
-import org.testng.annotations.Test;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNotNull;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.security.PrivateKey;
 
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertNotNull;
+import org.bouncycastle.util.io.pem.PemObject;
+import org.meanbean.factories.ObjectCreationException;
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
+import org.testng.annotations.Test;
+
+import de.alpharogroup.file.search.PathFinder;
 
 
 /**
@@ -96,6 +97,7 @@ public class PemObjectReaderTest
 
 		final PemObject pemObject = PemObjectReader.getPemObject(privatekeyPemFile);
 		final String foo = PemObjectReader.toPemFormat(pemObject);
+		System.out.println(foo);
 	}
 
 	/**

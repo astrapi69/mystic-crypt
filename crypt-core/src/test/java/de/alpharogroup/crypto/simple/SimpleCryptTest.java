@@ -26,7 +26,6 @@ package de.alpharogroup.crypto.simple;
 
 import java.lang.reflect.InvocationTargetException;
 
-import lombok.extern.java.Log;
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
 import org.testng.AssertJUnit;

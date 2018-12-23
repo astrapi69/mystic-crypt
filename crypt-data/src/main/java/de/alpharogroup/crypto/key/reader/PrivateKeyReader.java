@@ -38,7 +38,6 @@ import org.apache.commons.codec.binary.Base64;
 
 import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * The class {@link PrivateKeyReader} is a utility class for reading private keys in *.der or *.pem
