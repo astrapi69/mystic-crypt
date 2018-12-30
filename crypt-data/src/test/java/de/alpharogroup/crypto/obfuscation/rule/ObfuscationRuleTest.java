@@ -29,13 +29,11 @@ import static org.testng.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Optional;
 
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.evaluate.object.api.ContractViolation;
-import de.alpharogroup.evaluate.object.checkers.EqualsHashCodeAndToStringCheck;
+import de.alpharogroup.evaluate.object.evaluators.EqualsHashCodeAndToStringEvaluator;
 import de.alpharogroup.random.RandomExtensions;
 
 /**
@@ -79,12 +77,12 @@ public class ObfuscationRuleTest
 		throws NoSuchMethodException, IllegalAccessException, InvocationTargetException,
 		InstantiationException, IOException, ClassNotFoundException
 	{
-		Optional<ContractViolation> expected;
-		Optional<ContractViolation> actual;
-		actual = EqualsHashCodeAndToStringCheck.equalsHashcodeAndToString(ObfuscationRule.class,
-			clazz -> ObfuscationRule.<Character, Character> builder()
-				.character(RandomExtensions.randomChar()).build());
-		expected = Optional.empty();
+		boolean expected;
+		boolean actual;
+		actual = EqualsHashCodeAndToStringEvaluator
+			.evaluateEqualsHashcodeAndToString(ObfuscationRule.class, clazz -> ObfuscationRule
+				.<Character, Character> builder().character(RandomExtensions.randomChar()).build());
+		expected = true;
 		assertEquals(expected, actual);
 	}
 
