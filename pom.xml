@@ -29,8 +29,8 @@
 		<crypt-api.version>${mystic-crypt.version}</crypt-api.version>
 		<crypt-data.version>${mystic-crypt.version}</crypt-data.version>
 		<!-- NEW EXTENSIONS LIB versions -->
-		<file-worker.version>5.0.1</file-worker.version>
-		<jcommons-lang.version>5.1</jcommons-lang.version>
+		<file-worker.version>5.0.2</file-worker.version>
+		<jcommons-lang.version>5.1.1</jcommons-lang.version>
 		<test-objects.version>5</test-objects.version>
 		<silly-collections.version>5</silly-collections.version>
 		<vintage-time.version>5.1</vintage-time.version>

@@ -4,6 +4,11 @@
 Version 5.8-SNAPSHOT
 -------------
 
+CHANGED:
+
+- update of file-worker version to 5.0.2
+- update of jcommons-lang version to 5.1.1
+
 Version 5.7
 -------------
 
