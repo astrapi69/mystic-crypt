@@ -37,11 +37,11 @@ The source code comes under the liberal MIT License, making mystic-crypt great f
 
 ## Javadoc
 
-[![Javadoc](http://www.javadoc.io/doc/de.alpharogroup/crypt-core/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-api) crypt-api 
+[![Javadoc](http://www.javadoc.io/badge/de.alpharogroup/crypt-core.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-api) crypt-api 
 
-[![Javadoc](http://www.javadoc.io/doc/de.alpharogroup/crypt-core/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-core) crypt-core
+[![Javadoc](http://www.javadoc.io/badge/de.alpharogroup/crypt-core.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-core) crypt-core
 
-[![Javadoc](http://www.javadoc.io/doc/de.alpharogroup/crypt-data/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-data) crypt-data
+[![Javadoc](http://www.javadoc.io/badge/de.alpharogroup/crypt-data.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-data) crypt-data
 
 ## Maven dependency
 
@@ -184,7 +184,7 @@ Here is a list of awesome projects for cryptography:
 
 |**javadoc.io**|
 |     :---:      |
-|[![Javadoc](http://www.javadoc.io/doc/de.alpharogroup/crypt-core/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-api) crypt-api  [![Javadoc](http://www.javadoc.io/doc/de.alpharogroup/crypt-core/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-core) crypt-core  [![Javadoc](http://www.javadoc.io/doc/de.alpharogroup/crypt-data/badge.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-data) crypt-data|
+|[![Javadoc](http://www.javadoc.io/badge/de.alpharogroup/crypt-core.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-api) crypt-api  [![Javadoc](http://www.javadoc.io/badge/de.alpharogroup/crypt-core.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-core) crypt-core  [![Javadoc](http://www.javadoc.io/badge/de.alpharogroup/crypt-data.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-data) crypt-data|
 |Special thanks to [javadoc.io](http://www.javadoc.io) for providing a free javadoc documentation for open source projects|
 |     <img width=1000/>     |
 
