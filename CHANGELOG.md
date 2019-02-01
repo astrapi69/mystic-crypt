@@ -6,8 +6,11 @@ Version 5.8-SNAPSHOT
 
 CHANGED:
 
-- update of file-worker version to 5.0.2
+- update of file-worker version to 5.1
 - update of jcommons-lang version to 5.1.1
+- update of test-objects version to 5.0.1
+- update of silly-collections version to 5.1
+- update of random-beans version to 3.8.0
 
 Version 5.7
 -------------
