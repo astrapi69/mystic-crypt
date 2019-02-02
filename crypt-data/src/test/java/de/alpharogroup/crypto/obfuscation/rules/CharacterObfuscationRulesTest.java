@@ -86,9 +86,16 @@ public class CharacterObfuscationRulesTest
 	{
 		Optional<ContractViolation> expected;
 		Optional<ContractViolation> actual;
+		Map<Character, Character> charmap;
+		Map<Character, Character> charmap2;
+		BiMap<Character, Character> obfuscationRules;
+		CharacterObfuscationRules first;
+		CharacterObfuscationRules second;
+		CharacterObfuscationRules third;
+		CharacterObfuscationRules fourth;
 
-		final Map<Character, Character> charmap = MapFactory.newHashMap();
-		final Map<Character, Character> charmap2 = MapFactory.newHashMap();
+		charmap = MapFactory.newHashMap();
+		charmap2 = MapFactory.newHashMap();
 
 		charmap.put(Character.valueOf('1'), Character.valueOf('I'));
 		charmap.put(Character.valueOf('2'), Character.valueOf('F'));
@@ -98,14 +105,14 @@ public class CharacterObfuscationRulesTest
 		charmap2.put(Character.valueOf('5'), Character.valueOf('S'));
 		charmap2.put(Character.valueOf('6'), Character.valueOf('G'));
 
-		BiMap<Character, Character> obfuscationRules = HashBiMap.create(charmap);
+		obfuscationRules = HashBiMap.create(charmap);
 
 
-		final CharacterObfuscationRules first = new CharacterObfuscationRules(obfuscationRules);
-		final CharacterObfuscationRules second = new CharacterObfuscationRules(
+		first = new CharacterObfuscationRules(obfuscationRules);
+		second = new CharacterObfuscationRules(
 			HashBiMap.create(MapFactory.newHashMap(charmap2)));
-		final CharacterObfuscationRules third = new CharacterObfuscationRules(obfuscationRules);
-		final CharacterObfuscationRules fourth = new CharacterObfuscationRules(obfuscationRules);
+		third = new CharacterObfuscationRules(obfuscationRules);
+		fourth = new CharacterObfuscationRules(obfuscationRules);
 
 		actual = EqualsHashCodeAndToStringCheck.equalsHashcodeAndToString(first, second, third,
 			fourth);

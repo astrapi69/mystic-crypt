@@ -108,11 +108,14 @@ public class KeyStoreExtensionsTest
 	@Test
 	public void testDeleteAlias() throws Exception
 	{
+		KeyStore keyStore;
+		boolean containsAlias;
+		
 		KeyStoreExtensions.deleteAlias(privatekeyDerFile, alias, password);
 
-		KeyStore keyStore = KeyStoreFactory.newKeyStore(KeystoreType.JKS.name(), password,
+		keyStore = KeyStoreFactory.newKeyStore(KeystoreType.JKS.name(), password,
 			privatekeyDerFile, true);
-		boolean containsAlias = keyStore.containsAlias(alias);
+		containsAlias = keyStore.containsAlias(alias);
 
 		assertFalse(containsAlias);
 	}

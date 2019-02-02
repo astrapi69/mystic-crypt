@@ -83,7 +83,6 @@ public class ObfuscationOperationRuleComparatorTest
 	@Test
 	public void testCompare()
 	{
-
 		comparator = new ObfuscationOperationRuleComparator();
 
 		character = Character.valueOf('a');
@@ -116,7 +115,6 @@ public class ObfuscationOperationRuleComparatorTest
 		actual = comparator.compare(o2, o1);
 		expected = 0 < actual;
 		assertTrue(expected);
-
 	}
 
 }

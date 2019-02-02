@@ -55,9 +55,13 @@ public class TransactionTest
 	public void setUp() throws Exception
 	{
 
-		final File publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
+		File publickeyPemDir;
+		File publickeyPemFile;
+		PublicKey publicKey;
+		
+		publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		publickeyPemFile = new File(publickeyPemDir, "public.pem");
+		publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
 		address = new Address("foo", publicKey.getEncoded());
 	}

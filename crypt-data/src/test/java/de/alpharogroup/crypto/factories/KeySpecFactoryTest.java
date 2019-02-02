@@ -36,7 +36,7 @@ import org.testng.annotations.Test;
 import de.alpharogroup.crypto.CryptConst;
 
 /**
- * The class {@link KeySpecFactory}
+ * The unit test class for the class {@link KeySpecFactory}
  */
 public class KeySpecFactoryTest
 {

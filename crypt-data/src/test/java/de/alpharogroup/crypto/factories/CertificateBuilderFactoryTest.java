@@ -3,24 +3,20 @@
  *
  * Copyright (C) 2015 Asterios Raptis
  *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
- * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
- * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package de.alpharogroup.crypto.factories;
 
@@ -48,7 +44,7 @@ import de.alpharogroup.date.CalculateDateExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * The class {@link CertificateBuilderFactory}
+ * The unit test class for the class {@link CertificateBuilderFactory}
  */
 public class CertificateBuilderFactoryTest
 {
@@ -60,22 +56,32 @@ public class CertificateBuilderFactoryTest
 	@Test
 	public void testNewX509v1CertificateBuilder() throws Exception
 	{
-		final File keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File publickeyPemFile = new File(keyPemDir, "public.pem");
+		File keyPemDir;
+		File publickeyPemFile;
+		PublicKey publicKey;
+		X500Name issuer;
+		BigInteger serial;
+		Date notBefore;
+		Date notAfter;
+		X500Name subject;
+		X509v1CertificateBuilder certificateBuilder;
+
+		keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		publickeyPemFile = new File(keyPemDir, "public.pem");
 
 		Security.addProvider(new BouncyCastleProvider());
 
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
+		publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
-		X500Name issuer = new X500Name("C=DE");
-		BigInteger serial = random(BigInteger.class);
+		issuer = new X500Name("C=DE");
+		serial = random(BigInteger.class);
 
-		Date notBefore = new Date();
-		Date notAfter = CalculateDateExtensions.addYears(notBefore, 10);
-		X500Name subject = new X500Name("O=foo-company");
+		notBefore = new Date();
+		notAfter = CalculateDateExtensions.addYears(notBefore, 10);
+		subject = new X500Name("O=foo-company");
 
-		X509v1CertificateBuilder certificateBuilder = CertificateBuilderFactory
-			.newX509v1CertificateBuilder(issuer, serial, notBefore, notAfter, subject, publicKey);
+		certificateBuilder = CertificateBuilderFactory.newX509v1CertificateBuilder(issuer, serial,
+			notBefore, notAfter, subject, publicKey);
 
 		assertNotNull(certificateBuilder);
 	}
@@ -87,26 +93,35 @@ public class CertificateBuilderFactoryTest
 	@Test
 	public void testNewX509v3CertificateBuilder() throws Exception
 	{
-		final File keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File publickeyPemFile = new File(keyPemDir, "public.pem");
+		File keyPemDir;
+		File publickeyPemFile;
+		PublicKey publicKey;
+		X500Name issuer;
+		BigInteger serial;
+		Date notBefore;
+		Date notAfter;
+		X500Name subject;
+		SubjectPublicKeyInfo publicKeyInfo;
+		X509v3CertificateBuilder certificateBuilder;
+
+		keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		publickeyPemFile = new File(keyPemDir, "public.pem");
 
 		Security.addProvider(new BouncyCastleProvider());
 
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
+		publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
-		X500Name issuer = new X500Name("C=DE");
-		BigInteger serial = random(BigInteger.class);
+		issuer = new X500Name("C=DE");
+		serial = random(BigInteger.class);
 
-		Date notBefore = new Date();
-		Date notAfter = CalculateDateExtensions.addYears(notBefore, 10);
-		X500Name subject = new X500Name("O=foo-company");
+		notBefore = new Date();
+		notAfter = CalculateDateExtensions.addYears(notBefore, 10);
+		subject = new X500Name("O=foo-company");
 
-		SubjectPublicKeyInfo publicKeyInfo = SubjectPublicKeyInfo
-			.getInstance(publicKey.getEncoded());
+		publicKeyInfo = SubjectPublicKeyInfo.getInstance(publicKey.getEncoded());
 
-		X509v3CertificateBuilder certificateBuilder = CertificateBuilderFactory
-			.newX509v3CertificateBuilder(issuer, serial, notBefore, notAfter, subject,
-				publicKeyInfo);
+		certificateBuilder = CertificateBuilderFactory.newX509v3CertificateBuilder(issuer, serial,
+			notBefore, notAfter, subject, publicKeyInfo);
 
 		assertNotNull(certificateBuilder);
 	}

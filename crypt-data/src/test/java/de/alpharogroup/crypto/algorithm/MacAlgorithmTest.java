@@ -24,7 +24,8 @@
  */
 package de.alpharogroup.crypto.algorithm;
 
-import org.testng.AssertJUnit;
+import static org.testng.AssertJUnit.assertEquals;
+
 import org.testng.annotations.Test;
 
 /**
@@ -39,14 +40,16 @@ public class MacAlgorithmTest
 	@Test
 	public void test()
 	{
-		String expected = "HmacMD5";
-		String actual = MacAlgorithm.HmacMD5.getAlgorithm();
-		AssertJUnit.assertEquals(expected, actual);
+		String actual;
+		String expected;
+		
+		expected = "HmacMD5";
+		actual = MacAlgorithm.HmacMD5.getAlgorithm();
+		assertEquals(expected, actual);
 
 		expected = "PBEWithHmacMD5";
 		actual = MacAlgorithm.PBEWithHmacMD5.getAlgorithm();
-		AssertJUnit.assertEquals(expected, actual);
-
+		assertEquals(expected, actual);
 	}
 
 }

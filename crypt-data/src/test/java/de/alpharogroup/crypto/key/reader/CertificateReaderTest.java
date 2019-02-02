@@ -53,13 +53,13 @@ import de.alpharogroup.file.search.PathFinder;
 import de.alpharogroup.random.RandomExtensions;
 
 /**
- * The class {@link CertificateReaderTest}.
+ * The unit test class for the class {@link CertificateReaderTest}
  */
 public class CertificateReaderTest
 {
 
 	/**
-	 * Test method for {@link CertificateReader#readCertificate(File)}.
+	 * Test method for {@link CertificateReader#readCertificate(File)}
 	 *
 	 * @throws Exception
 	 *             the exception
@@ -67,49 +67,65 @@ public class CertificateReaderTest
 	@Test
 	public void testReadDerCertificateFile() throws Exception
 	{
-
-		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
+		File derDir;
+		File certificateDerFile;
+		File privatekeyPemDir;
+		File privatekeyPemFile;
+		PrivateKey privateKey;
+		File publickeyPemDir;
+		File publickeyPemFile;
+		PublicKey publicKey;
+		String subject;
+		String issuer;
+		String signatureAlgorithm;
+		Date start;
+		Date end;
+		BigInteger serialNumber;
+		X509Certificate cert;
+		X509Certificate certificate;
+		// new scenario...
+		privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
 
 		Security.addProvider(new BouncyCastleProvider());
 
-		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile);
+		privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile);
 
-		final File publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
+		publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		publickeyPemFile = new File(publickeyPemDir, "public.pem");
 
 		Security.addProvider(new BouncyCastleProvider());
 
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
+		publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
-		final String subject = "CN=Test subject";
-		final String issuer = "CN=Test issue";
-		final String signatureAlgorithm = HashAlgorithm.SHA256.getAlgorithm()
+		subject = "CN=Test subject";
+		issuer = "CN=Test issue";
+		signatureAlgorithm = HashAlgorithm.SHA256.getAlgorithm()
 			+ UnionWord.With.name() + KeyPairGeneratorAlgorithm.RSA.getAlgorithm();
 
-		final Date start = Date.from(
+		start = Date.from(
 			LocalDate.of(2017, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		final Date end = Date.from(
+		end = Date.from(
 			LocalDate.of(2027, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		final BigInteger serialNumber = RandomExtensions.randomSerialNumber();
+		serialNumber = RandomExtensions.randomSerialNumber();
 		// create certificate
-		final X509Certificate cert = CertFactory.newX509Certificate(publicKey, privateKey,
+		cert = CertFactory.newX509Certificate(publicKey, privateKey,
 			serialNumber, subject, issuer, signatureAlgorithm, start, end);
 		AssertJUnit.assertNotNull(cert);
 
-		final File derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		final File certificateDerFile = new File(derDir, "certificate.der");
+		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		certificateDerFile = new File(derDir, "certificate.der");
 		// save it ...
 		CertificateWriter.write(cert, certificateDerFile, KeyFileFormat.DER);
 
-		final X509Certificate certificate = CertificateReader.readCertificate(certificateDerFile);
+		certificate = CertificateReader.readCertificate(certificateDerFile);
 		AssertJUnit.assertNotNull(certificate);
 
 		DeleteFileExtensions.delete(certificateDerFile);
 	}
 
 	/**
-	 * Test method for {@link CertificateReader#readPemCertificate(File)}.
+	 * Test method for {@link CertificateReader#readPemCertificate(File)}
 	 *
 	 * @throws Exception
 	 *             the exception
@@ -117,41 +133,58 @@ public class CertificateReaderTest
 	@Test
 	public void testReadPemCertificateFile() throws Exception
 	{
-		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
+		File pemDir;
+		File certificateFile;
+		File privatekeyPemDir;
+		File privatekeyPemFile;
+		PrivateKey privateKey;
+		File publickeyPemDir;
+		File publickeyPemFile;
+		PublicKey publicKey;
+		String subject;
+		String issuer;
+		String signatureAlgorithm;
+		Date start;
+		Date end;
+		BigInteger serialNumber;
+		X509Certificate cert;
+		X509Certificate certificate;
+				
+		privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
 
 		Security.addProvider(new BouncyCastleProvider());
 
-		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile);
+		privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile);
 
-		final File publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
+		publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		publickeyPemFile = new File(publickeyPemDir, "public.pem");
 
 		Security.addProvider(new BouncyCastleProvider());
 
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
+		publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
-		final String subject = "CN=Test subject";
-		final String issuer = "CN=Test issue";
-		final String signatureAlgorithm = HashAlgorithm.SHA256.getAlgorithm()
+		subject = "CN=Test subject";
+		issuer = "CN=Test issue";
+		signatureAlgorithm = HashAlgorithm.SHA256.getAlgorithm()
 			+ UnionWord.With.name() + KeyPairGeneratorAlgorithm.RSA.getAlgorithm();
 
-		final Date start = Date.from(
+		start = Date.from(
 			LocalDate.of(2017, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		final Date end = Date.from(
+		end = Date.from(
 			LocalDate.of(2027, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		final BigInteger serialNumber = RandomExtensions.randomSerialNumber();
+		serialNumber = RandomExtensions.randomSerialNumber();
 		// create certificate
-		final X509Certificate cert = CertFactory.newX509Certificate(publicKey, privateKey,
+		cert = CertFactory.newX509Certificate(publicKey, privateKey,
 			serialNumber, subject, issuer, signatureAlgorithm, start, end);
 		AssertJUnit.assertNotNull(cert);
 
-		final File pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File certificateFile = new File(pemDir, "certificate.cert");
+		pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		certificateFile = new File(pemDir, "certificate.cert");
 		// save it ...
 		CertificateWriter.write(cert, certificateFile, KeyFileFormat.PEM);
 
-		final X509Certificate certificate = CertificateReader.readPemCertificate(certificateFile);
+		certificate = CertificateReader.readPemCertificate(certificateFile);
 		AssertJUnit.assertNotNull(certificate);
 
 		DeleteFileExtensions.delete(certificateFile);

@@ -48,7 +48,7 @@ public class PemObjectReaderTest
 {
 
 	/**
-	 * Test method for {@link PemObjectReader#getPemObject(File)}.
+	 * Test method for {@link PemObjectReader#getPemObject(File)}
 	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
@@ -56,18 +56,24 @@ public class PemObjectReaderTest
 	@Test
 	public void testGetPemObject() throws IOException
 	{
-		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
+		String actual;
+		String expected;
+		File privatekeyPemDir;
+		File privatekeyPemFile;
+		PemObject pemObject;
+		// new scenario...		
+		privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
 
-		final PemObject pemObject = PemObjectReader.getPemObject(privatekeyPemFile);
-		final String actual = pemObject.getType();
-		final String expected = PrivateKeyReader.RSA_PRIVATE_KEY;
+		pemObject = PemObjectReader.getPemObject(privatekeyPemFile);
+		actual = pemObject.getType();
+		expected = PrivateKeyReader.RSA_PRIVATE_KEY;
 		assertEquals(expected, actual);
 
 	}
 
 	/**
-	 * Test method for {@link PemObjectReader#readPemPrivateKey(File, String)}. you can create the
+	 * Test method for {@link PemObjectReader#readPemPrivateKey(File, String)} you can create the
 	 * file id_rsa with following command: ssh-keygen -t rsa -b 4096 -f ~/.ssh-tmp/id_rsa
 	 *
 	 * @throws IOException
@@ -76,15 +82,24 @@ public class PemObjectReaderTest
 	@Test
 	public void testReadPemPrivateKey() throws IOException
 	{
-		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File privatekeyPemFile = new File(privatekeyPemDir, "id_rsa");
+		File privatekeyPemDir;
+		File privatekeyPemFile;
+		PrivateKey privateKey;
+		// new scenario...		
+		privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		privatekeyPemFile = new File(privatekeyPemDir, "id_rsa");
 
-		PrivateKey privateKey = PemObjectReader.readPemPrivateKey(privatekeyPemFile, "secret");
+		privateKey = PemObjectReader.readPemPrivateKey(privatekeyPemFile, "secret");
 		assertNotNull(privateKey);
+		// new scenario...		
+		privatekeyPemFile = new File(privatekeyPemDir, "test.key");
+
+		privateKey = PemObjectReader.readPemPrivateKey(privatekeyPemFile, "bosco");
+		assertNotNull(privateKey);		
 	}
 
 	/**
-	 * Test method for {@link PemObjectReader#toPemFormat(PemObject)}.
+	 * Test method for {@link PemObjectReader#toPemFormat(PemObject)}
 	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
@@ -92,12 +107,17 @@ public class PemObjectReaderTest
 	@Test
 	public void testToPemFormat() throws IOException
 	{
-		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
+		String actual;
+		File privatekeyPemDir;
+		File privatekeyPemFile;
+		PemObject pemObject;
+		
+		privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
 
-		final PemObject pemObject = PemObjectReader.getPemObject(privatekeyPemFile);
-		final String foo = PemObjectReader.toPemFormat(pemObject);
-		System.out.println(foo);
+		pemObject = PemObjectReader.getPemObject(privatekeyPemFile);
+		actual = PemObjectReader.toPemFormat(pemObject);
+		System.out.println(actual);
 	}
 
 	/**

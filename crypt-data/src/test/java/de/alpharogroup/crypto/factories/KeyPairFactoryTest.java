@@ -3,24 +3,20 @@
  *
  * Copyright (C) 2015 Asterios Raptis
  *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
- * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
- * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package de.alpharogroup.crypto.factories;
 
@@ -105,12 +101,14 @@ public class KeyPairFactoryTest
 	public void testNewKeyPairFileFile() throws NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchProviderException, IOException
 	{
+		File derDir;
+		File publicKeyDerFile;
+		File privateKeyDerFile;
 		KeyPair actual;
 
-		final File derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		final File publicKeyDerFile = new File(derDir, "public.der");
-		final File privateKeyDerFile = new File(derDir, "private.der");
-
+		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		publicKeyDerFile = new File(derDir, "public.der");
+		privateKeyDerFile = new File(derDir, "private.der");
 
 		actual = KeyPairFactory.newKeyPair(publicKeyDerFile, privateKeyDerFile);
 		assertNotNull(actual);
@@ -146,15 +144,23 @@ public class KeyPairFactoryTest
 	@Test
 	public void testProtectPrivateKeyWithPassword() throws Exception
 	{
-		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		final File publickeyDerFile = new File(publickeyDerDir, "public.der");
-		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
 
-		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
+		File publickeyDerDir;
+		File publickeyDerFile;
+		File privatekeyDerFile;
+		PrivateKey privateKey;
+		PublicKey publicKey;
+		KeyPair keyPair;
 
-		final PublicKey publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
+		publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		publickeyDerFile = new File(publickeyDerDir, "public.der");
+		privatekeyDerFile = new File(publickeyDerDir, "private.der");
 
-		final KeyPair keyPair = KeyPairFactory.newKeyPair(publicKey, privateKey);
+		privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
+
+		publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
+
+		keyPair = KeyPairFactory.newKeyPair(publicKey, privateKey);
 		assertNotNull(keyPair);
 	}
 

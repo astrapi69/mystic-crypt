@@ -24,6 +24,8 @@
  */
 package de.alpharogroup.crypto.hash;
 
+import static org.testng.AssertJUnit.assertTrue;
+
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
 import java.security.NoSuchAlgorithmException;
@@ -31,7 +33,6 @@ import java.util.Arrays;
 
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
-import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.algorithm.HashAlgorithm;
@@ -51,15 +52,23 @@ public class HashExtensionsTest
 	@Test
 	public void testHash() throws NoSuchAlgorithmException
 	{
-		final Charset charset = Charset.forName("UTF-8");
-		final String password = "abcdefghijklmnopqrst";
-		final String newInsertPassword = "abcdefghijklmnopqrst";
-		final String salt = "NzeCdmaz";
-		final HashAlgorithm hashAlgorithm = HashAlgorithm.SHA_512;
-		final String expected = HashExtensions.hash(password, salt, hashAlgorithm, charset);
-		final String actual = HashExtensions.hash(newInsertPassword, salt, hashAlgorithm, charset);
+		String actual;
+		String expected;		
+		Charset charset;
+		String password;
+		String newInsertPassword;
+		String salt;
+		HashAlgorithm hashAlgorithm;
+				
+		charset = Charset.forName("UTF-8");
+		password = "abcdefghijklmnopqrst";
+		newInsertPassword = "abcdefghijklmnopqrst";
+		salt = "NzeCdmaz";
+		hashAlgorithm = HashAlgorithm.SHA_512;
+		expected = HashExtensions.hash(password, salt, hashAlgorithm, charset);
+		actual = HashExtensions.hash(newInsertPassword, salt, hashAlgorithm, charset);
 
-		AssertJUnit.assertTrue("'expected' should be equal with 'actual'.",
+		assertTrue("'expected' should be equal with 'actual'.",
 			expected.equals(actual));
 	}
 
@@ -72,16 +81,24 @@ public class HashExtensionsTest
 	@Test
 	public void testHashAndBase64() throws NoSuchAlgorithmException
 	{
-		final Charset charset = Charset.forName("UTF-8");
-		final String password = "secret";
-		final String newInsertPassword = "secret";
-		final String salt = "NzeCdmaz";
-		final HashAlgorithm hashAlgorithm = HashAlgorithm.SHA_512;
-		final String expected = HashExtensions.hashAndBase64(password, salt, hashAlgorithm,
+		String actual;
+		String expected;		
+		Charset charset;
+		String password;
+		String newInsertPassword;
+		String salt;
+		HashAlgorithm hashAlgorithm;
+		
+		charset = Charset.forName("UTF-8");
+		password = "secret";
+		newInsertPassword = "secret";
+		salt = "NzeCdmaz";
+		hashAlgorithm = HashAlgorithm.SHA_512;
+		expected = HashExtensions.hashAndBase64(password, salt, hashAlgorithm,
 			charset);
-		final String actual = HashExtensions.hashAndBase64(newInsertPassword, salt, hashAlgorithm,
+		actual = HashExtensions.hashAndBase64(newInsertPassword, salt, hashAlgorithm,
 			charset);
-		AssertJUnit.assertTrue("'expected' should be equal with 'actual'.",
+		assertTrue("'expected' should be equal with 'actual'.",
 			expected.equals(actual));
 	}
 
@@ -95,24 +112,32 @@ public class HashExtensionsTest
 	@Test
 	public void testHashByteArray() throws NoSuchAlgorithmException
 	{
-		final Charset charset = Charset.forName("UTF-8");
-		final String password = "abcdefghijklmnopqrst";
-		final String newInsertPassword = "abcdefghijklmnopqrst";
-		final String salt = "NzeCdmaz";
-		final HashAlgorithm hashAlgorithm = HashAlgorithm.SHA_512;
-		byte[] expected = HashExtensions.hash(password.getBytes(), salt, hashAlgorithm, charset);
-		byte[] actual = HashExtensions.hash(newInsertPassword.getBytes(), salt, hashAlgorithm,
+		byte[] actual;
+		byte[] expected;		
+		Charset charset;
+		String password;
+		String newInsertPassword;
+		String salt;
+		HashAlgorithm hashAlgorithm;
+		
+		charset = Charset.forName("UTF-8");
+		password = "abcdefghijklmnopqrst";
+		newInsertPassword = "abcdefghijklmnopqrst";
+		salt = "NzeCdmaz";
+		hashAlgorithm = HashAlgorithm.SHA_512;
+		expected = HashExtensions.hash(password.getBytes(), salt, hashAlgorithm, charset);
+		actual = HashExtensions.hash(newInsertPassword.getBytes(), salt, hashAlgorithm,
 			charset);
 
-		AssertJUnit.assertTrue(expected.length == actual.length);
-		AssertJUnit.assertTrue("'expected' should be equal with 'actual'.",
+		assertTrue(expected.length == actual.length);
+		assertTrue("'expected' should be equal with 'actual'.",
 			Arrays.equals(expected, actual));
 
 		expected = HashExtensions.hash(password.getBytes(), null, hashAlgorithm, charset);
 		actual = HashExtensions.hash(newInsertPassword.getBytes(), null, hashAlgorithm, charset);
 
-		AssertJUnit.assertTrue(expected.length == actual.length);
-		AssertJUnit.assertTrue("'expected' should be equal with 'actual'.",
+		assertTrue(expected.length == actual.length);
+		assertTrue("'expected' should be equal with 'actual'.",
 			Arrays.equals(expected, actual));
 	}
 
@@ -125,14 +150,20 @@ public class HashExtensionsTest
 	@Test
 	public void testHashByteArrayWithAlgorithm() throws NoSuchAlgorithmException
 	{
-		final String password = "abcdefghijklmnopqrst";
-		final String newInsertPassword = "abcdefghijklmnopqrst";
-		final HashAlgorithm hashAlgorithm = HashAlgorithm.SHA_512;
-		byte[] expected = HashExtensions.hash(password.getBytes(), hashAlgorithm);
-		byte[] actual = HashExtensions.hash(newInsertPassword.getBytes(), hashAlgorithm);
+		byte[] actual;
+		byte[] expected;	
+		String password;
+		String newInsertPassword;
+		HashAlgorithm hashAlgorithm;
+		
+		password = "abcdefghijklmnopqrst";
+		newInsertPassword = "abcdefghijklmnopqrst";
+		hashAlgorithm = HashAlgorithm.SHA_512;
+		expected = HashExtensions.hash(password.getBytes(), hashAlgorithm);
+		actual = HashExtensions.hash(newInsertPassword.getBytes(), hashAlgorithm);
 
-		AssertJUnit.assertTrue(expected.length == actual.length);
-		AssertJUnit.assertTrue("'expected' should be equal with 'actual'.",
+		assertTrue(expected.length == actual.length);
+		assertTrue("'expected' should be equal with 'actual'.",
 			Arrays.equals(expected, actual));
 	}
 

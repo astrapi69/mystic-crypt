@@ -222,7 +222,7 @@ public class PrivateKeyReaderTest
 	}
 
 	/**
-	 * Test method for {@link PrivateKeyReader#readPemPrivateKey(String, String)}.
+	 * Test method for {@link PrivateKeyReader#readPemPrivateKey(String, String)}
 	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred. *
@@ -238,7 +238,9 @@ public class PrivateKeyReaderTest
 	public void testReadPemPrivateKeyStringString() throws IOException, NoSuchAlgorithmException,
 		InvalidKeySpecException, NoSuchProviderException
 	{
-		final String privateKeyAsBase64String = PrivateKeyReader
+		String privateKeyAsBase64String;
+		
+		privateKeyAsBase64String = PrivateKeyReader
 			.readPemFileAsBase64(privateKeyPemFile);
 
 		actual = PrivateKeyReader.readPemPrivateKey(privateKeyAsBase64String,

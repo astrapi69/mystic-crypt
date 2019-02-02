@@ -42,7 +42,7 @@ import de.alpharogroup.file.delete.DeleteFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * The unit test class for the class {@link EncryptedPrivateKeyReader}.
+ * The unit test class for the class {@link EncryptedPrivateKeyReader}
  */
 public class EncryptedPrivateKeyReaderTest
 {

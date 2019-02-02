@@ -33,7 +33,7 @@ import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
 /**
- * Test class for {@link CryptConst}.
+ * The unit test class for the class {@link CryptConst}
  */
 public class CryptConstTest
 {

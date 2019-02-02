@@ -3,24 +3,20 @@
  *
  * Copyright (C) 2015 Asterios Raptis
  *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
- * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
- * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package de.alpharogroup.crypto.factories;
 
@@ -105,23 +101,33 @@ public class CertFactoryTest
 		X509Certificate caCert;
 		String type;
 		byte[] certificateData;
+		File pemDir;
+		File certificatePemFile;
+		String base64EncodedCertificate;
+		KeyPair keyPair;
+		X500Name issuer;
+		BigInteger serial;
+		Date notBefore;
+		Date notAfter;
+		X500Name subject;
+		String signatureAlgorithm;
 
-		final File pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File certificatePemFile = new File(pemDir, "certificate.pem");
-		String base64EncodedCertificate = CertificateReader.readPemFileAsBase64(certificatePemFile);
+		pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		certificatePemFile = new File(pemDir, "certificate.pem");
+		base64EncodedCertificate = CertificateReader.readPemFileAsBase64(certificatePemFile);
 		certificateData = new Base64().decode(base64EncodedCertificate);
 		type = "X.509";
 		caCert = CertFactory.newX509Certificate(type, certificateData);
 
-		final KeyPair keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, 2048);
-		final X500Name issuer = new X500Name("CN=Issuer of this certificate");
-		final BigInteger serial = BigInteger.ONE;
-		final Date notBefore = Date.from(
+		keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, 2048);
+		issuer = new X500Name("CN=Issuer of this certificate");
+		serial = BigInteger.ONE;
+		notBefore = Date.from(
 			LocalDate.of(2017, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		final Date notAfter = Date.from(
+		notAfter = Date.from(
 			LocalDate.of(2027, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		final X500Name subject = new X500Name("CN=Subject of this certificate");
-		final String signatureAlgorithm = "SHA1withRSA";
+		subject = new X500Name("CN=Subject of this certificate");
+		signatureAlgorithm = "SHA1withRSA";
 		actual = CertFactory.newEndEntityX509CertificateV3(keyPair, issuer, serial, notBefore,
 			notAfter, subject, signatureAlgorithm, caCert);
 		assertNotNull(actual);
@@ -152,23 +158,33 @@ public class CertFactoryTest
 		X509Certificate caCert;
 		String type;
 		byte[] certificateData;
+		File pemDir;
+		File certificatePemFile;
+		String base64EncodedCertificate;
+		KeyPair keyPair;
+		X500Name issuer;
+		BigInteger serial;
+		Date notBefore;
+		Date notAfter;
+		X500Name subject;
+		String signatureAlgorithm;
 
-		final File pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File certificatePemFile = new File(pemDir, "certificate.pem");
-		String base64EncodedCertificate = CertificateReader.readPemFileAsBase64(certificatePemFile);
+		pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		certificatePemFile = new File(pemDir, "certificate.pem");
+		base64EncodedCertificate = CertificateReader.readPemFileAsBase64(certificatePemFile);
 		certificateData = new Base64().decode(base64EncodedCertificate);
 		type = "X.509";
 		caCert = CertFactory.newX509Certificate(type, certificateData);
 
-		final KeyPair keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, 2048);
-		final X500Name issuer = new X500Name("CN=Issuer of this certificate");
-		final BigInteger serial = BigInteger.ONE;
-		final Date notBefore = Date.from(
+		keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, 2048);
+		issuer = new X500Name("CN=Issuer of this certificate");
+		serial = BigInteger.ONE;
+		notBefore = Date.from(
 			LocalDate.of(2017, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		final Date notAfter = Date.from(
+		notAfter = Date.from(
 			LocalDate.of(2027, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		final X500Name subject = new X500Name("CN=Subject of this certificate");
-		final String signatureAlgorithm = "SHA1withRSA";
+		subject = new X500Name("CN=Subject of this certificate");
+		signatureAlgorithm = "SHA1withRSA";
 		actual = CertFactory.newIntermediateX509CertificateV3(keyPair, issuer, serial, notBefore,
 			notAfter, subject, signatureAlgorithm, caCert);
 		assertNotNull(actual);
@@ -182,40 +198,59 @@ public class CertFactoryTest
 	public void testNewX509CertificatePublicKeyPrivateKeyStringStringStringDateDate()
 		throws Exception
 	{
-		final File privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
 
-		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile);
+		File privatekeyPemDir;
+		File privatekeyPemFile;
+		PrivateKey privateKey;
+		File publickeyPemDir;
+		File publickeyPemFile;
+		PublicKey publicKey;
+		String subject;
+		String issuer;
+		String signatureAlgorithm;
+		Date start;
+		Date end;
+		BigInteger serialNumber;
+		X509Certificate cert;
+
+		File pemDir;
+		File certificateFile;
+		X509Certificate certificate;
 
 
-		final File publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
+		privatekeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		privatekeyPemFile = new File(privatekeyPemDir, "private.pem");
+
+		privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile);
+
+		publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		publickeyPemFile = new File(publickeyPemDir, "public.pem");
 
 		Security.addProvider(new BouncyCastleProvider());
 
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
+		publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
-		final String subject = "CN=Test subject";
-		final String issuer = "CN=Test issue";
-		final String signatureAlgorithm = HashAlgorithm.SHA256.getAlgorithm()
-			+ UnionWord.With.name() + KeyPairGeneratorAlgorithm.RSA.getAlgorithm();
+		subject = "CN=Test subject";
+		issuer = "CN=Test issue";
+		signatureAlgorithm = HashAlgorithm.SHA256.getAlgorithm() + UnionWord.With.name()
+			+ KeyPairGeneratorAlgorithm.RSA.getAlgorithm();
 
-		final Date start = Date.from(
+		start = Date.from(
 			LocalDate.of(2017, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		final Date end = Date.from(
+		end = Date.from(
 			LocalDate.of(2027, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		final BigInteger serialNumber = RandomExtensions.randomSerialNumber();
+		serialNumber = RandomExtensions.randomSerialNumber();
 		// create certificate
-		final X509Certificate cert = CertFactory.newX509Certificate(publicKey, privateKey,
-			serialNumber, subject, issuer, signatureAlgorithm, start, end);
+		cert = CertFactory.newX509Certificate(publicKey, privateKey, serialNumber, subject, issuer,
+			signatureAlgorithm, start, end);
 		assertNotNull(cert);
 
-		final File pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File certificateFile = new File(pemDir, "certificate.cert");
+		pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		certificateFile = new File(pemDir, "certificate.cert");
 		// save it ...
 		CertificateWriter.writeInPemFormat(cert, certificateFile);
 		// read it ...
-		final X509Certificate certificate = CertificateReader.readPemCertificate(certificateFile);
+		certificate = CertificateReader.readPemCertificate(certificateFile);
 		// check null
 		assertNotNull(certificate);
 		// check equal
@@ -239,10 +274,13 @@ public class CertFactoryTest
 		X509Certificate actual;
 		String type;
 		byte[] certificateData;
+		File pemDir;
+		File certificatePemFile;
+		String base64EncodedCertificate;
 
-		final File pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File certificatePemFile = new File(pemDir, "certificate.pem");
-		String base64EncodedCertificate = CertificateReader.readPemFileAsBase64(certificatePemFile);
+		pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		certificatePemFile = new File(pemDir, "certificate.pem");
+		base64EncodedCertificate = CertificateReader.readPemFileAsBase64(certificatePemFile);
 		certificateData = new Base64().decode(base64EncodedCertificate);
 		type = "X.509";
 		actual = CertFactory.newX509Certificate(type, certificateData);
@@ -256,17 +294,26 @@ public class CertFactoryTest
 	@Test
 	public void testNewX509CertificateV1() throws Exception
 	{
-		final KeyPair keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, 2048);
-		final X500Name issuer = new X500Name("CN=Issuer of this certificate");
-		final BigInteger serial = BigInteger.ONE;
-		final Date notBefore = Date.from(
+		KeyPair keyPair;
+		X500Name issuer;
+		BigInteger serial;
+		Date notBefore;
+		Date notAfter;
+		X500Name subject;
+		String signatureAlgorithm;
+		X509Certificate cert;
+
+		keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, 2048);
+		issuer = new X500Name("CN=Issuer of this certificate");
+		serial = BigInteger.ONE;
+		notBefore = Date.from(
 			LocalDate.of(2017, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		final Date notAfter = Date.from(
+		notAfter = Date.from(
 			LocalDate.of(2027, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		final X500Name subject = new X500Name("CN=Subject of this certificate");
-		final String signatureAlgorithm = "SHA1withRSA";
-		final X509Certificate cert = CertFactory.newX509CertificateV1(keyPair, issuer, serial,
-			notBefore, notAfter, subject, signatureAlgorithm);
+		subject = new X500Name("CN=Subject of this certificate");
+		signatureAlgorithm = "SHA1withRSA";
+		cert = CertFactory.newX509CertificateV1(keyPair, issuer, serial, notBefore, notAfter,
+			subject, signatureAlgorithm);
 		assertNotNull(cert);
 
 	}

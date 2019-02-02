@@ -53,7 +53,6 @@ public class PublicKeyExtensionsTest
 	/** The hex string encoded for use in tests. */
 	public static String HEX_STRING_ENCODED = "30820122300d06092a864886f70d01010105000382010f003082010a0282010100de9ad9316a7690eeab7c434ee29ed728d2bd3868ac26cc78286d6019f49cb337507c8c56ffa29a0045a08544a17759f6b725fa2e8dd4a80e6df4eca1c949ed5e7010d8264f63936ad9ae4709b1f67bd408cc97623c13425d3b37c08a6b20626fd93d0ef6a90e1bb088aa16638ab9e168650002a312d21bd50e7f80029cefd0570989d68ee6a5f9e8bb28e653e93960910441eac10c9b5e116b0e96d36d8d2ed0a857a200e743e8c6b7d94c12cf121af287d05b96dd3b97b03351938b874bdc3f8db6f1d430b5b2314cbf78cd1e8e13acaa29bd195c2f60f7b87a7f880008794f835de6525081118bf155910c4835125fd9b01dbd134381316d0945b8250766610203010001";
 
-
 	/** The public key base64 encoded for use in tests. */
 	public static String PUBLIC_KEY_BASE64_ENCODED = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3prZMWp2kO6rfENO4p7X"
 		+ "KNK9OGisJsx4KG1gGfScszdQfIxW/6KaAEWghUShd1n2tyX6Lo3UqA5t9OyhyUnt"
@@ -150,7 +149,6 @@ public class PublicKeyExtensionsTest
 		assertEquals(expected, actual);
 	}
 
-
 	/**
 	 * Test method for {@link PrivateKeyExtensions#toHexString(PrivateKey)}.
 	 *
@@ -179,7 +177,6 @@ public class PublicKeyExtensionsTest
 	@Test(enabled = true)
 	public void testToHexStringBoolean() throws Exception
 	{
-
 		String actual;
 		String expected;
 		// new scenario...

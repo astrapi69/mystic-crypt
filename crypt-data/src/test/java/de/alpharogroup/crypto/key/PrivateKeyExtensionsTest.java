@@ -378,7 +378,6 @@ public class PrivateKeyExtensionsTest
 		pkcs1Format = PrivateKeyExtensions.toPKCS1Format(privateKey);
 		assertNotNull(pkcs1Format);
 
-
 		pemObject = new PemObject("RSA PUBLIC KEY", pkcs1Format);
 		keySpec = new PKCS8EncodedKeySpec(pemObject.getContent());
 		kf = KeyFactory.getInstance("RSA");

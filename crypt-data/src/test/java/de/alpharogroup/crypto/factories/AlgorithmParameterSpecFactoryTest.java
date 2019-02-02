@@ -36,7 +36,7 @@ import org.testng.annotations.Test;
 import de.alpharogroup.crypto.CryptConst;
 
 /**
- * The class {@link AlgorithmParameterSpecFactory}
+ * The unit test class for the class {@link AlgorithmParameterSpecFactory}
  */
 public class AlgorithmParameterSpecFactoryTest
 {
@@ -47,7 +47,8 @@ public class AlgorithmParameterSpecFactoryTest
 	@Test
 	public void testNewPBEParameterSpec() throws Exception
 	{
-		AlgorithmParameterSpec pbeParameterSpec = AlgorithmParameterSpecFactory
+		AlgorithmParameterSpec pbeParameterSpec;
+		pbeParameterSpec = AlgorithmParameterSpecFactory
 			.newPBEParameterSpec(CryptConst.SALT, CryptConst.ITERATIONCOUNT);
 		assertNotNull(pbeParameterSpec);
 	}

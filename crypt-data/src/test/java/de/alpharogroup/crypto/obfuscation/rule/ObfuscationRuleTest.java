@@ -54,7 +54,6 @@ public class ObfuscationRuleTest
 		assertNotNull(model);
 	}
 
-
 	/**
 	 * Test method for {@link ObfuscationRule#equals(Object)} , {@link ObfuscationRule#hashCode()}
 	 * and {@link ObfuscationRule#toString()}

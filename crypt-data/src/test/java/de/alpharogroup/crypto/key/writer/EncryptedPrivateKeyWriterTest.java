@@ -126,13 +126,18 @@ public class EncryptedPrivateKeyWriterTest
 		InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException,
 		InvalidParameterSpecException
 	{
-		final PrivateKey readedPrivateKey = PrivateKeyReader
+		PrivateKey readedPrivateKey;
+		String password;
+		PrivateKey decryptedPrivateKey;
+		
+		readedPrivateKey = PrivateKeyReader
 			.readPrivateKey(PathFinder.getSrcTestResourcesDir(), "der", "private.der");
-		final String password = "secret";
+		password = "secret";
+		
 		EncryptedPrivateKeyWriter.encryptPrivateKeyWithPassword(readedPrivateKey,
 			encryptedPrivateKeyFile, password);
 
-		final PrivateKey decryptedPrivateKey = EncryptedPrivateKeyReader
+		decryptedPrivateKey = EncryptedPrivateKeyReader
 			.readPasswordProtectedPrivateKey(encryptedPrivateKeyFile, password,
 				KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
 		expected = readedPrivateKey;

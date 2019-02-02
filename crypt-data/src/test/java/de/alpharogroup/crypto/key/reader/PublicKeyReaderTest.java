@@ -24,6 +24,8 @@
  */
 package de.alpharogroup.crypto.key.reader;
 
+import static org.testng.AssertJUnit.assertNotNull;
+
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.security.PublicKey;
@@ -32,20 +34,19 @@ import java.security.Security;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
-import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.key.PublicKeyExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * Test class for {@link PublicKeyReader}.
+ * The unit test class for the class {@link PublicKeyReader}
  */
 public class PublicKeyReaderTest
 {
 
 	/**
-	 * Test method for {@link PublicKeyReader#readPemPublicKey(File)}.
+	 * Test method for {@link PublicKeyReader#readPemPublicKey(File)}
 	 *
 	 * @throws Exception
 	 *             the exception
@@ -53,18 +54,24 @@ public class PublicKeyReaderTest
 	@Test
 	public void testReadPemFileAsBase64() throws Exception
 	{
-		final File publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
+		File publickeyPemDir;
+		File publickeyPemFile;
+		String publicKeyAsBase64String;
+		PublicKey publicKey;
+		String base64;
+		
+		publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		publickeyPemFile = new File(publickeyPemDir, "public.pem");
 
 		Security.addProvider(new BouncyCastleProvider());
-		final String publicKeyAsBase64String = PublicKeyReader
+		publicKeyAsBase64String = PublicKeyReader
 			.readPemFileAsBase64(publickeyPemFile);
 
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
+		publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
-		final String base64 = PublicKeyExtensions.toBase64(publicKey);
-		AssertJUnit.assertNotNull(publicKeyAsBase64String);
-		AssertJUnit.assertNotNull(base64);
+		base64 = PublicKeyExtensions.toBase64(publicKey);
+		assertNotNull(publicKeyAsBase64String);
+		assertNotNull(base64);
 	}
 
 	/**
@@ -77,6 +84,5 @@ public class PublicKeyReaderTest
 		final BeanTester beanTester = new BeanTester();
 		beanTester.testBean(PublicKeyReader.class);
 	}
-
 
 }
