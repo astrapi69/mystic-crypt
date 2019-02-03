@@ -106,7 +106,6 @@ public class CertificateWriterTest
 		Date start;
 		Date end;
 		BigInteger serialNumber;
-		X509Certificate cert;
 
 		pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
 
