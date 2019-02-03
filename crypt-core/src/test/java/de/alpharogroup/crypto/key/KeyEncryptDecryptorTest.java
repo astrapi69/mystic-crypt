@@ -20,7 +20,7 @@
  */
 package de.alpharogroup.crypto.key;
 
-import static org.testng.Assert.assertEquals;
+import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertTrue;
 
 import java.io.File;

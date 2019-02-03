@@ -3,24 +3,20 @@
  *
  * Copyright (C) 2015 Asterios Raptis
  *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
- * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
- * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package de.alpharogroup.crypto.key;
 
@@ -86,7 +82,7 @@ public class CertificateExtensionsTest
 	{
 		String expected;
 		String actual;
-		
+
 		actual = CertificateExtensions.getCountry(certificate);
 		expected = "";
 		assertEquals(expected, actual);
@@ -105,7 +101,7 @@ public class CertificateExtensionsTest
 	{
 		String expected;
 		String actual;
-		
+
 		actual = CertificateExtensions.getFingerprint(certificate, HashAlgorithm.SHA1);
 		expected = "98e12b1607890c76daa0b594be26616ceee93102";
 		assertEquals(expected, actual);
@@ -135,7 +131,7 @@ public class CertificateExtensionsTest
 	{
 		String expected;
 		String actual;
-		
+
 		actual = CertificateExtensions.getFirstValueOf(certificate, BCStyle.CN);
 		expected = "Test subject";
 		assertEquals(expected, actual);
@@ -148,8 +144,8 @@ public class CertificateExtensionsTest
 	public void testGetIssuedBy()
 	{
 		String expected;
-		String actual;		
-		
+		String actual;
+
 		actual = CertificateExtensions.getIssuedBy(certificate);
 		expected = "CN=Test subject";
 		assertEquals(expected, actual);
@@ -163,7 +159,7 @@ public class CertificateExtensionsTest
 	{
 		String expected;
 		String actual;
-		
+
 		actual = CertificateExtensions.getIssuedTo(certificate);
 		expected = "CN=Test issue";
 		assertEquals(expected, actual);
@@ -180,7 +176,7 @@ public class CertificateExtensionsTest
 	{
 		String expected;
 		String actual;
-		
+
 		actual = CertificateExtensions.getLocality(certificate);
 		expected = "";
 		assertEquals(expected, actual);
@@ -197,7 +193,7 @@ public class CertificateExtensionsTest
 	{
 		String expected;
 		String actual;
-		
+
 		actual = CertificateExtensions.getOrganization(certificate);
 		expected = "";
 		assertEquals(expected, actual);
@@ -211,7 +207,7 @@ public class CertificateExtensionsTest
 	{
 		String expected;
 		String actual;
-		
+
 		actual = CertificateExtensions.getSignatureAlgorithm(certificate);
 		expected = CryptConst.SHA256_WITH_RSA;
 		assertEquals(expected, actual);
@@ -225,7 +221,7 @@ public class CertificateExtensionsTest
 	{
 		Date expected;
 		Date actual;
-		
+
 		actual = CertificateExtensions.getValidFrom(certificate);
 		expected = Date
 			.from(ZonedDateTime.of(2016, 12, 31, 23, 0, 0, 0, ZoneId.of("UTC")).toInstant());
@@ -240,7 +236,7 @@ public class CertificateExtensionsTest
 	{
 		Date expected;
 		Date actual;
-		
+
 		actual = CertificateExtensions.getValidUntil(certificate);
 		expected = Date
 			.from(ZonedDateTime.of(2026, 12, 31, 23, 0, 0, 0, ZoneId.of("UTC")).toInstant());

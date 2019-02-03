@@ -3,28 +3,24 @@
  *
  * Copyright (C) 2015 Asterios Raptis
  *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
- * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
- * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package de.alpharogroup.crypto.key;
 
-import static org.testng.AssertJUnit.assertTrue;
+import static org.testng.AssertJUnit.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
@@ -98,24 +94,36 @@ public class KeyHexEncryptDecryptorTest
 		IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException,
 		BadPaddingException, InvalidAlgorithmParameterException, DecoderException
 	{
-		final String test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
 
-		final File derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		final File publickeyDerFile = new File(derDir, "public.der");
-		final File privatekeyDerFile = new File(derDir, "private.der");
+		String actual;
+		String expected;
+		File derDir;
+		File publickeyDerFile;
+		File privatekeyDerFile;
+		PrivateKey privateKey;
+		PublicKey publicKey;
+		PublicKeyHexEncryptor encryptor;
+		PrivateKeyHexDecryptor decryptor;
+		String encrypted;
 
-		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
+		expected = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
 
-		final PublicKey publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
+		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		publickeyDerFile = new File(derDir, "public.der");
+		privatekeyDerFile = new File(derDir, "private.der");
 
-		final PublicKeyHexEncryptor encryptor = new PublicKeyHexEncryptor(publicKey);
+		privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
 
-		final String encrypted = encryptor.encrypt(test);
+		publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
 
-		final PrivateKeyHexDecryptor decryptor = new PrivateKeyHexDecryptor(privateKey);
-		final String decryted = decryptor.decrypt(encrypted);
-		assertTrue("String before encryption is not equal after decryption.",
-			test.equals(decryted));
+		encryptor = new PublicKeyHexEncryptor(publicKey);
+
+		encrypted = encryptor.encrypt(expected);
+
+		decryptor = new PrivateKeyHexDecryptor(privateKey);
+
+		actual = decryptor.decrypt(encrypted);
+		assertEquals(actual, expected);
 	}
 
 	/**
@@ -150,23 +158,33 @@ public class KeyHexEncryptDecryptorTest
 		IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException,
 		BadPaddingException, InvalidAlgorithmParameterException, DecoderException
 	{
-		final String test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
+		String actual;
+		String expected;
+		File publickeyPemDir;
+		File publickeyPemFile;
+		File privatekeyPemFile;
+		PrivateKey privateKey;
+		PublicKey publicKey;
+		PublicKeyHexEncryptor encryptor;
+		PrivateKeyHexDecryptor decryptor;
+		String encrypted;
 
-		final File publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
-		final File privatekeyPemFile = new File(publickeyPemDir, "private.pem");
+		expected = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
 
-		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile);
+		publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		publickeyPemFile = new File(publickeyPemDir, "public.pem");
+		privatekeyPemFile = new File(publickeyPemDir, "private.pem");
 
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
+		privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile);
 
-		final PublicKeyHexEncryptor encryptor = new PublicKeyHexEncryptor(publicKey);
+		publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
-		final String encrypted = encryptor.encrypt(test);
-		final PrivateKeyHexDecryptor decryptor = new PrivateKeyHexDecryptor(privateKey);
-		final String decryted = decryptor.decrypt(encrypted);
-		assertTrue("String before encryption is not equal after decryption.",
-			test.equals(decryted));
+		encryptor = new PublicKeyHexEncryptor(publicKey);
+
+		encrypted = encryptor.encrypt(expected);
+		decryptor = new PrivateKeyHexDecryptor(privateKey);
+		actual = decryptor.decrypt(encrypted);
+		assertEquals(actual, expected);
 	}
 
 }

@@ -20,7 +20,7 @@
  */
 package de.alpharogroup.crypto.factories;
 
-import static org.testng.Assert.assertNotNull;
+import static org.testng.AssertJUnit.assertNotNull;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
@@ -137,7 +137,7 @@ public class CipherFactoryTest
 	{
 		String algorithm;
 		Cipher cipher;
-		
+
 		Security.addProvider(new BouncyCastleProvider());
 		algorithm = "AES/CBC/PKCS5Padding";
 		cipher = CipherFactory.newCipher(algorithm, SecurityProvider.BC.name());
@@ -153,7 +153,7 @@ public class CipherFactoryTest
 		String algorithm;
 		Cipher cipher;
 		int operationMode;
-		
+
 		algorithm = CryptConst.PBE_WITH_MD5_AND_DES;
 		operationMode = Cipher.ENCRYPT_MODE;
 		cipher = CipherFactory.newCipher(CryptConst.PRIVATE_KEY, algorithm, CryptConst.SALT,

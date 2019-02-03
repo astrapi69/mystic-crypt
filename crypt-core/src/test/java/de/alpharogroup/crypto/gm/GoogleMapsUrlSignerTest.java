@@ -21,7 +21,7 @@
 package de.alpharogroup.crypto.gm;
 
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
-import static org.testng.Assert.assertNotNull;
+import static org.testng.AssertJUnit.assertNotNull;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -55,7 +55,7 @@ public class GoogleMapsUrlSignerTest
 	public void testSignRequestStringStringString() throws Exception
 	{
 		String signRequest;
-		
+
 		signRequest = GoogleMapsUrlSigner.signRequest("YOUR_PRIVATE_KEY", "/alpha/beta", "quest");
 		assertNotNull(signRequest);
 	}
@@ -68,7 +68,7 @@ public class GoogleMapsUrlSignerTest
 	{
 		URL url;
 		String signRequest;
-		
+
 		url = random(URL.class);
 		signRequest = GoogleMapsUrlSigner.signRequest(url, "YOUR_PRIVATE_KEY");
 		assertNotNull(signRequest);

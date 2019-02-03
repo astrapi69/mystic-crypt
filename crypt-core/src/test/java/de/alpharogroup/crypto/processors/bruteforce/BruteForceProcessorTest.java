@@ -55,8 +55,9 @@ public class BruteForceProcessorTest
 		long start;
 		long end;
 		long elapsedMilliSeconds;
+		Set<String> list;
 
-		final Set<String> list = PackageExtensions.scanClassNames("de.alpharogroup", true, true);
+		list = PackageExtensions.scanClassNames("de.alpharogroup", true, true);
 		for (final String string : list)
 		{
 			if (string.endsWith("Test"))
