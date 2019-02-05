@@ -21,6 +21,7 @@
 package de.alpharogroup.crypto.simple;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -96,7 +97,7 @@ public class SimpleDecryptor implements StringDecryptor, Cryptor
 		initialize();
 		final byte[] dec = Base64.getDecoder().decode(encypted);
 		final byte[] utf8 = this.cipher.doFinal(dec);
-		return new String(utf8, CryptConst.ENCODING);
+		return new String(utf8, StandardCharsets.UTF_8.name());
 	}
 
 	/**

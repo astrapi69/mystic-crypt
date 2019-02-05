@@ -177,6 +177,7 @@ public final class EncryptedPrivateKeyReader
 		Object pemObject = pemParser.readObject();
 		pemParser.close();
 		PEMDecryptorProvider decryptorProvider = new JcePEMDecryptorProviderBuilder()
+			.setProvider(SecurityProvider.BC.name())
 			.build(password.toCharArray());
 		JcaPEMKeyConverter keyConverter = new JcaPEMKeyConverter()
 			.setProvider(SecurityProvider.BC.name());

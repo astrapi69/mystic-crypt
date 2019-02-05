@@ -40,11 +40,6 @@ public abstract class CryptConst
 {
 
 	/**
-	 * Constant for the utf-8 encoding.
-	 */
-	public static final String ENCODING = "UTF8";
-
-	/**
 	 * Constant for the iteration count.
 	 */
 	public static final int ITERATIONCOUNT = 19;
@@ -75,13 +70,10 @@ public abstract class CryptConst
 	public static final String PBE_WITH_SHA1_AND_DES_EDE = PBE_WITH + HashAlgorithm.SHA1.name()
 		+ UnionWord.And.name() + SunJCEAlgorithm.DESede.name();
 
-	/** The Constant PBKDF2. */
-	public static final String PBKDF2 = PasswordHashType.PBKDF2.name();
-
 	/**
 	 * Constant for the algorithm 'PBKDF2WithHmacSHA1' to encrypt and decrypt.
 	 */
-	public static final String PBKDF2_WITH_HMAC_SHA1 = PBKDF2 + UnionWord.With.name()
+	public static final String PBKDF2_WITH_HMAC_SHA1 = PasswordHashType.PBKDF2.name() + UnionWord.With.name()
 		+ MacAlgorithm.HMAC + HashAlgorithm.SHA1.name();
 
 	/**

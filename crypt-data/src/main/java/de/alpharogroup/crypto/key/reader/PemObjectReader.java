@@ -86,7 +86,6 @@ public class PemObjectReader
 		try (PEMParser pemParser = new PEMParser(
 			new InputStreamReader(new FileInputStream(keyFile))))
 		{
-
 			PEMEncryptedKeyPair encryptedKeyPair = (PEMEncryptedKeyPair)pemParser.readObject();
 			PEMDecryptorProvider decryptorProvider = new JcePEMDecryptorProviderBuilder()
 				.build(password.toCharArray());
