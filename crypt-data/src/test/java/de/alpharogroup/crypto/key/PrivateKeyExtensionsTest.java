@@ -20,11 +20,10 @@
  */
 package de.alpharogroup.crypto.key;
 
-import static org.junit.Assert.assertNotNull;
 import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNotNull;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.security.KeyFactory;
@@ -35,11 +34,6 @@ import java.security.PublicKey;
 import java.security.Security;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
-
-import org.bouncycastle.openssl.PEMParser;
-import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
-import org.bouncycastle.openssl.PEMKeyPair;
-import java.security.KeyPair;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.io.pem.PemObject;
@@ -369,6 +363,7 @@ public class PrivateKeyExtensionsTest
 	public void testToPKCS1Format() throws NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchProviderException, IOException
 	{
+		Security.addProvider(new BouncyCastleProvider());
 		byte[] pkcs1Format;
 		PemObject pemObject;
 		PKCS8EncodedKeySpec keySpec;
@@ -385,13 +380,6 @@ public class PrivateKeyExtensionsTest
 		kf = KeyFactory.getInstance("RSA");
 		privateKey1 = kf.generatePrivate(keySpec);
 		assertEquals(privateKey1, privateKey);
-
-		PEMParser pemParser = new PEMParser(new FileReader(privateKeyPemFile));
-		JcaPEMKeyConverter converter = new JcaPEMKeyConverter().setProvider("BC");
-		Object object = pemParser.readObject();
-		KeyPair kp = converter.getKeyPair((PEMKeyPair) object);
-		privateKey = kp.getPrivate();
-		pkcs1Format = PrivateKeyExtensions.toPKCS1Format(privateKey);
 
 	}
 
