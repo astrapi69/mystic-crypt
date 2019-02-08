@@ -24,6 +24,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.testng.AssertJUnit.assertEquals;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.security.KeyFactory;
