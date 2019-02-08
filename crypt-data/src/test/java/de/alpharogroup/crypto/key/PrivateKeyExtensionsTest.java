@@ -385,7 +385,7 @@ public class PrivateKeyExtensionsTest
 		privateKey1 = kf.generatePrivate(keySpec);
 		assertEquals(privateKey1, privateKey);
 
-		PEMParser pemParser = new PEMParser(new FileReader(privateKeyFile));
+		PEMParser pemParser = new PEMParser(new FileReader(privateKeyPemFile));
 		JcaPEMKeyConverter converter = new JcaPEMKeyConverter().setProvider("BC");
 		Object object = pemParser.readObject();
 		KeyPair kp = converter.getKeyPair((PEMKeyPair) object);
