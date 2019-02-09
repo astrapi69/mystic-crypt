@@ -24,7 +24,7 @@
  */
 package de.alpharogroup.crypto.factories;
 
-import static org.testng.Assert.assertNotNull;
+import static org.testng.AssertJUnit.assertNotNull;
 
 import java.lang.reflect.InvocationTargetException;
 import java.security.spec.AlgorithmParameterSpec;
@@ -36,7 +36,7 @@ import org.testng.annotations.Test;
 import de.alpharogroup.crypto.CryptConst;
 
 /**
- * The class {@link AlgorithmParameterSpecFactory}
+ * The unit test class for the class {@link AlgorithmParameterSpecFactory}
  */
 public class AlgorithmParameterSpecFactoryTest
 {
@@ -47,8 +47,9 @@ public class AlgorithmParameterSpecFactoryTest
 	@Test
 	public void testNewPBEParameterSpec() throws Exception
 	{
-		AlgorithmParameterSpec pbeParameterSpec = AlgorithmParameterSpecFactory
-			.newPBEParameterSpec(CryptConst.SALT, CryptConst.ITERATIONCOUNT);
+		AlgorithmParameterSpec pbeParameterSpec;
+		pbeParameterSpec = AlgorithmParameterSpecFactory.newPBEParameterSpec(CryptConst.SALT,
+			CryptConst.ITERATIONCOUNT);
 		assertNotNull(pbeParameterSpec);
 	}
 

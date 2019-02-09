@@ -105,12 +105,14 @@ public class KeyPairFactoryTest
 	public void testNewKeyPairFileFile() throws NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchProviderException, IOException
 	{
+		File derDir;
+		File publicKeyDerFile;
+		File privateKeyDerFile;
 		KeyPair actual;
 
-		final File derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		final File publicKeyDerFile = new File(derDir, "public.der");
-		final File privateKeyDerFile = new File(derDir, "private.der");
-
+		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		publicKeyDerFile = new File(derDir, "public.der");
+		privateKeyDerFile = new File(derDir, "private.der");
 
 		actual = KeyPairFactory.newKeyPair(publicKeyDerFile, privateKeyDerFile);
 		assertNotNull(actual);
@@ -146,15 +148,23 @@ public class KeyPairFactoryTest
 	@Test
 	public void testProtectPrivateKeyWithPassword() throws Exception
 	{
-		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		final File publickeyDerFile = new File(publickeyDerDir, "public.der");
-		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
 
-		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
+		File publickeyDerDir;
+		File publickeyDerFile;
+		File privatekeyDerFile;
+		PrivateKey privateKey;
+		PublicKey publicKey;
+		KeyPair keyPair;
 
-		final PublicKey publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
+		publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		publickeyDerFile = new File(publickeyDerDir, "public.der");
+		privatekeyDerFile = new File(publickeyDerDir, "private.der");
 
-		final KeyPair keyPair = KeyPairFactory.newKeyPair(publicKey, privateKey);
+		privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
+
+		publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
+
+		keyPair = KeyPairFactory.newKeyPair(publicKey, privateKey);
 		assertNotNull(keyPair);
 	}
 

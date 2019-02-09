@@ -67,10 +67,14 @@ public class KeyStoreFactoryTest
 	public void testNewKeyStore() throws NoSuchAlgorithmException, CertificateException,
 		FileNotFoundException, KeyStoreException, IOException
 	{
-		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		final File privatekeyDerFile = new File(publickeyDerDir, "keystore.jks");
+		File publickeyDerDir;
+		File privatekeyDerFile;
+		KeyStore keystore;
 
-		KeyStore keystore = KeyStoreFactory.newKeyStore(KeystoreType.JKS.name(), "foobar-secret-pw",
+		publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		privatekeyDerFile = new File(publickeyDerDir, "keystore.jks");
+
+		keystore = KeyStoreFactory.newKeyStore(KeystoreType.JKS.name(), "foobar-secret-pw",
 			privatekeyDerFile, true);
 		AssertJUnit.assertNotNull(keystore);
 		DeleteFileExtensions.delete(privatekeyDerFile);

@@ -24,7 +24,7 @@
  */
 package de.alpharogroup.crypto.factories;
 
-import static org.testng.Assert.assertNotNull;
+import static org.testng.AssertJUnit.assertNotNull;
 
 import java.lang.reflect.InvocationTargetException;
 import java.security.spec.KeySpec;
@@ -36,7 +36,7 @@ import org.testng.annotations.Test;
 import de.alpharogroup.crypto.CryptConst;
 
 /**
- * The class {@link KeySpecFactory}
+ * The unit test class for the class {@link KeySpecFactory}
  */
 public class KeySpecFactoryTest
 {

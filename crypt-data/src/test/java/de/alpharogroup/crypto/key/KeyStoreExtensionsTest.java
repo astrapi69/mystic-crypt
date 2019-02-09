@@ -24,8 +24,8 @@
  */
 package de.alpharogroup.crypto.key;
 
-import static org.testng.Assert.assertTrue;
 import static org.testng.AssertJUnit.assertFalse;
+import static org.testng.AssertJUnit.assertTrue;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -108,11 +108,14 @@ public class KeyStoreExtensionsTest
 	@Test
 	public void testDeleteAlias() throws Exception
 	{
+		KeyStore keyStore;
+		boolean containsAlias;
+
 		KeyStoreExtensions.deleteAlias(privatekeyDerFile, alias, password);
 
-		KeyStore keyStore = KeyStoreFactory.newKeyStore(KeystoreType.JKS.name(), password,
-			privatekeyDerFile, true);
-		boolean containsAlias = keyStore.containsAlias(alias);
+		keyStore = KeyStoreFactory.newKeyStore(KeystoreType.JKS.name(), password, privatekeyDerFile,
+			true);
+		containsAlias = keyStore.containsAlias(alias);
 
 		assertFalse(containsAlias);
 	}

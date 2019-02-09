@@ -50,13 +50,16 @@ public class PublicKeyEncryptorTest
 	 *             is thrown if a security error occurs
 	 */
 	@Test
-	public final void testConstructors() throws Exception
+	public void testConstructors() throws Exception
 	{
 		PublicKey publicKey;
 		PublicKeyEncryptor encryptor;
 		CryptModel<Cipher, PublicKey> encryptModel;
-		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		final File publickeyDerFile = new File(publickeyDerDir, "public.der");
+		File publickeyDerDir;
+		File publickeyDerFile;
+
+		publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		publickeyDerFile = new File(publickeyDerDir, "public.der");
 		publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
 
 		encryptModel = CryptModel.<Cipher, PublicKey> builder().key(publicKey).build();

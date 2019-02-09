@@ -24,7 +24,7 @@
  */
 package de.alpharogroup.crypto.key;
 
-import static org.testng.Assert.assertTrue;
+import static org.testng.AssertJUnit.assertTrue;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;

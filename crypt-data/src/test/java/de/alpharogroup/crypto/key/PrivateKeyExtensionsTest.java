@@ -24,8 +24,8 @@
  */
 package de.alpharogroup.crypto.key;
 
-import static org.junit.Assert.assertNotNull;
 import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -367,6 +367,7 @@ public class PrivateKeyExtensionsTest
 	public void testToPKCS1Format() throws NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchProviderException, IOException
 	{
+		Security.addProvider(new BouncyCastleProvider());
 		byte[] pkcs1Format;
 		PemObject pemObject;
 		PKCS8EncodedKeySpec keySpec;
@@ -377,7 +378,6 @@ public class PrivateKeyExtensionsTest
 		privateKey = PrivateKeyReader.readPemPrivateKey(privateKeyPemFile);
 		pkcs1Format = PrivateKeyExtensions.toPKCS1Format(privateKey);
 		assertNotNull(pkcs1Format);
-
 
 		pemObject = new PemObject("RSA PUBLIC KEY", pkcs1Format);
 		keySpec = new PKCS8EncodedKeySpec(pemObject.getContent());

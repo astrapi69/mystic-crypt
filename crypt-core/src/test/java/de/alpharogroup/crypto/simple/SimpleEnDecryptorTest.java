@@ -73,15 +73,21 @@ public class SimpleEnDecryptorTest
 		IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException,
 		InvalidKeySpecException, NoSuchPaddingException, InvalidAlgorithmParameterException
 	{
-		final String test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
+		String actual;
+		String expected;
+		SimpleEncryptor encryptor;
+		String encrypted;
+		SimpleDecryptor decryptor;
 
-		final SimpleEncryptor encryptor = new SimpleEncryptor(CryptConst.PRIVATE_KEY);
+		expected = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
 
-		final String encrypted = encryptor.encrypt(test);
-		final SimpleDecryptor decryptor = new SimpleDecryptor(CryptConst.PRIVATE_KEY);
-		final String decryted = decryptor.decrypt(encrypted);
+		encryptor = new SimpleEncryptor(CryptConst.PRIVATE_KEY);
+
+		encrypted = encryptor.encrypt(expected);
+		decryptor = new SimpleDecryptor(CryptConst.PRIVATE_KEY);
+		actual = decryptor.decrypt(encrypted);
 		assertTrue("String before encryption is not equal after decryption.",
-			test.equals(decryted));
+			expected.equals(actual));
 	}
 
 }

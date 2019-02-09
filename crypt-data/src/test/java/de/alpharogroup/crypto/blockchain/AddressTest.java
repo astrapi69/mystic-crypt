@@ -62,13 +62,16 @@ public class AddressTest
 		InvalidKeySpecException, NoSuchProviderException
 	{
 		Address address;
+		File publickeyPemDir;
+		File publickeyPemFile;
+		PublicKey publicKey;
 
 		address = new Address();
 		assertNotNull(address);
 
-		final File publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
+		publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		publickeyPemFile = new File(publickeyPemDir, "public.pem");
+		publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
 		address = new Address("foo", publicKey.getEncoded());
 		assertNotNull(address);

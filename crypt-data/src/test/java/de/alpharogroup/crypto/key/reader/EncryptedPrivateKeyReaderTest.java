@@ -24,30 +24,34 @@
  */
 package de.alpharogroup.crypto.key.reader;
 
-import static org.testng.AssertJUnit.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.security.KeyPair;
 import java.security.PrivateKey;
+import java.security.Security;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.openssl.PEMException;
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
-import de.alpharogroup.crypto.key.writer.EncryptedPrivateKeyWriter;
-import de.alpharogroup.file.delete.DeleteFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * The unit test class for the class {@link EncryptedPrivateKeyReader}.
+ * The unit test class for the class {@link EncryptedPrivateKeyReader}
  */
 public class EncryptedPrivateKeyReaderTest
 {
 	PrivateKey actual;
 	File derDir;
+	File pemDir;
 
 	File encryptedPrivateKeyFile;
 	PrivateKey expected;
@@ -64,7 +68,8 @@ public class EncryptedPrivateKeyReaderTest
 	protected void setUp() throws Exception
 	{
 		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		encryptedPrivateKeyFile = new File(derDir, "encryptedPrivate.der");
+		pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		encryptedPrivateKeyFile = new File(pemDir, "test.key");
 	}
 
 	/**
@@ -76,109 +81,52 @@ public class EncryptedPrivateKeyReaderTest
 	@AfterMethod
 	protected void tearDown() throws Exception
 	{
-		if (encryptedPrivateKeyFile.exists())
-		{
-			DeleteFileExtensions.delete(encryptedPrivateKeyFile);
-		}
+	}
+
+
+	/**
+	 * Test method for
+	 * {@link EncryptedPrivateKeyReader#readPasswordProtectedPrivateKey(byte[], String, String)}
+	 */
+	@Test(enabled = false)
+	public void testReadPasswordProtectedPrivateKeyByteArrayStringString()
+	{
 	}
 
 	/**
 	 * Test method for
-	 * {@link EncryptedPrivateKeyReader#decryptPasswordProtectedPrivateKey(byte[], String, String)}
-	 *
-	 * @throws Exception
-	 *             is thrown if any error occurs on the execution
+	 * {@link EncryptedPrivateKeyReader#readPasswordProtectedPrivateKey(File, String, String)}
 	 */
-	@SuppressWarnings("deprecation")
-	@Test
-	public void testDecryptPasswordProtectedPrivateKeyByteArray() throws Exception
+	@Test(enabled = false)
+	public void testReadPasswordProtectedPrivateKeyFileStringString()
 	{
-		byte[] pwprotectedKey;
-		PrivateKey decryptedPrivateKey;
+	}
 
-		readedPrivateKey = PrivateKeyReader.readPrivateKey(PathFinder.getSrcTestResourcesDir(),
-			"der", "private.der");
-		password = "secret";
-		pwprotectedKey = EncryptedPrivateKeyWriter.encryptPrivateKeyWithPassword(readedPrivateKey,
-			password);
-
-		decryptedPrivateKey = EncryptedPrivateKeyReader.readPasswordProtectedPrivateKey(
-			pwprotectedKey, password, KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
-		expected = readedPrivateKey;
-		actual = decryptedPrivateKey;
-		assertEquals(expected, actual);
-
-		decryptedPrivateKey = EncryptedPrivateKeyReader.decryptPasswordProtectedPrivateKey(
-			pwprotectedKey, password, KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
-		expected = readedPrivateKey;
-		actual = decryptedPrivateKey;
-		assertEquals(expected, actual);
+	/**
+	 * Test method for {@link EncryptedPrivateKeyReader#getKeyPair(File, String)}
+	 * 
+	 * @throws FileNotFoundException
+	 *             is thrown if the file did not found
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws PEMException
+	 *             is thrown if an error occurs on read the pem file
+	 */
+	@Test(enabled = true)
+	public void testGetKeyPair() throws FileNotFoundException, PEMException, IOException
+	{
+		Security.addProvider(new BouncyCastleProvider());
+		KeyPair keyPair = EncryptedPrivateKeyReader.getKeyPair(encryptedPrivateKeyFile, "bosco");
+		assertNotNull(keyPair);
 	}
 
 	/**
 	 * Test method for
-	 * {@link EncryptedPrivateKeyReader#decryptPasswordProtectedPrivateKey(File, String)}
-	 *
-	 * @throws Exception
-	 *             is thrown if any error occurs on the execution
+	 * {@link EncryptedPrivateKeyReader#readPasswordProtectedPrivateKey(File, String)}
 	 */
-	@SuppressWarnings("deprecation")
-	@Test
-	public void testDecryptPasswordProtectedPrivateKeyFilePassword() throws Exception
+	@Test(enabled = false)
+	public void testReadPasswordProtectedPrivateKeyFileString()
 	{
-
-		PrivateKey decryptedPrivateKey;
-
-		readedPrivateKey = PrivateKeyReader.readPrivateKey(PathFinder.getSrcTestResourcesDir(),
-			"der", "private.der");
-		password = "secret";
-		EncryptedPrivateKeyWriter.encryptPrivateKeyWithPassword(readedPrivateKey,
-			encryptedPrivateKeyFile, password);
-
-		decryptedPrivateKey = EncryptedPrivateKeyReader
-			.readPasswordProtectedPrivateKey(encryptedPrivateKeyFile, password);
-		expected = readedPrivateKey;
-		actual = decryptedPrivateKey;
-		assertEquals(expected, actual);
-
-		decryptedPrivateKey = EncryptedPrivateKeyReader
-			.decryptPasswordProtectedPrivateKey(encryptedPrivateKeyFile, password);
-		expected = readedPrivateKey;
-		actual = decryptedPrivateKey;
-		assertEquals(expected, actual);
-	}
-
-	/**
-	 * Test method for
-	 * {@link EncryptedPrivateKeyReader#decryptPasswordProtectedPrivateKey(File, String, String)}
-	 *
-	 * @throws Exception
-	 *             is thrown if any error occurs on the execution
-	 */
-	@SuppressWarnings("deprecation")
-	@Test
-	public void testDecryptPasswordProtectedPrivateKeyFilePasswordAlgorithm() throws Exception
-	{
-
-		PrivateKey decryptedPrivateKey;
-
-		readedPrivateKey = PrivateKeyReader.readPrivateKey(PathFinder.getSrcTestResourcesDir(),
-			"der", "private.der");
-		password = "secret";
-		EncryptedPrivateKeyWriter.encryptPrivateKeyWithPassword(readedPrivateKey,
-			encryptedPrivateKeyFile, password);
-
-		decryptedPrivateKey = EncryptedPrivateKeyReader.readPasswordProtectedPrivateKey(
-			encryptedPrivateKeyFile, password, KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
-		expected = readedPrivateKey;
-		actual = decryptedPrivateKey;
-		assertEquals(expected, actual);
-
-		decryptedPrivateKey = EncryptedPrivateKeyReader.decryptPasswordProtectedPrivateKey(
-			encryptedPrivateKeyFile, password, KeyPairGeneratorAlgorithm.RSA.getAlgorithm());
-		expected = readedPrivateKey;
-		actual = decryptedPrivateKey;
-		assertEquals(expected, actual);
 	}
 
 	/**

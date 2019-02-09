@@ -24,7 +24,7 @@
  */
 package de.alpharogroup.crypto.key.reader;
 
-import static org.testng.Assert.assertEquals;
+import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertNotNull;
 
 import java.io.File;
@@ -222,7 +222,7 @@ public class PrivateKeyReaderTest
 	}
 
 	/**
-	 * Test method for {@link PrivateKeyReader#readPemPrivateKey(String, String)}.
+	 * Test method for {@link PrivateKeyReader#readPemPrivateKey(String, String)}
 	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred. *
@@ -238,8 +238,9 @@ public class PrivateKeyReaderTest
 	public void testReadPemPrivateKeyStringString() throws IOException, NoSuchAlgorithmException,
 		InvalidKeySpecException, NoSuchProviderException
 	{
-		final String privateKeyAsBase64String = PrivateKeyReader
-			.readPemFileAsBase64(privateKeyPemFile);
+		String privateKeyAsBase64String;
+
+		privateKeyAsBase64String = PrivateKeyReader.readPemFileAsBase64(privateKeyPemFile);
 
 		actual = PrivateKeyReader.readPemPrivateKey(privateKeyAsBase64String,
 			KeyPairGeneratorAlgorithm.RSA.getAlgorithm());

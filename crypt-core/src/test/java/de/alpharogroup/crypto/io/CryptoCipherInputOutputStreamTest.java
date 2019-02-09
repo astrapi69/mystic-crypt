@@ -84,59 +84,59 @@ public class CryptoCipherInputOutputStreamTest
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, IOException
 	{
-		final String privateKey = "D1D15ED36B887AF1";
-		final File cryptDir = new File(PathFinder.getSrcTestResourcesDir(), "crypt");
-		final File toEncrypt = new File(cryptDir, "test.txt");
-
-		final InputStream fis = new FileInputStream(toEncrypt);
-
-		CryptModel<Cipher, String> encryptorModel = CryptModel.<Cipher, String> builder()
-			.key(privateKey).algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).salt(CryptConst.SALT)
-			.iterationCount(19).operationMode(Cipher.ENCRYPT_MODE).build();
-
-		Cipher encryptorCipher = CipherFactory.newCipher(encryptorModel);
-
-		final CryptoCipherInputStream cis = new CryptoCipherInputStream(fis, encryptorCipher);
-		final File encryptedFile = new File(cryptDir, "encrypted.txt");
-
-		final FileOutputStream out = new FileOutputStream(encryptedFile);
-
+		String actual;
+		String expected;
+		String privateKey;
+		final File cryptDir;
+		final File toEncrypt;
+		CryptModel<Cipher, String> encryptorModel;
+		Cipher encryptorCipher;
+		File encryptedFile;
 		int c;
+		File outputDecrypted;
+		CryptModel<Cipher, String> decryptorModel;
+		Cipher decryptorCipher;
+		// new scenario...
+		privateKey = "D1D15ED36B887AF1";
+		cryptDir = new File(PathFinder.getSrcTestResourcesDir(), "crypt");
+		toEncrypt = new File(cryptDir, "test.txt");
+		encryptedFile = new File(cryptDir, "encrypted.txt");
 
-		while ((c = cis.read()) != -1)
+		encryptorModel = CryptModel.<Cipher, String> builder().key(privateKey)
+			.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).salt(CryptConst.SALT).iterationCount(19)
+			.operationMode(Cipher.ENCRYPT_MODE).build();
+
+		encryptorCipher = CipherFactory.newCipher(encryptorModel);
+
+		try (InputStream fis = new FileInputStream(toEncrypt);
+			CryptoCipherInputStream cis = new CryptoCipherInputStream(fis, encryptorCipher);
+			FileOutputStream out = new FileOutputStream(encryptedFile))
 		{
-			out.write(c);
+			while ((c = cis.read()) != -1)
+			{
+				out.write(c);
+			}
 		}
 
-		cis.close();
-		out.close();
+		outputDecrypted = new File(cryptDir, "decrypted.txt");
+		decryptorModel = encryptorModel.toBuilder().operationMode(Cipher.DECRYPT_MODE).build();
 
-		final File outputDecrypted = new File(cryptDir, "decrypted.txt");
+		decryptorCipher = CipherFactory.newCipher(decryptorModel);
 
-		final FileOutputStream decryptedOut = new FileOutputStream(outputDecrypted);
-
-		CryptModel<Cipher, String> decryptorModel = encryptorModel.toBuilder()
-			.operationMode(Cipher.DECRYPT_MODE).build();
-
-
-		Cipher decryptorCipher = CipherFactory.newCipher(decryptorModel);
-
-		final CryptoCipherOutputStream cos = new CryptoCipherOutputStream(decryptedOut,
-			decryptorCipher);
-		final FileInputStream encryptedFis = new FileInputStream(encryptedFile);
-
-		while ((c = encryptedFis.read()) != -1)
+		try (FileOutputStream decryptedOut = new FileOutputStream(outputDecrypted);
+			CryptoCipherOutputStream cos = new CryptoCipherOutputStream(decryptedOut,
+				decryptorCipher);
+			FileInputStream encryptedFis = new FileInputStream(encryptedFile))
 		{
-			cos.write(c);
+
+			while ((c = encryptedFis.read()) != -1)
+			{
+				cos.write(c);
+			}
 		}
-
-		encryptedFis.close();
-		cos.close();
-
 		// Verify the enryption and decryption process by compare the content of files...
-
-		String expected = ReadFileExtensions.readFromFile(toEncrypt);
-		String actual = ReadFileExtensions.readFromFile(outputDecrypted);
+		expected = ReadFileExtensions.readFromFile(toEncrypt);
+		actual = ReadFileExtensions.readFromFile(outputDecrypted);
 		assertEquals(expected, actual);
 		// clean up...
 		DeleteFileExtensions.delete(encryptedFile);

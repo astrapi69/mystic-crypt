@@ -1,13 +1,16 @@
 ## Change log
 ----------------------
 
-Version 5.8-SNAPSHOT
+Version 5.8
 -------------
 
 CHANGED:
 
-- update of file-worker version to 5.0.2
+- update of parent version to 4.6
+- update of file-worker version to 5.1
 - update of jcommons-lang version to 5.1.1
+- update of test-objects version to 5.0.1
+- update of silly-collections version to 5.1
 
 Version 5.7
 -------------

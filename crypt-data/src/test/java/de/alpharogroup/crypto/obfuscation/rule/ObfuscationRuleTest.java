@@ -24,8 +24,8 @@
  */
 package de.alpharogroup.crypto.obfuscation.rule;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNotNull;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -53,7 +53,6 @@ public class ObfuscationRuleTest
 		model = ObfuscationRule.<Character, Character> builder().build();
 		assertNotNull(model);
 	}
-
 
 	/**
 	 * Test method for {@link ObfuscationRule#equals(Object)} , {@link ObfuscationRule#hashCode()}

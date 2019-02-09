@@ -84,8 +84,11 @@ public class CertificateExtensionsTest
 	@Test
 	public void testGetCountry() throws CertificateEncodingException
 	{
-		final String expected = "";
-		final String actual = CertificateExtensions.getCountry(certificate);
+		String expected;
+		String actual;
+
+		actual = CertificateExtensions.getCountry(certificate);
+		expected = "";
 		assertEquals(expected, actual);
 	}
 
@@ -100,20 +103,23 @@ public class CertificateExtensionsTest
 	@Test
 	public void testGetFingerprint() throws CertificateEncodingException, NoSuchAlgorithmException
 	{
-		String expected = "98e12b1607890c76daa0b594be26616ceee93102";
-		String actual = CertificateExtensions.getFingerprint(certificate, HashAlgorithm.SHA1);
+		String expected;
+		String actual;
+
+		actual = CertificateExtensions.getFingerprint(certificate, HashAlgorithm.SHA1);
+		expected = "98e12b1607890c76daa0b594be26616ceee93102";
 		assertEquals(expected, actual);
 
-		expected = "3a3dc338c7b444c3dd80e4f997d027a72451f9d5641783b3c810bf2d89bbd699";
 		actual = CertificateExtensions.getFingerprint(certificate, HashAlgorithm.SHA_256);
+		expected = "3a3dc338c7b444c3dd80e4f997d027a72451f9d5641783b3c810bf2d89bbd699";
 		assertEquals(expected, actual);
 
-		expected = "a44c1dc693670135c1abb13eb1a9472ab76059c29a7fb8b4a41ca605f3255fde7595374983ce7bc27633774d3c957026";
 		actual = CertificateExtensions.getFingerprint(certificate, HashAlgorithm.SHA_384);
+		expected = "a44c1dc693670135c1abb13eb1a9472ab76059c29a7fb8b4a41ca605f3255fde7595374983ce7bc27633774d3c957026";
 		assertEquals(expected, actual);
 
-		expected = "8ea8310e1ed6f299e4de949a8094cde28bac3550bf4fd551283e346477fbba77b085adae6348df1a296b370fe56819baf4fdc31e43c42ce192cad4bbfc6829ae";
 		actual = CertificateExtensions.getFingerprint(certificate, HashAlgorithm.SHA_512);
+		expected = "8ea8310e1ed6f299e4de949a8094cde28bac3550bf4fd551283e346477fbba77b085adae6348df1a296b370fe56819baf4fdc31e43c42ce192cad4bbfc6829ae";
 		assertEquals(expected, actual);
 	}
 
@@ -127,8 +133,11 @@ public class CertificateExtensionsTest
 	@Test
 	public void testGetFirstValueOf() throws CertificateEncodingException
 	{
-		final String expected = "Test subject";
-		final String actual = CertificateExtensions.getFirstValueOf(certificate, BCStyle.CN);
+		String expected;
+		String actual;
+
+		actual = CertificateExtensions.getFirstValueOf(certificate, BCStyle.CN);
+		expected = "Test subject";
 		assertEquals(expected, actual);
 	}
 
@@ -138,8 +147,11 @@ public class CertificateExtensionsTest
 	@Test
 	public void testGetIssuedBy()
 	{
-		final String expected = "CN=Test subject";
-		final String actual = CertificateExtensions.getIssuedBy(certificate);
+		String expected;
+		String actual;
+
+		actual = CertificateExtensions.getIssuedBy(certificate);
+		expected = "CN=Test subject";
 		assertEquals(expected, actual);
 	}
 
@@ -149,8 +161,11 @@ public class CertificateExtensionsTest
 	@Test
 	public void testGetIssuedTo()
 	{
-		final String expected = "CN=Test issue";
-		final String actual = CertificateExtensions.getIssuedTo(certificate);
+		String expected;
+		String actual;
+
+		actual = CertificateExtensions.getIssuedTo(certificate);
+		expected = "CN=Test issue";
 		assertEquals(expected, actual);
 	}
 
@@ -163,8 +178,11 @@ public class CertificateExtensionsTest
 	@Test
 	public void testGetLocality() throws CertificateEncodingException
 	{
-		final String expected = "";
-		final String actual = CertificateExtensions.getLocality(certificate);
+		String expected;
+		String actual;
+
+		actual = CertificateExtensions.getLocality(certificate);
+		expected = "";
 		assertEquals(expected, actual);
 	}
 
@@ -177,8 +195,11 @@ public class CertificateExtensionsTest
 	@Test
 	public void testGetOrganization() throws CertificateEncodingException
 	{
-		final String expected = "";
-		final String actual = CertificateExtensions.getOrganization(certificate);
+		String expected;
+		String actual;
+
+		actual = CertificateExtensions.getOrganization(certificate);
+		expected = "";
 		assertEquals(expected, actual);
 	}
 
@@ -188,8 +209,11 @@ public class CertificateExtensionsTest
 	@Test
 	public void testGetSignatureAlgorithm()
 	{
-		final String expected = CryptConst.SHA256_WITH_RSA;
-		final String actual = CertificateExtensions.getSignatureAlgorithm(certificate);
+		String expected;
+		String actual;
+
+		actual = CertificateExtensions.getSignatureAlgorithm(certificate);
+		expected = CryptConst.SHA256_WITH_RSA;
 		assertEquals(expected, actual);
 	}
 
@@ -199,9 +223,12 @@ public class CertificateExtensionsTest
 	@Test
 	public void testGetValidFrom()
 	{
-		final Date expected = Date
+		Date expected;
+		Date actual;
+
+		actual = CertificateExtensions.getValidFrom(certificate);
+		expected = Date
 			.from(ZonedDateTime.of(2016, 12, 31, 23, 0, 0, 0, ZoneId.of("UTC")).toInstant());
-		final Date actual = CertificateExtensions.getValidFrom(certificate);
 		assertEquals(expected, actual);
 	}
 
@@ -211,9 +238,12 @@ public class CertificateExtensionsTest
 	@Test
 	public void testGetValidUntil()
 	{
-		final Date expected = Date
+		Date expected;
+		Date actual;
+
+		actual = CertificateExtensions.getValidUntil(certificate);
+		expected = Date
 			.from(ZonedDateTime.of(2026, 12, 31, 23, 0, 0, 0, ZoneId.of("UTC")).toInstant());
-		final Date actual = CertificateExtensions.getValidUntil(certificate);
 		assertEquals(expected, actual);
 	}
 

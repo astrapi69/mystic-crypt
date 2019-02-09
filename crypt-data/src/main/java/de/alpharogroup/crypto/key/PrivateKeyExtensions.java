@@ -227,17 +227,12 @@ public class PrivateKeyExtensions
 	 */
 	public static byte[] toPKCS1Format(final PrivateKey privateKey) throws IOException
 	{
-		String keyFormat = privateKey.getFormat();
-		if (KeyFormat.PKCS_8.getFormat().equals(keyFormat))
-		{
-			final byte[] encoded = privateKey.getEncoded();
-			final PrivateKeyInfo privateKeyInfo = PrivateKeyInfo.getInstance(encoded);
-			final ASN1Encodable asn1Encodable = privateKeyInfo.parsePrivateKey();
-			final ASN1Primitive asn1Primitive = asn1Encodable.toASN1Primitive();
-			final byte[] privateKeyPKCS1Formatted = asn1Primitive.getEncoded();
-			return privateKeyPKCS1Formatted;
-		}
-		return privateKey.getEncoded();
+		final byte[] encoded = privateKey.getEncoded();
+		final PrivateKeyInfo privateKeyInfo = PrivateKeyInfo.getInstance(encoded);
+		final ASN1Encodable asn1Encodable = privateKeyInfo.parsePrivateKey();
+		final ASN1Primitive asn1Primitive = asn1Encodable.toASN1Primitive();
+		final byte[] privateKeyPKCS1Formatted = asn1Primitive.getEncoded();
+		return privateKeyPKCS1Formatted;
 	}
 
 	/**

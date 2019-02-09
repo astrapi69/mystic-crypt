@@ -25,6 +25,7 @@
 package de.alpharogroup.crypto.simple;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -98,7 +99,7 @@ public class SimpleEncryptor implements StringEncryptor, Cryptor
 		NoSuchPaddingException, InvalidAlgorithmParameterException
 	{
 		initialize();
-		final byte[] utf8 = string.getBytes(CryptConst.ENCODING);
+		final byte[] utf8 = string.getBytes(StandardCharsets.UTF_8.name());
 		final byte[] encrypt = this.cipher.doFinal(utf8);
 		final String encrypted = Base64.getEncoder().encodeToString(encrypt);
 		return encrypted;

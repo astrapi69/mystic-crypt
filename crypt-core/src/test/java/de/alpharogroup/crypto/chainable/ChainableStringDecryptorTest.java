@@ -48,24 +48,37 @@ public class ChainableStringDecryptorTest
 	@Test
 	public void testChainedEncryptDecrypt() throws Exception
 	{
-		final String secretMessage = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
-		final String firstKey = "D1D15ED36B887AF1";
-		final String secondKey = "44850AD044361AE8";
-		final String thirdKey = "BD0F34C849772DC6";
-		final HexableEncryptor firstEncryptor = new HexableEncryptor(firstKey);
-		final HexableEncryptor secondEncryptor = new HexableEncryptor(secondKey);
-		final HexableEncryptor thirdEncryptor = new HexableEncryptor(thirdKey);
-		final ChainableStringEncryptor encryptor = new ChainableStringEncryptor(firstEncryptor,
-			secondEncryptor, thirdEncryptor);
+		String secretMessage;
+		String firstKey;
+		String secondKey;
+		String thirdKey;
+		HexableEncryptor firstEncryptor;
+		HexableEncryptor secondEncryptor;
+		HexableEncryptor thirdEncryptor;
+		ChainableStringEncryptor encryptor;
+		String encrypted;
+		String decryted;
+		HexableDecryptor firstDecryptor;
+		HexableDecryptor secondDecryptor;
+		HexableDecryptor thirdDecryptor;
+		ChainableStringDecryptor decryptor;
 
-		final String encrypted = encryptor.encrypt(secretMessage);
-		final HexableDecryptor firstDecryptor = new HexableDecryptor(firstKey);
-		final HexableDecryptor secondDecryptor = new HexableDecryptor(secondKey);
-		final HexableDecryptor thirdDecryptor = new HexableDecryptor(thirdKey);
-		final ChainableStringDecryptor decryptor = new ChainableStringDecryptor(thirdDecryptor,
-			secondDecryptor, firstDecryptor);
+		secretMessage = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
+		firstKey = "D1D15ED36B887AF1";
+		secondKey = "44850AD044361AE8";
+		thirdKey = "BD0F34C849772DC6";
+		firstEncryptor = new HexableEncryptor(firstKey);
+		secondEncryptor = new HexableEncryptor(secondKey);
+		thirdEncryptor = new HexableEncryptor(thirdKey);
+		encryptor = new ChainableStringEncryptor(firstEncryptor, secondEncryptor, thirdEncryptor);
 
-		final String decryted = decryptor.decrypt(encrypted);
+		encrypted = encryptor.encrypt(secretMessage);
+		firstDecryptor = new HexableDecryptor(firstKey);
+		secondDecryptor = new HexableDecryptor(secondKey);
+		thirdDecryptor = new HexableDecryptor(thirdKey);
+		decryptor = new ChainableStringDecryptor(thirdDecryptor, secondDecryptor, firstDecryptor);
+
+		decryted = decryptor.decrypt(encrypted);
 		assertTrue("String before encryption is not equal after decryption.",
 			secretMessage.equals(decryted));
 	}

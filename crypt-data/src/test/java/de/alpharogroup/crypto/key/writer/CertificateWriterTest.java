@@ -96,28 +96,38 @@ public class CertificateWriterTest
 		IllegalStateException, SignatureException
 	{
 		Security.addProvider(new BouncyCastleProvider());
+		File privatekeyPemFile;
+		PrivateKey privateKey;
+		File publickeyPemFile;
+		PublicKey publicKey;
+		String subject;
+		String issuer;
+		String signatureAlgorithm;
+		Date start;
+		Date end;
+		BigInteger serialNumber;
 
 		pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
 
 		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		final File privatekeyPemFile = new File(pemDir, "private.pem");
+		privatekeyPemFile = new File(pemDir, "private.pem");
 
-		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile);
+		privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile);
 
-		final File publickeyPemFile = new File(pemDir, "public.pem");
+		publickeyPemFile = new File(pemDir, "public.pem");
 
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
+		publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
-		final String subject = "CN=Test subject";
-		final String issuer = "CN=Test issue";
-		final String signatureAlgorithm = HashAlgorithm.SHA256.getAlgorithm()
-			+ UnionWord.With.name() + KeyPairGeneratorAlgorithm.RSA.getAlgorithm();
+		subject = "CN=Test subject";
+		issuer = "CN=Test issue";
+		signatureAlgorithm = HashAlgorithm.SHA256.getAlgorithm() + UnionWord.With.name()
+			+ KeyPairGeneratorAlgorithm.RSA.getAlgorithm();
 
-		final Date start = Date.from(
+		start = Date.from(
 			LocalDate.of(2017, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		final Date end = Date.from(
+		end = Date.from(
 			LocalDate.of(2027, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		final BigInteger serialNumber = RandomExtensions.randomSerialNumber();
+		serialNumber = RandomExtensions.randomSerialNumber();
 		// create certificate
 		cert = CertFactory.newX509Certificate(publicKey, privateKey, serialNumber, subject, issuer,
 			signatureAlgorithm, start, end);
@@ -145,8 +155,10 @@ public class CertificateWriterTest
 	public void testWrite() throws IOException, CertificateException
 	{
 		X509Certificate certificate;
+		File certificateFile;
+		File certificateDerFile;
 
-		final File certificateFile = new File(pemDir, "certificate.cert");
+		certificateFile = new File(pemDir, "certificate.cert");
 		// save it ...
 		CertificateWriter.write(cert, certificateFile, KeyFileFormat.PEM);
 
@@ -157,7 +169,7 @@ public class CertificateWriterTest
 
 		// ======================================================================================
 
-		final File certificateDerFile = new File(derDir, "certificate.der");
+		certificateDerFile = new File(derDir, "certificate.der");
 		// save it ...
 		CertificateWriter.write(cert, certificateDerFile, KeyFileFormat.DER);
 
@@ -180,8 +192,9 @@ public class CertificateWriterTest
 	public void testWriteInDerFormatX509CertificateFile() throws IOException, CertificateException
 	{
 		X509Certificate certificate;
+		File certificateDerFile;
 
-		final File certificateDerFile = new File(derDir, "certificate.der");
+		certificateDerFile = new File(derDir, "certificate.der");
 		// save it ...
 		CertificateWriter.writeInDerFormat(cert, certificateDerFile);
 
@@ -204,8 +217,9 @@ public class CertificateWriterTest
 	public void testWriteInPemFormatX509CertificateFile() throws IOException, CertificateException
 	{
 		X509Certificate certificate;
+		File certificateFile;
 
-		final File certificateFile = new File(pemDir, "certificate.cert");
+		certificateFile = new File(pemDir, "certificate.cert");
 		// save it ...
 		CertificateWriter.writeInPemFormat(cert, certificateFile);
 

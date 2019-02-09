@@ -24,7 +24,8 @@
  */
 package de.alpharogroup.crypto.hex;
 
-import static org.junit.Assert.assertEquals;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertTrue;
 
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
@@ -50,10 +51,15 @@ public class HexExtensionsTest
 	@Test
 	public void testDecodeHex() throws DecoderException
 	{
-		final String expected = "Secret message";
-		final char[] actualCharArray = HexExtensions.encodeHex(StringUtils.getBytesUtf8(expected));
-		final byte[] decoded = HexExtensions.decodeHex(actualCharArray);
-		final String actual = new String(decoded);
+		String expected;
+		String actual;
+		char[] actualCharArray;
+		byte[] decoded;
+
+		expected = "Secret message";
+		actualCharArray = HexExtensions.encodeHex(StringUtils.getBytesUtf8(expected));
+		decoded = HexExtensions.decodeHex(actualCharArray);
+		actual = new String(decoded);
 		assertEquals(expected, actual);
 	}
 
@@ -66,10 +72,15 @@ public class HexExtensionsTest
 	@Test
 	public void testDecodeHexCharacterArray() throws DecoderException
 	{
-		final String expected = "Secret message";
-		final char[] actualCharArray = HexExtensions.encodeHex(StringUtils.getBytesUtf8(expected));
-		final byte[] decoded = HexExtensions.decodeHex(actualCharArray);
-		final String actual = HexExtensions.decodeHex(decoded);
+		String expected;
+		String actual;
+		char[] actualCharArray;
+		byte[] decoded;
+
+		expected = "Secret message";
+		actualCharArray = HexExtensions.encodeHex(StringUtils.getBytesUtf8(expected));
+		decoded = HexExtensions.decodeHex(actualCharArray);
+		actual = HexExtensions.decodeHex(decoded);
 		assertEquals(expected, actual);
 	}
 
@@ -102,9 +113,13 @@ public class HexExtensionsTest
 	@Test
 	public void testDecodeHexToString() throws DecoderException
 	{
-		final String expected = "Secret message";
-		final char[] actualCharArray = HexExtensions.encodeHex(StringUtils.getBytesUtf8(expected));
-		final String actual = HexExtensions.decodeHexToString(actualCharArray);
+		String expected;
+		String actual;
+		char[] actualCharArray;
+
+		expected = "Secret message";
+		actualCharArray = HexExtensions.encodeHex(StringUtils.getBytesUtf8(expected));
+		actual = HexExtensions.decodeHexToString(actualCharArray);
 		assertEquals(expected, actual);
 	}
 
@@ -134,11 +149,15 @@ public class HexExtensionsTest
 	@Test
 	public void testEncodeHexBoolean()
 	{
-		final String secretMessage = "Secret message";
-		final String expected = "536563726574206d657373616765";
-		char[] actualCharArray = HexExtensions.encodeHex(StringUtils.getBytesUtf8(secretMessage),
-			true);
-		String actual = new String(actualCharArray);
+		String actual;
+		String expected;
+		String secretMessage;
+		char[] actualCharArray;
+
+		secretMessage = "Secret message";
+		expected = "536563726574206d657373616765";
+		actualCharArray = HexExtensions.encodeHex(StringUtils.getBytesUtf8(secretMessage), true);
+		actual = new String(actualCharArray);
 		assertEquals(expected, actual);
 		actualCharArray = HexExtensions.encodeHex(StringUtils.getBytesUtf8(secretMessage), false);
 		actual = new String(actualCharArray);
@@ -181,10 +200,15 @@ public class HexExtensionsTest
 	@Test
 	public void testEncodeString()
 	{
-		final String secretMessage = "Secret message";
-		final String expected = "536563726574206d657373616765";
-		final char[] actualCharArray = HexExtensions.encodeHex(secretMessage);
-		final String actual = new String(actualCharArray);
+		String actual;
+		String expected;
+		String secretMessage;
+		char[] actualCharArray;
+
+		secretMessage = "Secret message";
+		expected = "536563726574206d657373616765";
+		actualCharArray = HexExtensions.encodeHex(secretMessage);
+		actual = new String(actualCharArray);
 		assertEquals(expected, actual);
 	}
 
@@ -194,10 +218,12 @@ public class HexExtensionsTest
 	@Test
 	public void testToHex()
 	{
-		char actual = HexExtensions.toHex(5);
-		org.junit.Assert.assertTrue(actual == '5');
+		char actual;
+
+		actual = HexExtensions.toHex(5);
+		assertTrue(actual == '5');
 		actual = HexExtensions.toHex(10);
-		org.junit.Assert.assertTrue(actual == 'A');
+		assertTrue(actual == 'A');
 	}
 
 	/**

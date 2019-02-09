@@ -6,12 +6,12 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mvn-java-parent</artifactId>
-		<version>4.5</version>
+		<version>4.6</version>
 		<relativePath></relativePath>
 	</parent>
 
 	<artifactId>mystic-crypt</artifactId>
-	<version>5.8-SNAPSHOT</version>
+	<version>5.8</version>
 	<packaging>pom</packaging>
 	<inceptionYear>2015</inceptionYear>
 
@@ -21,7 +21,7 @@
 		The target of this parent project is to make encryption and decryption as simple as possible.
 	</description>
 
-	<url>https://github.com/astrapi69/mystic-crypt</url>
+	<url>https://github.com/astrapi69/${project.artifactId}</url>
 
 	<properties>
 		<!-- MYSTIC-CRYPT versions -->
@@ -29,10 +29,10 @@
 		<crypt-api.version>${mystic-crypt.version}</crypt-api.version>
 		<crypt-data.version>${mystic-crypt.version}</crypt-data.version>
 		<!-- NEW EXTENSIONS LIB versions -->
-		<file-worker.version>5.0.2</file-worker.version>
+		<file-worker.version>5.1</file-worker.version>
 		<jcommons-lang.version>5.1.1</jcommons-lang.version>
-		<test-objects.version>5</test-objects.version>
-		<silly-collections.version>5</silly-collections.version>
+		<test-objects.version>5.0.1</test-objects.version>
+		<silly-collections.version>5.1</silly-collections.version>
 		<vintage-time.version>5.1</vintage-time.version>
 		<!-- RESOURCEBUNDLE-CORE versions -->
 		<resourcebundle-inspector.version>3.0.1</resourcebundle-inspector.version>
@@ -52,8 +52,6 @@
 		<guava.version>27.0.1-jre</guava.version>
 		<!-- MEANBEAN version -->
 		<meanbean.version>2.0.3</meanbean.version>		
-		<!-- RANDOM-BEANS version -->
-		<random-beans.version>3.7.0</random-beans.version>
 	</properties>
 
 	<modules>
@@ -77,14 +75,14 @@
 	</developers>
 
 	<scm>
-		<connection>scm:git:git:@github.com:astrapi69/mystic-crypt.git</connection>
-		<developerConnection>scm:git:git@github.com:astrapi69/mystic-crypt.git</developerConnection>
-		<url>git:@github.com:astrapi69/mystic-crypt.git</url>
+		<connection>scm:git:git:@github.com:astrapi69/${project.artifactId}.git</connection>
+		<developerConnection>scm:git:git@github.com:astrapi69/${project.artifactId}.git</developerConnection>
+		<url>git:@github.com:astrapi69/${project.artifactId}.git</url>
 	</scm>
 
 	<issueManagement>
 		<system>github.com</system>
-		<url>https://github.com/astrapi69/mystic-crypt/issues</url>
+		<url>https://github.com/astrapi69/${project.artifactId}/issues</url>
 	</issueManagement>
 
 	<dependencyManagement>
