@@ -166,13 +166,16 @@ Here is a list of awesome projects for cryptography:
 
 |**Travis CI**|
 |     :---:      |
-|[![Travis CI](https://travis-ci.com/images/logos/TravisCI-Full-Color.png)](https://coveralls.io/github/astrapi69/mystic-crypt?branch=master)|
+|[![Travis CI](https://travis-ci.com/images/logos/TravisCI-Full-Color.png)]|
+|[![Build Status](https://travis-ci.org/astrapi69/mystic-crypt.svg?branch=master)](https://travis-ci.org/astrapi69/mystic-crypt)|
 |Special thanks to [Travis CI](https://travis-ci.org) for providing a free continuous integration service for open source projects|
 |     <img width=1000/>     |
 
 |**Nexus Sonatype repositories**|
 |     :---:      |
-|[![sonatype repository](https://img.shields.io/nexus/r/https/oss.sonatype.org/de.alpharogroup/mystic-crypt.svg?style=for-the-badge)](https://oss.sonatype.org/index.html#nexus-search;gav~de.alpharogroup~mystic-crypt~~~)|
+|[![sonatype repository](https://img.shields.io/nexus/r/https/oss.sonatype.org/de.alpharogroup/crypt-api.svg?style=for-the-badge)](https://oss.sonatype.org/index.html#nexus-search;gav~de.alpharogroup~crypt-api~~~) crypt-api|
+|[![sonatype repository](https://img.shields.io/nexus/r/https/oss.sonatype.org/de.alpharogroup/crypt-core.svg?style=for-the-badge)](https://oss.sonatype.org/index.html#nexus-search;gav~de.alpharogroup~crypt-core~~~) crypt-core|
+|[![sonatype repository](https://img.shields.io/nexus/r/https/oss.sonatype.org/de.alpharogroup/crypt-data.svg?style=for-the-badge)](https://oss.sonatype.org/index.html#nexus-search;gav~de.alpharogroup~crypt-data~~~) crypt-data|
 |Special thanks to [sonatype repository](https://www.sonatype.com) for providing a free maven repository service for open source projects|
 |     <img width=1000/>     |
 
@@ -184,7 +187,7 @@ Here is a list of awesome projects for cryptography:
 
 |**javadoc.io**|
 |     :---:      |
-|[![Javadoc](http://www.javadoc.io/badge/de.alpharogroup/crypt-core.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-api) crypt-api|
+|[![Javadoc](http://www.javadoc.io/badge/de.alpharogroup/crypt-api.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-api) crypt-api|
 |[![Javadoc](http://www.javadoc.io/badge/de.alpharogroup/crypt-core.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-core) crypt-core|
 |[![Javadoc](http://www.javadoc.io/badge/de.alpharogroup/crypt-data.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-data) crypt-data|
 |Special thanks to [javadoc.io](http://www.javadoc.io) for providing a free javadoc documentation for open source projects|
