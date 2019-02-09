@@ -12,6 +12,30 @@
 
 The target of this parent project is to make encryption and decryption as simple as possible.
 
+## Note
+
+No animals were harmed in the making of this library.
+
+# Donations
+
+This project is kept as an open source product and relies on contributions to remain being developed. 
+If you like this project, please consider a donation through paypal: <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GVBTWLRAZ7HB8" target="_blank">
+<img src="https://www.paypalobjects.com/en_US/GB/i/btn/btn_donateCC_LG.gif" alt="PayPal this" title="PayPal – The safer, easier way to pay online!" border="0" />
+</a>
+
+or over bitcoin or bitcoin-cash with:
+
+1Jzso5h7U82QCNmgxxSCya1yUK7UVcSXsW
+
+or over ether with:
+
+0xaB6EaE10F352268B0CA672Dd6e999C86344D49D8
+
+or over flattr: <a href="http://flattr.com/thing/4152938/astrapi69mystic-crypt-on-GitHub" target="_blank">
+<img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" />
+</a>
+
+
 ## Key features:
 
  * Chain multiply encryptors for securely encrypting your data
@@ -125,29 +149,6 @@ Don't forget to add new units tests on your changes.
 
 Do not hesitate to contact the mystic-crypt developers with your questions, concerns, comments, bug reports, or feature requests.
 - Feature requests, questions and bug reports can be reported at the [issues page](https://github.com/astrapi69/mystic-crypt/issues).
-
-## Note
-
-No animals were harmed in the making of this library.
-
-# Donations
-
-This project is kept as an open source product and relies on contributions to remain being developed. 
-If you like this project, please consider a donation through paypal: <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GVBTWLRAZ7HB8" target="_blank">
-<img src="https://www.paypalobjects.com/en_US/GB/i/btn/btn_donateCC_LG.gif" alt="PayPal this" title="PayPal – The safer, easier way to pay online!" border="0" />
-</a>
-
-or over bitcoin or bitcoin-cash with:
-
-1Jzso5h7U82QCNmgxxSCya1yUK7UVcSXsW
-
-or over ether with:
-
-0xaB6EaE10F352268B0CA672Dd6e999C86344D49D8
-
-or over flattr: <a href="http://flattr.com/thing/4152938/astrapi69mystic-crypt-on-GitHub" target="_blank">
-<img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" />
-</a>
 
 # Similar projects
 
