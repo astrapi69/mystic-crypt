@@ -6,6 +6,7 @@ Version 5.8-SNAPSHOT
 
 CHANGED:
 
+- update of parent version to 4.6
 - update of file-worker version to 5.1
 - update of jcommons-lang version to 5.1.1
 - update of test-objects version to 5.0.1

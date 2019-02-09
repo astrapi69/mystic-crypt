@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mvn-java-parent</artifactId>
-		<version>4.5</version>
+		<version>4.6</version>
 		<relativePath></relativePath>
 	</parent>
 
@@ -52,8 +52,6 @@
 		<guava.version>27.0.1-jre</guava.version>
 		<!-- MEANBEAN version -->
 		<meanbean.version>2.0.3</meanbean.version>		
-		<!-- RANDOM-BEANS version -->
-		<random-beans.version>3.8.0</random-beans.version>
 	</properties>
 
 	<modules>

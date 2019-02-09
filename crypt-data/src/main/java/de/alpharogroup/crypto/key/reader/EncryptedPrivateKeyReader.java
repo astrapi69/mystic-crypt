@@ -176,14 +176,14 @@ public final class EncryptedPrivateKeyReader
 		PEMParser pemParser = new PEMParser(new FileReader(encryptedPrivateKeyFile));
 		Object pemObject = pemParser.readObject();
 		pemParser.close();
-		PEMDecryptorProvider decryptorProvider = new JcePEMDecryptorProviderBuilder()
-			.setProvider(SecurityProvider.BC.name())
-			.build(password.toCharArray());
+
 		JcaPEMKeyConverter keyConverter = new JcaPEMKeyConverter()
 			.setProvider(SecurityProvider.BC.name());
 		KeyPair keyPair;
 		if (pemObject instanceof PEMEncryptedKeyPair)
 		{
+			PEMDecryptorProvider decryptorProvider = new JcePEMDecryptorProviderBuilder()
+				.setProvider(SecurityProvider.BC.name()).build(password.toCharArray());
 			keyPair = keyConverter
 				.getKeyPair(((PEMEncryptedKeyPair)pemObject).decryptKeyPair(decryptorProvider));
 		}
