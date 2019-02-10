@@ -39,7 +39,7 @@ import javax.crypto.NoSuchPaddingException;
 
 import org.testng.annotations.Test;
 
-import de.alpharogroup.crypto.CryptConst;
+import de.alpharogroup.crypto.compound.CompoundAlgorithm;
 
 /**
  * Test class for the {@link SimpleEncryptor} and {@link SimpleDecryptor}
@@ -81,10 +81,10 @@ public class SimpleEnDecryptorTest
 
 		expected = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
 
-		encryptor = new SimpleEncryptor(CryptConst.PRIVATE_KEY);
+		encryptor = new SimpleEncryptor(CompoundAlgorithm.PRIVATE_KEY);
 
 		encrypted = encryptor.encrypt(expected);
-		decryptor = new SimpleDecryptor(CryptConst.PRIVATE_KEY);
+		decryptor = new SimpleDecryptor(CompoundAlgorithm.PRIVATE_KEY);
 		actual = decryptor.decrypt(encrypted);
 		assertTrue("String before encryption is not equal after decryption.",
 			expected.equals(actual));

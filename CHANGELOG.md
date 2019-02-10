@@ -4,6 +4,10 @@
 Version 5.9-SNAPSHOT
 -------------
 
+CHANGED:
+
+- constant class CryptConst tags as deprecated, will be removed in next minor release
+
 Version 5.8
 -------------
 

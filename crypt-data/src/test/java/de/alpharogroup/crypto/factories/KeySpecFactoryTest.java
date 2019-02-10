@@ -33,7 +33,7 @@ import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.crypto.CryptConst;
+import de.alpharogroup.crypto.compound.CompoundAlgorithm;
 
 /**
  * The unit test class for the class {@link KeySpecFactory}
@@ -49,7 +49,7 @@ public class KeySpecFactoryTest
 	{
 		KeySpec actual;
 
-		actual = KeySpecFactory.newPBEKeySpec(CryptConst.PRIVATE_KEY);
+		actual = KeySpecFactory.newPBEKeySpec(CompoundAlgorithm.PRIVATE_KEY);
 		assertNotNull(actual);
 
 		actual = KeySpecFactory.newPBEKeySpec(null);
@@ -64,11 +64,12 @@ public class KeySpecFactoryTest
 	{
 		KeySpec actual;
 
-		actual = KeySpecFactory.newPBEKeySpec(CryptConst.PRIVATE_KEY, CryptConst.SALT,
-			CryptConst.ITERATIONCOUNT);
+		actual = KeySpecFactory.newPBEKeySpec(CompoundAlgorithm.PRIVATE_KEY, CompoundAlgorithm.SALT,
+			CompoundAlgorithm.ITERATIONCOUNT);
 		assertNotNull(actual);
 
-		actual = KeySpecFactory.newPBEKeySpec(null, CryptConst.SALT, CryptConst.ITERATIONCOUNT);
+		actual = KeySpecFactory.newPBEKeySpec(null, CompoundAlgorithm.SALT,
+			CompoundAlgorithm.ITERATIONCOUNT);
 		assertNotNull(actual);
 	}
 

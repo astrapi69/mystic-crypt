@@ -51,11 +51,11 @@ public class EncryptedPrivateKeyReaderTest
 {
 	PrivateKey actual;
 	File derDir;
-	File pemDir;
-
 	File encryptedPrivateKeyFile;
+
 	PrivateKey expected;
 	String password;
+	File pemDir;
 	PrivateKey readedPrivateKey;
 
 	/**
@@ -85,24 +85,6 @@ public class EncryptedPrivateKeyReaderTest
 
 
 	/**
-	 * Test method for
-	 * {@link EncryptedPrivateKeyReader#readPasswordProtectedPrivateKey(byte[], String, String)}
-	 */
-	@Test(enabled = false)
-	public void testReadPasswordProtectedPrivateKeyByteArrayStringString()
-	{
-	}
-
-	/**
-	 * Test method for
-	 * {@link EncryptedPrivateKeyReader#readPasswordProtectedPrivateKey(File, String, String)}
-	 */
-	@Test(enabled = false)
-	public void testReadPasswordProtectedPrivateKeyFileStringString()
-	{
-	}
-
-	/**
 	 * Test method for {@link EncryptedPrivateKeyReader#getKeyPair(File, String)}
 	 * 
 	 * @throws FileNotFoundException
@@ -122,10 +104,28 @@ public class EncryptedPrivateKeyReaderTest
 
 	/**
 	 * Test method for
+	 * {@link EncryptedPrivateKeyReader#readPasswordProtectedPrivateKey(byte[], String, String)}
+	 */
+	@Test(enabled = false)
+	public void testReadPasswordProtectedPrivateKeyByteArrayStringString()
+	{
+	}
+
+	/**
+	 * Test method for
 	 * {@link EncryptedPrivateKeyReader#readPasswordProtectedPrivateKey(File, String)}
 	 */
 	@Test(enabled = false)
 	public void testReadPasswordProtectedPrivateKeyFileString()
+	{
+	}
+
+	/**
+	 * Test method for
+	 * {@link EncryptedPrivateKeyReader#readPasswordProtectedPrivateKey(File, String, String)}
+	 */
+	@Test(enabled = false)
+	public void testReadPasswordProtectedPrivateKeyFileStringString()
 	{
 	}
 

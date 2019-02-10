@@ -42,8 +42,8 @@ import org.testng.AssertJUnit;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.algorithm.HashAlgorithm;
+import de.alpharogroup.crypto.compound.CompoundAlgorithm;
 import de.alpharogroup.crypto.key.reader.CertificateReader;
 import de.alpharogroup.file.search.PathFinder;
 
@@ -213,7 +213,7 @@ public class CertificateExtensionsTest
 		String actual;
 
 		actual = CertificateExtensions.getSignatureAlgorithm(certificate);
-		expected = CryptConst.SHA256_WITH_RSA;
+		expected = CompoundAlgorithm.SHA256_WITH_RSA.getAlgorithm();
 		assertEquals(expected, actual);
 	}
 

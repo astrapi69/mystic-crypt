@@ -22,29 +22,33 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.modes;
+package de.alpharogroup.crypto.compound;
 
-/**
- * The enum {@link Mode} defines the block chaining mode.
- */
-public enum Mode
+import static org.testng.AssertJUnit.assertEquals;
+
+import org.testng.annotations.Test;
+
+public class CompoundAlgorithmTest
 {
 
-	/** The BC operation mode. */
-	BC,
+	/**
+	 * Test for concatenated constants.
+	 */
+	@Test
+	public void testGetAlgorithms()
+	{
+		assertEquals(CompoundAlgorithm.PBE_WITH_MD5_AND_DES.getAlgorithm(), "PBEWithMD5AndDES");
 
-	/** The CBC operation mode. */
-	CBC,
+		assertEquals(CompoundAlgorithm.PBE_WITH_MD5_AND_AES.getAlgorithm(), "PBEWithMD5AndAES");
 
-	/** The CFB operation mode. */
-	CFB,
+		assertEquals(CompoundAlgorithm.PBE_WITH_SHA1_AND_DES_EDE.getAlgorithm(),
+			"PBEWithSHA1AndDESede");
 
-	/** The ECB operation mode. */
-	ECB,
+		assertEquals(CompoundAlgorithm.PBKDF2_WITH_HMAC_SHA1.getAlgorithm(), "PBKDF2WithHmacSHA1");
 
-	/** The OFB operation mode. */
-	OFB,
+		assertEquals(CompoundAlgorithm.PBE_WITH_SHA1_AND_128BIT_AES_CBC_BC.getAlgorithm(),
+			"PBEWITHSHA1AND128BITAES-CBC-BC");
 
-	/** The PCBC operation mode. */
-	PCBC;
+		assertEquals(CompoundAlgorithm.SHA256_WITH_RSA.getAlgorithm(), "SHA256withRSA");
+	}
 }

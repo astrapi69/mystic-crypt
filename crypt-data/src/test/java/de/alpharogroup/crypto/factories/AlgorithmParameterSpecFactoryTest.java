@@ -33,7 +33,7 @@ import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.crypto.CryptConst;
+import de.alpharogroup.crypto.compound.CompoundAlgorithm;
 
 /**
  * The unit test class for the class {@link AlgorithmParameterSpecFactory}
@@ -48,8 +48,8 @@ public class AlgorithmParameterSpecFactoryTest
 	public void testNewPBEParameterSpec() throws Exception
 	{
 		AlgorithmParameterSpec pbeParameterSpec;
-		pbeParameterSpec = AlgorithmParameterSpecFactory.newPBEParameterSpec(CryptConst.SALT,
-			CryptConst.ITERATIONCOUNT);
+		pbeParameterSpec = AlgorithmParameterSpecFactory.newPBEParameterSpec(CompoundAlgorithm.SALT,
+			CompoundAlgorithm.ITERATIONCOUNT);
 		assertNotNull(pbeParameterSpec);
 	}
 

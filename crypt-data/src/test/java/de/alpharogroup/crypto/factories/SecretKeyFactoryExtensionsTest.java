@@ -39,9 +39,9 @@ import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.algorithm.AesAlgorithm;
 import de.alpharogroup.crypto.algorithm.SunJCEAlgorithm;
+import de.alpharogroup.crypto.compound.CompoundAlgorithm;
 
 /**
  * The unit test class for the class {@link SecretKeyFactoryExtensions}
@@ -72,7 +72,7 @@ public class SecretKeyFactoryExtensionsTest
 		String algorithm;
 		SecretKeyFactory secretKeyFactory;
 
-		algorithm = CryptConst.PBE_WITH_MD5_AND_DES;
+		algorithm = CompoundAlgorithm.PBE_WITH_MD5_AND_DES.getAlgorithm();
 		secretKeyFactory = SecretKeyFactoryExtensions.newSecretKeyFactory(algorithm);
 		assertNotNull(secretKeyFactory);
 	}

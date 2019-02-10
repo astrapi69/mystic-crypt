@@ -31,8 +31,8 @@ import javax.crypto.Cipher;
 
 import org.testng.annotations.Test;
 
-import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.algorithm.SunJCEAlgorithm;
+import de.alpharogroup.crypto.compound.CompoundAlgorithm;
 import de.alpharogroup.evaluate.object.evaluators.SilentEqualsHashCodeAndToStringEvaluator;
 import de.alpharogroup.random.RandomExtensions;
 
@@ -50,15 +50,15 @@ public class CryptModelTest
 	{
 		String privateKey = "D1D15ED36B887AF1";
 		CryptModel<Cipher, String> model = CryptModel.<Cipher, String> builder().key(privateKey)
-			.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).salt(CryptConst.SALT).iterationCount(19)
-			.operationMode(Cipher.ENCRYPT_MODE).build();
+			.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).salt(CompoundAlgorithm.SALT)
+			.iterationCount(19).operationMode(Cipher.ENCRYPT_MODE).build();
 		assertNotNull(model);
 		model = CryptModel.<Cipher, String> builder().build();
 		assertNotNull(model);
 		model = new CryptModel<>();
 		model.setKey(privateKey);
 		model.setAlgorithm(SunJCEAlgorithm.PBEWithMD5AndDES);
-		model.setSalt(CryptConst.SALT);
+		model.setSalt(CompoundAlgorithm.SALT);
 		model.setIterationCount(19);
 		model.setOperationMode(Cipher.ENCRYPT_MODE);
 	}
@@ -77,7 +77,7 @@ public class CryptModelTest
 			.evaluateEqualsHashcodeAndToStringQuietly(CryptModel.class, clazz -> {
 				return CryptModel.<Cipher, String> builder()
 					.key(RandomExtensions.getRandomHexString(16).toUpperCase())
-					.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).salt(CryptConst.SALT)
+					.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).salt(CompoundAlgorithm.SALT)
 					.iterationCount(19).operationMode(Cipher.ENCRYPT_MODE).build();
 			});
 		expected = true;

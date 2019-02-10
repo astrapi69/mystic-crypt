@@ -39,59 +39,118 @@ import de.alpharogroup.crypto.pw.PasswordHashType;
  *
  * @version 1.0
  * @author Asterios Raptis
+ * @deprecated use instead the enum CompoundAlgorithm. <br>
+ *             <br>
+ *             Note: will be remove on next minor release
  */
+@Deprecated
 public abstract class CryptConst
 {
 
 	/**
 	 * Constant for the iteration count.
+	 * 
+	 * @deprecated use instead the same name variable of enum CompoundAlgorithm. <br>
+	 *             <br>
+	 *             Note: will be remove on next minor release
 	 */
+	@Deprecated
 	public static final int ITERATIONCOUNT = 19;
 
-	/** The Constant PBE_WITH. */
+	/**
+	 * The Constant PBE_WITH.
+	 * 
+	 * @deprecated <br>
+	 *             <br>
+	 *             Note: will be remove on next minor release
+	 **/
+	@Deprecated
 	public static final String PBE_WITH = PBEMechanism.PBE.name() + UnionWord.With.name();
 
 	/**
 	 * Constant for the algorithm 'PBEWithMD5AndAES' to encrypt and decrypt.
+	 * 
+	 * @deprecated use instead the same name variable of enum CompoundAlgorithm.<br>
+	 *             <br>
+	 *             Note: will be remove on next minor release
 	 */
+
+	@Deprecated
 	public static final String PBE_WITH_MD5_AND_AES = PBE_WITH + MdAlgorithm.MD5.name()
 		+ UnionWord.And.name() + AesAlgorithm.AES.name();
 
 	/**
 	 * Constant for the algorithm 'PBEWithMD5AndDES' to encrypt and decrypt.
+	 * 
+	 * @deprecated use instead the same name variable of enum CompoundAlgorithm.<br>
+	 *             <br>
+	 *             Note: will be remove on next minor release
 	 */
+	@Deprecated
 	public static final String PBE_WITH_MD5_AND_DES = PBE_WITH + MdAlgorithm.MD5.name()
 		+ UnionWord.And.name() + SunJCEAlgorithm.DES.name();
 
 	/**
 	 * Constant for the algorithm 'PBEWITHSHA1AND128BITAES-CBC-BC' to encrypt and decrypt.
+	 * 
+	 * @deprecated use instead the same name variable of enum CompoundAlgorithm.<br>
+	 *             <br>
+	 *             Note: will be remove on next minor release
 	 */
+	@Deprecated
 	public static final String PBE_WITH_SHA1_AND_128BIT_AES_CBC_BC = "PBEWITHSHA1AND128BITAES-CBC-BC";
 
 	/**
 	 * Constant for the algorithm 'PBEWithSHA1AndDESede' to encrypt and decrypt.
+	 * 
+	 * @deprecated use instead the same name variable of enum CompoundAlgorithm.<br>
+	 *             <br>
+	 *             Note: will be remove on next minor release
 	 */
+	@Deprecated
 	public static final String PBE_WITH_SHA1_AND_DES_EDE = PBE_WITH + HashAlgorithm.SHA1.name()
 		+ UnionWord.And.name() + SunJCEAlgorithm.DESede.name();
 
 	/**
 	 * Constant for the algorithm 'PBKDF2WithHmacSHA1' to encrypt and decrypt.
+	 * 
+	 * @deprecated use instead the same name variable of enum CompoundAlgorithm.<br>
+	 *             <br>
+	 *             Note: will be remove on next minor release
 	 */
-	public static final String PBKDF2_WITH_HMAC_SHA1 = PasswordHashType.PBKDF2.name() + UnionWord.With.name()
-		+ MacAlgorithm.HMAC + HashAlgorithm.SHA1.name();
+	@Deprecated
+	public static final String PBKDF2_WITH_HMAC_SHA1 = PasswordHashType.PBKDF2.name()
+		+ UnionWord.With.name() + MacAlgorithm.HMAC + HashAlgorithm.SHA1.name();
 
 	/**
 	 * Constant for the private key.
+	 * 
+	 * @deprecated use instead the same name variable of enum CompoundAlgorithm.<br>
+	 *             <br>
+	 *             Note: will be remove on next minor release
 	 */
-	public static final String PRIVATE_KEY = "privattop secret";
+	@Deprecated
+	public static final String PRIVATE_KEY = "privatetopsecret";
 
 	/**
 	 * Constant array for the contents of salt.
+	 * 
+	 * @deprecated use instead the same name variable of enum CompoundAlgorithm.<br>
+	 *             <br>
+	 *             Note: will be remove on next minor release
 	 */
+	@Deprecated
 	public static final byte[] SALT = { (byte)0xA9, (byte)0x9B, (byte)0xC8, (byte)0x32, (byte)0x56,
 			(byte)0x35, (byte)0xE3, (byte)0x03 };
 
-	/** Constant for algorithm 'SHA256withRSA' to encrypt and decrypt. */
+	/**
+	 * Constant for algorithm 'SHA256withRSA' to encrypt and decrypt.
+	 * 
+	 * @deprecated use instead the same name variable of enum CompoundAlgorithm.<br>
+	 *             <br>
+	 *             Note: will be remove on next minor release
+	 */
+	@Deprecated
 	public static final String SHA256_WITH_RSA = HashAlgorithm.SHA256.getAlgorithm()
 		+ UnionWord.With.name().toLowerCase() + KeyPairGeneratorAlgorithm.RSA.getAlgorithm();
 

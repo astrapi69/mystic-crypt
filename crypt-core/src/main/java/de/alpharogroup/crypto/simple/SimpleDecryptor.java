@@ -43,9 +43,9 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
-import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.api.Cryptor;
 import de.alpharogroup.crypto.api.StringDecryptor;
+import de.alpharogroup.crypto.compound.CompoundAlgorithm;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
@@ -125,11 +125,11 @@ public class SimpleDecryptor implements StringDecryptor, Cryptor
 		{
 			KeySpec keySpec = new PBEKeySpec(this.getPrivateKey().toCharArray());
 			final SecretKeyFactory factory = SecretKeyFactory
-				.getInstance(CryptConst.PBE_WITH_MD5_AND_DES);
+				.getInstance(CompoundAlgorithm.PBE_WITH_MD5_AND_DES.getAlgorithm());
 			final SecretKey key = factory.generateSecret(keySpec);
 			this.cipher = Cipher.getInstance(key.getAlgorithm());
-			final AlgorithmParameterSpec paramSpec = new PBEParameterSpec(CryptConst.SALT,
-				CryptConst.ITERATIONCOUNT);
+			final AlgorithmParameterSpec paramSpec = new PBEParameterSpec(CompoundAlgorithm.SALT,
+				CompoundAlgorithm.ITERATIONCOUNT);
 			this.cipher.init(newOperationMode(), key, paramSpec);
 			initialized = true;
 		}

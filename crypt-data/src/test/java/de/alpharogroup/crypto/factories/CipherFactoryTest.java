@@ -46,8 +46,8 @@ import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.algorithm.SunJCEAlgorithm;
+import de.alpharogroup.crypto.compound.CompoundAlgorithm;
 import de.alpharogroup.crypto.model.CryptModel;
 import de.alpharogroup.crypto.provider.SecurityProvider;
 
@@ -84,8 +84,9 @@ public class CipherFactoryTest
 
 		privateKey = "D1D15ED36B887AF1";
 		encryptorModel = CryptModel.<Cipher, String> builder().key(privateKey)
-			.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).salt(CryptConst.SALT).iterationCount(19)
-			.operationMode(Cipher.ENCRYPT_MODE).build();
+			.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).salt(CompoundAlgorithm.SALT)
+			.iterationCount(CompoundAlgorithm.ITERATIONCOUNT).operationMode(Cipher.ENCRYPT_MODE)
+			.build();
 
 		actual = CipherFactory.newCipher(encryptorModel);
 		assertNotNull(actual);
@@ -106,15 +107,15 @@ public class CipherFactoryTest
 		AlgorithmParameterSpec paramSpec;
 		Cipher cipher;
 
-		algorithm = CryptConst.PBE_WITH_MD5_AND_DES;
-		keySpec = KeySpecFactory.newPBEKeySpec(CryptConst.PRIVATE_KEY, CryptConst.SALT,
-			CryptConst.ITERATIONCOUNT);
+		algorithm = CompoundAlgorithm.PBE_WITH_MD5_AND_DES.getAlgorithm();
+		keySpec = KeySpecFactory.newPBEKeySpec(CompoundAlgorithm.PRIVATE_KEY,
+			CompoundAlgorithm.SALT, CompoundAlgorithm.ITERATIONCOUNT);
 		factory = SecretKeyFactoryExtensions.newSecretKeyFactory(algorithm);
 		key = factory.generateSecret(keySpec);
 
 		operationMode = Cipher.ENCRYPT_MODE;
-		paramSpec = AlgorithmParameterSpecFactory.newPBEParameterSpec(CryptConst.SALT,
-			CryptConst.ITERATIONCOUNT);
+		paramSpec = AlgorithmParameterSpecFactory.newPBEParameterSpec(CompoundAlgorithm.SALT,
+			CompoundAlgorithm.ITERATIONCOUNT);
 		cipher = CipherFactory.newCipher(operationMode, key, paramSpec, algorithm);
 		assertNotNull(cipher);
 	}
@@ -128,7 +129,7 @@ public class CipherFactoryTest
 		String algorithm;
 		Cipher cipher;
 
-		algorithm = CryptConst.PBE_WITH_MD5_AND_DES;
+		algorithm = CompoundAlgorithm.PBE_WITH_MD5_AND_DES.getAlgorithm();
 		cipher = CipherFactory.newCipher(algorithm);
 		assertNotNull(cipher);
 	}
@@ -158,10 +159,10 @@ public class CipherFactoryTest
 		Cipher cipher;
 		int operationMode;
 
-		algorithm = CryptConst.PBE_WITH_MD5_AND_DES;
+		algorithm = CompoundAlgorithm.PBE_WITH_MD5_AND_DES.getAlgorithm();
 		operationMode = Cipher.ENCRYPT_MODE;
-		cipher = CipherFactory.newCipher(CryptConst.PRIVATE_KEY, algorithm, CryptConst.SALT,
-			CryptConst.ITERATIONCOUNT, operationMode);
+		cipher = CipherFactory.newCipher(CompoundAlgorithm.PRIVATE_KEY, algorithm,
+			CompoundAlgorithm.SALT, CompoundAlgorithm.ITERATIONCOUNT, operationMode);
 		assertNotNull(cipher);
 	}
 

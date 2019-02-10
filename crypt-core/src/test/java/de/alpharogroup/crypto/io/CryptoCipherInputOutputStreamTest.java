@@ -42,8 +42,8 @@ import javax.crypto.NoSuchPaddingException;
 
 import org.testng.annotations.Test;
 
-import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.algorithm.SunJCEAlgorithm;
+import de.alpharogroup.crypto.compound.CompoundAlgorithm;
 import de.alpharogroup.crypto.factories.CipherFactory;
 import de.alpharogroup.crypto.model.CryptModel;
 import de.alpharogroup.file.delete.DeleteFileExtensions;
@@ -103,8 +103,9 @@ public class CryptoCipherInputOutputStreamTest
 		encryptedFile = new File(cryptDir, "encrypted.txt");
 
 		encryptorModel = CryptModel.<Cipher, String> builder().key(privateKey)
-			.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).salt(CryptConst.SALT).iterationCount(19)
-			.operationMode(Cipher.ENCRYPT_MODE).build();
+			.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).salt(CompoundAlgorithm.SALT)
+			.iterationCount(CompoundAlgorithm.ITERATIONCOUNT).operationMode(Cipher.ENCRYPT_MODE)
+			.build();
 
 		encryptorCipher = CipherFactory.newCipher(encryptorModel);
 
