@@ -51,7 +51,8 @@
 		<!-- GUAVA version -->
 		<guava.version>27.0.1-jre</guava.version>
 		<!-- MEANBEAN version -->
-		<meanbean.version>2.0.3</meanbean.version>		
+		<meanbean.version>2.0.3</meanbean.version>
+		<jaxb.version>2.3.0</jaxb.version>
 	</properties>
 
 	<modules>
@@ -88,6 +89,11 @@
 	<dependencyManagement>
 
 		<dependencies>
+			<dependency>
+				<groupId>javax.xml.bind</groupId>
+				<artifactId>jaxb-api</artifactId>
+				<version>${jaxb.version}</version>
+			</dependency>
 			<!-- RESOURCEBUNDLE-CORE DEPENDENCIES -->
 			<dependency>
 				<groupId>de.alpharogroup</groupId>

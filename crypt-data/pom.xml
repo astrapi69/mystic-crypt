@@ -15,6 +15,12 @@
 	<dependencies>
 
 		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>de.alpharogroup</groupId>
 			<artifactId>crypt-api</artifactId>
 		</dependency>
