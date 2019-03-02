@@ -20,6 +20,8 @@
  */
 package de.alpharogroup.crypto.processors.bruteforce;
 
+import static org.testng.AssertJUnit.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.security.Security;
@@ -59,10 +61,7 @@ public class PrivateKeyBruteForceProcessorTest
 		long elapsedMilliSeconds;
 
 		pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		encryptedPrivateKeyFile = new File(pemDir, "test.key");
-
-
-		Security.addProvider(new BouncyCastleProvider());
+		encryptedPrivateKeyFile = new File(pemDir, "test.key.pem");
 
 		possibleCharacters = new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
 				'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
@@ -73,17 +72,12 @@ public class PrivateKeyBruteForceProcessorTest
 		end = System.currentTimeMillis();
 
 		elapsedMilliSeconds = end - start;
-
-		log.info("************************************************************");
-		log.info("************************************************************");
-		log.info("*                 Password found!                          *");
-		log.info("************************************************************");
+		assertTrue(resolvePassword.isPresent());
+		String expected = "bosco";
+		String actual = resolvePassword.get();
+		assertEquals(expected, actual); 
 		log.info("Needed milliseconds for crack the password with brute force attack: "
-			+ elapsedMilliSeconds);
-		log.info("************************************************************");
-		log.info("*    The wanted password is the following:'" + resolvePassword.get() + "'");
-		log.info("************************************************************");
-		log.info("************************************************************");
+			+ elapsedMilliSeconds);		
 	}
 
 	/**
@@ -102,16 +96,16 @@ public class PrivateKeyBruteForceProcessorTest
 		Optional<String> optionalPassword = Optional.empty();
 		try
 		{
+			Security.addProvider(new BouncyCastleProvider());
 			boolean isPasswordProtected = PrivateKeyReader
 				.isPrivateKeyPasswordProtected(privateKeyFile);
 
-			if (!isPasswordProtected)
+			if (isPasswordProtected)
 			{
 
 
 				String attempt;
 				attempt = processor.getCurrentAttempt();
-				Security.addProvider(new BouncyCastleProvider());
 				while (true)
 				{
 					try
