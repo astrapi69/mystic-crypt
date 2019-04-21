@@ -27,11 +27,14 @@ package de.alpharogroup.crypto.key;
 import static org.testng.AssertJUnit.assertEquals;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.Security;
+import java.security.*;
+import java.security.spec.InvalidKeySpecException;
 
+import de.alpharogroup.crypto.algorithm.MdAlgorithm;
+import de.alpharogroup.file.checksum.ChecksumExtensions;
+import de.alpharogroup.file.delete.DeleteFileExtensions;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
@@ -97,7 +100,7 @@ public class PublicKeyExtensionsTest
 	}
 
 	/**
-	 * Test method for {@link PublicKeyExtensions#getKeyLength(PrivateKey)}.
+	 * Test method for {@link PublicKeyExtensions#getKeyLength(PublicKey)}
 	 *
 	 * @throws Exception
 	 *             is thrown if an security error occurs
@@ -204,6 +207,25 @@ public class PublicKeyExtensionsTest
 		actual = PublicKeyExtensions.toPemFormat(publicKey);
 		expected = ReadFileExtensions.readFromFile(publicKeyPemFile);
 		assertEquals(actual, expected);
+	}
+
+	/**
+	 * Test method for {@link PublicKeyExtensions#toPemFile(PublicKey, File)}
+	 */
+	@Test
+	public void testToPemFile() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException {
+
+		String expected;
+		String actual;
+		File convertedPublickeyPemFile;
+		// new scenario...
+		publicKey = PublicKeyReader.readPemPublicKey(publicKeyPemFile);
+		convertedPublickeyPemFile = new File(pemDir, "converted-public.pem");
+		PublicKeyExtensions.toPemFile(publicKey, convertedPublickeyPemFile);
+		expected = ChecksumExtensions.getChecksum(publicKeyPemFile, MdAlgorithm.MD5);
+		actual = ChecksumExtensions.getChecksum(convertedPublickeyPemFile, MdAlgorithm.MD5);
+		assertEquals(expected, actual);
+		DeleteFileExtensions.delete(convertedPublickeyPemFile);
 	}
 
 	/**

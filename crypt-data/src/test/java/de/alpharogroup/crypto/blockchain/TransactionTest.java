@@ -31,13 +31,14 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.security.PublicKey;
 
+import de.alpharogroup.evaluate.object.evaluators.EqualsHashCodeAndToStringEvaluator;
+import lombok.SneakyThrows;
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
-import de.alpharogroup.evaluate.object.evaluators.SilentEqualsHashCodeAndToStringEvaluator;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
@@ -88,13 +89,14 @@ public class TransactionTest
 	 * {@link Transaction#toString()}
 	 */
 	@Test(enabled = false)
+	@SneakyThrows
 	public void testEqualsHashcodeAndToStringWithClass()
 	{
 		boolean expected;
 		boolean actual;
 
-		actual = SilentEqualsHashCodeAndToStringEvaluator
-			.evaluateEqualsHashcodeAndToStringQuietly(Transaction.class);
+		actual = EqualsHashCodeAndToStringEvaluator
+			.evaluateEqualsHashcodeAndToString(Transaction.class);
 		expected = true;
 		assertEquals(expected, actual);
 	}

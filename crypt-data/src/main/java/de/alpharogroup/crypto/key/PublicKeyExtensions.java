@@ -24,27 +24,22 @@
  */
 package de.alpharogroup.crypto.key;
 
-import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
-import de.alpharogroup.crypto.algorithm.MdAlgorithm;
-import de.alpharogroup.crypto.factories.KeyPairFactory;
+import de.alpharogroup.crypto.hex.HexExtensions;
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
-import de.alpharogroup.file.checksum.ChecksumExtensions;
-import de.alpharogroup.file.delete.DeleteFileExtensions;
-import de.alpharogroup.file.read.ReadFileExtensions;
-import de.alpharogroup.file.search.PathFinder;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.meanbean.test.BeanTestException;
-import org.meanbean.test.BeanTester;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import de.alpharogroup.crypto.key.writer.PublicKeyWriter;
+import de.alpharogroup.string.StringExtensions;
+import lombok.NonNull;
+import lombok.experimental.UtilityClass;
+import org.apache.commons.codec.binary.Base64;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.security.*;
-import java.security.spec.InvalidKeySpecException;
+import java.security.PublicKey;
+import java.security.interfaces.DSAPublicKey;
+import java.security.interfaces.ECPublicKey;
+import java.security.interfaces.RSAPublicKey;
+import java.util.List;
 
-import static org.testng.AssertJUnit.assertEquals;
 /**
  * The class {@link PublicKeyExtensions}.
  */
@@ -52,25 +47,6 @@ import static org.testng.AssertJUnit.assertEquals;
 public class PublicKeyExtensions
 {
 
-	/**
-	 * Test method for {@link PublicKeyExtensions#toPemFile(PublicKey, File)}
-	 */
-	@Test
-	public void testToPemFile() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException {
-
-		String expected;
-		String actual;
-		File convertedPublickeyPemFile;
-		// new scenario...
-		publicKey = PublicKeyReader.readPemPublicKey(publicKeyPemFile);
-		convertedPublickeyPemFile = new File(pemDir, "converted-public.pem");
-		PublicKeyExtensions.toPemFile(publicKey, convertedPublickeyPemFile);
-		expected = ChecksumExtensions.getChecksum(publicKeyPemFile, MdAlgorithm.MD5);
-		actual = ChecksumExtensions.getChecksum(convertedPublickeyPemFile, MdAlgorithm.MD5);
-		assertEquals(expected, actual);
-		DeleteFileExtensions.delete(convertedPublickeyPemFile);
-	}
-	
 	/**
 	 * Gets the key length of the given {@link PublicKey}.
 	 *
@@ -123,8 +99,7 @@ public class PublicKeyExtensions
 	public static String toBase64(final PublicKey publicKey)
 	{
 		final byte[] encoded = publicKey.getEncoded();
-		final String publicKeyAsBase64String = Base64.encodeBase64String(encoded);
-		return publicKeyAsBase64String;
+		return Base64.encodeBase64String(encoded);
 	}
 
 	/**
@@ -162,8 +137,7 @@ public class PublicKeyExtensions
 	 */
 	public static String toHexString(final PublicKey publicKey, final boolean lowerCase)
 	{
-		final String hexString = HexExtensions.toHexString(publicKey.getEncoded(), lowerCase);
-		return hexString;
+		return HexExtensions.toHexString(publicKey.getEncoded(), lowerCase);
 	}
 	
 	/**

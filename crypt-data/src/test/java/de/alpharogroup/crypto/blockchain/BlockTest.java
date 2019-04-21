@@ -31,6 +31,8 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.security.PublicKey;
 
+import de.alpharogroup.evaluate.object.evaluators.EqualsHashCodeAndToStringEvaluator;
+import lombok.SneakyThrows;
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.BeforeMethod;
@@ -38,7 +40,6 @@ import org.testng.annotations.Test;
 
 import de.alpharogroup.collections.list.ListFactory;
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
-import de.alpharogroup.evaluate.object.evaluators.SilentEqualsHashCodeAndToStringEvaluator;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
@@ -80,14 +81,11 @@ public class BlockTest
 		block = new Block();
 		assertNotNull(block);
 		block.setHash(new byte[] { });
-		assertNotNull(block.getLeadingZerosCount());
 
 		text = "transaction-name";
 		transaction = new Transaction(text, address.getHash(), fixedSignature);
 
 		block = new Block(null, ListFactory.newArrayList(transaction), 4847556);
-
-		assertNotNull(block.getLeadingZerosCount());
 
 	}
 
@@ -96,13 +94,14 @@ public class BlockTest
 	 * {@link Block#toString()}
 	 */
 	@Test(enabled = false)
+	@SneakyThrows
 	public void testEqualsHashcodeAndToStringWithClass()
 	{
 		boolean expected;
 		boolean actual;
 
-		actual = SilentEqualsHashCodeAndToStringEvaluator
-			.evaluateEqualsHashcodeAndToStringQuietly(Block.class);
+		actual = EqualsHashCodeAndToStringEvaluator
+			.evaluateEqualsHashcodeAndToString(Block.class);
 		expected = true;
 		assertEquals(expected, actual);
 	}

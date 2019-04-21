@@ -35,12 +35,13 @@ import java.security.NoSuchProviderException;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 
+import de.alpharogroup.evaluate.object.evaluators.EqualsHashCodeAndToStringEvaluator;
+import lombok.SneakyThrows;
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
-import de.alpharogroup.evaluate.object.evaluators.SilentEqualsHashCodeAndToStringEvaluator;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
@@ -51,15 +52,10 @@ public class AddressTest
 
 	/**
 	 * Test method for {@link Address} constructors
-	 *
-	 * @throws IOException
-	 * @throws NoSuchProviderException
-	 * @throws InvalidKeySpecException
-	 * @throws NoSuchAlgorithmException
 	 */
 	@Test
-	public final void testConstructors() throws IOException, NoSuchAlgorithmException,
-		InvalidKeySpecException, NoSuchProviderException
+	@SneakyThrows
+	public final void testConstructors()
 	{
 		Address address;
 		File publickeyPemDir;
@@ -82,13 +78,15 @@ public class AddressTest
 	 * {@link Address#toString()}
 	 */
 	@Test(enabled = false)
+	@SneakyThrows
 	public void testEqualsHashcodeAndToStringWithClass()
 	{
 		boolean expected;
 		boolean actual;
 
-		actual = SilentEqualsHashCodeAndToStringEvaluator
-			.evaluateEqualsHashcodeAndToStringQuietly(Address.class);
+
+		actual = EqualsHashCodeAndToStringEvaluator
+				.evaluateEqualsHashcodeAndToString(Address.class);
 		expected = true;
 		assertEquals(expected, actual);
 	}

@@ -29,11 +29,12 @@ import static org.testng.AssertJUnit.assertNotNull;
 
 import javax.crypto.Cipher;
 
+import de.alpharogroup.evaluate.object.evaluators.EqualsHashCodeAndToStringEvaluator;
+import lombok.SneakyThrows;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.algorithm.SunJCEAlgorithm;
 import de.alpharogroup.crypto.compound.CompoundAlgorithm;
-import de.alpharogroup.evaluate.object.evaluators.SilentEqualsHashCodeAndToStringEvaluator;
 import de.alpharogroup.random.RandomExtensions;
 
 /**
@@ -68,13 +69,14 @@ public class CryptModelTest
 	 * {@link CryptModel#toString()}
 	 */
 	@Test
+	@SneakyThrows
 	public void testEqualsHashcodeAndToStringWithClass()
 	{
 		boolean expected;
 		boolean actual;
 
-		actual = SilentEqualsHashCodeAndToStringEvaluator
-			.evaluateEqualsHashcodeAndToStringQuietly(CryptModel.class, clazz -> {
+		actual = EqualsHashCodeAndToStringEvaluator
+			.evaluateEqualsHashcodeAndToString(CryptModel.class, clazz -> {
 				return CryptModel.<Cipher, String> builder()
 					.key(RandomExtensions.getRandomHexString(16).toUpperCase())
 					.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).salt(CompoundAlgorithm.SALT)
