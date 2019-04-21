@@ -12,13 +12,6 @@
 	
 	<dependencies>
 
-		<!-- MEANBEAN DEPENDENCY -->
-		<dependency>
-			<groupId>org.meanbean</groupId>
-			<artifactId>meanbean</artifactId>
-			<scope>test</scope>
-		</dependency>
-
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
 			<artifactId>silly-collections</artifactId>

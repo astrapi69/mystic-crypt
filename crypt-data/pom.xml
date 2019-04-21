@@ -61,12 +61,6 @@
 			<artifactId>test-objects</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- MEANBEAN DEPENDENCY -->
-		<dependency>
-			<groupId>org.meanbean</groupId>
-			<artifactId>meanbean</artifactId>
-			<scope>test</scope>
-		</dependency>
 
 		<dependency>
 			<groupId>io.github.benas</groupId>

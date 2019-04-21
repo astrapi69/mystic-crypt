@@ -48,10 +48,11 @@
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcpkix-jdk15on</artifactId>
 		</dependency>
-		<!-- JOBJECT-CORE DEPENDENCY -->
+		<!-- JOBJ-CORE DEPENDENCY -->
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
-			<artifactId>jobject-core</artifactId>
+			<artifactId>jobj-core</artifactId>
+			<version>${jobj-core.version}</version>
 		</dependency>
 
 		<dependency>
@@ -63,12 +64,6 @@
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
 			<artifactId>test-objects</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<!-- MEANBEAN DEPENDENCY -->
-		<dependency>
-			<groupId>org.meanbean</groupId>
-			<artifactId>meanbean</artifactId>
 			<scope>test</scope>
 		</dependency>
 
