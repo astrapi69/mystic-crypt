@@ -47,7 +47,7 @@ public class BruteForceProcessorTest
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	@Test(enabled = true)
+	@Test(enabled = false)
 	public void test() throws IOException
 	{
 
@@ -76,7 +76,7 @@ public class BruteForceProcessorTest
 
 		processor = new BruteForceProcessor(possibleCharacters, 1);
 		attempt = processor.getCurrentAttempt();
-		found = false;
+
 		start = System.currentTimeMillis();
 		while (true)
 		{
