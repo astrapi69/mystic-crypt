@@ -7,7 +7,7 @@ Version 5.9-SNAPSHOT
 CHANGED:
 
 - constant class CryptConst tags as deprecated, will be removed in next minor release
-- update of parent version to 5
+- update of parent version to 6.1
 - update of guava version to 27.1-jre
 - update of commons-codec version to 1.12
 - update of bouncycastle version to 1.61
