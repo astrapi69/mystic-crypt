@@ -35,6 +35,8 @@
 		<test-objects.version>5.2</test-objects.version>
 		<silly-collections.version>5.2.1</silly-collections.version>
 		<vintage-time.version>5.1</vintage-time.version>
+		<!-- XML-EXTENSIONS version -->
+		<xml-extensions.version>5</xml-extensions.version>
 		<!-- RESOURCEBUNDLE-CORE versions -->
 		<resourcebundle-inspector.version>3.1</resourcebundle-inspector.version>
 		<!-- JOBJ-CORE version -->
@@ -93,6 +95,12 @@
 				<groupId>javax.xml.bind</groupId>
 				<artifactId>jaxb-api</artifactId>
 				<version>${jaxb-api.version}</version>
+			</dependency>
+			<!-- XML-EXTENSIONS DEPENDENCY -->
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>xml-extensions</artifactId>
+				<version>${xml-extensions.version}</version>
 			</dependency>
 			<!-- RESOURCEBUNDLE-CORE DEPENDENCIES -->
 			<dependency>

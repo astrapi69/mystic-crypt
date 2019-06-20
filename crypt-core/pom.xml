@@ -33,6 +33,23 @@
 			<groupId>de.alpharogroup</groupId>
 			<artifactId>crypt-data</artifactId>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/de.alpharogroup/model-core -->
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>model-core</artifactId>
+			<version>1.6.2</version>
+		</dependency>
+
+		<!-- XML-EXTENSIONS DEPENDENCY -->
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>xml-extensions</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>silly-collections</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
