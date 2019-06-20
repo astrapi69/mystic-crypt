@@ -31,7 +31,7 @@ import java.util.Set;
 
 import org.testng.annotations.Test;
 
-import de.alpharogroup.lang.PackageExtensions;
+import de.alpharogroup.lang.ScanPackageExtensions;
 import lombok.extern.java.Log;
 
 /**
@@ -61,7 +61,7 @@ public class BruteForceProcessorTest
 		long elapsedMilliSeconds;
 		Set<String> list;
 
-		list = PackageExtensions.scanClassNames("de.alpharogroup", true, true);
+		list = ScanPackageExtensions.scanClassNames("de.alpharogroup", true, true);
 		for (final String string : list)
 		{
 			if (string.endsWith("Test"))

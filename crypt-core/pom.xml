@@ -52,7 +52,6 @@
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
 			<artifactId>jobj-core</artifactId>
-			<version>${jobj-core.version}</version>
 		</dependency>
 
 		<dependency>
@@ -64,6 +63,12 @@
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
 			<artifactId>test-objects</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>jcommons-lang</artifactId>
 			<scope>test</scope>
 		</dependency>
 

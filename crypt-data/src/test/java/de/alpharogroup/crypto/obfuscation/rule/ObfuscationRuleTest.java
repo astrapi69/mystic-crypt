@@ -24,17 +24,12 @@
  */
 package de.alpharogroup.crypto.obfuscation.rule;
 
-import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertNotNull;
-
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.evaluate.object.evaluators.EqualsHashCodeAndToStringEvaluator;
-import de.alpharogroup.random.RandomExtensions;
+import de.alpharogroup.evaluate.object.verifier.ContractVerifier;
 
 /**
  * The unit test class for the class {@link ObfuscationRule}.
@@ -55,34 +50,13 @@ public class ObfuscationRuleTest
 	}
 
 	/**
-	 * Test method for {@link ObfuscationRule#equals(Object)} , {@link ObfuscationRule#hashCode()}
-	 * and {@link ObfuscationRule#toString()}
-	 *
-	 * @throws IllegalAccessException
-	 *             if the caller does not have access to the property accessor method
-	 * @throws InstantiationException
-	 *             if a new instance of the bean's class cannot be instantiated
-	 * @throws InvocationTargetException
-	 *             if the property accessor method throws an exception
-	 * @throws NoSuchMethodException
-	 *             if an accessor method for this property cannot be found
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred
-	 * @throws ClassNotFoundException
-	 *             occurs if a given class cannot be located by the specified class loader
+	 * Test method for {@link ObfuscationRule#equals(Object)} , {@link ObfuscationRule#hashCode()} and
+	 * {@link ObfuscationRule#toString()}
 	 */
 	@Test
-	public void testEqualsHashcodeAndToStringWithClass()
-		throws NoSuchMethodException, IllegalAccessException, InvocationTargetException,
-		InstantiationException, IOException, ClassNotFoundException
+	public void verifyEqualsHashcodeAndToStringContracts()
 	{
-		boolean expected;
-		boolean actual;
-		actual = EqualsHashCodeAndToStringEvaluator
-			.evaluateEqualsHashcodeAndToString(ObfuscationRule.class, clazz -> ObfuscationRule
-				.<Character, Character> builder().character(RandomExtensions.randomChar()).build());
-		expected = true;
-		assertEquals(expected, actual);
+		ContractVerifier.of(ObfuscationRule.class).verify();
 	}
 
 	/**

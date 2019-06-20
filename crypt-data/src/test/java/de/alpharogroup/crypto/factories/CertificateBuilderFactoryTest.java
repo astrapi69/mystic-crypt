@@ -24,7 +24,6 @@
  */
 package de.alpharogroup.crypto.factories;
 
-import static io.github.benas.randombeans.api.EnhancedRandom.random;
 import static org.testng.AssertJUnit.assertNotNull;
 
 import java.io.File;
@@ -46,6 +45,7 @@ import org.testng.annotations.Test;
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.date.CalculateDateExtensions;
 import de.alpharogroup.file.search.PathFinder;
+import de.alpharogroup.random.RandomExtensions;
 
 /**
  * The unit test class for the class {@link CertificateBuilderFactory}
@@ -78,7 +78,7 @@ public class CertificateBuilderFactoryTest
 		publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
 		issuer = new X500Name("C=DE");
-		serial = random(BigInteger.class);
+		serial = RandomExtensions.randomSerialNumber();
 
 		notBefore = new Date();
 		notAfter = CalculateDateExtensions.addYears(notBefore, 10);
@@ -116,7 +116,7 @@ public class CertificateBuilderFactoryTest
 		publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
 		issuer = new X500Name("C=DE");
-		serial = random(BigInteger.class);
+		serial = RandomExtensions.randomSerialNumber();
 
 		notBefore = new Date();
 		notAfter = CalculateDateExtensions.addYears(notBefore, 10);
