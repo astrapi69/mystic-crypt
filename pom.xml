@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
@@ -218,7 +219,7 @@
 		</dependencies>
 
 	</dependencyManagement>
-	
+
 	<dependencies>
 
 		<!-- JOBJ-CONTRACT-VERIFIER DEPENDENCY -->
@@ -325,6 +326,19 @@
 						<execution>
 							<goals>
 								<goal>clean</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+				<plugin>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>${jacoco-maven-plugin.version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>prepare-agent</goal>
 							</goals>
 						</execution>
 					</executions>
