@@ -7,12 +7,12 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mvn-java-parent</artifactId>
-		<version>6.1</version>
+		<version>6.2</version>
 		<relativePath></relativePath>
 	</parent>
 
 	<artifactId>mystic-crypt</artifactId>
-	<version>5.9-SNAPSHOT</version>
+	<version>6-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<inceptionYear>2015</inceptionYear>
 
@@ -51,9 +51,8 @@
 		<bouncycastle.version>1.62</bouncycastle.version>
 		<!-- GUAVA version -->
 		<guava.version>27.1-jre</guava.version>
-		<!-- MEANBEAN version -->
-		<meanbean.version>2.0.3</meanbean.version>
-		<jaxb.version>2.3.0</jaxb.version>
+		<!-- JAXB-API version -->
+		<jaxb-api.version>2.3.1</jaxb-api.version>
 	</properties>
 
 	<modules>
@@ -93,7 +92,7 @@
 			<dependency>
 				<groupId>javax.xml.bind</groupId>
 				<artifactId>jaxb-api</artifactId>
-				<version>${jaxb.version}</version>
+				<version>${jaxb-api.version}</version>
 			</dependency>
 			<!-- RESOURCEBUNDLE-CORE DEPENDENCIES -->
 			<dependency>

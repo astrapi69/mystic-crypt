@@ -1,16 +1,28 @@
 ## Change log
 ----------------------
 
-Version 5.9-SNAPSHOT
+Version 6-SNAPSHOT
 -------------
+
+ADDED:
+ 
+- new dependency jobj-core in version 3.2.1 added
+- new dependency jaxb-api in version 2.3.1 added
+- new dependency jobj-contract-verifier in version 3.2 added
 
 CHANGED:
 
 - constant class CryptConst tags as deprecated, will be removed in next minor release
-- update of parent version to 6.1
+- update of parent version to 6.2 and to new jdk release 11
 - update of guava version to 27.1-jre
 - update of commons-codec version to 1.12
 - update of bouncycastle version to 1.62
+- update of file-worker version to 5.2
+- update of jcommons-lang version to 5.2.2
+- update of test-objects version to 5.2
+- update of silly-collections version to 5.2.1
+- update of randomizer version to 6.1
+- update of commons-codec version to 1.12
 
 Version 5.8
 -------------
