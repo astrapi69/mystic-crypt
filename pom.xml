@@ -29,7 +29,7 @@
 		<crypt-api.version>${mystic-crypt.version}</crypt-api.version>
 		<crypt-data.version>${mystic-crypt.version}</crypt-data.version>
 		<!-- NEW EXTENSIONS LIB versions -->
-		<file-worker.version>5.2.1</file-worker.version>
+		<file-worker.version>5.2</file-worker.version>
 		<jcommons-lang.version>5.2.2</jcommons-lang.version>
 		<test-objects.version>5.2</test-objects.version>
 		<silly-collections.version>5.2.1</silly-collections.version>

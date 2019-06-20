@@ -10,7 +10,7 @@ CHANGED:
 - update of parent version to 6.1
 - update of guava version to 27.1-jre
 - update of commons-codec version to 1.12
-- update of bouncycastle version to 1.61
+- update of bouncycastle version to 1.62
 
 Version 5.8
 -------------
