@@ -46,8 +46,8 @@
 		<randomizer-api.version>${randomizer.version}</randomizer-api.version>
 		<randomizer-data.version>${randomizer.version}</randomizer-data.version>
 		<!-- EXTERNAL LIBRARIES versions -->
-		<commons-codec.version>1.11</commons-codec.version>
-		<bouncycastle.version>1.60</bouncycastle.version>
+		<commons-codec.version>1.12</commons-codec.version>
+		<bouncycastle.version>1.61</bouncycastle.version>
 		<!-- GUAVA version -->
 		<guava.version>27.1-jre</guava.version>
 		<!-- MEANBEAN version -->
