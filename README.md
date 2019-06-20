@@ -12,6 +12,8 @@
 
 The target of this parent project is to make encryption and decryption as simple as possible.
 
+If you like this project put a ⭐ and donate
+
 ## Note
 
 No animals were harmed in the making of this library.
