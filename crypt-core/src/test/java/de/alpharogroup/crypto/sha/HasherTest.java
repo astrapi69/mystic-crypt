@@ -93,6 +93,9 @@ public class HasherTest
 		expected = Hasher.hashAndHex(password, salt, hashAlgorithm, charset);
 		actual = Hasher.hashAndHex(newInsertPassword, salt, hashAlgorithm, charset);
 		assertEquals(actual, expected);
+		
+		final String hashedPassword = Hasher.hashAndHex("foo", "bINU6W59", hashAlgorithm, charset);
+		System.out.println(hashedPassword);
 	}
 
 	/**

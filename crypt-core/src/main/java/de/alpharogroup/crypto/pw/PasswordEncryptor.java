@@ -109,6 +109,16 @@ public class PasswordEncryptor implements Serializable
 	}
 
 	/**
+	 * Gets the random salt.
+	 *
+	 * @return the random salt
+	 */
+	public String getRandomSalt()
+	{
+		return getRandomSalt(8);
+	}
+
+	/**
 	 * Gets a random salt string.
 	 *
 	 * @param length
@@ -205,7 +215,7 @@ public class PasswordEncryptor implements Serializable
 	 *            the charset
 	 * @return the generated {@link String} object
 	 * @throws NoSuchAlgorithmException
-	 *             the no such algorithm exception
+	 *             is thrown if instantiation of the MessageDigest object fails.
 	 */
 	public String hashPassword(final String password, final String salt,
 		final HashAlgorithm hashAlgorithm, final Charset charset) throws NoSuchAlgorithmException
