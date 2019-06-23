@@ -3,7 +3,7 @@
 <div align="center">
 
 [![Build Status](https://travis-ci.org/astrapi69/mystic-crypt.svg?branch=develop)](https://travis-ci.org/astrapi69/mystic-crypt)
-[![Coverage Status](https://coveralls.io/repos/github/astrapi69/mystic-crypt/badge.svg?branch=develop)](https://coveralls.io/github/astrapi69/mystic-crypt?branch=master)
+[![Coverage Status](https://codecov.io/gh/astrapi69/mystic-crypt/branch/develop/graph/badge.svg)](https://codecov.io/gh/astrapi69/mystic-crypt)
 [![Open Issues](https://img.shields.io/github/issues/astrapi69/mystic-crypt.svg?style=flat)](https://github.com/astrapi69/mystic-crypt/issues) 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.alpharogroup/mystic-crypt/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.alpharogroup/mystic-crypt)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT)
@@ -183,10 +183,10 @@ Here is a list of awesome projects for cryptography:
 |Special thanks to [sonatype repository](https://www.sonatype.com) for providing a free maven repository service for open source projects|
 |     <img width=1000/>     |
 
-|**coveralls.io**|
+|**codecov.io**|
 |     :---:      |
-|[![Coverage Status](https://coveralls.io/repos/github/astrapi69/mystic-crypt/badge.svg?branch=develop)](https://coveralls.io/github/astrapi69/mystic-crypt?branch=master)|
-|Special thanks to [coveralls.io](https://coveralls.io) for providing a free code coverage for open source projects|
+|[![Coverage Status](https://codecov.io/gh/astrapi69/mystic-crypt/branch/develop/graph/badge.svg)](https://codecov.io/gh/astrapi69/mystic-crypt)|
+|Special thanks to [codecov.io](https://codecov.io) for providing a free code coverage for open source projects|
 |     <img width=1000/>     |
 
 |**javadoc.io**|

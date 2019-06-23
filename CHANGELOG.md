@@ -12,8 +12,8 @@ ADDED:
 
 CHANGED:
 
+- supports the new jdk release 11 by updating the parent version to 6.3 
 - constant class CryptConst tags as deprecated, will be removed in next minor release
-- update of parent version to 6.2 and to new jdk release 11
 - update of guava version to 27.1-jre
 - update of commons-codec version to 1.12
 - update of bouncycastle version to 1.62
@@ -23,6 +23,7 @@ CHANGED:
 - update of silly-collections version to 5.2.1
 - update of randomizer version to 6.1
 - update of commons-codec version to 1.12
+- change provider of code coverage to codecov.io
 
 Version 5.8
 -------------
