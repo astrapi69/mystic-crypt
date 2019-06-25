@@ -79,7 +79,7 @@ You can first define the version properties:
 	<properties>
 			...
 		<!-- MYSTIC-CRYPT versions -->
-		<mystic-crypt.version>5.8</mystic-crypt.version>
+		<mystic-crypt.version>6</mystic-crypt.version>
 		<crypt-api.version>${mystic-crypt.version}</crypt-api.version>
 		<crypt-core.version>${mystic-crypt.version}</crypt-core.version>
 		<crypt-data.version>${mystic-crypt.version}</crypt-data.version>
