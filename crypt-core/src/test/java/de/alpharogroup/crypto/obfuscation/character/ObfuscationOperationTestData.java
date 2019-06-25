@@ -62,7 +62,7 @@ public class ObfuscationOperationTestData
 		replaceWith = 'b';
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(0, 2);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 
@@ -70,7 +70,7 @@ public class ObfuscationOperationTestData
 		replaceWith = 'c';
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(2);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 
@@ -78,7 +78,7 @@ public class ObfuscationOperationTestData
 		replaceWith = 'd';
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(3);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 		return rules;
@@ -104,7 +104,7 @@ public class ObfuscationOperationTestData
 		replaceWith = 'b';
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(0, 2);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 
@@ -112,7 +112,7 @@ public class ObfuscationOperationTestData
 		replaceWith = 'c';
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(2);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 
@@ -120,7 +120,7 @@ public class ObfuscationOperationTestData
 		replaceWith = 'd';
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(3);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 
@@ -128,7 +128,7 @@ public class ObfuscationOperationTestData
 		replaceWith = 'e';
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(0);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 
@@ -136,7 +136,7 @@ public class ObfuscationOperationTestData
 		replaceWith = 'f';
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(0);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 
@@ -144,7 +144,7 @@ public class ObfuscationOperationTestData
 		replaceWith = 'g';
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(0);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 
@@ -152,7 +152,7 @@ public class ObfuscationOperationTestData
 		replaceWith = 'h';
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(0);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 
@@ -160,7 +160,7 @@ public class ObfuscationOperationTestData
 		replaceWith = 'i';
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(0);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 
@@ -168,7 +168,7 @@ public class ObfuscationOperationTestData
 		replaceWith = 'j';
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(0);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 
@@ -176,7 +176,7 @@ public class ObfuscationOperationTestData
 		replaceWith = 'k';
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(0);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 
@@ -184,7 +184,7 @@ public class ObfuscationOperationTestData
 		replaceWith = 'l';
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(0);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 
@@ -192,7 +192,7 @@ public class ObfuscationOperationTestData
 		replaceWith = 'm';
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(0);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 
@@ -200,7 +200,7 @@ public class ObfuscationOperationTestData
 		replaceWith = 'n';
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(0);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 
@@ -208,7 +208,7 @@ public class ObfuscationOperationTestData
 		replaceWith = 'o';
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(0);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 
@@ -216,7 +216,7 @@ public class ObfuscationOperationTestData
 		replaceWith = 'p';
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(0);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 
@@ -224,7 +224,7 @@ public class ObfuscationOperationTestData
 		replaceWith = 'q';
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(0);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 
@@ -232,7 +232,7 @@ public class ObfuscationOperationTestData
 		replaceWith = 'r';
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(0);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 
@@ -240,7 +240,7 @@ public class ObfuscationOperationTestData
 		replaceWith = 's';
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(0);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 
@@ -248,7 +248,7 @@ public class ObfuscationOperationTestData
 		replaceWith = 't';
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(0);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 
@@ -256,7 +256,7 @@ public class ObfuscationOperationTestData
 		replaceWith = 'u';
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(0);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 
@@ -264,7 +264,7 @@ public class ObfuscationOperationTestData
 		replaceWith = 'v';
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(0);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 
@@ -272,7 +272,7 @@ public class ObfuscationOperationTestData
 		replaceWith = 'w';
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(0);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 
@@ -280,7 +280,7 @@ public class ObfuscationOperationTestData
 		replaceWith = 'x';
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(0);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 
@@ -288,7 +288,7 @@ public class ObfuscationOperationTestData
 		replaceWith = 'y';
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(0);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 
@@ -296,7 +296,7 @@ public class ObfuscationOperationTestData
 		replaceWith = 'z';
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(0);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 
@@ -304,7 +304,7 @@ public class ObfuscationOperationTestData
 		replaceWith = '0';
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(0);
-		rule = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 		return rules;

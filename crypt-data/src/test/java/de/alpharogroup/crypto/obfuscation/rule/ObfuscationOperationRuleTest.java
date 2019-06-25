@@ -47,7 +47,7 @@ public class ObfuscationOperationRuleTest
 		Object expected;
 		Object actual;
 		ObfuscationOperationRule<Character, String> rule = ObfuscationOperationRule
-			.<Character, String> newRule().character(Character.valueOf('a')).replaceWith("bc")
+			.<Character, String> builder().character(Character.valueOf('a')).replaceWith("bc")
 			.operation(Operation.UPPERCASE).indexes(SetFactory.newHashSet(0, 2)).build();
 
 		expected = Character.valueOf('a');

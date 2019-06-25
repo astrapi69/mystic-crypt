@@ -48,13 +48,11 @@ public class CharacterObfuscationOperationRule
 	extends
 		ObfuscationOperationRule<Character, Character>
 {
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
 
-	public CharacterObfuscationOperationRule(Character character, Character replaceWith,
-		Operation operation, Set<Integer> indexes)
+	public CharacterObfuscationOperationRule(Character character, Set<Integer> indexes,Character operatedCharacter,
+		Operation operation,  Character replaceWith)
 	{
-		super(character, replaceWith, operation, indexes);
+		super(character, indexes, operatedCharacter, operation, replaceWith);
 		if (operation != null)
 		{
 			setOperatedCharacter(Operation.operate(character, operation));

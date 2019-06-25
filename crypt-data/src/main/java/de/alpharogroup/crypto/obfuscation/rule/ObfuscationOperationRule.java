@@ -26,8 +26,8 @@ package de.alpharogroup.crypto.obfuscation.rule;
 
 import java.util.Set;
 
-import de.alpharogroup.collections.set.SetFactory;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -37,19 +37,21 @@ import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 /**
- * The class {@link ObfuscationOperationRule} builds a complex rule for obfuscating a single
- * character.
+ * The class {@link ObfuscationOperationRule} builds a complex rule for
+ * obfuscating a single character.
  */
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
+@EqualsAndHashCode
+@ToString
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder(toBuilder = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ObfuscationOperationRule<C, RW> extends ObfuscationRule<C, RW>
-{
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 1L;
+public class ObfuscationOperationRule<C, RW> {
+
+	/** The character. */
+	C character;
 
 	/** The index where this rule will execute. */
 	Set<Integer> indexes;
@@ -60,13 +62,7 @@ public class ObfuscationOperationRule<C, RW> extends ObfuscationRule<C, RW>
 	/** The type of operation for the obfuscation. */
 	Operation operation;
 
-	@Builder(builderMethodName = "newRule")
-	public ObfuscationOperationRule(C character, RW replaceWith, Operation operation,
-		Set<Integer> indexes)
-	{
-		super(character, replaceWith);
-		this.indexes = SetFactory.newHashSet(indexes);
-		this.operation = operation;
-	}
+	/** The character(s) that will be replaced with. */
+	RW replaceWith;
 
 }

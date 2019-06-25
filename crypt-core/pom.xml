@@ -15,13 +15,23 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>crypt-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>crypt-data</artifactId>
 		</dependency>
 
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
 			<artifactId>randomizer-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
 		</dependency>
 
 		<dependency>
@@ -31,13 +41,7 @@
 
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
-			<artifactId>crypt-data</artifactId>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/de.alpharogroup/model-core -->
-		<dependency>
-			<groupId>de.alpharogroup</groupId>
 			<artifactId>model-core</artifactId>
-			<version>1.6.2</version>
 		</dependency>
 
 		<!-- XML-EXTENSIONS DEPENDENCY -->
@@ -88,7 +92,7 @@
 			<artifactId>jcommons-lang</artifactId>
 			<scope>test</scope>
 		</dependency>
-
+		
 	</dependencies>
 
 </project>

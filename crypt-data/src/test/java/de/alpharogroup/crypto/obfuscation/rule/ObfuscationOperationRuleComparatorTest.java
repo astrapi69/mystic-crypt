@@ -90,10 +90,10 @@ public class ObfuscationOperationRuleComparatorTest
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(0, 2);
 
-		o1 = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		o1 = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 
-		o2 = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		o2 = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 
 		actual = comparator.compare(o1, o2);
@@ -105,7 +105,7 @@ public class ObfuscationOperationRuleComparatorTest
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(2);
 
-		o2 = ObfuscationOperationRule.<Character, Character> newRule().character(character)
+		o2 = ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 
 		actual = comparator.compare(o1, o2);
