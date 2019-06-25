@@ -25,8 +25,8 @@
 package de.alpharogroup.crypto.key;
 
 import static org.junit.Assert.assertNull;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -74,19 +74,24 @@ public class PublicKeyHexEncryptorTest
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
 	 */
 	@Test
-	public final void testConstructors() throws NoSuchAlgorithmException, InvalidKeySpecException,
+	public void testConstructors() throws NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchProviderException, IOException, InvalidKeyException, NoSuchPaddingException,
 		IllegalBlockSizeException, BadPaddingException
 	{
 		PublicKey publicKey;
-		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		final File publickeyDerFile = new File(publickeyDerDir, "public.der");
+		File publickeyDerDir;
+		File publickeyDerFile;
+		PublicKeyHexEncryptor encryptor;
+		String encrypted;
+
+		publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		publickeyDerFile = new File(publickeyDerDir, "public.der");
 		publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
-		PublicKeyHexEncryptor encryptor = new PublicKeyHexEncryptor(publicKey);
+		encryptor = new PublicKeyHexEncryptor(publicKey);
 		assertNotNull(encryptor);
 		assertEquals(publicKey, encryptor.getPublicKey());
 		assertNull(encryptor.getCipher());
-		final String encrypted = encryptor.encrypt("foo");
+		encrypted = encryptor.encrypt("foo");
 		assertNotNull(encrypted);
 		assertNotNull(encryptor.getCipher());
 	}

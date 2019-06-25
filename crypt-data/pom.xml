@@ -7,12 +7,17 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mystic-crypt</artifactId>
-		<version>5.8-SNAPSHOT</version>
+		<version>6</version>
 	</parent>
 
 	<artifactId>crypt-data</artifactId>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
@@ -53,12 +58,6 @@
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
 			<artifactId>test-objects</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<!-- MEANBEAN DEPENDENCY -->
-		<dependency>
-			<groupId>org.meanbean</groupId>
-			<artifactId>meanbean</artifactId>
 			<scope>test</scope>
 		</dependency>
 

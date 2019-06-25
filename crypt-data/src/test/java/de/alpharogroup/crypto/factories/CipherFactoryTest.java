@@ -24,7 +24,7 @@
  */
 package de.alpharogroup.crypto.factories;
 
-import static org.testng.Assert.assertNotNull;
+import static org.testng.AssertJUnit.assertNotNull;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
@@ -46,13 +46,13 @@ import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.algorithm.SunJCEAlgorithm;
+import de.alpharogroup.crypto.compound.CompoundAlgorithm;
 import de.alpharogroup.crypto.model.CryptModel;
 import de.alpharogroup.crypto.provider.SecurityProvider;
 
 /**
- * The class {@link CipherFactory}
+ * The unit test class for the class {@link CipherFactory}
  */
 public class CipherFactoryTest
 {
@@ -80,11 +80,13 @@ public class CipherFactoryTest
 	{
 		Cipher actual;
 		String privateKey;
+		CryptModel<Cipher, String> encryptorModel;
 
 		privateKey = "D1D15ED36B887AF1";
-		CryptModel<Cipher, String> encryptorModel = CryptModel.<Cipher, String> builder()
-			.key(privateKey).algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).salt(CryptConst.SALT)
-			.iterationCount(19).operationMode(Cipher.ENCRYPT_MODE).build();
+		encryptorModel = CryptModel.<Cipher, String> builder().key(privateKey)
+			.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).salt(CompoundAlgorithm.SALT)
+			.iterationCount(CompoundAlgorithm.ITERATIONCOUNT).operationMode(Cipher.ENCRYPT_MODE)
+			.build();
 
 		actual = CipherFactory.newCipher(encryptorModel);
 		assertNotNull(actual);
@@ -97,16 +99,24 @@ public class CipherFactoryTest
 	@Test
 	public void testNewCipherIntSecretKeyAlgorithmParameterSpecString() throws Exception
 	{
-		final String algorithm = CryptConst.PBE_WITH_MD5_AND_DES;
-		final KeySpec keySpec = KeySpecFactory.newPBEKeySpec(CryptConst.PRIVATE_KEY,
-			CryptConst.SALT, CryptConst.ITERATIONCOUNT);
-		final SecretKeyFactory factory = SecretKeyFactoryExtensions.newSecretKeyFactory(algorithm);
-		final SecretKey key = factory.generateSecret(keySpec);
+		String algorithm;
+		KeySpec keySpec;
+		SecretKeyFactory factory;
+		SecretKey key;
+		int operationMode;
+		AlgorithmParameterSpec paramSpec;
+		Cipher cipher;
 
-		final int operationMode = Cipher.ENCRYPT_MODE;
-		final AlgorithmParameterSpec paramSpec = AlgorithmParameterSpecFactory
-			.newPBEParameterSpec(CryptConst.SALT, CryptConst.ITERATIONCOUNT);
-		Cipher cipher = CipherFactory.newCipher(operationMode, key, paramSpec, algorithm);
+		algorithm = CompoundAlgorithm.PBE_WITH_MD5_AND_DES.getAlgorithm();
+		keySpec = KeySpecFactory.newPBEKeySpec(CompoundAlgorithm.PRIVATE_KEY,
+			CompoundAlgorithm.SALT, CompoundAlgorithm.ITERATIONCOUNT);
+		factory = SecretKeyFactoryExtensions.newSecretKeyFactory(algorithm);
+		key = factory.generateSecret(keySpec);
+
+		operationMode = Cipher.ENCRYPT_MODE;
+		paramSpec = AlgorithmParameterSpecFactory.newPBEParameterSpec(CompoundAlgorithm.SALT,
+			CompoundAlgorithm.ITERATIONCOUNT);
+		cipher = CipherFactory.newCipher(operationMode, key, paramSpec, algorithm);
 		assertNotNull(cipher);
 	}
 
@@ -116,8 +126,11 @@ public class CipherFactoryTest
 	@Test
 	public void testNewCipherString() throws Exception
 	{
-		final String algorithm = CryptConst.PBE_WITH_MD5_AND_DES;
-		Cipher cipher = CipherFactory.newCipher(algorithm);
+		String algorithm;
+		Cipher cipher;
+
+		algorithm = CompoundAlgorithm.PBE_WITH_MD5_AND_DES.getAlgorithm();
+		cipher = CipherFactory.newCipher(algorithm);
 		assertNotNull(cipher);
 	}
 
@@ -127,9 +140,12 @@ public class CipherFactoryTest
 	@Test
 	public void testNewCipherStringString() throws Exception
 	{
+		String algorithm;
+		Cipher cipher;
+
 		Security.addProvider(new BouncyCastleProvider());
-		final String algorithm = "AES/CBC/PKCS5Padding";
-		Cipher cipher = CipherFactory.newCipher(algorithm, SecurityProvider.BC.name());
+		algorithm = "AES/CBC/PKCS5Padding";
+		cipher = CipherFactory.newCipher(algorithm, SecurityProvider.BC.name());
 		assertNotNull(cipher);
 	}
 
@@ -139,12 +155,14 @@ public class CipherFactoryTest
 	@Test
 	public void testNewCipherStringStringByteArrayIntInt() throws Exception
 	{
-		final String algorithm = CryptConst.PBE_WITH_MD5_AND_DES;
+		String algorithm;
+		Cipher cipher;
+		int operationMode;
 
-		final int operationMode = Cipher.ENCRYPT_MODE;
-
-		Cipher cipher = CipherFactory.newCipher(CryptConst.PRIVATE_KEY, algorithm, CryptConst.SALT,
-			CryptConst.ITERATIONCOUNT, operationMode);
+		algorithm = CompoundAlgorithm.PBE_WITH_MD5_AND_DES.getAlgorithm();
+		operationMode = Cipher.ENCRYPT_MODE;
+		cipher = CipherFactory.newCipher(CompoundAlgorithm.PRIVATE_KEY, algorithm,
+			CompoundAlgorithm.SALT, CompoundAlgorithm.ITERATIONCOUNT, operationMode);
 		assertNotNull(cipher);
 	}
 

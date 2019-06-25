@@ -24,40 +24,43 @@
  */
 package de.alpharogroup.crypto;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.FieldDefaults;
 
 /**
- * The class {@link Router} holds data for a router.
+ * The class {@link Router} holds data for a router
  */
 @Data
 @Builder(toBuilder = true)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Router
 {
 
 	/** The access type. */
-	private String accessType;
+	String accessType;
 
 	/** The model. */
-	private String model;
+	String model;
 
 	/** The notes. */
-	private String notes;
+	String notes;
 
 	/** The permissions. */
-	private String permissions;
+	String permissions;
 
 	/** The pw. */
-	private String pw;
+	String pw;
 
 	/** The username. */
-	private String username;
+	String username;
 
 	/** The vendor. */
-	private String vendor;
+	String vendor;
 
 	/** The version. */
-	private String version;
+	String version;
 
 	/**
 	 * To line.

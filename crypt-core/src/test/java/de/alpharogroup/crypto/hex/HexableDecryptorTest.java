@@ -44,13 +44,20 @@ public class HexableDecryptorTest
 	@Test
 	public void testEncryptDecrypt() throws Exception
 	{
-		final String test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
-		final String key = "1234567890123456";
-		final HexableEncryptor encryptor = new HexableEncryptor(key);
-		final String encrypted = encryptor.encrypt(test);
+		String test;
+		String key;
+		HexableEncryptor encryptor;
+		String encrypted;
+		HexableDecryptor decryptor;
+		String decryted;
 
-		final HexableDecryptor decryptor = new HexableDecryptor(key);
-		final String decryted = decryptor.decrypt(encrypted);
+		test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
+		key = "1234567890123456";
+		encryptor = new HexableEncryptor(key);
+		encrypted = encryptor.encrypt(test);
+
+		decryptor = new HexableDecryptor(key);
+		decryted = decryptor.decrypt(encrypted);
 		assertTrue("String before encryption is not equal after decryption.",
 			test.equals(decryted));
 	}

@@ -38,8 +38,9 @@ import org.testng.annotations.Test;
 
 import de.alpharogroup.collections.list.ListFactory;
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
-import de.alpharogroup.evaluate.object.evaluators.SilentEqualsHashCodeAndToStringEvaluator;
+import de.alpharogroup.evaluate.object.evaluators.EqualsHashCodeAndToStringEvaluator;
 import de.alpharogroup.file.search.PathFinder;
+import lombok.SneakyThrows;
 
 /**
  * The unit test class for the class {@link Block}
@@ -56,9 +57,13 @@ public class BlockTest
 	public void setUp() throws Exception
 	{
 
-		final File publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
+		File publickeyPemDir;
+		File publickeyPemFile;
+		PublicKey publicKey;
+
+		publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		publickeyPemFile = new File(publickeyPemDir, "public.pem");
+		publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
 		address = new Address("foo", publicKey.getEncoded());
 	}
@@ -70,20 +75,17 @@ public class BlockTest
 	public final void testConstructors()
 	{
 		Block block;
+		Transaction transaction;
+		String text;
 
 		block = new Block();
 		assertNotNull(block);
 		block.setHash(new byte[] { });
-		assertNotNull(block.getLeadingZerosCount());
-		Transaction transaction;
-		String text;
 
 		text = "transaction-name";
 		transaction = new Transaction(text, address.getHash(), fixedSignature);
 
 		block = new Block(null, ListFactory.newArrayList(transaction), 4847556);
-
-		assertNotNull(block.getLeadingZerosCount());
 
 	}
 
@@ -92,13 +94,13 @@ public class BlockTest
 	 * {@link Block#toString()}
 	 */
 	@Test(enabled = false)
+	@SneakyThrows
 	public void testEqualsHashcodeAndToStringWithClass()
 	{
 		boolean expected;
 		boolean actual;
 
-		actual = SilentEqualsHashCodeAndToStringEvaluator
-			.evaluateEqualsHashcodeAndToStringQuietly(Block.class);
+		actual = EqualsHashCodeAndToStringEvaluator.evaluateEqualsHashcodeAndToString(Block.class);
 		expected = true;
 		assertEquals(expected, actual);
 	}

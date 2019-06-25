@@ -39,9 +39,9 @@ import javax.crypto.SecretKeyFactory;
 import org.apache.commons.lang3.ArrayUtils;
 
 import de.alpharogroup.check.Check;
-import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.algorithm.SunJCEAlgorithm;
 import de.alpharogroup.crypto.api.Cryptor;
+import de.alpharogroup.crypto.compound.CompoundAlgorithm;
 import de.alpharogroup.crypto.factories.AlgorithmParameterSpecFactory;
 import de.alpharogroup.crypto.factories.SecretKeyFactoryExtensions;
 import de.alpharogroup.crypto.model.CryptModel;
@@ -232,7 +232,7 @@ public abstract class AbstractCryptor<C, K> implements Serializable, Cryptor
 	{
 		if (getModel().getIterationCount() == null)
 		{
-			return CryptConst.ITERATIONCOUNT;
+			return CompoundAlgorithm.ITERATIONCOUNT;
 		}
 		return getModel().getIterationCount();
 	}
@@ -246,7 +246,7 @@ public abstract class AbstractCryptor<C, K> implements Serializable, Cryptor
 	{
 		if (ArrayUtils.isEmpty(getModel().getSalt()))
 		{
-			return CryptConst.SALT;
+			return CompoundAlgorithm.SALT;
 		}
 		return getModel().getSalt();
 	}

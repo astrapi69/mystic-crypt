@@ -24,6 +24,9 @@
  */
 package de.alpharogroup.crypto.key;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertTrue;
+
 import java.io.File;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -32,7 +35,6 @@ import java.security.Security;
 import javax.crypto.Cipher;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
@@ -58,38 +60,49 @@ public class KeyEncryptDecryptorTest
 	@Test
 	public void testEncryptDecryptDerFiles() throws Exception
 	{
-		final String test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
-		final byte[] testBytes = test.getBytes("UTF-8");
+		String actual;
+		String expected;
+		byte[] testBytes;
+		File publickeyDerDir;
+		File publickeyDerFile;
+		File privatekeyDerFile;
+		PrivateKey privateKey;
+		PublicKey publicKey;
+		CryptModel<Cipher, PublicKey> encryptModel;
+		CryptModel<Cipher, PrivateKey> decryptModel;
+		PublicKeyEncryptor encryptor;
+		PrivateKeyDecryptor decryptor;
+		byte[] encrypted;
+		byte[] decrypted;
 
-		final File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		final File publickeyDerFile = new File(publickeyDerDir, "public.der");
-		final File privatekeyDerFile = new File(publickeyDerDir, "private.der");
+		expected = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
+		testBytes = expected.getBytes("UTF-8");
 
-		final PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
+		publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		publickeyDerFile = new File(publickeyDerDir, "public.der");
+		privatekeyDerFile = new File(publickeyDerDir, "private.der");
 
-		final PublicKey publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
+		privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
 
-		final CryptModel<Cipher, PublicKey> encryptModel = CryptModel.<Cipher, PublicKey> builder()
-			.key(publicKey)
+		publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
+
+		encryptModel = CryptModel.<Cipher, PublicKey> builder().key(publicKey)
 			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding)
 			.build();
 
-		final CryptModel<Cipher, PrivateKey> decryptModel = CryptModel
-			.<Cipher, PrivateKey> builder().key(privateKey)
+		decryptModel = CryptModel.<Cipher, PrivateKey> builder().key(privateKey)
 			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding)
 			.build();
 
-		final PublicKeyEncryptor encryptor = new PublicKeyEncryptor(encryptModel);
-		final PrivateKeyDecryptor decryptor = new PrivateKeyDecryptor(decryptModel);
+		encryptor = new PublicKeyEncryptor(encryptModel);
+		decryptor = new PrivateKeyDecryptor(decryptModel);
 
+		encrypted = encryptor.encrypt(testBytes);
 
-		final byte[] encrypted = encryptor.encrypt(testBytes);
+		decrypted = decryptor.decrypt(encrypted);
 
-		final byte[] decrypted = decryptor.decrypt(encrypted);
-
-		final String decryptedString = new String(decrypted, "UTF-8");
-		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
-			test.equals(decryptedString));
+		actual = new String(decrypted, "UTF-8");
+		assertEquals(actual, expected);
 	}
 
 	/**
@@ -102,47 +115,61 @@ public class KeyEncryptDecryptorTest
 	@Test
 	public void testEncryptDecryptPemFiles() throws Exception
 	{
-		final String test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
-		final byte[] testBytes = test.getBytes("UTF-8");
+		String actual;
+		String expected;
+		byte[] testBytes;
+		File keyPemDir;
+		File publickeyPemFile;
+		File privatekeyPemFile;
+		PrivateKey privateKey;
+		PublicKey publicKey;
+		CryptModel<Cipher, PublicKey> encryptModel;
+		CryptModel<Cipher, PrivateKey> decryptModel;
+		PublicKeyEncryptor encryptor;
+		PrivateKeyDecryptor decryptor;
+		byte[] encrypted;
+		byte[] decrypted;
 
-		final File keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File publickeyPemFile = new File(keyPemDir, "public.pem");
-		final File privatekeyPemFile = new File(keyPemDir, "private.pem");
+		expected = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
+		testBytes = expected.getBytes("UTF-8");
+
+		keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		publickeyPemFile = new File(keyPemDir, "public.pem");
+		privatekeyPemFile = new File(keyPemDir, "private.pem");
 
 		Security.addProvider(new BouncyCastleProvider());
-		final PrivateKey privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile);
+		privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile);
 
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
+		publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
-		final CryptModel<Cipher, PublicKey> encryptModel = CryptModel.<Cipher, PublicKey> builder()
-			.key(publicKey)
+		encryptModel = CryptModel.<Cipher, PublicKey> builder().key(publicKey)
 			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA256AndMGF1Padding)
 			.build();
 
-		final CryptModel<Cipher, PrivateKey> decryptModel = CryptModel
-			.<Cipher, PrivateKey> builder().key(privateKey)
+		decryptModel = CryptModel.<Cipher, PrivateKey> builder().key(privateKey)
 			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA256AndMGF1Padding)
 			.build();
 
-		final PublicKeyEncryptor encryptor = new PublicKeyEncryptor(encryptModel);
-		final PrivateKeyDecryptor decryptor = new PrivateKeyDecryptor(decryptModel);
+		encryptor = new PublicKeyEncryptor(encryptModel);
+		decryptor = new PrivateKeyDecryptor(decryptModel);
 
 
-		byte[] encrypted = encryptor.encrypt(testBytes);
+		encrypted = encryptor.encrypt(testBytes);
 
-		byte[] decrypted = decryptor.decrypt(encrypted);
+		decrypted = decryptor.decrypt(encrypted);
 
-		String decryptedString = new String(decrypted, "UTF-8");
-		AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
-			test.equals(decryptedString));
+		actual = new String(decrypted, "UTF-8");
+		assertTrue("String before encryption is not equal after decryption.",
+			expected.equals(actual));
 		for (int i = 0; i < 100; i++)
 		{
 			encrypted = encryptor.encrypt(testBytes);
 			decrypted = decryptor.decrypt(encrypted);
 
-			decryptedString = new String(decrypted, "UTF-8");
-			AssertJUnit.assertTrue("String before encryption is not equal after decryption.",
-				test.equals(decryptedString));
+			actual = new String(decrypted, "UTF-8");
+			assertTrue("String before encryption is not equal after decryption.",
+				expected.equals(actual));
+			assertEquals(actual, expected);
 		}
 	}
 

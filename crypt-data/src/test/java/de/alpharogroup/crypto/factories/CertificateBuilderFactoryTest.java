@@ -24,7 +24,6 @@
  */
 package de.alpharogroup.crypto.factories;
 
-import static io.github.benas.randombeans.api.EnhancedRandom.random;
 import static org.testng.AssertJUnit.assertNotNull;
 
 import java.io.File;
@@ -46,9 +45,10 @@ import org.testng.annotations.Test;
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.date.CalculateDateExtensions;
 import de.alpharogroup.file.search.PathFinder;
+import de.alpharogroup.random.RandomExtensions;
 
 /**
- * The class {@link CertificateBuilderFactory}
+ * The unit test class for the class {@link CertificateBuilderFactory}
  */
 public class CertificateBuilderFactoryTest
 {
@@ -60,22 +60,32 @@ public class CertificateBuilderFactoryTest
 	@Test
 	public void testNewX509v1CertificateBuilder() throws Exception
 	{
-		final File keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File publickeyPemFile = new File(keyPemDir, "public.pem");
+		File keyPemDir;
+		File publickeyPemFile;
+		PublicKey publicKey;
+		X500Name issuer;
+		BigInteger serial;
+		Date notBefore;
+		Date notAfter;
+		X500Name subject;
+		X509v1CertificateBuilder certificateBuilder;
+
+		keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		publickeyPemFile = new File(keyPemDir, "public.pem");
 
 		Security.addProvider(new BouncyCastleProvider());
 
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
+		publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
-		X500Name issuer = new X500Name("C=DE");
-		BigInteger serial = random(BigInteger.class);
+		issuer = new X500Name("C=DE");
+		serial = RandomExtensions.randomSerialNumber();
 
-		Date notBefore = new Date();
-		Date notAfter = CalculateDateExtensions.addYears(notBefore, 10);
-		X500Name subject = new X500Name("O=foo-company");
+		notBefore = new Date();
+		notAfter = CalculateDateExtensions.addYears(notBefore, 10);
+		subject = new X500Name("O=foo-company");
 
-		X509v1CertificateBuilder certificateBuilder = CertificateBuilderFactory
-			.newX509v1CertificateBuilder(issuer, serial, notBefore, notAfter, subject, publicKey);
+		certificateBuilder = CertificateBuilderFactory.newX509v1CertificateBuilder(issuer, serial,
+			notBefore, notAfter, subject, publicKey);
 
 		assertNotNull(certificateBuilder);
 	}
@@ -87,26 +97,35 @@ public class CertificateBuilderFactoryTest
 	@Test
 	public void testNewX509v3CertificateBuilder() throws Exception
 	{
-		final File keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File publickeyPemFile = new File(keyPemDir, "public.pem");
+		File keyPemDir;
+		File publickeyPemFile;
+		PublicKey publicKey;
+		X500Name issuer;
+		BigInteger serial;
+		Date notBefore;
+		Date notAfter;
+		X500Name subject;
+		SubjectPublicKeyInfo publicKeyInfo;
+		X509v3CertificateBuilder certificateBuilder;
+
+		keyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		publickeyPemFile = new File(keyPemDir, "public.pem");
 
 		Security.addProvider(new BouncyCastleProvider());
 
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
+		publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
-		X500Name issuer = new X500Name("C=DE");
-		BigInteger serial = random(BigInteger.class);
+		issuer = new X500Name("C=DE");
+		serial = RandomExtensions.randomSerialNumber();
 
-		Date notBefore = new Date();
-		Date notAfter = CalculateDateExtensions.addYears(notBefore, 10);
-		X500Name subject = new X500Name("O=foo-company");
+		notBefore = new Date();
+		notAfter = CalculateDateExtensions.addYears(notBefore, 10);
+		subject = new X500Name("O=foo-company");
 
-		SubjectPublicKeyInfo publicKeyInfo = SubjectPublicKeyInfo
-			.getInstance(publicKey.getEncoded());
+		publicKeyInfo = SubjectPublicKeyInfo.getInstance(publicKey.getEncoded());
 
-		X509v3CertificateBuilder certificateBuilder = CertificateBuilderFactory
-			.newX509v3CertificateBuilder(issuer, serial, notBefore, notAfter, subject,
-				publicKeyInfo);
+		certificateBuilder = CertificateBuilderFactory.newX509v3CertificateBuilder(issuer, serial,
+			notBefore, notAfter, subject, publicKeyInfo);
 
 		assertNotNull(certificateBuilder);
 	}

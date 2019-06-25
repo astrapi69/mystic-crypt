@@ -24,8 +24,7 @@
  */
 package de.alpharogroup.crypto.gm;
 
-import static io.github.benas.randombeans.api.EnhancedRandom.random;
-import static org.testng.Assert.assertNotNull;
+import static org.testng.AssertJUnit.assertNotNull;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -33,6 +32,8 @@ import java.net.URL;
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
+
+import de.alpharogroup.random.RandomObjectsExtensions;
 
 /**
  * The class {@link GoogleMapsUrlSigner}
@@ -44,9 +45,11 @@ public class GoogleMapsUrlSignerTest
 	 * Test method for {@link GoogleMapsUrlSigner#convertToKeyByteArray(String)}
 	 */
 	@Test
-	public void testConvertToKeyByteArray() throws Exception
+	public void testConvertToKeyByteArray()
 	{
-		byte[] byteArray = GoogleMapsUrlSigner.convertToKeyByteArray("YOUR_PRIVATE_KEY");
+		byte[] byteArray;
+
+		byteArray = GoogleMapsUrlSigner.convertToKeyByteArray("YOUR_PRIVATE_KEY");
 		assertNotNull(byteArray);
 	}
 
@@ -56,8 +59,9 @@ public class GoogleMapsUrlSignerTest
 	@Test
 	public void testSignRequestStringStringString() throws Exception
 	{
-		String signRequest = GoogleMapsUrlSigner.signRequest("YOUR_PRIVATE_KEY", "/alpha/beta",
-			"quest");
+		String signRequest;
+
+		signRequest = GoogleMapsUrlSigner.signRequest("YOUR_PRIVATE_KEY", "/alpha/beta", "quest");
 		assertNotNull(signRequest);
 	}
 
@@ -67,8 +71,12 @@ public class GoogleMapsUrlSignerTest
 	@Test
 	public void testSignRequestURLString() throws Exception
 	{
-		final URL url = random(URL.class);
-		String signRequest = GoogleMapsUrlSigner.signRequest(url, "YOUR_PRIVATE_KEY");
+		URL url;
+		String signRequest;
+
+		url = new URL(RandomObjectsExtensions.getRandomWebsite());
+
+		signRequest = GoogleMapsUrlSigner.signRequest(url, "YOUR_PRIVATE_KEY");
 		assertNotNull(signRequest);
 	}
 

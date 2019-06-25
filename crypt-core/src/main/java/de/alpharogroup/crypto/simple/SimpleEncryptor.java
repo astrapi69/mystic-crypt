@@ -25,6 +25,7 @@
 package de.alpharogroup.crypto.simple;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -42,9 +43,9 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
-import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.api.Cryptor;
 import de.alpharogroup.crypto.api.StringEncryptor;
+import de.alpharogroup.crypto.compound.CompoundAlgorithm;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
@@ -98,7 +99,7 @@ public class SimpleEncryptor implements StringEncryptor, Cryptor
 		NoSuchPaddingException, InvalidAlgorithmParameterException
 	{
 		initialize();
-		final byte[] utf8 = string.getBytes(CryptConst.ENCODING);
+		final byte[] utf8 = string.getBytes(StandardCharsets.UTF_8.name());
 		final byte[] encrypt = this.cipher.doFinal(utf8);
 		final String encrypted = Base64.getEncoder().encodeToString(encrypt);
 		return encrypted;
@@ -126,11 +127,11 @@ public class SimpleEncryptor implements StringEncryptor, Cryptor
 			final KeySpec keySpec = new PBEKeySpec(this.getPrivateKey().toCharArray());
 
 			final SecretKeyFactory factory = SecretKeyFactory
-				.getInstance(CryptConst.PBE_WITH_MD5_AND_DES);
+				.getInstance(CompoundAlgorithm.PBE_WITH_MD5_AND_DES.getAlgorithm());
 			final SecretKey key = factory.generateSecret(keySpec);
 			this.cipher = Cipher.getInstance(key.getAlgorithm());
-			final AlgorithmParameterSpec paramSpec = new PBEParameterSpec(CryptConst.SALT,
-				CryptConst.ITERATIONCOUNT);
+			final AlgorithmParameterSpec paramSpec = new PBEParameterSpec(CompoundAlgorithm.SALT,
+				CompoundAlgorithm.ITERATIONCOUNT);
 			this.cipher.init(newOperationMode(), key, paramSpec);
 			initialized = true;
 		}

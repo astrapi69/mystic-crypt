@@ -45,7 +45,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
-import de.alpharogroup.crypto.CryptConst;
+import de.alpharogroup.crypto.compound.CompoundAlgorithm;
 import de.alpharogroup.crypto.factories.AlgorithmParameterSpecFactory;
 import de.alpharogroup.crypto.factories.SecretKeyFactoryExtensions;
 import lombok.NonNull;
@@ -104,16 +104,17 @@ public final class EncryptedPrivateKeyWriter
 			.newPBEParameterSpec(salt, 20);
 
 		final SecretKey secretKey = SecretKeyFactoryExtensions.newSecretKey(password.toCharArray(),
-			CryptConst.PBE_WITH_SHA1_AND_DES_EDE);
+			CompoundAlgorithm.PBE_WITH_SHA1_AND_DES_EDE.getAlgorithm());
 
-		final Cipher pbeCipher = Cipher.getInstance(CryptConst.PBE_WITH_SHA1_AND_DES_EDE);
+		final Cipher pbeCipher = Cipher
+			.getInstance(CompoundAlgorithm.PBE_WITH_SHA1_AND_DES_EDE.getAlgorithm());
 
 		pbeCipher.init(Cipher.ENCRYPT_MODE, secretKey, algorithmParameterSpec);
 
 		final byte[] ciphertext = pbeCipher.doFinal(privateKeyEncoded);
 
 		final AlgorithmParameters algparms = AlgorithmParameters
-			.getInstance(CryptConst.PBE_WITH_SHA1_AND_DES_EDE);
+			.getInstance(CompoundAlgorithm.PBE_WITH_SHA1_AND_DES_EDE.getAlgorithm());
 		algparms.init(algorithmParameterSpec);
 		final EncryptedPrivateKeyInfo encinfo = new EncryptedPrivateKeyInfo(algparms, ciphertext);
 

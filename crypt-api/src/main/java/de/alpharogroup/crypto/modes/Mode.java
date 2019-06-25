@@ -30,6 +30,9 @@ package de.alpharogroup.crypto.modes;
 public enum Mode
 {
 
+	/** The BC operation mode. */
+	BC,
+
 	/** The CBC operation mode. */
 	CBC,
 

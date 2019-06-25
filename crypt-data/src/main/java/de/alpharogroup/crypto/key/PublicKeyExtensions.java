@@ -24,6 +24,8 @@
  */
 package de.alpharogroup.crypto.key;
 
+import java.io.File;
+import java.io.IOException;
 import java.security.PublicKey;
 import java.security.interfaces.DSAPublicKey;
 import java.security.interfaces.ECPublicKey;
@@ -34,7 +36,9 @@ import org.apache.commons.codec.binary.Base64;
 
 import de.alpharogroup.crypto.hex.HexExtensions;
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
+import de.alpharogroup.crypto.key.writer.PublicKeyWriter;
 import de.alpharogroup.string.StringExtensions;
+import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -96,8 +100,7 @@ public class PublicKeyExtensions
 	public static String toBase64(final PublicKey publicKey)
 	{
 		final byte[] encoded = publicKey.getEncoded();
-		final String publicKeyAsBase64String = Base64.encodeBase64String(encoded);
-		return publicKeyAsBase64String;
+		return Base64.encodeBase64String(encoded);
 	}
 
 	/**
@@ -135,8 +138,23 @@ public class PublicKeyExtensions
 	 */
 	public static String toHexString(final PublicKey publicKey, final boolean lowerCase)
 	{
-		final String hexString = HexExtensions.toHexString(publicKey.getEncoded(), lowerCase);
-		return hexString;
+		return HexExtensions.toHexString(publicKey.getEncoded(), lowerCase);
+	}
+
+	/**
+	 * Write the given {@link PublicKey} into the given {@link File}.
+	 *
+	 * @param publicKey
+	 *            the public key
+	 * @param file
+	 *            the file to write in
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	public static void toPemFile(final @NonNull PublicKey publicKey, final @NonNull File file)
+		throws IOException
+	{
+		PublicKeyWriter.writeInPemFormat(publicKey, file);
 	}
 
 }

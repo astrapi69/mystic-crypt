@@ -32,8 +32,10 @@ import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
+import de.alpharogroup.crypto.compound.CompoundAlgorithm;
+
 /**
- * Test class for {@link CryptConst}.
+ * The unit test class for the class {@link CryptConst}
  */
 public class CryptConstTest
 {
@@ -41,10 +43,11 @@ public class CryptConstTest
 	/**
 	 * Test for concatenated constants.
 	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testConcatenatedConst()
 	{
-		assertEquals(CryptConst.PBE_WITH_MD5_AND_DES, "PBEWithMD5AndDES");
+		assertEquals(CompoundAlgorithm.PBE_WITH_MD5_AND_DES.getAlgorithm(), "PBEWithMD5AndDES");
 
 		assertEquals(CryptConst.PBE_WITH_MD5_AND_AES, "PBEWithMD5AndAES");
 
@@ -61,6 +64,7 @@ public class CryptConstTest
 	/**
 	 * Test method for {@link CryptConst} with {@link BeanTester}
 	 */
+	@SuppressWarnings("deprecation")
 	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
 			UnsupportedOperationException.class })
 	public void testWithBeanTester()

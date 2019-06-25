@@ -32,6 +32,12 @@ import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
+import de.alpharogroup.crypto.algorithm.AesAlgorithm;
+import de.alpharogroup.crypto.algorithm.HashAlgorithm;
+import de.alpharogroup.crypto.algorithm.UnionWord;
+import de.alpharogroup.crypto.mechanisms.PBEMechanism;
+import de.alpharogroup.crypto.modes.Mode;
+
 /**
  * The unit test class for the class {@link KeyType}
  */
@@ -46,6 +52,11 @@ public class KeyTypeTest
 	{
 		String expected;
 		String actual;
+
+		String foo = PBEMechanism.PBE.name() + UnionWord.With.name().toUpperCase()
+			+ HashAlgorithm.SHA1.name() + UnionWord.And.name().toUpperCase() + "128BIT"
+			+ AesAlgorithm.AES.name() + "-" + Mode.CBC.name() + "-" + Mode.BC.name();
+		System.out.println(foo);
 
 		actual = KeyType.CERTIFICATE.getDisplayValue();
 		expected = "Certificate";

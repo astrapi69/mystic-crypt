@@ -70,9 +70,7 @@ public class CharacterObfuscator implements Obfuscatable
 	@Override
 	public String disentangle()
 	{
-		final String obfuscated = ObfuscatorExtensions.obfuscateWith(rules, this.key);
-		final String disentangled = ObfuscatorExtensions.disentangle(rules, obfuscated);
-		return disentangled;
+		return ObfuscatorExtensions.disentangle(rules, obfuscate());
 	}
 
 	/**
@@ -81,8 +79,7 @@ public class CharacterObfuscator implements Obfuscatable
 	@Override
 	public String obfuscate()
 	{
-		final String obfuscated = ObfuscatorExtensions.obfuscateWith(rules, this.key);
-		return obfuscated;
+		return ObfuscatorExtensions.obfuscateWith(rules, this.key);
 	}
 
 }

@@ -24,11 +24,12 @@
  */
 package de.alpharogroup.crypto.simple;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 import java.lang.reflect.InvocationTargetException;
 
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
-import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
 /**
@@ -42,34 +43,43 @@ public class SimpleCryptTest
 
 	/**
 	 * Test method for test the method {@link SimpleCrypt#encode(String)} and
-	 * {@link SimpleCrypt#decode(String)}.
+	 * {@link SimpleCrypt#decode(String)}
 	 */
 	@Test
-	public void testSimpleCrypt()
+	public void testSimpleCrypt01()
 	{
-		final String testString = "top secret";
-		final String expected = testString;
-		final String encrypted = SimpleCrypt.encode(testString);
-		final String decrypted = SimpleCrypt.decode(encrypted);
-		AssertJUnit.assertTrue(decrypted.equals(expected));
-		testSimpleCrypt(testString, 4);
+		String actual;
+		String expected;
+		String testString;
+		String encrypted;
+
+		testString = "top secret";
+		expected = testString;
+		encrypted = SimpleCrypt.encode(testString);
+		actual = SimpleCrypt.decode(encrypted);
+		assertEquals(actual, expected);
 	}
 
 	/**
 	 * Test method for test the method {@link SimpleCrypt#encode(String)} and
-	 * {@link SimpleCrypt#decode(String)}.
-	 *
-	 * @param testString
-	 *            the test string
-	 * @param verschiebe
-	 *            the relocate
+	 * {@link SimpleCrypt#decode(String)}
 	 */
-	protected void testSimpleCrypt(final String testString, final int verschiebe)
+	@Test
+	public void testSimpleCrypt02()
 	{
-		final String expected = new StringBuffer(testString).toString().trim();
-		final String encrypted = SimpleCrypt.encode(testString, verschiebe);
-		final String decrypted = SimpleCrypt.decode(encrypted, verschiebe);
-		AssertJUnit.assertTrue(decrypted.equals(expected));
+		String actual;
+		String expected;
+		String encrypted;
+		String testString;
+		int verschiebe;
+
+		testString = "top secret";
+		verschiebe = 4;
+
+		expected = new StringBuffer(testString).toString().trim();
+		encrypted = SimpleCrypt.encode(testString, verschiebe);
+		actual = SimpleCrypt.decode(encrypted, verschiebe);
+		assertEquals(actual, expected);
 	}
 
 	/**
@@ -79,7 +89,7 @@ public class SimpleCryptTest
 			UnsupportedOperationException.class })
 	public void testWithBeanTester()
 	{
-		final BeanTester beanTester = new BeanTester();
+		BeanTester beanTester = new BeanTester();
 		beanTester.testBean(SimpleCrypt.class);
 	}
 

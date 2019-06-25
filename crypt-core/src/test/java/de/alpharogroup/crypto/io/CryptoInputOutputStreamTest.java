@@ -56,54 +56,51 @@ public class CryptoInputOutputStreamTest
 	@Test
 	public void testCryptoOutputStream() throws Exception
 	{
-
-		final File cryptDir = new File(PathFinder.getSrcTestResourcesDir(), "crypt");
-		final File toEncrypt = new File(cryptDir, "test.txt");
-
-		final InputStream fis = new FileInputStream(toEncrypt);
-
-		final String key = "D1D15ED36B887AF1";
-
-		final HexableEncryptor encryptor = new HexableEncryptor(key);
-
-		InputStream cis = new CryptoInputStream(fis, encryptor);
-
-		final File encryptedFile = new File(cryptDir, "encryptedWithCryptoInputStream.txt");
-
-
-		final FileOutputStream out = new FileOutputStream(encryptedFile);
-
+		String actual;
+		String expected;
+		File cryptDir;
+		File toEncrypt;
+		File encryptedFile;
+		String key;
+		HexableEncryptor encryptor;
 		int c;
+		File decryptedFile;
+		HexableDecryptor decryptor;
 
-		while ((c = cis.read()) != -1)
+		cryptDir = new File(PathFinder.getSrcTestResourcesDir(), "crypt");
+		toEncrypt = new File(cryptDir, "test.txt");
+		encryptedFile = new File(cryptDir, "encryptedWithCryptoInputStream.txt");
+		key = "D1D15ED36B887AF1";
+		encryptor = new HexableEncryptor(key);
+
+		try (InputStream fis = new FileInputStream(toEncrypt);
+			InputStream cis = new CryptoInputStream(fis, encryptor);
+			FileOutputStream out = new FileOutputStream(encryptedFile))
 		{
-			out.write(c);
+
+			while ((c = cis.read()) != -1)
+			{
+				out.write(c);
+			}
 		}
 
-		cis.close();
-		out.close();
+		decryptedFile = new File(cryptDir, "decryptedWithCryptoOutputStream.txt");
+		decryptor = new HexableDecryptor(key);
 
-
-		final File decryptedFile = new File(cryptDir, "decryptedWithCryptoOutputStream.txt");
-
-		final HexableDecryptor decryptor = new HexableDecryptor(key);
-		OutputStream fileOutput = new FileOutputStream(decryptedFile);
-		OutputStream cos = new CryptoOutputStream(fileOutput, decryptor);
-
-		final FileInputStream encryptedFis = new FileInputStream(encryptedFile);
-
-		while ((c = encryptedFis.read()) != -1)
+		try (OutputStream fileOutput = new FileOutputStream(decryptedFile);
+			OutputStream cos = new CryptoOutputStream(fileOutput, decryptor);
+			FileInputStream encryptedFis = new FileInputStream(encryptedFile))
 		{
-			cos.write(c);
-		}
 
-		encryptedFis.close();
-		cos.close();
+			while ((c = encryptedFis.read()) != -1)
+			{
+				cos.write(c);
+			}
+		}
 
 		// Verify the enryption and decryption process by compare the content of files...
-
-		String expected = ReadFileExtensions.readFromFile(toEncrypt);
-		String actual = ReadFileExtensions.readFromFile(decryptedFile);
+		expected = ReadFileExtensions.readFromFile(toEncrypt);
+		actual = ReadFileExtensions.readFromFile(decryptedFile);
 		assertEquals(expected, actual);
 		// clean up...
 		DeleteFileExtensions.delete(encryptedFile);

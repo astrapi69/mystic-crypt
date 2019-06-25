@@ -27,7 +27,7 @@
  */
 package de.alpharogroup.crypto.factories;
 
-import static org.testng.Assert.assertNotNull;
+import static org.testng.AssertJUnit.assertNotNull;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -39,12 +39,12 @@ import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.crypto.CryptConst;
 import de.alpharogroup.crypto.algorithm.AesAlgorithm;
 import de.alpharogroup.crypto.algorithm.SunJCEAlgorithm;
+import de.alpharogroup.crypto.compound.CompoundAlgorithm;
 
 /**
- * The class {@link SecretKeyFactoryExtensions}
+ * The unit test class for the class {@link SecretKeyFactoryExtensions}
  */
 public class SecretKeyFactoryExtensionsTest
 {
@@ -55,9 +55,11 @@ public class SecretKeyFactoryExtensionsTest
 	@Test
 	public void testNewSecretKey() throws Exception
 	{
-		String algorithm = SunJCEAlgorithm.PBEWithMD5AndDES.getAlgorithm();
-		SecretKey secretKey = SecretKeyFactoryExtensions.newSecretKey("secret".toCharArray(),
-			algorithm);
+		String algorithm;
+		SecretKey secretKey;
+
+		algorithm = SunJCEAlgorithm.PBEWithMD5AndDES.getAlgorithm();
+		secretKey = SecretKeyFactoryExtensions.newSecretKey("secret".toCharArray(), algorithm);
 		assertNotNull(secretKey);
 	}
 
@@ -67,9 +69,11 @@ public class SecretKeyFactoryExtensionsTest
 	@Test
 	public void testNewSecretKeyFactory() throws Exception
 	{
-		final String algorithm = CryptConst.PBE_WITH_MD5_AND_DES;
-		SecretKeyFactory secretKeyFactory = SecretKeyFactoryExtensions
-			.newSecretKeyFactory(algorithm);
+		String algorithm;
+		SecretKeyFactory secretKeyFactory;
+
+		algorithm = CompoundAlgorithm.PBE_WITH_MD5_AND_DES.getAlgorithm();
+		secretKeyFactory = SecretKeyFactoryExtensions.newSecretKeyFactory(algorithm);
 		assertNotNull(secretKeyFactory);
 	}
 
@@ -79,10 +83,13 @@ public class SecretKeyFactoryExtensionsTest
 	@Test
 	public void testNewSecretKeySpecByteArrayString() throws Exception
 	{
-		final String algorithm = AesAlgorithm.AES.getAlgorithm();
-		final String key = "1234567890123456";
-		SecretKeySpec secretKeySpec = SecretKeyFactoryExtensions.newSecretKeySpec(key.getBytes(),
-			algorithm);
+		String algorithm;
+		String key;
+		SecretKeySpec secretKeySpec;
+
+		algorithm = AesAlgorithm.AES.getAlgorithm();
+		key = "1234567890123456";
+		secretKeySpec = SecretKeyFactoryExtensions.newSecretKeySpec(key.getBytes(), algorithm);
 		assertNotNull(secretKeySpec);
 	}
 
@@ -92,8 +99,11 @@ public class SecretKeyFactoryExtensionsTest
 	@Test
 	public void testNewSecretKeySpecStringInt() throws Exception
 	{
-		final String algorithm = AesAlgorithm.AES.getAlgorithm();
-		SecretKeySpec secretKeySpec = SecretKeyFactoryExtensions.newSecretKeySpec(algorithm, 128);
+		String algorithm;
+		SecretKeySpec secretKeySpec;
+
+		algorithm = AesAlgorithm.AES.getAlgorithm();
+		secretKeySpec = SecretKeyFactoryExtensions.newSecretKeySpec(algorithm, 128);
 		assertNotNull(secretKeySpec);
 	}
 

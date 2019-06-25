@@ -46,27 +46,32 @@ public class ConnectToRouter
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	public static void main(final String[] args) throws IOException
+	public static void main(String[] args) throws IOException
 	{
-		final String password = URLEncoder.encode("", "US-ASCII");
+		String password;
 
-		final URL url = new URL("http://192.168.178.1/");
-		final URLConnection connection = url.openConnection();
+		URL url;
+		URLConnection connection;
+
+		password = URLEncoder.encode("", "US-ASCII");
+
+		url = new URL("http://192.168.178.1/");
+		connection = url.openConnection();
 		connection.setDoOutput(true);
-
-		final PrintWriter out = new PrintWriter(connection.getOutputStream());
-		out.println(password);
-		out.close();
-
-		final BufferedReader in = new BufferedReader(
-			new InputStreamReader(connection.getInputStream()));
-		String inputLine;
-
-		while ((inputLine = in.readLine()) != null)
+		try (PrintWriter out = new PrintWriter(connection.getOutputStream()))
 		{
-			System.out.println(inputLine);
+			out.println(password);
 		}
 
-		in.close();
+		try (BufferedReader in = new BufferedReader(
+			new InputStreamReader(connection.getInputStream())))
+		{
+			String inputLine;
+
+			while ((inputLine = in.readLine()) != null)
+			{
+				System.out.println(inputLine);
+			}
+		}
 	}
 }

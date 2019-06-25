@@ -24,8 +24,8 @@
  */
 package de.alpharogroup.crypto.obfuscation.rules;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNotNull;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -77,12 +77,15 @@ public class ObfuscationRulesTest
 	{
 		Optional<ContractViolation> expected;
 		Optional<ContractViolation> actual;
+		ObfuscationRules<Character, Character> first;
+		ObfuscationRules<Character, Character> second;
+		ObfuscationRules<Character, Character> third;
+		ObfuscationRules<Character, Character> fourth;
 
-		ObfuscationRules<Character, Character> first = new ObfuscationRules<>();
-		ObfuscationRules<Character, Character> second = ObfuscationRules
-			.<Character, Character> builder().build();
-		ObfuscationRules<Character, Character> third = new ObfuscationRules<>();
-		ObfuscationRules<Character, Character> fourth = new ObfuscationRules<>();
+		first = new ObfuscationRules<>();
+		second = ObfuscationRules.<Character, Character> builder().build();
+		third = new ObfuscationRules<>();
+		fourth = new ObfuscationRules<>();
 
 		actual = EqualsHashCodeAndToStringCheck.equalsHashcodeAndToString(first, second, third,
 			fourth);

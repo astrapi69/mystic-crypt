@@ -37,8 +37,9 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
-import de.alpharogroup.evaluate.object.evaluators.SilentEqualsHashCodeAndToStringEvaluator;
+import de.alpharogroup.evaluate.object.evaluators.EqualsHashCodeAndToStringEvaluator;
 import de.alpharogroup.file.search.PathFinder;
+import lombok.SneakyThrows;
 
 /**
  * The unit test class for the class {@link Transaction}
@@ -55,9 +56,13 @@ public class TransactionTest
 	public void setUp() throws Exception
 	{
 
-		final File publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		final File publickeyPemFile = new File(publickeyPemDir, "public.pem");
-		final PublicKey publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
+		File publickeyPemDir;
+		File publickeyPemFile;
+		PublicKey publicKey;
+
+		publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		publickeyPemFile = new File(publickeyPemDir, "public.pem");
+		publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
 		address = new Address("foo", publicKey.getEncoded());
 	}
@@ -84,13 +89,14 @@ public class TransactionTest
 	 * {@link Transaction#toString()}
 	 */
 	@Test(enabled = false)
+	@SneakyThrows
 	public void testEqualsHashcodeAndToStringWithClass()
 	{
 		boolean expected;
 		boolean actual;
 
-		actual = SilentEqualsHashCodeAndToStringEvaluator
-			.evaluateEqualsHashcodeAndToStringQuietly(Transaction.class);
+		actual = EqualsHashCodeAndToStringEvaluator
+			.evaluateEqualsHashcodeAndToString(Transaction.class);
 		expected = true;
 		assertEquals(expected, actual);
 	}

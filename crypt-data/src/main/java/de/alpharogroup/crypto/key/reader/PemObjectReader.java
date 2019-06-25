@@ -65,14 +65,9 @@ public class PemObjectReader
 	public static PemObject getPemObject(final File file) throws IOException
 	{
 		PemObject pemObject;
-		final PemReader pemReader = new PemReader(new InputStreamReader(new FileInputStream(file)));
-		try
+		try (PemReader pemReader = new PemReader(new InputStreamReader(new FileInputStream(file))))
 		{
 			pemObject = pemReader.readPemObject();
-		}
-		finally
-		{
-			pemReader.close();
 		}
 		return pemObject;
 	}
@@ -95,7 +90,6 @@ public class PemObjectReader
 		try (PEMParser pemParser = new PEMParser(
 			new InputStreamReader(new FileInputStream(keyFile))))
 		{
-
 			PEMEncryptedKeyPair encryptedKeyPair = (PEMEncryptedKeyPair)pemParser.readObject();
 			PEMDecryptorProvider decryptorProvider = new JcePEMDecryptorProviderBuilder()
 				.build(password.toCharArray());

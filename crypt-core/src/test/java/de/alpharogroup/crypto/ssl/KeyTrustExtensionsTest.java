@@ -24,7 +24,7 @@
  */
 package de.alpharogroup.crypto.ssl;
 
-import static org.testng.Assert.assertNotNull;
+import static org.testng.AssertJUnit.assertNotNull;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -54,17 +54,25 @@ public class KeyTrustExtensionsTest
 	@Test
 	public void testResolveKeyManagers() throws Exception
 	{
-		final File derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		final File keystoreFile = new File(derDir, "keystore.jks");
+		File derDir;
+		File keystoreFile;
+		String keystoreType;
+		String password;
+		String keyManagerAlgorithm;
+		KeyManager[] keyManagers;
 
-		final String keystoreType = KeystoreType.JKS.name();
+		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		keystoreFile = new File(derDir, "keystore.jks");
 
-		String password = "secret-pw";
+		keystoreType = KeystoreType.JKS.name();
+
+		password = "secret-pw";
+
 		KeyStoreFactory.newKeyStore(keystoreType, password, keystoreFile, true);
 
-		final String keyManagerAlgorithm = KeyManagerFactory.getDefaultAlgorithm();
-		KeyManager[] keyManagers = KeyTrustExtensions.resolveKeyManagers(keystoreType, password,
-			keystoreFile, keyManagerAlgorithm);
+		keyManagerAlgorithm = KeyManagerFactory.getDefaultAlgorithm();
+		keyManagers = KeyTrustExtensions.resolveKeyManagers(keystoreType, password, keystoreFile,
+			keyManagerAlgorithm);
 
 		assertNotNull(keyManagers);
 		// cleanup...
@@ -77,17 +85,24 @@ public class KeyTrustExtensionsTest
 	@Test
 	public void testResolveTrustManagers() throws Exception
 	{
-		final File derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		final File keystoreFile = new File(derDir, "keystore.jks");
+		File derDir;
+		File keystoreFile;
+		String keystoreType;
+		String password;
+		String trustManagerAlgorithm;
+		TrustManager[] trustManagers;
 
-		final String keystoreType = KeystoreType.JKS.name();
+		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		keystoreFile = new File(derDir, "keystore.jks");
 
-		String password = "secret-pw";
+		keystoreType = KeystoreType.JKS.name();
+
+		password = "secret-pw";
 		KeyStoreFactory.newKeyStore(keystoreType, password, keystoreFile, true);
 
-		final String trustManagerAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
-		TrustManager[] trustManagers = KeyTrustExtensions.resolveTrustManagers(keystoreType,
-			password, keystoreFile, trustManagerAlgorithm);
+		trustManagerAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+		trustManagers = KeyTrustExtensions.resolveTrustManagers(keystoreType, password,
+			keystoreFile, trustManagerAlgorithm);
 
 		assertNotNull(trustManagers);
 		// cleanup...
@@ -101,7 +116,7 @@ public class KeyTrustExtensionsTest
 			UnsupportedOperationException.class })
 	public void testWithBeanTester()
 	{
-		final BeanTester beanTester = new BeanTester();
+		BeanTester beanTester = new BeanTester();
 		beanTester.testBean(KeyTrustExtensions.class);
 	}
 

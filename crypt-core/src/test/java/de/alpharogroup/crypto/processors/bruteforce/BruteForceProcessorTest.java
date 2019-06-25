@@ -31,11 +31,13 @@ import java.util.Set;
 
 import org.testng.annotations.Test;
 
-import de.alpharogroup.lang.PackageExtensions;
+import de.alpharogroup.lang.ScanPackageExtensions;
+import lombok.extern.java.Log;
 
 /**
  * The unit test class for the class {@link BruteForceProcessor}
  */
+@Log
 public class BruteForceProcessorTest
 {
 
@@ -45,50 +47,58 @@ public class BruteForceProcessorTest
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	@Test(enabled = true)
+	@Test(enabled = false)
 	public void test() throws IOException
 	{
 
-		final Set<String> list = PackageExtensions.scanClassNames("de.alpharogroup", true, true);
+		String password;
+		char[] possibleCharacters;
+		BruteForceProcessor processor;
+		String attempt;
+		boolean found;
+		long start;
+		long end;
+		long elapsedMilliSeconds;
+		Set<String> list;
+
+		list = ScanPackageExtensions.scanClassNames("de.alpharogroup", true, true);
 		for (final String string : list)
 		{
 			if (string.endsWith("Test"))
 			{
-				System.out.println("<class name=\"" + string + "\"/>");
+				log.info("<class name=\"" + string + "\"/>");
 			}
 		}
 
-		String password;
-		char[] possibleCharacters;
-		password = "hash";
+		password = "ha";
 		possibleCharacters = new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
 				'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 
-		final BruteForceProcessor processor = new BruteForceProcessor(possibleCharacters, 1);
-		String attempt = processor.getCurrentAttempt();
-		boolean found = false;
-		final long start = System.currentTimeMillis();
+		processor = new BruteForceProcessor(possibleCharacters, 1);
+		attempt = processor.getCurrentAttempt();
+
+		start = System.currentTimeMillis();
 		while (true)
 		{
 			if (attempt.equals(password))
 			{
-				System.out.println("Password Found: " + attempt);
+				log.info("Password Found: " + attempt);
 				found = true;
 				break;
 			}
 			attempt = processor.getCurrentAttempt();
-			System.out.println("Tried: " + attempt);
+			log.info("Tried: " + attempt);
 			processor.increment();
 		}
-		final long end = System.currentTimeMillis();
+		end = System.currentTimeMillis();
 
-		long elapsedMilliSeconds = end - start;
+		elapsedMilliSeconds = end - start;
 		assertTrue(found);
 
-		System.out.println("Started brute force attack for the password '" + password + "'.");
-		System.out.println("Needed milliseconds for crack the password with brute force attack: "
+		log.info("Started brute force attack for the password '" + password + "'.");
+		log.info("Needed milliseconds for crack the password with brute force attack: "
 			+ elapsedMilliSeconds);
-		System.out.println("Password found: " + found);
+		log.info("Password found: " + found);
 	}
 
 }

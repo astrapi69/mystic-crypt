@@ -24,8 +24,8 @@
  */
 package de.alpharogroup.crypto.processors.wordlist;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -58,18 +58,27 @@ public class WordlistsProcessorTest
 		boolean found;
 		String toCheckAgainst;
 		String password;
+		File wordlistDir;
+		File wordlist_1;
+		File wordlist_2;
+		File wordlist_3;
+		File wordlist_4;
+		List<String> lines1;
+		List<String> lines2;
+		List<String> lines3;
+		List<String> lines4;
+		Set<String> set;
 
-
-		final File wordlistDir = new File(PathFinder.getSrcTestResourcesDir(), "wordlists");
-		final File wordlist_1 = new File(wordlistDir, "default-pw.txt");
-		final File wordlist_2 = new File(wordlistDir, "firstnames.txt");
-		final File wordlist_3 = new File(wordlistDir, "surnames.txt");
-		final File wordlist_4 = new File(wordlistDir, "top25pw.txt");
-		final List<String> lines1 = ReadFileExtensions.readLinesInList(wordlist_1);
-		final List<String> lines2 = ReadFileExtensions.readLinesInList(wordlist_2);
-		final List<String> lines3 = ReadFileExtensions.readLinesInList(wordlist_3);
-		final List<String> lines4 = ReadFileExtensions.readLinesInList(wordlist_4);
-		final Set<String> set = SetFactory.newTreeSet();
+		wordlistDir = new File(PathFinder.getSrcTestResourcesDir(), "wordlists");
+		wordlist_1 = new File(wordlistDir, "default-pw.txt");
+		wordlist_2 = new File(wordlistDir, "firstnames.txt");
+		wordlist_3 = new File(wordlistDir, "surnames.txt");
+		wordlist_4 = new File(wordlistDir, "top25pw.txt");
+		lines1 = ReadFileExtensions.readLinesInList(wordlist_1);
+		lines2 = ReadFileExtensions.readLinesInList(wordlist_2);
+		lines3 = ReadFileExtensions.readLinesInList(wordlist_3);
+		lines4 = ReadFileExtensions.readLinesInList(wordlist_4);
+		set = SetFactory.newTreeSet();
 		set.addAll(lines1);
 		set.addAll(lines2);
 		set.addAll(lines3);

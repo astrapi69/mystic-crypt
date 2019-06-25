@@ -24,17 +24,12 @@
  */
 package de.alpharogroup.crypto.obfuscation.rule;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
-
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
+import static org.testng.AssertJUnit.assertNotNull;
 
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.evaluate.object.evaluators.EqualsHashCodeAndToStringEvaluator;
-import de.alpharogroup.random.RandomExtensions;
+import de.alpharogroup.evaluate.object.verifier.ContractVerifier;
 
 /**
  * The unit test class for the class {@link ObfuscationRule}.
@@ -54,38 +49,6 @@ public class ObfuscationRuleTest
 		assertNotNull(model);
 	}
 
-
-	/**
-	 * Test method for {@link ObfuscationRule#equals(Object)} , {@link ObfuscationRule#hashCode()}
-	 * and {@link ObfuscationRule#toString()}
-	 *
-	 * @throws IllegalAccessException
-	 *             if the caller does not have access to the property accessor method
-	 * @throws InstantiationException
-	 *             if a new instance of the bean's class cannot be instantiated
-	 * @throws InvocationTargetException
-	 *             if the property accessor method throws an exception
-	 * @throws NoSuchMethodException
-	 *             if an accessor method for this property cannot be found
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred
-	 * @throws ClassNotFoundException
-	 *             occurs if a given class cannot be located by the specified class loader
-	 */
-	@Test
-	public void testEqualsHashcodeAndToStringWithClass()
-		throws NoSuchMethodException, IllegalAccessException, InvocationTargetException,
-		InstantiationException, IOException, ClassNotFoundException
-	{
-		boolean expected;
-		boolean actual;
-		actual = EqualsHashCodeAndToStringEvaluator
-			.evaluateEqualsHashcodeAndToString(ObfuscationRule.class, clazz -> ObfuscationRule
-				.<Character, Character> builder().character(RandomExtensions.randomChar()).build());
-		expected = true;
-		assertEquals(expected, actual);
-	}
-
 	/**
 	 * Test method for {@link ObfuscationRule}
 	 */
@@ -94,5 +57,15 @@ public class ObfuscationRuleTest
 	{
 		BeanTester beanTester = new BeanTester();
 		beanTester.testBean(ObfuscationRule.class);
+	}
+
+	/**
+	 * Test method for {@link ObfuscationRule#equals(Object)} , {@link ObfuscationRule#hashCode()}
+	 * and {@link ObfuscationRule#toString()}
+	 */
+	@Test
+	public void verifyEqualsHashcodeAndToStringContracts()
+	{
+		ContractVerifier.of(ObfuscationRule.class).verify();
 	}
 }

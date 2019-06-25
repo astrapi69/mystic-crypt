@@ -5,19 +5,12 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mystic-crypt</artifactId>
-		<version>5.8-SNAPSHOT</version>
+		<version>6</version>
 	</parent>
 	
 	<artifactId>crypt-api</artifactId>
 	
 	<dependencies>
-
-		<!-- MEANBEAN DEPENDENCY -->
-		<dependency>
-			<groupId>org.meanbean</groupId>
-			<artifactId>meanbean</artifactId>
-			<scope>test</scope>
-		</dependency>
 
 		<dependency>
 			<groupId>de.alpharogroup</groupId>

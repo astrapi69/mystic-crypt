@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mystic-crypt</artifactId>
-		<version>5.8-SNAPSHOT</version>
+		<version>6</version>
 	</parent>
 
 	<artifactId>crypt-core</artifactId>
@@ -33,6 +33,23 @@
 			<groupId>de.alpharogroup</groupId>
 			<artifactId>crypt-data</artifactId>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/de.alpharogroup/model-core -->
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>model-core</artifactId>
+			<version>1.6.2</version>
+		</dependency>
+
+		<!-- XML-EXTENSIONS DEPENDENCY -->
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>xml-extensions</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>silly-collections</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
@@ -48,10 +65,10 @@
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcpkix-jdk15on</artifactId>
 		</dependency>
-		<!-- JOBJECT-CORE DEPENDENCY -->
+		<!-- JOBJ-CORE DEPENDENCY -->
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
-			<artifactId>jobject-core</artifactId>
+			<artifactId>jobj-core</artifactId>
 		</dependency>
 
 		<dependency>
@@ -65,10 +82,10 @@
 			<artifactId>test-objects</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- MEANBEAN DEPENDENCY -->
+
 		<dependency>
-			<groupId>org.meanbean</groupId>
-			<artifactId>meanbean</artifactId>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>jcommons-lang</artifactId>
 			<scope>test</scope>
 		</dependency>
 

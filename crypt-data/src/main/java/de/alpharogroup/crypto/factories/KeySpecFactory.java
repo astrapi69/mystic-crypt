@@ -28,7 +28,7 @@ import java.security.spec.KeySpec;
 
 import javax.crypto.spec.PBEKeySpec;
 
-import de.alpharogroup.crypto.CryptConst;
+import de.alpharogroup.crypto.compound.CompoundAlgorithm;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -49,7 +49,7 @@ public class KeySpecFactory
 	{
 		if (privateKey == null)
 		{
-			return new PBEKeySpec(CryptConst.PRIVATE_KEY.toCharArray());
+			return new PBEKeySpec(CompoundAlgorithm.PRIVATE_KEY.toCharArray());
 		}
 		return new PBEKeySpec(privateKey.toCharArray());
 	}
@@ -70,7 +70,8 @@ public class KeySpecFactory
 	{
 		if (privateKey == null)
 		{
-			return new PBEKeySpec(CryptConst.PRIVATE_KEY.toCharArray(), salt, iterationCount);
+			return new PBEKeySpec(CompoundAlgorithm.PRIVATE_KEY.toCharArray(), salt,
+				iterationCount);
 		}
 		return new PBEKeySpec(privateKey.toCharArray(), salt, iterationCount);
 	}
