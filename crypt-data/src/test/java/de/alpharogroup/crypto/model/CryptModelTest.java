@@ -29,13 +29,13 @@ import static org.testng.AssertJUnit.assertNotNull;
 
 import javax.crypto.Cipher;
 
-import de.alpharogroup.evaluate.object.evaluators.EqualsHashCodeAndToStringEvaluator;
-import lombok.SneakyThrows;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.algorithm.SunJCEAlgorithm;
 import de.alpharogroup.crypto.compound.CompoundAlgorithm;
+import de.alpharogroup.evaluate.object.evaluators.EqualsHashCodeAndToStringEvaluator;
 import de.alpharogroup.random.RandomExtensions;
+import lombok.SneakyThrows;
 
 /**
  * The unit test class for the class {@link CryptModel}

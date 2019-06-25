@@ -57,7 +57,7 @@ public class ObfuscatorExtensions
 		for (int i = 0; i < toObfuscate.length(); i++)
 		{
 			final char currentCharacter = toObfuscate.charAt(i);
-			final Character asCharacter = Character.valueOf(currentCharacter);
+			final Character asCharacter = currentCharacter;
 			final String charAsString = Character.toString(currentCharacter);
 			if (rules.containsKey(asCharacter))
 			{
@@ -65,15 +65,18 @@ public class ObfuscatorExtensions
 					.get(asCharacter);
 				final Set<Integer> indexes = obfuscationOperationRule.getIndexes();
 				final Operation operation = obfuscationOperationRule.getOperation();
-				if(operation != null) {
-					obfuscationOperationRule.setOperatedCharacter(Operation.operate(currentCharacter, operation));
-				}
-				if (indexes.contains(Integer.valueOf(i)))
+				if (operation != null)
 				{
-					if(obfuscationOperationRule.getOperatedCharacter()!=null) {
+					obfuscationOperationRule
+						.setOperatedCharacter(Operation.operate(currentCharacter, operation));
+				}
+				if (indexes.contains(i))
+				{
+					if (obfuscationOperationRule.getOperatedCharacter() != null)
+					{
 						sb.append(obfuscationOperationRule.getOperatedCharacter());
 						continue;
-					}					
+					}
 				}
 				final Character replaceWith = obfuscationOperationRule.getReplaceWith();
 				sb.append(replaceWith);
@@ -100,7 +103,7 @@ public class ObfuscatorExtensions
 		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
 		final String obfuscated)
 	{
-		boolean processed = false;
+		boolean processed;
 		char currentChar;
 		boolean upperCase;
 		boolean lowerCase;
@@ -112,7 +115,7 @@ public class ObfuscatorExtensions
 			currentChar = obfuscated.charAt(i);
 			upperCase = Character.isUpperCase(currentChar);
 			lowerCase = Character.isLowerCase(currentChar);
-			currentCharacter = Character.valueOf(currentChar);
+			currentCharacter = currentChar;
 
 			for (final Entry<Character, ObfuscationOperationRule<Character, Character>> entry : rules
 				.entrySet())
@@ -121,12 +124,14 @@ public class ObfuscatorExtensions
 					.getValue();
 				Set<Integer> indexes = obfuscationOperationRule.getIndexes();
 				Operation operation = obfuscationOperationRule.getOperation();
-				if(operation != null) {
-					obfuscationOperationRule.setOperatedCharacter(Operation.operate(currentCharacter, operation));
+				if (operation != null)
+				{
+					obfuscationOperationRule
+						.setOperatedCharacter(Operation.operate(currentCharacter, operation));
 				}
 				Character character = obfuscationOperationRule.getCharacter();
 				Character replaceWith = obfuscationOperationRule.getReplaceWith();
-				if (!indexes.isEmpty() && indexes.contains(Integer.valueOf(i)) && operation != null)
+				if (!indexes.isEmpty() && indexes.contains(i) && operation != null)
 				{
 					Character operatedCharacter = Operation.operate(character, operation);
 					if (currentCharacter.equals(operatedCharacter))
@@ -190,5 +195,5 @@ public class ObfuscatorExtensions
 		}
 		return true;
 	}
-	
+
 }

@@ -50,7 +50,7 @@ import de.alpharogroup.crypto.key.KeySize;
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.file.search.PathFinder;
-import de.alpharogroup.random.SecureRandomBean;
+import de.alpharogroup.random.SecureRandomBuilder;
 
 /**
  * The unit test class for the class {@link KeyPairFactory}
@@ -135,7 +135,8 @@ public class KeyPairFactoryTest
 		KeyPairGenerator actual;
 
 		actual = KeyPairFactory.newKeyPairGenerator(KeyPairGeneratorAlgorithm.RSA.getAlgorithm(),
-			KeySize.KEYSIZE_2048.getKeySize().intValue(), SecureRandomBean.builder().build());
+			KeySize.KEYSIZE_2048.getKeySize(),
+			SecureRandomBuilder.getInstance().build());
 		assertNotNull(actual);
 	}
 

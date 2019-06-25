@@ -45,7 +45,7 @@ public class GoogleMapsUrlSignerTest
 	 * Test method for {@link GoogleMapsUrlSigner#convertToKeyByteArray(String)}
 	 */
 	@Test
-	public void testConvertToKeyByteArray() throws Exception
+	public void testConvertToKeyByteArray()
 	{
 		byte[] byteArray;
 
@@ -75,7 +75,7 @@ public class GoogleMapsUrlSignerTest
 		String signRequest;
 
 		url = new URL(RandomObjectsExtensions.getRandomWebsite());
-			
+
 		signRequest = GoogleMapsUrlSigner.signRequest(url, "YOUR_PRIVATE_KEY");
 		assertNotNull(signRequest);
 	}

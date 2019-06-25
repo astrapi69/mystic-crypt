@@ -67,7 +67,8 @@ public class XmlEnDecryptionExtensions
 	 *             Signals that an I/O exception has occurred.
 	 */
 	public static <T> void writeToFileAsXmlAndHex(final @NonNull XStream xstream,
-		final @NonNull Map<String, Class<?>> aliases, final @NonNull T data, @NonNull File file) throws IOException
+		final @NonNull Map<String, Class<?>> aliases, final @NonNull T data, @NonNull File file)
+		throws IOException
 	{
 		String xmlString = ObjectToXmlExtensions.toXmlWithXStream(xstream, data, aliases);
 		final String hexXmlString = HexExtensions.encodeHex(xmlString, Charset.forName("UTF-8"),

@@ -1,6 +1,31 @@
+/**
+ * The MIT License
+ *
+ * Copyright (C) 2015 Asterios Raptis
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 package de.alpharogroup.crypto.pw;
 
-import static org.testng.AssertJUnit.*;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNotNull;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
@@ -34,6 +59,7 @@ public class PasswordEncryptorTest
 	{
 		instance = PasswordEncryptor.getInstance();
 	}
+
 	/**
 	 * Test method for {@link PasswordEncryptor#getInstance()}
 	 */
@@ -60,7 +86,7 @@ public class PasswordEncryptorTest
 	@Test
 	public void testGetRandomPasswordOptionalOfInteger()
 	{
-		String randomPassword = instance.getRandomPassword(Optional.<Integer>of(8));
+		String randomPassword = instance.getRandomPassword(Optional.of(8));
 		assertNotNull(randomPassword);
 		assertEquals(8, randomPassword.length());
 	}
@@ -89,6 +115,7 @@ public class PasswordEncryptorTest
 
 	/**
 	 * Test method for {@link PasswordEncryptor#hashAndHexPassword(String, String)}
+	 * 
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the MessageDigest object fails.
 	 * @throws UnsupportedEncodingException
@@ -107,7 +134,10 @@ public class PasswordEncryptorTest
 	 *             is thrown if generation of the SecretKey object fails.
 	 */
 	@Test
-	public void testHashAndHexPasswordStringString() throws InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException, InvalidAlgorithmParameterException
+	public void testHashAndHexPasswordStringString()
+		throws InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException,
+		NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException,
+		InvalidKeySpecException, InvalidAlgorithmParameterException
 	{
 		String actual;
 		String expected;
@@ -121,7 +151,9 @@ public class PasswordEncryptorTest
 	}
 
 	/**
-	 * Test method for {@link PasswordEncryptor#hashAndHexPassword(String, String, HashAlgorithm, Charset)}
+	 * Test method for
+	 * {@link PasswordEncryptor#hashAndHexPassword(String, String, HashAlgorithm, Charset)}
+	 * 
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the MessageDigest object fails.
 	 * @throws UnsupportedEncodingException
@@ -140,7 +172,10 @@ public class PasswordEncryptorTest
 	 *             is thrown if generation of the SecretKey object fails.
 	 */
 	@Test
-	public void testHashAndHexPasswordStringStringHashAlgorithmCharset() throws InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException, InvalidAlgorithmParameterException
+	public void testHashAndHexPasswordStringStringHashAlgorithmCharset()
+		throws InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException,
+		NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException,
+		InvalidKeySpecException, InvalidAlgorithmParameterException
 	{
 		String actual;
 		String expected;
@@ -152,14 +187,16 @@ public class PasswordEncryptorTest
 		password = "foo";
 		hashAlgorithm = HashAlgorithm.SHA_1;
 		charset = StandardCharsets.UTF_8;
-		
+
 		actual = instance.hashAndHexPassword(password, salt, hashAlgorithm, charset);
 		expected = "D3AF4F7472B54F73F6D4F1E80D9EFF45EE4303DBE481ACF4D25DFC581CAC739E9D2D51E6B01C536D34A444D224A82CE0";
 		assertEquals(expected, actual);
 	}
 
 	/**
-	 * Test method for {@link PasswordEncryptor#hashPassword(String, String, HashAlgorithm, Charset)}
+	 * Test method for
+	 * {@link PasswordEncryptor#hashPassword(String, String, HashAlgorithm, Charset)}
+	 * 
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the MessageDigest object fails.
 	 */

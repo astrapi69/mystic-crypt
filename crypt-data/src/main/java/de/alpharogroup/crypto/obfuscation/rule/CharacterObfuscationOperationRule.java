@@ -35,8 +35,8 @@ import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 /**
- * The class {@link CharacterObfuscationOperationRule} builds a complex rule for obfuscating a single
- * character.
+ * The class {@link CharacterObfuscationOperationRule} builds a complex rule for obfuscating a
+ * single character.
  */
 @Getter
 @Setter
@@ -44,16 +44,19 @@ import lombok.experimental.FieldDefaults;
 @ToString(callSuper = true)
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CharacterObfuscationOperationRule extends ObfuscationOperationRule<Character, Character>
+public class CharacterObfuscationOperationRule
+	extends
+		ObfuscationOperationRule<Character, Character>
 {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	public CharacterObfuscationOperationRule(Character character, Character replaceWith, Operation operation,
-		Set<Integer> indexes)
+	public CharacterObfuscationOperationRule(Character character, Character replaceWith,
+		Operation operation, Set<Integer> indexes)
 	{
 		super(character, replaceWith, operation, indexes);
-		if(operation !=null) {
+		if (operation != null)
+		{
 			setOperatedCharacter(Operation.operate(character, operation));
 		}
 	}

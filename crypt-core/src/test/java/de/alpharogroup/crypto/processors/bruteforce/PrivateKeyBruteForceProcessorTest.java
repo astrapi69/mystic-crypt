@@ -24,7 +24,8 @@
  */
 package de.alpharogroup.crypto.processors.bruteforce;
 
-import static org.testng.AssertJUnit.*;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,43 +47,6 @@ import lombok.extern.java.Log;
 @Log
 public class PrivateKeyBruteForceProcessorTest
 {
-
-	/**
-	 * Test method for test the class {@link BruteForceProcessor}.
-	 *
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 */
-	@Test(enabled = true)
-	public void testPrivateKeyWithPassword()
-	{
-		File pemDir;
-		File encryptedPrivateKeyFile;
-		char[] possibleCharacters;
-		BruteForceProcessor processor;
-		long start;
-		long end;
-		long elapsedMilliSeconds;
-
-		pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		encryptedPrivateKeyFile = new File(pemDir, "test.key.pem");
-
-		possibleCharacters = new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
-				'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
-
-		processor = new BruteForceProcessor(possibleCharacters, 1);
-		start = System.currentTimeMillis();
-		Optional<String> resolvePassword = resolvePassword(encryptedPrivateKeyFile, processor);
-		end = System.currentTimeMillis();
-
-		elapsedMilliSeconds = end - start;
-		assertTrue(resolvePassword.isPresent());
-		String expected = "bosco";
-		String actual = resolvePassword.get();
-		assertEquals(expected, actual); 
-		log.info("Needed milliseconds for crack the password with brute force attack: "
-			+ elapsedMilliSeconds);		
-	}
 
 	/**
 	 * Resolve the password from the given private key file. If no password is set an empty Optional
@@ -131,6 +95,40 @@ public class PrivateKeyBruteForceProcessorTest
 			return optionalPassword;
 		}
 		return optionalPassword;
+	}
+
+	/**
+	 * Test method for test the class {@link BruteForceProcessor}
+	 */
+	@Test(enabled = true)
+	public void testPrivateKeyWithPassword()
+	{
+		File pemDir;
+		File encryptedPrivateKeyFile;
+		char[] possibleCharacters;
+		BruteForceProcessor processor;
+		long start;
+		long end;
+		long elapsedMilliSeconds;
+
+		pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		encryptedPrivateKeyFile = new File(pemDir, "test.key.pem");
+
+		possibleCharacters = new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
+				'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+
+		processor = new BruteForceProcessor(possibleCharacters, 1);
+		start = System.currentTimeMillis();
+		Optional<String> resolvePassword = resolvePassword(encryptedPrivateKeyFile, processor);
+		end = System.currentTimeMillis();
+
+		elapsedMilliSeconds = end - start;
+		assertTrue(resolvePassword.isPresent());
+		String expected = "bosco";
+		String actual = resolvePassword.get();
+		assertEquals(expected, actual);
+		log.info("Needed milliseconds for crack the password with brute force attack: "
+			+ elapsedMilliSeconds);
 	}
 
 }

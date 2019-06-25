@@ -24,14 +24,6 @@
  */
 package de.alpharogroup.crypto.key;
 
-import de.alpharogroup.crypto.hex.HexExtensions;
-import de.alpharogroup.crypto.key.reader.PublicKeyReader;
-import de.alpharogroup.crypto.key.writer.PublicKeyWriter;
-import de.alpharogroup.string.StringExtensions;
-import lombok.NonNull;
-import lombok.experimental.UtilityClass;
-import org.apache.commons.codec.binary.Base64;
-
 import java.io.File;
 import java.io.IOException;
 import java.security.PublicKey;
@@ -39,6 +31,15 @@ import java.security.interfaces.DSAPublicKey;
 import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.List;
+
+import org.apache.commons.codec.binary.Base64;
+
+import de.alpharogroup.crypto.hex.HexExtensions;
+import de.alpharogroup.crypto.key.reader.PublicKeyReader;
+import de.alpharogroup.crypto.key.writer.PublicKeyWriter;
+import de.alpharogroup.string.StringExtensions;
+import lombok.NonNull;
+import lombok.experimental.UtilityClass;
 
 /**
  * The class {@link PublicKeyExtensions}.
@@ -139,7 +140,7 @@ public class PublicKeyExtensions
 	{
 		return HexExtensions.toHexString(publicKey.getEncoded(), lowerCase);
 	}
-	
+
 	/**
 	 * Write the given {@link PublicKey} into the given {@link File}.
 	 *
@@ -151,7 +152,8 @@ public class PublicKeyExtensions
 	 *             Signals that an I/O exception has occurred.
 	 */
 	public static void toPemFile(final @NonNull PublicKey publicKey, final @NonNull File file)
-			throws IOException {
+		throws IOException
+	{
 		PublicKeyWriter.writeInPemFormat(publicKey, file);
 	}
 

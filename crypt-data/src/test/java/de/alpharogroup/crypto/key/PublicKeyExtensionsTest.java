@@ -29,12 +29,13 @@ import static org.testng.AssertJUnit.assertEquals;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.security.*;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.Security;
 import java.security.spec.InvalidKeySpecException;
 
-import de.alpharogroup.crypto.algorithm.MdAlgorithm;
-import de.alpharogroup.file.checksum.ChecksumExtensions;
-import de.alpharogroup.file.delete.DeleteFileExtensions;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
@@ -42,8 +43,11 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
+import de.alpharogroup.crypto.algorithm.MdAlgorithm;
 import de.alpharogroup.crypto.factories.KeyPairFactory;
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
+import de.alpharogroup.file.checksum.ChecksumExtensions;
+import de.alpharogroup.file.delete.DeleteFileExtensions;
 import de.alpharogroup.file.read.ReadFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
@@ -191,6 +195,27 @@ public class PublicKeyExtensionsTest
 	}
 
 	/**
+	 * Test method for {@link PublicKeyExtensions#toPemFile(PublicKey, File)}
+	 */
+	@Test
+	public void testToPemFile() throws IOException, NoSuchAlgorithmException,
+		InvalidKeySpecException, NoSuchProviderException
+	{
+
+		String expected;
+		String actual;
+		File convertedPublickeyPemFile;
+		// new scenario...
+		publicKey = PublicKeyReader.readPemPublicKey(publicKeyPemFile);
+		convertedPublickeyPemFile = new File(pemDir, "converted-public.pem");
+		PublicKeyExtensions.toPemFile(publicKey, convertedPublickeyPemFile);
+		expected = ChecksumExtensions.getChecksum(publicKeyPemFile, MdAlgorithm.MD5);
+		actual = ChecksumExtensions.getChecksum(convertedPublickeyPemFile, MdAlgorithm.MD5);
+		assertEquals(expected, actual);
+		DeleteFileExtensions.delete(convertedPublickeyPemFile);
+	}
+
+	/**
 	 * Test method for {@link PublicKeyExtensions#toBase64(PublicKey)}
 	 *
 	 * @throws Exception
@@ -207,25 +232,6 @@ public class PublicKeyExtensionsTest
 		actual = PublicKeyExtensions.toPemFormat(publicKey);
 		expected = ReadFileExtensions.readFromFile(publicKeyPemFile);
 		assertEquals(actual, expected);
-	}
-
-	/**
-	 * Test method for {@link PublicKeyExtensions#toPemFile(PublicKey, File)}
-	 */
-	@Test
-	public void testToPemFile() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException {
-
-		String expected;
-		String actual;
-		File convertedPublickeyPemFile;
-		// new scenario...
-		publicKey = PublicKeyReader.readPemPublicKey(publicKeyPemFile);
-		convertedPublickeyPemFile = new File(pemDir, "converted-public.pem");
-		PublicKeyExtensions.toPemFile(publicKey, convertedPublickeyPemFile);
-		expected = ChecksumExtensions.getChecksum(publicKeyPemFile, MdAlgorithm.MD5);
-		actual = ChecksumExtensions.getChecksum(convertedPublickeyPemFile, MdAlgorithm.MD5);
-		assertEquals(expected, actual);
-		DeleteFileExtensions.delete(convertedPublickeyPemFile);
 	}
 
 	/**

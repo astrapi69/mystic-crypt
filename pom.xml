@@ -328,6 +328,33 @@
 						</excludes>
 					</configuration>
 				</plugin>
+				
+				
+				<!-- Configuring Maven Javadoc Plugin: To attach javadoc artifacts to 
+					your build we execute the javadoc:jar goal from the javadoc plugin. -->
+				<plugin>
+					<inherited>true</inherited>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>${maven-javadoc-plugin.version}</version>
+					<configuration>
+						<detectOfflineLinks>false</detectOfflineLinks>
+						<minmemory>128m</minmemory>
+						<maxmemory>256m</maxmemory>
+						<notimestamp>true</notimestamp>
+						<quiet>true</quiet>
+						<doclint>none</doclint>
+					</configuration>
+					<executions>
+						<execution>
+							<id>attach-javadoc</id>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+				
 
 			</plugins>
 
