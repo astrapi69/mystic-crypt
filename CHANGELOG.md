@@ -12,7 +12,7 @@ ADDED:
 
 CHANGED:
 
-- supports the new jdk release 11 by updating the parent version to 6.3 
+- update of parent version to 5.2 
 - constant class CryptConst tags as deprecated, will be removed in next minor release
 - update of guava version to 27.1-jre
 - update of commons-codec version to 1.12

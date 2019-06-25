@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mvn-java-parent</artifactId>
-		<version>6.3</version>
+		<version>5.2</version>
 		<relativePath></relativePath>
 	</parent>
 
@@ -348,11 +348,6 @@
 			<plugin>
 				<inherited>true</inherited>
 				<artifactId>maven-eclipse-plugin</artifactId>
-			</plugin>
-
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
 			</plugin>
 
 		</plugins>
