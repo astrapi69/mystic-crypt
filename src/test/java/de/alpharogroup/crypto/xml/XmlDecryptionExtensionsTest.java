@@ -30,7 +30,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-import de.alpharogroup.crypto.file.xml.XmlDecryptionExtensions;
 import org.apache.commons.codec.DecoderException;
 import org.junit.Test;
 
@@ -39,6 +38,7 @@ import com.thoughtworks.xstream.XStream;
 
 import de.alpharogroup.collections.map.MapFactory;
 import de.alpharogroup.collections.pairs.KeyValuePair;
+import de.alpharogroup.crypto.file.xml.XmlDecryptionExtensions;
 import de.alpharogroup.crypto.obfuscation.character.ObfuscationOperationTestData;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
 import de.alpharogroup.file.search.PathFinder;
@@ -49,8 +49,13 @@ import de.alpharogroup.file.search.PathFinder;
 public class XmlDecryptionExtensionsTest
 {
 
+	BiMap<Character, ObfuscationOperationRule<Character, Character>> actual;
 	/** The aliases for the {@link XStream} object */
 	Map<String, Class<?>> aliases;
+	BiMap<Character, ObfuscationOperationRule<Character, Character>> expected;
+
+	File xmlDir;
+	File xmlFile;
 	/** The {@link XStream} object */
 	XStream xStream;
 	{
@@ -61,11 +66,6 @@ public class XmlDecryptionExtensionsTest
 		aliases.put("KeyValuePair", KeyValuePair.class);
 		aliases.put("ObfuscationOperationRule", ObfuscationOperationRule.class);
 	}
-
-	BiMap<Character, ObfuscationOperationRule<Character, Character>> expected;
-	BiMap<Character, ObfuscationOperationRule<Character, Character>> actual;
-	File xmlFile;
-	File xmlDir;
 
 	/**
 	 * Test method for {@link XmlDecryptionExtensions#readFromFileAsXmlAndHex(XStream, Map, File)}

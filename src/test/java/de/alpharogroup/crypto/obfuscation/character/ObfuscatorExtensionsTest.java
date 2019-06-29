@@ -41,8 +41,8 @@ import com.thoughtworks.xstream.XStream;
 import de.alpharogroup.AbstractTestCase;
 import de.alpharogroup.collections.map.MapFactory;
 import de.alpharogroup.collections.pairs.KeyValuePair;
-import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
 import de.alpharogroup.crypto.file.xml.XmlDecryptionExtensions;
+import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
 import de.alpharogroup.file.search.PathFinder;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -54,13 +54,13 @@ import lombok.experimental.FieldDefaults;
 public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 {
 
-	BiMap<Character, ObfuscationOperationRule<Character, Character>> smallSizeRules;
-	BiMap<Character, ObfuscationOperationRule<Character, Character>> fullSizeRules;
-	String stringToDisentangle;
-	String stringToObfuscate;
-
 	/** The aliases for the {@link XStream} object */
 	Map<String, Class<?>> aliases;
+	BiMap<Character, ObfuscationOperationRule<Character, Character>> fullSizeRules;
+	BiMap<Character, ObfuscationOperationRule<Character, Character>> smallSizeRules;
+	String stringToDisentangle;
+
+	String stringToObfuscate;
 	/** The {@link XStream} object */
 	XStream xStream;
 	{
@@ -118,17 +118,13 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 		// new scenario...
 		stringToDisentangle = "Lfpobsep";
 
-		actual = ObfuscatorExtensions.disentangle(
-			fullSizeRules,
-			stringToDisentangle);
+		actual = ObfuscatorExtensions.disentangle(fullSizeRules, stringToDisentangle);
 		expected = "leonardo";
 		assertEquals(expected, actual);
 		// new scenario...
 		stringToDisentangle = "Lfpobsep Lpsfn jqtvn epmps tju bnfu, tfb dpotvm wfsufsfn qfsgfdup je. Amjj qspnqub fmfdusbn uf ofd, bu njojnvn dpqjptbf rvp. Ept jvejdp opnjobuj pqpsufsf fj, vtv bu ejdub mfhfoept. Io optusvn jotpmfot ejtqvuboep qsp, jvtup frvjefn jvt je.";
 
-		actual = ObfuscatorExtensions.disentangle(
-			fullSizeRules,
-			stringToDisentangle);
+		actual = ObfuscatorExtensions.disentangle(fullSizeRules, stringToDisentangle);
 		expected = "leonardo Lorem ipsum dolor sit amet, sea consul verterem perfecto id. Alii prompta electram te nec, at minimum copiosae quo. Eos iudico nominati oportere ei, usu at dicta legendos. In nostrum insolens disputando pro, iusto equidem ius id.";
 		assertEquals(expected, actual);
 

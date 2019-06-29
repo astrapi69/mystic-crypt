@@ -52,8 +52,13 @@ import de.alpharogroup.file.search.PathFinder;
 public class XmlEnDecryptionExtensionsTest
 {
 
+	BiMap<Character, ObfuscationOperationRule<Character, Character>> actual;
 	/** The aliases for the {@link XStream} object */
 	Map<String, Class<?>> aliases;
+	BiMap<Character, ObfuscationOperationRule<Character, Character>> expected;
+
+	File xmlDir;
+	File xmlFile;
 	/** The {@link XStream} object */
 	XStream xStream;
 	{
@@ -64,12 +69,6 @@ public class XmlEnDecryptionExtensionsTest
 		aliases.put("KeyValuePair", KeyValuePair.class);
 		aliases.put("ObfuscationOperationRule", ObfuscationOperationRule.class);
 	}
-
-	BiMap<Character, ObfuscationOperationRule<Character, Character>> expected;
-	BiMap<Character, ObfuscationOperationRule<Character, Character>> actual;
-	File xmlFile;
-	File xmlDir;
-
 
 
 	@BeforeMethod
