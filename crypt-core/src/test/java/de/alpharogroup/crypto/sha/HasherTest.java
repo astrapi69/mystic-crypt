@@ -93,9 +93,51 @@ public class HasherTest
 		expected = Hasher.hashAndHex(password, salt, hashAlgorithm, charset);
 		actual = Hasher.hashAndHex(newInsertPassword, salt, hashAlgorithm, charset);
 		assertEquals(actual, expected);
+	}
 
-		final String hashedPassword = Hasher.hashAndHex("foo", "bINU6W59", hashAlgorithm, charset);
-		System.out.println(hashedPassword);
+	/**
+	 * Test method for {@link Hasher#hashAndHex(String, String, String, HashAlgorithm, Charset)}
+	 *
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the MessageDigest object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown by get the byte array of the private key String object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the cypher object fails.
+	 * @throws InvalidKeyException
+	 *             the invalid key exception is thrown if initialization of the cypher object fails.
+	 * @throws BadPaddingException
+	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
+	 * @throws IllegalBlockSizeException
+	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 */
+	@Test
+	public void testHashAndHexWithPrivateKey() throws NoSuchAlgorithmException, InvalidKeyException,
+		UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException,
+		BadPaddingException, InvalidKeySpecException, InvalidAlgorithmParameterException
+	{
+		String actual;
+		String expected;
+		Charset charset;
+		String password;
+		String newInsertPassword;
+		String privateKey;
+		String salt;
+		HashAlgorithm hashAlgorithm;
+
+		charset = Charset.forName("UTF-8");
+		password = "xxx";
+		newInsertPassword = "xxx";
+		privateKey = new String(RandomExtensions.getRandomSalt(16, charset), charset);
+		salt = new String(RandomExtensions.getRandomSalt(8, charset), charset);
+		hashAlgorithm = HashAlgorithm.SHA_512;
+		expected = Hasher.hashAndHex(password, privateKey, salt, hashAlgorithm, charset);
+		actual = Hasher.hashAndHex(newInsertPassword, privateKey, salt, hashAlgorithm, charset);
+		assertEquals(actual, expected);
 	}
 
 	/**

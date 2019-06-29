@@ -59,7 +59,7 @@ public class HexableEncryptor extends AbstractStringEncryptor
 	 * Instantiates a new {@link HexableEncryptor} from the given parameters.
 	 *
 	 * @param privateKey
-	 *            The private key.
+	 *            the private key
 	 * @throws InvalidAlgorithmParameterException
 	 *             is thrown if initialization of the cypher object fails.
 	 * @throws NoSuchPaddingException

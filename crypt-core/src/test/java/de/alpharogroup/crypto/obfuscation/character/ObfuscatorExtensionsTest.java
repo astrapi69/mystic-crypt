@@ -26,8 +26,9 @@ package de.alpharogroup.crypto.obfuscation.character;
 
 import static org.testng.AssertJUnit.assertEquals;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Set;
+import java.util.Map;
 
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
@@ -35,25 +36,41 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.BiMap;
+import com.thoughtworks.xstream.XStream;
 
 import de.alpharogroup.AbstractTestCase;
+import de.alpharogroup.collections.map.MapFactory;
+import de.alpharogroup.collections.pairs.KeyValuePair;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
-import de.alpharogroup.crypto.obfuscation.rule.Operation;
+import de.alpharogroup.crypto.file.xml.XmlDecryptionExtensions;
+import de.alpharogroup.file.search.PathFinder;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 
 /**
  * The unit test class for the class {@link ObfuscatorExtensions}
  */
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 {
 
-	Character character;
-	Set<Integer> indexes;
-	Operation operation;
-	Character replaceWith;
-	ObfuscationOperationRule<Character, Character> rule;
-	BiMap<Character, ObfuscationOperationRule<Character, Character>> rules;
+	BiMap<Character, ObfuscationOperationRule<Character, Character>> smallSizeRules;
+	BiMap<Character, ObfuscationOperationRule<Character, Character>> fullSizeRules;
 	String stringToDisentangle;
 	String stringToObfuscate;
+
+	/** The aliases for the {@link XStream} object */
+	Map<String, Class<?>> aliases;
+	/** The {@link XStream} object */
+	XStream xStream;
+	{
+		xStream = new XStream();
+		XStream.setupDefaultSecurity(xStream);
+		xStream.allowTypesByWildcard(new String[] { "de.alpharogroup.**" });
+		aliases = MapFactory.newLinkedHashMap();
+		aliases.put("KeyValuePair", KeyValuePair.class);
+		aliases.put("ObfuscationOperationRule", ObfuscationOperationRule.class);
+	}
 
 	/**
 	 * Sets up method will be invoked before every unit test method in this class
@@ -66,8 +83,17 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 	protected void setUp() throws Exception
 	{
 		super.setUp();
-		// create a rule for obfuscate the key
-		rules = ObfuscationOperationTestData.getSmallBiMapObfuscationOperationRules();
+		File xmlFile;
+		File xmlDir;
+
+		xmlDir = new File(PathFinder.getSrcTestResourcesDir(), "xml");
+		xmlFile = new File(xmlDir, "small-size-operation-rules.oor");
+
+		smallSizeRules = XmlDecryptionExtensions.readFromFileAsXmlAndHex(xStream, aliases, xmlFile);
+
+		xmlFile = new File(xmlDir, "full-size-operation-rules.oor");
+		fullSizeRules = XmlDecryptionExtensions.readFromFileAsXmlAndHex(xStream, aliases, xmlFile);
+
 	}
 
 	/**
@@ -79,21 +105,21 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 		// new scenario...
 		stringToDisentangle = "d";
 
-		actual = ObfuscatorExtensions.disentangle(rules, stringToDisentangle);
+		actual = ObfuscatorExtensions.disentangle(smallSizeRules, stringToDisentangle);
 		expected = "d";
 		assertEquals(expected, actual);
 
 		// new scenario...
 		stringToDisentangle = "AcACd";
 
-		actual = ObfuscatorExtensions.disentangle(rules, stringToDisentangle);
+		actual = ObfuscatorExtensions.disentangle(smallSizeRules, stringToDisentangle);
 		expected = "abacd";
 		assertEquals(expected, actual);
 		// new scenario...
 		stringToDisentangle = "Lfpobsep";
 
 		actual = ObfuscatorExtensions.disentangle(
-			ObfuscationOperationTestData.getFirstBiMapObfuscationOperationRules(),
+			fullSizeRules,
 			stringToDisentangle);
 		expected = "leonardo";
 		assertEquals(expected, actual);
@@ -101,7 +127,7 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 		stringToDisentangle = "Lfpobsep Lpsfn jqtvn epmps tju bnfu, tfb dpotvm wfsufsfn qfsgfdup je. Amjj qspnqub fmfdusbn uf ofd, bu njojnvn dpqjptbf rvp. Ept jvejdp opnjobuj pqpsufsf fj, vtv bu ejdub mfhfoept. Io optusvn jotpmfot ejtqvuboep qsp, jvtup frvjefn jvt je.";
 
 		actual = ObfuscatorExtensions.disentangle(
-			ObfuscationOperationTestData.getFirstBiMapObfuscationOperationRules(),
+			fullSizeRules,
 			stringToDisentangle);
 		expected = "leonardo Lorem ipsum dolor sit amet, sea consul verterem perfecto id. Alii prompta electram te nec, at minimum copiosae quo. Eos iudico nominati oportere ei, usu at dicta legendos. In nostrum insolens disputando pro, iusto equidem ius id.";
 		assertEquals(expected, actual);
@@ -109,7 +135,7 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 		// new scenario...
 		stringToDisentangle = "AcACd";
 
-		actual = ObfuscatorExtensions.disentangle(rules, stringToDisentangle);
+		actual = ObfuscatorExtensions.disentangle(smallSizeRules, stringToDisentangle);
 		expected = "abacd";
 		assertEquals(expected, actual);
 		// new scenario...
@@ -125,13 +151,13 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 		// new scenario...
 		stringToObfuscate = "abac";
 
-		actual = ObfuscatorExtensions.obfuscateWith(rules, stringToObfuscate);
+		actual = ObfuscatorExtensions.obfuscateWith(smallSizeRules, stringToObfuscate);
 		expected = "AcAC";
 		assertEquals(expected, actual);
 		// new scenario...
 		stringToObfuscate = "abacd";
 
-		actual = ObfuscatorExtensions.obfuscateWith(rules, stringToObfuscate);
+		actual = ObfuscatorExtensions.obfuscateWith(smallSizeRules, stringToObfuscate);
 		expected = "AcACd";
 		assertEquals(expected, actual);
 	}
@@ -144,15 +170,12 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 	{
 		boolean actual;
 		boolean expected;
-		BiMap<Character, ObfuscationOperationRule<Character, Character>> biMap;
 
-		biMap = ObfuscationOperationTestData.getFirstBiMapObfuscationOperationRules();
-		actual = ObfuscatorExtensions.validate(biMap);
+		actual = ObfuscatorExtensions.validate(fullSizeRules);
 		expected = true;
 		assertEquals(expected, actual);
 
-		biMap = ObfuscationOperationTestData.getSmallBiMapObfuscationOperationRules();
-		actual = ObfuscatorExtensions.validate(biMap);
+		actual = ObfuscatorExtensions.validate(smallSizeRules);
 		expected = true;
 		assertEquals(expected, actual);
 	}

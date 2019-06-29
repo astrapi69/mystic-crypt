@@ -86,7 +86,47 @@ public class Hasher
 		NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException,
 		InvalidKeySpecException, InvalidAlgorithmParameterException
 	{
-		final HexableEncryptor hexEncryptor = new HexableEncryptor(CompoundAlgorithm.PRIVATE_KEY);
+		return hashAndHex(hashIt, CompoundAlgorithm.PRIVATE_KEY, salt, hashAlgorithm, charset);
+	}
+
+	/**
+	 * Hashes and hex it with the given {@link String} object with the given parameters.
+	 *
+	 * @param hashIt
+	 *            the hash it
+	 * @param privateKey
+	 *            the private key
+	 * @param salt
+	 *            the salt
+	 * @param hashAlgorithm
+	 *            the hash algorithm
+	 * @param charset
+	 *            the charset
+	 * @return the generated {@link String} object
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the MessageDigest object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown by get the byte array of the private key String object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the cypher object fails.
+	 * @throws InvalidKeyException
+	 *             the invalid key exception is thrown if initialization of the cypher object fails.
+	 * @throws BadPaddingException
+	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
+	 * @throws IllegalBlockSizeException
+	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cypher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 */
+	public static String hashAndHex(final String hashIt, final String privateKey, final String salt,
+		final HashAlgorithm hashAlgorithm, final Charset charset)
+		throws NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException,
+		NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException,
+		InvalidKeySpecException, InvalidAlgorithmParameterException
+	{
+		final HexableEncryptor hexEncryptor = new HexableEncryptor(privateKey);
 		return hexEncryptor.encrypt(HashExtensions.hash(hashIt, salt, hashAlgorithm, charset));
 	}
 

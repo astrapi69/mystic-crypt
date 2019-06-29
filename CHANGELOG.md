@@ -4,6 +4,12 @@
 Version 6.1-SNAPSHOT
 -------------
 
+CHANGED:
+
+- removed depracated class CryptConst
+- moved crypt-api to own project
+- new method in the utility class Hasher with private key parameter created
+
 Version 6
 -------------
 

@@ -31,6 +31,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
+import de.alpharogroup.crypto.file.xml.XmlDecryptionExtensions;
+import de.alpharogroup.crypto.file.xml.XmlEncryptionExtensions;
 import org.apache.commons.codec.DecoderException;
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
@@ -47,9 +49,9 @@ import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * The unit test class for the class {@link XmlEnDecryptionExtensions}
+ * The unit test class for the class {@link XmlEncryptionExtensions}
  */
-public class XmlEnDecryptionExtensionsTest
+public class XmlEncryptionExtensionsTest
 {
 
 	/** The aliases for the {@link XStream} object */
@@ -70,8 +72,6 @@ public class XmlEnDecryptionExtensionsTest
 	File xmlFile;
 	File xmlDir;
 
-
-
 	@BeforeMethod
 	protected void setUp()
 	{
@@ -80,50 +80,32 @@ public class XmlEnDecryptionExtensionsTest
 	}
 
 	/**
-	 * Test method for {@link XmlEnDecryptionExtensions#readFromFileAsXmlAndHex(XStream, Map, File)}
-	 *
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 * @throws DecoderException
-	 *             is thrown if an odd number or illegal of characters is supplied
+	 * Test method for {@link XmlEncryptionExtensions} with {@link BeanTester}
 	 */
-	@SuppressWarnings("deprecation")
-	@Test
-	public void testReadFromFileAsXmlAndHex() throws IOException, DecoderException
-	{
-		expected = ObfuscationOperationTestData.getFirstBiMapObfuscationOperationRules();
-		actual = XmlEnDecryptionExtensions.readFromFileAsXmlAndHex(xStream, aliases, xmlFile);
-		assertEquals(actual, expected);
-	}
-
-	/**
-	 * Test method for {@link XmlEnDecryptionExtensions} with {@link BeanTester}
-	 */
-	@SuppressWarnings("deprecation")
 	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
 			UnsupportedOperationException.class })
 	public void testWithBeanTester()
 	{
 		BeanTester beanTester = new BeanTester();
-		beanTester.testBean(XmlEnDecryptionExtensions.class);
+		beanTester.testBean(XmlEncryptionExtensions.class);
 	}
 
 	/**
 	 * Test method for
-	 * {@link XmlEnDecryptionExtensions#writeToFileAsXmlAndHex(XStream, Map, Object, File)}
+	 * {@link XmlEncryptionExtensions#writeToFileAsXmlAndHex(XStream, Map, Object, File)}
 	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws DecoderException
 	 *             is thrown if an odd number or illegal of characters is supplied
 	 */
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testWriteToFileAsXmlAndHex() throws IOException, DecoderException
 	{
 		expected = ObfuscationOperationTestData.getFirstBiMapObfuscationOperationRules();
-		XmlEnDecryptionExtensions.writeToFileAsXmlAndHex(xStream, aliases, expected, xmlFile);
-		actual = XmlEnDecryptionExtensions.readFromFileAsXmlAndHex(xStream, aliases, xmlFile);
+		XmlEncryptionExtensions.writeToFileAsXmlAndHex(xStream, aliases, expected, xmlFile);
+		actual = XmlDecryptionExtensions.readFromFileAsXmlAndHex(xStream, aliases, xmlFile);
 		assertEquals(actual, expected);
 	}
+
 }
