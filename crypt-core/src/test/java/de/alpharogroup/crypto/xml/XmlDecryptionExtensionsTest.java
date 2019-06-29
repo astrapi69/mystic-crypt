@@ -68,15 +68,6 @@ public class XmlDecryptionExtensionsTest
 	File xmlFile;
 	File xmlDir;
 
-
-
-	@BeforeMethod
-	protected void setUp()
-	{
-		xmlDir = new File(PathFinder.getSrcTestResourcesDir(), "xml");
-		xmlFile = new File(xmlDir, "foo.sor");
-	}
-
 	/**
 	 * Test method for {@link XmlDecryptionExtensions#readFromFileAsXmlAndHex(XStream, Map, File)}
 	 *
@@ -88,6 +79,8 @@ public class XmlDecryptionExtensionsTest
 	@Test
 	public void testReadFromFileAsXmlAndHex() throws IOException, DecoderException
 	{
+		xmlDir = new File(PathFinder.getSrcTestResourcesDir(), "xml");
+		xmlFile = new File(xmlDir, "foo.sor");
 		expected = ObfuscationOperationTestData.getFirstBiMapObfuscationOperationRules();
 		actual = XmlDecryptionExtensions.readFromFileAsXmlAndHex(xStream, aliases, xmlFile);
 		assertEquals(actual, expected);

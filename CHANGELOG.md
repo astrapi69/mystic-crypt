@@ -8,6 +8,7 @@ CHANGED:
 
 - removed depracated class CryptConst
 - moved crypt-api to own project
+- moved crypt-data to own project
 - new method in the utility class Hasher with private key parameter created
 
 Version 6

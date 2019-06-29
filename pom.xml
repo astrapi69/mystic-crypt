@@ -27,7 +27,7 @@
 	<properties>
 		<!-- MYSTIC-CRYPT versions -->
 		<crypt-api.version>7</crypt-api.version>
-		<crypt-data.version>6.1-SNAPSHOT</crypt-data.version>
+		<crypt-data.version>7</crypt-data.version>
 		<model-core.version>1.6.2</model-core.version>
 		<!-- NEW EXTENSIONS LIB versions -->
 		<file-worker.version>5.2</file-worker.version>
@@ -59,7 +59,6 @@
 
 	<modules>
 		<module>crypt-core</module>
-		<module>crypt-data</module>
 	</modules>
 
 	<developers>
@@ -90,65 +89,6 @@
 	<dependencyManagement>
 
 		<dependencies>
-			<dependency>
-				<groupId>javax.xml.bind</groupId>
-				<artifactId>jaxb-api</artifactId>
-				<version>${jaxb-api.version}</version>
-			</dependency>			
-		<!-- MODEL-CORE DEPENDENCY -->
-		<dependency>
-			<groupId>de.alpharogroup</groupId>
-			<artifactId>model-core</artifactId>
-			<version>${model-core.version}</version>
-		</dependency>
-			<!-- XML-EXTENSIONS DEPENDENCY -->
-			<dependency>
-				<groupId>de.alpharogroup</groupId>
-				<artifactId>xml-extensions</artifactId>
-				<version>${xml-extensions.version}</version>
-			</dependency>
-			<!-- RESOURCEBUNDLE-CORE DEPENDENCIES -->
-			<dependency>
-				<groupId>de.alpharogroup</groupId>
-				<artifactId>resourcebundle-inspector</artifactId>
-				<version>${resourcebundle-inspector.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>commons-codec</groupId>
-				<artifactId>commons-codec</artifactId>
-				<version>${commons-codec.version}</version>
-			</dependency>
-			<!-- NEW EXTENSIONS LIB DEPENDENCIES -->
-			<dependency>
-				<groupId>de.alpharogroup</groupId>
-				<artifactId>silly-collections</artifactId>
-				<version>${silly-collections.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>de.alpharogroup</groupId>
-				<artifactId>jcommons-lang</artifactId>
-				<version>${jcommons-lang.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>de.alpharogroup</groupId>
-				<artifactId>test-objects</artifactId>
-				<version>${test-objects.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>de.alpharogroup</groupId>
-				<artifactId>file-worker</artifactId>
-				<version>${file-worker.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>de.alpharogroup</groupId>
-				<artifactId>vintage-time</artifactId>
-				<version>${vintage-time.version}</version>
-			</dependency>
 
 			<dependency>
 				<groupId>de.alpharogroup</groupId>
@@ -169,15 +109,33 @@
 			</dependency>
 
 			<dependency>
-				<groupId>de.alpharogroup</groupId>
-				<artifactId>randomizer-api</artifactId>
-				<version>${randomizer-api.version}</version>
+				<groupId>commons-codec</groupId>
+				<artifactId>commons-codec</artifactId>
+				<version>${commons-codec.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>de.alpharogroup</groupId>
-				<artifactId>randomizer-data</artifactId>
-				<version>${randomizer-data.version}</version>
+				<artifactId>file-worker</artifactId>
+				<version>${file-worker.version}</version>
+			</dependency>
+			<!-- MODEL-CORE DEPENDENCY -->
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>model-core</artifactId>
+				<version>${model-core.version}</version>
+			</dependency>
+			<!-- XML-EXTENSIONS DEPENDENCY -->
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>xml-extensions</artifactId>
+				<version>${xml-extensions.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>silly-collections</artifactId>
+				<version>${silly-collections.version}</version>
 			</dependency>
 
 			<dependency>
@@ -197,29 +155,11 @@
 				<artifactId>bcpkix-jdk15on</artifactId>
 				<version>${bouncycastle.version}</version>
 			</dependency>
-			<!-- GUAVA DEPENDENCY -->
-			<dependency>
-				<groupId>com.google.guava</groupId>
-				<artifactId>guava</artifactId>
-				<version>${guava.version}</version>
-			</dependency>
 			<!-- JOBJ-CORE DEPENDENCY -->
 			<dependency>
 				<groupId>de.alpharogroup</groupId>
 				<artifactId>jobj-core</artifactId>
 				<version>${jobj-core.version}</version>
-			</dependency>
-			<!-- MEANBEAN DEPENDENCY -->
-			<dependency>
-				<groupId>org.meanbean</groupId>
-				<artifactId>meanbean</artifactId>
-				<version>${meanbean.version}</version>
-			</dependency>
-			<!-- RANDOM-BEANS DEPENDENCY -->
-			<dependency>
-				<groupId>io.github.benas</groupId>
-				<artifactId>random-beans</artifactId>
-				<version>${random-beans.version}</version>
 			</dependency>
 			<!-- JOBJ-CONTRACT-VERIFIER DEPENDENCY -->
 			<dependency>
@@ -228,12 +168,101 @@
 				<version>${jobj-contract-verifier.version}</version>
 			</dependency>
 
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>jcommons-lang</artifactId>
+				<version>${jcommons-lang.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>test-objects</artifactId>
+				<version>${test-objects.version}</version>
+			</dependency>
+
 		</dependencies>
 
 	</dependencyManagement>
 
 	<dependencies>
 
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>crypt-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>crypt-data</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>randomizer-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>file-worker</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>model-core</artifactId>
+		</dependency>
+		<!-- XML-EXTENSIONS DEPENDENCY -->
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>xml-extensions</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>silly-collections</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk15on</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-ext-jdk15on</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcpkix-jdk15on</artifactId>
+		</dependency>
+		<!-- JOBJ-CORE DEPENDENCY -->
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>jobj-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.github.benas</groupId>
+			<artifactId>random-beans</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>test-objects</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>de.alpharogroup</groupId>
+			<artifactId>jcommons-lang</artifactId>
+			<scope>test</scope>
+		</dependency>
 		<!-- JOBJ-CONTRACT-VERIFIER DEPENDENCY -->
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
@@ -309,17 +338,10 @@
 							<!-- abstract classes -->
 							<exclude>de/alpharogroup/crypto/core/**/*.class</exclude>
 							<!-- enums -->
-							<exclude>de/alpharogroup/crypto/algorithm/**/*.class</exclude>
-							<exclude>de/alpharogroup/crypto/mechanisms/**/*.class</exclude>
-							<exclude>de/alpharogroup/crypto/modes/**/*.class</exclude>
-							<exclude>de/alpharogroup/crypto/padding/**/*.class</exclude>
-							<exclude>de/alpharogroup/crypto/provider/**/*.class</exclude>
-							<exclude>de/alpharogroup/crypto/pw/**/*.class</exclude>
 							<!-- beans -->
 							<!-- constant classes with only constants -->
 							<!-- deprecated classes -->
 							<!-- interfaces -->
-							<exclude>de/alpharogroup/crypto/api/**/*.class</exclude>
 							<!-- exceptions -->
 							<!-- experimental classes -->
 							<!-- explicit abstract classes -->
@@ -327,7 +349,6 @@
 							<!-- explicit bean classes -->
 							<!-- explicit deprecated classes -->
 							<!-- explicit interfaces -->
-							<exclude>de/alpharogroup/crypto/obfuscation/api/Obfuscatable.class</exclude>
 							<!-- explicit constant classes with only constants -->
 							<!-- explicit delegation classes -->
 						</excludes>
