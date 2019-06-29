@@ -28,21 +28,24 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-import de.alpharogroup.crypto.file.xml.XmlDecryptionExtensions;
-import de.alpharogroup.crypto.file.xml.XmlEncryptionExtensions;
 import org.apache.commons.codec.DecoderException;
 
 import com.thoughtworks.xstream.XStream;
 
+import de.alpharogroup.crypto.file.xml.XmlDecryptionExtensions;
+import de.alpharogroup.crypto.file.xml.XmlEncryptionExtensions;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
 /**
  * The class {@link XmlEnDecryptionExtensions} provides methods for write and encrypt and read and
  * decrypt xml data.
- * @deprecated use instead <code>XmlEncryptionExtensions</code> or <code>XmlDecryptionExtensions</code>
- * <br>Note: will be removed in next minor release
+ * 
+ * @deprecated use instead <code>XmlEncryptionExtensions</code> or
+ *             <code>XmlDecryptionExtensions</code> <br>
+ *             Note: will be removed in next minor release
  */
+@Deprecated
 @UtilityClass
 public class XmlEnDecryptionExtensions
 {
@@ -63,9 +66,10 @@ public class XmlEnDecryptionExtensions
 	 *            the file to write
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
-	 * @deprecated use instead <code>XmlEncryptionExtensions</code> same name method
-	 * <br>Note: will be removed in next minor release
+	 * @deprecated use instead <code>XmlEncryptionExtensions</code> same name method <br>
+	 *             Note: will be removed in next minor release
 	 */
+	@Deprecated
 	public static <T> void writeToFileAsXmlAndHex(final @NonNull XStream xstream,
 		final @NonNull Map<String, Class<?>> aliases, final @NonNull T data, @NonNull File file)
 		throws IOException
@@ -90,9 +94,10 @@ public class XmlEnDecryptionExtensions
 	 *             Signals that an I/O exception has occurred.
 	 * @throws DecoderException
 	 *             is thrown if an odd number or illegal of characters is supplied
-	 * @deprecated use instead <code>XmlDecryptionExtensions</code> same name method
-	 * <br>Note: will be removed in next minor release
+	 * @deprecated use instead <code>XmlDecryptionExtensions</code> same name method <br>
+	 *             Note: will be removed in next minor release
 	 */
+	@Deprecated
 	public static <T> T readFromFileAsXmlAndHex(final @NonNull XStream xstream,
 		final @NonNull Map<String, Class<?>> aliases, final @NonNull File selectedFile)
 		throws IOException, DecoderException
