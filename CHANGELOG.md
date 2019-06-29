@@ -1,14 +1,16 @@
 ## Change log
 ----------------------
 
-Version 6.1-SNAPSHOT
+Version 7-SNAPSHOT
 -------------
 
 CHANGED:
 
 - removed depracated class CryptConst
+- changed from modules to simple project
 - moved crypt-api to own project
 - moved crypt-data to own project
+- moved crypt-core to the top of this project so crypt-core is now mystic-crypt
 - new method in the utility class Hasher with private key parameter created
 
 Version 6
