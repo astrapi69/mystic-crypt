@@ -7,16 +7,17 @@
 [![Open Issues](https://img.shields.io/github/issues/astrapi69/mystic-crypt.svg?style=flat)](https://github.com/astrapi69/mystic-crypt/issues) 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.alpharogroup/mystic-crypt/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.alpharogroup/mystic-crypt)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT)
+[![Javadoc](http://www.javadoc.io/badge/de.alpharogroup/mystic-crypt.svg)](http://www.javadoc.io/doc/de.alpharogroup/mystic-crypt)
 
 </div>
 
-The target of this parent project is to make encryption and decryption as simple as possible.
+The target of this parent project is to make encryption and decryption as simple as possible
 
 If you like this project put a ⭐ and donate
 
 ## Note
 
-No animals were harmed in the making of this library.
+No animals were harmed in the making of this library
 
 # Donations
 
@@ -61,72 +62,31 @@ described above.
 
 The source code comes under the liberal MIT License, making mystic-crypt great for all types of applications.
 
-## Javadoc
-
-[![Javadoc](http://www.javadoc.io/badge/de.alpharogroup/crypt-core.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-api) crypt-api 
-
-[![Javadoc](http://www.javadoc.io/badge/de.alpharogroup/crypt-core.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-core) crypt-core
-
-[![Javadoc](http://www.javadoc.io/badge/de.alpharogroup/crypt-data.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-data) crypt-data
-
 ## Maven dependency
 
 Maven dependency is now available on sonatype.
 Check out [sonatype repository](https://oss.sonatype.org/index.html#nexus-search;quick~mystic-crypt) for latest snapshots and releases.
 
-You can first define the version properties:
+Than you can add the dependency to your dependencies:
 
 	<properties>
 			...
-		<!-- MYSTIC-CRYPT versions -->
-		<mystic-crypt.version>6</mystic-crypt.version>
-		<crypt-api.version>${mystic-crypt.version}</crypt-api.version>
-		<crypt-core.version>${mystic-crypt.version}</crypt-core.version>
-		<crypt-data.version>${mystic-crypt.version}</crypt-data.version>
+		<!-- MYSTIC-CRYPT version -->
+		<mystic-crypt.version>7</mystic-crypt.version>
 			...
 	</properties>
+			...
+		<dependencies>
+			...
+			<!-- MYSTIC-CRYPT DEPENDENCY -->
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>mystic-crypt</artifactId>
+				<version>${mystic-crypt.version}</version>
+			</dependency>
+			...
+		</dependencies>
 	
-You can add the following dependencies to your project for use the functionality of mystic-crypt.
-
-Add the following maven dependency to your project `pom.xml` if you want to import the core functionality of crypt-api:
-
-		<dependencies>
-			...
-			<!-- CRYPT-API DEPENDENCY -->
-			<dependency>
-				<groupId>de.alpharogroup</groupId>
-				<artifactId>crypt-api</artifactId>
-				<version>${crypt-api.version}</version>
-			</dependency>
-			...
-		</dependencies>
-
-Add the following maven dependency to your project `pom.xml` if you want to import the core functionality of crypt-core:
-
-		<dependencies>
-			...
-			<!-- CRYPT-CORE DEPENDENCY -->
-			<dependency>
-				<groupId>de.alpharogroup</groupId>
-				<artifactId>crypt-core</artifactId>
-				<version>${crypt-core.version}</version>
-			</dependency>
-			...
-		</dependencies>
-
-Add the following maven dependency to your project `pom.xml` if you want to import only the crypt-data like algorithms, modes, paddings etc.:
-
-		<dependencies>
-			...
-			<!-- CRYPT-DATA DEPENDENCY -->
-			<dependency>
-				<groupId>de.alpharogroup</groupId>
-				<artifactId>crypt-data</artifactId>
-				<version>${crypt-data.version}</version>
-			</dependency>
-			...
-		</dependencies>
-
 ## Semantic Versioning
 
 The versions of mystic-crypt are maintained with the Semantic Versioning guidelines.
@@ -177,9 +137,7 @@ Here is a list of awesome projects for cryptography:
 
 |**Nexus Sonatype repositories**|
 |     :---:      |
-|[![sonatype repository](https://img.shields.io/nexus/r/https/oss.sonatype.org/de.alpharogroup/crypt-api.svg?style=for-the-badge)](https://oss.sonatype.org/index.html#nexus-search;gav~de.alpharogroup~crypt-api~~~) crypt-api|
-|[![sonatype repository](https://img.shields.io/nexus/r/https/oss.sonatype.org/de.alpharogroup/crypt-core.svg?style=for-the-badge)](https://oss.sonatype.org/index.html#nexus-search;gav~de.alpharogroup~crypt-core~~~) crypt-core|
-|[![sonatype repository](https://img.shields.io/nexus/r/https/oss.sonatype.org/de.alpharogroup/crypt-data.svg?style=for-the-badge)](https://oss.sonatype.org/index.html#nexus-search;gav~de.alpharogroup~crypt-data~~~) crypt-data|
+|[![sonatype repository](https://img.shields.io/nexus/r/https/oss.sonatype.org/de.alpharogroup/mystic-crypt.svg?style=for-the-badge)](https://oss.sonatype.org/index.html#nexus-search;gav~de.alpharogroup~mystic-crypt~~~) mystic-crypt|
 |Special thanks to [sonatype repository](https://www.sonatype.com) for providing a free maven repository service for open source projects|
 |     <img width=1000/>     |
 
@@ -191,9 +149,7 @@ Here is a list of awesome projects for cryptography:
 
 |**javadoc.io**|
 |     :---:      |
-|[![Javadoc](http://www.javadoc.io/badge/de.alpharogroup/crypt-api.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-api) crypt-api|
-|[![Javadoc](http://www.javadoc.io/badge/de.alpharogroup/crypt-core.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-core) crypt-core|
-|[![Javadoc](http://www.javadoc.io/badge/de.alpharogroup/crypt-data.svg)](http://www.javadoc.io/doc/de.alpharogroup/crypt-data) crypt-data|
+|[![Javadoc](http://www.javadoc.io/badge/de.alpharogroup/mystic-crypt.svg)](http://www.javadoc.io/doc/de.alpharogroup/mystic-crypt) mystic-crypt|
 |Special thanks to [javadoc.io](http://www.javadoc.io) for providing a free javadoc documentation for open source projects|
 |     <img width=1000/>     |
 
