@@ -24,11 +24,16 @@
  */
 package de.alpharogroup.crypto.obfuscation.character;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
 import com.google.common.collect.BiMap;
 
+import com.google.common.collect.HashBiMap;
+import de.alpharogroup.collections.map.MapFactory;
+import de.alpharogroup.collections.pairs.KeyValuePair;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
 import de.alpharogroup.crypto.obfuscation.rule.Operation;
 import lombok.experimental.UtilityClass;
@@ -80,7 +85,6 @@ public class ObfuscatorExtensions
 				}
 				final Character replaceWith = obfuscationOperationRule.getReplaceWith();
 				sb.append(replaceWith);
-
 			}
 			else
 			{
@@ -89,6 +93,37 @@ public class ObfuscatorExtensions
 		}
 		return sb.toString();
 	}
+
+	/**
+	 * Disentangle the given obfuscated text with the given {@link List} rules
+	 *
+	 * @param rules
+	 *            the rules
+	 * @param obfuscated
+	 *            the obfuscated text
+	 * @return the string
+	 */
+	public static String disentangle(
+		final List<KeyValuePair<Character, ObfuscationOperationRule<Character, Character>>> rules,
+		final String obfuscated)
+	{
+		char currentChar;
+		Character currentCharacter;
+		final StringBuilder sb = new StringBuilder();
+		Map<Character, Character> swapped = swapMapWithReplaceWithAsKey(HashBiMap.create(KeyValuePair.toMap(rules)));
+		for (int i = 0; i < obfuscated.length(); i++)
+		{
+			currentChar = obfuscated.charAt(i);
+			currentCharacter = currentChar;
+			if(swapped.containsKey(currentCharacter)) {
+				sb.append(swapped.get(currentCharacter));
+			} else {
+				sb.append(currentChar);
+			}
+		}
+		return sb.toString();
+	}
+
 
 	/**
 	 * Disentangle the given obfuscated text with the given {@link BiMap} rules
@@ -171,6 +206,7 @@ public class ObfuscatorExtensions
 		return sb.toString();
 	}
 
+
 	/**
 	 * Validate the given {@link BiMap} if a before obfuscated String can be disentangled
 	 *
@@ -194,6 +230,19 @@ public class ObfuscatorExtensions
 			}
 		}
 		return true;
+	}
+
+	public static Map<Character, Character> swapMapWithReplaceWithAsKey(BiMap<Character, ObfuscationOperationRule<Character, Character>> rules)
+	{
+		Map<Character, Character> swapped = MapFactory.newLinkedHashMap();
+		rules.entrySet().forEach(entry -> {
+				if(entry.getValue().getOperatedCharacter()!=null){
+					swapped.put(entry.getValue().getOperatedCharacter(), entry.getKey());
+				}
+				swapped.put(entry.getValue().getReplaceWith(), entry.getKey());
+			}
+			);
+		return swapped;
 	}
 
 }

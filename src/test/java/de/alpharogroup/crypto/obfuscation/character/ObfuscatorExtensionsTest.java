@@ -28,6 +28,7 @@ import static org.testng.AssertJUnit.assertEquals;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.Map;
 
 import org.meanbean.test.BeanTestException;
@@ -36,6 +37,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.thoughtworks.xstream.XStream;
 
 import de.alpharogroup.AbstractTestCase;
@@ -58,7 +60,9 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 	Map<String, Class<?>> aliases;
 	BiMap<Character, ObfuscationOperationRule<Character, Character>> fullSizeRules;
 	BiMap<Character, ObfuscationOperationRule<Character, Character>> smallSizeRules;
+	BiMap<Character, ObfuscationOperationRule<Character, Character>> testRules;
 	String stringToDisentangle;
+	List<KeyValuePair<Character, ObfuscationOperationRule<Character, Character>>> data;
 
 	String stringToObfuscate;
 	/** The {@link XStream} object */
@@ -84,6 +88,7 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 	{
 		super.setUp();
 		File xmlFile;
+		File xmlListFile;
 		File xmlDir;
 
 		xmlDir = new File(PathFinder.getSrcTestResourcesDir(), "xml");
@@ -93,6 +98,27 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 
 		xmlFile = new File(xmlDir, "full-size-operation-rules.oor");
 		fullSizeRules = XmlDecryptionExtensions.readFromFileAsXmlAndHex(xStream, aliases, xmlFile);
+
+		xmlListFile = new File(xmlDir, "pwhex-foo.oor");
+		data = XmlDecryptionExtensions
+			.readFromFileAsXmlAndHex(xStream, aliases, xmlListFile);
+		testRules = HashBiMap.create(KeyValuePair.toMap(data));
+
+	}
+
+	/**
+	 * Test method for {@link ObfuscatorExtensions#disentangle(BiMap, String)}
+	 */
+	@Test
+	public void testDisentangleWithTestRules()
+	{
+		// new scenario...
+		stringToObfuscate = "asterios";
+		String obfuscateWith = ObfuscatorExtensions.obfuscateWith(testRules, stringToObfuscate);
+
+		actual = ObfuscatorExtensions.disentangle(data, obfuscateWith);
+		expected = stringToObfuscate;
+		assertEquals(expected, actual);
 
 	}
 
