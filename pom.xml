@@ -25,7 +25,7 @@
 
 	<properties>
 		<!-- MYSTIC-CRYPT versions -->
-		<crypt-api.version>7</crypt-api.version>
+		<crypt-api.version>7.1</crypt-api.version>
 		<crypt-data.version>7</crypt-data.version>
 		<model-core.version>1.6.2</model-core.version>
 		<!-- NEW EXTENSIONS LIB versions -->

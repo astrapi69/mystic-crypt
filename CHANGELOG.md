@@ -4,6 +4,15 @@
 Version 7.1-SNAPSHOT
 -------------
 
+ADDED:
+
+- new encryptor class created for encrypting java object in a generic way
+- new decryptor class created for decrypt an encrypted {@link File} object that was previously encrypted and return the decrypted result as generic java object 
+
+CHANGED:
+
+- update of dependency crypt-api version to 7.1
+
 Version 7
 -------------
 

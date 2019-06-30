@@ -22,16 +22,20 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.xml;
+package de.alpharogroup.crypto.file.xml;
 
 import static org.testng.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 import org.apache.commons.codec.DecoderException;
-import org.junit.Test;
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import com.google.common.collect.BiMap;
 import com.thoughtworks.xstream.XStream;
@@ -39,14 +43,15 @@ import com.thoughtworks.xstream.XStream;
 import de.alpharogroup.collections.map.MapFactory;
 import de.alpharogroup.collections.pairs.KeyValuePair;
 import de.alpharogroup.crypto.file.xml.XmlDecryptionExtensions;
+import de.alpharogroup.crypto.file.xml.XmlEncryptionExtensions;
 import de.alpharogroup.crypto.obfuscation.character.ObfuscationOperationTestData;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * The unit test class for the class {@link XmlDecryptionExtensions}
+ * The unit test class for the class {@link XmlEncryptionExtensions}
  */
-public class XmlDecryptionExtensionsTest
+public class XmlEncryptionExtensionsTest
 {
 
 	BiMap<Character, ObfuscationOperationRule<Character, Character>> actual;
@@ -67,8 +72,27 @@ public class XmlDecryptionExtensionsTest
 		aliases.put("ObfuscationOperationRule", ObfuscationOperationRule.class);
 	}
 
+	@BeforeMethod
+	protected void setUp()
+	{
+		xmlDir = new File(PathFinder.getSrcTestResourcesDir(), "xml");
+		xmlFile = new File(xmlDir, "foo.sor");
+	}
+
 	/**
-	 * Test method for {@link XmlDecryptionExtensions#readFromFileAsXmlAndHex(XStream, Map, File)}
+	 * Test method for {@link XmlEncryptionExtensions} with {@link BeanTester}
+	 */
+	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
+			UnsupportedOperationException.class })
+	public void testWithBeanTester()
+	{
+		BeanTester beanTester = new BeanTester();
+		beanTester.testBean(XmlEncryptionExtensions.class);
+	}
+
+	/**
+	 * Test method for
+	 * {@link XmlEncryptionExtensions#writeToFileAsXmlAndHex(XStream, Map, Object, File)}
 	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
@@ -76,11 +100,10 @@ public class XmlDecryptionExtensionsTest
 	 *             is thrown if an odd number or illegal of characters is supplied
 	 */
 	@Test
-	public void testReadFromFileAsXmlAndHex() throws IOException, DecoderException
+	public void testWriteToFileAsXmlAndHex() throws IOException, DecoderException
 	{
-		xmlDir = new File(PathFinder.getSrcTestResourcesDir(), "xml");
-		xmlFile = new File(xmlDir, "foo.sor");
 		expected = ObfuscationOperationTestData.getFirstBiMapObfuscationOperationRules();
+		XmlEncryptionExtensions.writeToFileAsXmlAndHex(xStream, aliases, expected, xmlFile);
 		actual = XmlDecryptionExtensions.readFromFileAsXmlAndHex(xStream, aliases, xmlFile);
 		assertEquals(actual, expected);
 	}
