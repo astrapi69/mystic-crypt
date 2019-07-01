@@ -236,12 +236,12 @@ public class ObfuscatorExtensions
 	{
 		Map<Character, Character> swapped = MapFactory.newLinkedHashMap();
 		rules.entrySet().forEach(entry -> {
-				if(entry.getValue().getOperatedCharacter()!=null){
-					swapped.put(entry.getValue().getOperatedCharacter(), entry.getKey());
+					if(entry.getValue().getOperatedCharacter()!=null){
+						swapped.put(entry.getValue().getOperatedCharacter(), entry.getKey());
+					}
+					swapped.put(entry.getValue().getReplaceWith(), entry.getKey());
 				}
-				swapped.put(entry.getValue().getReplaceWith(), entry.getKey());
-			}
-			);
+		);
 		return swapped;
 	}
 
@@ -252,6 +252,13 @@ public class ObfuscatorExtensions
 		rule.setCharacter(replaceWithChar);
 		rule.setReplaceWith(currentChar);
 		rule.setInverted(!rule.isInverted());
+	}
+
+	public static BiMap<ObfuscationOperationRule<Character, Character>, Character> inverse(BiMap<Character, ObfuscationOperationRule<Character, Character>> rules)
+	{
+		BiMap<ObfuscationOperationRule<Character, Character>, Character> invertedBiMap = rules.inverse();
+		invertedBiMap.entrySet().forEach(entry -> inverse(entry.getKey())	);
+		return invertedBiMap;
 	}
 
 }
