@@ -245,4 +245,13 @@ public class ObfuscatorExtensions
 		return swapped;
 	}
 
+	public static void inverse(ObfuscationOperationRule<Character, Character> rule)
+	{
+		char currentChar = rule.getCharacter();
+		char replaceWithChar = rule.getReplaceWith();
+		rule.setCharacter(replaceWithChar);
+		rule.setReplaceWith(currentChar);
+		rule.setInverted(!rule.isInverted());
+	}
+
 }
