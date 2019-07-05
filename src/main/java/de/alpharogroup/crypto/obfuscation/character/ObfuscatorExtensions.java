@@ -110,14 +110,18 @@ public class ObfuscatorExtensions
 		char currentChar;
 		Character currentCharacter;
 		final StringBuilder sb = new StringBuilder();
-		Map<Character, Character> swapped = swapMapWithReplaceWithAsKey(HashBiMap.create(KeyValuePair.toMap(rules)));
+		Map<Character, Character> swapped = swapMapWithReplaceWithAsKey(
+			HashBiMap.create(KeyValuePair.toMap(rules)));
 		for (int i = 0; i < obfuscated.length(); i++)
 		{
 			currentChar = obfuscated.charAt(i);
 			currentCharacter = currentChar;
-			if(swapped.containsKey(currentCharacter)) {
+			if (swapped.containsKey(currentCharacter))
+			{
 				sb.append(swapped.get(currentCharacter));
-			} else {
+			}
+			else
+			{
 				sb.append(currentChar);
 			}
 		}
@@ -232,16 +236,17 @@ public class ObfuscatorExtensions
 		return true;
 	}
 
-	public static Map<Character, Character> swapMapWithReplaceWithAsKey(BiMap<Character, ObfuscationOperationRule<Character, Character>> rules)
+	public static Map<Character, Character> swapMapWithReplaceWithAsKey(
+		BiMap<Character, ObfuscationOperationRule<Character, Character>> rules)
 	{
 		Map<Character, Character> swapped = MapFactory.newLinkedHashMap();
 		rules.entrySet().forEach(entry -> {
-					if(entry.getValue().getOperatedCharacter()!=null){
-						swapped.put(entry.getValue().getOperatedCharacter(), entry.getKey());
-					}
-					swapped.put(entry.getValue().getReplaceWith(), entry.getKey());
-				}
-		);
+			if (entry.getValue().getOperatedCharacter() != null)
+			{
+				swapped.put(entry.getValue().getOperatedCharacter(), entry.getKey());
+			}
+			swapped.put(entry.getValue().getReplaceWith(), entry.getKey());
+		});
 		return swapped;
 	}
 
@@ -254,10 +259,16 @@ public class ObfuscatorExtensions
 		rule.setInverted(!rule.isInverted());
 	}
 
-	public static BiMap<ObfuscationOperationRule<Character, Character>, Character> inverse(BiMap<Character, ObfuscationOperationRule<Character, Character>> rules)
+	public static BiMap<ObfuscationOperationRule<Character, Character>, Character> inverse(
+		BiMap<Character, ObfuscationOperationRule<Character, Character>> rules)
 	{
-		BiMap<ObfuscationOperationRule<Character, Character>, Character> invertedBiMap = rules.inverse();
-		invertedBiMap.entrySet().forEach(entry -> inverse(entry.getKey())	);
+		BiMap<ObfuscationOperationRule<Character, Character>, Character> invertedBiMap = rules
+			.inverse();
+		invertedBiMap.entrySet().forEach(entry -> {
+			ObfuscationOperationRule<Character, Character> key = entry.getKey();
+			inverse(key);
+			entry.setValue(key.getCharacter());
+		});
 		return invertedBiMap;
 	}
 
