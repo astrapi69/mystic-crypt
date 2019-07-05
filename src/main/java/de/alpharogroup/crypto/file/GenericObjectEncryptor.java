@@ -95,10 +95,11 @@ public class GenericObjectEncryptor<T> extends AbstractObjectEncryptor<T>
 	public File encrypt(final T toEncrypt) throws Exception
 	{
 		Cipher cipher = getModel().getCipher();
-		try(CipherOutputStream cipherOutputStream = new CipherOutputStream(
-			new BufferedOutputStream(new FileOutputStream(this.encryptedFile)),
-			cipher);
-		ObjectOutputStream outputStream = new ObjectOutputStream(cipherOutputStream);){
+		try (
+			CipherOutputStream cipherOutputStream = new CipherOutputStream(
+				new BufferedOutputStream(new FileOutputStream(this.encryptedFile)), cipher);
+			ObjectOutputStream outputStream = new ObjectOutputStream(cipherOutputStream);)
+		{
 			outputStream.writeObject(toEncrypt);
 			outputStream.close();
 		}

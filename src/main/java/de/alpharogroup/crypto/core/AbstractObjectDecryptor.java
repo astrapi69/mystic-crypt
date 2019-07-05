@@ -53,7 +53,7 @@ import de.alpharogroup.crypto.model.CryptModel;
  */
 public abstract class AbstractObjectDecryptor<R> extends AbstractDecryptor<Cipher, String>
 	implements
-	GenericObjectDecryptor<R>
+		GenericObjectDecryptor<R>
 {
 
 	/** The Constant serialVersionUID. */

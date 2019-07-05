@@ -42,7 +42,8 @@ import de.alpharogroup.test.objects.Person;
 import de.alpharogroup.test.objects.enums.Gender;
 
 /**
- * The unit test class for the class {@link GenericObjectEncryptor} and the class {@link GenericObjectDecryptor}
+ * The unit test class for the class {@link GenericObjectEncryptor} and the class
+ * {@link GenericObjectDecryptor}
  */
 public class GenericObjectEncryptDecryptorTest extends AbstractTestCase<Person, Person>
 {
@@ -83,7 +84,8 @@ public class GenericObjectEncryptDecryptorTest extends AbstractTestCase<Person, 
 	public void testEncryptDecryptConstructorFiles() throws Exception
 	{
 		// new scenario...
-		encryptor = new GenericObjectEncryptor<>(cryptModel, new File(cryptDir, "encryptedPerson.enc"));
+		encryptor = new GenericObjectEncryptor<>(cryptModel,
+			new File(cryptDir, "encryptedPerson.enc"));
 		encrypted = encryptor.encrypt(toEncrypt);
 
 		decryptor = new GenericObjectDecryptor<>(cryptModel);

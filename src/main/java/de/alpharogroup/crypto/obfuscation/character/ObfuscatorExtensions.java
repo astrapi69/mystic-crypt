@@ -30,8 +30,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import com.google.common.collect.BiMap;
-
 import com.google.common.collect.HashBiMap;
+
 import de.alpharogroup.collections.map.MapFactory;
 import de.alpharogroup.collections.pairs.KeyValuePair;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
@@ -143,8 +143,10 @@ public class ObfuscatorExtensions
 	{
 		char currentChar;
 		Character currentCharacter;
+		ObfuscationOperationRule<Character, Character> currentOperationRule;
 		final StringBuilder sb = new StringBuilder();
-		Map<Character, Character> swapped = swapMapWithReplaceWithAsKey(rules);
+		Map<Character, ObfuscationOperationRule<Character, Character>> swapped = swapOperatedMapWithReplaceWithAsKey(
+			rules);
 		BiMap<ObfuscationOperationRule<Character, Character>, Character> inverted = inverse(rules);
 		BiMap<Character, ObfuscationOperationRule<Character, Character>> inverseInverted = inverted
 			.inverse();
@@ -152,12 +154,19 @@ public class ObfuscatorExtensions
 		{
 			currentChar = obfuscated.charAt(i);
 			currentCharacter = currentChar;
-			if (inverseInverted.containsKey(currentCharacter)
-				|| swapped.containsKey(currentCharacter))
+			if (inverseInverted.containsKey(currentCharacter))
 			{
-				ObfuscationOperationRule<Character, Character> obfuscationOperationRule = inverseInverted
-					.get(currentCharacter);
-				sb.append(obfuscationOperationRule.getReplaceWith());
+				currentOperationRule = inverseInverted.get(currentCharacter);
+				sb.append(currentOperationRule.getReplaceWith());
+			}
+			else if (swapped.containsKey(currentCharacter))
+			{
+				currentOperationRule = swapped.get(currentCharacter);
+				Set<Integer> indexes = currentOperationRule.getIndexes();
+				if (!indexes.isEmpty() && indexes.contains(i))
+				{
+					sb.append(currentOperationRule.getReplaceWith());
+				}
 			}
 			else
 			{
@@ -279,11 +288,32 @@ public class ObfuscatorExtensions
 	{
 		Map<Character, Character> swapped = MapFactory.newLinkedHashMap();
 		rules.entrySet().forEach(entry -> {
-			if (entry.getValue().getOperatedCharacter() != null)
+			ObfuscationOperationRule<Character, Character> value = entry.getValue();
+			if (value.getOperation() != null && !value.getIndexes().isEmpty())
 			{
-				swapped.put(entry.getValue().getOperatedCharacter(), entry.getKey());
+				value.setOperatedCharacter(
+					Operation.operate(value.getCharacter(), value.getOperation()));
+				swapped.put(value.getOperatedCharacter(), entry.getKey());
 			}
-			swapped.put(entry.getValue().getReplaceWith(), entry.getKey());
+			swapped.put(value.getReplaceWith(), entry.getKey());
+		});
+		return swapped;
+	}
+
+	public static Map<Character, ObfuscationOperationRule<Character, Character>> swapOperatedMapWithReplaceWithAsKey(
+		BiMap<Character, ObfuscationOperationRule<Character, Character>> rules)
+	{
+		Map<Character, ObfuscationOperationRule<Character, Character>> swapped = MapFactory
+			.newLinkedHashMap();
+		rules.entrySet().forEach(entry -> {
+			ObfuscationOperationRule<Character, Character> value = entry.getValue();
+			if (value.getOperation() != null && !value.getIndexes().isEmpty())
+			{
+				value.setOperatedCharacter(
+					Operation.operate(value.getCharacter(), value.getOperation()));
+				swapped.put(value.getOperatedCharacter(), value);
+			}
+			swapped.put(value.getReplaceWith(), value);
 		});
 		return swapped;
 	}

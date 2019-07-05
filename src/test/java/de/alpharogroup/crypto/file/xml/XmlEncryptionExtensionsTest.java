@@ -42,8 +42,6 @@ import com.thoughtworks.xstream.XStream;
 
 import de.alpharogroup.collections.map.MapFactory;
 import de.alpharogroup.collections.pairs.KeyValuePair;
-import de.alpharogroup.crypto.file.xml.XmlDecryptionExtensions;
-import de.alpharogroup.crypto.file.xml.XmlEncryptionExtensions;
 import de.alpharogroup.crypto.obfuscation.character.ObfuscationOperationTestData;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
 import de.alpharogroup.file.search.PathFinder;

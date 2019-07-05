@@ -58,13 +58,13 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 
 	/** The aliases for the {@link XStream} object */
 	Map<String, Class<?>> aliases;
+	List<KeyValuePair<Character, ObfuscationOperationRule<Character, Character>>> data;
 	BiMap<Character, ObfuscationOperationRule<Character, Character>> fullSizeRules;
 	BiMap<Character, ObfuscationOperationRule<Character, Character>> smallSizeRules;
-	BiMap<Character, ObfuscationOperationRule<Character, Character>> testRules;
 	String stringToDisentangle;
-	List<KeyValuePair<Character, ObfuscationOperationRule<Character, Character>>> data;
-
 	String stringToObfuscate;
+
+	BiMap<Character, ObfuscationOperationRule<Character, Character>> testRules;
 	/** The {@link XStream} object */
 	XStream xStream;
 	{
@@ -100,25 +100,8 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 		fullSizeRules = XmlDecryptionExtensions.readFromFileAsXmlAndHex(xStream, aliases, xmlFile);
 
 		xmlListFile = new File(xmlDir, "pwhex-foo.oor");
-		data = XmlDecryptionExtensions
-			.readFromFileAsXmlAndHex(xStream, aliases, xmlListFile);
+		data = XmlDecryptionExtensions.readFromFileAsXmlAndHex(xStream, aliases, xmlListFile);
 		testRules = HashBiMap.create(KeyValuePair.toMap(data));
-
-	}
-
-	/**
-	 * Test method for {@link ObfuscatorExtensions#disentangle(BiMap, String)}
-	 */
-	@Test
-	public void testDisentangleWithTestRules()
-	{
-		// new scenario...
-		stringToObfuscate = "asterios";
-		String obfuscateWith = ObfuscatorExtensions.obfuscateWith(testRules, stringToObfuscate);
-
-		actual = ObfuscatorExtensions.disentangle(data, obfuscateWith);
-		expected = stringToObfuscate;
-		assertEquals(expected, actual);
 
 	}
 
@@ -165,6 +148,37 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 	}
 
 	/**
+	 * Test method for {@link ObfuscatorExtensions#disentangle(BiMap, String)}
+	 */
+	@Test
+	public void testDisentangleImprovedWithTestRules()
+	{
+		// new scenario...
+		stringToDisentangle = "Ast3r70s";
+
+		actual = ObfuscatorExtensions.disentangleImproved(testRules, stringToDisentangle);
+		expected = "asterios";
+		assertEquals(expected, actual);
+
+	}
+
+	/**
+	 * Test method for {@link ObfuscatorExtensions#disentangle(BiMap, String)}
+	 */
+	@Test
+	public void testDisentangleWithTestRules()
+	{
+		// new scenario...
+		stringToObfuscate = "asterios";
+		String obfuscateWith = ObfuscatorExtensions.obfuscateWith(testRules, stringToObfuscate);
+
+		actual = ObfuscatorExtensions.disentangle(data, obfuscateWith);
+		expected = stringToObfuscate;
+		assertEquals(expected, actual);
+
+	}
+
+	/**
 	 * Test method for {@link ObfuscatorExtensions#obfuscateWith(BiMap, String)}
 	 */
 	@Test
@@ -181,6 +195,12 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 
 		actual = ObfuscatorExtensions.obfuscateWith(smallSizeRules, stringToObfuscate);
 		expected = "AcACd";
+		assertEquals(expected, actual);
+
+		// new scenario...
+		stringToObfuscate = "asterios";
+		actual = ObfuscatorExtensions.obfuscateWith(testRules, stringToObfuscate);
+		expected = "Ast3r70s";
 		assertEquals(expected, actual);
 	}
 
