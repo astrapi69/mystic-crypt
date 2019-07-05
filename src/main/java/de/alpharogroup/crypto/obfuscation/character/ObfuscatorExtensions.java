@@ -128,6 +128,44 @@ public class ObfuscatorExtensions
 		return sb.toString();
 	}
 
+	/**
+	 * Disentangle the given obfuscated text with the given {@link BiMap} rules
+	 *
+	 * @param rules
+	 *            the rules
+	 * @param obfuscated
+	 *            the obfuscated text
+	 * @return the string
+	 */
+	public static String disentangleImproved(
+		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
+		final String obfuscated)
+	{
+		char currentChar;
+		Character currentCharacter;
+		final StringBuilder sb = new StringBuilder();
+		Map<Character, Character> swapped = swapMapWithReplaceWithAsKey(rules);
+		BiMap<ObfuscationOperationRule<Character, Character>, Character> inverted = inverse(rules);
+		BiMap<Character, ObfuscationOperationRule<Character, Character>> inverseInverted = inverted
+			.inverse();
+		for (int i = 0; i < obfuscated.length(); i++)
+		{
+			currentChar = obfuscated.charAt(i);
+			currentCharacter = currentChar;
+			if (inverseInverted.containsKey(currentCharacter)
+				|| swapped.containsKey(currentCharacter))
+			{
+				ObfuscationOperationRule<Character, Character> obfuscationOperationRule = inverseInverted
+					.get(currentCharacter);
+				sb.append(obfuscationOperationRule.getReplaceWith());
+			}
+			else
+			{
+				sb.append(currentChar);
+			}
+		}
+		return sb.toString();
+	}
 
 	/**
 	 * Disentangle the given obfuscated text with the given {@link BiMap} rules
