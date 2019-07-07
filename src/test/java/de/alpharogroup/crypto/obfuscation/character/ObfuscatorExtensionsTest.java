@@ -27,10 +27,14 @@ package de.alpharogroup.crypto.obfuscation.character;
 import static org.testng.AssertJUnit.assertEquals;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
+import org.apache.commons.codec.DecoderException;
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.BeforeMethod;
@@ -43,8 +47,11 @@ import com.thoughtworks.xstream.XStream;
 import de.alpharogroup.AbstractTestCase;
 import de.alpharogroup.collections.map.MapFactory;
 import de.alpharogroup.collections.pairs.KeyValuePair;
+import de.alpharogroup.collections.set.SetFactory;
 import de.alpharogroup.crypto.file.xml.XmlDecryptionExtensions;
+import de.alpharogroup.crypto.obfuscation.rule.CharacterObfuscationOperationRule;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
+import de.alpharogroup.crypto.obfuscation.rule.Operation;
 import de.alpharogroup.file.search.PathFinder;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -76,6 +83,10 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 		aliases.put("ObfuscationOperationRule", ObfuscationOperationRule.class);
 	}
 
+	File xmlFile;
+	File xmlListFile;
+	File xmlDir;
+
 	/**
 	 * Sets up method will be invoked before every unit test method in this class
 	 *
@@ -87,9 +98,6 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 	protected void setUp() throws Exception
 	{
 		super.setUp();
-		File xmlFile;
-		File xmlListFile;
-		File xmlDir;
 
 		xmlDir = new File(PathFinder.getSrcTestResourcesDir(), "xml");
 		xmlFile = new File(xmlDir, "small-size-operation-rules.oor");
@@ -101,8 +109,18 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 
 		xmlListFile = new File(xmlDir, "pwhex-foo.oor");
 		data = XmlDecryptionExtensions.readFromFileAsXmlAndHex(xStream, aliases, xmlListFile);
-		testRules = HashBiMap.create(KeyValuePair.toMap(data));
+		testRules = loadXmlListToBiMap(xmlListFile);
 
+	}
+
+	BiMap<Character, ObfuscationOperationRule<Character, Character>> loadXmlListToBiMap(
+		File xmlListFile) throws IOException, DecoderException
+	{
+		List<KeyValuePair<Character, ObfuscationOperationRule<Character, Character>>> data = XmlDecryptionExtensions
+			.readFromFileAsXmlAndHex(xStream, aliases, xmlListFile);
+		BiMap<Character, ObfuscationOperationRule<Character, Character>> rules = HashBiMap
+			.create(KeyValuePair.toMap(data));
+		return rules;
 	}
 
 	/**
@@ -149,10 +167,15 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 
 	/**
 	 * Test method for {@link ObfuscatorExtensions#disentangle(BiMap, String)}
+	 *
+	 * @throws DecoderException
+	 * @throws IOException
 	 */
 	@Test
-	public void testDisentangleImprovedWithTestRules()
+	public void testDisentangleImprovedWithTestRules() throws IOException, DecoderException
 	{
+
+		String obfuscateWith;
 		// new scenario...
 		stringToDisentangle = "Ast3r70s";
 
@@ -160,6 +183,52 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 		expected = "asterios";
 		assertEquals(expected, actual);
 
+		// new scenario...
+		stringToObfuscate = "Asterios";
+
+		testRules = loadXmlListToBiMap(xmlListFile);
+		testRules.put(Character.valueOf('A'), ObfuscationOperationRule
+			.<Character, Character> builder().character('A').replaceWith('5').build());
+		obfuscateWith = ObfuscatorExtensions.obfuscateWith(testRules, stringToObfuscate);
+
+		actual = ObfuscatorExtensions.disentangleImproved(testRules, obfuscateWith);
+		expected = stringToObfuscate;
+		assertEquals(expected, actual);
+
+	}
+
+	@Test
+	public void testInverse()
+	{
+		Character character;
+		Set<Integer> indexes;
+		boolean inverted;
+		Operation operation;
+		Character replaceWith;
+		CharacterObfuscationOperationRule rule;
+		Character actual;
+		Character expected;
+		Optional<Character> operatedCharacter;
+
+		inverted = false;
+		operatedCharacter = Optional.empty();
+		character = Character.valueOf('a');
+		replaceWith = 'b';
+		operation = Operation.UPPERCASE;
+		indexes = SetFactory.newHashSet(0, 2);
+
+		rule = new CharacterObfuscationOperationRule(character, indexes, inverted,
+			operatedCharacter, operation, replaceWith);
+
+		ObfuscatorExtensions.inverse(rule);
+
+		actual = rule.getCharacter();
+		expected = replaceWith;
+		assertEquals(actual, expected);
+
+		actual = rule.getReplaceWith();
+		expected = character;
+		assertEquals(actual, expected);
 	}
 
 	/**
@@ -168,9 +237,18 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 	@Test
 	public void testDisentangleWithTestRules()
 	{
+		String obfuscateWith;
 		// new scenario...
 		stringToObfuscate = "asterios";
-		String obfuscateWith = ObfuscatorExtensions.obfuscateWith(testRules, stringToObfuscate);
+		obfuscateWith = ObfuscatorExtensions.obfuscateWith(testRules, stringToObfuscate);
+
+		actual = ObfuscatorExtensions.disentangle(data, obfuscateWith);
+		expected = stringToObfuscate;
+		assertEquals(expected, actual);
+
+		// new scenario...
+		stringToObfuscate = "Leonardo!";
+		obfuscateWith = ObfuscatorExtensions.obfuscateWith(testRules, stringToObfuscate);
 
 		actual = ObfuscatorExtensions.disentangle(data, obfuscateWith);
 		expected = stringToObfuscate;

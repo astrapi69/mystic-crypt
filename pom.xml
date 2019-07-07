@@ -25,7 +25,7 @@
 
 	<properties>
 		<!-- MYSTIC-CRYPT versions -->
-		<crypt-api.version>7.1</crypt-api.version>
+		<crypt-api.version>7.2-SNAPSHOT</crypt-api.version>
 		<crypt-data.version>7.1-SNAPSHOT</crypt-data.version>
 		<model-core.version>1.6.2</model-core.version>
 		<!-- NEW EXTENSIONS LIB versions -->
@@ -40,6 +40,9 @@
 		<jobj-core.version>3.2.1</jobj-core.version>
 		<!-- JOBJ-CONTRACT-VERIFIER version -->
 		<jobj-contract-verifier.version>3.2</jobj-contract-verifier.version>
+		<!-- JOBJECT-EXTENSIONS versions -->
+		<jobject-extensions.version>3.1.2</jobject-extensions.version>
+		<jobject-clone.version>${jobject-extensions.version}</jobject-clone.version>
 		<!-- RANDOMIZER-CORE version -->
 		<randomizer-core.version>6.1</randomizer-core.version>
 		<!-- COMMONS-CODEC version -->
@@ -142,6 +145,12 @@
 				<artifactId>bcpkix-jdk15on</artifactId>
 				<version>${bouncycastle.version}</version>
 			</dependency>
+			<!-- JOBJECT-CLONE DEPENDENCY -->
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>jobject-clone</artifactId>
+				<version>${jobject-clone.version}</version>
+			</dependency>
 			<!-- JOBJ-CORE DEPENDENCY -->
 			<dependency>
 				<groupId>de.alpharogroup</groupId>
@@ -227,6 +236,11 @@
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcpkix-jdk15on</artifactId>
 		</dependency>
+        <!-- JOBJECT-CLONE DEPENDENCY -->
+        <dependency>
+            <groupId>de.alpharogroup</groupId>
+            <artifactId>jobject-clone</artifactId>
+        </dependency>
 		<!-- JOBJ-CORE DEPENDENCY -->
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
@@ -341,7 +355,7 @@
 						</excludes>
 					</configuration>
 				</plugin>
-				
+
 			</plugins>
 
 		</pluginManagement>

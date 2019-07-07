@@ -24,14 +24,19 @@
  */
 package de.alpharogroup.crypto.obfuscation.character;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Map.Entry;
 import java.util.Set;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
+import de.alpharogroup.clone.object.CloneObjectExtensions;
 import de.alpharogroup.collections.map.MapFactory;
 import de.alpharogroup.collections.pairs.KeyValuePair;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
@@ -73,13 +78,13 @@ public class ObfuscatorExtensions
 				if (operation != null)
 				{
 					obfuscationOperationRule
-						.setOperatedCharacter(Operation.operate(currentCharacter, operation));
+						.setOperatedCharacter(Optional.of(Operation.operate(currentCharacter, operation)));
 				}
 				if (indexes.contains(i))
 				{
-					if (obfuscationOperationRule.getOperatedCharacter() != null)
+					if (obfuscationOperationRule.getOperatedCharacter().isPresent())
 					{
-						sb.append(obfuscationOperationRule.getOperatedCharacter());
+						sb.append(obfuscationOperationRule.getOperatedCharacter().get());
 						continue;
 					}
 				}
@@ -165,7 +170,7 @@ public class ObfuscatorExtensions
 				Set<Integer> indexes = currentOperationRule.getIndexes();
 				if (!indexes.isEmpty() && indexes.contains(i))
 				{
-					sb.append(currentOperationRule.getReplaceWith());
+					sb.append(currentOperationRule.getCharacter());
 				}
 			}
 			else
@@ -213,7 +218,7 @@ public class ObfuscatorExtensions
 				if (operation != null)
 				{
 					obfuscationOperationRule
-						.setOperatedCharacter(Operation.operate(currentCharacter, operation));
+					.setOperatedCharacter(Optional.of(Operation.operate(currentCharacter, operation)));
 				}
 				Character character = obfuscationOperationRule.getCharacter();
 				Character replaceWith = obfuscationOperationRule.getReplaceWith();
@@ -289,11 +294,12 @@ public class ObfuscatorExtensions
 		Map<Character, Character> swapped = MapFactory.newLinkedHashMap();
 		rules.entrySet().forEach(entry -> {
 			ObfuscationOperationRule<Character, Character> value = entry.getValue();
-			if (value.getOperation() != null && !value.getIndexes().isEmpty())
+			if (value.getOperation() != null && !value.getOperation().equals(Operation.NONE)&& !value.getIndexes().isEmpty())
 			{
-				value.setOperatedCharacter(
-					Operation.operate(value.getCharacter(), value.getOperation()));
-				swapped.put(value.getOperatedCharacter(), entry.getKey());
+				value.
+				setOperatedCharacter(
+					Optional.of(Operation.operate(value.getCharacter(), value.getOperation())));
+				swapped.put(value.getOperatedCharacter().get(), entry.getKey());
 			}
 			swapped.put(value.getReplaceWith(), entry.getKey());
 		});
@@ -307,11 +313,11 @@ public class ObfuscatorExtensions
 			.newLinkedHashMap();
 		rules.entrySet().forEach(entry -> {
 			ObfuscationOperationRule<Character, Character> value = entry.getValue();
-			if (value.getOperation() != null && !value.getIndexes().isEmpty())
+			if (value.getOperation() != null && !value.getOperation().equals(Operation.NONE)&& !value.getIndexes().isEmpty())
 			{
 				value.setOperatedCharacter(
-					Operation.operate(value.getCharacter(), value.getOperation()));
-				swapped.put(value.getOperatedCharacter(), value);
+					Optional.of(Operation.operate(value.getCharacter(), value.getOperation())));
+				swapped.put(value.getOperatedCharacter().get(), value);
 			}
 			swapped.put(value.getReplaceWith(), value);
 		});
@@ -330,7 +336,14 @@ public class ObfuscatorExtensions
 	public static BiMap<ObfuscationOperationRule<Character, Character>, Character> inverse(
 		BiMap<Character, ObfuscationOperationRule<Character, Character>> rules)
 	{
-		BiMap<ObfuscationOperationRule<Character, Character>, Character> invertedBiMap = rules
+		BiMap<Character,ObfuscationOperationRule<Character,Character>> cloned;
+		Optional<BiMap<Character, ObfuscationOperationRule<Character, Character>>> optional = tryToClone(rules);
+		if(optional.isPresent()) {
+			cloned = optional.get();
+		} else {
+			cloned = rules;
+		}
+		BiMap<ObfuscationOperationRule<Character, Character>, Character> invertedBiMap = cloned
 			.inverse();
 		invertedBiMap.entrySet().forEach(entry -> {
 			ObfuscationOperationRule<Character, Character> key = entry.getKey();
@@ -339,5 +352,33 @@ public class ObfuscatorExtensions
 		});
 		return invertedBiMap;
 	}
+
+
+	public static Map<ObfuscationOperationRule<Character, Character>, Character> inverseToMap(
+		BiMap<Character, ObfuscationOperationRule<Character, Character>> rules)
+	{
+		Map<ObfuscationOperationRule<Character, Character>, Character> invertedMap = new HashMap<>();
+		rules.entrySet().forEach(entry -> {
+			invertedMap.put(tryToClone(entry.getValue()).get(), tryToClone(entry.getKey()).get());
+		});
+		return invertedMap;
+	}
+
+	public static <T> Optional<T> tryToClone(final T object)
+	{
+		try
+		{
+			return Optional.of(CloneObjectExtensions.clone(object));
+		}
+		catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException
+			| ClassNotFoundException | InstantiationException | IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return Optional.empty();
+	}
+
+
 
 }
