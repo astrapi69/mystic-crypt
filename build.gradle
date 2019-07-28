@@ -16,8 +16,8 @@ repositories {
 dependencies {
     compile 'org.projectlombok:lombok:1.18.8'
     annotationProcessor 'org.projectlombok:lombok:1.18.8'
-    compile 'de.alpharogroup:crypt-api:7.2-SNAPSHOT'
-    compile 'de.alpharogroup:crypt-data:7.1-SNAPSHOT'
+    compile 'de.alpharogroup:crypt-api:7.2'
+    compile 'de.alpharogroup:crypt-data:7.1'
     compile 'de.alpharogroup:randomizer-core:6.1'
     compile 'commons-codec:commons-codec:1.12'
     compile 'de.alpharogroup:file-worker:5.2'
