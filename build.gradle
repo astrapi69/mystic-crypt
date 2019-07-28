@@ -8,14 +8,18 @@ plugins {
     id 'maven-publish'
 }
 
+ext {
+    lombokVersion = '1.18.8'
+}
+
 repositories {
     mavenLocal()
     mavenCentral()
 }
 
 dependencies {
-    compile 'org.projectlombok:lombok:1.18.8'
-    annotationProcessor 'org.projectlombok:lombok:1.18.8'
+    compile 'org.projectlombok:lombok:${lombokVersion}'
+    annotationProcessor 'org.projectlombok:lombok:${lombokVersion}'
     compile 'de.alpharogroup:crypt-api:7.2'
     compile 'de.alpharogroup:crypt-data:7.1'
     compile 'de.alpharogroup:randomizer-core:6.1'
@@ -46,7 +50,7 @@ description = 'mystic-crypt'
 sourceCompatibility = '1.8'
 
 task sourcesJar(type: Jar) {
-    classifier = 'sources'
+    archiveClassifier.set("sources")
     from(sourceSets.main.allJava)
 }
 
