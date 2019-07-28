@@ -50,10 +50,6 @@ task sourcesJar(type: Jar) {
     from(sourceSets.main.allJava)
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.0'
-}
-
 publishing {
     publications {
         maven(MavenPublication) {
