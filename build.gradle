@@ -6,7 +6,13 @@ plugins {
     id 'io.franzbecker.gradle-lombok' version '3.1.0'
     id 'java'
     id 'maven-publish'
+    id 'signing'
 }
+
+group = 'de.alpharogroup'
+version = '7.1-SNAPSHOT'
+description = 'mystic-crypt'
+sourceCompatibility = '1.8'
 
 ext {
     lombokVersion = '1.18.8'
@@ -44,22 +50,75 @@ dependencies {
     testCompile 'org.mockito:mockito-core:2.28.2'
 }
 
-group = 'de.alpharogroup'
-version = '7.1-SNAPSHOT'
-description = 'mystic-crypt'
-sourceCompatibility = '1.8'
-
 task sourcesJar(type: Jar) {
     archiveClassifier.set("sources")
     from(sourceSets.main.allJava)
 }
 
+task javadocJar(type: Jar) {
+    from javadoc
+    archiveClassifier = 'javadoc'
+}
+
 publishing {
     publications {
-        maven(MavenPublication) {
-            from(components.java)
-            artifact(sourcesJar)
+        mavenJava(MavenPublication) {
+            artifactId = 'mystic-crypt'
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+            pom {
+                name = '${project.artifactId}'
+                description = 'The target of this project is to make encryption and decryption as simple as possible.'
+                url = 'https://github.com/astrapi69/${project.artifactId}'
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'http://www.opensource.org/licenses/mit-license.php'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'astrapi69'
+                        name = 'Asterios Raptis'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git:@github.com:astrapi69/${project.artifactId}.git'
+                    developerConnection = 'scm:git:git@github.com:astrapi69/${project.artifactId}.git'
+                    url = 'git:@github.com:astrapi69/${project.artifactId}.git'
+                }
+            }
         }
+    }
+    repositories {
+        maven {
+            credentials {
+                username project.property('sonatypeun')
+                password project.property('sonatypepw')
+            }
+            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
+}
+
+javadoc {
+    if(JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
     }
 }
 
