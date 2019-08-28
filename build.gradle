@@ -67,14 +67,6 @@ publishing {
             from components.java
             artifact sourcesJar
             artifact javadocJar
-            versionMapping {
-                usage('java-api') {
-                    fromResolutionOf('runtimeClasspath')
-                }
-                usage('java-runtime') {
-                    fromResolutionResult()
-                }
-            }
             pom {
                 name = '${project.artifactId}'
                 description = 'The target of this project is to make encryption and decryption as simple as possible.'
