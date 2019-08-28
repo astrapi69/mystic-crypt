@@ -3,3 +3,4 @@
  */
 
 rootProject.name = 'mystic-crypt'
+deploying=false

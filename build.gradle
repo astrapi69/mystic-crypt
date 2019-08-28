@@ -93,9 +93,16 @@ publishing {
     }
     repositories {
         maven {
-            credentials {
-                username project.property('sonatypeun')
-                password project.property('sonatypepw')
+            if(project.property('deploying')) {
+                credentials {
+                    username project.property('sonatypeun')
+                    password project.property('sonatypepw')
+                }
+            } else {
+                credentials {
+                    username "${System.properties['sonatypeun']}"
+                    password "${System.properties['sonatypepw']}"
+                }
             }
             def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
             def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
