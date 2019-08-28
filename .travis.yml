@@ -1,5 +1,4 @@
 # mystic-crypt .travis.yml
-install: gradle wrapper --gradle-version=5.1.1 --distribution-type=all
 
 language: java
 
