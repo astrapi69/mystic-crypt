@@ -66,7 +66,7 @@ The source code comes under the liberal MIT License, making mystic-crypt great f
 Maven dependency is now available on sonatype.
 Check out [sonatype repository](https://oss.sonatype.org/index.html#nexus-search;quick~mystic-crypt) for latest snapshots and releases.
 
-Than you can add the dependency to your dependencies:
+You can first define the version properties and add than the following maven dependency to your project `pom.xml` if you want to import the core functionality of mystic-crypt:
 
 	<properties>
 			...
@@ -86,6 +86,24 @@ Than you can add the dependency to your dependencies:
 			...
 		</dependencies>
 	
+			
+## gradle dependency
+
+You can first define the version in the ext section and add than the following gradle dependency to your project `build.gradle` if you want to import the core functionality of mystic-crypt:
+
+```
+ext {
+			...
+    mysticCryptVersion = '7'
+			...
+}
+dependencies {
+			...
+compile group: 'de.alpharogroup', name: 'mystic-crypt', version: '${mysticCryptVersion}'
+			...
+}
+```
+
 ## Semantic Versioning
 
 The versions of mystic-crypt are maintained with the Semantic Versioning guidelines.
