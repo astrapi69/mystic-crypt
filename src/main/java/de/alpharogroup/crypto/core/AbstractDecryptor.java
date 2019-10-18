@@ -44,8 +44,10 @@ import de.alpharogroup.crypto.model.CryptModel;
  *            the generic type of the cipher
  * @param <K>
  *            the generic type of the key
+ * @param <T>
+ *            the generic type of the decorator objects
  */
-public abstract class AbstractDecryptor<C, K> extends AbstractCryptor<C, K> implements Cryptor
+public abstract class AbstractDecryptor<C, K, T> extends AbstractCryptor<C, K, T> implements Cryptor
 {
 
 	/** The Constant serialVersionUID. */
@@ -71,7 +73,7 @@ public abstract class AbstractDecryptor<C, K> extends AbstractCryptor<C, K> impl
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public AbstractDecryptor(final CryptModel<C, K> model)
+	public AbstractDecryptor(final CryptModel<C, K, T> model)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{

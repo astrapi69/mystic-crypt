@@ -43,7 +43,7 @@ import de.alpharogroup.crypto.model.CryptModel;
 /**
  * The class {@link PublicKeyEncryptor} can encrypt a byte array with his public key.
  */
-public class PublicKeyEncryptor extends AbstractEncryptor<Cipher, PublicKey>
+public class PublicKeyEncryptor extends AbstractEncryptor<Cipher, PublicKey, byte[]>
 	implements
 		ByteArrayEncryptor
 {
@@ -56,7 +56,7 @@ public class PublicKeyEncryptor extends AbstractEncryptor<Cipher, PublicKey>
 	 *
 	 * @param model
 	 *            The crypt model.
-	 * 
+	 *
 	 * @throws InvalidAlgorithmParameterException
 	 *             is thrown if initialization of the cypher object fails.
 	 * @throws NoSuchPaddingException
@@ -72,7 +72,7 @@ public class PublicKeyEncryptor extends AbstractEncryptor<Cipher, PublicKey>
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public PublicKeyEncryptor(final CryptModel<Cipher, PublicKey> model)
+	public PublicKeyEncryptor(final CryptModel<Cipher, PublicKey, byte[]> model)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{

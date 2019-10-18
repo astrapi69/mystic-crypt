@@ -57,7 +57,7 @@ public class PrivateKeyDecryptorTest
 		String actual;
 		String expected;
 		PrivateKey privateKey;
-		CryptModel<Cipher, PrivateKey> decryptModel;
+		CryptModel<Cipher, PrivateKey, byte[]> decryptModel;
 		byte[] testBytes;
 		File derDir;
 		File privatekeyDerFile;
@@ -73,8 +73,8 @@ public class PrivateKeyDecryptorTest
 
 		privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
 
-		decryptModel = CryptModel.<Cipher, PrivateKey> builder().key(privateKey).build();
-		encryptor = new PublicKeyEncryptor(CryptModel.<Cipher, PublicKey> builder()
+		decryptModel = CryptModel.<Cipher, PrivateKey, byte[]> builder().key(privateKey).build();
+		encryptor = new PublicKeyEncryptor(CryptModel.<Cipher, PublicKey, byte[]> builder()
 			.key(PrivateKeyExtensions.generatePublicKey(privateKey)).build());
 
 		decryptor = new PrivateKeyDecryptor(decryptModel);

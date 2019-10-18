@@ -94,7 +94,6 @@ public class ChecksumExtensionsTest  extends AbstractTestCase<Long, Long>
 	{
 		long expected;
 		long actual;
-		File checksumDir;
 		actual = ChecksumExtensions.getCheckSumAdler32(testFile);
 		expected = 3296728756l;
 		assertEquals(expected, actual);
@@ -332,7 +331,7 @@ public class ChecksumExtensionsTest  extends AbstractTestCase<Long, Long>
 
 	/**
 	 * Test method for {@link ChecksumExtensions#getCheckSumCRC32(byte[])}.
-	 * 
+	 *
 	 * @throws UnsupportedEncodingException
 	 */
 	@Test

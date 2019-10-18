@@ -27,6 +27,7 @@ package de.alpharogroup.crypto.file;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
@@ -40,11 +41,15 @@ import javax.crypto.NoSuchPaddingException;
 
 import de.alpharogroup.crypto.core.AbstractObjectDecryptor;
 import de.alpharogroup.crypto.model.CryptModel;
+import lombok.NonNull;
 
 /**
  * The class {@link GenericObjectDecryptor} can decrypt files from the given crypt model bean
+ *
+ * @param <D>
+ *            the generic type of the decorator objects
  */
-public class GenericObjectDecryptor<R> extends AbstractObjectDecryptor<R>
+public class GenericObjectDecryptor<R, D> extends AbstractObjectDecryptor<R, D>
 {
 
 	/** The Constant serialVersionUID. */
@@ -68,7 +73,7 @@ public class GenericObjectDecryptor<R> extends AbstractObjectDecryptor<R>
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public GenericObjectDecryptor(final CryptModel<Cipher, String> model)
+	public GenericObjectDecryptor(final CryptModel<Cipher, String, D> model)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
@@ -78,10 +83,22 @@ public class GenericObjectDecryptor<R> extends AbstractObjectDecryptor<R>
 	/**
 	 * {@inheritDoc}
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
-	public R decrypt(final File encrypted) throws Exception
+	public R decrypt(final @NonNull File encrypted) throws Exception
 	{
+		onBeforeDecrypt(encrypted);
+		R genericObject = onDecrypt(encrypted);
+		onAfterDecrypt(encrypted);
+		return genericObject;
+	}
+
+
+	protected void onBeforeDecrypt(final @NonNull File encrypted) {
+
+	}
+
+	@SuppressWarnings("unchecked")
+	private R onDecrypt(final @NonNull File encrypted) throws IOException, ClassNotFoundException {
 		R genericObject = null;
 		Cipher cipher = getModel().getCipher();
 		try (
@@ -93,6 +110,10 @@ public class GenericObjectDecryptor<R> extends AbstractObjectDecryptor<R>
 			inputStream.close();
 		}
 		return genericObject;
+	}
+
+	protected void onAfterDecrypt(final @NonNull File encrypted) {
+
 	}
 
 }

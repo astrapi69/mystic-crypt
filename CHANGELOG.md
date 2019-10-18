@@ -9,10 +9,12 @@ ADDED:
 - gradle as build system
 - new encryptor class created for encrypting java object in a generic way
 - new decryptor class created for decrypt an encrypted {@link File} object that was previously encrypted and return the decrypted result as generic java object 
+- feature request for decorating crypt objects initial version implemented 
 
 CHANGED:
 
 - update of dependency crypt-api version to 7.1
+- update of dependency crypt-data version to 7.2
 
 Version 7
 -------------

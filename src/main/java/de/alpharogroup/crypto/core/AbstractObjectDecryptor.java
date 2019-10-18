@@ -48,10 +48,13 @@ import de.alpharogroup.crypto.model.CryptModel;
  * The abstract class {@link AbstractObjectDecryptor} provides a base implementation for decrypting
  * {@link File} objects.
  *
+ * @param <D>
+ *            the generic type of the decorator objects
+ *
  * @author Asterios Raptis
  * @version 1.0
  */
-public abstract class AbstractObjectDecryptor<R> extends AbstractDecryptor<Cipher, String>
+public abstract class AbstractObjectDecryptor<R, D> extends AbstractDecryptor<Cipher, String, D>
 	implements
 		GenericObjectDecryptor<R>
 {
@@ -79,7 +82,7 @@ public abstract class AbstractObjectDecryptor<R> extends AbstractDecryptor<Ciphe
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public AbstractObjectDecryptor(final CryptModel<Cipher, String> model)
+	public AbstractObjectDecryptor(final CryptModel<Cipher, String, D> model)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{

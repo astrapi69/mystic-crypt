@@ -89,12 +89,12 @@ public class CryptoCipherInputOutputStreamTest
 		String privateKey;
 		final File cryptDir;
 		final File toEncrypt;
-		CryptModel<Cipher, String> encryptorModel;
+		CryptModel<Cipher, String, String> encryptorModel;
 		Cipher encryptorCipher;
 		File encryptedFile;
 		int c;
 		File outputDecrypted;
-		CryptModel<Cipher, String> decryptorModel;
+		CryptModel<Cipher, String, String> decryptorModel;
 		Cipher decryptorCipher;
 		// new scenario...
 		privateKey = "D1D15ED36B887AF1";
@@ -102,7 +102,7 @@ public class CryptoCipherInputOutputStreamTest
 		toEncrypt = new File(cryptDir, "test.txt");
 		encryptedFile = new File(cryptDir, "encrypted.txt");
 
-		encryptorModel = CryptModel.<Cipher, String> builder().key(privateKey)
+		encryptorModel = CryptModel.<Cipher, String, String> builder().key(privateKey)
 			.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).salt(CompoundAlgorithm.SALT)
 			.iterationCount(CompoundAlgorithm.ITERATIONCOUNT).operationMode(Cipher.ENCRYPT_MODE)
 			.build();

@@ -29,6 +29,7 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.List;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -42,7 +43,9 @@ import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.algorithm.AesAlgorithm;
 import de.alpharogroup.crypto.algorithm.Algorithm;
 import de.alpharogroup.crypto.core.AbstractStringEncryptor;
+import de.alpharogroup.crypto.decorator.CryptObjectDecoratorExtensions;
 import de.alpharogroup.crypto.factories.SecretKeyFactoryExtensions;
+import de.alpharogroup.crypto.model.CryptObjectDecorator;
 
 /**
  * The class {@link HexableEncryptor} is the pendant class of {@link HexableDecryptor} and encrypts
@@ -131,7 +134,15 @@ public class HexableEncryptor extends AbstractStringEncryptor
 		throws InvalidKeyException, UnsupportedEncodingException, NoSuchAlgorithmException,
 		NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException
 	{
-		final byte[] utf8 = string.getBytes("UTF-8");
+		List<CryptObjectDecorator<String>> decorators = getModel().getDecorators();
+		String decoratedString = string;
+		if(decorators != null && !decorators.isEmpty()) {
+			for (int i = 0; i < decorators.size(); i++)
+			{
+				decoratedString = CryptObjectDecoratorExtensions.decorateWithStringDecorator(decoratedString, decorators.get(i));
+			}
+		}
+		final byte[] utf8 = decoratedString.getBytes("UTF-8");
 		final byte[] encrypt = getModel().getCipher().doFinal(utf8);
 		final char[] original = Hex.encodeHex(encrypt, false);
 		return new String(original);

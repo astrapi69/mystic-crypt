@@ -49,12 +49,12 @@ public class GenericObjectEncryptDecryptorTest extends AbstractTestCase<Person, 
 {
 
 	File cryptDir;
-	CryptModel<Cipher, String> cryptModel;
+	CryptModel<Cipher, String, String> cryptModel;
 	Person decrypted;
-	GenericObjectDecryptor<Person> decryptor;
+	GenericObjectDecryptor<Person, String> decryptor;
 	File dirToEncrypt;
 	File encrypted;
-	GenericObjectEncryptor<Person> encryptor;
+	GenericObjectEncryptor<Person, String> encryptor;
 	String firstKey;
 	Person toEncrypt;
 
@@ -69,7 +69,7 @@ public class GenericObjectEncryptDecryptorTest extends AbstractTestCase<Person, 
 		toEncrypt = Person.builder().about("about").name("Foo").gender(Gender.MALE).build();
 		dirToEncrypt = new File(cryptDir, "food");
 		firstKey = "D1D15ED36B887AF1";
-		cryptModel = CryptModel.<Cipher, String> builder().key(firstKey)
+		cryptModel = CryptModel.<Cipher, String, String> builder().key(firstKey)
 			.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).build();
 	}
 

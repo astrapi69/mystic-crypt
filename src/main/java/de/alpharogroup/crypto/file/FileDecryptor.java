@@ -29,10 +29,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.List;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
@@ -40,8 +42,12 @@ import javax.crypto.NoSuchPaddingException;
 import org.apache.commons.io.FilenameUtils;
 
 import de.alpharogroup.crypto.core.AbstractFileDecryptor;
+import de.alpharogroup.crypto.decorator.CryptObjectDecoratorExtensions;
 import de.alpharogroup.crypto.io.CryptoCipherOutputStream;
 import de.alpharogroup.crypto.model.CryptModel;
+import de.alpharogroup.crypto.model.CryptObjectDecorator;
+import de.alpharogroup.file.read.ReadFileExtensions;
+import de.alpharogroup.file.write.WriteFileExtensions;
 
 /**
  * The class {@link FileDecryptor} can decrypt files from the given crypt model bean.
@@ -74,7 +80,7 @@ public class FileDecryptor extends AbstractFileDecryptor
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public FileDecryptor(final CryptModel<Cipher, String> model)
+	public FileDecryptor(final CryptModel<Cipher, String, String> model)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
@@ -103,7 +109,7 @@ public class FileDecryptor extends AbstractFileDecryptor
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public FileDecryptor(final CryptModel<Cipher, String> model, final File decryptedFile)
+	public FileDecryptor(final CryptModel<Cipher, String, String> model, final File decryptedFile)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
@@ -136,11 +142,20 @@ public class FileDecryptor extends AbstractFileDecryptor
 
 		fileInputStream.close();
 		cos.close();
+		String decryptedFileString = ReadFileExtensions.readFromFile(decryptedFile);
+		List<CryptObjectDecorator<String>> decorators = getModel().getDecorators();
+		if(decorators != null && !decorators.isEmpty()) {
+			for (int i = decorators.size()-1; 0 <= i; i--)
+			{
+				decryptedFileString = CryptObjectDecoratorExtensions.undecorateFile(decryptedFile, decorators.get(i));
+			}
+		}
+		WriteFileExtensions.writeStringToFile(decryptedFile, decryptedFileString, Charset.forName("UTF-8").name() );
 		return decryptedFile;
 	}
 
 	/**
-	 * 
+	 *
 	 * Factory method for creating the new decrypted {@link File} if it is not exists. This method
 	 * is invoked in the constructor from the derived classes and can be overridden so users can
 	 * provide their own version of creating the new decrypted {@link File}

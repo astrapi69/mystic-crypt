@@ -54,7 +54,7 @@ public class PublicKeyEncryptorTest
 	{
 		PublicKey publicKey;
 		PublicKeyEncryptor encryptor;
-		CryptModel<Cipher, PublicKey> encryptModel;
+		CryptModel<Cipher, PublicKey, byte[]> encryptModel;
 		File publickeyDerDir;
 		File publickeyDerFile;
 
@@ -62,7 +62,7 @@ public class PublicKeyEncryptorTest
 		publickeyDerFile = new File(publickeyDerDir, "public.der");
 		publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
 
-		encryptModel = CryptModel.<Cipher, PublicKey> builder().key(publicKey).build();
+		encryptModel = CryptModel.<Cipher, PublicKey, byte[]> builder().key(publicKey).build();
 
 		encryptor = new PublicKeyEncryptor(encryptModel);
 		assertNotNull(encryptor);

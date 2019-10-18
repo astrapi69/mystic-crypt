@@ -48,7 +48,7 @@ import de.alpharogroup.crypto.model.CryptModel;
  * @author Asterios Raptis
  * @version 1.0
  */
-public abstract class BaseCryptor extends AbstractCryptor<Cipher, String>
+public abstract class BaseCryptor extends AbstractCryptor<Cipher, String, String>
 {
 
 	/** The Constant serialVersionUID. */
@@ -74,7 +74,7 @@ public abstract class BaseCryptor extends AbstractCryptor<Cipher, String>
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public BaseCryptor(final CryptModel<Cipher, String> model)
+	public BaseCryptor(final CryptModel<Cipher, String, String> model)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{

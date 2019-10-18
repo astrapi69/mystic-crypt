@@ -68,8 +68,8 @@ public class KeyEncryptDecryptorTest
 		File privatekeyDerFile;
 		PrivateKey privateKey;
 		PublicKey publicKey;
-		CryptModel<Cipher, PublicKey> encryptModel;
-		CryptModel<Cipher, PrivateKey> decryptModel;
+		CryptModel<Cipher, PublicKey, byte[]> encryptModel;
+		CryptModel<Cipher, PrivateKey, byte[]> decryptModel;
 		PublicKeyEncryptor encryptor;
 		PrivateKeyDecryptor decryptor;
 		byte[] encrypted;
@@ -86,11 +86,11 @@ public class KeyEncryptDecryptorTest
 
 		publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
 
-		encryptModel = CryptModel.<Cipher, PublicKey> builder().key(publicKey)
+		encryptModel = CryptModel.<Cipher, PublicKey, byte[]> builder().key(publicKey)
 			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding)
 			.build();
 
-		decryptModel = CryptModel.<Cipher, PrivateKey> builder().key(privateKey)
+		decryptModel = CryptModel.<Cipher, PrivateKey, byte[]> builder().key(privateKey)
 			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding)
 			.build();
 
@@ -123,8 +123,8 @@ public class KeyEncryptDecryptorTest
 		File privatekeyPemFile;
 		PrivateKey privateKey;
 		PublicKey publicKey;
-		CryptModel<Cipher, PublicKey> encryptModel;
-		CryptModel<Cipher, PrivateKey> decryptModel;
+		CryptModel<Cipher, PublicKey, byte[]> encryptModel;
+		CryptModel<Cipher, PrivateKey, byte[]> decryptModel;
 		PublicKeyEncryptor encryptor;
 		PrivateKeyDecryptor decryptor;
 		byte[] encrypted;
@@ -142,11 +142,11 @@ public class KeyEncryptDecryptorTest
 
 		publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
-		encryptModel = CryptModel.<Cipher, PublicKey> builder().key(publicKey)
+		encryptModel = CryptModel.<Cipher, PublicKey, byte[]> builder().key(publicKey)
 			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA256AndMGF1Padding)
 			.build();
 
-		decryptModel = CryptModel.<Cipher, PrivateKey> builder().key(privateKey)
+		decryptModel = CryptModel.<Cipher, PrivateKey, byte[]> builder().key(privateKey)
 			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA256AndMGF1Padding)
 			.build();
 

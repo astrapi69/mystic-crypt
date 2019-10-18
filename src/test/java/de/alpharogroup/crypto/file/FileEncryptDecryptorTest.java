@@ -38,6 +38,7 @@ import de.alpharogroup.AbstractTestCase;
 import de.alpharogroup.crypto.algorithm.MdAlgorithm;
 import de.alpharogroup.crypto.algorithm.SunJCEAlgorithm;
 import de.alpharogroup.crypto.model.CryptModel;
+import de.alpharogroup.crypto.model.StringDecorator;
 import de.alpharogroup.file.checksum.ChecksumExtensions;
 import de.alpharogroup.file.delete.DeleteFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
@@ -49,7 +50,7 @@ public class FileEncryptDecryptorTest extends AbstractTestCase<String, String>
 {
 
 	File cryptDir;
-	CryptModel<Cipher, String> cryptModel;
+	CryptModel<Cipher, String, String> cryptModel;
 	File decrypted;
 	FileDecryptor decryptor;
 	File dirToEncrypt;
@@ -69,8 +70,10 @@ public class FileEncryptDecryptorTest extends AbstractTestCase<String, String>
 		toEncrypt = new File(cryptDir, "test.txt");
 		dirToEncrypt = new File(cryptDir, "food");
 		firstKey = "D1D15ED36B887AF1";
-		cryptModel = CryptModel.<Cipher, String> builder().key(firstKey)
-			.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).build();
+		cryptModel = CryptModel.<Cipher, String, String> builder().key(firstKey)
+			.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES)
+			.decorator(StringDecorator.builder().prefix("$").suffix("?").build())
+			.build();
 	}
 
 	/**

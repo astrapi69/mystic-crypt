@@ -27,6 +27,7 @@ package de.alpharogroup.crypto.file;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
@@ -47,8 +48,11 @@ import lombok.NonNull;
  *
  * @param <T>
  *            the generic type of the object to encrypt
+ *
+ * @param <D>
+ *            the generic type of the decorator objects
  */
-public class GenericObjectEncryptor<T> extends AbstractObjectEncryptor<T>
+public class GenericObjectEncryptor<T, D> extends AbstractObjectEncryptor<T, D>
 {
 
 	/** The Constant serialVersionUID. */
@@ -79,7 +83,7 @@ public class GenericObjectEncryptor<T> extends AbstractObjectEncryptor<T>
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public GenericObjectEncryptor(final CryptModel<Cipher, String> model,
+	public GenericObjectEncryptor(final CryptModel<Cipher, String, D> model,
 		final @NonNull File encryptedFile)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
@@ -92,8 +96,19 @@ public class GenericObjectEncryptor<T> extends AbstractObjectEncryptor<T>
 	 * {@inheritDoc}
 	 */
 	@Override
-	public File encrypt(final T toEncrypt) throws Exception
+	public File encrypt(final @NonNull T toEncrypt) throws Exception
 	{
+		onBeforeEncrypt(toEncrypt);
+		onEncrypt(toEncrypt);
+		onAfterEncrypt(toEncrypt);
+		return encryptedFile;
+	}
+
+	protected void onBeforeEncrypt(final @NonNull T toEncrypt) {
+
+	}
+
+	private void onEncrypt(final @NonNull T toEncrypt) throws IOException {
 		Cipher cipher = getModel().getCipher();
 		try (
 			CipherOutputStream cipherOutputStream = new CipherOutputStream(
@@ -103,11 +118,13 @@ public class GenericObjectEncryptor<T> extends AbstractObjectEncryptor<T>
 			outputStream.writeObject(toEncrypt);
 			outputStream.close();
 		}
-		return encryptedFile;
+	}
+
+	protected void onAfterEncrypt(final @NonNull T toEncrypt) {
+
 	}
 
 	/**
-	 *
 	 * Factory method for creating the new decrypted {@link File} if it is not exists. This method
 	 * is invoked in the constructor from the derived classes and can be overridden so users can
 	 * provide their own version of creating the new decrypted {@link File}

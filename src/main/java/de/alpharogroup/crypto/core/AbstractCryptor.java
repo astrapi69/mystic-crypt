@@ -56,11 +56,13 @@ import lombok.NonNull;
  *            the generic type of the cipher
  * @param <K>
  *            the generic type of the key
+ * @param <T>
+ *            the generic type of the decorator objects
  *
  * @author Asterios Raptis
  * @version 1.0
  */
-public abstract class AbstractCryptor<C, K> implements Serializable, Cryptor
+public abstract class AbstractCryptor<C, K, T> implements Serializable, Cryptor
 {
 
 	/** The Constant serialVersionUID. */
@@ -68,7 +70,7 @@ public abstract class AbstractCryptor<C, K> implements Serializable, Cryptor
 
 	/** The crypto model. */
 	@Getter
-	protected final CryptModel<C, K> model;
+	protected final CryptModel<C, K, T> model;
 
 	/**
 	 * Constructor with the given {@link CryptModel}.
@@ -90,7 +92,7 @@ public abstract class AbstractCryptor<C, K> implements Serializable, Cryptor
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public AbstractCryptor(final @NonNull CryptModel<C, K> model)
+	public AbstractCryptor(final @NonNull CryptModel<C, K, T> model)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
@@ -124,7 +126,7 @@ public abstract class AbstractCryptor<C, K> implements Serializable, Cryptor
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
 		Check.get().notNull(key, "key");
-		model = CryptModel.<C, K> builder().key(key).build();
+		model = CryptModel.<C, K, T> builder().key(key).build();
 		onInitialize();
 	}
 
@@ -136,11 +138,11 @@ public abstract class AbstractCryptor<C, K> implements Serializable, Cryptor
 	 */
 	protected String newAlgorithm()
 	{
-		if (getModel().getAlgorithm() == null)
+		if (model.getAlgorithm() == null)
 		{
 			return SunJCEAlgorithm.PBEWithMD5AndDES.getAlgorithm();
 		}
-		return getModel().getAlgorithm().getAlgorithm();
+		return model.getAlgorithm().getAlgorithm();
 	}
 
 	/**
@@ -231,11 +233,11 @@ public abstract class AbstractCryptor<C, K> implements Serializable, Cryptor
 	 */
 	protected int newIterationCount()
 	{
-		if (getModel().getIterationCount() == null)
+		if (model.getIterationCount() == null)
 		{
 			return CompoundAlgorithm.ITERATIONCOUNT;
 		}
-		return getModel().getIterationCount();
+		return model.getIterationCount();
 	}
 
 	/**

@@ -34,6 +34,7 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.List;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
@@ -41,8 +42,10 @@ import javax.crypto.NoSuchPaddingException;
 import org.apache.commons.io.FilenameUtils;
 
 import de.alpharogroup.crypto.core.AbstractFileEncryptor;
+import de.alpharogroup.crypto.decorator.CryptObjectDecoratorExtensions;
 import de.alpharogroup.crypto.io.CryptoCipherInputStream;
 import de.alpharogroup.crypto.model.CryptModel;
+import de.alpharogroup.crypto.model.CryptObjectDecorator;
 
 /**
  * The class {@link FileEncryptor} can encrypt files with the given crypt model.
@@ -74,7 +77,7 @@ public class FileEncryptor extends AbstractFileEncryptor
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public FileEncryptor(final CryptModel<Cipher, String> model)
+	public FileEncryptor(final CryptModel<Cipher, String, String> model)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
@@ -103,7 +106,7 @@ public class FileEncryptor extends AbstractFileEncryptor
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public FileEncryptor(final CryptModel<Cipher, String> model, final File encryptedFile)
+	public FileEncryptor(final CryptModel<Cipher, String, String> model, final File encryptedFile)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
@@ -121,6 +124,13 @@ public class FileEncryptor extends AbstractFileEncryptor
 		{
 			final String filename = FilenameUtils.getBaseName(toEncrypt.getName());
 			encryptedFile = newEncryptedFile(toEncrypt.getParent(), filename + ".enc");
+		}
+		List<CryptObjectDecorator<String>> decorators = getModel().getDecorators();
+		if(decorators != null && !decorators.isEmpty()) {
+			for (int i = 0; i < decorators.size(); i++)
+			{
+				CryptObjectDecoratorExtensions.decorateFile(toEncrypt, decorators.get(i));
+			}
 		}
 
 		final InputStream fis = new FileInputStream(toEncrypt);
@@ -142,7 +152,7 @@ public class FileEncryptor extends AbstractFileEncryptor
 	}
 
 	/**
-	 * 
+	 *
 	 * Factory method for creating the new decrypted {@link File} if it is not exists. This method
 	 * is invoked in the constructor from the derived classes and can be overridden so users can
 	 * provide their own version of creating the new decrypted {@link File}

@@ -44,7 +44,7 @@ import de.alpharogroup.crypto.model.CryptModel;
  * The class {@link PrivateKeyDecryptor} decrypts encrypted byte array the was encrypted with the
  * public key of the pendant private key of this class.
  */
-public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey>
+public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey, byte[]>
 	implements
 		ByteArrayDecryptor
 {
@@ -72,7 +72,7 @@ public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey>
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public PrivateKeyDecryptor(final CryptModel<Cipher, PrivateKey> model)
+	public PrivateKeyDecryptor(final CryptModel<Cipher, PrivateKey, byte[]> model)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{

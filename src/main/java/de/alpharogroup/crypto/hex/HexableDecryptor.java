@@ -29,6 +29,7 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.List;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
@@ -38,7 +39,9 @@ import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.algorithm.AesAlgorithm;
 import de.alpharogroup.crypto.algorithm.Algorithm;
 import de.alpharogroup.crypto.core.AbstractStringDecryptor;
+import de.alpharogroup.crypto.decorator.CryptObjectDecoratorExtensions;
 import de.alpharogroup.crypto.factories.SecretKeyFactoryExtensions;
+import de.alpharogroup.crypto.model.CryptObjectDecorator;
 
 /**
  * The class {@link HexableDecryptor} is the pendant class of {@link HexableEncryptor} and decrypts
@@ -113,7 +116,15 @@ public class HexableDecryptor extends AbstractStringDecryptor
 	{
 		final byte[] dec = HexExtensions.decodeHex(encypted.toCharArray());
 		final byte[] utf8 = getModel().getCipher().doFinal(dec);
-		return new String(utf8, "UTF-8");
+		String string = new String(utf8, "UTF-8");
+		List<CryptObjectDecorator<String>> decorators = getModel().getDecorators();
+		if(decorators != null && !decorators.isEmpty()) {
+			for (int i = decorators.size()-1; 0 <= i; i--)
+			{
+				string = CryptObjectDecoratorExtensions.undecorateWithStringDecorator(string, decorators.get(i));
+			}
+		}
+		return string;
 	}
 
 	/**

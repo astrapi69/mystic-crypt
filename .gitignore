@@ -12,6 +12,7 @@
 .idea/copyright
 .idea/libraries
 .idea/*.*
+/out/*.*
 
 #################
 # eclipse files #

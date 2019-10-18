@@ -50,8 +50,11 @@ import de.alpharogroup.crypto.model.CryptModel;
  * @version 1.0
  * @param <T>
  *            the generic type of the object to encrypt
+ *
+ * @param <D>
+ *            the generic type of the decorator objects
  */
-public abstract class AbstractObjectEncryptor<T> extends AbstractEncryptor<Cipher, String>
+public abstract class AbstractObjectEncryptor<T, D> extends AbstractEncryptor<Cipher, String, D>
 	implements
 		GenericObjectEncryptor<T>
 {
@@ -76,7 +79,7 @@ public abstract class AbstractObjectEncryptor<T> extends AbstractEncryptor<Ciphe
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public AbstractObjectEncryptor(final CryptModel<Cipher, String> model)
+	public AbstractObjectEncryptor(final CryptModel<Cipher, String, D> model)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
