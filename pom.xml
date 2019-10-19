@@ -12,7 +12,7 @@
 	</parent>
 
 	<artifactId>mystic-crypt</artifactId>
-	<version>7.1</version>
+	<version>7.2-SNAPSHOT</version>
 	<inceptionYear>2015</inceptionYear>
 
 	<name>${project.artifactId}</name>
