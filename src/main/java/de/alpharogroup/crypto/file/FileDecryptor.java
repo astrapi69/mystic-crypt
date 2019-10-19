@@ -27,6 +27,7 @@ package de.alpharogroup.crypto.file;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
@@ -48,6 +49,7 @@ import de.alpharogroup.crypto.model.CryptModel;
 import de.alpharogroup.crypto.model.CryptObjectDecorator;
 import de.alpharogroup.file.read.ReadFileExtensions;
 import de.alpharogroup.file.write.WriteFileExtensions;
+import lombok.NonNull;
 
 /**
  * The class {@link FileDecryptor} can decrypt files from the given crypt model bean.
@@ -61,9 +63,8 @@ public class FileDecryptor extends AbstractFileDecryptor
 	/** The decrypted file. */
 	private File decryptedFile;
 
-
 	/**
-	 * Instantiates a new {@link FileDecryptor}.
+	 * Instantiates a new {@link FileDecryptor} object
 	 *
 	 * @param model
 	 *            the model
@@ -121,37 +122,52 @@ public class FileDecryptor extends AbstractFileDecryptor
 	 * {@inheritDoc}
 	 */
 	@Override
-	public File decrypt(final File encrypted) throws Exception
+	public File decrypt(final @NonNull File encrypted) throws Exception
+	{
+		onBeforeDecrypt(encrypted);
+		onDecrypt(encrypted);
+		onAfterDecrypt(encrypted);
+		return decryptedFile;
+	}
+
+	protected void onBeforeDecrypt(final @NonNull File encrypted)
 	{
 		if (decryptedFile == null)
 		{
 			final String filename = FilenameUtils.getBaseName(encrypted.getName());
 			decryptedFile = newDecryptedFile(encrypted.getParent(), filename + ".decrypted");
 		}
+	}
 
-		final FileOutputStream decryptedOut = new FileOutputStream(decryptedFile);
-		final CryptoCipherOutputStream cos = new CryptoCipherOutputStream(decryptedOut,
-			getModel().getCipher());
-		final InputStream fileInputStream = new FileInputStream(encrypted);
-
-		int c;
-		while ((c = fileInputStream.read()) != -1)
+	protected void onDecrypt(final @NonNull File encrypted) throws Exception
+	{
+		try (FileOutputStream decryptedOut = new FileOutputStream(decryptedFile);
+			CryptoCipherOutputStream cos = new CryptoCipherOutputStream(decryptedOut,
+				getModel().getCipher());
+			InputStream fileInputStream = new FileInputStream(encrypted))
 		{
-			cos.write(c);
-		}
-
-		fileInputStream.close();
-		cos.close();
-		String decryptedFileString = ReadFileExtensions.readFromFile(decryptedFile);
-		List<CryptObjectDecorator<String>> decorators = getModel().getDecorators();
-		if(decorators != null && !decorators.isEmpty()) {
-			for (int i = decorators.size()-1; 0 <= i; i--)
+			int c;
+			while ((c = fileInputStream.read()) != -1)
 			{
-				decryptedFileString = CryptObjectDecoratorExtensions.undecorateFile(decryptedFile, decorators.get(i));
+				cos.write(c);
 			}
 		}
-		WriteFileExtensions.writeStringToFile(decryptedFile, decryptedFileString, Charset.forName("UTF-8").name() );
-		return decryptedFile;
+	}
+
+	protected void onAfterDecrypt(final @NonNull File encrypted) throws IOException
+	{
+		String decryptedFileString = ReadFileExtensions.readFromFile(decryptedFile);
+		List<CryptObjectDecorator<String>> decorators = getModel().getDecorators();
+		if (decorators != null && !decorators.isEmpty())
+		{
+			for (int i = decorators.size() - 1; 0 <= i; i--)
+			{
+				decryptedFileString = CryptObjectDecoratorExtensions.undecorateFile(decryptedFile,
+					decorators.get(i));
+			}
+		}
+		WriteFileExtensions.writeStringToFile(decryptedFile, decryptedFileString,
+			Charset.forName("UTF-8").name());
 	}
 
 	/**

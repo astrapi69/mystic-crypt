@@ -59,6 +59,9 @@ public abstract class AbstractObjectEncryptor<T, D> extends AbstractEncryptor<Ci
 		GenericObjectEncryptor<T>
 {
 
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Constructor with the given {@link CryptModel}.
 	 *

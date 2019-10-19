@@ -27,7 +27,6 @@ package de.alpharogroup.crypto.file;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
@@ -50,8 +49,7 @@ import de.alpharogroup.crypto.model.CryptObjectDecorator;
 /**
  * The class {@link FileEncryptor} can encrypt files with the given crypt model.
  */
-public class FileEncryptor extends AbstractFileEncryptor
-{
+public class FileEncryptor extends AbstractFileEncryptor {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -62,54 +60,46 @@ public class FileEncryptor extends AbstractFileEncryptor
 	/**
 	 * Instantiates a new file encryptor.
 	 *
-	 * @param model
-	 *            the model
-	 * @throws InvalidKeyException
-	 *             the invalid key exception
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchPaddingException
-	 *             the no such padding exception
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws UnsupportedEncodingException
-	 *             is thrown if the named charset is not supported.
+	 * @param model the model
+	 * @throws InvalidKeyException                the invalid key exception
+	 * @throws NoSuchAlgorithmException           is thrown if instantiation of the
+	 *                                            SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException            is thrown if generation of the
+	 *                                            SecretKey object fails.
+	 * @throws NoSuchPaddingException             the no such padding exception
+	 * @throws InvalidAlgorithmParameterException is thrown if initialization of the
+	 *                                            cypher object fails.
+	 * @throws UnsupportedEncodingException       is thrown if the named charset is
+	 *                                            not supported.
 	 */
 	public FileEncryptor(final CryptModel<Cipher, String, String> model)
-		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
-		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
-	{
+			throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
+			InvalidAlgorithmParameterException, UnsupportedEncodingException {
 		super(model);
 	}
 
 	/**
 	 * Instantiates a new file encryptor.
 	 *
-	 * @param model
-	 *            the model
-	 * @param encryptedFile
-	 *            is the target of the result from the encryption, if null the default file will be
-	 *            created. If null the name convention is given name of the file that has to be
-	 *            encrypted with the extension '.enc'.
-	 * @throws InvalidKeyException
-	 *             the invalid key exception
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchPaddingException
-	 *             the no such padding exception
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws UnsupportedEncodingException
-	 *             is thrown if the named charset is not supported.
+	 * @param model         the model
+	 * @param encryptedFile is the target of the result from the encryption, if null
+	 *                      the default file will be created. If null the name
+	 *                      convention is given name of the file that has to be
+	 *                      encrypted with the extension '.enc'.
+	 * @throws InvalidKeyException                the invalid key exception
+	 * @throws NoSuchAlgorithmException           is thrown if instantiation of the
+	 *                                            SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException            is thrown if generation of the
+	 *                                            SecretKey object fails.
+	 * @throws NoSuchPaddingException             the no such padding exception
+	 * @throws InvalidAlgorithmParameterException is thrown if initialization of the
+	 *                                            cypher object fails.
+	 * @throws UnsupportedEncodingException       is thrown if the named charset is
+	 *                                            not supported.
 	 */
 	public FileEncryptor(final CryptModel<Cipher, String, String> model, final File encryptedFile)
-		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
-		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
-	{
+			throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
+			InvalidAlgorithmParameterException, UnsupportedEncodingException {
 		super(model);
 		this.encryptedFile = encryptedFile;
 	}
@@ -118,53 +108,39 @@ public class FileEncryptor extends AbstractFileEncryptor
 	 * {@inheritDoc}
 	 */
 	@Override
-	public File encrypt(final File toEncrypt) throws Exception
-	{
-		if (encryptedFile == null)
-		{
+	public File encrypt(final File toEncrypt) throws Exception {
+		if (encryptedFile == null) {
 			final String filename = FilenameUtils.getBaseName(toEncrypt.getName());
 			encryptedFile = newEncryptedFile(toEncrypt.getParent(), filename + ".enc");
 		}
 		List<CryptObjectDecorator<String>> decorators = getModel().getDecorators();
-		if(decorators != null && !decorators.isEmpty()) {
-			for (int i = 0; i < decorators.size(); i++)
-			{
+		if (decorators != null && !decorators.isEmpty()) {
+			for (int i = 0; i < decorators.size(); i++) {
 				CryptObjectDecoratorExtensions.decorateFile(toEncrypt, decorators.get(i));
 			}
 		}
-
-		final InputStream fis = new FileInputStream(toEncrypt);
-		final CryptoCipherInputStream cis = new CryptoCipherInputStream(fis,
-			getModel().getCipher());
-
-		final OutputStream out = new FileOutputStream(encryptedFile);
-
-		int c;
-
-		while ((c = cis.read()) != -1)
-		{
-			out.write(c);
+		try (CryptoCipherInputStream cis = new CryptoCipherInputStream(new FileInputStream(toEncrypt),
+				getModel().getCipher()); OutputStream out = new FileOutputStream(encryptedFile)) {
+			int c;
+			while ((c = cis.read()) != -1) {
+				out.write(c);
+			}
 		}
-
-		cis.close();
-		out.close();
 		return encryptedFile;
 	}
 
 	/**
 	 *
-	 * Factory method for creating the new decrypted {@link File} if it is not exists. This method
-	 * is invoked in the constructor from the derived classes and can be overridden so users can
-	 * provide their own version of creating the new decrypted {@link File}
+	 * Factory method for creating the new decrypted {@link File} if it is not
+	 * exists. This method is invoked in the constructor from the derived classes
+	 * and can be overridden so users can provide their own version of creating the
+	 * new decrypted {@link File}
 	 *
-	 * @param parent
-	 *            the parent directory
-	 * @param child
-	 *            the file name
+	 * @param parent the parent directory
+	 * @param child  the file name
 	 * @return the new {@link File} object
 	 */
-	protected File newEncryptedFile(final String parent, final String child)
-	{
+	protected File newEncryptedFile(final String parent, final String child) {
 		return new File(parent, child);
 	}
 
