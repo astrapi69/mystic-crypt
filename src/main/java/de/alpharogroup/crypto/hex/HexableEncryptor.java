@@ -136,10 +136,12 @@ public class HexableEncryptor extends AbstractStringEncryptor
 	{
 		List<CryptObjectDecorator<String>> decorators = getModel().getDecorators();
 		String decoratedString = string;
-		if(decorators != null && !decorators.isEmpty()) {
+		if (decorators != null && !decorators.isEmpty())
+		{
 			for (int i = 0; i < decorators.size(); i++)
 			{
-				decoratedString = CryptObjectDecoratorExtensions.decorateWithStringDecorator(decoratedString, decorators.get(i));
+				decoratedString = CryptObjectDecoratorExtensions
+					.decorateWithStringDecorator(decoratedString, decorators.get(i));
 			}
 		}
 		final byte[] utf8 = decoratedString.getBytes("UTF-8");

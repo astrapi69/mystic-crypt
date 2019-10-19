@@ -104,26 +104,6 @@ public class GenericObjectEncryptor<T, D> extends AbstractObjectEncryptor<T, D>
 		return encryptedFile;
 	}
 
-	protected void onBeforeEncrypt(final @NonNull T toEncrypt) {
-
-	}
-
-	private void onEncrypt(final @NonNull T toEncrypt) throws IOException {
-		Cipher cipher = getModel().getCipher();
-		try (
-			CipherOutputStream cipherOutputStream = new CipherOutputStream(
-				new BufferedOutputStream(new FileOutputStream(this.encryptedFile)), cipher);
-			ObjectOutputStream outputStream = new ObjectOutputStream(cipherOutputStream);)
-		{
-			outputStream.writeObject(toEncrypt);
-			outputStream.close();
-		}
-	}
-
-	protected void onAfterEncrypt(final @NonNull T toEncrypt) {
-
-	}
-
 	/**
 	 * Factory method for creating the new decrypted {@link File} if it is not exists. This method
 	 * is invoked in the constructor from the derived classes and can be overridden so users can
@@ -138,6 +118,29 @@ public class GenericObjectEncryptor<T, D> extends AbstractObjectEncryptor<T, D>
 	protected File newEncryptedFile(final String parent, final String child)
 	{
 		return new File(parent, child);
+	}
+
+	protected void onAfterEncrypt(final @NonNull T toEncrypt)
+	{
+
+	}
+
+	protected void onBeforeEncrypt(final @NonNull T toEncrypt)
+	{
+
+	}
+
+	private void onEncrypt(final @NonNull T toEncrypt) throws IOException
+	{
+		Cipher cipher = getModel().getCipher();
+		try (
+			CipherOutputStream cipherOutputStream = new CipherOutputStream(
+				new BufferedOutputStream(new FileOutputStream(this.encryptedFile)), cipher);
+			ObjectOutputStream outputStream = new ObjectOutputStream(cipherOutputStream);)
+		{
+			outputStream.writeObject(toEncrypt);
+			outputStream.close();
+		}
 	}
 
 }

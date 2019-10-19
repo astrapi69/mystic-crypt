@@ -130,6 +130,39 @@ public class FileDecryptor extends AbstractFileDecryptor
 		return decryptedFile;
 	}
 
+	/**
+	 *
+	 * Factory method for creating the new decrypted {@link File} if it is not exists. This method
+	 * is invoked in the constructor from the derived classes and can be overridden so users can
+	 * provide their own version of creating the new decrypted {@link File}
+	 *
+	 * @param parent
+	 *            the parent directory
+	 * @param child
+	 *            the file name
+	 * @return the new {@link File} object
+	 */
+	protected File newDecryptedFile(final String parent, final String child)
+	{
+		return new File(parent, child);
+	}
+
+	protected void onAfterDecrypt(final @NonNull File encrypted) throws IOException
+	{
+		String decryptedFileString = ReadFileExtensions.readFromFile(decryptedFile);
+		List<CryptObjectDecorator<String>> decorators = getModel().getDecorators();
+		if (decorators != null && !decorators.isEmpty())
+		{
+			for (int i = decorators.size() - 1; 0 <= i; i--)
+			{
+				decryptedFileString = CryptObjectDecoratorExtensions.undecorateFile(decryptedFile,
+					decorators.get(i));
+			}
+		}
+		WriteFileExtensions.writeStringToFile(decryptedFile, decryptedFileString,
+			Charset.forName("UTF-8").name());
+	}
+
 	protected void onBeforeDecrypt(final @NonNull File encrypted)
 	{
 		if (decryptedFile == null)
@@ -152,39 +185,6 @@ public class FileDecryptor extends AbstractFileDecryptor
 				cos.write(c);
 			}
 		}
-	}
-
-	protected void onAfterDecrypt(final @NonNull File encrypted) throws IOException
-	{
-		String decryptedFileString = ReadFileExtensions.readFromFile(decryptedFile);
-		List<CryptObjectDecorator<String>> decorators = getModel().getDecorators();
-		if (decorators != null && !decorators.isEmpty())
-		{
-			for (int i = decorators.size() - 1; 0 <= i; i--)
-			{
-				decryptedFileString = CryptObjectDecoratorExtensions.undecorateFile(decryptedFile,
-					decorators.get(i));
-			}
-		}
-		WriteFileExtensions.writeStringToFile(decryptedFile, decryptedFileString,
-			Charset.forName("UTF-8").name());
-	}
-
-	/**
-	 *
-	 * Factory method for creating the new decrypted {@link File} if it is not exists. This method
-	 * is invoked in the constructor from the derived classes and can be overridden so users can
-	 * provide their own version of creating the new decrypted {@link File}
-	 *
-	 * @param parent
-	 *            the parent directory
-	 * @param child
-	 *            the file name
-	 * @return the new {@link File} object
-	 */
-	protected File newDecryptedFile(final String parent, final String child)
-	{
-		return new File(parent, child);
 	}
 
 }

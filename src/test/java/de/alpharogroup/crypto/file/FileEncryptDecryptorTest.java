@@ -72,8 +72,7 @@ public class FileEncryptDecryptorTest extends AbstractTestCase<String, String>
 		firstKey = "D1D15ED36B887AF1";
 		cryptModel = CryptModel.<Cipher, String, String> builder().key(firstKey)
 			.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES)
-			.decorator(StringDecorator.builder().prefix("$").suffix("?").build())
-			.build();
+			.decorator(StringDecorator.builder().prefix("$").suffix("?").build()).build();
 	}
 
 	/**

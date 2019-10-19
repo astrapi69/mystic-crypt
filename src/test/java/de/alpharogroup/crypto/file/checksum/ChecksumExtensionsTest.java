@@ -32,7 +32,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
-import de.alpharogroup.AbstractTestCase;
 import org.apache.commons.lang3.ArrayUtils;
 import org.meanbean.factories.ObjectCreationException;
 import org.meanbean.test.BeanTestException;
@@ -40,6 +39,7 @@ import org.meanbean.test.BeanTester;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import de.alpharogroup.AbstractTestCase;
 import de.alpharogroup.crypto.algorithm.Algorithm;
 import de.alpharogroup.crypto.algorithm.HashAlgorithm;
 import de.alpharogroup.crypto.algorithm.MdAlgorithm;
@@ -48,7 +48,7 @@ import de.alpharogroup.file.search.PathFinder;
 /**
  * The unit test class for the class {@link ChecksumExtensions}
  */
-public class ChecksumExtensionsTest  extends AbstractTestCase<Long, Long>
+public class ChecksumExtensionsTest extends AbstractTestCase<Long, Long>
 {
 	File checksumDir;
 	File testFile;
@@ -60,10 +60,10 @@ public class ChecksumExtensionsTest  extends AbstractTestCase<Long, Long>
 	@BeforeMethod
 	protected void setUp()
 	{
-		checksumDir = PathFinder.getRelativePath(PathFinder.getSrcTestResourcesDir(),
-		"checksum");
+		checksumDir = PathFinder.getRelativePath(PathFinder.getSrcTestResourcesDir(), "checksum");
 		testFile = new File(checksumDir, "testReadFileInput.txt");
 	}
+
 	/**
 	 * Test method for {@link ChecksumExtensions#getCheckSumAdler32(byte[])}.
 	 *

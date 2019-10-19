@@ -29,8 +29,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 
 import com.google.common.collect.BiMap;
@@ -77,8 +77,8 @@ public class ObfuscatorExtensions
 				final Operation operation = obfuscationOperationRule.getOperation();
 				if (operation != null)
 				{
-					obfuscationOperationRule
-						.setOperatedCharacter(Optional.of(Operation.operate(currentCharacter, operation)));
+					obfuscationOperationRule.setOperatedCharacter(
+						Optional.of(Operation.operate(currentCharacter, operation)));
 				}
 				if (indexes.contains(i))
 				{
@@ -217,8 +217,8 @@ public class ObfuscatorExtensions
 				Operation operation = obfuscationOperationRule.getOperation();
 				if (operation != null)
 				{
-					obfuscationOperationRule
-					.setOperatedCharacter(Optional.of(Operation.operate(currentCharacter, operation)));
+					obfuscationOperationRule.setOperatedCharacter(
+						Optional.of(Operation.operate(currentCharacter, operation)));
 				}
 				Character character = obfuscationOperationRule.getCharacter();
 				Character replaceWith = obfuscationOperationRule.getReplaceWith();
@@ -294,10 +294,10 @@ public class ObfuscatorExtensions
 		Map<Character, Character> swapped = MapFactory.newLinkedHashMap();
 		rules.entrySet().forEach(entry -> {
 			ObfuscationOperationRule<Character, Character> value = entry.getValue();
-			if (value.getOperation() != null && !value.getOperation().equals(Operation.NONE)&& !value.getIndexes().isEmpty())
+			if (value.getOperation() != null && !value.getOperation().equals(Operation.NONE)
+				&& !value.getIndexes().isEmpty())
 			{
-				value.
-				setOperatedCharacter(
+				value.setOperatedCharacter(
 					Optional.of(Operation.operate(value.getCharacter(), value.getOperation())));
 				swapped.put(value.getOperatedCharacter().get(), entry.getKey());
 			}
@@ -313,7 +313,8 @@ public class ObfuscatorExtensions
 			.newLinkedHashMap();
 		rules.entrySet().forEach(entry -> {
 			ObfuscationOperationRule<Character, Character> value = entry.getValue();
-			if (value.getOperation() != null && !value.getOperation().equals(Operation.NONE)&& !value.getIndexes().isEmpty())
+			if (value.getOperation() != null && !value.getOperation().equals(Operation.NONE)
+				&& !value.getIndexes().isEmpty())
 			{
 				value.setOperatedCharacter(
 					Optional.of(Operation.operate(value.getCharacter(), value.getOperation())));
@@ -336,11 +337,15 @@ public class ObfuscatorExtensions
 	public static BiMap<ObfuscationOperationRule<Character, Character>, Character> inverse(
 		BiMap<Character, ObfuscationOperationRule<Character, Character>> rules)
 	{
-		BiMap<Character,ObfuscationOperationRule<Character,Character>> cloned;
-		Optional<BiMap<Character, ObfuscationOperationRule<Character, Character>>> optional = tryToClone(rules);
-		if(optional.isPresent()) {
+		BiMap<Character, ObfuscationOperationRule<Character, Character>> cloned;
+		Optional<BiMap<Character, ObfuscationOperationRule<Character, Character>>> optional = tryToClone(
+			rules);
+		if (optional.isPresent())
+		{
 			cloned = optional.get();
-		} else {
+		}
+		else
+		{
 			cloned = rules;
 		}
 		BiMap<ObfuscationOperationRule<Character, Character>, Character> invertedBiMap = cloned
@@ -378,7 +383,6 @@ public class ObfuscatorExtensions
 		}
 		return Optional.empty();
 	}
-
 
 
 }

@@ -93,12 +93,19 @@ public class GenericObjectDecryptor<R, D> extends AbstractObjectDecryptor<R, D>
 	}
 
 
-	protected void onBeforeDecrypt(final @NonNull File encrypted) {
+	protected void onAfterDecrypt(final @NonNull File encrypted)
+	{
+
+	}
+
+	protected void onBeforeDecrypt(final @NonNull File encrypted)
+	{
 
 	}
 
 	@SuppressWarnings("unchecked")
-	private R onDecrypt(final @NonNull File encrypted) throws IOException, ClassNotFoundException {
+	private R onDecrypt(final @NonNull File encrypted) throws IOException, ClassNotFoundException
+	{
 		R genericObject = null;
 		Cipher cipher = getModel().getCipher();
 		try (
@@ -110,10 +117,6 @@ public class GenericObjectDecryptor<R, D> extends AbstractObjectDecryptor<R, D>
 			inputStream.close();
 		}
 		return genericObject;
-	}
-
-	protected void onAfterDecrypt(final @NonNull File encrypted) {
-
 	}
 
 }

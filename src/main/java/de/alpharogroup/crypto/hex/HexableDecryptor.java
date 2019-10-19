@@ -118,10 +118,12 @@ public class HexableDecryptor extends AbstractStringDecryptor
 		final byte[] utf8 = getModel().getCipher().doFinal(dec);
 		String string = new String(utf8, "UTF-8");
 		List<CryptObjectDecorator<String>> decorators = getModel().getDecorators();
-		if(decorators != null && !decorators.isEmpty()) {
-			for (int i = decorators.size()-1; 0 <= i; i--)
+		if (decorators != null && !decorators.isEmpty())
+		{
+			for (int i = decorators.size() - 1; 0 <= i; i--)
 			{
-				string = CryptObjectDecoratorExtensions.undecorateWithStringDecorator(string, decorators.get(i));
+				string = CryptObjectDecoratorExtensions.undecorateWithStringDecorator(string,
+					decorators.get(i));
 			}
 		}
 		return string;
