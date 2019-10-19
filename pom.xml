@@ -27,7 +27,7 @@
 		<!-- MYSTIC-CRYPT versions -->
 		<crypt-api.version>7.2</crypt-api.version>
 		<crypt-data.version>7.2</crypt-data.version>
-		<model-core.version>1.6.3</model-core.version>
+		<model-core.version>1.6.2</model-core.version>
 		<!-- NEW EXTENSIONS LIB versions -->
 		<file-worker.version>5.2</file-worker.version>
 		<jcommons-lang.version>5.2.2</jcommons-lang.version>
