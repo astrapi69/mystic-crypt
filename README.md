@@ -38,7 +38,6 @@ or over flattr: <a href="http://flattr.com/thing/4152938/astrapi69mystic-crypt-o
 <img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" />
 </a>
 
-
 ## Key features:
 
  * Chain multiply encryptors for securely encrypting your data
@@ -67,12 +66,12 @@ The source code comes under the liberal MIT License, making mystic-crypt great f
 Maven dependency is now available on sonatype.
 Check out [sonatype repository](https://oss.sonatype.org/index.html#nexus-search;quick~mystic-crypt) for latest snapshots and releases.
 
-Than you can add the dependency to your dependencies:
+You can first define the version properties and add than the following maven dependency to your project `pom.xml` if you want to import the core functionality of mystic-crypt:
 
 	<properties>
 			...
 		<!-- MYSTIC-CRYPT version -->
-		<mystic-crypt.version>7</mystic-crypt.version>
+		<mystic-crypt.version>7.1</mystic-crypt.version>
 			...
 	</properties>
 			...
@@ -87,6 +86,24 @@ Than you can add the dependency to your dependencies:
 			...
 		</dependencies>
 	
+			
+## gradle dependency
+
+You can first define the version in the ext section and add than the following gradle dependency to your project `build.gradle` if you want to import the core functionality of mystic-crypt:
+
+```
+ext {
+			...
+    mysticCryptVersion = '7.1'
+			...
+}
+dependencies {
+			...
+compile group: 'de.alpharogroup', name: 'mystic-crypt', version: '${mysticCryptVersion}'
+			...
+}
+```
+
 ## Semantic Versioning
 
 The versions of mystic-crypt are maintained with the Semantic Versioning guidelines.
@@ -125,6 +142,7 @@ Here is a list of awesome projects for cryptography:
  * [curve25519](https://github.com/signalapp/curve25519-java) Pure Java and JNI backed Curve25519 implementation
  * [vault](https://github.com/hashicorp/vault) A tool for secrets management, encryption as a service, and privileged access management
  * [jasypt](http://www.jasypt.org/) Java Simplified Encryption
+ * [CogniCrypt](https://github.com/eclipse-cognicrypt/CogniCrypt) CogniCrypt is an Eclipse plugin that supports Java developers in using Java Cryptographic APIs
 
 ## Credits
 

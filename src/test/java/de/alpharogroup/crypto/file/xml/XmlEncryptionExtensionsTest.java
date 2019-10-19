@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.xml;
+package de.alpharogroup.crypto.file.xml;
 
 import static org.testng.Assert.assertEquals;
 
@@ -42,8 +42,6 @@ import com.thoughtworks.xstream.XStream;
 
 import de.alpharogroup.collections.map.MapFactory;
 import de.alpharogroup.collections.pairs.KeyValuePair;
-import de.alpharogroup.crypto.file.xml.XmlDecryptionExtensions;
-import de.alpharogroup.crypto.file.xml.XmlEncryptionExtensions;
 import de.alpharogroup.crypto.obfuscation.character.ObfuscationOperationTestData;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
 import de.alpharogroup.file.search.PathFinder;

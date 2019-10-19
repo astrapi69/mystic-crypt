@@ -12,6 +12,7 @@
 .idea/copyright
 .idea/libraries
 .idea/*.*
+/out/*.*
 
 #################
 # eclipse files #
@@ -26,6 +27,7 @@
 #########################
 /target
 *.versionsBackup
+/pom.xml.bak
 
 #############
 # Zip files #
@@ -60,4 +62,19 @@
 /build
 /.gradle
 /gradle
-/pom.xml.bak
+# Ignore Gradle GUI config
+gradle-app.setting
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!/gradle/wrapper/gradle-wrapper.jar
+!/gradle/wrapper/gradle-wrapper.properties
+# Cache of project
+.gradletasknamecache
+# # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
+# gradle/wrapper/gradle-wrapper.properties
+
+##############################################################
+# virtual machine crash logs                                 #
+# see http://www.java.com/en/download/help/error_hotspot.xml #
+##############################################################
+hs_err_pid*
+/.attach_pid*

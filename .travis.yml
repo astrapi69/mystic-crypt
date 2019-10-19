@@ -7,7 +7,7 @@ cache:
   - $HOME/.m2
 
 jdk:
-    - openjdk11
+    - openjdk8
 
 notifications:
     email:

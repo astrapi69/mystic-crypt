@@ -50,7 +50,7 @@ import de.alpharogroup.crypto.model.CryptModel;
  * @author Asterios Raptis
  * @version 1.0
  */
-public abstract class AbstractFileEncryptor extends AbstractEncryptor<Cipher, String>
+public abstract class AbstractFileEncryptor extends AbstractEncryptor<Cipher, String, String>
 	implements
 		FileEncryptor
 {
@@ -78,7 +78,7 @@ public abstract class AbstractFileEncryptor extends AbstractEncryptor<Cipher, St
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public AbstractFileEncryptor(final CryptModel<Cipher, String> model)
+	public AbstractFileEncryptor(final CryptModel<Cipher, String, String> model)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{

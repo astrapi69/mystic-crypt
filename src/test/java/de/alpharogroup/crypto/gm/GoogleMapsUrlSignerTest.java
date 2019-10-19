@@ -33,7 +33,7 @@ import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.random.RandomObjectsExtensions;
+import de.alpharogroup.random.object.RandomObjectsExtensions;
 
 /**
  * The class {@link GoogleMapsUrlSigner}

@@ -1,6 +1,25 @@
 ## Change log
 ----------------------
 
+Version 7.1
+-------------
+
+ADDED:
+
+- gradle as build system
+- new encryptor class created for encrypting java object in a generic way
+- new decryptor class created for decrypt an encrypted {@link File} object that was previously encrypted and return the decrypted result as generic java object 
+- feature request for decorating crypt objects initial version implemented 
+
+CHANGED:
+
+- update of commons-codec version to 1.13
+- update of dependency crypt-api version to 7.2
+- update of dependency crypt-data version to 7.2
+- update of bouncycastle version to 1.64
+- update of randomizer version to 6.3
+- update of xml-extensions version to 6.2.1
+
 Version 7
 -------------
 

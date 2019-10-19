@@ -42,7 +42,7 @@ import de.alpharogroup.crypto.algorithm.HashAlgorithm;
 import de.alpharogroup.crypto.hash.HashExtensions;
 import de.alpharogroup.crypto.sha.Hasher;
 import de.alpharogroup.random.RandomExtensions;
-import de.alpharogroup.random.RandomObjectsExtensions;
+import de.alpharogroup.random.object.RandomObjectsExtensions;
 
 /**
  * The class {@link PasswordEncryptor} is a singleton and helps to generate secure encrypted random

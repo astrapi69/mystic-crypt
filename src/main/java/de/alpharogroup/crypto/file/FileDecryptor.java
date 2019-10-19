@@ -27,12 +27,15 @@ package de.alpharogroup.crypto.file;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.List;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
@@ -40,8 +43,13 @@ import javax.crypto.NoSuchPaddingException;
 import org.apache.commons.io.FilenameUtils;
 
 import de.alpharogroup.crypto.core.AbstractFileDecryptor;
+import de.alpharogroup.crypto.decorator.CryptObjectDecoratorExtensions;
 import de.alpharogroup.crypto.io.CryptoCipherOutputStream;
 import de.alpharogroup.crypto.model.CryptModel;
+import de.alpharogroup.crypto.model.CryptObjectDecorator;
+import de.alpharogroup.file.read.ReadFileExtensions;
+import de.alpharogroup.file.write.WriteFileExtensions;
+import lombok.NonNull;
 
 /**
  * The class {@link FileDecryptor} can decrypt files from the given crypt model bean.
@@ -55,9 +63,8 @@ public class FileDecryptor extends AbstractFileDecryptor
 	/** The decrypted file. */
 	private File decryptedFile;
 
-
 	/**
-	 * Instantiates a new {@link FileDecryptor}.
+	 * Instantiates a new {@link FileDecryptor} object
 	 *
 	 * @param model
 	 *            the model
@@ -74,7 +81,7 @@ public class FileDecryptor extends AbstractFileDecryptor
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public FileDecryptor(final CryptModel<Cipher, String> model)
+	public FileDecryptor(final CryptModel<Cipher, String, String> model)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
@@ -103,7 +110,7 @@ public class FileDecryptor extends AbstractFileDecryptor
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public FileDecryptor(final CryptModel<Cipher, String> model, final File decryptedFile)
+	public FileDecryptor(final CryptModel<Cipher, String, String> model, final File decryptedFile)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
@@ -115,32 +122,16 @@ public class FileDecryptor extends AbstractFileDecryptor
 	 * {@inheritDoc}
 	 */
 	@Override
-	public File decrypt(final File encrypted) throws Exception
+	public File decrypt(final @NonNull File encrypted) throws Exception
 	{
-		if (decryptedFile == null)
-		{
-			final String filename = FilenameUtils.getBaseName(encrypted.getName());
-			decryptedFile = newDecryptedFile(encrypted.getParent(), filename + ".decrypted");
-		}
-
-		final FileOutputStream decryptedOut = new FileOutputStream(decryptedFile);
-		final CryptoCipherOutputStream cos = new CryptoCipherOutputStream(decryptedOut,
-			getModel().getCipher());
-		final InputStream fileInputStream = new FileInputStream(encrypted);
-
-		int c;
-		while ((c = fileInputStream.read()) != -1)
-		{
-			cos.write(c);
-		}
-
-		fileInputStream.close();
-		cos.close();
+		onBeforeDecrypt(encrypted);
+		onDecrypt(encrypted);
+		onAfterDecrypt(encrypted);
 		return decryptedFile;
 	}
 
 	/**
-	 * 
+	 *
 	 * Factory method for creating the new decrypted {@link File} if it is not exists. This method
 	 * is invoked in the constructor from the derived classes and can be overridden so users can
 	 * provide their own version of creating the new decrypted {@link File}
@@ -154,6 +145,46 @@ public class FileDecryptor extends AbstractFileDecryptor
 	protected File newDecryptedFile(final String parent, final String child)
 	{
 		return new File(parent, child);
+	}
+
+	protected void onAfterDecrypt(final @NonNull File encrypted) throws IOException
+	{
+		String decryptedFileString = ReadFileExtensions.readFromFile(decryptedFile);
+		List<CryptObjectDecorator<String>> decorators = getModel().getDecorators();
+		if (decorators != null && !decorators.isEmpty())
+		{
+			for (int i = decorators.size() - 1; 0 <= i; i--)
+			{
+				decryptedFileString = CryptObjectDecoratorExtensions.undecorateFile(decryptedFile,
+					decorators.get(i));
+			}
+		}
+		WriteFileExtensions.writeStringToFile(decryptedFile, decryptedFileString,
+			Charset.forName("UTF-8").name());
+	}
+
+	protected void onBeforeDecrypt(final @NonNull File encrypted)
+	{
+		if (decryptedFile == null)
+		{
+			final String filename = FilenameUtils.getBaseName(encrypted.getName());
+			decryptedFile = newDecryptedFile(encrypted.getParent(), filename + ".decrypted");
+		}
+	}
+
+	protected void onDecrypt(final @NonNull File encrypted) throws Exception
+	{
+		try (FileOutputStream decryptedOut = new FileOutputStream(decryptedFile);
+			CryptoCipherOutputStream cos = new CryptoCipherOutputStream(decryptedOut,
+				getModel().getCipher());
+			InputStream fileInputStream = new FileInputStream(encrypted))
+		{
+			int c;
+			while ((c = fileInputStream.read()) != -1)
+			{
+				cos.write(c);
+			}
+		}
 	}
 
 }

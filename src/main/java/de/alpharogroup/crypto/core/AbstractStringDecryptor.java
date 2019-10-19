@@ -49,7 +49,7 @@ import de.alpharogroup.crypto.model.CryptModel;
  * @author Asterios Raptis
  * @version 1.0
  */
-public abstract class AbstractStringDecryptor extends AbstractDecryptor<Cipher, String>
+public abstract class AbstractStringDecryptor extends AbstractDecryptor<Cipher, String, String>
 	implements
 		StringDecryptor
 {
@@ -77,7 +77,7 @@ public abstract class AbstractStringDecryptor extends AbstractDecryptor<Cipher, 
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public AbstractStringDecryptor(final CryptModel<Cipher, String> model)
+	public AbstractStringDecryptor(final CryptModel<Cipher, String, String> model)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{

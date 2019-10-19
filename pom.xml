@@ -7,12 +7,12 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mvn-java-parent</artifactId>
-		<version>5.2</version>
+		<version>5.3</version>
 		<relativePath></relativePath>
 	</parent>
 
 	<artifactId>mystic-crypt</artifactId>
-	<version>7</version>
+	<version>7.1</version>
 	<inceptionYear>2015</inceptionYear>
 
 	<name>${project.artifactId}</name>
@@ -25,27 +25,29 @@
 
 	<properties>
 		<!-- MYSTIC-CRYPT versions -->
-		<crypt-api.version>7</crypt-api.version>
-		<crypt-data.version>7</crypt-data.version>
+		<crypt-api.version>7.2</crypt-api.version>
+		<crypt-data.version>7.2</crypt-data.version>
 		<model-core.version>1.6.2</model-core.version>
 		<!-- NEW EXTENSIONS LIB versions -->
 		<file-worker.version>5.2</file-worker.version>
 		<jcommons-lang.version>5.2.2</jcommons-lang.version>
 		<test-objects.version>5.2</test-objects.version>
 		<silly-collections.version>5.2.1</silly-collections.version>
-		<vintage-time.version>5.1</vintage-time.version>
 		<!-- XML-EXTENSIONS version -->
-		<xml-extensions.version>5</xml-extensions.version>
+		<xml-extensions.version>6.2.1</xml-extensions.version>
 		<!-- JOBJ-CORE version -->
 		<jobj-core.version>3.2.1</jobj-core.version>
 		<!-- JOBJ-CONTRACT-VERIFIER version -->
 		<jobj-contract-verifier.version>3.2</jobj-contract-verifier.version>
+		<!-- JOBJECT-EXTENSIONS versions -->
+		<jobject-extensions.version>3.1.2</jobject-extensions.version>
+		<jobject-clone.version>${jobject-extensions.version}</jobject-clone.version>
 		<!-- RANDOMIZER-CORE version -->
-		<randomizer-core.version>6.1</randomizer-core.version>
+		<randomizer-core.version>6.3</randomizer-core.version>
 		<!-- COMMONS-CODEC version -->
-		<commons-codec.version>1.12</commons-codec.version>
+		<commons-codec.version>1.13</commons-codec.version>
 		<!-- BOUNCYCASTLE version -->
-		<bouncycastle.version>1.62</bouncycastle.version>
+		<bouncycastle.version>1.64</bouncycastle.version>
 	</properties>
 
 	<developers>
@@ -142,6 +144,12 @@
 				<artifactId>bcpkix-jdk15on</artifactId>
 				<version>${bouncycastle.version}</version>
 			</dependency>
+			<!-- JOBJECT-CLONE DEPENDENCY -->
+			<dependency>
+				<groupId>de.alpharogroup</groupId>
+				<artifactId>jobject-clone</artifactId>
+				<version>${jobject-clone.version}</version>
+			</dependency>
 			<!-- JOBJ-CORE DEPENDENCY -->
 			<dependency>
 				<groupId>de.alpharogroup</groupId>
@@ -227,6 +235,11 @@
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcpkix-jdk15on</artifactId>
 		</dependency>
+        <!-- JOBJECT-CLONE DEPENDENCY -->
+        <dependency>
+            <groupId>de.alpharogroup</groupId>
+            <artifactId>jobject-clone</artifactId>
+        </dependency>
 		<!-- JOBJ-CORE DEPENDENCY -->
 		<dependency>
 			<groupId>de.alpharogroup</groupId>
@@ -341,7 +354,7 @@
 						</excludes>
 					</configuration>
 				</plugin>
-				
+
 			</plugins>
 
 		</pluginManagement>
