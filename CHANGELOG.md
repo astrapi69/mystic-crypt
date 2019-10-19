@@ -18,7 +18,6 @@ CHANGED:
 - update of dependency crypt-data version to 7.2
 - update of bouncycastle version to 1.64
 - update of randomizer version to 6.3
-- update of model-core version to 1.6.3
 - update of xml-extensions version to 6.2.1
 
 Version 7
