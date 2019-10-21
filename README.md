@@ -47,6 +47,7 @@ or over flattr: <a href="http://flattr.com/thing/4152938/astrapi69mystic-crypt-o
  * Encryption with PublicKey and decryption with PrivateKey objects that was generated with openssl or java
  * Encryption and decryption from .pem, .der files that was generated with openssl
  * Obfuscate text with specified map
+ * Decorate crypt objects with decorators
  * Brute-force processing for crack passwords
  * Wordlist processing for crack passwords
  * Hash byte arrays, strings such as passwords
