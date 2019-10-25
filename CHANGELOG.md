@@ -4,6 +4,11 @@
 Version 7.2-SNAPSHOT
 -------------
 
+CHANGED:
+
+- update of silly-collections version to 5.4
+- update of jobj-core version to 3.3
+
 Version 7.1
 -------------
 

@@ -32,11 +32,11 @@
 		<file-worker.version>5.2</file-worker.version>
 		<jcommons-lang.version>5.2.2</jcommons-lang.version>
 		<test-objects.version>5.2</test-objects.version>
-		<silly-collections.version>5.2.1</silly-collections.version>
+		<silly-collections.version>5.4</silly-collections.version>
 		<!-- XML-EXTENSIONS version -->
 		<xml-extensions.version>6.2.1</xml-extensions.version>
 		<!-- JOBJ-CORE version -->
-		<jobj-core.version>3.2.1</jobj-core.version>
+		<jobj-core.version>3.3</jobj-core.version>
 		<!-- JOBJ-CONTRACT-VERIFIER version -->
 		<jobj-contract-verifier.version>3.2</jobj-contract-verifier.version>
 		<!-- JOBJECT-EXTENSIONS versions -->
