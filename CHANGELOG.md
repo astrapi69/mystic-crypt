@@ -8,6 +8,8 @@ CHANGED:
 
 - update of silly-collections version to 5.4
 - update of jobj-core version to 3.3
+- removed maven related files and directories
+- added new gradle plugins for migration of the maven plugins like license update, publish and version check
 
 Version 7.1
 -------------
