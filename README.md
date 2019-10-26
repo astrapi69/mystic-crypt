@@ -47,6 +47,7 @@ or over flattr: <a href="http://flattr.com/thing/4152938/astrapi69mystic-crypt-o
  * Encryption with PublicKey and decryption with PrivateKey objects that was generated with openssl or java
  * Encryption and decryption from .pem, .der files that was generated with openssl
  * Obfuscate text with specified map
+ * Decorate crypt objects with decorators
  * Brute-force processing for crack passwords
  * Wordlist processing for crack passwords
  * Hash byte arrays, strings such as passwords
@@ -71,7 +72,7 @@ You can first define the version properties and add than the following maven dep
 	<properties>
 			...
 		<!-- MYSTIC-CRYPT version -->
-		<mystic-crypt.version>7.1</mystic-crypt.version>
+		<mystic-crypt.version>7.1.1</mystic-crypt.version>
 			...
 	</properties>
 			...
@@ -94,7 +95,7 @@ You can first define the version in the ext section and add than the following g
 ```
 ext {
 			...
-    mysticCryptVersion = '7.1'
+    mysticCryptVersion = '7.1.1'
 			...
 }
 dependencies {
