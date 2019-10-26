@@ -73,7 +73,7 @@ dependencies {
 license {
     ext.year="2015"
     ext.owner="Asterios Raptis"
-    header rootProject.file('src/main/resources/LICENSE.txt')
+    header rootProject.file("src/main/resources/LICENSE.txt")
     excludes(["**/README",
               "**/README.md",
               "**/LICENSE",
@@ -111,27 +111,27 @@ task sourcesJar(type: Jar) {
 task javadocJar(type: Jar) {
     from javadoc
     archiveClassifier.set("javadoc")
-//    archiveClassifier = "javadoc"
+    javadoc.properties.failOnError = true
 }
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifactId = "mystic-crypt"
+            artifactId = "${rootProject.name}"
             from components.java
             artifact sourcesJar
             artifact javadocJar
             pom {
-                name = "mystic-crypt"
-                description = 'The target of this project is to make encryption and decryption as simple as possible.'
-                url = 'https://github.com/astrapi69/mystic-crypt'
+                name = "${rootProject.name}"
+                description = "The target of this project is to make encryption and decryption as simple as possible."
+                url = "https://github.com/astrapi69/"+"${rootProject.name}"
                 organization {
-                    name = 'Alpha Ro Group UG (haftungsbeschrängt)'
-                    url = 'http://www.alpharogroup.de/'
+                    name = "Alpha Ro Group UG (haftungsbeschrängt)"
+                    url = "http://www.alpharogroup.de/"
                 }
                 issueManagement {
-                    system = 'GitHub'
-                    url = 'https://github.com/astrapi69/mystic-crypt/issues'
+                    system = "GitHub"
+                    url = "https://github.com/astrapi69/mystic-crypt/issues"
                 }
                 licenses {
                     license {
@@ -147,9 +147,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection = 'scm:git:git:@github.com:astrapi69/mystic-crypt.git'
-                    developerConnection = 'scm:git:git@github.com:astrapi69/mystic-crypt.git'
-                    url = 'git:@github.com:astrapi69/mystic-crypt.git'
+                    connection = "scm:git:git:@github.com:astrapi69/mystic-crypt.git"
+                    developerConnection = "scm:git:git@github.com:astrapi69/mystic-crypt.git"
+                    url = "git:@github.com:astrapi69/mystic-crypt.git"
                 }
             }
         }
