@@ -122,13 +122,22 @@ publishing {
             artifact sourcesJar
             artifact javadocJar
             pom {
-                name = '${project.artifactId}'
+                name = "mystic-crypt"
                 description = 'The target of this project is to make encryption and decryption as simple as possible.'
-                url = 'https://github.com/astrapi69/${project.artifactId}'
+                url = 'https://github.com/astrapi69/mystic-crypt'
+                organization {
+                    name = 'Alpha Ro Group UG (haftungsbeschrängt)'
+                    url = 'http://www.alpharogroup.de/'
+                }
+                issueManagement {
+                    system = 'GitHub'
+                    url = 'https://github.com/astrapi69/mystic-crypt/issues'
+                }
                 licenses {
                     license {
                         name = "MIT License"
                         url = "http://www.opensource.org/licenses/mit-license.php"
+                        distribution = "repo"
                     }
                 }
                 developers {
@@ -138,9 +147,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection = 'scm:git:git:@github.com:astrapi69/${project.artifactId}.git'
-                    developerConnection = 'scm:git:git@github.com:astrapi69/${project.artifactId}.git'
-                    url = 'git:@github.com:astrapi69/${project.artifactId}.git'
+                    connection = 'scm:git:git:@github.com:astrapi69/mystic-crypt.git'
+                    developerConnection = 'scm:git:git@github.com:astrapi69/mystic-crypt.git'
+                    url = 'git:@github.com:astrapi69/mystic-crypt.git'
                 }
             }
         }
