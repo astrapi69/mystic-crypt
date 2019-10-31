@@ -34,9 +34,7 @@ or over ether with:
 
 0xaB6EaE10F352268B0CA672Dd6e999C86344D49D8
 
-or over flattr: <a href="http://flattr.com/thing/4152938/astrapi69mystic-crypt-on-GitHub" target="_blank">
-<img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" />
-</a>
+or over the donation buttons at the top.
 
 ## Key features:
 
@@ -72,7 +70,7 @@ You can first define the version properties and add than the following maven dep
 	<properties>
 			...
 		<!-- MYSTIC-CRYPT version -->
-		<mystic-crypt.version>7.1.1</mystic-crypt.version>
+		<mystic-crypt.version>7.1.2</mystic-crypt.version>
 			...
 	</properties>
 			...
@@ -95,7 +93,7 @@ You can first define the version in the ext section and add than the following g
 ```
 ext {
 			...
-    mysticCryptVersion = '7.1.1'
+    mysticCryptVersion = '7.1.2'
 			...
 }
 dependencies {

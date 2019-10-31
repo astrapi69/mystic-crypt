@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "de.alpharogroup"
-version = "7.1.1"
+version = "7.1.2"
 description = "mystic-crypt"
 sourceCompatibility = "1.8"
 
@@ -40,6 +40,7 @@ ext {
 }
 
 repositories {
+    jcenter()
     mavenLocal()
     mavenCentral()
 }
@@ -131,7 +132,7 @@ publishing {
                 }
                 issueManagement {
                     system = "GitHub"
-                    url = "https://github.com/astrapi69/mystic-crypt/issues"
+                    url = "https://github.com/astrapi69/"+"${rootProject.name}"+"/issues"
                 }
                 licenses {
                     license {
@@ -147,9 +148,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection = "scm:git:git:@github.com:astrapi69/mystic-crypt.git"
-                    developerConnection = "scm:git:git@github.com:astrapi69/mystic-crypt.git"
-                    url = "git:@github.com:astrapi69/mystic-crypt.git"
+                    connection = "scm:git:git:@github.com:astrapi69/"+"${rootProject.name}"+".git"
+                    developerConnection = "scm:git:git@github.com:astrapi69/"+"${rootProject.name}"+".git"
+                    url = "git:@github.com:astrapi69/"+"${rootProject.name}"+".git"
                 }
             }
         }
