@@ -6,6 +6,13 @@ Version 7.2-SNAPSHOT
 
 
 
+Version 7.1.2
+-------------
+
+CHANGED:
+
+- update of build.gradle and changed from explicit project name with property reference
+
 Version 7.1.1
 -------------
 

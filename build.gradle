@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "de.alpharogroup"
-version = "7.1.2"
+version = "7.2-SNAPSHOT"
 description = "mystic-crypt"
 sourceCompatibility = "1.8"
 
