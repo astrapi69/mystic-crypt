@@ -93,12 +93,12 @@ You can first define the version in the ext section and add than the following g
 ```
 ext {
 			...
-    mysticCryptVersion = '7.1.2'
+    mysticCryptVersion = "7.1.2"
 			...
 }
 dependencies {
 			...
-compile group: 'de.alpharogroup', name: 'mystic-crypt', version: '${mysticCryptVersion}'
+compile group: "de.alpharogroup:mystic-crypt:${mysticCryptVersion}"
 			...
 }
 ```
