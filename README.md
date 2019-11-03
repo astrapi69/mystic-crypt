@@ -83,8 +83,7 @@ You can first define the version properties and add than the following maven dep
 				<version>${mystic-crypt.version}</version>
 			</dependency>
 			...
-		</dependencies>
-	
+		</dependencies>	
 			
 ## gradle dependency
 
