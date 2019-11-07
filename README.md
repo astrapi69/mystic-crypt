@@ -97,7 +97,7 @@ ext {
 }
 dependencies {
 			...
-compile group: "de.alpharogroup:mystic-crypt:${mysticCryptVersion}"
+compile "de.alpharogroup:mystic-crypt:${mysticCryptVersion}"
 			...
 }
 ```
