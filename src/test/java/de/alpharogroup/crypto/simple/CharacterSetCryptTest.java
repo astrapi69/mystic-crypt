@@ -20,22 +20,43 @@ public class CharacterSetCryptTest
 {
 
 	/**
-	 * Test method for test the method {@link CharacterSetCrypt#toText(List, List)} <br>
-	 * <br>
-	 * This test method provides a full example of how this en- decryption algorithm works
+	 * Test method for test the method {@link CharacterSetCrypt#newCharacterList(String)}
 	 */
 	@Test
-	public void testToText()
+	public void testNewCharacterList()
 	{
-		String actual;
-		String expected;
+		List<Character> actual;
+		List<Character> expected;
+
 		String text = "Lorem ipsum dolor sit amet, sea consul verterem perfecto id. Alii prompta electram te nec, at minimum copiosae quo. Eos iudico nominati oportere ei, usu at dicta legendos. In nostrum insolens disputando pro, iusto equidem ius id.";
-		List<Character> uniqueCharacters = CharacterSetCrypt.newCharacterList(text);
-		List<Integer> indexesList = CharacterSetCrypt.toIndexList(text, uniqueCharacters);
-		actual = CharacterSetCrypt.toText(indexesList, uniqueCharacters);
-		expected = text;
+		actual = CharacterSetCrypt.newCharacterList(text);
+
+		expected = ListFactory.newArrayList(Character.valueOf((char)0x20), ',', '.', 'A', 'E', 'I',
+			'L', 'a', 'c', 'd', 'e', 'f', 'g', 'i', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+			'u', 'v');
 		assertEquals(actual, expected);
 	}
+
+	/**
+	 * Test method for test the method
+	 * {@link CharacterSetCrypt#newCharacterList(String, java.util.Comparator)}
+	 */
+	@Test
+	public void testNewCharacterListWithComparator()
+	{
+		List<Character> actual;
+		List<Character> expected;
+
+		String text = "Lorem ipsum dolor sit amet, sea consul verterem perfecto id. Alii prompta electram te nec, at minimum copiosae quo. Eos iudico nominati oportere ei, usu at dicta legendos. In nostrum insolens disputando pro, iusto equidem ius id.";
+		actual = CharacterSetCrypt.newCharacterList(text,
+			Comparator.<Character> naturalOrder().reversed());
+
+		expected = ListExtensions.revertOrder(ListFactory.newArrayList(
+			Character.valueOf((char)0x20), ',', '.', 'A', 'E', 'I', 'L', 'a', 'c', 'd', 'e', 'f',
+			'g', 'i', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v'));
+		assertEquals(actual, expected);
+	}
+
 	/**
 	 * Test method for test the method {@link CharacterSetCrypt#toIndexList(String, List)}
 	 */
@@ -62,38 +83,20 @@ public class CharacterSetCryptTest
 	}
 
 	/**
-	 * Test method for test the method {@link CharacterSetCrypt#newCharacterList(String)}
+	 * Test method for test the method {@link CharacterSetCrypt#toText(List, List)} <br>
+	 * <br>
+	 * This test method provides a full example of how this en- decryption algorithm works
 	 */
 	@Test
-	public void testNewCharacterList()
+	public void testToText()
 	{
-		List<Character> actual;
-		List<Character> expected;
-
+		String actual;
+		String expected;
 		String text = "Lorem ipsum dolor sit amet, sea consul verterem perfecto id. Alii prompta electram te nec, at minimum copiosae quo. Eos iudico nominati oportere ei, usu at dicta legendos. In nostrum insolens disputando pro, iusto equidem ius id.";
-		actual = CharacterSetCrypt.newCharacterList(text);
-
-		expected = ListFactory.newArrayList(Character.valueOf((char)0x20), ',', '.', 'A', 'E', 'I',
-			'L', 'a', 'c', 'd', 'e', 'f', 'g', 'i', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-			'u', 'v');
-		assertEquals(actual, expected);
-	}
-
-	/**
-	 * Test method for test the method {@link CharacterSetCrypt#newCharacterList(String, java.util.Comparator)}
-	 */
-	@Test
-	public void testNewCharacterListWithComparator()
-	{
-		List<Character> actual;
-		List<Character> expected;
-
-		String text = "Lorem ipsum dolor sit amet, sea consul verterem perfecto id. Alii prompta electram te nec, at minimum copiosae quo. Eos iudico nominati oportere ei, usu at dicta legendos. In nostrum insolens disputando pro, iusto equidem ius id.";
-		actual = CharacterSetCrypt.newCharacterList(text, Comparator.<Character>naturalOrder().reversed());
-
-		expected = ListExtensions.revertOrder(ListFactory.newArrayList(Character.valueOf((char)0x20), ',', '.', 'A', 'E', 'I',
-			'L', 'a', 'c', 'd', 'e', 'f', 'g', 'i', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-			'u', 'v'));
+		List<Character> uniqueCharacters = CharacterSetCrypt.newCharacterList(text);
+		List<Integer> indexesList = CharacterSetCrypt.toIndexList(text, uniqueCharacters);
+		actual = CharacterSetCrypt.toText(indexesList, uniqueCharacters);
+		expected = text;
 		assertEquals(actual, expected);
 	}
 

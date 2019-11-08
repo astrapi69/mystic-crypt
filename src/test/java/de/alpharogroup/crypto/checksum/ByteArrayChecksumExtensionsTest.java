@@ -24,21 +24,21 @@
  */
 package de.alpharogroup.crypto.checksum;
 
-import de.alpharogroup.AbstractTestCase;
-import de.alpharogroup.crypto.algorithm.Algorithm;
-import de.alpharogroup.crypto.algorithm.HashAlgorithm;
-import de.alpharogroup.crypto.algorithm.MdAlgorithm;
+import static org.testng.AssertJUnit.assertEquals;
+
+import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.meanbean.factories.ObjectCreationException;
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.security.NoSuchAlgorithmException;
-
-import static org.testng.AssertJUnit.assertEquals;
+import de.alpharogroup.AbstractTestCase;
+import de.alpharogroup.crypto.algorithm.Algorithm;
+import de.alpharogroup.crypto.algorithm.HashAlgorithm;
+import de.alpharogroup.crypto.algorithm.MdAlgorithm;
 
 /**
  * The unit test class for the class {@link ByteArrayChecksumExtensions}
@@ -70,8 +70,7 @@ public class ByteArrayChecksumExtensionsTest extends AbstractTestCase<Long, Long
 	 *             {@link java.security.MessageDigest} object.
 	 */
 	@Test
-	public void testGetChecksumAlgorithmByteArrays()
-		throws NoSuchAlgorithmException
+	public void testGetChecksumAlgorithmByteArrays() throws NoSuchAlgorithmException
 	{
 		String expected;
 		String actual;
@@ -118,8 +117,7 @@ public class ByteArrayChecksumExtensionsTest extends AbstractTestCase<Long, Long
 	 *             {@link java.security.MessageDigest} object.
 	 */
 	@Test
-	public void testGetChecksumByteArrayAlgorithm()
-		throws NoSuchAlgorithmException
+	public void testGetChecksumByteArrayAlgorithm() throws NoSuchAlgorithmException
 	{
 		String expected;
 		String actual;
@@ -158,19 +156,20 @@ public class ByteArrayChecksumExtensionsTest extends AbstractTestCase<Long, Long
 	 *             {@link java.security.MessageDigest} object.
 	 */
 	@Test
-	public void testGetChecksumByteArrayString()
-		throws NoSuchAlgorithmException
+	public void testGetChecksumByteArrayString() throws NoSuchAlgorithmException
 	{
 		String expected;
 		String actual;
 		final String secretMessage = "secret Message";
 		final byte[] secretMessageBytes = secretMessage.getBytes(StandardCharsets.UTF_8);
 		expected = "5cc16e663491726545c13ec2012f4601";
-		actual = ByteArrayChecksumExtensions.getChecksum(secretMessageBytes, MdAlgorithm.MD2.getAlgorithm());
+		actual = ByteArrayChecksumExtensions.getChecksum(secretMessageBytes,
+			MdAlgorithm.MD2.getAlgorithm());
 		assertEquals(expected, actual);
 
 		expected = "25659bd9db98ecc3c2077d44e69607b8";
-		actual = ByteArrayChecksumExtensions.getChecksum(secretMessageBytes, MdAlgorithm.MD5.getAlgorithm());
+		actual = ByteArrayChecksumExtensions.getChecksum(secretMessageBytes,
+			MdAlgorithm.MD5.getAlgorithm());
 		assertEquals(expected, actual);
 
 		expected = "874026e54b67d4f9aaf87cb14a683fb51de6f9cb";
@@ -202,8 +201,7 @@ public class ByteArrayChecksumExtensionsTest extends AbstractTestCase<Long, Long
 	 *             {@link java.security.MessageDigest} object.
 	 */
 	@Test
-	public void testGetChecksumByteObjectArrayAlgorithm()
-		throws NoSuchAlgorithmException
+	public void testGetChecksumByteObjectArrayAlgorithm() throws NoSuchAlgorithmException
 	{
 		String expected;
 		String actual;
@@ -244,8 +242,7 @@ public class ByteArrayChecksumExtensionsTest extends AbstractTestCase<Long, Long
 	 *             {@link java.security.MessageDigest} object.
 	 */
 	@Test
-	public void testGetChecksumByteObjectArrayString()
-		throws  NoSuchAlgorithmException
+	public void testGetChecksumByteObjectArrayString() throws NoSuchAlgorithmException
 	{
 		String expected;
 		String actual;
@@ -258,11 +255,13 @@ public class ByteArrayChecksumExtensionsTest extends AbstractTestCase<Long, Long
 		secretMessageBytes = ArrayUtils.toObject(sbytes);
 
 		expected = "5cc16e663491726545c13ec2012f4601";
-		actual = ByteArrayChecksumExtensions.getChecksum(secretMessageBytes, MdAlgorithm.MD2.getAlgorithm());
+		actual = ByteArrayChecksumExtensions.getChecksum(secretMessageBytes,
+			MdAlgorithm.MD2.getAlgorithm());
 		assertEquals(expected, actual);
 
 		expected = "25659bd9db98ecc3c2077d44e69607b8";
-		actual = ByteArrayChecksumExtensions.getChecksum(secretMessageBytes, MdAlgorithm.MD5.getAlgorithm());
+		actual = ByteArrayChecksumExtensions.getChecksum(secretMessageBytes,
+			MdAlgorithm.MD5.getAlgorithm());
 		assertEquals(expected, actual);
 
 		expected = "874026e54b67d4f9aaf87cb14a683fb51de6f9cb";
@@ -326,7 +325,8 @@ public class ByteArrayChecksumExtensionsTest extends AbstractTestCase<Long, Long
 	{
 		boolean expected;
 		boolean actual;
-		actual = ByteArrayChecksumExtensions.matchesSHA1("496dfa0ecf50cc6e3eda41fd3258272c2f2f0ff1");
+		actual = ByteArrayChecksumExtensions
+			.matchesSHA1("496dfa0ecf50cc6e3eda41fd3258272c2f2f0ff1");
 		expected = true;
 		assertEquals(expected, actual);
 
@@ -348,7 +348,8 @@ public class ByteArrayChecksumExtensionsTest extends AbstractTestCase<Long, Long
 		expected = true;
 		assertEquals(expected, actual);
 
-		actual = ByteArrayChecksumExtensions.matchesSHA512("496dfa0ecf50cc6e3eda41fd3258272c2f2f0ff1");
+		actual = ByteArrayChecksumExtensions
+			.matchesSHA512("496dfa0ecf50cc6e3eda41fd3258272c2f2f0ff1");
 		expected = false;
 		assertEquals(expected, actual);
 	}

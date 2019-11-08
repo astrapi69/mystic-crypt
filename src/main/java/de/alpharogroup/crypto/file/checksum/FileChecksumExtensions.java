@@ -33,9 +33,8 @@ import java.util.zip.Adler32;
 import java.util.zip.CRC32;
 import java.util.zip.CheckedInputStream;
 
-import de.alpharogroup.crypto.checksum.ByteArrayChecksumExtensions;
-
 import de.alpharogroup.crypto.algorithm.Algorithm;
+import de.alpharogroup.crypto.checksum.ByteArrayChecksumExtensions;
 import de.alpharogroup.file.read.ReadFileExtensions;
 import lombok.experimental.UtilityClass;
 
@@ -92,11 +91,11 @@ public final class FileChecksumExtensions
 	 *             object. {@link java.util.zip.Adler32} object.
 	 */
 	public static long getChecksum(final File file, final boolean crc)
-			throws FileNotFoundException, IOException
+		throws FileNotFoundException, IOException
 	{
 		try (CheckedInputStream cis = crc
-				? new CheckedInputStream(new FileInputStream(file), new CRC32())
-				: new CheckedInputStream(new FileInputStream(file), new Adler32()))
+			? new CheckedInputStream(new FileInputStream(file), new CRC32())
+			: new CheckedInputStream(new FileInputStream(file), new Adler32()))
 		{
 			final int length = (int)file.length();
 			final byte[] buffer = new byte[length];
@@ -128,7 +127,8 @@ public final class FileChecksumExtensions
 	public static String getChecksum(final File file, final String algorithm)
 		throws NoSuchAlgorithmException, IOException
 	{
-		return ByteArrayChecksumExtensions.getChecksum(ReadFileExtensions.toByteArray(file), algorithm);
+		return ByteArrayChecksumExtensions.getChecksum(ReadFileExtensions.toByteArray(file),
+			algorithm);
 	}
 
 	/**

@@ -24,14 +24,14 @@
  */
 package de.alpharogroup.crypto.checksum;
 
-import de.alpharogroup.copy.object.CopyObjectExtensions;
-import de.alpharogroup.crypto.algorithm.Algorithm;
-import lombok.experimental.UtilityClass;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import de.alpharogroup.copy.object.CopyObjectExtensions;
+import de.alpharogroup.crypto.algorithm.Algorithm;
+import lombok.experimental.UtilityClass;
 
 /**
  * The class {@link ObjectChecksumExtensions} is a utility class for computing checksum from objects
@@ -44,9 +44,9 @@ public final class ObjectChecksumExtensions
 {
 
 	/**
-	 * Gets the checksum from the given serializable object. If the flag crc is true than the checksum is
-	 * constructed with an instance of <code>java.util.zip.CRC32</code> otherwise with an instance
-	 * of <code>java.util.zip.Adler32</code>.
+	 * Gets the checksum from the given serializable object. If the flag crc is true than the
+	 * checksum is constructed with an instance of <code>java.util.zip.CRC32</code> otherwise with
+	 * an instance of <code>java.util.zip.Adler32</code>.
 	 *
 	 * @param serializableObject
 	 *            the serializable object from what to get the checksum
@@ -56,12 +56,14 @@ public final class ObjectChecksumExtensions
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	public static <T extends Serializable> long getChecksum(final T serializableObject, final boolean crc)
-			throws IOException
+	public static <T extends Serializable> long getChecksum(final T serializableObject,
+		final boolean crc) throws IOException
 	{
-		return crc ?
-				ByteArrayChecksumExtensions.getCheckSumCRC32(CopyObjectExtensions.toByteArray(serializableObject)):
-				ByteArrayChecksumExtensions.getCheckSumAdler32(CopyObjectExtensions.toByteArray(serializableObject));
+		return crc
+			? ByteArrayChecksumExtensions
+				.getCheckSumCRC32(CopyObjectExtensions.toByteArray(serializableObject))
+			: ByteArrayChecksumExtensions
+				.getCheckSumAdler32(CopyObjectExtensions.toByteArray(serializableObject));
 	}
 
 	/**
@@ -79,10 +81,11 @@ public final class ObjectChecksumExtensions
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	public static <T extends Serializable> String getChecksum(final T serializableObject, final String algorithm)
-			throws NoSuchAlgorithmException, IOException
+	public static <T extends Serializable> String getChecksum(final T serializableObject,
+		final String algorithm) throws NoSuchAlgorithmException, IOException
 	{
-		return ByteArrayChecksumExtensions.getChecksum(CopyObjectExtensions.toByteArray(serializableObject), algorithm);
+		return ByteArrayChecksumExtensions
+			.getChecksum(CopyObjectExtensions.toByteArray(serializableObject), algorithm);
 	}
 
 	/**
@@ -100,8 +103,8 @@ public final class ObjectChecksumExtensions
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	public static <T extends Serializable> String getChecksum(final T serializableObject, final Algorithm algorithm)
-			throws NoSuchAlgorithmException, IOException
+	public static <T extends Serializable> String getChecksum(final T serializableObject,
+		final Algorithm algorithm) throws NoSuchAlgorithmException, IOException
 	{
 		return getChecksum(serializableObject, algorithm.getAlgorithm());
 	}
@@ -120,7 +123,7 @@ public final class ObjectChecksumExtensions
 	 *             {@link MessageDigest} object.
 	 */
 	public static String getChecksum(final String text, final String algorithm)
-			throws NoSuchAlgorithmException
+		throws NoSuchAlgorithmException
 	{
 		return ByteArrayChecksumExtensions.getChecksum(text.getBytes(), algorithm);
 	}
@@ -139,7 +142,7 @@ public final class ObjectChecksumExtensions
 	 *             {@link MessageDigest} object.
 	 */
 	public static String getChecksum(final String text, final Algorithm algorithm)
-			throws NoSuchAlgorithmException
+		throws NoSuchAlgorithmException
 	{
 		return getChecksum(text, algorithm.getAlgorithm());
 	}
@@ -157,9 +160,9 @@ public final class ObjectChecksumExtensions
 	 */
 	public static long getChecksum(final String text, final boolean crc)
 	{
-		return crc ?
-				ByteArrayChecksumExtensions.getCheckSumCRC32(text.getBytes()):
-				ByteArrayChecksumExtensions.getCheckSumAdler32(text.getBytes());
+		return crc
+			? ByteArrayChecksumExtensions.getCheckSumCRC32(text.getBytes())
+			: ByteArrayChecksumExtensions.getCheckSumAdler32(text.getBytes());
 	}
 
 }

@@ -24,18 +24,20 @@
  */
 package de.alpharogroup.crypto.checksum;
 
-import de.alpharogroup.crypto.algorithm.Algorithm;
-import lombok.experimental.UtilityClass;
-import org.apache.commons.lang3.ArrayUtils;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.zip.Adler32;
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
 
+import org.apache.commons.lang3.ArrayUtils;
+
+import de.alpharogroup.crypto.algorithm.Algorithm;
+import lombok.experimental.UtilityClass;
+
 /**
- * The class {@link ByteArrayChecksumExtensions} is a utility class for computing checksum from byte arrays
+ * The class {@link ByteArrayChecksumExtensions} is a utility class for computing checksum from byte
+ * arrays
  *
  * @version 1.0
  * @author Asterios Raptis
@@ -118,7 +120,7 @@ public final class ByteArrayChecksumExtensions
 		final MessageDigest messageDigest = MessageDigest.getInstance(algorithm);
 		messageDigest.reset();
 		messageDigest.update(bytes);
-		final byte[]  digest= messageDigest.digest();
+		final byte[] digest = messageDigest.digest();
 		final StringBuilder hexView = new StringBuilder();
 		for (final byte element : digest)
 		{

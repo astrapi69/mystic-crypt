@@ -26,7 +26,9 @@ package de.alpharogroup.crypto.file.checksum;
 
 import static org.testng.AssertJUnit.assertEquals;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
 import org.meanbean.factories.ObjectCreationException;
