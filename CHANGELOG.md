@@ -7,6 +7,7 @@ Version 7.2-SNAPSHOT
 ADDED:
 
 - new encryption and decryption strings with character set over indexes
+- new classes created for create checksums for files, serializable and string objects
 
 Version 7.1.2
 -------------
