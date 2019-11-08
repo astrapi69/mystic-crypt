@@ -4,7 +4,9 @@
 Version 7.2-SNAPSHOT
 -------------
 
+ADDED:
 
+- new encryption and decryption strings with character set over indexes
 
 Version 7.1.2
 -------------

@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.zip.Adler32;
@@ -37,6 +38,7 @@ import java.util.zip.Checksum;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import de.alpharogroup.copy.object.CopyObjectExtensions;
 import de.alpharogroup.crypto.algorithm.Algorithm;
 import de.alpharogroup.file.read.ReadFileExtensions;
 import lombok.experimental.UtilityClass;
@@ -256,6 +258,48 @@ public final class ChecksumExtensions
 		throws NoSuchAlgorithmException, IOException
 	{
 		return getChecksum(ReadFileExtensions.toByteArray(file), algorithm);
+	}
+
+	/**
+	 * Gets the checksum from the given file with an instance of the given algorithm
+	 *
+	 * @param serializableObject
+	 *            the serializable object
+	 * @param algorithm
+	 *            the algorithm to get the checksum. This could be for instance "MD4", "MD5",
+	 *            "SHA-1", "SHA-256", "SHA-384" or "SHA-512".
+	 * @return The checksum from the file as a String object.
+	 * @throws NoSuchAlgorithmException
+	 *             Is thrown if the algorithm is not supported or does not exists.
+	 *             {@link java.security.MessageDigest} object.
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	public static <T extends Serializable> String getChecksum(final T serializableObject, final String algorithm)
+		throws NoSuchAlgorithmException, IOException
+	{
+		return getChecksum(CopyObjectExtensions.toByteArray(serializableObject), algorithm);
+	}
+
+	/**
+	 * Gets the checksum from the given file with an instance of the given algorithm.
+	 *
+	 * @param file
+	 *            the file.
+	 * @param algorithm
+	 *            the algorithm to get the checksum. This could be for instance "MD4", "MD5",
+	 *            "SHA-1", "SHA-256", "SHA-384" or "SHA-512".
+	 * @return The checksum from the file as a String object.
+	 * @throws NoSuchAlgorithmException
+	 *             Is thrown if the algorithm is not supported or does not exists.
+	 *             {@link java.security.MessageDigest} object.
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	public static String getChecksum(final String text, final String algorithm)
+		throws NoSuchAlgorithmException, IOException
+	{
+		return getChecksum(text.getBytes(), algorithm);
 	}
 
 	/**

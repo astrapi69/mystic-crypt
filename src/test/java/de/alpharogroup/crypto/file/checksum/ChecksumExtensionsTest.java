@@ -44,6 +44,7 @@ import de.alpharogroup.crypto.algorithm.Algorithm;
 import de.alpharogroup.crypto.algorithm.HashAlgorithm;
 import de.alpharogroup.crypto.algorithm.MdAlgorithm;
 import de.alpharogroup.file.search.PathFinder;
+import de.alpharogroup.test.objects.Person;
 
 /**
  * The unit test class for the class {@link ChecksumExtensions}
@@ -399,6 +400,25 @@ public class ChecksumExtensionsTest extends AbstractTestCase<Long, Long>
 		expected = "4d0c14f299254e58dcea1f524ca08af5f0776b1f5070919a859b92c2ab350635375862ab0727fd5e34ff35da837bd836a17047544db8df63adc4912211ea7f02";
 		actual = ChecksumExtensions.getChecksum(testFile, HashAlgorithm.SHA_512);
 		assertEquals(expected, actual);
+
+	}
+
+
+	/**
+	 * Test method for {@link ChecksumExtensions#getChecksum(File, Algorithm)}.
+	 *
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	@Test
+	public void testGetChecksumSerializableAlgorithm() throws NoSuchAlgorithmException, IOException
+	{
+		String expected;
+		String actual;
+		Person person;
+
 
 	}
 
