@@ -38,6 +38,8 @@ or over the donation buttons at the top.
 
 ## Key features:
 
+ * checksums from files
+ * checksums from serializable objects
  * chain multiply encryptors for securely encrypting your data
  * encryption and decryption strings with character set
  * encryption and decryption of single files
@@ -52,6 +54,7 @@ or over the donation buttons at the top.
  * hash byte arrays, strings such as passwords
  * simple encode and decode of string objects with relocation
  * resolve the TrustManagers and KeyManagers from keystore files
+ 
  
 Encryption and decryption processes are always executed in the backround so it is a black box for the user. If you want to 
 see this library in action you can download this [gui client](https://github.com/astrapi69/mystic-crypt-ui) and see some features
