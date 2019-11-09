@@ -38,19 +38,23 @@ or over the donation buttons at the top.
 
 ## Key features:
 
- * Chain multiply encryptors for securely encrypting your data
- * Encryption and decryption of single files
- * Sign requests for your google maps urls
- * Hex encryption and decryption
- * Encryption with PublicKey and decryption with PrivateKey objects that was generated with openssl or java
- * Encryption and decryption from .pem, .der files that was generated with openssl
- * Obfuscate text with specified map
- * Decorate crypt objects with decorators
- * Brute-force processing for crack passwords
- * Wordlist processing for crack passwords
- * Hash byte arrays, strings such as passwords
- * Simple encode and decode of string objects with relocation
- * Resolve the TrustManagers and KeyManagers from keystore files
+ * checksums from files
+ * checksums from serializable objects
+ * chain multiply encryptors for securely encrypting your data
+ * encryption and decryption strings with character set
+ * encryption and decryption of single files
+ * sign requests for your google maps urls
+ * hex encryption and decryption
+ * encryption with PublicKey and decryption with PrivateKey objects that was generated with openssl or java
+ * encryption and decryption from .pem, .der files that was generated with openssl
+ * obfuscate text with specified map
+ * decorate crypt objects with decorators
+ * brute-force processing for crack passwords
+ * wordlist processing for crack passwords
+ * hash byte arrays, strings such as passwords
+ * simple encode and decode of string objects with relocation
+ * resolve the TrustManagers and KeyManagers from keystore files
+ 
  
 Encryption and decryption processes are always executed in the backround so it is a black box for the user. If you want to 
 see this library in action you can download this [gui client](https://github.com/astrapi69/mystic-crypt-ui) and see some features
@@ -70,7 +74,7 @@ You can first define the version properties and add than the following maven dep
 	<properties>
 			...
 		<!-- MYSTIC-CRYPT version -->
-		<mystic-crypt.version>7.1.2</mystic-crypt.version>
+		<mystic-crypt.version>7.2</mystic-crypt.version>
 			...
 	</properties>
 			...
@@ -83,8 +87,7 @@ You can first define the version properties and add than the following maven dep
 				<version>${mystic-crypt.version}</version>
 			</dependency>
 			...
-		</dependencies>
-	
+		</dependencies>	
 			
 ## gradle dependency
 
@@ -93,12 +96,12 @@ You can first define the version in the ext section and add than the following g
 ```
 ext {
 			...
-    mysticCryptVersion = '7.1.2'
+    mysticCryptVersion = "7.2"
 			...
 }
 dependencies {
 			...
-compile group: 'de.alpharogroup', name: 'mystic-crypt', version: '${mysticCryptVersion}'
+compile "de.alpharogroup:mystic-crypt:${mysticCryptVersion}"
 			...
 }
 ```

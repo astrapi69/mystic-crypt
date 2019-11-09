@@ -1,10 +1,20 @@
 ## Change log
 ----------------------
 
-Version 7.2-SNAPSHOT
+Version 7.2
 -------------
 
+ADDED:
 
+- new encryption and decryption strings with character set over indexes
+- new classes created for create checksums for files, serializable and string objects
+
+Version 7.1.2
+-------------
+
+CHANGED:
+
+- update of build.gradle and changed from explicit project name with property reference
 
 Version 7.1.1
 -------------

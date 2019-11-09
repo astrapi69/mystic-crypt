@@ -70,8 +70,6 @@ public class PrivateKeyBruteForceProcessorTest
 
 			if (isPasswordProtected)
 			{
-
-
 				String attempt;
 				attempt = processor.getCurrentAttempt();
 				while (true)
@@ -100,7 +98,7 @@ public class PrivateKeyBruteForceProcessorTest
 	/**
 	 * Test method for test the class {@link BruteForceProcessor}
 	 */
-	@Test(enabled = true)
+	@Test(enabled = false)
 	public void testPrivateKeyWithPassword()
 	{
 		File pemDir;
