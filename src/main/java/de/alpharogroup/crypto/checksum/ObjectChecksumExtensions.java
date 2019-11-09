@@ -48,6 +48,8 @@ public final class ObjectChecksumExtensions
 	 * checksum is constructed with an instance of <code>java.util.zip.CRC32</code> otherwise with
 	 * an instance of <code>java.util.zip.Adler32</code>.
 	 *
+	 * @param <T>
+	 *            the generic type of the serializable object
 	 * @param serializableObject
 	 *            the serializable object from what to get the checksum
 	 * @param crc
@@ -68,6 +70,9 @@ public final class ObjectChecksumExtensions
 
 	/**
 	 * Gets the checksum from the given file with an instance of the given algorithm
+	 *
+	 * @param <T>
+	 *            the generic type of the serializable object
 	 *
 	 * @param serializableObject
 	 *            the serializable object
@@ -90,6 +95,9 @@ public final class ObjectChecksumExtensions
 
 	/**
 	 * Gets the checksum from the given file with an instance of the given algorithm
+	 *
+	 * @param <T>
+	 *            the generic type of the serializable object
 	 *
 	 * @param serializableObject
 	 *            the serializable object

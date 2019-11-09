@@ -74,7 +74,7 @@ You can first define the version properties and add than the following maven dep
 	<properties>
 			...
 		<!-- MYSTIC-CRYPT version -->
-		<mystic-crypt.version>7.1.2</mystic-crypt.version>
+		<mystic-crypt.version>7.2</mystic-crypt.version>
 			...
 	</properties>
 			...
@@ -96,7 +96,7 @@ You can first define the version in the ext section and add than the following g
 ```
 ext {
 			...
-    mysticCryptVersion = "7.1.2"
+    mysticCryptVersion = "7.2"
 			...
 }
 dependencies {
