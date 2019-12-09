@@ -44,31 +44,6 @@ public class CharacterSetCryptTest
 {
 
 	/**
-	 * Test method for test utf-8 characters in a loop
-	 */
-	@Test
-	public void testUtf8Characters()
-	{
-		int count = 1;
-		for(int i = 0; i<65536; i++){
-			char[] chars = Character.toChars(i);
-			char currentChar = chars[0];
-			Character c  = Character.valueOf(currentChar);
-			if(
-					Character.isDefined(i)
-					&& Character.isAlphabetic(i)
-					&& !Character.isIdeographic(i)
-					&& !Character.isISOControl(i)
-					&& Character.getType(currentChar) != 5
-			) {
-
-				System.out.println(count+":"+i+"=    "+c+"    ::"+Character.getType(currentChar));
-				count++;
-			}
-		}
-	}
-
-	/**
 	 * Test method for test the method {@link CharacterSetCrypt#newCharacterList(String)}
 	 */
 	@Test
@@ -147,6 +122,29 @@ public class CharacterSetCryptTest
 		actual = CharacterSetCrypt.toText(indexesList, uniqueCharacters);
 		expected = text;
 		assertEquals(actual, expected);
+	}
+
+	/**
+	 * Test method for test utf-8 characters in a loop
+	 */
+	@Test
+	public void testUtf8Characters()
+	{
+		int count = 1;
+		for (int i = 0; i < 65536; i++)
+		{
+			char[] chars = Character.toChars(i);
+			char currentChar = chars[0];
+			Character c = Character.valueOf(currentChar);
+			if (Character.isDefined(i) && Character.isAlphabetic(i) && !Character.isIdeographic(i)
+				&& !Character.isISOControl(i) && Character.getType(currentChar) != 5)
+			{
+
+				System.out.println(
+					count + ":" + i + "=    " + c + "    ::" + Character.getType(currentChar));
+				count++;
+			}
+		}
 	}
 
 }
