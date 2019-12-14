@@ -5,7 +5,7 @@ plugins {
     id "maven-publish"
     id "signing"
     id "com.github.ben-manes.versions" version "0.27.0"
-//    id "com.github.hierynomus.license" version "0.15.0"
+    id "com.github.hierynomus.license" version "0.15.0"
 }
 
 apply plugin: "jacoco"
@@ -72,38 +72,43 @@ dependencies {
     testCompile "org.mockito:mockito-core:${mockitoCoreVersion}"
 }
 
-//license {
-//    ext.year="2015"
-//    ext.owner="Asterios Raptis"
-//    header rootProject.file("src/main/resources/LICENSE.txt")
-//    excludes(["**/README",
-//              "**/README.md",
-//              "**/LICENSE",
-//              "**/NOTICE",
-//              "**/*.xml",
-//              "**/*.xsl",
-//              "**/*.xsd",
-//              "**/*.dtd",
-//              "**/*.html",
-//              "**/*.jsp",
-//              "**/*.jpa",
-//              "**/*.sql",
-//              "**/*.properties",
-//              "**/*.bat",
-//              "**/*.gradle",
-//              "**/*.MF",
-//              "**/*.txt",
-//              "**/*.vm",
-//              "**/*.log",
-//              "**/*.map",
-//              "**/*.js.map",
-//              "**/*.tmpl",
-//              "**/*.js.tmpl",
-//              "**/*.editorconfig",
-//              "**/*.lombok.config",
-//              "src/test/resources/**",
-//              "src/main/resources/**"])
-//}
+license {
+    ext.year="2015"
+    ext.owner="Asterios Raptis"
+    header rootProject.file("src/main/resources/LICENSE.txt")
+    excludes(["**/README",
+              "**/README.md",
+              "**/LICENSE",
+              "**/NOTICE",
+              "**/*.xml",
+              "**/*.xsl",
+              "**/*.xsd",
+              "**/*.dtd",
+              "**/*.html",
+              "**/*.jsp",
+              "**/*.jpa",
+              "**/*.sql",
+              "**/*.properties",
+              "**/*.bat",
+              "**/*.gradle",
+              "**/*.MF",
+              "**/*.txt",
+              "**/*.vm",
+              "**/*.log",
+              "**/*.map",
+              "**/*.js.map",
+              "**/*.tmpl",
+              "**/*.js.tmpl",
+              "**/*.editorconfig",
+              "**/*.lombok.config",
+              "src/test/resources/**",
+              "src/main/resources/**",
+              "out/**",
+              "build/**"])
+}
+
+gradle.startParameter.excludedTaskNames += "licenseMain"
+gradle.startParameter.excludedTaskNames += "licenseTest"
 
 task sourcesJar(type: Jar) {
     archiveClassifier.set("sources")
