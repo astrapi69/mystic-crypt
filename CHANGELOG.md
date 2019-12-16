@@ -4,7 +4,15 @@
 Version 7.3-SNAPSHOT
 -------------
 
+ADDED:
+ 
+- new idea run configurations for gradle builds created
 
+CHANGED:
+
+- update of silly-collections version to 5.8
+- update of randomizer version to 6.4
+- update of file-worker dependency version to 5.4
 
 Version 7.2
 -------------
