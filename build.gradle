@@ -11,7 +11,7 @@ plugins {
 apply plugin: "jacoco"
 
 group = "de.alpharogroup"
-version = "7.3"
+version = "7.4-SNAPSHOT"
 description = "mystic-crypt"
 sourceCompatibility = "1.8"
 
