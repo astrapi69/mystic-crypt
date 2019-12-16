@@ -34,7 +34,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import de.alpharogroup.xml.crypto.file.XmlDecryptionExtensions;
 import org.apache.commons.codec.DecoderException;
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
@@ -53,6 +52,7 @@ import de.alpharogroup.crypto.obfuscation.rule.CharacterObfuscationOperationRule
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
 import de.alpharogroup.crypto.obfuscation.rule.Operation;
 import de.alpharogroup.file.search.PathFinder;
+import de.alpharogroup.xml.crypto.file.XmlDecryptionExtensions;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
