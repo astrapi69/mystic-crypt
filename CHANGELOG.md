@@ -1,6 +1,24 @@
 ## Change log
 ----------------------
 
+Version 7.3
+-------------
+
+ADDED:
+ 
+- new idea run configurations for gradle builds created
+
+CHANGED:
+
+- update of silly-collections version to 5.8
+- update of randomizer version to 6.4
+- update of file-worker dependency version to 5.4
+- update of xml-extensions version to 7.1
+- update of testng test dependency version to 7.1.0
+- update of junit test dependency version to 4.13-rc-2
+- update of mockito-core test dependency version to 3.2.0
+- moved xml specific classes to project xml-extensions
+
 Version 7.2
 -------------
 

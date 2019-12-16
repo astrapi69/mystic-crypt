@@ -5,13 +5,13 @@ plugins {
     id "maven-publish"
     id "signing"
     id "com.github.ben-manes.versions" version "0.27.0"
-//    id "com.github.hierynomus.license" version "0.15.0"
+    id "com.github.hierynomus.license" version "0.15.0"
 }
 
 apply plugin: "jacoco"
 
 group = "de.alpharogroup"
-version = "7.2"
+version = "7.3"
 description = "mystic-crypt"
 sourceCompatibility = "1.8"
 
@@ -23,30 +23,30 @@ repositories {
 
 ext {
     lombokVersion = "1.18.10"
-    randomBeansVersion = "3.9.0"
-    meanbeanVersion = "2.0.3"
-    testngVersion = "7.0.0"
-    junitVersion = "4.12"
-    mockitoCoreVersion = "3.1.0"
+    commonsCodecVersion = "1.13"
     cryptApiVersion = "7.2"
     cryptDataVersion = "7.2"
+    randomizerVersion = "6.4"
+    fileWorkerVersion = "5.4"
     modelCoreVersion = "1.6.2"
-    fileWorkerVersion = "5.2"
-    jcommonsLangVersion = "5.2.2"
-    testObjectsVersion = "5.2"
-    sillyCollectionsVersion = "5.4"
-    xmlExtensionsVersion = "6.2.1"
+    xmlExtensionsVersion = "7.1"
+    sillyCollectionsVersion = "5.8"
+    jobjCloneVersion = "3.2"
     jobjCoreVersion = "3.3"
     jobjCopyVersion = "3.2"
-    jobjContractVerifierVersion = "3.2"
-    jobjectCloneVersion = "3.1.2"
-    randomizerVersion = "6.3"
-    commonsCodecVersion = "1.13"
     bouncycastleVersion = "1.64"
+    testObjectsVersion = "5.2"
+    jcommonsLangVersion = "5.2.2"
+    jobjContractVerifierVersion = "3.2"
+    randomBeansVersion = "3.9.0"
+    meanbeanVersion = "2.0.3"
+    testngVersion = "7.1.0"
+    junitVersion = "4.13-rc-2"
+    mockitoCoreVersion = "3.2.4"
 }
 
 dependencies {
-    compile "org.projectlombok:lombok:${lombokVersion}"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     compile "commons-codec:commons-codec:${commonsCodecVersion}"
     compile "de.alpharogroup:crypt-api:${cryptApiVersion}"
@@ -56,7 +56,7 @@ dependencies {
     compile "de.alpharogroup:model-core:${modelCoreVersion}"
     compile "de.alpharogroup:xml-extensions:${xmlExtensionsVersion}"
     compile "de.alpharogroup:silly-collections:${sillyCollectionsVersion}"
-    compile "de.alpharogroup:jobject-clone:${jobjectCloneVersion}"
+    compile "de.alpharogroup:jobj-clone:${jobjCloneVersion}"
     compile "de.alpharogroup:jobj-core:${jobjCoreVersion}"
     compile "de.alpharogroup:jobj-copy:${jobjCopyVersion}"
     compile "org.bouncycastle:bcprov-jdk15on:${bouncycastleVersion}"
@@ -72,38 +72,44 @@ dependencies {
     testCompile "org.mockito:mockito-core:${mockitoCoreVersion}"
 }
 
-//license {
-//    ext.year="2015"
-//    ext.owner="Asterios Raptis"
-//    header rootProject.file("src/main/resources/LICENSE.txt")
-//    excludes(["**/README",
-//              "**/README.md",
-//              "**/LICENSE",
-//              "**/NOTICE",
-//              "**/*.xml",
-//              "**/*.xsl",
-//              "**/*.xsd",
-//              "**/*.dtd",
-//              "**/*.html",
-//              "**/*.jsp",
-//              "**/*.jpa",
-//              "**/*.sql",
-//              "**/*.properties",
-//              "**/*.bat",
-//              "**/*.gradle",
-//              "**/*.MF",
-//              "**/*.txt",
-//              "**/*.vm",
-//              "**/*.log",
-//              "**/*.map",
-//              "**/*.js.map",
-//              "**/*.tmpl",
-//              "**/*.js.tmpl",
-//              "**/*.editorconfig",
-//              "**/*.lombok.config",
-//              "src/test/resources/**",
-//              "src/main/resources/**"])
-//}
+license {
+    ext.year="2015"
+    ext.owner="Asterios Raptis"
+    header rootProject.file("src/main/resources/LICENSE.txt")
+    excludes(["**/README",
+              "**/README.md",
+              "**/LICENSE",
+              "**/NOTICE",
+              "**/*.xml",
+              "**/*.xsl",
+              "**/*.xsd",
+              "**/*.dtd",
+              "**/*.html",
+              "**/*.jsp",
+              "**/*.jpa",
+              "**/*.sql",
+              "**/*.properties",
+              "**/*.bat",
+              "**/*.gradle",
+              "**/*.MF",
+              "**/*.txt",
+              "**/*.vm",
+              "**/*.log",
+              "**/*.map",
+              "**/*.js.map",
+              "**/*.tmpl",
+              "**/*.js.tmpl",
+              "**/*.editorconfig",
+              "**/*.lombok.config",
+              "src/test/resources/**",
+              "src/main/resources/**",
+              "out/**",
+              "build/**"])
+}
+
+// workhack for license issue #76
+gradle.startParameter.excludedTaskNames += "licenseMain"
+gradle.startParameter.excludedTaskNames += "licenseTest"
 
 task sourcesJar(type: Jar) {
     archiveClassifier.set("sources")

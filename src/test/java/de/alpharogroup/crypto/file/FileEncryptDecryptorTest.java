@@ -37,9 +37,9 @@ import org.testng.annotations.Test;
 import de.alpharogroup.AbstractTestCase;
 import de.alpharogroup.crypto.algorithm.MdAlgorithm;
 import de.alpharogroup.crypto.algorithm.SunJCEAlgorithm;
+import de.alpharogroup.crypto.file.checksum.FileChecksumExtensions;
 import de.alpharogroup.crypto.model.CryptModel;
 import de.alpharogroup.crypto.model.StringDecorator;
-import de.alpharogroup.file.checksum.ChecksumExtensions;
 import de.alpharogroup.file.delete.DeleteFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
@@ -93,8 +93,8 @@ public class FileEncryptDecryptorTest extends AbstractTestCase<String, String>
 
 		decrypted = decryptor.decrypt(encrypted);
 
-		expected = ChecksumExtensions.getChecksum(toEncrypt, MdAlgorithm.MD5);
-		actual = ChecksumExtensions.getChecksum(decrypted, MdAlgorithm.MD5);
+		expected = FileChecksumExtensions.getChecksum(toEncrypt, MdAlgorithm.MD5);
+		actual = FileChecksumExtensions.getChecksum(decrypted, MdAlgorithm.MD5);
 		assertEquals(actual, expected);
 		// clean up...
 		DeleteFileExtensions.delete(encrypted);
@@ -134,8 +134,8 @@ public class FileEncryptDecryptorTest extends AbstractTestCase<String, String>
 
 		decrypted = decryptor.decrypt(encrypted);
 
-		expected = ChecksumExtensions.getChecksum(toEncrypt, MdAlgorithm.MD5);
-		actual = ChecksumExtensions.getChecksum(decrypted, MdAlgorithm.MD5);
+		expected = FileChecksumExtensions.getChecksum(toEncrypt, MdAlgorithm.MD5);
+		actual = FileChecksumExtensions.getChecksum(decrypted, MdAlgorithm.MD5);
 		assertEquals(actual, expected);
 		// clean up...
 		DeleteFileExtensions.delete(encrypted);
@@ -181,8 +181,8 @@ public class FileEncryptDecryptorTest extends AbstractTestCase<String, String>
 
 		decrypted = decryptor.decrypt(encrypted);
 
-		expected = ChecksumExtensions.getChecksum(toEncrypt, MdAlgorithm.MD5);
-		actual = ChecksumExtensions.getChecksum(decrypted, MdAlgorithm.MD5);
+		expected = FileChecksumExtensions.getChecksum(toEncrypt, MdAlgorithm.MD5);
+		actual = FileChecksumExtensions.getChecksum(decrypted, MdAlgorithm.MD5);
 		assertEquals(actual, expected);
 
 		// clean up...

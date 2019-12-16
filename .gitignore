@@ -1,3 +1,12 @@
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
 ##################
 # Compiled files #
 ##################
@@ -7,12 +16,16 @@
 # intellij files #
 ##################
 *.iml
+*.iws
+*.ipr
 !.idea/runConfigurations
 .idea/inspectionProfiles
 .idea/copyright
 .idea/libraries
+.idea/codeStyles
+.idea/shelf
 .idea/*.*
-/out/
+/.idea/$PRODUCT_WORKSPACE_FILE$
 
 #################
 # eclipse files #
@@ -26,8 +39,6 @@
 # maven generated files #
 #########################
 /target
-*.versionsBackup
-/pom.xml.bak
 
 #############
 # Zip files #
@@ -62,6 +73,7 @@
 /build
 /.gradle
 /gradle
+/out
 # Ignore Gradle GUI config
 gradle-app.setting
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
