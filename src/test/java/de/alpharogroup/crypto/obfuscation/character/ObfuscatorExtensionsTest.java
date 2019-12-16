@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import de.alpharogroup.xml.crypto.file.XmlDecryptionExtensions;
 import org.apache.commons.codec.DecoderException;
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
@@ -48,7 +49,6 @@ import de.alpharogroup.AbstractTestCase;
 import de.alpharogroup.collections.map.MapFactory;
 import de.alpharogroup.collections.pairs.KeyValuePair;
 import de.alpharogroup.collections.set.SetFactory;
-import de.alpharogroup.crypto.file.xml.XmlDecryptionExtensions;
 import de.alpharogroup.crypto.obfuscation.rule.CharacterObfuscationOperationRule;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
 import de.alpharogroup.crypto.obfuscation.rule.Operation;
@@ -225,14 +225,14 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 	@Test
 	public void testInverse()
 	{
-		Character character;
+		char character;
 		Set<Integer> indexes;
 		boolean inverted;
 		Operation operation;
-		Character replaceWith;
+		char replaceWith;
 		CharacterObfuscationOperationRule rule;
-		Character actual;
-		Character expected;
+		char actual;
+		char expected;
 		Optional<Character> operatedCharacter;
 
 		inverted = false;
