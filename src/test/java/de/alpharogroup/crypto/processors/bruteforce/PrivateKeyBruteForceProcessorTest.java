@@ -30,7 +30,9 @@ import static org.testng.AssertJUnit.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import java.security.Security;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.testng.annotations.Test;
@@ -38,15 +40,15 @@ import org.testng.annotations.Test;
 import de.alpharogroup.crypto.key.reader.EncryptedPrivateKeyReader;
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 import de.alpharogroup.file.search.PathFinder;
-import lombok.NonNull;
-import lombok.extern.java.Log;
 
 /**
  * The unit test class for the class {@link BruteForceProcessor}
  */
-@Log
 public class PrivateKeyBruteForceProcessorTest
 {
+
+	private static final Logger log = Logger
+		.getLogger(PrivateKeyBruteForceProcessorTest.class.getName());
 
 	/**
 	 * Resolve the password from the given private key file. If no password is set an empty Optional
@@ -59,8 +61,9 @@ public class PrivateKeyBruteForceProcessorTest
 	 * @return the optional
 	 */
 	public static Optional<String> resolvePassword(File privateKeyFile,
-		@NonNull BruteForceProcessor processor)
+		BruteForceProcessor processor)
 	{
+		Objects.requireNonNull(processor);
 		Optional<String> optionalPassword = Optional.empty();
 		try
 		{

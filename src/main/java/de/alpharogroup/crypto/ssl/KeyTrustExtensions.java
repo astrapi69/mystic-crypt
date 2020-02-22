@@ -39,15 +39,51 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 
 import de.alpharogroup.crypto.factories.KeyStoreFactory;
-import lombok.experimental.UtilityClass;
 
 /**
  * The factory class {@link KeyTrustExtensions} holds methods for creating {@link TrustManager}
  * array objects and {@link KeyManager} array objects.
  */
-@UtilityClass
-public class KeyTrustExtensions
+public final class KeyTrustExtensions
 {
+
+	/**
+	 * Resolve the {@link KeyManager} array from the keystore that is resolved from the given
+	 * parameters.
+	 *
+	 * @param keystoreType
+	 *            the keystore type
+	 * @param password
+	 *            the password
+	 * @param keystoreFile
+	 *            the keystore file
+	 * @param keyManagerAlgorithm
+	 *            the key manager algorithm
+	 * @return the key manager[]
+	 * @throws NoSuchAlgorithmException
+	 *             the no such algorithm exception
+	 * @throws CertificateException
+	 *             the certificate exception
+	 * @throws FileNotFoundException
+	 *             the file not found exception
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws KeyStoreException
+	 *             the key store exception
+	 * @throws UnrecoverableKeyException
+	 *             the unrecoverable key exception
+	 */
+	public static KeyManager[] resolveKeyManagers(final String keystoreType, final String password,
+		final File keystoreFile, final String keyManagerAlgorithm)
+		throws NoSuchAlgorithmException, CertificateException, FileNotFoundException, IOException,
+		KeyStoreException, UnrecoverableKeyException
+	{
+		final KeyStore keyStore = KeyStoreFactory.newKeyStore(keystoreType, password, keystoreFile);
+		final KeyManagerFactory keyFactory = KeyManagerFactory.getInstance(keyManagerAlgorithm);
+		keyFactory.init(keyStore, password.toCharArray());
+		final KeyManager[] keyManagers = keyFactory.getKeyManagers();
+		return keyManagers;
+	}
 
 	/**
 	 * Resolve the {@link TrustManager} array from the keystore that is resolved from the given
@@ -86,42 +122,8 @@ public class KeyTrustExtensions
 		return trustManagers;
 	}
 
-	/**
-	 * Resolve the {@link KeyManager} array from the keystore that is resolved from the given
-	 * parameters.
-	 *
-	 * @param keystoreType
-	 *            the keystore type
-	 * @param password
-	 *            the password
-	 * @param keystoreFile
-	 *            the keystore file
-	 * @param keyManagerAlgorithm
-	 *            the key manager algorithm
-	 * @return the key manager[]
-	 * @throws NoSuchAlgorithmException
-	 *             the no such algorithm exception
-	 * @throws CertificateException
-	 *             the certificate exception
-	 * @throws FileNotFoundException
-	 *             the file not found exception
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 * @throws KeyStoreException
-	 *             the key store exception
-	 * @throws UnrecoverableKeyException
-	 *             the unrecoverable key exception
-	 */
-	public static KeyManager[] resolveKeyManagers(final String keystoreType, final String password,
-		final File keystoreFile, final String keyManagerAlgorithm)
-		throws NoSuchAlgorithmException, CertificateException, FileNotFoundException, IOException,
-		KeyStoreException, UnrecoverableKeyException
+	private KeyTrustExtensions()
 	{
-		final KeyStore keyStore = KeyStoreFactory.newKeyStore(keystoreType, password, keystoreFile);
-		final KeyManagerFactory keyFactory = KeyManagerFactory.getInstance(keyManagerAlgorithm);
-		keyFactory.init(keyStore, password.toCharArray());
-		final KeyManager[] keyManagers = keyFactory.getKeyManagers();
-		return keyManagers;
 	}
 
 }

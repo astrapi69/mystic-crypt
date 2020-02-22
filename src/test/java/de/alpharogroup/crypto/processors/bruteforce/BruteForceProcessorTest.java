@@ -28,18 +28,19 @@ import static org.testng.AssertJUnit.assertTrue;
 
 import java.io.IOException;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import org.testng.annotations.Test;
 
 import de.alpharogroup.lang.ScanPackageExtensions;
-import lombok.extern.java.Log;
 
 /**
  * The unit test class for the class {@link BruteForceProcessor}
  */
-@Log
 public class BruteForceProcessorTest
 {
+
+	private static final Logger log = Logger.getLogger(BruteForceProcessorTest.class.getName());
 
 	/**
 	 * Test method for test the class {@link BruteForceProcessor}.

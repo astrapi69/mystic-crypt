@@ -26,20 +26,14 @@ package de.alpharogroup.crypto.obfuscation.character;
 
 import static org.testng.AssertJUnit.assertEquals;
 
-import java.lang.reflect.InvocationTargetException;
-
-import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.AbstractTestCase;
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
 
 /**
  * The unit test class for the class {@link CharacterExtensions}
  */
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CharacterExtensionsTest extends AbstractTestCase<Boolean, Boolean>
 {
 
@@ -68,8 +62,7 @@ public class CharacterExtensionsTest extends AbstractTestCase<Boolean, Boolean>
 	/**
 	 * Test method for {@link CharacterExtensions} with {@link BeanTester}
 	 */
-	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
-			UnsupportedOperationException.class })
+	@Test
 	public void testWithBeanTester()
 	{
 		final BeanTester beanTester = new BeanTester();

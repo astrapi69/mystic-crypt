@@ -27,14 +27,12 @@ package de.alpharogroup.crypto.ssl;
 import static org.testng.AssertJUnit.assertNotNull;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 
-import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
@@ -112,8 +110,7 @@ public class KeyTrustExtensionsTest
 	/**
 	 * Test method for {@link KeyTrustExtensions} with {@link BeanTester}
 	 */
-	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
-			UnsupportedOperationException.class })
+	@Test
 	public void testWithBeanTester()
 	{
 		BeanTester beanTester = new BeanTester();

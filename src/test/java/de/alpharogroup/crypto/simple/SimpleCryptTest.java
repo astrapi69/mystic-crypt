@@ -26,9 +26,6 @@ package de.alpharogroup.crypto.simple;
 
 import static org.testng.AssertJUnit.assertEquals;
 
-import java.lang.reflect.InvocationTargetException;
-
-import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
@@ -85,8 +82,7 @@ public class SimpleCryptTest
 	/**
 	 * Test method for {@link SimpleCrypt} with {@link BeanTester}
 	 */
-	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
-			UnsupportedOperationException.class })
+	@Test
 	public void testWithBeanTester()
 	{
 		BeanTester beanTester = new BeanTester();

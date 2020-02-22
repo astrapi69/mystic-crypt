@@ -27,20 +27,18 @@ package de.alpharogroup.crypto.processors.bruteforce;
 import java.io.File;
 import java.io.IOException;
 import java.security.Security;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import de.alpharogroup.crypto.key.reader.EncryptedPrivateKeyReader;
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
-import lombok.NonNull;
-import lombok.experimental.UtilityClass;
 
 /**
  * The class {@link PrivateKeyBruteForceProcessor}
  */
-@UtilityClass
-public class PrivateKeyBruteForceProcessor
+public final class PrivateKeyBruteForceProcessor
 {
 
 	/**
@@ -54,8 +52,9 @@ public class PrivateKeyBruteForceProcessor
 	 * @return the optional
 	 */
 	public static Optional<String> resolvePassword(File privateKeyFile,
-		@NonNull BruteForceProcessor processor)
+		BruteForceProcessor processor)
 	{
+		Objects.requireNonNull(processor);
 		Optional<String> optionalPassword = Optional.empty();
 		try
 		{
@@ -90,6 +89,10 @@ public class PrivateKeyBruteForceProcessor
 			return optionalPassword;
 		}
 		return optionalPassword;
+	}
+
+	private PrivateKeyBruteForceProcessor()
+	{
 	}
 
 }

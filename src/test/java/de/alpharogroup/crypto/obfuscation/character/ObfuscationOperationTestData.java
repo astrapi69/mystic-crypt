@@ -32,57 +32,12 @@ import com.google.common.collect.HashBiMap;
 import de.alpharogroup.collections.set.SetFactory;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
 import de.alpharogroup.crypto.obfuscation.rule.Operation;
-import lombok.experimental.UtilityClass;
 
 /**
  * The class {@link ObfuscationOperationTestData} provides test data for test the obfuscation rules
  */
-@UtilityClass
-public class ObfuscationOperationTestData
+public final class ObfuscationOperationTestData
 {
-
-	/**
-	 * Gets the {@link BiMap} for obfuscation operation rules with only three operation rules for
-	 * use in unit tests.
-	 *
-	 * @return the {@link BiMap} for obfuscation operation rules with only three operation rules
-	 */
-	public static BiMap<Character, ObfuscationOperationRule<Character, Character>> getSmallBiMapObfuscationOperationRules()
-	{
-		Character character;
-		Set<Integer> indexes;
-		Operation operation;
-		Character replaceWith;
-		ObfuscationOperationRule<Character, Character> rule;
-		BiMap<Character, ObfuscationOperationRule<Character, Character>> rules;
-
-		rules = HashBiMap.create();
-
-		character = Character.valueOf('a');
-		replaceWith = 'b';
-		operation = Operation.UPPERCASE;
-		indexes = SetFactory.newHashSet(0, 2);
-		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
-			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
-		rules.put(character, rule);
-
-		character = Character.valueOf('b');
-		replaceWith = 'c';
-		operation = Operation.UPPERCASE;
-		indexes = SetFactory.newHashSet(2);
-		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
-			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
-		rules.put(character, rule);
-
-		character = Character.valueOf('c');
-		replaceWith = 'd';
-		operation = Operation.UPPERCASE;
-		indexes = SetFactory.newHashSet(3);
-		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
-			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
-		rules.put(character, rule);
-		return rules;
-	}
 
 	/**
 	 * Gets the {@link BiMap} for obfuscation operation rules with 25 rules for use in unit tests.
@@ -308,6 +263,53 @@ public class ObfuscationOperationTestData
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 		return rules;
+	}
+
+	/**
+	 * Gets the {@link BiMap} for obfuscation operation rules with only three operation rules for
+	 * use in unit tests.
+	 *
+	 * @return the {@link BiMap} for obfuscation operation rules with only three operation rules
+	 */
+	public static BiMap<Character, ObfuscationOperationRule<Character, Character>> getSmallBiMapObfuscationOperationRules()
+	{
+		Character character;
+		Set<Integer> indexes;
+		Operation operation;
+		Character replaceWith;
+		ObfuscationOperationRule<Character, Character> rule;
+		BiMap<Character, ObfuscationOperationRule<Character, Character>> rules;
+
+		rules = HashBiMap.create();
+
+		character = Character.valueOf('a');
+		replaceWith = 'b';
+		operation = Operation.UPPERCASE;
+		indexes = SetFactory.newHashSet(0, 2);
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
+			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
+		rules.put(character, rule);
+
+		character = Character.valueOf('b');
+		replaceWith = 'c';
+		operation = Operation.UPPERCASE;
+		indexes = SetFactory.newHashSet(2);
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
+			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
+		rules.put(character, rule);
+
+		character = Character.valueOf('c');
+		replaceWith = 'd';
+		operation = Operation.UPPERCASE;
+		indexes = SetFactory.newHashSet(3);
+		rule = ObfuscationOperationRule.<Character, Character> builder().character(character)
+			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
+		rules.put(character, rule);
+		return rules;
+	}
+
+	private ObfuscationOperationTestData()
+	{
 	}
 
 }

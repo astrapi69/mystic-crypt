@@ -36,6 +36,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.List;
+import java.util.Objects;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
@@ -49,7 +50,6 @@ import de.alpharogroup.crypto.model.CryptModel;
 import de.alpharogroup.crypto.model.CryptObjectDecorator;
 import de.alpharogroup.file.read.ReadFileExtensions;
 import de.alpharogroup.file.write.WriteFileExtensions;
-import lombok.NonNull;
 
 /**
  * The class {@link FileDecryptor} can decrypt files from the given crypt model bean.
@@ -122,8 +122,9 @@ public class FileDecryptor extends AbstractFileDecryptor
 	 * {@inheritDoc}
 	 */
 	@Override
-	public File decrypt(final @NonNull File encrypted) throws Exception
+	public File decrypt(final File encrypted) throws Exception
 	{
+		Objects.requireNonNull(encrypted);
 		onBeforeDecrypt(encrypted);
 		onDecrypt(encrypted);
 		onAfterDecrypt(encrypted);
@@ -147,8 +148,9 @@ public class FileDecryptor extends AbstractFileDecryptor
 		return new File(parent, child);
 	}
 
-	protected void onAfterDecrypt(final @NonNull File encrypted) throws IOException
+	protected void onAfterDecrypt(final File encrypted) throws IOException
 	{
+		Objects.requireNonNull(encrypted);
 		String decryptedFileString = ReadFileExtensions.readFromFile(decryptedFile);
 		List<CryptObjectDecorator<String>> decorators = getModel().getDecorators();
 		if (decorators != null && !decorators.isEmpty())
@@ -163,8 +165,9 @@ public class FileDecryptor extends AbstractFileDecryptor
 			Charset.forName("UTF-8").name());
 	}
 
-	protected void onBeforeDecrypt(final @NonNull File encrypted)
+	protected void onBeforeDecrypt(final File encrypted)
 	{
+		Objects.requireNonNull(encrypted);
 		if (decryptedFile == null)
 		{
 			final String filename = FilenameUtils.getBaseName(encrypted.getName());
@@ -172,8 +175,9 @@ public class FileDecryptor extends AbstractFileDecryptor
 		}
 	}
 
-	protected void onDecrypt(final @NonNull File encrypted) throws Exception
+	protected void onDecrypt(final File encrypted) throws Exception
 	{
+		Objects.requireNonNull(encrypted);
 		try (FileOutputStream decryptedOut = new FileOutputStream(decryptedFile);
 			CryptoCipherOutputStream cos = new CryptoCipherOutputStream(decryptedOut,
 				getModel().getCipher());

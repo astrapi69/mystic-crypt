@@ -1,17 +1,16 @@
 
 plugins {
-    id "io.franzbecker.gradle-lombok" version "3.2.0"
     id "java"
     id "maven-publish"
     id "signing"
-    id "com.github.ben-manes.versions" version "0.27.0"
+    id "com.github.ben-manes.versions" version "0.28.0"
     id "com.github.hierynomus.license" version "0.15.0"
 }
 
 apply plugin: "jacoco"
 
 group = "de.alpharogroup"
-version = "7.3"
+version = "$projectVersion"
 description = "mystic-crypt"
 sourceCompatibility = "1.8"
 
@@ -21,55 +20,26 @@ repositories {
     mavenCentral()
 }
 
-ext {
-    lombokVersion = "1.18.10"
-    commonsCodecVersion = "1.13"
-    cryptApiVersion = "7.2"
-    cryptDataVersion = "7.2"
-    randomizerVersion = "6.4"
-    fileWorkerVersion = "5.4"
-    modelCoreVersion = "1.6.2"
-    xmlExtensionsVersion = "7.1"
-    sillyCollectionsVersion = "5.8"
-    jobjCloneVersion = "3.2"
-    jobjCoreVersion = "3.3"
-    jobjCopyVersion = "3.2"
-    bouncycastleVersion = "1.64"
-    testObjectsVersion = "5.2"
-    jcommonsLangVersion = "5.2.2"
-    jobjContractVerifierVersion = "3.2"
-    randomBeansVersion = "3.9.0"
-    meanbeanVersion = "2.0.3"
-    testngVersion = "7.1.0"
-    junitVersion = "4.13-rc-2"
-    mockitoCoreVersion = "3.2.4"
-}
-
 dependencies {
-    compileOnly "org.projectlombok:lombok:${lombokVersion}"
-    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-    compile "commons-codec:commons-codec:${commonsCodecVersion}"
-    compile "de.alpharogroup:crypt-api:${cryptApiVersion}"
-    compile "de.alpharogroup:crypt-data:${cryptDataVersion}"
-    compile "de.alpharogroup:randomizer-core:${randomizerVersion}"
-    compile "de.alpharogroup:file-worker:${fileWorkerVersion}"
-    compile "de.alpharogroup:model-core:${modelCoreVersion}"
-    compile "de.alpharogroup:xml-extensions:${xmlExtensionsVersion}"
-    compile "de.alpharogroup:silly-collections:${sillyCollectionsVersion}"
-    compile "de.alpharogroup:jobj-clone:${jobjCloneVersion}"
-    compile "de.alpharogroup:jobj-core:${jobjCoreVersion}"
-    compile "de.alpharogroup:jobj-copy:${jobjCopyVersion}"
-    compile "org.bouncycastle:bcprov-jdk15on:${bouncycastleVersion}"
-    compile "org.bouncycastle:bcprov-ext-jdk15on:${bouncycastleVersion}"
-    compile "org.bouncycastle:bcpkix-jdk15on:${bouncycastleVersion}"
-    testCompile "de.alpharogroup:test-objects:${testObjectsVersion}"
-    testCompile "de.alpharogroup:jcommons-lang:${jcommonsLangVersion}"
-    testCompile "de.alpharogroup:jobj-contract-verifier:${jobjContractVerifierVersion}"
-    testCompile "io.github.benas:random-beans:${randomBeansVersion}"
-    testCompile "org.meanbean:meanbean:${meanbeanVersion}"
-    testCompile "org.testng:testng:${testngVersion}"
-    testCompile "junit:junit:${junitVersion}"
-    testCompile "org.mockito:mockito-core:${mockitoCoreVersion}"
+    compile "commons-codec:commons-codec:$commonsCodecVersion"
+    compile "de.alpharogroup:crypt-api:$cryptApiVersion"
+    compile "de.alpharogroup:crypt-data:$cryptDataVersion"
+    compile "de.alpharogroup:randomizer-core:$randomizerVersion"
+    compile "de.alpharogroup:file-worker:$fileWorkerVersion"
+    compile "de.alpharogroup:silly-collections:$sillyCollectionsVersion"
+    compile "de.alpharogroup:jobj-clone:$jobjCloneVersion"
+    compile "de.alpharogroup:jobj-core:$jobjCoreVersion"
+    compile "org.bouncycastle:bcprov-jdk15on:$bouncycastleVersion"
+    compile "org.bouncycastle:bcprov-ext-jdk15on:$bouncycastleVersion"
+    compile "org.bouncycastle:bcpkix-jdk15on:$bouncycastleVersion"
+    testCompile "de.alpharogroup:xml-extensions:$xmlExtensionsVersion"
+    testCompile "de.alpharogroup:checksum-up:$checksumUpVersion"
+    testCompile "de.alpharogroup:test-objects:$testObjectsVersion"
+    testCompile "de.alpharogroup:jcommons-lang:$jcommonsLangVersion"
+    testCompile "de.alpharogroup:jobj-contract-verifier:$jobjContractVerifierVersion"
+    testCompile "io.github.benas:random-beans:$randomBeansVersion"
+    testCompile "org.meanbean:meanbean:$meanbeanVersion"
+    testCompile "org.testng:testng:$testngVersion"
 }
 
 license {
@@ -100,7 +70,6 @@ license {
               "**/*.tmpl",
               "**/*.js.tmpl",
               "**/*.editorconfig",
-              "**/*.lombok.config",
               "src/test/resources/**",
               "src/main/resources/**",
               "out/**",
@@ -121,6 +90,8 @@ task javadocJar(type: Jar) {
     archiveClassifier.set("javadoc")
     javadoc.properties.failOnError = true
 }
+
+def releaseVersion = !version.endsWith("SNAPSHOT")
 
 publishing {
     publications {
@@ -170,13 +141,15 @@ publishing {
             }
             def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
             def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
-            url = version.endsWith("SNAPSHOT") ? snapshotsRepoUrl : releasesRepoUrl
+            url = releaseVersion ? releasesRepoUrl : snapshotsRepoUrl
         }
     }
 }
 
 signing {
-    sign publishing.publications.mavenJava
+    if (releaseVersion) {
+        sign publishing.publications.mavenJava
+    }
 }
 
 javadoc {

@@ -1,6 +1,20 @@
 ## Change log
 ----------------------
 
+Version 7.4
+-------------
+
+CHANGED:
+
+- removed all lombok dependent imports
+- update of silly-collections version to 8
+- update of randomizer version to 6.8
+- update of file-worker dependency version to 5.5
+- update of jobj-core version to 3.5
+- update of testng test dependency version to 7.1.1
+- removed of junit test dependency
+- removed of mockito-core test dependency
+
 Version 7.3
 -------------
 

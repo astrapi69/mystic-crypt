@@ -24,20 +24,20 @@
  */
 package de.alpharogroup.crypto.obfuscation.character;
 
+import java.util.Objects;
+
 import com.google.common.collect.BiMap;
 
 import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
-import lombok.Getter;
-import lombok.NonNull;
+
 
 /**
  * The class {@link CharacterObfuscator}
  */
 public class CharacterObfuscator implements Obfuscatable
 {
-	@Getter
 	boolean disentanglable;
 
 	/** The key. */
@@ -47,16 +47,18 @@ public class CharacterObfuscator implements Obfuscatable
 	private final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules;
 
 	public CharacterObfuscator(
-		final @NonNull BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
-		final @NonNull String key)
+		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
+		final String key)
 	{
 		this(rules, key, false);
 	}
 
 	public CharacterObfuscator(
-		final @NonNull BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
-		final @NonNull String key, final boolean validate)
+		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
+		final String key, final boolean validate)
 	{
+		Objects.requireNonNull(rules);
+		Objects.requireNonNull(key);
 		Check.get().notEmpty(rules, "rules");
 		Check.get().notEmpty(key, "key");
 		this.rules = rules;
@@ -73,6 +75,11 @@ public class CharacterObfuscator implements Obfuscatable
 		return ObfuscatorExtensions.disentangle(rules, obfuscate());
 	}
 
+	public boolean isDisentanglable()
+	{
+		return this.disentanglable;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -81,5 +88,4 @@ public class CharacterObfuscator implements Obfuscatable
 	{
 		return ObfuscatorExtensions.obfuscateWith(rules, this.key);
 	}
-
 }

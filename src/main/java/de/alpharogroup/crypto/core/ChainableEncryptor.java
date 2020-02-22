@@ -25,7 +25,6 @@
 package de.alpharogroup.crypto.core;
 
 import de.alpharogroup.crypto.api.Encryptor;
-import lombok.Getter;
 
 /**
  * The class {@link ChainableEncryptor} can take many {@code Encryptor} objects and encrypts the
@@ -35,7 +34,6 @@ public abstract class ChainableEncryptor<T> implements Encryptor<T, T>
 {
 
 	/** The array with the {@code Encryptor} objects. */
-	@Getter
 	private final Encryptor<T, T>[] encryptors;
 
 	/**
@@ -62,5 +60,10 @@ public abstract class ChainableEncryptor<T> implements Encryptor<T, T>
 			result = encryptor.encrypt(result);
 		}
 		return result;
+	}
+
+	public Encryptor<T, T>[] getEncryptors()
+	{
+		return this.encryptors;
 	}
 }

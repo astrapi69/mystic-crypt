@@ -24,13 +24,10 @@
  */
 package de.alpharogroup.crypto.obfuscation.character;
 
-import lombok.experimental.UtilityClass;
-
 /**
  * The class {@link CharacterExtensions} provides utility methods for {@link Character} objects
  */
-@UtilityClass
-public class CharacterExtensions
+public final class CharacterExtensions
 {
 
 	/**
@@ -55,5 +52,9 @@ public class CharacterExtensions
 		return Character.valueOf(Character.toLowerCase(character.charValue()))
 			.equals(Character.valueOf(Character.toLowerCase(another.charValue())));
 
+	}
+
+	private CharacterExtensions()
+	{
 	}
 }

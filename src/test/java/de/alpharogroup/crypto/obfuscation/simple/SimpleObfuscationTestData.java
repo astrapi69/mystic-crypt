@@ -28,76 +28,12 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationRule;
-import lombok.experimental.UtilityClass;
 
 /**
  * The class {@link SimpleObfuscationTestData} provides test data for test the obfuscation rules
  */
-@UtilityClass
-public class SimpleObfuscationTestData
+public final class SimpleObfuscationTestData
 {
-
-	/**
-	 * Gets the {@link BiMap} for obfuscation rules with only three rules for use in unit tests.
-	 *
-	 * @return the {@link BiMap} for obfuscation rules with only three rules
-	 */
-	public static BiMap<Character, ObfuscationRule<Character, Character>> getSmallBiMapObfuscationRules()
-	{
-		Character character;
-		Character replaceWith;
-		ObfuscationRule<Character, Character> rule;
-		BiMap<Character, ObfuscationRule<Character, Character>> rules;
-
-		rules = HashBiMap.create();
-
-		character = Character.valueOf('a');
-		replaceWith = 'b';
-		rule = ObfuscationRule.<Character, Character> builder().character(character)
-			.replaceWith(replaceWith).build();
-		rules.put(character, rule);
-
-		character = Character.valueOf('b');
-		replaceWith = 'c';
-		rule = ObfuscationRule.<Character, Character> builder().character(character)
-			.replaceWith(replaceWith).build();
-		rules.put(character, rule);
-
-		character = Character.valueOf('c');
-		replaceWith = 'd';
-		rule = ObfuscationRule.<Character, Character> builder().character(character)
-			.replaceWith(replaceWith).build();
-		rules.put(character, rule);
-		return rules;
-	}
-
-	/**
-	 * Gets the {@link BiMap} for obfuscation rules with only two rules for use in unit tests.
-	 *
-	 * @return the {@link BiMap} for obfuscation rules with only two rules
-	 */
-	public static BiMap<Character, ObfuscationRule<Character, Character>> getSmallestBiMapObfuscationRules()
-	{
-		Character character;
-		Character replaceWith;
-		ObfuscationRule<Character, Character> rule;
-		BiMap<Character, ObfuscationRule<Character, Character>> rules;
-
-		rules = HashBiMap.create();
-
-		character = Character.valueOf('a');
-		replaceWith = 'b';
-		rule = ObfuscationRule.<Character, Character> builder().character(character)
-			.replaceWith(replaceWith).build();
-		rules.put(character, rule);
-
-		character = Character.valueOf('c');
-		replaceWith = 'e';
-		rule = ObfuscationRule.<Character, Character> builder().character(character)
-			.replaceWith(replaceWith).build();
-		rules.put(character, rule);
-		return rules;
-	}
 
 	/**
 	 * Gets the {@link BiMap} for obfuscation rules with 26 rules for use in unit tests.
@@ -269,6 +205,72 @@ public class SimpleObfuscationTestData
 			.replaceWith(replaceWith).build();
 		rules.put(character, rule);
 		return rules;
+	}
+
+	/**
+	 * Gets the {@link BiMap} for obfuscation rules with only three rules for use in unit tests.
+	 *
+	 * @return the {@link BiMap} for obfuscation rules with only three rules
+	 */
+	public static BiMap<Character, ObfuscationRule<Character, Character>> getSmallBiMapObfuscationRules()
+	{
+		Character character;
+		Character replaceWith;
+		ObfuscationRule<Character, Character> rule;
+		BiMap<Character, ObfuscationRule<Character, Character>> rules;
+
+		rules = HashBiMap.create();
+
+		character = Character.valueOf('a');
+		replaceWith = 'b';
+		rule = ObfuscationRule.<Character, Character> builder().character(character)
+			.replaceWith(replaceWith).build();
+		rules.put(character, rule);
+
+		character = Character.valueOf('b');
+		replaceWith = 'c';
+		rule = ObfuscationRule.<Character, Character> builder().character(character)
+			.replaceWith(replaceWith).build();
+		rules.put(character, rule);
+
+		character = Character.valueOf('c');
+		replaceWith = 'd';
+		rule = ObfuscationRule.<Character, Character> builder().character(character)
+			.replaceWith(replaceWith).build();
+		rules.put(character, rule);
+		return rules;
+	}
+
+	/**
+	 * Gets the {@link BiMap} for obfuscation rules with only two rules for use in unit tests.
+	 *
+	 * @return the {@link BiMap} for obfuscation rules with only two rules
+	 */
+	public static BiMap<Character, ObfuscationRule<Character, Character>> getSmallestBiMapObfuscationRules()
+	{
+		Character character;
+		Character replaceWith;
+		ObfuscationRule<Character, Character> rule;
+		BiMap<Character, ObfuscationRule<Character, Character>> rules;
+
+		rules = HashBiMap.create();
+
+		character = Character.valueOf('a');
+		replaceWith = 'b';
+		rule = ObfuscationRule.<Character, Character> builder().character(character)
+			.replaceWith(replaceWith).build();
+		rules.put(character, rule);
+
+		character = Character.valueOf('c');
+		replaceWith = 'e';
+		rule = ObfuscationRule.<Character, Character> builder().character(character)
+			.replaceWith(replaceWith).build();
+		rules.put(character, rule);
+		return rules;
+	}
+
+	private SimpleObfuscationTestData()
+	{
 	}
 
 }

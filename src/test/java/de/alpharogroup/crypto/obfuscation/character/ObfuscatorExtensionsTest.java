@@ -28,14 +28,13 @@ import static org.testng.AssertJUnit.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
 import org.apache.commons.codec.DecoderException;
-import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -53,14 +52,10 @@ import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
 import de.alpharogroup.crypto.obfuscation.rule.Operation;
 import de.alpharogroup.file.search.PathFinder;
 import de.alpharogroup.xml.crypto.file.XmlDecryptionExtensions;
-import lombok.AccessLevel;
-import lombok.NonNull;
-import lombok.experimental.FieldDefaults;
 
 /**
  * The unit test class for the class {@link ObfuscatorExtensions}
  */
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 {
 
@@ -88,8 +83,9 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 	}
 
 	BiMap<Character, ObfuscationOperationRule<Character, Character>> loadXmlListToBiMap(
-		@NonNull final File xmlListFile) throws IOException, DecoderException
+		final File xmlListFile) throws IOException, DecoderException
 	{
+		Objects.requireNonNull(xmlListFile);
 		List<KeyValuePair<Character, ObfuscationOperationRule<Character, Character>>> data = XmlDecryptionExtensions
 			.readFromFileAsXmlAndHex(xStream, aliases, xmlListFile);
 		return HashBiMap.create(KeyValuePair.toMap(data));
@@ -188,7 +184,7 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 
 		testRules = loadXmlListToBiMap(xmlListFile);
 		testRules.put('A', ObfuscationOperationRule.<Character, Character> builder().character('A')
-			.replaceWith('5').build());
+			.indexes(SetFactory.newHashSet()).replaceWith('5').build());
 		obfuscateWith = ObfuscatorExtensions.obfuscateWith(testRules, stringToObfuscate);
 
 		actual = ObfuscatorExtensions.disentangleImproved(testRules, obfuscateWith);
@@ -397,8 +393,7 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 	/**
 	 * Test method for {@link ObfuscatorExtensions} with {@link BeanTester}
 	 */
-	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
-			UnsupportedOperationException.class })
+	@Test
 	public void testWithBeanTester()
 	{
 		final BeanTester beanTester = new BeanTester();

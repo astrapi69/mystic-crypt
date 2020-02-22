@@ -35,9 +35,9 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.AbstractTestCase;
+import de.alpharogroup.checksum.FileChecksumExtensions;
 import de.alpharogroup.crypto.algorithm.MdAlgorithm;
 import de.alpharogroup.crypto.algorithm.SunJCEAlgorithm;
-import de.alpharogroup.crypto.file.checksum.FileChecksumExtensions;
 import de.alpharogroup.crypto.model.CryptModel;
 import de.alpharogroup.crypto.model.StringDecorator;
 import de.alpharogroup.file.delete.DeleteFileExtensions;

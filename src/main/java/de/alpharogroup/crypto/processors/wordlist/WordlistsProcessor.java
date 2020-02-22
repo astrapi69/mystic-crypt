@@ -27,8 +27,6 @@ package de.alpharogroup.crypto.processors.wordlist;
 import java.util.List;
 
 import de.alpharogroup.check.Check;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * The class {@link WordlistsProcessor} can process a list of words. For an example see the unit
@@ -41,8 +39,6 @@ public class WordlistsProcessor
 	private int currentIndex;
 
 	/** The password to check against it. */
-	@Getter
-	@Setter
 	private String toCheckAgainst;
 
 	/** The word list. */
@@ -93,6 +89,11 @@ public class WordlistsProcessor
 		return null;
 	}
 
+	public String getToCheckAgainst()
+	{
+		return this.toCheckAgainst;
+	}
+
 	/**
 	 * Increments the word list current index.
 	 *
@@ -129,5 +130,10 @@ public class WordlistsProcessor
 			continueIterate = increment();
 		}
 		return found;
+	}
+
+	public void setToCheckAgainst(String toCheckAgainst)
+	{
+		this.toCheckAgainst = toCheckAgainst;
 	}
 }
