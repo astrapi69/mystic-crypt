@@ -187,7 +187,9 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
 		stringToObfuscate = "Asterios";
 
 		testRules = loadXmlListToBiMap(xmlListFile);
-		testRules.put('A', ObfuscationOperationRule.<Character, Character> builder().character('A')
+		testRules.put('A', ObfuscationOperationRule.<Character, Character> builder()
+			.character('A')
+			.indexes(SetFactory.newHashSet())
 			.replaceWith('5').build());
 		obfuscateWith = ObfuscatorExtensions.obfuscateWith(testRules, stringToObfuscate);
 

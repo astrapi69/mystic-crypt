@@ -44,6 +44,8 @@ import lombok.experimental.UtilityClass;
  *
  * @version 1.0
  * @author Asterios Raptis
+ * @deprecated use instead the same name class from project checksum-up<br><br>
+ *     Note: will be removed in next minor version
  */
 @UtilityClass
 public final class FileChecksumExtensions
