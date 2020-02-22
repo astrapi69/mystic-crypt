@@ -25,8 +25,6 @@
 package de.alpharogroup.crypto.core;
 
 import de.alpharogroup.crypto.api.Decryptor;
-import lombok.Getter;
-import lombok.Singular;
 
 /**
  * The class {@link ChainableDecryptor} can take many {@code Decryptor} objects and decrypts the
@@ -37,8 +35,6 @@ public abstract class ChainableDecryptor<T> implements Decryptor<T, T>
 {
 
 	/** The decryptors. */
-	@Getter
-	@Singular
 	private final Decryptor<T, T>[] decryptors;
 
 	/**
@@ -65,5 +61,10 @@ public abstract class ChainableDecryptor<T> implements Decryptor<T, T>
 			result = encryptor.decrypt(result);
 		}
 		return result;
+	}
+
+	public Decryptor<T, T>[] getDecryptors()
+	{
+		return this.decryptors;
 	}
 }

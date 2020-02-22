@@ -34,6 +34,7 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Objects;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherOutputStream;
@@ -41,7 +42,6 @@ import javax.crypto.NoSuchPaddingException;
 
 import de.alpharogroup.crypto.core.AbstractObjectEncryptor;
 import de.alpharogroup.crypto.model.CryptModel;
-import lombok.NonNull;
 
 /**
  * The class {@link GenericObjectEncryptor} can encrypt files with the given crypt model.
@@ -84,11 +84,12 @@ public class GenericObjectEncryptor<T, D> extends AbstractObjectEncryptor<T, D>
 	 *             is thrown if the named charset is not supported.
 	 */
 	public GenericObjectEncryptor(final CryptModel<Cipher, String, D> model,
-		final @NonNull File encryptedFile)
+		final File encryptedFile)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
 		super(model);
+		Objects.requireNonNull(encryptedFile);
 		this.encryptedFile = encryptedFile;
 	}
 
@@ -96,8 +97,9 @@ public class GenericObjectEncryptor<T, D> extends AbstractObjectEncryptor<T, D>
 	 * {@inheritDoc}
 	 */
 	@Override
-	public File encrypt(final @NonNull T toEncrypt) throws Exception
+	public File encrypt(final T toEncrypt) throws Exception
 	{
+		Objects.requireNonNull(toEncrypt);
 		onBeforeEncrypt(toEncrypt);
 		onEncrypt(toEncrypt);
 		onAfterEncrypt(toEncrypt);
@@ -120,18 +122,19 @@ public class GenericObjectEncryptor<T, D> extends AbstractObjectEncryptor<T, D>
 		return new File(parent, child);
 	}
 
-	protected void onAfterEncrypt(final @NonNull T toEncrypt)
+	protected void onAfterEncrypt(final T toEncrypt)
 	{
-
+		Objects.requireNonNull(toEncrypt);
 	}
 
-	protected void onBeforeEncrypt(final @NonNull T toEncrypt)
+	protected void onBeforeEncrypt(final T toEncrypt)
 	{
-
+		Objects.requireNonNull(toEncrypt);
 	}
 
-	private void onEncrypt(final @NonNull T toEncrypt) throws IOException
+	private void onEncrypt(final T toEncrypt) throws IOException
 	{
+		Objects.requireNonNull(toEncrypt);
 		Cipher cipher = getModel().getCipher();
 		try (
 			CipherOutputStream cipherOutputStream = new CipherOutputStream(
@@ -139,7 +142,6 @@ public class GenericObjectEncryptor<T, D> extends AbstractObjectEncryptor<T, D>
 			ObjectOutputStream outputStream = new ObjectOutputStream(cipherOutputStream);)
 		{
 			outputStream.writeObject(toEncrypt);
-			outputStream.close();
 		}
 	}
 

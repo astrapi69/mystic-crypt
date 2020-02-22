@@ -30,6 +30,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Objects;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -40,9 +41,6 @@ import org.apache.commons.codec.DecoderException;
 
 import de.alpharogroup.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
 import de.alpharogroup.crypto.hex.HexExtensions;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NonNull;
 
 /**
  * The class {@link PrivateKeyHexDecryptor} decrypts encrypted characters the was encrypted with the
@@ -53,7 +51,6 @@ public final class PrivateKeyHexDecryptor
 	/**
 	 * The Cipher object
 	 */
-	@Getter
 	private Cipher cipher;
 
 	/**
@@ -61,13 +58,11 @@ public final class PrivateKeyHexDecryptor
 	 *
 	 * @return true, if is initialized
 	 */
-	@Getter(value = AccessLevel.PRIVATE)
 	private boolean initialized;
 
 	/**
 	 * The private key
 	 */
-	@Getter
 	private final PrivateKey privateKey;
 
 	/**
@@ -76,8 +71,9 @@ public final class PrivateKeyHexDecryptor
 	 * @param privateKey
 	 *            The private key
 	 */
-	public PrivateKeyHexDecryptor(final @NonNull PrivateKey privateKey)
+	public PrivateKeyHexDecryptor(final PrivateKey privateKey)
 	{
+		Objects.requireNonNull(privateKey);
 		this.privateKey = privateKey;
 	}
 
@@ -118,6 +114,16 @@ public final class PrivateKeyHexDecryptor
 		return new String(utf8, "UTF-8");
 	}
 
+	public Cipher getCipher()
+	{
+		return this.cipher;
+	}
+
+	public PrivateKey getPrivateKey()
+	{
+		return this.privateKey;
+	}
+
 	/**
 	 * Initializes the {@link PrivateKeyHexDecryptor} object
 	 *
@@ -148,4 +154,8 @@ public final class PrivateKeyHexDecryptor
 		}
 	}
 
+	private boolean isInitialized()
+	{
+		return this.initialized;
+	}
 }

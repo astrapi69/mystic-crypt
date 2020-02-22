@@ -24,15 +24,12 @@
  */
 package de.alpharogroup.crypto.simple;
 
-import lombok.experimental.UtilityClass;
-
 /**
  * The class {@link SimpleCrypt} is an utility class for the use of encrypt or decrypt information.
  *
  * @version 1.0
  * @author Asterios Raptis
  */
-@UtilityClass
 public final class SimpleCrypt
 {
 
@@ -102,6 +99,10 @@ public final class SimpleCrypt
 			sb.append(a);
 		}
 		return sb.toString().trim();
+	}
+
+	private SimpleCrypt()
+	{
 	}
 
 }

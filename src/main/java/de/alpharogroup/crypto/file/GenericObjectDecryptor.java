@@ -34,6 +34,7 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Objects;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
@@ -41,7 +42,6 @@ import javax.crypto.NoSuchPaddingException;
 
 import de.alpharogroup.crypto.core.AbstractObjectDecryptor;
 import de.alpharogroup.crypto.model.CryptModel;
-import lombok.NonNull;
 
 /**
  * The class {@link GenericObjectDecryptor} can decrypt files from the given crypt model bean
@@ -84,8 +84,9 @@ public class GenericObjectDecryptor<R, D> extends AbstractObjectDecryptor<R, D>
 	 * {@inheritDoc}
 	 */
 	@Override
-	public R decrypt(final @NonNull File encrypted) throws Exception
+	public R decrypt(final File encrypted) throws Exception
 	{
+		Objects.requireNonNull(encrypted);
 		onBeforeDecrypt(encrypted);
 		R genericObject = onDecrypt(encrypted);
 		onAfterDecrypt(encrypted);
@@ -93,19 +94,20 @@ public class GenericObjectDecryptor<R, D> extends AbstractObjectDecryptor<R, D>
 	}
 
 
-	protected void onAfterDecrypt(final @NonNull File encrypted)
+	protected void onAfterDecrypt(final File encrypted)
 	{
-
+		Objects.requireNonNull(encrypted);
 	}
 
-	protected void onBeforeDecrypt(final @NonNull File encrypted)
+	protected void onBeforeDecrypt(final File encrypted)
 	{
-
+		Objects.requireNonNull(encrypted);
 	}
 
 	@SuppressWarnings("unchecked")
-	private R onDecrypt(final @NonNull File encrypted) throws IOException, ClassNotFoundException
+	private R onDecrypt(final File encrypted) throws IOException, ClassNotFoundException
 	{
+		Objects.requireNonNull(encrypted);
 		R genericObject = null;
 		Cipher cipher = getModel().getCipher();
 		try (

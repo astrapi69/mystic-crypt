@@ -25,55 +25,19 @@
 package de.alpharogroup.crypto.obfuscation.simple;
 
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationRule;
-import lombok.NonNull;
-import lombok.experimental.UtilityClass;
 
 /**
  * The class {@link SimpleObfuscatorExtensions} provides algorithms for obfuscate strings.
  */
-@UtilityClass
-public class SimpleObfuscatorExtensions
+public final class SimpleObfuscatorExtensions
 {
-
-	/**
-	 * Obfuscate with the given {@link BiMap}
-	 *
-	 * @param rules
-	 *            the rules
-	 * @param toObfuscate
-	 *            the {@link String} object to obfuscate
-	 * @return the string
-	 */
-	public static String obfuscateWith(
-		final BiMap<Character, ObfuscationRule<Character, Character>> rules,
-		final String toObfuscate)
-	{
-		final StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < toObfuscate.length(); i++)
-		{
-			final char currentCharacter = toObfuscate.charAt(i);
-			final Character asCharacter = Character.valueOf(currentCharacter);
-			final String charAsString = Character.toString(currentCharacter);
-			if (rules.containsKey(asCharacter))
-			{
-				final ObfuscationRule<Character, Character> obfuscationOperationRule = rules
-					.get(asCharacter);
-				final Character replaceWith = obfuscationOperationRule.getReplaceWith();
-				sb.append(replaceWith);
-			}
-			else
-			{
-				sb.append(charAsString);
-			}
-		}
-		return sb.toString();
-	}
 
 	/**
 	 * Disentangle the given obfuscated text with the given {@link BiMap} rules
@@ -166,6 +130,40 @@ public class SimpleObfuscatorExtensions
 	}
 
 	/**
+	 * Obfuscate with the given {@link BiMap}
+	 *
+	 * @param rules
+	 *            the rules
+	 * @param toObfuscate
+	 *            the {@link String} object to obfuscate
+	 * @return the string
+	 */
+	public static String obfuscateWith(
+		final BiMap<Character, ObfuscationRule<Character, Character>> rules,
+		final String toObfuscate)
+	{
+		final StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < toObfuscate.length(); i++)
+		{
+			final char currentCharacter = toObfuscate.charAt(i);
+			final Character asCharacter = Character.valueOf(currentCharacter);
+			final String charAsString = Character.toString(currentCharacter);
+			if (rules.containsKey(asCharacter))
+			{
+				final ObfuscationRule<Character, Character> obfuscationOperationRule = rules
+					.get(asCharacter);
+				final Character replaceWith = obfuscationOperationRule.getReplaceWith();
+				sb.append(replaceWith);
+			}
+			else
+			{
+				sb.append(charAsString);
+			}
+		}
+		return sb.toString();
+	}
+
+	/**
 	 * Transforms the given obfuscation rules {@link BiMap} to a simple character {@link BiMap}
 	 *
 	 * @param rules
@@ -173,8 +171,9 @@ public class SimpleObfuscatorExtensions
 	 * @return the simple character {@link BiMap}
 	 */
 	public static BiMap<Character, Character> toCharacterBiMap(
-		@NonNull BiMap<Character, ObfuscationRule<Character, Character>> rules)
+		BiMap<Character, ObfuscationRule<Character, Character>> rules)
 	{
+		Objects.requireNonNull(rules);
 		BiMap<Character, Character> biMap = HashBiMap.create();
 		rules.keySet().stream().forEach(
 			key -> biMap.put(rules.get(key).getCharacter(), rules.get(key).getReplaceWith()));
@@ -200,6 +199,10 @@ public class SimpleObfuscatorExtensions
 			}
 		}
 		return true;
+	}
+
+	private SimpleObfuscatorExtensions()
+	{
 	}
 
 }

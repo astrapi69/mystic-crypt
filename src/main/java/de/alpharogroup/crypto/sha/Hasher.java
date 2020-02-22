@@ -40,15 +40,13 @@ import de.alpharogroup.crypto.algorithm.HashAlgorithm;
 import de.alpharogroup.crypto.compound.CompoundAlgorithm;
 import de.alpharogroup.crypto.hash.HashExtensions;
 import de.alpharogroup.crypto.hex.HexableEncryptor;
-import lombok.experimental.UtilityClass;
 
 /**
  * The class {@link Hasher}
  *
  * @author Asterios Raptis
  */
-@UtilityClass
-public class Hasher
+public final class Hasher
 {
 
 	/**
@@ -128,6 +126,10 @@ public class Hasher
 	{
 		final HexableEncryptor hexEncryptor = new HexableEncryptor(privateKey);
 		return hexEncryptor.encrypt(HashExtensions.hash(hashIt, salt, hashAlgorithm, charset));
+	}
+
+	private Hasher()
+	{
 	}
 
 }

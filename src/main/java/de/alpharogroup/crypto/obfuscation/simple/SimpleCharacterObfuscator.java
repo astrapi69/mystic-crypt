@@ -24,29 +24,27 @@
  */
 package de.alpharogroup.crypto.obfuscation.simple;
 
+import java.util.Objects;
+
 import com.google.common.collect.BiMap;
 
 import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationRule;
-import lombok.AccessLevel;
-import lombok.NonNull;
-import lombok.experimental.FieldDefaults;
 
 /**
  * The class {@link SimpleCharacterObfuscator} provide as the name says obfuscation of a given text
  */
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SimpleCharacterObfuscator implements Obfuscatable
 {
 
-	BiMap<Character, Character> biMap;
+	private final BiMap<Character, Character> biMap;
 
 	/** The key. */
-	String key;
+	private final String key;
 
 	/** The rule. */
-	BiMap<Character, ObfuscationRule<Character, Character>> rules;
+	private final BiMap<Character, ObfuscationRule<Character, Character>> rules;
 
 	/**
 	 * Instantiates a new {@link SimpleCharacterObfuscator}
@@ -57,9 +55,10 @@ public class SimpleCharacterObfuscator implements Obfuscatable
 	 *            the key
 	 */
 	public SimpleCharacterObfuscator(
-		final @NonNull BiMap<Character, ObfuscationRule<Character, Character>> rules,
-		final @NonNull String key)
+		final BiMap<Character, ObfuscationRule<Character, Character>> rules, final String key)
 	{
+		Objects.requireNonNull(rules);
+		Objects.requireNonNull(key);
 		Check.get().notEmpty(rules, "rules");
 		Check.get().notEmpty(key, "key");
 		this.rules = rules;

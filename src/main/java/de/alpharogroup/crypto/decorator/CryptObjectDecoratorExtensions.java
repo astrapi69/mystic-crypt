@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.Objects;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -35,19 +36,23 @@ import org.apache.commons.lang3.StringUtils;
 import de.alpharogroup.crypto.model.CharacterDecorator;
 import de.alpharogroup.crypto.model.CryptObjectDecorator;
 import de.alpharogroup.file.read.ReadFileExtensions;
-import lombok.NonNull;
 
-public class CryptObjectDecoratorExtensions
+public final class CryptObjectDecoratorExtensions
 {
-	public static String decorateFile(final @NonNull File toEncrypt,
-		final @NonNull CryptObjectDecorator<String> decorator) throws IOException
+	public static String decorateFile(final File toEncrypt,
+		final CryptObjectDecorator<String> decorator) throws IOException
 	{
+		Objects.requireNonNull(toEncrypt);
+		Objects.requireNonNull(decorator);
 		return decorateWithStringDecorator(ReadFileExtensions.readFromFile(toEncrypt), decorator);
 	}
 
-	public static String decorateWithBytearrayDecorator(final @NonNull String toEncrypt,
-		final @NonNull CryptObjectDecorator<byte[]> decorator, final @NonNull Charset charset)
+	public static String decorateWithBytearrayDecorator(final String toEncrypt,
+		final CryptObjectDecorator<byte[]> decorator, final Charset charset)
 	{
+		Objects.requireNonNull(toEncrypt);
+		Objects.requireNonNull(decorator);
+		Objects.requireNonNull(charset);
 		StringBuilder sb = new StringBuilder();
 		sb.append(new String(decorator.getPrefix(), charset));
 
@@ -57,9 +62,11 @@ public class CryptObjectDecoratorExtensions
 		return sb.toString();
 	}
 
-	public static String decorateWithCharacterDecorator(final @NonNull String toEncrypt,
-		final @NonNull CharacterDecorator decorator)
+	public static String decorateWithCharacterDecorator(final String toEncrypt,
+		final CharacterDecorator decorator)
 	{
+		Objects.requireNonNull(toEncrypt);
+		Objects.requireNonNull(decorator);
 		StringBuilder sb = new StringBuilder();
 		sb.append(decorator.getPrefix());
 		sb.append(toEncrypt);
@@ -67,9 +74,11 @@ public class CryptObjectDecoratorExtensions
 		return sb.toString();
 	}
 
-	public static String decorateWithStringDecorator(final @NonNull String toEncrypt,
-		final @NonNull CryptObjectDecorator<String> decorator)
+	public static String decorateWithStringDecorator(final String toEncrypt,
+		final CryptObjectDecorator<String> decorator)
 	{
+		Objects.requireNonNull(toEncrypt);
+		Objects.requireNonNull(decorator);
 		StringBuilder sb = new StringBuilder();
 		sb.append(decorator.getPrefix());
 		sb.append(toEncrypt);
@@ -77,8 +86,10 @@ public class CryptObjectDecoratorExtensions
 		return sb.toString();
 	}
 
-	private static boolean endsWith(final @NonNull byte[] array, final @NonNull byte[] suffix)
+	private static boolean endsWith(final byte[] array, final byte[] suffix)
 	{
+		Objects.requireNonNull(array);
+		Objects.requireNonNull(suffix);
 		int lastIndex = suffix.length - 1;
 		int currentIndex = lastIndex;
 		if (ArrayUtils.isEmpty(suffix))
@@ -99,18 +110,22 @@ public class CryptObjectDecoratorExtensions
 		return true;
 	}
 
-	private static byte[] removeFromEnd(final @NonNull byte[] array, final @NonNull byte[] suffix)
+	private static byte[] removeFromEnd(final byte[] array, final byte[] suffix)
 	{
+		Objects.requireNonNull(array);
+		Objects.requireNonNull(suffix);
 		return Arrays.copyOf(array, array.length - suffix.length);
 	}
 
-
-	private static byte[] removeFromStart(final @NonNull byte[] array, final @NonNull byte[] prefix)
+	private static byte[] removeFromStart(final byte[] array, final byte[] prefix)
 	{
+		Objects.requireNonNull(array);
+		Objects.requireNonNull(prefix);
 		byte[] result = new byte[array.length - prefix.length];
 		System.arraycopy(array, prefix.length, result, 0, result.length);
 		return result;
 	}
+
 
 	private static boolean startsWith(final byte[] array, byte[] prefix)
 	{
@@ -124,15 +139,19 @@ public class CryptObjectDecoratorExtensions
 		return true;
 	}
 
-	public static String undecorateFile(final @NonNull File decrypted,
-		final @NonNull CryptObjectDecorator<String> decorator) throws IOException
+	public static String undecorateFile(final File decrypted,
+		final CryptObjectDecorator<String> decorator) throws IOException
 	{
+		Objects.requireNonNull(decrypted);
+		Objects.requireNonNull(decorator);
 		return undecorateWithStringDecorator(ReadFileExtensions.readFromFile(decrypted), decorator);
 	}
 
-	public static String undecorateWithBytearrayDecorator(final @NonNull String toEncrypt,
-		final @NonNull CryptObjectDecorator<byte[]> decorator)
+	public static String undecorateWithBytearrayDecorator(final String toEncrypt,
+		final CryptObjectDecorator<byte[]> decorator)
 	{
+		Objects.requireNonNull(toEncrypt);
+		Objects.requireNonNull(decorator);
 		byte[] result = toEncrypt.getBytes();
 		byte[] prefix = decorator.getPrefix();
 		byte[] suffix = decorator.getSuffix();
@@ -150,10 +169,11 @@ public class CryptObjectDecoratorExtensions
 		return new String(result);
 	}
 
-
-	public static String undecorateWithCharacterDecorator(final @NonNull String toEncrypt,
-		final @NonNull CharacterDecorator decorator)
+	public static String undecorateWithCharacterDecorator(final String toEncrypt,
+		final CharacterDecorator decorator)
 	{
+		Objects.requireNonNull(toEncrypt);
+		Objects.requireNonNull(decorator);
 		StringBuilder sb = new StringBuilder(toEncrypt);
 		boolean prefixRemoved = false;
 		if (toEncrypt.startsWith(decorator.getPrefix().toString()))
@@ -176,9 +196,12 @@ public class CryptObjectDecoratorExtensions
 		return sb.toString();
 	}
 
-	public static String undecorateWithStringDecorator(final @NonNull String decrypted,
-		final @NonNull CryptObjectDecorator<String> decorator)
+
+	public static String undecorateWithStringDecorator(final String decrypted,
+		final CryptObjectDecorator<String> decorator)
 	{
+		Objects.requireNonNull(decrypted);
+		Objects.requireNonNull(decorator);
 		String result = decrypted;
 		if (decrypted.startsWith(decorator.getPrefix()))
 		{
@@ -190,5 +213,9 @@ public class CryptObjectDecoratorExtensions
 
 		}
 		return result;
+	}
+
+	private CryptObjectDecoratorExtensions()
+	{
 	}
 }

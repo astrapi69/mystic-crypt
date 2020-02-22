@@ -30,6 +30,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Objects;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -39,9 +40,6 @@ import javax.crypto.NoSuchPaddingException;
 import org.apache.commons.codec.binary.Hex;
 
 import de.alpharogroup.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NonNull;
 
 /**
  * The class {@link PublicKeyHexEncryptor} can encrypt characters with his public key.
@@ -52,7 +50,6 @@ public final class PublicKeyHexEncryptor
 	/**
 	 * the Cipher object
 	 */
-	@Getter
 	private Cipher cipher;
 
 	/**
@@ -60,13 +57,11 @@ public final class PublicKeyHexEncryptor
 	 *
 	 * @return true, if is initialized
 	 */
-	@Getter(value = AccessLevel.PRIVATE)
 	private boolean initialized;
 
 	/**
 	 * the public key
 	 */
-	@Getter
 	private final PublicKey publicKey;
 
 	/**
@@ -75,8 +70,9 @@ public final class PublicKeyHexEncryptor
 	 * @param publicKey
 	 *            the public key
 	 */
-	public PublicKeyHexEncryptor(final @NonNull PublicKey publicKey)
+	public PublicKeyHexEncryptor(final PublicKey publicKey)
 	{
+		Objects.requireNonNull(publicKey);
 		this.publicKey = publicKey;
 	}
 
@@ -113,6 +109,16 @@ public final class PublicKeyHexEncryptor
 		return new String(original);
 	}
 
+	public Cipher getCipher()
+	{
+		return this.cipher;
+	}
+
+	public PublicKey getPublicKey()
+	{
+		return this.publicKey;
+	}
+
 	/**
 	 * Initializes this {@link PublicKeyHexEncryptor} object
 	 *
@@ -140,4 +146,8 @@ public final class PublicKeyHexEncryptor
 		}
 	}
 
+	private boolean isInitialized()
+	{
+		return this.initialized;
+	}
 }

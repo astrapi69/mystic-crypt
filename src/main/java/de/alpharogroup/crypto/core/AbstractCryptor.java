@@ -31,6 +31,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Objects;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
@@ -45,8 +46,6 @@ import de.alpharogroup.crypto.compound.CompoundAlgorithm;
 import de.alpharogroup.crypto.factories.AlgorithmParameterSpecFactory;
 import de.alpharogroup.crypto.factories.SecretKeyFactoryExtensions;
 import de.alpharogroup.crypto.model.CryptModel;
-import lombok.Getter;
-import lombok.NonNull;
 
 /**
  * The abstract class {@link AbstractCryptor} provides factory methods that may or must be
@@ -69,7 +68,6 @@ public abstract class AbstractCryptor<C, K, T> implements Serializable, Cryptor
 	private static final long serialVersionUID = 1L;
 
 	/** The crypto model. */
-	@Getter
 	protected final CryptModel<C, K, T> model;
 
 	/**
@@ -92,10 +90,11 @@ public abstract class AbstractCryptor<C, K, T> implements Serializable, Cryptor
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public AbstractCryptor(final @NonNull CryptModel<C, K, T> model)
+	public AbstractCryptor(final CryptModel<C, K, T> model)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
+		Objects.requireNonNull(model);
 		Check.get().notNull(model.getKey(), "model.getKey()");
 		this.model = model;
 		onInitialize();
@@ -128,6 +127,11 @@ public abstract class AbstractCryptor<C, K, T> implements Serializable, Cryptor
 		Check.get().notNull(key, "key");
 		model = CryptModel.<C, K, T> builder().key(key).build();
 		onInitialize();
+	}
+
+	public CryptModel<C, K, T> getModel()
+	{
+		return this.model;
 	}
 
 	/**
@@ -295,5 +299,4 @@ public abstract class AbstractCryptor<C, K, T> implements Serializable, Cryptor
 		model.setCipher(newCipher(model.getKey()));
 		model.setInitialized(true);
 	}
-
 }

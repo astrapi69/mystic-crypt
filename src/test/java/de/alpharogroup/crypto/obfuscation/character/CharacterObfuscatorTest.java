@@ -39,13 +39,10 @@ import com.google.common.collect.BiMap;
 import de.alpharogroup.AbstractTestCase;
 import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
 
 /**
  * The unit test class for the class {@link CharacterObfuscator}
  */
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CharacterObfuscatorTest extends AbstractTestCase<String, String>
 {
 

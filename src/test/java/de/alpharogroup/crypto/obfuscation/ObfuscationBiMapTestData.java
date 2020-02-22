@@ -27,63 +27,11 @@ package de.alpharogroup.crypto.obfuscation;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
-import lombok.experimental.UtilityClass;
-
 /**
  * The class {@link ObfuscationBiMapTestData} provides test data for test the obfuscation rules
  */
-@UtilityClass
-public class ObfuscationBiMapTestData
+public final class ObfuscationBiMapTestData
 {
-
-	/**
-	 * Gets the {@link BiMap} for obfuscation operation rules with only three operation rules for
-	 * use in unit tests.
-	 *
-	 * @return the {@link BiMap} for obfuscation operation rules with only three operation rules
-	 */
-	public static BiMap<Character, Character> getSmallBiMapRules()
-	{
-		Character character;
-		Character replaceWith;
-		BiMap<Character, Character> rules;
-		rules = HashBiMap.create();
-
-		character = 'a';
-		replaceWith = 'b';
-		rules.put(character, replaceWith);
-
-		character = 'b';
-		replaceWith = 'c';
-		rules.put(character, replaceWith);
-
-		character = 'c';
-		replaceWith = 'd';
-		rules.put(character, replaceWith);
-		return rules;
-	}
-
-	/**
-	 * Gets the {@link BiMap} for obfuscation rules with only two rules for use in unit tests.
-	 *
-	 * @return the {@link BiMap} for obfuscation rules with only two rules
-	 */
-	public static BiMap<Character, Character> getSmallestBiMapObfuscationRules()
-	{
-		Character character;
-		Character replaceWith;
-		BiMap<Character, Character> rules;
-		rules = HashBiMap.create();
-
-		character = Character.valueOf('a');
-		replaceWith = 'b';
-		rules.put(character, replaceWith);
-
-		character = Character.valueOf('c');
-		replaceWith = 'e';
-		rules.put(character, replaceWith);
-		return rules;
-	}
 
 	/**
 	 * Gets the {@link BiMap} for obfuscation operation rules with 26 rules for use in unit tests.
@@ -201,6 +149,59 @@ public class ObfuscationBiMapTestData
 		replaceWith = '0';
 		rules.put(character, replaceWith);
 		return rules;
+	}
+
+	/**
+	 * Gets the {@link BiMap} for obfuscation operation rules with only three operation rules for
+	 * use in unit tests.
+	 *
+	 * @return the {@link BiMap} for obfuscation operation rules with only three operation rules
+	 */
+	public static BiMap<Character, Character> getSmallBiMapRules()
+	{
+		Character character;
+		Character replaceWith;
+		BiMap<Character, Character> rules;
+		rules = HashBiMap.create();
+
+		character = 'a';
+		replaceWith = 'b';
+		rules.put(character, replaceWith);
+
+		character = 'b';
+		replaceWith = 'c';
+		rules.put(character, replaceWith);
+
+		character = 'c';
+		replaceWith = 'd';
+		rules.put(character, replaceWith);
+		return rules;
+	}
+
+	/**
+	 * Gets the {@link BiMap} for obfuscation rules with only two rules for use in unit tests.
+	 *
+	 * @return the {@link BiMap} for obfuscation rules with only two rules
+	 */
+	public static BiMap<Character, Character> getSmallestBiMapObfuscationRules()
+	{
+		Character character;
+		Character replaceWith;
+		BiMap<Character, Character> rules;
+		rules = HashBiMap.create();
+
+		character = Character.valueOf('a');
+		replaceWith = 'b';
+		rules.put(character, replaceWith);
+
+		character = Character.valueOf('c');
+		replaceWith = 'e';
+		rules.put(character, replaceWith);
+		return rules;
+	}
+
+	private ObfuscationBiMapTestData()
+	{
 	}
 
 }

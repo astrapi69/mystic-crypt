@@ -33,6 +33,7 @@ import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Base64;
+import java.util.Objects;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -46,9 +47,6 @@ import javax.crypto.spec.PBEParameterSpec;
 import de.alpharogroup.crypto.api.Cryptor;
 import de.alpharogroup.crypto.api.StringDecryptor;
 import de.alpharogroup.crypto.compound.CompoundAlgorithm;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NonNull;
 
 /**
  * The class {@link SimpleDecryptor} is a simple {@link StringDecryptor} implementation.
@@ -69,13 +67,11 @@ public class SimpleDecryptor implements StringDecryptor, Cryptor
 	 *
 	 * @return true, if is initialized
 	 */
-	@Getter(value = AccessLevel.PRIVATE)
 	private boolean initialized;
 
 	/**
 	 * The private key.
 	 */
-	@Getter
 	private final String privateKey;
 
 	/**
@@ -84,8 +80,9 @@ public class SimpleDecryptor implements StringDecryptor, Cryptor
 	 * @param privateKey
 	 *            The private key.
 	 */
-	public SimpleDecryptor(final @NonNull String privateKey)
+	public SimpleDecryptor(final String privateKey)
 	{
+		Objects.requireNonNull(privateKey);
 		this.privateKey = privateKey;
 	}
 
@@ -102,6 +99,11 @@ public class SimpleDecryptor implements StringDecryptor, Cryptor
 		final byte[] dec = Base64.getDecoder().decode(encypted);
 		final byte[] utf8 = this.cipher.doFinal(dec);
 		return new String(utf8, StandardCharsets.UTF_8.name());
+	}
+
+	public String getPrivateKey()
+	{
+		return this.privateKey;
 	}
 
 	/**
@@ -133,6 +135,11 @@ public class SimpleDecryptor implements StringDecryptor, Cryptor
 			this.cipher.init(newOperationMode(), key, paramSpec);
 			initialized = true;
 		}
+	}
+
+	private boolean isInitialized()
+	{
+		return this.initialized;
 	}
 
 	/**
