@@ -4,7 +4,10 @@
 Version 7.5-SNAPSHOT
 -------------
 
-
+ADDED:
+ 
+- new class DigitalSignaturesExtensions that signs and verify byte arrays with MessageDigest
+- new class SignatureExtensions that signs and verify byte arrays with Signature
 
 Version 7.4
 -------------
