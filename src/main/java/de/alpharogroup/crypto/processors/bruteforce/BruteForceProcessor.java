@@ -27,13 +27,14 @@ package de.alpharogroup.crypto.processors.bruteforce;
 import java.util.Arrays;
 
 /**
- * The class {@link BruteForceProcessor} can process a brute force for find a
- * password. For an example see the unit test.
+ * The class {@link BruteForceProcessor} can process a brute force for find a password. For an
+ * example see the unit test.
  *
  * @version 1.0
  * @author Asterios Raptis
  */
-public class BruteForceProcessor {
+public class BruteForceProcessor
+{
 
 	/** The current attempt. */
 	private char[] currentAttempt;
@@ -44,10 +45,13 @@ public class BruteForceProcessor {
 	/**
 	 * Instantiates a new {@link BruteForceProcessor} object.
 	 *
-	 * @param possiblesCharacters the possibles characters
-	 * @param attemptLength       the attempt length
+	 * @param possiblesCharacters
+	 *            the possibles characters
+	 * @param attemptLength
+	 *            the attempt length
 	 */
-	public BruteForceProcessor(final char[] possiblesCharacters, final int attemptLength) {
+	public BruteForceProcessor(final char[] possiblesCharacters, final int attemptLength)
+	{
 		this.possiblesCharacters = possiblesCharacters;
 		this.currentAttempt = new char[attemptLength];
 		Arrays.fill(currentAttempt, possiblesCharacters[0]);
@@ -58,28 +62,37 @@ public class BruteForceProcessor {
 	 *
 	 * @return the current attempt
 	 */
-	public String getCurrentAttempt() {
+	public String getCurrentAttempt()
+	{
 		return new String(currentAttempt);
 	}
 
 	/**
 	 * Increment.
 	 */
-	public void increment() {
+	public void increment()
+	{
 		int index = currentAttempt.length - 1;
-		while (0 <= index) {
-			if (currentAttempt[index] == possiblesCharacters[possiblesCharacters.length - 1]) {
-				if (index == 0) {
+		while (0 <= index)
+		{
+			if (currentAttempt[index] == possiblesCharacters[possiblesCharacters.length - 1])
+			{
+				if (index == 0)
+				{
 					currentAttempt = new char[currentAttempt.length + 1];
 					Arrays.fill(currentAttempt, possiblesCharacters[0]);
 					break;
-				} else {
+				}
+				else
+				{
 					currentAttempt[index] = possiblesCharacters[0];
 					index--;
 				}
-			} else {
+			}
+			else
+			{
 				currentAttempt[index] = possiblesCharacters[Arrays.binarySearch(possiblesCharacters,
-						currentAttempt[index]) + 1];
+					currentAttempt[index]) + 1];
 				break;
 			}
 		}

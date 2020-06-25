@@ -34,39 +34,48 @@ import com.google.common.collect.HashBiMap;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationRule;
 
 /**
- * The class {@link SimpleObfuscatorExtensions} provides algorithms for
- * obfuscate strings.
+ * The class {@link SimpleObfuscatorExtensions} provides algorithms for obfuscate strings.
  */
-public final class SimpleObfuscatorExtensions {
+public final class SimpleObfuscatorExtensions
+{
 
 	/**
 	 * Disentangle the given obfuscated text with the given {@link BiMap} rules
 	 *
-	 * @param rules      the rules
-	 * @param obfuscated the obfuscated text
+	 * @param rules
+	 *            the rules
+	 * @param obfuscated
+	 *            the obfuscated text
 	 * @return the string
 	 */
-	public static String disentangle(final BiMap<Character, ObfuscationRule<Character, Character>> rules,
-			final String obfuscated) {
+	public static String disentangle(
+		final BiMap<Character, ObfuscationRule<Character, Character>> rules,
+		final String obfuscated)
+	{
 		boolean processed = false;
 		char currentChar;
 		Character currentCharacter;
 		final StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < obfuscated.length(); i++) {
+		for (int i = 0; i < obfuscated.length(); i++)
+		{
 			currentChar = obfuscated.charAt(i);
 			currentCharacter = Character.valueOf(currentChar);
 
-			for (final Entry<Character, ObfuscationRule<Character, Character>> entry : rules.entrySet()) {
+			for (final Entry<Character, ObfuscationRule<Character, Character>> entry : rules
+				.entrySet())
+			{
 				ObfuscationRule<Character, Character> obfuscationRule = entry.getValue();
 				Character replaceWith = obfuscationRule.getReplaceWith();
 				Character character = obfuscationRule.getCharacter();
-				if (currentCharacter.equals(replaceWith) && rules.containsKey(replaceWith)) {
+				if (currentCharacter.equals(replaceWith) && rules.containsKey(replaceWith))
+				{
 					sb.append(character);
 					processed = true;
 					break;
 				}
 			}
-			if (!processed) {
+			if (!processed)
+			{
 				sb.append(currentChar);
 			}
 			processed = false;
@@ -77,31 +86,43 @@ public final class SimpleObfuscatorExtensions {
 	/**
 	 * Disentangle the given obfuscated text with the given {@link BiMap} rules
 	 *
-	 * @param rules      the rules
-	 * @param obfuscated the obfuscated text
+	 * @param rules
+	 *            the rules
+	 * @param obfuscated
+	 *            the obfuscated text
 	 * @return the string
 	 */
-	public static String disentangleBiMap(final BiMap<Character, Character> rules, final String obfuscated) {
+	public static String disentangleBiMap(final BiMap<Character, Character> rules,
+		final String obfuscated)
+	{
 		return obfuscateBiMap(rules.inverse(), obfuscated);
 	}
 
 	/**
 	 * Obfuscate with the given {@link BiMap}
 	 *
-	 * @param rules       the rules
-	 * @param toObfuscate the {@link String} object to obfuscate
+	 * @param rules
+	 *            the rules
+	 * @param toObfuscate
+	 *            the {@link String} object to obfuscate
 	 * @return the string
 	 */
-	public static String obfuscateBiMap(final BiMap<Character, Character> rules, final String toObfuscate) {
+	public static String obfuscateBiMap(final BiMap<Character, Character> rules,
+		final String toObfuscate)
+	{
 		char currentChar;
 		Character currentCharacter;
 		final StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < toObfuscate.length(); i++) {
+		for (int i = 0; i < toObfuscate.length(); i++)
+		{
 			currentChar = toObfuscate.charAt(i);
 			currentCharacter = Character.valueOf(currentChar);
-			if (rules.containsKey(currentCharacter)) {
+			if (rules.containsKey(currentCharacter))
+			{
 				sb.append(rules.get(currentCharacter));
-			} else {
+			}
+			else
+			{
 				sb.append(currentChar);
 			}
 		}
@@ -111,22 +132,31 @@ public final class SimpleObfuscatorExtensions {
 	/**
 	 * Obfuscate with the given {@link BiMap}
 	 *
-	 * @param rules       the rules
-	 * @param toObfuscate the {@link String} object to obfuscate
+	 * @param rules
+	 *            the rules
+	 * @param toObfuscate
+	 *            the {@link String} object to obfuscate
 	 * @return the string
 	 */
-	public static String obfuscateWith(final BiMap<Character, ObfuscationRule<Character, Character>> rules,
-			final String toObfuscate) {
+	public static String obfuscateWith(
+		final BiMap<Character, ObfuscationRule<Character, Character>> rules,
+		final String toObfuscate)
+	{
 		final StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < toObfuscate.length(); i++) {
+		for (int i = 0; i < toObfuscate.length(); i++)
+		{
 			final char currentCharacter = toObfuscate.charAt(i);
 			final Character asCharacter = Character.valueOf(currentCharacter);
 			final String charAsString = Character.toString(currentCharacter);
-			if (rules.containsKey(asCharacter)) {
-				final ObfuscationRule<Character, Character> obfuscationOperationRule = rules.get(asCharacter);
+			if (rules.containsKey(asCharacter))
+			{
+				final ObfuscationRule<Character, Character> obfuscationOperationRule = rules
+					.get(asCharacter);
 				final Character replaceWith = obfuscationOperationRule.getReplaceWith();
 				sb.append(replaceWith);
-			} else {
+			}
+			else
+			{
 				sb.append(charAsString);
 			}
 		}
@@ -134,40 +164,45 @@ public final class SimpleObfuscatorExtensions {
 	}
 
 	/**
-	 * Transforms the given obfuscation rules {@link BiMap} to a simple character
-	 * {@link BiMap}
+	 * Transforms the given obfuscation rules {@link BiMap} to a simple character {@link BiMap}
 	 *
-	 * @param rules the rules
+	 * @param rules
+	 *            the rules
 	 * @return the simple character {@link BiMap}
 	 */
 	public static BiMap<Character, Character> toCharacterBiMap(
-			BiMap<Character, ObfuscationRule<Character, Character>> rules) {
+		BiMap<Character, ObfuscationRule<Character, Character>> rules)
+	{
 		Objects.requireNonNull(rules);
 		BiMap<Character, Character> biMap = HashBiMap.create();
-		rules.keySet().stream()
-				.forEach(key -> biMap.put(rules.get(key).getCharacter(), rules.get(key).getReplaceWith()));
+		rules.keySet().stream().forEach(
+			key -> biMap.put(rules.get(key).getCharacter(), rules.get(key).getReplaceWith()));
 		return biMap;
 	}
 
 	/**
-	 * Validate the given {@link BiMap} if a before obfuscated String can be
-	 * disentangled
+	 * Validate the given {@link BiMap} if a before obfuscated String can be disentangled
 	 *
-	 * @param rules the rules
+	 * @param rules
+	 *            the rules
 	 * @return if true is returned the given {@link BiMap} is disentanglable
 	 */
-	public static boolean validate(BiMap<Character, ObfuscationRule<Character, Character>> rules) {
+	public static boolean validate(BiMap<Character, ObfuscationRule<Character, Character>> rules)
+	{
 		Set<Character> keySet = rules.keySet();
-		for (Entry<Character, ObfuscationRule<Character, Character>> entry : rules.entrySet()) {
+		for (Entry<Character, ObfuscationRule<Character, Character>> entry : rules.entrySet())
+		{
 			ObfuscationRule<Character, Character> value = entry.getValue();
-			if (keySet.contains(value.getReplaceWith())) {
+			if (keySet.contains(value.getReplaceWith()))
+			{
 				return false;
 			}
 		}
 		return true;
 	}
 
-	private SimpleObfuscatorExtensions() {
+	private SimpleObfuscatorExtensions()
+	{
 	}
 
 }

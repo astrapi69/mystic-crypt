@@ -33,14 +33,16 @@ import org.testng.annotations.Test;
 /**
  * The unit test class for the class {@link SimpleEncryptor}
  */
-public class SimpleEncryptorTest {
+public class SimpleEncryptorTest
+{
 
 	/**
 	 * Test method for {@link SimpleEncryptor} with {@link BeanTester}
 	 */
 	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
 			UnsupportedOperationException.class })
-	public void testWithBeanTester() {
+	public void testWithBeanTester()
+	{
 		final BeanTester beanTester = new BeanTester();
 		beanTester.testBean(SimpleEncryptor.class);
 	}

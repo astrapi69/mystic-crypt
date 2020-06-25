@@ -44,20 +44,24 @@ import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
 import de.alpharogroup.crypto.obfuscation.rule.Operation;
 
 /**
- * The class {@link ObfuscatorExtensions} provides algorithms for obfuscate
- * strings.
+ * The class {@link ObfuscatorExtensions} provides algorithms for obfuscate strings.
  */
-public final class ObfuscatorExtensions {
+public final class ObfuscatorExtensions
+{
 
 	/**
 	 * Disentangle the given obfuscated text with the given {@link BiMap} rules
 	 *
-	 * @param rules      the rules
-	 * @param obfuscated the obfuscated text
+	 * @param rules
+	 *            the rules
+	 * @param obfuscated
+	 *            the obfuscated text
 	 * @return the string
 	 */
-	public static String disentangle(final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
-			final String obfuscated) {
+	public static String disentangle(
+		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
+		final String obfuscated)
+	{
 		Objects.requireNonNull(rules);
 		Objects.requireNonNull(obfuscated);
 		boolean processed;
@@ -66,49 +70,62 @@ public final class ObfuscatorExtensions {
 		boolean lowerCase;
 		Character currentCharacter;
 		final StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < obfuscated.length(); i++) {
+		for (int i = 0; i < obfuscated.length(); i++)
+		{
 			processed = false;
 			currentChar = obfuscated.charAt(i);
 			upperCase = Character.isUpperCase(currentChar);
 			lowerCase = Character.isLowerCase(currentChar);
 			currentCharacter = currentChar;
 
-			for (final Entry<Character, ObfuscationOperationRule<Character, Character>> entry : rules.entrySet()) {
-				ObfuscationOperationRule<Character, Character> obfuscationOperationRule = entry.getValue();
+			for (final Entry<Character, ObfuscationOperationRule<Character, Character>> entry : rules
+				.entrySet())
+			{
+				ObfuscationOperationRule<Character, Character> obfuscationOperationRule = entry
+					.getValue();
 				Set<Integer> indexes = obfuscationOperationRule.getIndexes();
 				Operation operation = obfuscationOperationRule.getOperation();
-				if (operation != null) {
-					obfuscationOperationRule
-							.setOperatedCharacter(Optional.of(Operation.operate(currentCharacter, operation)));
+				if (operation != null)
+				{
+					obfuscationOperationRule.setOperatedCharacter(
+						Optional.of(Operation.operate(currentCharacter, operation)));
 				}
 				Character character = obfuscationOperationRule.getCharacter();
 				Character replaceWith = obfuscationOperationRule.getReplaceWith();
-				if (!indexes.isEmpty() && indexes.contains(i) && operation != null) {
+				if (!indexes.isEmpty() && indexes.contains(i) && operation != null)
+				{
 					Character operatedCharacter = Operation.operate(character, operation);
-					if (currentCharacter.equals(operatedCharacter)) {
+					if (currentCharacter.equals(operatedCharacter))
+					{
 						if ((operation.equals(Operation.UPPERCASE) && upperCase)
-								|| (operation.equals(Operation.LOWERCASE) && lowerCase)) {
+							|| (operation.equals(Operation.LOWERCASE) && lowerCase))
+						{
 							sb.append(Operation.operate(currentChar, operation, true));
-						} else {
+						}
+						else
+						{
 							sb.append(Operation.operate(currentChar, operation, false));
 
 						}
 						processed = true;
 						continue;
 					}
-					if (currentCharacter.equals(replaceWith)) {
+					if (currentCharacter.equals(replaceWith))
+					{
 						sb.append(character);
 						processed = true;
 						continue;
 					}
 				}
-				if (currentCharacter.equals(replaceWith) && rules.containsKey(replaceWith)) {
+				if (currentCharacter.equals(replaceWith) && rules.containsKey(replaceWith))
+				{
 					sb.append(character);
 					processed = true;
 					continue;
 				}
 			}
-			if (!processed && !rules.containsKey(currentCharacter)) {
+			if (!processed && !rules.containsKey(currentCharacter))
+			{
 				sb.append(currentChar);
 			}
 		}
@@ -118,23 +135,31 @@ public final class ObfuscatorExtensions {
 	/**
 	 * Disentangle the given obfuscated text with the given {@link List} rules
 	 *
-	 * @param rules      the rules
-	 * @param obfuscated the obfuscated text
+	 * @param rules
+	 *            the rules
+	 * @param obfuscated
+	 *            the obfuscated text
 	 * @return the string
 	 */
 	public static String disentangle(
-			final List<KeyValuePair<Character, ObfuscationOperationRule<Character, Character>>> rules,
-			final String obfuscated) {
+		final List<KeyValuePair<Character, ObfuscationOperationRule<Character, Character>>> rules,
+		final String obfuscated)
+	{
 		char currentChar;
 		Character currentCharacter;
 		final StringBuilder sb = new StringBuilder();
-		Map<Character, Character> swapped = swapMapWithReplaceWithAsKey(HashBiMap.create(KeyValuePair.toMap(rules)));
-		for (int i = 0; i < obfuscated.length(); i++) {
+		Map<Character, Character> swapped = swapMapWithReplaceWithAsKey(
+			HashBiMap.create(KeyValuePair.toMap(rules)));
+		for (int i = 0; i < obfuscated.length(); i++)
+		{
 			currentChar = obfuscated.charAt(i);
 			currentCharacter = currentChar;
-			if (swapped.containsKey(currentCharacter)) {
+			if (swapped.containsKey(currentCharacter))
+			{
 				sb.append(swapped.get(currentCharacter));
-			} else {
+			}
+			else
+			{
 				sb.append(currentChar);
 			}
 		}
@@ -144,33 +169,45 @@ public final class ObfuscatorExtensions {
 	/**
 	 * Disentangle the given obfuscated text with the given {@link BiMap} rules
 	 *
-	 * @param rules      the rules
-	 * @param obfuscated the obfuscated text
+	 * @param rules
+	 *            the rules
+	 * @param obfuscated
+	 *            the obfuscated text
 	 * @return the string
 	 */
 	public static String disentangleImproved(
-			final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules, final String obfuscated) {
+		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
+		final String obfuscated)
+	{
 		char currentChar;
 		Character currentCharacter;
 		ObfuscationOperationRule<Character, Character> currentOperationRule;
 		final StringBuilder sb = new StringBuilder();
 		Map<Character, ObfuscationOperationRule<Character, Character>> swapped = swapOperatedMapWithReplaceWithAsKey(
-				rules);
+			rules);
 		BiMap<ObfuscationOperationRule<Character, Character>, Character> inverted = inverse(rules);
-		BiMap<Character, ObfuscationOperationRule<Character, Character>> inverseInverted = inverted.inverse();
-		for (int i = 0; i < obfuscated.length(); i++) {
+		BiMap<Character, ObfuscationOperationRule<Character, Character>> inverseInverted = inverted
+			.inverse();
+		for (int i = 0; i < obfuscated.length(); i++)
+		{
 			currentChar = obfuscated.charAt(i);
 			currentCharacter = currentChar;
-			if (inverseInverted.containsKey(currentCharacter)) {
+			if (inverseInverted.containsKey(currentCharacter))
+			{
 				currentOperationRule = inverseInverted.get(currentCharacter);
 				sb.append(currentOperationRule.getReplaceWith());
-			} else if (swapped.containsKey(currentCharacter)) {
+			}
+			else if (swapped.containsKey(currentCharacter))
+			{
 				currentOperationRule = swapped.get(currentCharacter);
 				Set<Integer> indexes = currentOperationRule.getIndexes();
-				if (!indexes.isEmpty() && indexes.contains(i)) {
+				if (!indexes.isEmpty() && indexes.contains(i))
+				{
 					sb.append(currentOperationRule.getCharacter());
 				}
-			} else {
+			}
+			else
+			{
 				sb.append(currentChar);
 			}
 		}
@@ -178,16 +215,22 @@ public final class ObfuscatorExtensions {
 	}
 
 	public static BiMap<ObfuscationOperationRule<Character, Character>, Character> inverse(
-			final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules) {
+		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules)
+	{
 		Objects.requireNonNull(rules);
 		BiMap<Character, ObfuscationOperationRule<Character, Character>> cloned;
-		Optional<BiMap<Character, ObfuscationOperationRule<Character, Character>>> optional = tryToClone(rules);
-		if (optional.isPresent()) {
+		Optional<BiMap<Character, ObfuscationOperationRule<Character, Character>>> optional = tryToClone(
+			rules);
+		if (optional.isPresent())
+		{
 			cloned = optional.get();
-		} else {
+		}
+		else
+		{
 			cloned = rules;
 		}
-		BiMap<ObfuscationOperationRule<Character, Character>, Character> invertedBiMap = cloned.inverse();
+		BiMap<ObfuscationOperationRule<Character, Character>, Character> invertedBiMap = cloned
+			.inverse();
 		invertedBiMap.entrySet().forEach(entry -> {
 			ObfuscationOperationRule<Character, Character> key = entry.getKey();
 			inverse(key);
@@ -196,7 +239,8 @@ public final class ObfuscatorExtensions {
 		return invertedBiMap;
 	}
 
-	public static void inverse(final ObfuscationOperationRule<Character, Character> rule) {
+	public static void inverse(final ObfuscationOperationRule<Character, Character> rule)
+	{
 		Objects.requireNonNull(rule);
 		char currentChar = rule.getCharacter();
 		char replaceWithChar = rule.getReplaceWith();
@@ -206,7 +250,8 @@ public final class ObfuscatorExtensions {
 	}
 
 	public static Map<ObfuscationOperationRule<Character, Character>, Character> inverseToMap(
-			final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules) {
+		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules)
+	{
 		Objects.requireNonNull(rules);
 		Map<ObfuscationOperationRule<Character, Character>, Character> invertedMap = new HashMap<>();
 		rules.entrySet().forEach(entry -> {
@@ -216,20 +261,24 @@ public final class ObfuscatorExtensions {
 	}
 
 	/**
-	 * Validate the given input if it can be obfuscated with the given rules. This
-	 * means if the given input is disentanglable. <br>
+	 * Validate the given input if it can be obfuscated with the given rules. This means if the
+	 * given input is disentanglable. <br>
 	 * <br>
 	 *
-	 * @param rules the rules
-	 * @param input the input
-	 * @return true if the given {@link BiMap} is obfuscable with the given input
-	 *         otherwise false
+	 * @param rules
+	 *            the rules
+	 * @param input
+	 *            the input
+	 * @return true if the given {@link BiMap} is obfuscable with the given input otherwise false
 	 */
 	public static boolean isObfuscableAndDisentanglable(
-			final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules, final String input) {
+		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
+		final String input)
+	{
 		Objects.requireNonNull(rules);
 		Objects.requireNonNull(input);
-		if (validate(rules)) {
+		if (validate(rules))
+		{
 			String obfuscated = obfuscateWith(rules, input);
 			String disentangled = disentangle(rules, obfuscated);
 			return input.equals(disentangled);
@@ -240,34 +289,46 @@ public final class ObfuscatorExtensions {
 	/**
 	 * Obfuscate with the given {@link BiMap}
 	 *
-	 * @param rules       the rules
-	 * @param toObfuscate the {@link String} object to obfuscate
+	 * @param rules
+	 *            the rules
+	 * @param toObfuscate
+	 *            the {@link String} object to obfuscate
 	 * @return the string
 	 */
-	public static String obfuscateWith(final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
-			final String toObfuscate) {
+	public static String obfuscateWith(
+		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
+		final String toObfuscate)
+	{
 		final StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < toObfuscate.length(); i++) {
+		for (int i = 0; i < toObfuscate.length(); i++)
+		{
 			final char currentCharacter = toObfuscate.charAt(i);
 			final Character asCharacter = currentCharacter;
 			final String charAsString = Character.toString(currentCharacter);
-			if (rules.containsKey(asCharacter)) {
-				final ObfuscationOperationRule<Character, Character> obfuscationOperationRule = rules.get(asCharacter);
+			if (rules.containsKey(asCharacter))
+			{
+				final ObfuscationOperationRule<Character, Character> obfuscationOperationRule = rules
+					.get(asCharacter);
 				final Set<Integer> indexes = obfuscationOperationRule.getIndexes();
 				final Operation operation = obfuscationOperationRule.getOperation();
-				if (operation != null) {
-					obfuscationOperationRule
-							.setOperatedCharacter(Optional.of(Operation.operate(currentCharacter, operation)));
+				if (operation != null)
+				{
+					obfuscationOperationRule.setOperatedCharacter(
+						Optional.of(Operation.operate(currentCharacter, operation)));
 				}
-				if (indexes.contains(i)) {
-					if (obfuscationOperationRule.getOperatedCharacter().isPresent()) {
+				if (indexes.contains(i))
+				{
+					if (obfuscationOperationRule.getOperatedCharacter().isPresent())
+					{
 						sb.append(obfuscationOperationRule.getOperatedCharacter().get());
 						continue;
 					}
 				}
 				final Character replaceWith = obfuscationOperationRule.getReplaceWith();
 				sb.append(replaceWith);
-			} else {
+			}
+			else
+			{
 				sb.append(charAsString);
 			}
 		}
@@ -277,33 +338,45 @@ public final class ObfuscatorExtensions {
 	/**
 	 * Obfuscate with the given {@link BiMap}
 	 *
-	 * @param rules       the rules
-	 * @param toObfuscate the {@link String} object to obfuscate
+	 * @param rules
+	 *            the rules
+	 * @param toObfuscate
+	 *            the {@link String} object to obfuscate
 	 * @return the string
 	 */
 	public static String obfuscateWithCharArray(
-			final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules, final String toObfuscate) {
+		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
+		final String toObfuscate)
+	{
 		char[] result = new char[toObfuscate.length()];
-		for (int i = 0; i < toObfuscate.length(); i++) {
+		for (int i = 0; i < toObfuscate.length(); i++)
+		{
 			final char currentCharacter = toObfuscate.charAt(i);
 			final Character asCharacter = currentCharacter;
-			if (rules.containsKey(asCharacter)) {
-				final ObfuscationOperationRule<Character, Character> obfuscationOperationRule = rules.get(asCharacter);
+			if (rules.containsKey(asCharacter))
+			{
+				final ObfuscationOperationRule<Character, Character> obfuscationOperationRule = rules
+					.get(asCharacter);
 				final Set<Integer> indexes = obfuscationOperationRule.getIndexes();
 				final Operation operation = obfuscationOperationRule.getOperation();
-				if (operation != null && !operation.equals(Operation.NONE)) {
-					obfuscationOperationRule
-							.setOperatedCharacter(Optional.of(Operation.operate(currentCharacter, operation)));
+				if (operation != null && !operation.equals(Operation.NONE))
+				{
+					obfuscationOperationRule.setOperatedCharacter(
+						Optional.of(Operation.operate(currentCharacter, operation)));
 				}
-				if (indexes.contains(i)) {
-					if (obfuscationOperationRule.getOperatedCharacter().isPresent()) {
+				if (indexes.contains(i))
+				{
+					if (obfuscationOperationRule.getOperatedCharacter().isPresent())
+					{
 						result[i] = obfuscationOperationRule.getOperatedCharacter().get();
 						continue;
 					}
 				}
 				final Character replaceWith = obfuscationOperationRule.getReplaceWith();
 				result[i] = replaceWith;
-			} else {
+			}
+			else
+			{
 				result[i] = currentCharacter;
 			}
 		}
@@ -311,14 +384,17 @@ public final class ObfuscatorExtensions {
 	}
 
 	public static Map<Character, Character> swapMapWithReplaceWithAsKey(
-			final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules) {
+		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules)
+	{
 		Objects.requireNonNull(rules);
 		Map<Character, Character> swapped = MapFactory.newLinkedHashMap();
 		rules.entrySet().forEach(entry -> {
 			ObfuscationOperationRule<Character, Character> value = entry.getValue();
 			if (value.getOperation() != null && !value.getOperation().equals(Operation.NONE)
-					&& !value.getIndexes().isEmpty()) {
-				value.setOperatedCharacter(Optional.of(Operation.operate(value.getCharacter(), value.getOperation())));
+				&& !value.getIndexes().isEmpty())
+			{
+				value.setOperatedCharacter(
+					Optional.of(Operation.operate(value.getCharacter(), value.getOperation())));
 				swapped.put(value.getOperatedCharacter().get(), entry.getKey());
 			}
 			swapped.put(value.getReplaceWith(), entry.getKey());
@@ -327,14 +403,18 @@ public final class ObfuscatorExtensions {
 	}
 
 	public static Map<Character, ObfuscationOperationRule<Character, Character>> swapOperatedMapWithReplaceWithAsKey(
-			final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules) {
+		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules)
+	{
 		Objects.requireNonNull(rules);
-		Map<Character, ObfuscationOperationRule<Character, Character>> swapped = MapFactory.newLinkedHashMap();
+		Map<Character, ObfuscationOperationRule<Character, Character>> swapped = MapFactory
+			.newLinkedHashMap();
 		rules.entrySet().forEach(entry -> {
 			ObfuscationOperationRule<Character, Character> value = entry.getValue();
 			if (value.getOperation() != null && !value.getOperation().equals(Operation.NONE)
-					&& !value.getIndexes().isEmpty()) {
-				value.setOperatedCharacter(Optional.of(Operation.operate(value.getCharacter(), value.getOperation())));
+				&& !value.getIndexes().isEmpty())
+			{
+				value.setOperatedCharacter(
+					Optional.of(Operation.operate(value.getCharacter(), value.getOperation())));
 				swapped.put(value.getOperatedCharacter().get(), value);
 			}
 			swapped.put(value.getReplaceWith(), value);
@@ -342,38 +422,49 @@ public final class ObfuscatorExtensions {
 		return swapped;
 	}
 
-	public static <T> Optional<T> tryToClone(final T object) {
+	public static <T> Optional<T> tryToClone(final T object)
+	{
 		Objects.requireNonNull(object);
-		try {
+		try
+		{
 			return Optional.of(CloneObjectExtensions.clone(object));
-		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | ClassNotFoundException
-				| InstantiationException | IOException e) {
+		}
+		catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException
+			| ClassNotFoundException | InstantiationException | IOException e)
+		{
 			// Do nothing
 		}
 		return Optional.empty();
 	}
 
 	/**
-	 * Validate the given {@link BiMap} if a before obfuscated String can be
-	 * disentangled
+	 * Validate the given {@link BiMap} if a before obfuscated String can be disentangled
 	 *
-	 * @param rules the rules
+	 * @param rules
+	 *            the rules
 	 * @return if true is returned the given {@link BiMap} is disentanglable
 	 */
-	public static boolean validate(final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules) {
+	public static boolean validate(
+		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules)
+	{
 		Objects.requireNonNull(rules);
 		Set<Character> keySet = rules.keySet();
-		for (Entry<Character, ObfuscationOperationRule<Character, Character>> entry : rules.entrySet()) {
+		for (Entry<Character, ObfuscationOperationRule<Character, Character>> entry : rules
+			.entrySet())
+		{
 			ObfuscationOperationRule<Character, Character> value = entry.getValue();
-			Character operatedCharacter = Operation.operate(value.getCharacter(), value.getOperation());
-			if (keySet.contains(operatedCharacter)) {
+			Character operatedCharacter = Operation.operate(value.getCharacter(),
+				value.getOperation());
+			if (keySet.contains(operatedCharacter))
+			{
 				return false;
 			}
 		}
 		return true;
 	}
 
-	private ObfuscatorExtensions() {
+	private ObfuscatorExtensions()
+	{
 	}
 
 }

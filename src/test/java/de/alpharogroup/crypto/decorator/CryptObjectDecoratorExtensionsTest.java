@@ -37,14 +37,16 @@ import de.alpharogroup.crypto.model.StringDecorator;
 /**
  * The unit test class for the class {@link CryptObjectDecoratorExtensions}
  */
-public class CryptObjectDecoratorExtensionsTest {
+public class CryptObjectDecoratorExtensionsTest
+{
 
 	/**
-	 * Test method for the decoration of an crypt object with
-	 * {@link CryptObjectDecorator} with byte array as prefix and suffix
+	 * Test method for the decoration of an crypt object with {@link CryptObjectDecorator} with byte
+	 * array as prefix and suffix
 	 */
 	@Test
-	public void testDecorateWithByteArrayDecorator() {
+	public void testDecorateWithByteArrayDecorator()
+	{
 		String actual;
 		String expected;
 		String toEncrypt;
@@ -52,40 +54,47 @@ public class CryptObjectDecoratorExtensionsTest {
 		Charset utf8 = Charset.forName("UTF-8");
 
 		toEncrypt = "mile";
-		decorator = CryptObjectDecorator.<byte[]>builder().prefix("s".getBytes(utf8)).suffix("s".getBytes(utf8))
-				.build();
+		decorator = CryptObjectDecorator.<byte[]> builder().prefix("s".getBytes(utf8))
+			.suffix("s".getBytes(utf8)).build();
 
-		actual = CryptObjectDecoratorExtensions.decorateWithBytearrayDecorator(toEncrypt, decorator, utf8);
+		actual = CryptObjectDecoratorExtensions.decorateWithBytearrayDecorator(toEncrypt, decorator,
+			utf8);
 		expected = "smiles";
 		assertEquals(actual, expected);
 
 		// new scenario ...
-		decorator = CryptObjectDecorator.<byte[]>builder().prefix("".getBytes(utf8)).suffix("s".getBytes(utf8)).build();
+		decorator = CryptObjectDecorator.<byte[]> builder().prefix("".getBytes(utf8))
+			.suffix("s".getBytes(utf8)).build();
 
-		actual = CryptObjectDecoratorExtensions.decorateWithBytearrayDecorator(toEncrypt, decorator, utf8);
+		actual = CryptObjectDecoratorExtensions.decorateWithBytearrayDecorator(toEncrypt, decorator,
+			utf8);
 		expected = "miles";
 		assertEquals(actual, expected);
 
 		// new scenario ...
-		decorator = CryptObjectDecorator.<byte[]>builder().prefix("s".getBytes(utf8)).suffix("".getBytes(utf8)).build();
+		decorator = CryptObjectDecorator.<byte[]> builder().prefix("s".getBytes(utf8))
+			.suffix("".getBytes(utf8)).build();
 
-		actual = CryptObjectDecoratorExtensions.decorateWithBytearrayDecorator(toEncrypt, decorator, utf8);
+		actual = CryptObjectDecoratorExtensions.decorateWithBytearrayDecorator(toEncrypt, decorator,
+			utf8);
 		expected = "smile";
 		assertEquals(actual, expected);
 		// new scenario ...
-		decorator = CryptObjectDecorator.<byte[]>builder().prefix("".getBytes(utf8)).suffix("".getBytes(utf8)).build();
+		decorator = CryptObjectDecorator.<byte[]> builder().prefix("".getBytes(utf8))
+			.suffix("".getBytes(utf8)).build();
 
-		actual = CryptObjectDecoratorExtensions.decorateWithBytearrayDecorator(toEncrypt, decorator, utf8);
+		actual = CryptObjectDecoratorExtensions.decorateWithBytearrayDecorator(toEncrypt, decorator,
+			utf8);
 		expected = "mile";
 		assertEquals(actual, expected);
 	}
 
 	/**
-	 * Test method for the decoration of an crypt object with
-	 * {@link CharacterDecorator}
+	 * Test method for the decoration of an crypt object with {@link CharacterDecorator}
 	 */
 	@Test
-	public void testDecorateWithCharacterDecorator() {
+	public void testDecorateWithCharacterDecorator()
+	{
 		String actual;
 		String expected;
 		String toEncrypt;
@@ -94,17 +103,18 @@ public class CryptObjectDecoratorExtensionsTest {
 		toEncrypt = "mile";
 		decorator = CharacterDecorator.builder().prefix('s').suffix('s').build();
 
-		actual = CryptObjectDecoratorExtensions.decorateWithCharacterDecorator(toEncrypt, decorator);
+		actual = CryptObjectDecoratorExtensions.decorateWithCharacterDecorator(toEncrypt,
+			decorator);
 		expected = "smiles";
 		assertEquals(actual, expected);
 	}
 
 	/**
-	 * Test method for the decoration of an crypt object with
-	 * {@link StringDecorator}
+	 * Test method for the decoration of an crypt object with {@link StringDecorator}
 	 */
 	@Test
-	public void testDecorateWithStringDecorator() {
+	public void testDecorateWithStringDecorator()
+	{
 		String actual;
 		String expected;
 		String toEncrypt;
@@ -139,40 +149,49 @@ public class CryptObjectDecoratorExtensionsTest {
 	}
 
 	/**
-	 * Test method for undecorate an crypt object with {@link CryptObjectDecorator}
-	 * with byte array as prefix and suffix
+	 * Test method for undecorate an crypt object with {@link CryptObjectDecorator} with byte array
+	 * as prefix and suffix
 	 */
 	@Test
-	public void testUndecorateWithByteArrayDecorator() {
+	public void testUndecorateWithByteArrayDecorator()
+	{
 		String actual;
 		String expected;
 		String toEncrypt;
 		CryptObjectDecorator<byte[]> decorator;
 
 		toEncrypt = "smiles";
-		decorator = CryptObjectDecorator.<byte[]>builder().prefix("s".getBytes()).suffix("s".getBytes()).build();
+		decorator = CryptObjectDecorator.<byte[]> builder().prefix("s".getBytes())
+			.suffix("s".getBytes()).build();
 
-		actual = CryptObjectDecoratorExtensions.undecorateWithBytearrayDecorator(toEncrypt, decorator);
+		actual = CryptObjectDecoratorExtensions.undecorateWithBytearrayDecorator(toEncrypt,
+			decorator);
 		expected = "mile";
 		assertEquals(actual, expected);
 
 		// new scenario ...
-		decorator = CryptObjectDecorator.<byte[]>builder().prefix("".getBytes()).suffix("s".getBytes()).build();
+		decorator = CryptObjectDecorator.<byte[]> builder().prefix("".getBytes())
+			.suffix("s".getBytes()).build();
 
-		actual = CryptObjectDecoratorExtensions.undecorateWithBytearrayDecorator(toEncrypt, decorator);
+		actual = CryptObjectDecoratorExtensions.undecorateWithBytearrayDecorator(toEncrypt,
+			decorator);
 		expected = "smile";
 		assertEquals(actual, expected);
 
 		// new scenario ...
-		decorator = CryptObjectDecorator.<byte[]>builder().prefix("s".getBytes()).suffix("".getBytes()).build();
+		decorator = CryptObjectDecorator.<byte[]> builder().prefix("s".getBytes())
+			.suffix("".getBytes()).build();
 
-		actual = CryptObjectDecoratorExtensions.undecorateWithBytearrayDecorator(toEncrypt, decorator);
+		actual = CryptObjectDecoratorExtensions.undecorateWithBytearrayDecorator(toEncrypt,
+			decorator);
 		expected = "miles";
 		assertEquals(actual, expected);
 		// new scenario ...
-		decorator = CryptObjectDecorator.<byte[]>builder().prefix("".getBytes()).suffix("".getBytes()).build();
+		decorator = CryptObjectDecorator.<byte[]> builder().prefix("".getBytes())
+			.suffix("".getBytes()).build();
 
-		actual = CryptObjectDecoratorExtensions.undecorateWithBytearrayDecorator(toEncrypt, decorator);
+		actual = CryptObjectDecoratorExtensions.undecorateWithBytearrayDecorator(toEncrypt,
+			decorator);
 		expected = "smiles";
 		assertEquals(actual, expected);
 	}
@@ -181,7 +200,8 @@ public class CryptObjectDecoratorExtensionsTest {
 	 * Test method for undecorate an crypt object with {@link CharacterDecorator}
 	 */
 	@Test
-	public void testUndecorateWithCharacterDecorator() {
+	public void testUndecorateWithCharacterDecorator()
+	{
 		String actual;
 		String expected;
 		String toEncrypt;
@@ -190,7 +210,8 @@ public class CryptObjectDecoratorExtensionsTest {
 		toEncrypt = "smiles";
 		decorator = CharacterDecorator.builder().prefix('s').suffix('s').build();
 
-		actual = CryptObjectDecoratorExtensions.undecorateWithCharacterDecorator(toEncrypt, decorator);
+		actual = CryptObjectDecoratorExtensions.undecorateWithCharacterDecorator(toEncrypt,
+			decorator);
 		expected = "mile";
 		assertEquals(actual, expected);
 	}
@@ -199,7 +220,8 @@ public class CryptObjectDecoratorExtensionsTest {
 	 * Test method for undecorate an crypt object with {@link StringDecorator}
 	 */
 	@Test
-	public void testUndecorateWithStringDecorator() {
+	public void testUndecorateWithStringDecorator()
+	{
 		String actual;
 		String expected;
 		String toEncrypt;

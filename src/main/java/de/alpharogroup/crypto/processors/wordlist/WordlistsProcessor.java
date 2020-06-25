@@ -29,10 +29,11 @@ import java.util.List;
 import de.alpharogroup.check.Check;
 
 /**
- * The class {@link WordlistsProcessor} can process a list of words. For an
- * example see the unit test.
+ * The class {@link WordlistsProcessor} can process a list of words. For an example see the unit
+ * test.
  */
-public class WordlistsProcessor {
+public class WordlistsProcessor
+{
 
 	/** The current index. */
 	private int currentIndex;
@@ -46,9 +47,11 @@ public class WordlistsProcessor {
 	/**
 	 * Instantiates a new {@link WordlistsProcessor} object.
 	 *
-	 * @param words the word list
+	 * @param words
+	 *            the word list
 	 */
-	public WordlistsProcessor(final List<String> words) {
+	public WordlistsProcessor(final List<String> words)
+	{
 		this.words = words;
 		this.currentIndex = 0;
 	}
@@ -56,11 +59,15 @@ public class WordlistsProcessor {
 	/**
 	 * Instantiates a new wordlists processor.
 	 *
-	 * @param words          the words
-	 * @param toCheckAgainst the to check against
+	 * @param words
+	 *            the words
+	 * @param toCheckAgainst
+	 *            the to check against
 	 */
-	public WordlistsProcessor(final List<String> words, final String toCheckAgainst) {
-		Check.get().notNull(toCheckAgainst, "toCheckAgainst").notEmpty(toCheckAgainst, "toCheckAgainst");
+	public WordlistsProcessor(final List<String> words, final String toCheckAgainst)
+	{
+		Check.get().notNull(toCheckAgainst, "toCheckAgainst").notEmpty(toCheckAgainst,
+			"toCheckAgainst");
 		this.words = words;
 		this.currentIndex = 0;
 		this.toCheckAgainst = toCheckAgainst;
@@ -71,15 +78,18 @@ public class WordlistsProcessor {
 	 *
 	 * @return the current attempt
 	 */
-	public String getCurrentAttempt() {
-		if (currentIndex < words.size()) {
+	public String getCurrentAttempt()
+	{
+		if (currentIndex < words.size())
+		{
 			final String currentAttempt = words.get(currentIndex);
 			return currentAttempt;
 		}
 		return null;
 	}
 
-	public String getToCheckAgainst() {
+	public String getToCheckAgainst()
+	{
 		return this.toCheckAgainst;
 	}
 
@@ -88,8 +98,10 @@ public class WordlistsProcessor {
 	 *
 	 * @return true, if the current index was incremented otherwise false.
 	 */
-	public boolean increment() {
-		if (currentIndex == words.size()) {
+	public boolean increment()
+	{
+		if (currentIndex == words.size())
+		{
 			return false;
 		}
 		currentIndex++;
@@ -101,12 +113,15 @@ public class WordlistsProcessor {
 	 *
 	 * @return true, if successful
 	 */
-	public boolean process() {
+	public boolean process()
+	{
 		boolean continueIterate = true;
 		boolean found = false;
 		String attempt = getCurrentAttempt();
-		while (continueIterate) {
-			if (attempt.equals(toCheckAgainst)) {
+		while (continueIterate)
+		{
+			if (attempt.equals(toCheckAgainst))
+			{
 				found = true;
 				break;
 			}
@@ -116,7 +131,8 @@ public class WordlistsProcessor {
 		return found;
 	}
 
-	public void setToCheckAgainst(String toCheckAgainst) {
+	public void setToCheckAgainst(String toCheckAgainst)
+	{
 		this.toCheckAgainst = toCheckAgainst;
 	}
 }

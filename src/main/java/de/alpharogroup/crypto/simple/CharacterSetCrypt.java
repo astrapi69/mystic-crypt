@@ -32,60 +32,70 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 /**
- * The class {@link CharacterSetCrypt} provides algorithms for encrypt a text
- * with a character set. The text is encrypted with the character set over the
- * index. The decryption builds the text over the indexes and the character set.
- * So the character set is the key element in this encryption method.
+ * The class {@link CharacterSetCrypt} provides algorithms for encrypt a text with a character set.
+ * The text is encrypted with the character set over the index. The decryption builds the text over
+ * the indexes and the character set. So the character set is the key element in this encryption
+ * method.
  */
-public final class CharacterSetCrypt {
+public final class CharacterSetCrypt
+{
 
 	/**
-	 * Factory method for create new {@link ArrayList} of unique characters from the
-	 * given text
+	 * Factory method for create new {@link ArrayList} of unique characters from the given text
 	 *
-	 * @param text the text
+	 * @param text
+	 *            the text
 	 * @return the new {@link List} with the unique characters
 	 */
-	public static List<Character> newCharacterList(final String text) {
+	public static List<Character> newCharacterList(final String text)
+	{
 		Objects.requireNonNull(text);
-		return newCharacterList(text, Comparator.<Character>naturalOrder());
+		return newCharacterList(text, Comparator.<Character> naturalOrder());
 	}
 
 	/**
-	 * Factory method for create new {@link ArrayList} of unique characters from the
-	 * given text sorted with the given {@link Comparator} <br>
+	 * Factory method for create new {@link ArrayList} of unique characters from the given text
+	 * sorted with the given {@link Comparator} <br>
 	 * <br>
-	 * Note: This method can be used for a custom Comparator that have a defined
-	 * order. For example: <code>
+	 * Note: This method can be used for a custom Comparator that have a defined order. For example:
+	 * <code>
 	 * // defined custom order
 	 * List&lt;Character&gt; definedOrder = Arrays.asList('c', 'b', 'a', 'd', '.', ...);
 	 * Comparator&lt;Character&gt; customComparator = Comparator.comparing(character -&gt; definedOrder.indexOf(character));
 	 * </code>
 	 *
-	 * @param text       the text
-	 * @param comparator the comparator
+	 * @param text
+	 *            the text
+	 * @param comparator
+	 *            the comparator
 	 * @return the new {@link List} with the unique characters
 	 */
-	public static List<Character> newCharacterList(final String text, final Comparator<Character> comparator) {
+	public static List<Character> newCharacterList(final String text,
+		final Comparator<Character> comparator)
+	{
 		Objects.requireNonNull(text);
 		Objects.requireNonNull(comparator);
-		return new ArrayList<>(
-				text.chars().mapToObj(i -> (char) i).collect(Collectors.toCollection(() -> new TreeSet<>(comparator))));
+		return new ArrayList<>(text.chars().mapToObj(i -> (char)i)
+			.collect(Collectors.toCollection(() -> new TreeSet<>(comparator))));
 	}
 
 	/**
 	 * To index list.
 	 *
-	 * @param text       the text
-	 * @param characters the characters
+	 * @param text
+	 *            the text
+	 * @param characters
+	 *            the characters
 	 * @return the list
 	 */
-	public static List<Integer> toIndexList(final String text, final List<Character> characters) {
+	public static List<Integer> toIndexList(final String text, final List<Character> characters)
+	{
 		Objects.requireNonNull(text);
 		Objects.requireNonNull(characters);
 		char[] chars = text.toCharArray();
 		List<Integer> integerList = new ArrayList<>();
-		for (char c : chars) {
+		for (char c : chars)
+		{
 			integerList.add(characters.indexOf(Character.valueOf(c)));
 		}
 		return integerList;
@@ -94,21 +104,26 @@ public final class CharacterSetCrypt {
 	/**
 	 * To text.
 	 *
-	 * @param integerList the integer list
-	 * @param characters  the characters
+	 * @param integerList
+	 *            the integer list
+	 * @param characters
+	 *            the characters
 	 * @return the string
 	 */
-	public static String toText(final List<Integer> integerList, final List<Character> characters) {
+	public static String toText(final List<Integer> integerList, final List<Character> characters)
+	{
 		Objects.requireNonNull(integerList);
 		Objects.requireNonNull(characters);
 		StringBuilder sb = new StringBuilder();
-		for (int index : integerList) {
+		for (int index : integerList)
+		{
 			sb.append(characters.get(index));
 		}
 		return sb.toString();
 	}
 
-	private CharacterSetCrypt() {
+	private CharacterSetCrypt()
+	{
 	}
 
 }

@@ -38,45 +38,60 @@ import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 /**
  * The class {@link PrivateKeyBruteForceProcessor}
  */
-public final class PrivateKeyBruteForceProcessor {
+public final class PrivateKeyBruteForceProcessor
+{
 
 	/**
-	 * Resolve the password from the given private key file. If no password is set
-	 * an empty Optional will be returned.
+	 * Resolve the password from the given private key file. If no password is set an empty Optional
+	 * will be returned.
 	 *
-	 * @param privateKeyFile the private key file
-	 * @param processor      the processor
+	 * @param privateKeyFile
+	 *            the private key file
+	 * @param processor
+	 *            the processor
 	 * @return the optional
 	 */
-	public static Optional<String> resolvePassword(File privateKeyFile, BruteForceProcessor processor) {
+	public static Optional<String> resolvePassword(File privateKeyFile,
+		BruteForceProcessor processor)
+	{
 		Objects.requireNonNull(processor);
 		Optional<String> optionalPassword = Optional.empty();
-		try {
-			boolean isPasswordProtected = PrivateKeyReader.isPrivateKeyPasswordProtected(privateKeyFile);
+		try
+		{
+			boolean isPasswordProtected = PrivateKeyReader
+				.isPrivateKeyPasswordProtected(privateKeyFile);
 
-			if (!isPasswordProtected) {
+			if (!isPasswordProtected)
+			{
 
 				String attempt;
 				attempt = processor.getCurrentAttempt();
 				Security.addProvider(new BouncyCastleProvider());
-				while (true) {
-					try {
+				while (true)
+				{
+					try
+					{
 						EncryptedPrivateKeyReader.getKeyPair(privateKeyFile, attempt);
 						optionalPassword = Optional.of(attempt);
 						break;
-					} catch (IOException e) {
+					}
+					catch (IOException e)
+					{
 						attempt = processor.getCurrentAttempt();
 						processor.increment();
 					}
 				}
 			}
-		} catch (IOException ex) {
+		}
+		catch (IOException ex)
+		{
 			return optionalPassword;
 		}
 		return optionalPassword;
 	}
 
-	private PrivateKeyBruteForceProcessor() {
+	private PrivateKeyBruteForceProcessor()
+	{
 	}
 
 }

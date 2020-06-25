@@ -43,14 +43,15 @@ import de.alpharogroup.file.search.PathFinder;
 /**
  * The unit test class for the class {@link KeyTrustExtensions}
  */
-public class KeyTrustExtensionsTest {
+public class KeyTrustExtensionsTest
+{
 
 	/**
-	 * Test method for
-	 * {@link KeyTrustExtensions#resolveKeyManagers(String, String, File, String)}
+	 * Test method for {@link KeyTrustExtensions#resolveKeyManagers(String, String, File, String)}
 	 */
 	@Test
-	public void testResolveKeyManagers() throws Exception {
+	public void testResolveKeyManagers() throws Exception
+	{
 		File derDir;
 		File keystoreFile;
 		String keystoreType;
@@ -68,7 +69,8 @@ public class KeyTrustExtensionsTest {
 		KeyStoreFactory.newKeyStore(keystoreType, password, keystoreFile, true);
 
 		keyManagerAlgorithm = KeyManagerFactory.getDefaultAlgorithm();
-		keyManagers = KeyTrustExtensions.resolveKeyManagers(keystoreType, password, keystoreFile, keyManagerAlgorithm);
+		keyManagers = KeyTrustExtensions.resolveKeyManagers(keystoreType, password, keystoreFile,
+			keyManagerAlgorithm);
 
 		assertNotNull(keyManagers);
 		// cleanup...
@@ -76,11 +78,11 @@ public class KeyTrustExtensionsTest {
 	}
 
 	/**
-	 * Test method for
-	 * {@link KeyTrustExtensions#resolveTrustManagers(String, String, File, String)}
+	 * Test method for {@link KeyTrustExtensions#resolveTrustManagers(String, String, File, String)}
 	 */
 	@Test
-	public void testResolveTrustManagers() throws Exception {
+	public void testResolveTrustManagers() throws Exception
+	{
 		File derDir;
 		File keystoreFile;
 		String keystoreType;
@@ -97,8 +99,8 @@ public class KeyTrustExtensionsTest {
 		KeyStoreFactory.newKeyStore(keystoreType, password, keystoreFile, true);
 
 		trustManagerAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
-		trustManagers = KeyTrustExtensions.resolveTrustManagers(keystoreType, password, keystoreFile,
-				trustManagerAlgorithm);
+		trustManagers = KeyTrustExtensions.resolveTrustManagers(keystoreType, password,
+			keystoreFile, trustManagerAlgorithm);
 
 		assertNotNull(trustManagers);
 		// cleanup...
@@ -109,7 +111,8 @@ public class KeyTrustExtensionsTest {
 	 * Test method for {@link KeyTrustExtensions} with {@link BeanTester}
 	 */
 	@Test
-	public void testWithBeanTester() {
+	public void testWithBeanTester()
+	{
 		BeanTester beanTester = new BeanTester();
 		beanTester.testBean(KeyTrustExtensions.class);
 	}

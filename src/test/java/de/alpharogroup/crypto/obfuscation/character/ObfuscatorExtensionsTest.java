@@ -56,7 +56,8 @@ import de.alpharogroup.xml.crypto.file.XmlDecryptionExtensions;
 /**
  * The unit test class for the class {@link ObfuscatorExtensions}
  */
-public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String> {
+public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String>
+{
 
 	/** The aliases for the {@link XStream} object */
 	Map<String, Class<?>> aliases;
@@ -81,22 +82,25 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String> {
 		aliases.put("ObfuscationOperationRule", ObfuscationOperationRule.class);
 	}
 
-	BiMap<Character, ObfuscationOperationRule<Character, Character>> loadXmlListToBiMap(final File xmlListFile)
-			throws IOException, DecoderException {
+	BiMap<Character, ObfuscationOperationRule<Character, Character>> loadXmlListToBiMap(
+		final File xmlListFile) throws IOException, DecoderException
+	{
 		Objects.requireNonNull(xmlListFile);
 		List<KeyValuePair<Character, ObfuscationOperationRule<Character, Character>>> data = XmlDecryptionExtensions
-				.readFromFileAsXmlAndHex(xStream, aliases, xmlListFile);
+			.readFromFileAsXmlAndHex(xStream, aliases, xmlListFile);
 		return HashBiMap.create(KeyValuePair.toMap(data));
 	}
 
 	/**
 	 * Sets up method will be invoked before every unit test method in this class
 	 *
-	 * @throws Exception is thrown if an exception occurs
+	 * @throws Exception
+	 *             is thrown if an exception occurs
 	 */
 	@Override
 	@BeforeMethod
-	protected void setUp() throws Exception {
+	protected void setUp() throws Exception
+	{
 		super.setUp();
 
 		xmlDir = new File(PathFinder.getSrcTestResourcesDir(), "xml");
@@ -117,7 +121,8 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String> {
 	 * Test method for {@link ObfuscatorExtensions#disentangle(BiMap, String)}
 	 */
 	@Test
-	public void testDisentangle() {
+	public void testDisentangle()
+	{
 		// new scenario...
 		stringToDisentangle = "d";
 
@@ -157,12 +162,14 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String> {
 	/**
 	 * Test method for {@link ObfuscatorExtensions#disentangle(BiMap, String)}
 	 *
-	 * @throws IOException      Signals that an I/O exception has occurred.
-	 * @throws DecoderException is thrown if an odd number or illegal of characters
-	 *                          is supplied
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws DecoderException
+	 *             is thrown if an odd number or illegal of characters is supplied
 	 */
 	@Test
-	public void testDisentangleImprovedWithTestRules() throws IOException, DecoderException {
+	public void testDisentangleImprovedWithTestRules() throws IOException, DecoderException
+	{
 
 		String obfuscateWith;
 		// new scenario...
@@ -176,8 +183,8 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String> {
 		stringToObfuscate = "Asterios";
 
 		testRules = loadXmlListToBiMap(xmlListFile);
-		testRules.put('A', ObfuscationOperationRule.<Character, Character>builder().character('A')
-				.indexes(SetFactory.newHashSet()).replaceWith('5').build());
+		testRules.put('A', ObfuscationOperationRule.<Character, Character> builder().character('A')
+			.indexes(SetFactory.newHashSet()).replaceWith('5').build());
 		obfuscateWith = ObfuscatorExtensions.obfuscateWith(testRules, stringToObfuscate);
 
 		actual = ObfuscatorExtensions.disentangleImproved(testRules, obfuscateWith);
@@ -190,7 +197,8 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String> {
 	 * Test method for {@link ObfuscatorExtensions#disentangle(BiMap, String)}
 	 */
 	@Test
-	public void testDisentangleWithTestRules() {
+	public void testDisentangleWithTestRules()
+	{
 		String obfuscateWith;
 		// new scenario...
 		stringToObfuscate = "asterios";
@@ -211,7 +219,8 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String> {
 	}
 
 	@Test
-	public void testInverse() {
+	public void testInverse()
+	{
 		char character;
 		Set<Integer> indexes;
 		boolean inverted;
@@ -229,8 +238,8 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String> {
 		operation = Operation.UPPERCASE;
 		indexes = SetFactory.newHashSet(0, 2);
 
-		rule = new CharacterObfuscationOperationRule(character, indexes, inverted, operatedCharacter, operation,
-				replaceWith);
+		rule = new CharacterObfuscationOperationRule(character, indexes, inverted,
+			operatedCharacter, operation, replaceWith);
 
 		ObfuscatorExtensions.inverse(rule);
 
@@ -244,11 +253,11 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String> {
 	}
 
 	/**
-	 * Test method for
-	 * {@link ObfuscatorExtensions#isObfuscableAndDisentanglable(BiMap, String)}
+	 * Test method for {@link ObfuscatorExtensions#isObfuscableAndDisentanglable(BiMap, String)}
 	 */
 	@Test
-	public void testIsObfuscableAndDisentanglable() {
+	public void testIsObfuscableAndDisentanglable()
+	{
 		boolean actual;
 		boolean expected;
 		String input;
@@ -307,7 +316,8 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String> {
 	 * Test method for {@link ObfuscatorExtensions#obfuscateWith(BiMap, String)}
 	 */
 	@Test
-	public void testObfuscateWith() {
+	public void testObfuscateWith()
+	{
 		// new scenario...
 		stringToObfuscate = "abac";
 
@@ -329,11 +339,11 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String> {
 	}
 
 	/**
-	 * Test method for
-	 * {@link ObfuscatorExtensions#obfuscateWithCharArray(BiMap, String)}
+	 * Test method for {@link ObfuscatorExtensions#obfuscateWithCharArray(BiMap, String)}
 	 */
 	@Test
-	public void testObfuscateWithCharArray() {
+	public void testObfuscateWithCharArray()
+	{
 		// new scenario...
 		stringToObfuscate = "abac";
 
@@ -358,7 +368,8 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String> {
 	 * Test method for {@link ObfuscatorExtensions#validate(BiMap)}
 	 */
 	@Test
-	public void testValidate() {
+	public void testValidate()
+	{
 		boolean actual;
 		boolean expected;
 		BiMap<Character, ObfuscationOperationRule<Character, Character>> rules;
@@ -383,7 +394,8 @@ public class ObfuscatorExtensionsTest extends AbstractTestCase<String, String> {
 	 * Test method for {@link ObfuscatorExtensions} with {@link BeanTester}
 	 */
 	@Test
-	public void testWithBeanTester() {
+	public void testWithBeanTester()
+	{
 		final BeanTester beanTester = new BeanTester();
 		beanTester.testBean(ObfuscatorExtensions.class);
 	}

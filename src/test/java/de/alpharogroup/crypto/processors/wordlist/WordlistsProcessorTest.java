@@ -42,15 +42,18 @@ import de.alpharogroup.file.search.PathFinder;
 /**
  * The unit test class for the class {@link WordlistsProcessor}
  */
-public class WordlistsProcessorTest {
+public class WordlistsProcessorTest
+{
 
 	/**
 	 * Test method for test the class {@link WordlistsProcessor}.
 	 *
-	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	@Test(enabled = true)
-	public void test() throws IOException {
+	public void test() throws IOException
+	{
 		WordlistsProcessor processor;
 		boolean found;
 		String toCheckAgainst;

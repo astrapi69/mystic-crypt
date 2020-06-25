@@ -27,92 +27,115 @@ package de.alpharogroup.crypto.sign;
 import java.security.PublicKey;
 import java.security.cert.Certificate;
 
-public final class VerifyBean {
-	public static class VerifyBeanBuilder {
-		private PublicKey publicKey;
+public final class VerifyBean
+{
+	public static class VerifyBeanBuilder
+	{
 		private Certificate certificate;
+		private PublicKey publicKey;
 		private String signatureAlgorithm;
 
-		VerifyBeanBuilder() {
+		VerifyBeanBuilder()
+		{
 		}
 
-		public VerifyBean build() {
+		public VerifyBean build()
+		{
 			return new VerifyBean(publicKey, certificate, signatureAlgorithm);
 		}
 
-		public VerifyBean.VerifyBeanBuilder certificate(Certificate certificate) {
+		public VerifyBean.VerifyBeanBuilder certificate(Certificate certificate)
+		{
 			this.certificate = certificate;
 			return this;
 		}
 
-		public VerifyBean.VerifyBeanBuilder publicKey(PublicKey publicKey) {
+		public VerifyBean.VerifyBeanBuilder publicKey(PublicKey publicKey)
+		{
 			this.publicKey = publicKey;
 			return this;
 		}
 
-		public VerifyBean.VerifyBeanBuilder signatureAlgorithm(String signatureAlgorithm) {
+		public VerifyBean.VerifyBeanBuilder signatureAlgorithm(String signatureAlgorithm)
+		{
 			this.signatureAlgorithm = signatureAlgorithm;
 			return this;
 		}
 
-		public String toString() {
-			return "VerifyBean.VerifyBeanBuilder(publicKey=" + this.publicKey + ", certificate=" + this.certificate
-					+ ", signatureAlgorithm=" + this.signatureAlgorithm + ")";
+		public String toString()
+		{
+			return "VerifyBean.VerifyBeanBuilder(publicKey=" + this.publicKey + ", certificate="
+				+ this.certificate + ", signatureAlgorithm=" + this.signatureAlgorithm + ")";
 		}
 	}
-	public static VerifyBeanBuilder builder() {
+
+	public static VerifyBeanBuilder builder()
+	{
 		return new VerifyBeanBuilder();
 	}
-	private PublicKey publicKey;
 
 	private Certificate certificate;
 
+	private PublicKey publicKey;
+
 	private String signatureAlgorithm;
 
-	public VerifyBean() {
+	public VerifyBean()
+	{
 	}
 
-	public VerifyBean(PublicKey publicKey, Certificate certificate, String signatureAlgorithm) {
+	public VerifyBean(PublicKey publicKey, Certificate certificate, String signatureAlgorithm)
+	{
 		this.publicKey = publicKey;
 		this.certificate = certificate;
 		this.signatureAlgorithm = signatureAlgorithm;
 	}
 
-	public boolean equals(final Object o) {
+	public boolean equals(final Object o)
+	{
 		if (o == this)
 			return true;
 		if (!(o instanceof VerifyBean))
 			return false;
-		final VerifyBean other = (VerifyBean) o;
+		final VerifyBean other = (VerifyBean)o;
 		final Object this$publicKey = this.getPublicKey();
 		final Object other$publicKey = other.getPublicKey();
-		if (this$publicKey == null ? other$publicKey != null : !this$publicKey.equals(other$publicKey))
+		if (this$publicKey == null
+			? other$publicKey != null
+			: !this$publicKey.equals(other$publicKey))
 			return false;
 		final Object this$certificate = this.getCertificate();
 		final Object other$certificate = other.getCertificate();
-		if (this$certificate == null ? other$certificate != null : !this$certificate.equals(other$certificate))
+		if (this$certificate == null
+			? other$certificate != null
+			: !this$certificate.equals(other$certificate))
 			return false;
 		final Object this$signatureAlgorithm = this.getSignatureAlgorithm();
 		final Object other$signatureAlgorithm = other.getSignatureAlgorithm();
-		if (this$signatureAlgorithm == null ? other$signatureAlgorithm != null
-				: !this$signatureAlgorithm.equals(other$signatureAlgorithm))
+		if (this$signatureAlgorithm == null
+			? other$signatureAlgorithm != null
+			: !this$signatureAlgorithm.equals(other$signatureAlgorithm))
 			return false;
 		return true;
 	}
 
-	public Certificate getCertificate() {
+	public Certificate getCertificate()
+	{
 		return this.certificate;
 	}
 
-	public PublicKey getPublicKey() {
+	public PublicKey getPublicKey()
+	{
 		return this.publicKey;
 	}
 
-	public String getSignatureAlgorithm() {
+	public String getSignatureAlgorithm()
+	{
 		return this.signatureAlgorithm;
 	}
 
-	public int hashCode() {
+	public int hashCode()
+	{
 		final int PRIME = 59;
 		int result = 1;
 		final Object $publicKey = this.getPublicKey();
@@ -120,24 +143,29 @@ public final class VerifyBean {
 		final Object $certificate = this.getCertificate();
 		result = result * PRIME + ($certificate == null ? 43 : $certificate.hashCode());
 		final Object $signatureAlgorithm = this.getSignatureAlgorithm();
-		result = result * PRIME + ($signatureAlgorithm == null ? 43 : $signatureAlgorithm.hashCode());
+		result = result * PRIME
+			+ ($signatureAlgorithm == null ? 43 : $signatureAlgorithm.hashCode());
 		return result;
 	}
 
-	public void setCertificate(Certificate certificate) {
+	public void setCertificate(Certificate certificate)
+	{
 		this.certificate = certificate;
 	}
 
-	public void setPublicKey(PublicKey publicKey) {
+	public void setPublicKey(PublicKey publicKey)
+	{
 		this.publicKey = publicKey;
 	}
 
-	public void setSignatureAlgorithm(String signatureAlgorithm) {
+	public void setSignatureAlgorithm(String signatureAlgorithm)
+	{
 		this.signatureAlgorithm = signatureAlgorithm;
 	}
 
-	public String toString() {
-		return "VerifyBean(publicKey=" + this.getPublicKey() + ", certificate=" + this.getCertificate()
-				+ ", signatureAlgorithm=" + this.getSignatureAlgorithm() + ")";
+	public String toString()
+	{
+		return "VerifyBean(publicKey=" + this.getPublicKey() + ", certificate="
+			+ this.getCertificate() + ", signatureAlgorithm=" + this.getSignatureAlgorithm() + ")";
 	}
 }

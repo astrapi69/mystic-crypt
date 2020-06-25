@@ -40,10 +40,12 @@ import java.util.Date;
 import de.alpharogroup.crypto.factories.CertFactory;
 import de.alpharogroup.random.RandomExtensions;
 
-public final class TestObjectFactory {
-	public static Certificate newCertificateForTests(final PublicKey publicKey, final PrivateKey privateKey,
-			String signatureAlgorithm)
-			throws CertificateEncodingException, NoSuchAlgorithmException, InvalidKeyException, SignatureException {
+public final class TestObjectFactory
+{
+	public static Certificate newCertificateForTests(final PublicKey publicKey,
+		final PrivateKey privateKey, String signatureAlgorithm) throws CertificateEncodingException,
+		NoSuchAlgorithmException, InvalidKeyException, SignatureException
+	{
 		String subject;
 		String issuer;
 		Date start;
@@ -53,13 +55,16 @@ public final class TestObjectFactory {
 		subject = "CN=Test subject";
 		issuer = "CN=Test issue";
 
-		start = Date.from(LocalDate.of(2020, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		end = Date.from(LocalDate.of(2030, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+		start = Date.from(
+			LocalDate.of(2020, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+		end = Date.from(
+			LocalDate.of(2030, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
 		serialNumber = RandomExtensions.randomSerialNumber();
-		return CertFactory.newX509Certificate(publicKey, privateKey, serialNumber, subject, issuer, signatureAlgorithm,
-				start, end);
+		return CertFactory.newX509Certificate(publicKey, privateKey, serialNumber, subject, issuer,
+			signatureAlgorithm, start, end);
 	}
 
-	private TestObjectFactory() {
+	private TestObjectFactory()
+	{
 	}
 }

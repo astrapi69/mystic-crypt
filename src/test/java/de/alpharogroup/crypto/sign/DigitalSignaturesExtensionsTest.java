@@ -53,17 +53,20 @@ import de.alpharogroup.random.RandomExtensions;
 /**
  * The unit test class for the class {@link DigitalSignaturesExtensions}
  */
-public class DigitalSignaturesExtensionsTest {
+public class DigitalSignaturesExtensionsTest
+{
 
 	/**
 	 * Test chained encrypt and decrypt with
 	 * {@link DigitalSignaturesExtensions#sign(PrivateKey, String, String, byte[])}
 	 * {@link DigitalSignaturesExtensions#verify(Certificate, String, String, byte[], byte[])}
 	 *
-	 * @throws Exception is thrown if any security exception occured
+	 * @throws Exception
+	 *             is thrown if any security exception occured
 	 */
 	@Test
-	public void testSignAndVerifyWithCertificate() throws Exception {
+	public void testSignAndVerifyWithCertificate() throws Exception
+	{
 		boolean actual;
 		boolean expected;
 		String value;
@@ -90,29 +93,33 @@ public class DigitalSignaturesExtensionsTest {
 		publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
 
 		charset = StandardCharsets.UTF_8;
-		value = new String("Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)".getBytes(charset), charset);
+		value = new String(
+			"Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)".getBytes(charset),
+			charset);
 
-		byte[] signedWithMessageDigest = DigitalSignaturesExtensions.sign(privateKey, "SHA-256", "RSA",
-				value.getBytes(charset));
+		byte[] signedWithMessageDigest = DigitalSignaturesExtensions.sign(privateKey, "SHA-256",
+			"RSA", value.getBytes(charset));
 
 		subject = "CN=Test subject";
 		issuer = "CN=Test issue";
 
-		start = Date.from(LocalDate.of(2020, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		end = Date.from(LocalDate.of(2030, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+		start = Date.from(
+			LocalDate.of(2020, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+		end = Date.from(
+			LocalDate.of(2030, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
 		serialNumber = RandomExtensions.randomSerialNumber();
 		signatureAlgorithm = CompoundAlgorithm.SHA256_WITH_RSA.getAlgorithm(); // SHA256withRSA
-		cert = CertFactory.newX509Certificate(publicKey, privateKey, serialNumber, subject, issuer, signatureAlgorithm,
-				start, end);
+		cert = CertFactory.newX509Certificate(publicKey, privateKey, serialNumber, subject, issuer,
+			signatureAlgorithm, start, end);
 
 		actual = DigitalSignaturesExtensions.verify(cert, "SHA-256", "RSA", value.getBytes(charset),
-				signedWithMessageDigest);
+			signedWithMessageDigest);
 		expected = true;
 		assertTrue(actual);
 		assertEquals(actual, expected);
 		value = "Im a hacker and changed secured data";
 		actual = DigitalSignaturesExtensions.verify(cert, "SHA-256", "RSA", value.getBytes(charset),
-				signedWithMessageDigest);
+			signedWithMessageDigest);
 		expected = false;
 		assertFalse(actual);
 		assertEquals(actual, expected);
@@ -123,13 +130,13 @@ public class DigitalSignaturesExtensionsTest {
 	 * {@link DigitalSignaturesExtensions#sign(PrivateKey, String, String, byte[])}
 	 * {@link DigitalSignaturesExtensions#verify(PublicKey, String, String, byte[], byte[])}
 	 *
-	 * @throws Exception is thrown if any security exception occured
+	 * @throws Exception
+	 *             is thrown if any security exception occured
 	 */
 	@Test
-	public void testSignWithMessageDigest() throws Exception {
-		String actual;
+	public void testSignWithMessageDigest() throws Exception
+	{
 		String expected;
-		Charset charset;
 		File publickeyDerDir;
 		File publickeyDerFile;
 		File privatekeyDerFile;
@@ -145,11 +152,11 @@ public class DigitalSignaturesExtensionsTest {
 
 		publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
 
-		byte[] signedWithMessageDigest = DigitalSignaturesExtensions.sign(privateKey, "SHA-256", "RSA",
-				expected.getBytes());
+		byte[] signedWithMessageDigest = DigitalSignaturesExtensions.sign(privateKey, "SHA-256",
+			"RSA", expected.getBytes());
 
-		boolean verifed = DigitalSignaturesExtensions.verify(publicKey, "SHA-256", "RSA", expected.getBytes(),
-				signedWithMessageDigest);
+		boolean verifed = DigitalSignaturesExtensions.verify(publicKey, "SHA-256", "RSA",
+			expected.getBytes(), signedWithMessageDigest);
 		assertTrue(verifed);
 	}
 

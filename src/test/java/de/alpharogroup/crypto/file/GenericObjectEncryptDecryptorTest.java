@@ -42,10 +42,11 @@ import de.alpharogroup.test.objects.Person;
 import de.alpharogroup.test.objects.enums.Gender;
 
 /**
- * The unit test class for the class {@link GenericObjectEncryptor} and the
- * class {@link GenericObjectDecryptor}
+ * The unit test class for the class {@link GenericObjectEncryptor} and the class
+ * {@link GenericObjectDecryptor}
  */
-public class GenericObjectEncryptDecryptorTest extends AbstractTestCase<Person, Person> {
+public class GenericObjectEncryptDecryptorTest extends AbstractTestCase<Person, Person>
+{
 
 	File cryptDir;
 	CryptModel<Cipher, String, String> cryptModel;
@@ -62,25 +63,29 @@ public class GenericObjectEncryptDecryptorTest extends AbstractTestCase<Person, 
 	 */
 	@Override
 	@BeforeMethod
-	protected void setUp() {
+	protected void setUp()
+	{
 		cryptDir = new File(PathFinder.getSrcTestResourcesDir(), "crypt");
 		toEncrypt = Person.builder().about("about").name("Foo").gender(Gender.MALE).build();
 		dirToEncrypt = new File(cryptDir, "food");
 		firstKey = "D1D15ED36B887AF1";
-		cryptModel = CryptModel.<Cipher, String, String>builder().key(firstKey)
-				.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).build();
+		cryptModel = CryptModel.<Cipher, String, String> builder().key(firstKey)
+			.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).build();
 	}
 
 	/**
-	 * Test method for the encrpytion with the class {@link FileEncryptor} and
-	 * decryption with the class {@link FileDecryptor} with given constructor files.
+	 * Test method for the encrpytion with the class {@link FileEncryptor} and decryption with the
+	 * class {@link FileDecryptor} with given constructor files.
 	 *
-	 * @throws Exception is thrown if any error occurs on the execution
+	 * @throws Exception
+	 *             is thrown if any error occurs on the execution
 	 */
 	@Test
-	public void testEncryptDecryptConstructorFiles() throws Exception {
+	public void testEncryptDecryptConstructorFiles() throws Exception
+	{
 		// new scenario...
-		encryptor = new GenericObjectEncryptor<>(cryptModel, new File(cryptDir, "encryptedPerson.enc"));
+		encryptor = new GenericObjectEncryptor<>(cryptModel,
+			new File(cryptDir, "encryptedPerson.enc"));
 		encrypted = encryptor.encrypt(toEncrypt);
 
 		decryptor = new GenericObjectDecryptor<>(cryptModel);

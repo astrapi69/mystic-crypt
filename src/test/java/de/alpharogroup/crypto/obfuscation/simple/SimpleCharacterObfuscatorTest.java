@@ -39,7 +39,8 @@ import de.alpharogroup.crypto.obfuscation.rule.ObfuscationRule;
 /**
  * The unit test class for the class {@link SimpleCharacterObfuscator}
  */
-public class SimpleCharacterObfuscatorTest extends AbstractTestCase<String, String> {
+public class SimpleCharacterObfuscatorTest extends AbstractTestCase<String, String>
+{
 
 	Obfuscatable obfuscator;
 	BiMap<Character, ObfuscationRule<Character, Character>> rules;
@@ -48,11 +49,13 @@ public class SimpleCharacterObfuscatorTest extends AbstractTestCase<String, Stri
 	/**
 	 * Sets up method will be invoked before every unit test method in this class
 	 *
-	 * @throws Exception is thrown if an exception occurs
+	 * @throws Exception
+	 *             is thrown if an exception occurs
 	 */
 	@Override
 	@BeforeMethod
-	protected void setUp() throws Exception {
+	protected void setUp() throws Exception
+	{
 		super.setUp();
 		// create a rule for obfuscate the key
 		rules = SimpleObfuscationTestData.getFirstBiMapObfuscationRules();
@@ -61,11 +64,13 @@ public class SimpleCharacterObfuscatorTest extends AbstractTestCase<String, Stri
 	/**
 	 * Tear down method will be invoked after every unit test method in this class
 	 *
-	 * @throws Exception is thrown if an exception occurs
+	 * @throws Exception
+	 *             is thrown if an exception occurs
 	 */
 	@Override
 	@AfterMethod
-	protected void tearDown() throws Exception {
+	protected void tearDown() throws Exception
+	{
 		super.tearDown();
 		obfuscator = null;
 		stringToObfuscate = null;
@@ -76,7 +81,8 @@ public class SimpleCharacterObfuscatorTest extends AbstractTestCase<String, Stri
 	 * Test method for {@link SimpleCharacterObfuscator#disentangle()}
 	 */
 	@Test(enabled = true)
-	public void testDisentangle() {
+	public void testDisentangle()
+	{
 		stringToObfuscate = "abac";
 		// obfuscate the key
 		obfuscator = new SimpleCharacterObfuscator(rules, stringToObfuscate);
@@ -93,7 +99,8 @@ public class SimpleCharacterObfuscatorTest extends AbstractTestCase<String, Stri
 	 * Test method for {@link SimpleCharacterObfuscator#obfuscate()}
 	 */
 	@Test(enabled = true)
-	public void testObfuscate() {
+	public void testObfuscate()
+	{
 		// a key for obfuscation
 		stringToObfuscate = "abac";
 

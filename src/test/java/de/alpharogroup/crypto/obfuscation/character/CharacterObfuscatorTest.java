@@ -43,7 +43,8 @@ import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
 /**
  * The unit test class for the class {@link CharacterObfuscator}
  */
-public class CharacterObfuscatorTest extends AbstractTestCase<String, String> {
+public class CharacterObfuscatorTest extends AbstractTestCase<String, String>
+{
 
 	Obfuscatable obfuscator;
 	BiMap<Character, ObfuscationOperationRule<Character, Character>> rules;
@@ -52,11 +53,13 @@ public class CharacterObfuscatorTest extends AbstractTestCase<String, String> {
 	/**
 	 * Sets up method will be invoked before every unit test method in this class
 	 *
-	 * @throws Exception is thrown if an exception occurs
+	 * @throws Exception
+	 *             is thrown if an exception occurs
 	 */
 	@Override
 	@BeforeMethod
-	protected void setUp() throws Exception {
+	protected void setUp() throws Exception
+	{
 		super.setUp();
 		// create a rule for obfuscate the key
 		rules = ObfuscationOperationTestData.getFirstBiMapObfuscationOperationRules();
@@ -65,11 +68,13 @@ public class CharacterObfuscatorTest extends AbstractTestCase<String, String> {
 	/**
 	 * Tear down method will be invoked after every unit test method in this class
 	 *
-	 * @throws Exception is thrown if an exception occurs
+	 * @throws Exception
+	 *             is thrown if an exception occurs
 	 */
 	@Override
 	@AfterMethod
-	protected void tearDown() throws Exception {
+	protected void tearDown() throws Exception
+	{
 		super.tearDown();
 		obfuscator = null;
 		stringToObfuscate = null;
@@ -80,7 +85,8 @@ public class CharacterObfuscatorTest extends AbstractTestCase<String, String> {
 	 * Test method for {@link CharacterObfuscator#disentangle()}
 	 */
 	@Test(enabled = true)
-	public void testDisentangle() {
+	public void testDisentangle()
+	{
 		stringToObfuscate = "abac";
 		// obfuscate the key
 		obfuscator = new CharacterObfuscator(rules, stringToObfuscate);
@@ -97,7 +103,8 @@ public class CharacterObfuscatorTest extends AbstractTestCase<String, String> {
 	 * Test method for {@link CharacterObfuscator#obfuscate()}
 	 */
 	@Test(enabled = true)
-	public void testObfuscate() {
+	public void testObfuscate()
+	{
 		// a key for obfuscation
 		stringToObfuscate = "abac";
 
@@ -116,7 +123,8 @@ public class CharacterObfuscatorTest extends AbstractTestCase<String, String> {
 	 * Test method for {@link CharacterObfuscator#obfuscate()}
 	 */
 	@Test(enabled = true) // TODO inspect and fix...
-	public void testObfuscateEightChars() {
+	public void testObfuscateEightChars()
+	{
 		// new scenario...
 		// a key for obfuscation
 		stringToObfuscate = "leonardo";
@@ -165,7 +173,8 @@ public class CharacterObfuscatorTest extends AbstractTestCase<String, String> {
 	 */
 	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
 			UnsupportedOperationException.class })
-	public void testWithBeanTester() {
+	public void testWithBeanTester()
+	{
 		final BeanTester beanTester = new BeanTester();
 		beanTester.testBean(CharacterObfuscator.class);
 	}

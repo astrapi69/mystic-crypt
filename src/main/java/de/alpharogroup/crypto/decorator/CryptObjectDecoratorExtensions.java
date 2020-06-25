@@ -37,16 +37,19 @@ import de.alpharogroup.crypto.model.CharacterDecorator;
 import de.alpharogroup.crypto.model.CryptObjectDecorator;
 import de.alpharogroup.file.read.ReadFileExtensions;
 
-public final class CryptObjectDecoratorExtensions {
-	public static String decorateFile(final File toEncrypt, final CryptObjectDecorator<String> decorator)
-			throws IOException {
+public final class CryptObjectDecoratorExtensions
+{
+	public static String decorateFile(final File toEncrypt,
+		final CryptObjectDecorator<String> decorator) throws IOException
+	{
 		Objects.requireNonNull(toEncrypt);
 		Objects.requireNonNull(decorator);
 		return decorateWithStringDecorator(ReadFileExtensions.readFromFile(toEncrypt), decorator);
 	}
 
 	public static String decorateWithBytearrayDecorator(final String toEncrypt,
-			final CryptObjectDecorator<byte[]> decorator, final Charset charset) {
+		final CryptObjectDecorator<byte[]> decorator, final Charset charset)
+	{
 		Objects.requireNonNull(toEncrypt);
 		Objects.requireNonNull(decorator);
 		Objects.requireNonNull(charset);
@@ -59,7 +62,9 @@ public final class CryptObjectDecoratorExtensions {
 		return sb.toString();
 	}
 
-	public static String decorateWithCharacterDecorator(final String toEncrypt, final CharacterDecorator decorator) {
+	public static String decorateWithCharacterDecorator(final String toEncrypt,
+		final CharacterDecorator decorator)
+	{
 		Objects.requireNonNull(toEncrypt);
 		Objects.requireNonNull(decorator);
 		StringBuilder sb = new StringBuilder();
@@ -70,7 +75,8 @@ public final class CryptObjectDecoratorExtensions {
 	}
 
 	public static String decorateWithStringDecorator(final String toEncrypt,
-			final CryptObjectDecorator<String> decorator) {
+		final CryptObjectDecorator<String> decorator)
+	{
 		Objects.requireNonNull(toEncrypt);
 		Objects.requireNonNull(decorator);
 		StringBuilder sb = new StringBuilder();
@@ -80,32 +86,39 @@ public final class CryptObjectDecoratorExtensions {
 		return sb.toString();
 	}
 
-	private static boolean endsWith(final byte[] array, final byte[] suffix) {
+	private static boolean endsWith(final byte[] array, final byte[] suffix)
+	{
 		Objects.requireNonNull(array);
 		Objects.requireNonNull(suffix);
 		int lastIndex = suffix.length - 1;
 		int currentIndex = lastIndex;
-		if (ArrayUtils.isEmpty(suffix)) {
+		if (ArrayUtils.isEmpty(suffix))
+		{
 			return false;
 		}
-		for (int i = array.length - 1; 0 <= i; i--) {
-			if (suffix[currentIndex--] != array[i]) {
+		for (int i = array.length - 1; 0 <= i; i--)
+		{
+			if (suffix[currentIndex--] != array[i])
+			{
 				return false;
 			}
-			if (currentIndex == -1) {
+			if (currentIndex == -1)
+			{
 				break;
 			}
 		}
 		return true;
 	}
 
-	private static byte[] removeFromEnd(final byte[] array, final byte[] suffix) {
+	private static byte[] removeFromEnd(final byte[] array, final byte[] suffix)
+	{
 		Objects.requireNonNull(array);
 		Objects.requireNonNull(suffix);
 		return Arrays.copyOf(array, array.length - suffix.length);
 	}
 
-	private static byte[] removeFromStart(final byte[] array, final byte[] prefix) {
+	private static byte[] removeFromStart(final byte[] array, final byte[] prefix)
+	{
 		Objects.requireNonNull(array);
 		Objects.requireNonNull(prefix);
 		byte[] result = new byte[array.length - prefix.length];
@@ -113,24 +126,29 @@ public final class CryptObjectDecoratorExtensions {
 		return result;
 	}
 
-	private static boolean startsWith(final byte[] array, byte[] prefix) {
-		for (int i = 0; i < prefix.length; i++) {
-			if (prefix[i] != array[i]) {
+	private static boolean startsWith(final byte[] array, byte[] prefix)
+	{
+		for (int i = 0; i < prefix.length; i++)
+		{
+			if (prefix[i] != array[i])
+			{
 				return false;
 			}
 		}
 		return true;
 	}
 
-	public static String undecorateFile(final File decrypted, final CryptObjectDecorator<String> decorator)
-			throws IOException {
+	public static String undecorateFile(final File decrypted,
+		final CryptObjectDecorator<String> decorator) throws IOException
+	{
 		Objects.requireNonNull(decrypted);
 		Objects.requireNonNull(decorator);
 		return undecorateWithStringDecorator(ReadFileExtensions.readFromFile(decrypted), decorator);
 	}
 
 	public static String undecorateWithBytearrayDecorator(final String toEncrypt,
-			final CryptObjectDecorator<byte[]> decorator) {
+		final CryptObjectDecorator<byte[]> decorator)
+	{
 		Objects.requireNonNull(toEncrypt);
 		Objects.requireNonNull(decorator);
 		byte[] result = toEncrypt.getBytes();
@@ -138,29 +156,38 @@ public final class CryptObjectDecoratorExtensions {
 		byte[] suffix = decorator.getSuffix();
 
 		result = ArrayUtils.removeElements(result, prefix);
-		if (startsWith(result, prefix)) {
+		if (startsWith(result, prefix))
+		{
 			result = removeFromStart(result, prefix);
 		}
 
-		if (endsWith(result, suffix)) {
+		if (endsWith(result, suffix))
+		{
 			result = removeFromEnd(result, suffix);
 		}
 		return new String(result);
 	}
 
-	public static String undecorateWithCharacterDecorator(final String toEncrypt, final CharacterDecorator decorator) {
+	public static String undecorateWithCharacterDecorator(final String toEncrypt,
+		final CharacterDecorator decorator)
+	{
 		Objects.requireNonNull(toEncrypt);
 		Objects.requireNonNull(decorator);
 		StringBuilder sb = new StringBuilder(toEncrypt);
 		boolean prefixRemoved = false;
-		if (toEncrypt.startsWith(decorator.getPrefix().toString())) {
+		if (toEncrypt.startsWith(decorator.getPrefix().toString()))
+		{
 			sb.deleteCharAt(0);
 			prefixRemoved = true;
 		}
-		if (toEncrypt.endsWith(decorator.getSuffix().toString())) {
-			if (prefixRemoved) {
+		if (toEncrypt.endsWith(decorator.getSuffix().toString()))
+		{
+			if (prefixRemoved)
+			{
 				sb.deleteCharAt(toEncrypt.length() - 2);
-			} else {
+			}
+			else
+			{
 				sb.deleteCharAt(toEncrypt.length() - 1);
 			}
 
@@ -169,20 +196,24 @@ public final class CryptObjectDecoratorExtensions {
 	}
 
 	public static String undecorateWithStringDecorator(final String decrypted,
-			final CryptObjectDecorator<String> decorator) {
+		final CryptObjectDecorator<String> decorator)
+	{
 		Objects.requireNonNull(decrypted);
 		Objects.requireNonNull(decorator);
 		String result = decrypted;
-		if (decrypted.startsWith(decorator.getPrefix())) {
+		if (decrypted.startsWith(decorator.getPrefix()))
+		{
 			result = StringUtils.removeStart(result, decorator.getPrefix());
 		}
-		if (decrypted.endsWith(decorator.getSuffix())) {
+		if (decrypted.endsWith(decorator.getSuffix()))
+		{
 			result = StringUtils.removeEnd(result, decorator.getSuffix());
 
 		}
 		return result;
 	}
 
-	private CryptObjectDecoratorExtensions() {
+	private CryptObjectDecoratorExtensions()
+	{
 	}
 }

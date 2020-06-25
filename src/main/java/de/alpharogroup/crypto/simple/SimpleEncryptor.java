@@ -49,13 +49,13 @@ import de.alpharogroup.crypto.api.StringEncryptor;
 import de.alpharogroup.crypto.compound.CompoundAlgorithm;
 
 /**
- * The class {@link SimpleEncryptor} is a simple {@link StringEncryptor}
- * implementation.
+ * The class {@link SimpleEncryptor} is a simple {@link StringEncryptor} implementation.
  *
  * @author Asterios Raptis
  * @version 1.0
  */
-public class SimpleEncryptor implements StringEncryptor, Cryptor {
+public class SimpleEncryptor implements StringEncryptor, Cryptor
+{
 
 	/**
 	 * The Cipher object.
@@ -63,8 +63,7 @@ public class SimpleEncryptor implements StringEncryptor, Cryptor {
 	private Cipher cipher;
 
 	/**
-	 * The flag initialized that indicates if the cipher is initialized for
-	 * decryption.
+	 * The flag initialized that indicates if the cipher is initialized for decryption.
 	 *
 	 * @return true, if is initialized
 	 */
@@ -78,9 +77,11 @@ public class SimpleEncryptor implements StringEncryptor, Cryptor {
 	/**
 	 * Instantiates a new {@link SimpleEncryptor} with the given private key.
 	 *
-	 * @param privateKey The private key.
+	 * @param privateKey
+	 *            The private key.
 	 */
-	public SimpleEncryptor(final String privateKey) {
+	public SimpleEncryptor(final String privateKey)
+	{
 		Objects.requireNonNull(privateKey);
 		this.privateKey = privateKey;
 	}
@@ -89,9 +90,11 @@ public class SimpleEncryptor implements StringEncryptor, Cryptor {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String encrypt(final String string) throws UnsupportedEncodingException, IllegalBlockSizeException,
-			BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
-			NoSuchPaddingException, InvalidAlgorithmParameterException {
+	public String encrypt(final String string)
+		throws UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException,
+		InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchPaddingException, InvalidAlgorithmParameterException
+	{
 		initialize();
 		final byte[] utf8 = string.getBytes(StandardCharsets.UTF_8.name());
 		final byte[] encrypt = this.cipher.doFinal(utf8);
@@ -99,41 +102,45 @@ public class SimpleEncryptor implements StringEncryptor, Cryptor {
 		return encrypted;
 	}
 
-	public String getPrivateKey() {
+	public String getPrivateKey()
+	{
 		return this.privateKey;
 	}
 
 	/**
 	 * Initializes the {@link SimpleEncryptor} object.
 	 *
-	 * @throws InvalidAlgorithmParameterException is thrown if initialization of the
-	 *                                            cipher object fails.
-	 * @throws NoSuchPaddingException             is thrown if instantiation of the
-	 *                                            cipher object fails.
-	 * @throws InvalidKeySpecException            is thrown if generation of the
-	 *                                            SecretKey object fails.
-	 * @throws NoSuchAlgorithmException           is thrown if instantiation of the
-	 *                                            SecretKeyFactory object fails.
-	 * @throws InvalidKeyException                is thrown if initialization of the
-	 *                                            cipher object fails.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the cipher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cipher object fails.
 	 */
-	private void initialize() throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
-			InvalidKeyException, InvalidAlgorithmParameterException {
-		if (!isInitialized()) {
+	private void initialize() throws NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException
+	{
+		if (!isInitialized())
+		{
 			final KeySpec keySpec = new PBEKeySpec(this.getPrivateKey().toCharArray());
 
 			final SecretKeyFactory factory = SecretKeyFactory
-					.getInstance(CompoundAlgorithm.PBE_WITH_MD5_AND_DES.getAlgorithm());
+				.getInstance(CompoundAlgorithm.PBE_WITH_MD5_AND_DES.getAlgorithm());
 			final SecretKey key = factory.generateSecret(keySpec);
 			this.cipher = Cipher.getInstance(key.getAlgorithm());
 			final AlgorithmParameterSpec paramSpec = new PBEParameterSpec(CompoundAlgorithm.SALT,
-					CompoundAlgorithm.ITERATIONCOUNT);
+				CompoundAlgorithm.ITERATIONCOUNT);
 			this.cipher.init(newOperationMode(), key, paramSpec);
 			initialized = true;
 		}
 	}
 
-	private boolean isInitialized() {
+	private boolean isInitialized()
+	{
 		return this.initialized;
 	}
 
@@ -141,7 +148,8 @@ public class SimpleEncryptor implements StringEncryptor, Cryptor {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int newOperationMode() {
+	public int newOperationMode()
+	{
 		return Cipher.ENCRYPT_MODE;
 	}
 }

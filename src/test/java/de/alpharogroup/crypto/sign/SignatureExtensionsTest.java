@@ -44,17 +44,20 @@ import de.alpharogroup.file.search.PathFinder;
 /**
  * The unit test class for the class {@link SignatureExtensions}
  */
-public class SignatureExtensionsTest {
+public class SignatureExtensionsTest
+{
 
 	/**
 	 * Test chained encrypt and decrypt with
 	 * {@link SignatureExtensions#sign(PrivateKey, String, byte[])}
 	 * {@link SignatureExtensions#verify(Certificate, String, byte[], byte[])}
 	 *
-	 * @throws Exception is thrown if any security exception occured
+	 * @throws Exception
+	 *             is thrown if any security exception occured
 	 */
 	@Test
-	public void testSignAndVerifyWithCertificate() throws Exception {
+	public void testSignAndVerifyWithCertificate() throws Exception
+	{
 		String actual;
 		String expected;
 		String value;
@@ -72,24 +75,27 @@ public class SignatureExtensionsTest {
 		privatekeyDerFile = new File(publickeyDerDir, "private.der");
 
 		charset = StandardCharsets.UTF_8;
-		value = new String("Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)".getBytes(charset), charset);
+		value = new String(
+			"Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)".getBytes(charset),
+			charset);
 
 		privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
 
 		publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
 		signatureAlgorithm = CompoundAlgorithm.SHA256_WITH_RSA.getAlgorithm(); // SHA256withRSA
 		byte[] signedWithMessageDigest = SignatureExtensions.sign(privateKey, signatureAlgorithm,
-				value.getBytes(charset));
+			value.getBytes(charset));
 
 		actual = new String(signedWithMessageDigest, charset);
 
 		expected = "O(��P�HN�ߐ\u0005�[�\u0002ƲN+�|�XjR�y�\u0018�t(L���U,����x���/�3��d�\u0003�\u0012,�H)�\f\u0007`<^�6Ip�U\u000B?\u0000��~i�.>7�m\u001E�;F�t\f�\u0012\u0003Q��w�q�_\u0004����\u0014\u0014\u0010*M\t���u�{&�\u0013_�7�\u0006qe�\u0004*���#X\u0007�n#��C��\u001C\u0002����|#�\"ny�2�R!��;��VV�\u0014�\u0014�����<f\u0016�\u07B4>8�m\u000E.\u000F�X�\u0383���b���E`gQ�\u0000��J�\u0006��K\u0007\u0014�6H�r�P\"����V>���lV0\u000B�b�=H\u000F";
 		assertEquals(actual, expected);
 
-		certificate = TestObjectFactory.newCertificateForTests(publicKey, privateKey, signatureAlgorithm);
+		certificate = TestObjectFactory.newCertificateForTests(publicKey, privateKey,
+			signatureAlgorithm);
 
-		boolean verifed = SignatureExtensions.verify(certificate, signatureAlgorithm, value.getBytes(charset),
-				signedWithMessageDigest);
+		boolean verifed = SignatureExtensions.verify(certificate, signatureAlgorithm,
+			value.getBytes(charset), signedWithMessageDigest);
 		assertTrue(verifed);
 	}
 
@@ -98,10 +104,12 @@ public class SignatureExtensionsTest {
 	 * {@link SignatureExtensions#sign(PrivateKey, String, byte[])}
 	 * {@link SignatureExtensions#verify(PublicKey, String, byte[], byte[])}
 	 *
-	 * @throws Exception is thrown if any security exception occured
+	 * @throws Exception
+	 *             is thrown if any security exception occured
 	 */
 	@Test
-	public void testSignAndVerifyWithPublicKey() throws Exception {
+	public void testSignAndVerifyWithPublicKey() throws Exception
+	{
 		String actual;
 		String expected;
 		String value;
@@ -118,21 +126,23 @@ public class SignatureExtensionsTest {
 		privatekeyDerFile = new File(publickeyDerDir, "private.der");
 
 		charset = StandardCharsets.UTF_8;
-		value = new String("Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)".getBytes(charset), charset);
+		value = new String(
+			"Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)".getBytes(charset),
+			charset);
 
 		privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
 
 		publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
 		signatureAlgorithm = CompoundAlgorithm.SHA256_WITH_RSA.getAlgorithm(); // SHA256withRSA
 		byte[] signedWithMessageDigest = SignatureExtensions.sign(privateKey, signatureAlgorithm,
-				value.getBytes(charset));
+			value.getBytes(charset));
 
 		actual = new String(signedWithMessageDigest, charset);
 
 		expected = "O(��P�HN�ߐ\u0005�[�\u0002ƲN+�|�XjR�y�\u0018�t(L���U,����x���/�3��d�\u0003�\u0012,�H)�\f\u0007`<^�6Ip�U\u000B?\u0000��~i�.>7�m\u001E�;F�t\f�\u0012\u0003Q��w�q�_\u0004����\u0014\u0014\u0010*M\t���u�{&�\u0013_�7�\u0006qe�\u0004*���#X\u0007�n#��C��\u001C\u0002����|#�\"ny�2�R!��;��VV�\u0014�\u0014�����<f\u0016�\u07B4>8�m\u000E.\u000F�X�\u0383���b���E`gQ�\u0000��J�\u0006��K\u0007\u0014�6H�r�P\"����V>���lV0\u000B�b�=H\u000F";
 		assertEquals(actual, expected);
-		boolean verificationResult = SignatureExtensions.verify(publicKey, signatureAlgorithm, value.getBytes(charset),
-				signedWithMessageDigest);
+		boolean verificationResult = SignatureExtensions.verify(publicKey, signatureAlgorithm,
+			value.getBytes(charset), signedWithMessageDigest);
 		assertTrue(verificationResult);
 	}
 

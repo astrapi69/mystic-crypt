@@ -35,15 +35,19 @@ import java.net.URLEncoder;
 /**
  * The class {@link ConnectToRouter} connects to a router.
  */
-public class ConnectToRouter {
+public class ConnectToRouter
+{
 
 	/**
 	 * The main method connects to a router.
 	 *
-	 * @param args the arguments
-	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @param args
+	 *            the arguments
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException
+	{
 		String password;
 
 		URL url;
@@ -54,14 +58,18 @@ public class ConnectToRouter {
 		url = new URL("http://192.168.178.1/");
 		connection = url.openConnection();
 		connection.setDoOutput(true);
-		try (PrintWriter out = new PrintWriter(connection.getOutputStream())) {
+		try (PrintWriter out = new PrintWriter(connection.getOutputStream()))
+		{
 			out.println(password);
 		}
 
-		try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+		try (BufferedReader in = new BufferedReader(
+			new InputStreamReader(connection.getInputStream())))
+		{
 			String inputLine;
 
-			while ((inputLine = in.readLine()) != null) {
+			while ((inputLine = in.readLine()) != null)
+			{
 				System.out.println(inputLine);
 			}
 		}

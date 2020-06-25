@@ -49,30 +49,35 @@ import de.alpharogroup.file.search.PathFinder;
 /**
  * The unit test class for the class {@link PublicKeyHexEncryptor}
  */
-public class PublicKeyHexEncryptorTest {
+public class PublicKeyHexEncryptorTest
+{
 
 	/**
 	 * Test method for {@link PublicKeyHexEncryptor} constructors
 	 *
-	 * @throws IOException               Signals that an I/O exception has occurred.
-	 * @throws NoSuchAlgorithmException  is thrown if instantiation of the cipher
-	 *                                   object fails.
-	 * @throws InvalidKeySpecException   is thrown if generation of the SecretKey
-	 *                                   object fails.
-	 * @throws NoSuchProviderException   is thrown if the specified provider is not
-	 *                                   registered in the security provider list.
-	 * @throws InvalidKeyException       the invalid key exception is thrown if
-	 *                                   initialization of the cipher object fails.
-	 * @throws NoSuchPaddingException    is thrown if instantiation of the cipher
-	 *                                   object fails.
-	 * @throws IllegalBlockSizeException is thrown if {@link Cipher#doFinal(byte[])}
-	 *                                   fails.
-	 * @throws BadPaddingException       is thrown if {@link Cipher#doFinal(byte[])}
-	 *                                   fails.
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the cipher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
+	 * @throws InvalidKeyException
+	 *             the invalid key exception is thrown if initialization of the cipher object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the cipher object fails.
+	 * @throws IllegalBlockSizeException
+	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
+	 * @throws BadPaddingException
+	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
 	 */
 	@Test
-	public void testConstructors() throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException,
-			IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+	public void testConstructors() throws NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchProviderException, IOException, InvalidKeyException, NoSuchPaddingException,
+		IllegalBlockSizeException, BadPaddingException
+	{
 		PublicKey publicKey;
 		File publickeyDerDir;
 		File publickeyDerFile;

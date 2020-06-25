@@ -33,7 +33,11 @@ import java.util.Objects;
 /**
  * The class {@link Signer} provide sign algorithm for byte arrays
  */
-public final class Signer {
+public final class Signer
+{
+
+	/** The flag that indicates if the {@link Signature} object is initialized */
+	private boolean initialized;
 
 	/** The {@link Signature} object for signing */
 	private final Signature signature;
@@ -41,17 +45,16 @@ public final class Signer {
 	/** The {@link SignatureBean} object holds the model data for signing */
 	private final SignatureBean signatureBean;
 
-	/** The flag that indicates if the {@link Signature} object is initialized */
-	private boolean initialized;
-
 	/**
 	 * Instantiates a new {@link Signer} object
 	 *
-	 * @param signatureBean the signature bean
-	 * @throws NoSuchAlgorithmException is thrown if instantiation of the
-	 *                                  SecretKeyFactory object fails.
+	 * @param signatureBean
+	 *            the signature bean
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 */
-	public Signer(SignatureBean signatureBean) throws NoSuchAlgorithmException {
+	public Signer(SignatureBean signatureBean) throws NoSuchAlgorithmException
+	{
 
 		Objects.requireNonNull(signatureBean);
 		Objects.requireNonNull(signatureBean.getPrivateKey());
@@ -63,29 +66,33 @@ public final class Signer {
 	/**
 	 * Initializes the {@link Signature} object for signing
 	 *
-	 * @throws InvalidKeyException the invalid key exception
+	 * @throws InvalidKeyException
+	 *             the invalid key exception
 	 */
-	private void initialize() throws InvalidKeyException {
-		if (!initialized) {
+	private void initialize() throws InvalidKeyException
+	{
+		if (!initialized)
+		{
 			signature.initSign(this.signatureBean.getPrivateKey());
 			initialized = true;
 		}
 	}
 
 	/**
-	 * Sign the given byte array with the given private key and the appropriate
-	 * algorithms.
+	 * Sign the given byte array with the given private key and the appropriate algorithms.
 	 *
-	 * @param bytesToSign the bytes to sign
+	 * @param bytesToSign
+	 *            the bytes to sign
 	 * @return the signed byte array
-	 * @throws InvalidKeyException is thrown if initialization of the cipher object
-	 *                             fails
-	 * @throws SignatureException  is thrown if the signature object is not
-	 *                             initialized properly or if this signature
-	 *                             algorithm is unable to process the input data
-	 *                             provided
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cipher object fails
+	 * @throws SignatureException
+	 *             is thrown if the signature object is not initialized properly or if this
+	 *             signature algorithm is unable to process the input data provided
 	 */
-	public synchronized byte[] sign(byte[] bytesToSign) throws InvalidKeyException, SignatureException {
+	public synchronized byte[] sign(byte[] bytesToSign)
+		throws InvalidKeyException, SignatureException
+	{
 		initialize();
 		signature.update(bytesToSign);
 		return signature.sign();

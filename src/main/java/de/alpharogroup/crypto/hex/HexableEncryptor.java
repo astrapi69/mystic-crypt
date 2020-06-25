@@ -48,11 +48,12 @@ import de.alpharogroup.crypto.factories.SecretKeyFactoryExtensions;
 import de.alpharogroup.crypto.model.CryptObjectDecorator;
 
 /**
- * The class {@link HexableEncryptor} is the pendant class of
- * {@link HexableDecryptor} and encrypts given String objects that can be
- * decrypted with {@link HexableDecryptor}. For an example see the unit test.
+ * The class {@link HexableEncryptor} is the pendant class of {@link HexableDecryptor} and encrypts
+ * given String objects that can be decrypted with {@link HexableDecryptor}. For an example see the
+ * unit test.
  */
-public class HexableEncryptor extends AbstractStringEncryptor {
+public class HexableEncryptor extends AbstractStringEncryptor
+{
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -60,47 +61,52 @@ public class HexableEncryptor extends AbstractStringEncryptor {
 	/**
 	 * Instantiates a new {@link HexableEncryptor} from the given parameters.
 	 *
-	 * @param privateKey the private key
-	 * @throws InvalidAlgorithmParameterException is thrown if initialization of the
-	 *                                            cipher object fails.
-	 * @throws NoSuchPaddingException             is thrown if instantiation of the
-	 *                                            SecretKeyFactory object fails.
-	 * @throws InvalidKeySpecException            is thrown if generation of the
-	 *                                            SecretKey object fails.
-	 * @throws NoSuchAlgorithmException           is thrown if instantiation of the
-	 *                                            SecretKeyFactory object fails.
-	 * @throws InvalidKeyException                is thrown if initialization of the
-	 *                                            cipher object fails.
-	 * @throws UnsupportedEncodingException       is thrown if the named charset is
-	 *                                            not supported.
+	 * @param privateKey
+	 *            the private key
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported.
 	 */
 	public HexableEncryptor(final String privateKey)
-			throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
-			InvalidAlgorithmParameterException, UnsupportedEncodingException {
+		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+	{
 		this(privateKey, AesAlgorithm.AES);
 	}
 
 	/**
 	 * Instantiates a new {@link HexableEncryptor} from the given parameters.
 	 *
-	 * @param privateKey The private key.
-	 * @param algorithm  the algorithm
-	 * @throws InvalidAlgorithmParameterException is thrown if initialization of the
-	 *                                            cipher object fails.
-	 * @throws NoSuchPaddingException             is thrown if instantiation of the
-	 *                                            SecretKeyFactory object fails.
-	 * @throws InvalidKeySpecException            is thrown if generation of the
-	 *                                            SecretKey object fails.
-	 * @throws NoSuchAlgorithmException           is thrown if instantiation of the
-	 *                                            SecretKeyFactory object fails.
-	 * @throws InvalidKeyException                is thrown if initialization of the
-	 *                                            cipher object fails.
-	 * @throws UnsupportedEncodingException       is thrown if the named charset is
-	 *                                            not supported.
+	 * @param privateKey
+	 *            The private key.
+	 * @param algorithm
+	 *            the algorithm
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported.
 	 */
 	public HexableEncryptor(final String privateKey, final Algorithm algorithm)
-			throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
-			InvalidAlgorithmParameterException, UnsupportedEncodingException {
+		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+	{
 		super(privateKey);
 		Check.get().notNull(algorithm, "algorithm");
 		getModel().setAlgorithm(algorithm);
@@ -109,30 +115,33 @@ public class HexableEncryptor extends AbstractStringEncryptor {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @throws InvalidKeyException          the invalid key exception is thrown if
-	 *                                      initialization of the cipher object
-	 *                                      fails.
-	 * @throws UnsupportedEncodingException is thrown by get the byte array of the
-	 *                                      private key String object fails or if
-	 *                                      the named charset is not supported.
-	 * @throws NoSuchAlgorithmException     is thrown if instantiation of the cipher
-	 *                                      object fails.
-	 * @throws NoSuchPaddingException       is thrown if instantiation of the cipher
-	 *                                      object fails.
-	 * @throws IllegalBlockSizeException    is thrown if
-	 *                                      {@link Cipher#doFinal(byte[])} fails.
-	 * @throws BadPaddingException          is thrown if
-	 *                                      {@link Cipher#doFinal(byte[])} fails.
+	 * @throws InvalidKeyException
+	 *             the invalid key exception is thrown if initialization of the cipher object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown by get the byte array of the private key String object fails or if the
+	 *             named charset is not supported.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the cipher object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the cipher object fails.
+	 * @throws IllegalBlockSizeException
+	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
+	 * @throws BadPaddingException
+	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
 	 */
 	@Override
-	public String encrypt(final String string) throws InvalidKeyException, UnsupportedEncodingException,
-			NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+	public String encrypt(final String string)
+		throws InvalidKeyException, UnsupportedEncodingException, NoSuchAlgorithmException,
+		NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException
+	{
 		List<CryptObjectDecorator<String>> decorators = getModel().getDecorators();
 		String decoratedString = string;
-		if (decorators != null && !decorators.isEmpty()) {
-			for (int i = 0; i < decorators.size(); i++) {
-				decoratedString = CryptObjectDecoratorExtensions.decorateWithStringDecorator(decoratedString,
-						decorators.get(i));
+		if (decorators != null && !decorators.isEmpty())
+		{
+			for (int i = 0; i < decorators.size(); i++)
+			{
+				decoratedString = CryptObjectDecoratorExtensions
+					.decorateWithStringDecorator(decoratedString, decorators.get(i));
 			}
 		}
 		final byte[] utf8 = decoratedString.getBytes("UTF-8");
@@ -145,8 +154,10 @@ public class HexableEncryptor extends AbstractStringEncryptor {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String newAlgorithm() {
-		if (getModel().getAlgorithm() == null) {
+	protected String newAlgorithm()
+	{
+		if (getModel().getAlgorithm() == null)
+		{
 			getModel().setAlgorithm(AesAlgorithm.AES);
 		}
 		return getModel().getAlgorithm().getAlgorithm();
@@ -157,11 +168,12 @@ public class HexableEncryptor extends AbstractStringEncryptor {
 	 */
 	@Override
 	protected Cipher newCipher(final String privateKey, final String algorithm, final byte[] salt,
-			final int iterationCount, final int operationMode)
-			throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException,
-			InvalidAlgorithmParameterException, UnsupportedEncodingException {
-		final SecretKeySpec skeySpec = SecretKeyFactoryExtensions.newSecretKeySpec(privateKey.getBytes("UTF-8"),
-				algorithm);
+		final int iterationCount, final int operationMode)
+		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
+		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+	{
+		final SecretKeySpec skeySpec = SecretKeyFactoryExtensions
+			.newSecretKeySpec(privateKey.getBytes("UTF-8"), algorithm);
 		final Cipher cipher = Cipher.getInstance(algorithm);
 		cipher.init(operationMode, skeySpec);
 		return cipher;

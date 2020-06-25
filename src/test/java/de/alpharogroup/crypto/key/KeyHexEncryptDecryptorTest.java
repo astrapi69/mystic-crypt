@@ -52,52 +52,52 @@ import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * Test class for {@link PublicKeyHexEncryptor} and
- * {@link PrivateKeyHexDecryptor}
+ * Test class for {@link PublicKeyHexEncryptor} and {@link PrivateKeyHexDecryptor}
  */
-public class KeyHexEncryptDecryptorTest {
+public class KeyHexEncryptDecryptorTest
+{
 
 	/**
 	 * Sets up method will be invoked before every unit test method in this class
 	 */
 	@BeforeMethod
-	protected void setUp() {
+	protected void setUp()
+	{
 		Security.addProvider(new BouncyCastleProvider());
 	}
 
 	/**
-	 * Test encrypt and decrypt with {@link PublicKeyHexEncryptor#encrypt(String)}
-	 * and {@link PrivateKeyHexDecryptor#decrypt(String)} loaded from pem files
+	 * Test encrypt and decrypt with {@link PublicKeyHexEncryptor#encrypt(String)} and
+	 * {@link PrivateKeyHexDecryptor#decrypt(String)} loaded from pem files
 	 *
-	 * @throws NoSuchAlgorithmException           is thrown if instantiation of the
-	 *                                            cipher object fails.
-	 * @throws InvalidKeySpecException            is thrown if generation of the
-	 *                                            SecretKey object fails.
-	 * @throws NoSuchProviderException            is thrown if the specified
-	 *                                            provider is not registered in the
-	 *                                            security provider list.
-	 * @throws IOException                        Signals that an I/O exception has
-	 *                                            occurred.
-	 * @throws InvalidKeyException                the invalid key exception is
-	 *                                            thrown if initialization of the
-	 *                                            cipher object fails.
-	 * @throws NoSuchPaddingException             is thrown if instantiation of the
-	 *                                            cipher object fails.
-	 * @throws IllegalBlockSizeException          is thrown if
-	 *                                            {@link Cipher#doFinal(byte[])}
-	 *                                            fails.
-	 * @throws BadPaddingException                is thrown if
-	 *                                            {@link Cipher#doFinal(byte[])}
-	 *                                            fails.
-	 * @throws InvalidAlgorithmParameterException is thrown if initialization of the
-	 *                                            cipher object fails.
-	 * @throws DecoderException                   is thrown if an odd number or
-	 *                                            illegal of characters is supplied
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the cipher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws InvalidKeyException
+	 *             the invalid key exception is thrown if initialization of the cipher object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the cipher object fails.
+	 * @throws IllegalBlockSizeException
+	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
+	 * @throws BadPaddingException
+	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws DecoderException
+	 *             is thrown if an odd number or illegal of characters is supplied
 	 */
 	@Test(enabled = true)
-	public void testEncryptDecrypt() throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException,
-			IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException,
-			InvalidAlgorithmParameterException, DecoderException {
+	public void testEncryptDecrypt()
+		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException,
+		IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException,
+		BadPaddingException, InvalidAlgorithmParameterException, DecoderException
+	{
 
 		String actual;
 		String expected;
@@ -131,38 +131,37 @@ public class KeyHexEncryptDecryptorTest {
 	}
 
 	/**
-	 * Test encrypt and decrypt with {@link PublicKeyHexEncryptor#encrypt(String)}
-	 * and {@link PrivateKeyHexDecryptor#decrypt(String)} loaded from pem files.
+	 * Test encrypt and decrypt with {@link PublicKeyHexEncryptor#encrypt(String)} and
+	 * {@link PrivateKeyHexDecryptor#decrypt(String)} loaded from pem files.
 	 *
-	 * @throws IOException                        Signals that an I/O exception has
-	 *                                            occurred.
-	 * @throws NoSuchAlgorithmException           is thrown if instantiation of the
-	 *                                            cipher object fails.
-	 * @throws InvalidKeySpecException            is thrown if generation of the
-	 *                                            SecretKey object fails.
-	 * @throws NoSuchProviderException            is thrown if the specified
-	 *                                            provider is not registered in the
-	 *                                            security provider list.
-	 * @throws InvalidKeyException                the invalid key exception is
-	 *                                            thrown if initialization of the
-	 *                                            cipher object fails.
-	 * @throws NoSuchPaddingException             is thrown if instantiation of the
-	 *                                            cipher object fails.
-	 * @throws IllegalBlockSizeException          is thrown if
-	 *                                            {@link Cipher#doFinal(byte[])}
-	 *                                            fails.
-	 * @throws BadPaddingException                is thrown if
-	 *                                            {@link Cipher#doFinal(byte[])}
-	 *                                            fails.
-	 * @throws DecoderException                   is thrown if an odd number or
-	 *                                            illegal of characters is supplied
-	 * @throws InvalidAlgorithmParameterException is thrown if initialization of the
-	 *                                            cipher object fails.
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the cipher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list.
+	 * @throws InvalidKeyException
+	 *             the invalid key exception is thrown if initialization of the cipher object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the cipher object fails.
+	 * @throws IllegalBlockSizeException
+	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
+	 * @throws BadPaddingException
+	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
+	 * @throws DecoderException
+	 *             is thrown if an odd number or illegal of characters is supplied
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cipher object fails.
 	 */
 	@Test(enabled = true)
-	public void testEncryptDecryptPemFiles() throws NoSuchAlgorithmException, InvalidKeySpecException,
-			NoSuchProviderException, IOException, InvalidKeyException, NoSuchPaddingException,
-			IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException, DecoderException {
+	public void testEncryptDecryptPemFiles()
+		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException,
+		IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException,
+		BadPaddingException, InvalidAlgorithmParameterException, DecoderException
+	{
 		String actual;
 		String expected;
 		File publickeyPemDir;

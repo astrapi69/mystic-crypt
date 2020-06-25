@@ -37,17 +37,20 @@ import de.alpharogroup.lang.ScanPackageExtensions;
 /**
  * The unit test class for the class {@link BruteForceProcessor}
  */
-public class BruteForceProcessorTest {
+public class BruteForceProcessorTest
+{
 
 	private static final Logger log = Logger.getLogger(BruteForceProcessorTest.class.getName());
 
 	/**
 	 * Test method for test the class {@link BruteForceProcessor}.
 	 *
-	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	@Test(enabled = false)
-	public void test() throws IOException {
+	public void test() throws IOException
+	{
 
 		String password;
 		char[] possibleCharacters;
@@ -60,22 +63,26 @@ public class BruteForceProcessorTest {
 		Set<String> list;
 
 		list = ScanPackageExtensions.scanClassNames("de.alpharogroup", true, true);
-		for (final String string : list) {
-			if (string.endsWith("Test")) {
+		for (final String string : list)
+		{
+			if (string.endsWith("Test"))
+			{
 				log.info("<class name=\"" + string + "\"/>");
 			}
 		}
 
 		password = "ha";
-		possibleCharacters = new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
-				'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+		possibleCharacters = new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
+				'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 
 		processor = new BruteForceProcessor(possibleCharacters, 1);
 		attempt = processor.getCurrentAttempt();
 
 		start = System.currentTimeMillis();
-		while (true) {
-			if (attempt.equals(password)) {
+		while (true)
+		{
+			if (attempt.equals(password))
+			{
 				log.info("Password Found: " + attempt);
 				found = true;
 				break;
@@ -90,7 +97,8 @@ public class BruteForceProcessorTest {
 		assertTrue(found);
 
 		log.info("Started brute force attack for the password '" + password + "'.");
-		log.info("Needed milliseconds for crack the password with brute force attack: " + elapsedMilliSeconds);
+		log.info("Needed milliseconds for crack the password with brute force attack: "
+			+ elapsedMilliSeconds);
 		log.info("Password found: " + found);
 	}
 

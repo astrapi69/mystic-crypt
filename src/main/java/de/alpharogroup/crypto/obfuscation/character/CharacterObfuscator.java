@@ -35,7 +35,8 @@ import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
 /**
  * The class {@link CharacterObfuscator}
  */
-public class CharacterObfuscator implements Obfuscatable {
+public class CharacterObfuscator implements Obfuscatable
+{
 	boolean disentanglable;
 
 	/** The key. */
@@ -44,30 +45,37 @@ public class CharacterObfuscator implements Obfuscatable {
 	/** The rule. */
 	private final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules;
 
-	public CharacterObfuscator(final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
-			final String key) {
+	public CharacterObfuscator(
+		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
+		final String key)
+	{
 		this(rules, key, false);
 	}
 
-	public CharacterObfuscator(final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
-			final String key, final boolean validate) {
+	public CharacterObfuscator(
+		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
+		final String key, final boolean validate)
+	{
 		Objects.requireNonNull(rules);
 		Objects.requireNonNull(key);
 		Check.get().notEmpty(rules, "rules");
 		Check.get().notEmpty(key, "key");
 		this.rules = rules;
 		this.key = key;
-		if (validate) {
+		if (validate)
+		{
 			this.disentanglable = ObfuscatorExtensions.validate(this.rules);
 		}
 	}
 
 	@Override
-	public String disentangle() {
+	public String disentangle()
+	{
 		return ObfuscatorExtensions.disentangle(rules, obfuscate());
 	}
 
-	public boolean isDisentanglable() {
+	public boolean isDisentanglable()
+	{
 		return this.disentanglable;
 	}
 
@@ -75,7 +83,8 @@ public class CharacterObfuscator implements Obfuscatable {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String obfuscate() {
+	public String obfuscate()
+	{
 		return ObfuscatorExtensions.obfuscateWith(rules, this.key);
 	}
 }

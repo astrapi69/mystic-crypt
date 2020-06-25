@@ -43,18 +43,18 @@ import de.alpharogroup.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
 import de.alpharogroup.crypto.hex.HexExtensions;
 
 /**
- * The class {@link PrivateKeyHexDecryptor} decrypts encrypted characters the
- * was encrypted with the public key of the pendant private key of this class.
+ * The class {@link PrivateKeyHexDecryptor} decrypts encrypted characters the was encrypted with the
+ * public key of the pendant private key of this class.
  */
-public final class PrivateKeyHexDecryptor {
+public final class PrivateKeyHexDecryptor
+{
 	/**
 	 * The Cipher object
 	 */
 	private Cipher cipher;
 
 	/**
-	 * The flag initialized that indicates if the cipher is initialized for
-	 * decryption.
+	 * The flag initialized that indicates if the cipher is initialized for decryption.
 	 *
 	 * @return true, if is initialized
 	 */
@@ -66,12 +66,13 @@ public final class PrivateKeyHexDecryptor {
 	private final PrivateKey privateKey;
 
 	/**
-	 * Instantiates a new {@link PrivateKeyHexDecryptor} with the given
-	 * {@link PrivateKey}
+	 * Instantiates a new {@link PrivateKeyHexDecryptor} with the given {@link PrivateKey}
 	 *
-	 * @param privateKey The private key
+	 * @param privateKey
+	 *            The private key
 	 */
-	public PrivateKeyHexDecryptor(final PrivateKey privateKey) {
+	public PrivateKeyHexDecryptor(final PrivateKey privateKey)
+	{
 		Objects.requireNonNull(privateKey);
 		this.privateKey = privateKey;
 	}
@@ -79,76 +80,82 @@ public final class PrivateKeyHexDecryptor {
 	/**
 	 * Decrypt the given encrypted {@link String}
 	 *
-	 * @param encypted The encrypted {@link String} to decrypt
+	 * @param encypted
+	 *            The encrypted {@link String} to decrypt
 	 * @return The decrypted {@link String}
 	 *
-	 * @throws NoSuchAlgorithmException           is thrown if instantiation of the
-	 *                                            cipher object fails.
-	 * @throws NoSuchPaddingException             is thrown if instantiation of the
-	 *                                            cipher object fails.
-	 * @throws InvalidKeyException                the invalid key exception is
-	 *                                            thrown if initialization of the
-	 *                                            cipher object fails.
-	 * @throws DecoderException                   is thrown if an odd number or
-	 *                                            illegal of characters is supplied
-	 * @throws IllegalBlockSizeException          is thrown if
-	 *                                            {@link Cipher#doFinal(byte[])}
-	 *                                            fails.
-	 * @throws BadPaddingException                is thrown if
-	 *                                            {@link Cipher#doFinal(byte[])}
-	 *                                            fails.
-	 * @throws InvalidKeySpecException            is thrown if generation of the
-	 *                                            SecretKey object fails.
-	 * @throws IOException                        Signals that an I/O exception has
-	 *                                            occurred.
-	 * @throws InvalidAlgorithmParameterException is thrown if initialization of the
-	 *                                            cipher object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the cipher object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the cipher object fails.
+	 * @throws InvalidKeyException
+	 *             the invalid key exception is thrown if initialization of the cipher object fails.
+	 * @throws DecoderException
+	 *             is thrown if an odd number or illegal of characters is supplied
+	 * @throws IllegalBlockSizeException
+	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
+	 * @throws BadPaddingException
+	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cipher object fails.
 	 */
-	public String decrypt(final String encypted) throws InvalidKeyException, NoSuchAlgorithmException,
-			NoSuchPaddingException, DecoderException, IllegalBlockSizeException, BadPaddingException,
-			InvalidKeySpecException, InvalidAlgorithmParameterException, IOException {
+	public String decrypt(final String encypted)
+		throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
+		DecoderException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException,
+		InvalidAlgorithmParameterException, IOException
+	{
 		initialize();
 		final byte[] dec = HexExtensions.decodeHex(encypted.toCharArray());
 		final byte[] utf8 = this.cipher.doFinal(dec);
 		return new String(utf8, "UTF-8");
 	}
 
-	public Cipher getCipher() {
+	public Cipher getCipher()
+	{
 		return this.cipher;
 	}
 
-	public PrivateKey getPrivateKey() {
+	public PrivateKey getPrivateKey()
+	{
 		return this.privateKey;
 	}
 
 	/**
 	 * Initializes the {@link PrivateKeyHexDecryptor} object
 	 *
-	 * @throws NoSuchAlgorithmException           is thrown if instantiation of the
-	 *                                            cipher object fails.
-	 * @throws NoSuchPaddingException             is thrown if instantiation of the
-	 *                                            cipher object fails.
-	 * @throws InvalidKeyException                the invalid key exception is
-	 *                                            thrown if initialization of the
-	 *                                            cipher object fails.
-	 * @throws InvalidKeySpecException            is thrown if generation of the
-	 *                                            SecretKey object fails.
-	 * @throws IOException                        Signals that an I/O exception has
-	 *                                            occurred.
-	 * @throws InvalidAlgorithmParameterException is thrown if initialization of the
-	 *                                            cipher object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the cipher object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the cipher object fails.
+	 * @throws InvalidKeyException
+	 *             the invalid key exception is thrown if initialization of the cipher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cipher object fails.
 	 */
-	private void initialize() throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
-			InvalidKeySpecException, IOException, InvalidAlgorithmParameterException {
-		if (!isInitialized()) {
+	private void initialize()
+		throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+		InvalidKeySpecException, IOException, InvalidAlgorithmParameterException
+	{
+		if (!isInitialized())
+		{
 			cipher = Cipher
-					.getInstance(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding.getAlgorithm());
+				.getInstance(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding
+					.getAlgorithm());
 			cipher.init(Cipher.DECRYPT_MODE, privateKey);
 			initialized = true;
 		}
 	}
 
-	private boolean isInitialized() {
+	private boolean isInitialized()
+	{
 		return this.initialized;
 	}
 }

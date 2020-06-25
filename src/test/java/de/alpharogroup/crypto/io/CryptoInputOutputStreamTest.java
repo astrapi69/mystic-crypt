@@ -42,19 +42,20 @@ import de.alpharogroup.file.read.ReadFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * The unit test class for the classes {@link HexableEncryptor} and
- * {@link CryptoInputStream} and the classes {@link HexableDecryptor} and
- * {@link CryptoOutputStream}
+ * The unit test class for the classes {@link HexableEncryptor} and {@link CryptoInputStream} and
+ * the classes {@link HexableDecryptor} and {@link CryptoOutputStream}
  */
-public class CryptoInputOutputStreamTest {
+public class CryptoInputOutputStreamTest
+{
 
 	/**
 	 * Test method for
-	 * {@link CryptoOutputStream#CryptoOutputStream(OutputStream, AbstractStringDecryptor)}
-	 * for read and write to decrypted file with cipher IO
+	 * {@link CryptoOutputStream#CryptoOutputStream(OutputStream, AbstractStringDecryptor)} for read
+	 * and write to decrypted file with cipher IO
 	 */
 	@Test
-	public void testCryptoOutputStream() throws Exception {
+	public void testCryptoOutputStream() throws Exception
+	{
 		String actual;
 		String expected;
 		File cryptDir;
@@ -73,10 +74,12 @@ public class CryptoInputOutputStreamTest {
 		encryptor = new HexableEncryptor(key);
 
 		try (InputStream fis = new FileInputStream(toEncrypt);
-				InputStream cis = new CryptoInputStream(fis, encryptor);
-				FileOutputStream out = new FileOutputStream(encryptedFile)) {
+			InputStream cis = new CryptoInputStream(fis, encryptor);
+			FileOutputStream out = new FileOutputStream(encryptedFile))
+		{
 
-			while ((c = cis.read()) != -1) {
+			while ((c = cis.read()) != -1)
+			{
 				out.write(c);
 			}
 		}
@@ -85,10 +88,12 @@ public class CryptoInputOutputStreamTest {
 		decryptor = new HexableDecryptor(key);
 
 		try (OutputStream fileOutput = new FileOutputStream(decryptedFile);
-				OutputStream cos = new CryptoOutputStream(fileOutput, decryptor);
-				FileInputStream encryptedFis = new FileInputStream(encryptedFile)) {
+			OutputStream cos = new CryptoOutputStream(fileOutput, decryptor);
+			FileInputStream encryptedFis = new FileInputStream(encryptedFile))
+		{
 
-			while ((c = encryptedFis.read()) != -1) {
+			while ((c = encryptedFis.read()) != -1)
+			{
 				cos.write(c);
 			}
 		}

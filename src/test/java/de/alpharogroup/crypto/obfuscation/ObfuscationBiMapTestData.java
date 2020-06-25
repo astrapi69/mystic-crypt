@@ -28,18 +28,18 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
 /**
- * The class {@link ObfuscationBiMapTestData} provides test data for test the
- * obfuscation rules
+ * The class {@link ObfuscationBiMapTestData} provides test data for test the obfuscation rules
  */
-public final class ObfuscationBiMapTestData {
+public final class ObfuscationBiMapTestData
+{
 
 	/**
-	 * Gets the {@link BiMap} for obfuscation operation rules with 26 rules for use
-	 * in unit tests.
+	 * Gets the {@link BiMap} for obfuscation operation rules with 26 rules for use in unit tests.
 	 *
 	 * @return the {@link BiMap} for obfuscation operation rules with 26 rules
 	 */
-	public static BiMap<Character, Character> getFirstBiMapObfuscationOperationRules() {
+	public static BiMap<Character, Character> getFirstBiMapObfuscationOperationRules()
+	{
 		Character character;
 		Character replaceWith;
 		BiMap<Character, Character> rules;
@@ -152,13 +152,13 @@ public final class ObfuscationBiMapTestData {
 	}
 
 	/**
-	 * Gets the {@link BiMap} for obfuscation operation rules with only three
-	 * operation rules for use in unit tests.
+	 * Gets the {@link BiMap} for obfuscation operation rules with only three operation rules for
+	 * use in unit tests.
 	 *
-	 * @return the {@link BiMap} for obfuscation operation rules with only three
-	 *         operation rules
+	 * @return the {@link BiMap} for obfuscation operation rules with only three operation rules
 	 */
-	public static BiMap<Character, Character> getSmallBiMapRules() {
+	public static BiMap<Character, Character> getSmallBiMapRules()
+	{
 		Character character;
 		Character replaceWith;
 		BiMap<Character, Character> rules;
@@ -179,12 +179,12 @@ public final class ObfuscationBiMapTestData {
 	}
 
 	/**
-	 * Gets the {@link BiMap} for obfuscation rules with only two rules for use in
-	 * unit tests.
+	 * Gets the {@link BiMap} for obfuscation rules with only two rules for use in unit tests.
 	 *
 	 * @return the {@link BiMap} for obfuscation rules with only two rules
 	 */
-	public static BiMap<Character, Character> getSmallestBiMapObfuscationRules() {
+	public static BiMap<Character, Character> getSmallestBiMapObfuscationRules()
+	{
 		Character character;
 		Character replaceWith;
 		BiMap<Character, Character> rules;
@@ -200,7 +200,8 @@ public final class ObfuscationBiMapTestData {
 		return rules;
 	}
 
-	private ObfuscationBiMapTestData() {
+	private ObfuscationBiMapTestData()
+	{
 	}
 
 }

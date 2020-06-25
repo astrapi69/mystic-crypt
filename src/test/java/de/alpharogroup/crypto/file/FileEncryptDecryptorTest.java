@@ -44,10 +44,10 @@ import de.alpharogroup.file.delete.DeleteFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * The unit test class for the class {@link FileEncryptor} and the class
- * {@link FileDecryptor}
+ * The unit test class for the class {@link FileEncryptor} and the class {@link FileDecryptor}
  */
-public class FileEncryptDecryptorTest extends AbstractTestCase<String, String> {
+public class FileEncryptDecryptorTest extends AbstractTestCase<String, String>
+{
 
 	File cryptDir;
 	CryptModel<Cipher, String, String> cryptModel;
@@ -64,24 +64,27 @@ public class FileEncryptDecryptorTest extends AbstractTestCase<String, String> {
 	 */
 	@Override
 	@BeforeMethod
-	protected void setUp() {
+	protected void setUp()
+	{
 		cryptDir = new File(PathFinder.getSrcTestResourcesDir(), "crypt");
 		toEncrypt = new File(cryptDir, "test.txt");
 		dirToEncrypt = new File(cryptDir, "food");
 		firstKey = "D1D15ED36B887AF1";
-		cryptModel = CryptModel.<Cipher, String, String>builder().key(firstKey)
-				.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES)
-				.decorator(StringDecorator.builder().prefix("$").suffix("?").build()).build();
+		cryptModel = CryptModel.<Cipher, String, String> builder().key(firstKey)
+			.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES)
+			.decorator(StringDecorator.builder().prefix("$").suffix("?").build()).build();
 	}
 
 	/**
-	 * Test method for the encrpytion with the class {@link FileEncryptor} and
-	 * decryption with the class {@link FileDecryptor} with given constructor files.
+	 * Test method for the encrpytion with the class {@link FileEncryptor} and decryption with the
+	 * class {@link FileDecryptor} with given constructor files.
 	 *
-	 * @throws Exception is thrown if any error occurs on the execution
+	 * @throws Exception
+	 *             is thrown if any error occurs on the execution
 	 */
 	@Test
-	public void testEncryptDecryptConstructorFiles() throws Exception {
+	public void testEncryptDecryptConstructorFiles() throws Exception
+	{
 		// new scenario...
 		encryptor = new FileEncryptor(cryptModel, new File(cryptDir, "encryptedCnstr.enc"));
 		encrypted = encryptor.encrypt(toEncrypt);
@@ -99,28 +102,31 @@ public class FileEncryptDecryptorTest extends AbstractTestCase<String, String> {
 	}
 
 	/**
-	 * Test method for the encrpytion with the class {@link FileEncryptor} and
-	 * decryption with the class {@link FileDecryptor} with given constructor files
-	 * that throws a {@link FileNotFoundException}
+	 * Test method for the encrpytion with the class {@link FileEncryptor} and decryption with the
+	 * class {@link FileDecryptor} with given constructor files that throws a
+	 * {@link FileNotFoundException}
 	 *
-	 * @throws Exception is thrown if any error occurs on the execution
+	 * @throws Exception
+	 *             is thrown if any error occurs on the execution
 	 */
 	@Test(expectedExceptions = FileNotFoundException.class)
-	public void testEncryptDecryptConstructorFilesThrowFileNotFoundException() throws Exception {
+	public void testEncryptDecryptConstructorFilesThrowFileNotFoundException() throws Exception
+	{
 		// new scenario...
 		encryptor = new FileEncryptor(cryptModel, new File(cryptDir, "foodenc"));
 		encrypted = encryptor.encrypt(dirToEncrypt);
 	}
 
 	/**
-	 * Test method for the encrpytion with the class {@link FileEncryptor} and
-	 * decryption with the class {@link FileDecryptor} with the default file name
-	 * convention
+	 * Test method for the encrpytion with the class {@link FileEncryptor} and decryption with the
+	 * class {@link FileDecryptor} with the default file name convention
 	 *
-	 * @throws Exception is thrown if any error occurs on the execution
+	 * @throws Exception
+	 *             is thrown if any error occurs on the execution
 	 */
 	@Test
-	public void testEncryptDecryptDefaultFiles() throws Exception {
+	public void testEncryptDecryptDefaultFiles() throws Exception
+	{
 		encryptor = new FileEncryptor(cryptModel);
 		encrypted = encryptor.encrypt(toEncrypt);
 
@@ -137,32 +143,38 @@ public class FileEncryptDecryptorTest extends AbstractTestCase<String, String> {
 	}
 
 	/**
-	 * Test method for the encrpytion with the class {@link FileEncryptor} and
-	 * decryption with the class {@link FileDecryptor} with factory injection
+	 * Test method for the encrpytion with the class {@link FileEncryptor} and decryption with the
+	 * class {@link FileDecryptor} with factory injection
 	 *
-	 * @throws Exception is thrown if any error occurs on the execution
+	 * @throws Exception
+	 *             is thrown if any error occurs on the execution
 	 */
 	@Test
-	public void testEncryptDecryptFactoryInjected() throws Exception {
-		encryptor = new FileEncryptor(cryptModel) {
+	public void testEncryptDecryptFactoryInjected() throws Exception
+	{
+		encryptor = new FileEncryptor(cryptModel)
+		{
 
 			/** The Constant serialVersionUID. */
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected File newEncryptedFile(final String parent, final String child) {
+			protected File newEncryptedFile(final String parent, final String child)
+			{
 				return new File(cryptDir, "encryptedFctrNjctd.enc");
 			}
 		};
 		encrypted = encryptor.encrypt(toEncrypt);
 
-		decryptor = new FileDecryptor(cryptModel) {
+		decryptor = new FileDecryptor(cryptModel)
+		{
 
 			/** The Constant serialVersionUID. */
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected File newDecryptedFile(final String parent, final String child) {
+			protected File newDecryptedFile(final String parent, final String child)
+			{
 				return new File(cryptDir, "decryptedFctrNjctd.decrypted");
 			}
 		};

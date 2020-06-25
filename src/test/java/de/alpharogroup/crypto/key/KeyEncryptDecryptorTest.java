@@ -47,16 +47,19 @@ import de.alpharogroup.file.search.PathFinder;
  * The unit test class for the class {@link PublicKeyEncryptor} and the class
  * {@link PrivateKeyDecryptor}
  */
-public class KeyEncryptDecryptorTest {
+public class KeyEncryptDecryptorTest
+{
 
 	/**
 	 * Test encrypt and decrypt with {@link PublicKeyEncryptor#encrypt(byte[])} and
 	 * {@link PrivateKeyDecryptor#decrypt(byte[])} loaded from der files.
 	 *
-	 * @throws Exception is thrown if any security exception occured.
+	 * @throws Exception
+	 *             is thrown if any security exception occured.
 	 */
 	@Test
-	public void testEncryptDecryptDerFiles() throws Exception {
+	public void testEncryptDecryptDerFiles() throws Exception
+	{
 		String actual;
 		String expected;
 		byte[] testBytes;
@@ -83,11 +86,13 @@ public class KeyEncryptDecryptorTest {
 
 		publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
 
-		encryptModel = CryptModel.<Cipher, PublicKey, byte[]>builder().key(publicKey)
-				.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding).build();
+		encryptModel = CryptModel.<Cipher, PublicKey, byte[]> builder().key(publicKey)
+			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding)
+			.build();
 
-		decryptModel = CryptModel.<Cipher, PrivateKey, byte[]>builder().key(privateKey)
-				.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding).build();
+		decryptModel = CryptModel.<Cipher, PrivateKey, byte[]> builder().key(privateKey)
+			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding)
+			.build();
 
 		encryptor = new PublicKeyEncryptor(encryptModel);
 		decryptor = new PrivateKeyDecryptor(decryptModel);
@@ -104,10 +109,12 @@ public class KeyEncryptDecryptorTest {
 	 * Test encrypt and decrypt with {@link PublicKeyEncryptor#encrypt(byte[])} and
 	 * {@link PrivateKeyDecryptor#decrypt(byte[])} loaded from pem files.
 	 *
-	 * @throws Exception is thrown if any security exception occured.
+	 * @throws Exception
+	 *             is thrown if any security exception occured.
 	 */
 	@Test
-	public void testEncryptDecryptPemFiles() throws Exception {
+	public void testEncryptDecryptPemFiles() throws Exception
+	{
 		String actual;
 		String expected;
 		byte[] testBytes;
@@ -135,11 +142,13 @@ public class KeyEncryptDecryptorTest {
 
 		publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
 
-		encryptModel = CryptModel.<Cipher, PublicKey, byte[]>builder().key(publicKey)
-				.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA256AndMGF1Padding).build();
+		encryptModel = CryptModel.<Cipher, PublicKey, byte[]> builder().key(publicKey)
+			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA256AndMGF1Padding)
+			.build();
 
-		decryptModel = CryptModel.<Cipher, PrivateKey, byte[]>builder().key(privateKey)
-				.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA256AndMGF1Padding).build();
+		decryptModel = CryptModel.<Cipher, PrivateKey, byte[]> builder().key(privateKey)
+			.algorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA256AndMGF1Padding)
+			.build();
 
 		encryptor = new PublicKeyEncryptor(encryptModel);
 		decryptor = new PrivateKeyDecryptor(decryptModel);
@@ -149,13 +158,16 @@ public class KeyEncryptDecryptorTest {
 		decrypted = decryptor.decrypt(encrypted);
 
 		actual = new String(decrypted, "UTF-8");
-		assertTrue("String before encryption is not equal after decryption.", expected.equals(actual));
-		for (int i = 0; i < 100; i++) {
+		assertTrue("String before encryption is not equal after decryption.",
+			expected.equals(actual));
+		for (int i = 0; i < 100; i++)
+		{
 			encrypted = encryptor.encrypt(testBytes);
 			decrypted = decryptor.decrypt(encrypted);
 
 			actual = new String(decrypted, "UTF-8");
-			assertTrue("String before encryption is not equal after decryption.", expected.equals(actual));
+			assertTrue("String before encryption is not equal after decryption.",
+				expected.equals(actual));
 			assertEquals(actual, expected);
 		}
 	}

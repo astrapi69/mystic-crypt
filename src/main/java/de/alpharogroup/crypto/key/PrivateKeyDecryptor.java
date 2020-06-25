@@ -41,37 +41,41 @@ import de.alpharogroup.crypto.factories.CipherFactory;
 import de.alpharogroup.crypto.model.CryptModel;
 
 /**
- * The class {@link PrivateKeyDecryptor} decrypts encrypted byte array the was
- * encrypted with the public key of the pendant private key of this class.
+ * The class {@link PrivateKeyDecryptor} decrypts encrypted byte array the was encrypted with the
+ * public key of the pendant private key of this class.
  */
-public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey, byte[]> implements ByteArrayDecryptor {
+public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey, byte[]>
+	implements
+		ByteArrayDecryptor
+{
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Instantiates a new {@link PrivateKeyDecryptor} with the given
-	 * {@link CryptModel}.
+	 * Instantiates a new {@link PrivateKeyDecryptor} with the given {@link CryptModel}.
 	 *
-	 * @param model The crypt model.
-	 * @throws InvalidAlgorithmParameterException is thrown if initialization of the
-	 *                                            cipher object fails.
-	 * @throws NoSuchPaddingException             is thrown if instantiation of the
-	 *                                            SecretKeyFactory object fails.
-	 * @throws InvalidKeySpecException            is thrown if generation of the
-	 *                                            SecretKey object fails.
-	 * @throws NoSuchAlgorithmException           is thrown if instantiation of the
-	 *                                            SecretKeyFactory object fails.
-	 * @throws InvalidKeyException                is thrown if initialization of the
-	 *                                            cipher object fails.
-	 * @throws NoSuchAlgorithmException           is thrown if instantiation of the
-	 *                                            SecretKeyFactory object fails.
-	 * @throws UnsupportedEncodingException       is thrown if the named charset is
-	 *                                            not supported.
+	 * @param model
+	 *            The crypt model.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported.
 	 */
 	public PrivateKeyDecryptor(final CryptModel<Cipher, PrivateKey, byte[]> model)
-			throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
-			InvalidAlgorithmParameterException, UnsupportedEncodingException {
+		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+	{
 		super(model);
 	}
 
@@ -79,7 +83,8 @@ public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey, b
 	 * {@inheritDoc}
 	 */
 	@Override
-	public byte[] decrypt(final byte[] encrypted) throws Exception {
+	public byte[] decrypt(final byte[] encrypted) throws Exception
+	{
 		final byte[] decrypted = getModel().getCipher().doFinal(encrypted);
 		return decrypted;
 	}
@@ -88,9 +93,12 @@ public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey, b
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String newAlgorithm() {
-		if (getModel().getAlgorithm() == null) {
-			getModel().setAlgorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding);
+	protected String newAlgorithm()
+	{
+		if (getModel().getAlgorithm() == null)
+		{
+			getModel().setAlgorithm(
+				KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding);
 		}
 		return getModel().getAlgorithm().getAlgorithm();
 	}
@@ -100,9 +108,10 @@ public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey, b
 	 */
 	@Override
 	protected Cipher newCipher(final PrivateKey key, final String algorithm, final byte[] salt,
-			final int iterationCount, final int operationMode)
-			throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException,
-			InvalidAlgorithmParameterException, UnsupportedEncodingException {
+		final int iterationCount, final int operationMode)
+		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
+		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+	{
 		final Cipher cipher = CipherFactory.newCipher(algorithm);
 		cipher.init(operationMode, key);
 		return cipher;
