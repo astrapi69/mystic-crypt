@@ -44,13 +44,12 @@ import de.alpharogroup.crypto.core.AbstractObjectDecryptor;
 import de.alpharogroup.crypto.model.CryptModel;
 
 /**
- * The class {@link GenericObjectDecryptor} can decrypt files from the given crypt model bean
+ * The class {@link GenericObjectDecryptor} can decrypt files from the given
+ * crypt model bean
  *
- * @param <D>
- *            the generic type of the decorator objects
+ * @param <D> the generic type of the decorator objects
  */
-public class GenericObjectDecryptor<R, D> extends AbstractObjectDecryptor<R, D>
-{
+public class GenericObjectDecryptor<R, D> extends AbstractObjectDecryptor<R, D> {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -58,25 +57,21 @@ public class GenericObjectDecryptor<R, D> extends AbstractObjectDecryptor<R, D>
 	/**
 	 * Instantiates a new {@link GenericObjectDecryptor}
 	 *
-	 * @param model
-	 *            the model
-	 * @throws InvalidKeyException
-	 *             the invalid key exception
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchPaddingException
-	 *             the no such padding exception
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws UnsupportedEncodingException
-	 *             is thrown if the named charset is not supported.
+	 * @param model the model
+	 * @throws InvalidKeyException                the invalid key exception
+	 * @throws NoSuchAlgorithmException           is thrown if instantiation of the
+	 *                                            SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException            is thrown if generation of the
+	 *                                            SecretKey object fails.
+	 * @throws NoSuchPaddingException             the no such padding exception
+	 * @throws InvalidAlgorithmParameterException is thrown if initialization of the
+	 *                                            cipher object fails.
+	 * @throws UnsupportedEncodingException       is thrown if the named charset is
+	 *                                            not supported.
 	 */
 	public GenericObjectDecryptor(final CryptModel<Cipher, String, D> model)
-		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
-		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
-	{
+			throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
+			InvalidAlgorithmParameterException, UnsupportedEncodingException {
 		super(model);
 	}
 
@@ -84,8 +79,7 @@ public class GenericObjectDecryptor<R, D> extends AbstractObjectDecryptor<R, D>
 	 * {@inheritDoc}
 	 */
 	@Override
-	public R decrypt(final File encrypted) throws Exception
-	{
+	public R decrypt(final File encrypted) throws Exception {
 		Objects.requireNonNull(encrypted);
 		onBeforeDecrypt(encrypted);
 		R genericObject = onDecrypt(encrypted);
@@ -93,29 +87,23 @@ public class GenericObjectDecryptor<R, D> extends AbstractObjectDecryptor<R, D>
 		return genericObject;
 	}
 
-
-	protected void onAfterDecrypt(final File encrypted)
-	{
+	protected void onAfterDecrypt(final File encrypted) {
 		Objects.requireNonNull(encrypted);
 	}
 
-	protected void onBeforeDecrypt(final File encrypted)
-	{
+	protected void onBeforeDecrypt(final File encrypted) {
 		Objects.requireNonNull(encrypted);
 	}
 
 	@SuppressWarnings("unchecked")
-	private R onDecrypt(final File encrypted) throws IOException, ClassNotFoundException
-	{
+	private R onDecrypt(final File encrypted) throws IOException, ClassNotFoundException {
 		Objects.requireNonNull(encrypted);
 		R genericObject = null;
 		Cipher cipher = getModel().getCipher();
-		try (
-			CipherInputStream cipherInputStream = new CipherInputStream(
+		try (CipherInputStream cipherInputStream = new CipherInputStream(
 				new BufferedInputStream(new FileInputStream(encrypted)), cipher);
-			ObjectInputStream inputStream = new ObjectInputStream(cipherInputStream);)
-		{
-			genericObject = (R)inputStream.readObject();
+				ObjectInputStream inputStream = new ObjectInputStream(cipherInputStream);) {
+			genericObject = (R) inputStream.readObject();
 			inputStream.close();
 		}
 		return genericObject;

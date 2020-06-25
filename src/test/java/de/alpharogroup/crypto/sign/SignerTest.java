@@ -112,8 +112,8 @@ public class SignerTest {
 		}
 		long end = System.currentTimeMillis();
 		long duration = end - start;
-		System.out.println("duration in ms:"+duration);
-		assertTrue(duration<500);
+		System.out.println("duration in ms:" + duration);
+		assertTrue(duration < 500);
 
 	}
 }

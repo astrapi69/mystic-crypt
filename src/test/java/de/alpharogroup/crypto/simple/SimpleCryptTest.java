@@ -35,16 +35,14 @@ import org.testng.annotations.Test;
  * @author Asterios Raptis
  * @version 1.0
  */
-public class SimpleCryptTest
-{
+public class SimpleCryptTest {
 
 	/**
 	 * Test method for test the method {@link SimpleCrypt#encode(String)} and
 	 * {@link SimpleCrypt#decode(String)}
 	 */
 	@Test
-	public void testSimpleCrypt01()
-	{
+	public void testSimpleCrypt01() {
 		String actual;
 		String expected;
 		String testString;
@@ -62,8 +60,7 @@ public class SimpleCryptTest
 	 * {@link SimpleCrypt#decode(String)}
 	 */
 	@Test
-	public void testSimpleCrypt02()
-	{
+	public void testSimpleCrypt02() {
 		String actual;
 		String expected;
 		String encrypted;
@@ -83,11 +80,9 @@ public class SimpleCryptTest
 	 * Test method for {@link SimpleCrypt} with {@link BeanTester}
 	 */
 	@Test
-	public void testWithBeanTester()
-	{
+	public void testWithBeanTester() {
 		BeanTester beanTester = new BeanTester();
 		beanTester.testBean(SimpleCrypt.class);
 	}
-
 
 }

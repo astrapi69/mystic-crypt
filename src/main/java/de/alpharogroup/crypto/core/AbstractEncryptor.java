@@ -37,18 +37,14 @@ import de.alpharogroup.crypto.api.Cryptor;
 import de.alpharogroup.crypto.model.CryptModel;
 
 /**
- * The abstract class {@link AbstractEncryptor} can be extended for providing the encrypting
- * feature.
+ * The abstract class {@link AbstractEncryptor} can be extended for providing
+ * the encrypting feature.
  *
- * @param <C>
- *            the generic type of the cipher
- * @param <K>
- *            the generic type of the key
- * @param <T>
- *            the generic type of the decorator objects
+ * @param <C> the generic type of the cipher
+ * @param <K> the generic type of the key
+ * @param <T> the generic type of the decorator objects
  */
-public abstract class AbstractEncryptor<C, K, T> extends AbstractCryptor<C, K, T> implements Cryptor
-{
+public abstract class AbstractEncryptor<C, K, T> extends AbstractCryptor<C, K, T> implements Cryptor {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -56,54 +52,49 @@ public abstract class AbstractEncryptor<C, K, T> extends AbstractCryptor<C, K, T
 	/**
 	 * Constructor with the given {@link CryptModel}.
 	 *
-	 * @param model
-	 *            The crypt model.
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws UnsupportedEncodingException
-	 *             is thrown if the named charset is not supported.
+	 * @param model The crypt model.
+	 * @throws InvalidAlgorithmParameterException is thrown if initialization of the
+	 *                                            cipher object fails.
+	 * @throws NoSuchPaddingException             is thrown if instantiation of the
+	 *                                            SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException            is thrown if generation of the
+	 *                                            SecretKey object fails.
+	 * @throws NoSuchAlgorithmException           is thrown if instantiation of the
+	 *                                            SecretKeyFactory object fails.
+	 * @throws InvalidKeyException                is thrown if initialization of the
+	 *                                            cipher object fails.
+	 * @throws NoSuchAlgorithmException           is thrown if instantiation of the
+	 *                                            SecretKeyFactory object fails.
+	 * @throws UnsupportedEncodingException       is thrown if the named charset is
+	 *                                            not supported.
 	 */
 	public AbstractEncryptor(final CryptModel<C, K, T> model)
-		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
-		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
-	{
+			throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
+			InvalidAlgorithmParameterException, UnsupportedEncodingException {
 		super(model);
 	}
 
 	/**
 	 * Constructor with a key.
 	 *
-	 * @param key
-	 *            The key.
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws UnsupportedEncodingException
-	 *             is thrown if the named charset is not supported.
+	 * @param key The key.
+	 * @throws InvalidAlgorithmParameterException is thrown if initialization of the
+	 *                                            cipher object fails.
+	 * @throws NoSuchPaddingException             is thrown if instantiation of the
+	 *                                            SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException            is thrown if generation of the
+	 *                                            SecretKey object fails.
+	 * @throws NoSuchAlgorithmException           is thrown if instantiation of the
+	 *                                            SecretKeyFactory object fails.
+	 * @throws InvalidKeyException                is thrown if initialization of the
+	 *                                            cipher object fails.
+	 * @throws NoSuchAlgorithmException           is thrown if instantiation of the
+	 *                                            SecretKeyFactory object fails.
+	 * @throws UnsupportedEncodingException       is thrown if the named charset is
+	 *                                            not supported.
 	 */
-	public AbstractEncryptor(final K key)
-		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
-		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
-	{
+	public AbstractEncryptor(final K key) throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
+			NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException {
 		super(key);
 	}
 
@@ -111,8 +102,7 @@ public abstract class AbstractEncryptor<C, K, T> extends AbstractCryptor<C, K, T
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int newOperationMode()
-	{
+	public int newOperationMode() {
 		return Cipher.ENCRYPT_MODE;
 	}
 

@@ -44,35 +44,35 @@ import de.alpharogroup.crypto.compound.CompoundAlgorithm;
 /**
  * Test class for the {@link SimpleEncryptor} and {@link SimpleDecryptor}
  */
-public class SimpleEnDecryptorTest
-{
+public class SimpleEnDecryptorTest {
 
 	/**
 	 * Test encrypt and decrypt with {@link SimpleEncryptor#encrypt(String)} and
 	 * {@link SimpleDecryptor#decrypt(String)}
 	 *
-	 * @throws BadPaddingException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws IllegalBlockSizeException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws UnsupportedEncodingException
-	 *             is thrown if the named charset is not supported.
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cypher object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cypher object fails.
+	 * @throws BadPaddingException                is thrown if
+	 *                                            {@link Cipher#doFinal(byte[])}
+	 *                                            fails.
+	 * @throws IllegalBlockSizeException          is thrown if
+	 *                                            {@link Cipher#doFinal(byte[])}
+	 *                                            fails.
+	 * @throws UnsupportedEncodingException       is thrown if the named charset is
+	 *                                            not supported.
+	 * @throws InvalidAlgorithmParameterException is thrown if initialization of the
+	 *                                            cipher object fails.
+	 * @throws NoSuchPaddingException             is thrown if instantiation of the
+	 *                                            cipher object fails.
+	 * @throws InvalidKeySpecException            is thrown if generation of the
+	 *                                            SecretKey object fails.
+	 * @throws NoSuchAlgorithmException           is thrown if instantiation of the
+	 *                                            SecretKeyFactory object fails.
+	 * @throws InvalidKeyException                is thrown if initialization of the
+	 *                                            cipher object fails.
 	 */
 	@Test
-	public void testEncrypt() throws InvalidKeyException, UnsupportedEncodingException,
-		IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException,
-		InvalidKeySpecException, NoSuchPaddingException, InvalidAlgorithmParameterException
-	{
+	public void testEncrypt() throws InvalidKeyException, UnsupportedEncodingException, IllegalBlockSizeException,
+			BadPaddingException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
+			InvalidAlgorithmParameterException {
 		String actual;
 		String expected;
 		SimpleEncryptor encryptor;
@@ -86,8 +86,7 @@ public class SimpleEnDecryptorTest
 		encrypted = encryptor.encrypt(expected);
 		decryptor = new SimpleDecryptor(CompoundAlgorithm.PRIVATE_KEY);
 		actual = decryptor.decrypt(encrypted);
-		assertTrue("String before encryption is not equal after decryption.",
-			expected.equals(actual));
+		assertTrue("String before encryption is not equal after decryption.", expected.equals(actual));
 	}
 
 }

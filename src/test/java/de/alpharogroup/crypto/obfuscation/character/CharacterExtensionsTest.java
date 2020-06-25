@@ -34,19 +34,17 @@ import de.alpharogroup.AbstractTestCase;
 /**
  * The unit test class for the class {@link CharacterExtensions}
  */
-public class CharacterExtensionsTest extends AbstractTestCase<Boolean, Boolean>
-{
+public class CharacterExtensionsTest extends AbstractTestCase<Boolean, Boolean> {
 
 	/**
-	 * Test method for {@link CharacterExtensions#equalsIgnoreCase(Character, Character)}
+	 * Test method for
+	 * {@link CharacterExtensions#equalsIgnoreCase(Character, Character)}
 	 */
 	@Test(enabled = true)
-	public void testEqualsIgnoreCase()
-	{
+	public void testEqualsIgnoreCase() {
 
 		expected = true;
-		actual = CharacterExtensions.equalsIgnoreCase(Character.valueOf('C'),
-			Character.valueOf('c'));
+		actual = CharacterExtensions.equalsIgnoreCase(Character.valueOf('C'), Character.valueOf('c'));
 		assertEquals(expected, actual);
 
 		expected = false;
@@ -63,8 +61,7 @@ public class CharacterExtensionsTest extends AbstractTestCase<Boolean, Boolean>
 	 * Test method for {@link CharacterExtensions} with {@link BeanTester}
 	 */
 	@Test
-	public void testWithBeanTester()
-	{
+	public void testWithBeanTester() {
 		final BeanTester beanTester = new BeanTester();
 		beanTester.testBean(CharacterExtensions.class);
 	}

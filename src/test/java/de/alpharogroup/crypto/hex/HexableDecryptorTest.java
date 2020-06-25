@@ -29,21 +29,20 @@ import static org.testng.AssertJUnit.assertTrue;
 import org.testng.annotations.Test;
 
 /**
- * The unit test class for the class {@link HexableEncryptor} and {@link HexableDecryptor}
+ * The unit test class for the class {@link HexableEncryptor} and
+ * {@link HexableDecryptor}
  */
-public class HexableDecryptorTest
-{
+public class HexableDecryptorTest {
 
 	/**
-	 * Test chained encrypt and decrypt with {@link HexableEncryptor#encrypt(String)} and
+	 * Test chained encrypt and decrypt with
+	 * {@link HexableEncryptor#encrypt(String)} and
 	 * {@link HexableDecryptor#decrypt(String)}.
 	 *
-	 * @throws Exception
-	 *             is thrown if any security exception occured.
+	 * @throws Exception is thrown if any security exception occured.
 	 */
 	@Test
-	public void testEncryptDecrypt() throws Exception
-	{
+	public void testEncryptDecrypt() throws Exception {
 		String test;
 		String key;
 		HexableEncryptor encryptor;
@@ -58,9 +57,7 @@ public class HexableDecryptorTest
 
 		decryptor = new HexableDecryptor(key);
 		decryted = decryptor.decrypt(encrypted);
-		assertTrue("String before encryption is not equal after decryption.",
-			test.equals(decryted));
+		assertTrue("String before encryption is not equal after decryption.", test.equals(decryted));
 	}
-
 
 }

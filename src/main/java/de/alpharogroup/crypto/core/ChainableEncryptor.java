@@ -27,11 +27,10 @@ package de.alpharogroup.crypto.core;
 import de.alpharogroup.crypto.api.Encryptor;
 
 /**
- * The class {@link ChainableEncryptor} can take many {@code Encryptor} objects and encrypts the
- * given string with all the given {@code Encryptor} objects.
+ * The class {@link ChainableEncryptor} can take many {@code Encryptor} objects
+ * and encrypts the given string with all the given {@code Encryptor} objects.
  */
-public abstract class ChainableEncryptor<T> implements Encryptor<T, T>
-{
+public abstract class ChainableEncryptor<T> implements Encryptor<T, T> {
 
 	/** The array with the {@code Encryptor} objects. */
 	private final Encryptor<T, T>[] encryptors;
@@ -39,12 +38,10 @@ public abstract class ChainableEncryptor<T> implements Encryptor<T, T>
 	/**
 	 * Instantiates a new {@link ChainableEncryptor} object.
 	 *
-	 * @param encryptors
-	 *            the {@code Encryptor} objects.
+	 * @param encryptors the {@code Encryptor} objects.
 	 */
 	@SafeVarargs
-	public ChainableEncryptor(final Encryptor<T, T>... encryptors)
-	{
+	public ChainableEncryptor(final Encryptor<T, T>... encryptors) {
 		this.encryptors = encryptors;
 	}
 
@@ -52,18 +49,15 @@ public abstract class ChainableEncryptor<T> implements Encryptor<T, T>
 	 * {@inheritDoc}
 	 */
 	@Override
-	public T encrypt(final T toEncrypt) throws Exception
-	{
+	public T encrypt(final T toEncrypt) throws Exception {
 		T result = toEncrypt;
-		for (final Encryptor<T, T> encryptor : encryptors)
-		{
+		for (final Encryptor<T, T> encryptor : encryptors) {
 			result = encryptor.encrypt(result);
 		}
 		return result;
 	}
 
-	public Encryptor<T, T>[] getEncryptors()
-	{
+	public Encryptor<T, T>[] getEncryptors() {
 		return this.encryptors;
 	}
 }

@@ -36,20 +36,15 @@ import de.alpharogroup.crypto.core.AbstractStringEncryptor;
  * @author Asterios Raptis
  * @version 1.0
  */
-public class CryptoInputStream extends CipherInputStream
-{
+public class CryptoInputStream extends CipherInputStream {
 
 	/**
 	 * Instantiates a new {@link CryptoInputStream}.
 	 *
-	 * @param inputStream
-	 *            the input stream
-	 * @param encryptor
-	 *            the encryptor
+	 * @param inputStream the input stream
+	 * @param encryptor   the encryptor
 	 */
-	protected CryptoInputStream(final InputStream inputStream,
-		final AbstractStringEncryptor encryptor)
-	{
+	protected CryptoInputStream(final InputStream inputStream, final AbstractStringEncryptor encryptor) {
 		super(inputStream, encryptor.getModel().getCipher());
 	}
 

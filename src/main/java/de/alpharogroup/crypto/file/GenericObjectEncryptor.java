@@ -44,16 +44,14 @@ import de.alpharogroup.crypto.core.AbstractObjectEncryptor;
 import de.alpharogroup.crypto.model.CryptModel;
 
 /**
- * The class {@link GenericObjectEncryptor} can encrypt files with the given crypt model.
+ * The class {@link GenericObjectEncryptor} can encrypt files with the given
+ * crypt model.
  *
- * @param <T>
- *            the generic type of the object to encrypt
+ * @param <T> the generic type of the object to encrypt
  *
- * @param <D>
- *            the generic type of the decorator objects
+ * @param <D> the generic type of the decorator objects
  */
-public class GenericObjectEncryptor<T, D> extends AbstractObjectEncryptor<T, D>
-{
+public class GenericObjectEncryptor<T, D> extends AbstractObjectEncryptor<T, D> {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -64,30 +62,25 @@ public class GenericObjectEncryptor<T, D> extends AbstractObjectEncryptor<T, D>
 	/**
 	 * Instantiates a new file encryptor.
 	 *
-	 * @param model
-	 *            the model
-	 * @param encryptedFile
-	 *            is the target of the result from the encryption, if null the default file will be
-	 *            created. If null the name convention is given name of the file that has to be
-	 *            encrypted with the extension '.enc'.
-	 * @throws InvalidKeyException
-	 *             the invalid key exception
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchPaddingException
-	 *             the no such padding exception
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws UnsupportedEncodingException
-	 *             is thrown if the named charset is not supported.
+	 * @param model         the model
+	 * @param encryptedFile is the target of the result from the encryption, if null
+	 *                      the default file will be created. If null the name
+	 *                      convention is given name of the file that has to be
+	 *                      encrypted with the extension '.enc'.
+	 * @throws InvalidKeyException                the invalid key exception
+	 * @throws NoSuchAlgorithmException           is thrown if instantiation of the
+	 *                                            SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException            is thrown if generation of the
+	 *                                            SecretKey object fails.
+	 * @throws NoSuchPaddingException             the no such padding exception
+	 * @throws InvalidAlgorithmParameterException is thrown if initialization of the
+	 *                                            cipher object fails.
+	 * @throws UnsupportedEncodingException       is thrown if the named charset is
+	 *                                            not supported.
 	 */
-	public GenericObjectEncryptor(final CryptModel<Cipher, String, D> model,
-		final File encryptedFile)
-		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
-		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
-	{
+	public GenericObjectEncryptor(final CryptModel<Cipher, String, D> model, final File encryptedFile)
+			throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
+			InvalidAlgorithmParameterException, UnsupportedEncodingException {
 		super(model);
 		Objects.requireNonNull(encryptedFile);
 		this.encryptedFile = encryptedFile;
@@ -97,8 +90,7 @@ public class GenericObjectEncryptor<T, D> extends AbstractObjectEncryptor<T, D>
 	 * {@inheritDoc}
 	 */
 	@Override
-	public File encrypt(final T toEncrypt) throws Exception
-	{
+	public File encrypt(final T toEncrypt) throws Exception {
 		Objects.requireNonNull(toEncrypt);
 		onBeforeEncrypt(toEncrypt);
 		onEncrypt(toEncrypt);
@@ -107,40 +99,33 @@ public class GenericObjectEncryptor<T, D> extends AbstractObjectEncryptor<T, D>
 	}
 
 	/**
-	 * Factory method for creating the new decrypted {@link File} if it is not exists. This method
-	 * is invoked in the constructor from the derived classes and can be overridden so users can
-	 * provide their own version of creating the new decrypted {@link File}
+	 * Factory method for creating the new decrypted {@link File} if it is not
+	 * exists. This method is invoked in the constructor from the derived classes
+	 * and can be overridden so users can provide their own version of creating the
+	 * new decrypted {@link File}
 	 *
-	 * @param parent
-	 *            the parent directory
-	 * @param child
-	 *            the file name
+	 * @param parent the parent directory
+	 * @param child  the file name
 	 * @return the new {@link File} object
 	 */
-	protected File newEncryptedFile(final String parent, final String child)
-	{
+	protected File newEncryptedFile(final String parent, final String child) {
 		return new File(parent, child);
 	}
 
-	protected void onAfterEncrypt(final T toEncrypt)
-	{
+	protected void onAfterEncrypt(final T toEncrypt) {
 		Objects.requireNonNull(toEncrypt);
 	}
 
-	protected void onBeforeEncrypt(final T toEncrypt)
-	{
+	protected void onBeforeEncrypt(final T toEncrypt) {
 		Objects.requireNonNull(toEncrypt);
 	}
 
-	private void onEncrypt(final T toEncrypt) throws IOException
-	{
+	private void onEncrypt(final T toEncrypt) throws IOException {
 		Objects.requireNonNull(toEncrypt);
 		Cipher cipher = getModel().getCipher();
-		try (
-			CipherOutputStream cipherOutputStream = new CipherOutputStream(
+		try (CipherOutputStream cipherOutputStream = new CipherOutputStream(
 				new BufferedOutputStream(new FileOutputStream(this.encryptedFile)), cipher);
-			ObjectOutputStream outputStream = new ObjectOutputStream(cipherOutputStream);)
-		{
+				ObjectOutputStream outputStream = new ObjectOutputStream(cipherOutputStream);) {
 			outputStream.writeObject(toEncrypt);
 		}
 	}

@@ -25,36 +25,31 @@
 package de.alpharogroup.crypto.obfuscation.character;
 
 /**
- * The class {@link CharacterExtensions} provides utility methods for {@link Character} objects
+ * The class {@link CharacterExtensions} provides utility methods for
+ * {@link Character} objects
  */
-public final class CharacterExtensions
-{
+public final class CharacterExtensions {
 
 	/**
-	 * Compares this {@code Character} to another {@code Character}, ignoring case considerations.
+	 * Compares this {@code Character} to another {@code Character}, ignoring case
+	 * considerations.
 	 *
-	 * @param character
-	 *            the character
-	 * @param another
-	 *            the other
+	 * @param character the character
+	 * @param another   the other
 	 * @return true, if successful
 	 */
-	public static boolean equalsIgnoreCase(Character character, Character another)
-	{
-		if (character == null && another == null)
-		{
+	public static boolean equalsIgnoreCase(Character character, Character another) {
+		if (character == null && another == null) {
 			return true;
 		}
-		if (character == null && another != null || character != null && another == null)
-		{
+		if (character == null && another != null || character != null && another == null) {
 			return false;
 		}
 		return Character.valueOf(Character.toLowerCase(character.charValue()))
-			.equals(Character.valueOf(Character.toLowerCase(another.charValue())));
+				.equals(Character.valueOf(Character.toLowerCase(another.charValue())));
 
 	}
 
-	private CharacterExtensions()
-	{
+	private CharacterExtensions() {
 	}
 }

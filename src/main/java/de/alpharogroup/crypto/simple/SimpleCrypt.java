@@ -25,43 +25,37 @@
 package de.alpharogroup.crypto.simple;
 
 /**
- * The class {@link SimpleCrypt} is an utility class for the use of encrypt or decrypt information.
+ * The class {@link SimpleCrypt} is an utility class for the use of encrypt or
+ * decrypt information.
  *
  * @version 1.0
  * @author Asterios Raptis
  */
-public final class SimpleCrypt
-{
+public final class SimpleCrypt {
 
 	/**
 	 * Decrypt the given String.
 	 *
-	 * @param toDecode
-	 *            The String to decrypt.
+	 * @param toDecode The String to decrypt.
 	 * @return The decrypted String.
 	 */
-	public static String decode(final String toDecode)
-	{
+	public static String decode(final String toDecode) {
 		return decode(toDecode, 28);
 	}
 
 	/**
 	 * Decrypt the given String.
 	 *
-	 * @param toDecode
-	 *            The String to decrypt.
-	 * @param relocate
-	 *            How much places to switch.
+	 * @param toDecode The String to decrypt.
+	 * @param relocate How much places to switch.
 	 * @return The decrypted String.
 	 */
-	public static String decode(final String toDecode, final int relocate)
-	{
+	public static String decode(final String toDecode, final int relocate) {
 		final StringBuffer sb = new StringBuffer();
 		final char[] encrypt = toDecode.toCharArray();
 		final int arraylength = encrypt.length;
-		for (int i = 0; i < arraylength; i++)
-		{
-			final char a = (char)(encrypt[i] - relocate);
+		for (int i = 0; i < arraylength; i++) {
+			final char a = (char) (encrypt[i] - relocate);
 			sb.append(a);
 		}
 		return sb.toString().trim();
@@ -70,39 +64,32 @@ public final class SimpleCrypt
 	/**
 	 * Encrypt the given String.
 	 *
-	 * @param secret
-	 *            The String to encrypt.
+	 * @param secret The String to encrypt.
 	 * @return The encrypted String.
 	 */
-	public static String encode(final String secret)
-	{
+	public static String encode(final String secret) {
 		return encode(secret, 28);
 	}
 
 	/**
 	 * Encrypt the given String.
 	 *
-	 * @param secret
-	 *            The String to encrypt.
-	 * @param relocate
-	 *            How much places to switch.
+	 * @param secret   The String to encrypt.
+	 * @param relocate How much places to switch.
 	 * @return The encrypted String.
 	 */
-	public static String encode(final String secret, final int relocate)
-	{
+	public static String encode(final String secret, final int relocate) {
 		final StringBuffer sb = new StringBuffer();
 		final char[] encrypt = secret.toCharArray();
 		final int arraylength = encrypt.length;
-		for (int i = 0; i < arraylength; i++)
-		{
-			final char a = (char)(encrypt[i] + relocate);
+		for (int i = 0; i < arraylength; i++) {
+			final char a = (char) (encrypt[i] + relocate);
 			sb.append(a);
 		}
 		return sb.toString().trim();
 	}
 
-	private SimpleCrypt()
-	{
+	private SimpleCrypt() {
 	}
 
 }

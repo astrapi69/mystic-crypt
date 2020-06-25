@@ -33,10 +33,10 @@ import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationRule;
 
 /**
- * The class {@link SimpleCharacterObfuscator} provide as the name says obfuscation of a given text
+ * The class {@link SimpleCharacterObfuscator} provide as the name says
+ * obfuscation of a given text
  */
-public class SimpleCharacterObfuscator implements Obfuscatable
-{
+public class SimpleCharacterObfuscator implements Obfuscatable {
 
 	private final BiMap<Character, Character> biMap;
 
@@ -49,14 +49,11 @@ public class SimpleCharacterObfuscator implements Obfuscatable
 	/**
 	 * Instantiates a new {@link SimpleCharacterObfuscator}
 	 *
-	 * @param rules
-	 *            the rules
-	 * @param key
-	 *            the key
+	 * @param rules the rules
+	 * @param key   the key
 	 */
-	public SimpleCharacterObfuscator(
-		final BiMap<Character, ObfuscationRule<Character, Character>> rules, final String key)
-	{
+	public SimpleCharacterObfuscator(final BiMap<Character, ObfuscationRule<Character, Character>> rules,
+			final String key) {
 		Objects.requireNonNull(rules);
 		Objects.requireNonNull(key);
 		Check.get().notEmpty(rules, "rules");
@@ -70,14 +67,12 @@ public class SimpleCharacterObfuscator implements Obfuscatable
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String disentangle()
-	{
+	public String disentangle() {
 		final String obfuscated = SimpleObfuscatorExtensions.obfuscateWith(rules, this.key);
 		return disentangle(obfuscated);
 	}
 
-	public String disentangle(String obfuscated)
-	{
+	public String disentangle(String obfuscated) {
 		final String disentangled = SimpleObfuscatorExtensions.disentangleBiMap(biMap, obfuscated);
 		return disentangled;
 	}
@@ -86,8 +81,7 @@ public class SimpleCharacterObfuscator implements Obfuscatable
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String obfuscate()
-	{
+	public String obfuscate() {
 		final String obfuscated = SimpleObfuscatorExtensions.obfuscateWith(rules, this.key);
 		return obfuscated;
 	}

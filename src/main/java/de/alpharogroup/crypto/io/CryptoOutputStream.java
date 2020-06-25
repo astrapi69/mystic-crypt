@@ -36,19 +36,15 @@ import de.alpharogroup.crypto.core.AbstractStringDecryptor;
  * @author Asterios Raptis
  * @version 1.0
  */
-public class CryptoOutputStream extends CipherOutputStream
-{
+public class CryptoOutputStream extends CipherOutputStream {
 
 	/**
 	 * Instantiates a new {@link CryptoOutputStream}.
 	 *
-	 * @param out
-	 *            the out
-	 * @param decryptor
-	 *            the decryptor
+	 * @param out       the out
+	 * @param decryptor the decryptor
 	 */
-	public CryptoOutputStream(final OutputStream out, final AbstractStringDecryptor decryptor)
-	{
+	public CryptoOutputStream(final OutputStream out, final AbstractStringDecryptor decryptor) {
 		super(out, decryptor.getModel().getCipher());
 	}
 

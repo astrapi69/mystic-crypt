@@ -44,55 +44,40 @@ import de.alpharogroup.file.search.PathFinder;
 /**
  * The unit test class for the class {@link BruteForceProcessor}
  */
-public class PrivateKeyBruteForceProcessorTest
-{
+public class PrivateKeyBruteForceProcessorTest {
 
-	private static final Logger log = Logger
-		.getLogger(PrivateKeyBruteForceProcessorTest.class.getName());
+	private static final Logger log = Logger.getLogger(PrivateKeyBruteForceProcessorTest.class.getName());
 
 	/**
-	 * Resolve the password from the given private key file. If no password is set an empty Optional
-	 * will be returned.
+	 * Resolve the password from the given private key file. If no password is set
+	 * an empty Optional will be returned.
 	 *
-	 * @param privateKeyFile
-	 *            the private key file
-	 * @param processor
-	 *            the processor
+	 * @param privateKeyFile the private key file
+	 * @param processor      the processor
 	 * @return the optional
 	 */
-	public static Optional<String> resolvePassword(File privateKeyFile,
-		BruteForceProcessor processor)
-	{
+	public static Optional<String> resolvePassword(File privateKeyFile, BruteForceProcessor processor) {
 		Objects.requireNonNull(processor);
 		Optional<String> optionalPassword = Optional.empty();
-		try
-		{
+		try {
 			Security.addProvider(new BouncyCastleProvider());
-			boolean isPasswordProtected = PrivateKeyReader
-				.isPrivateKeyPasswordProtected(privateKeyFile);
+			boolean isPasswordProtected = PrivateKeyReader.isPrivateKeyPasswordProtected(privateKeyFile);
 
-			if (isPasswordProtected)
-			{
+			if (isPasswordProtected) {
 				String attempt;
 				attempt = processor.getCurrentAttempt();
-				while (true)
-				{
-					try
-					{
+				while (true) {
+					try {
 						EncryptedPrivateKeyReader.getKeyPair(privateKeyFile, attempt);
 						optionalPassword = Optional.of(attempt);
 						break;
-					}
-					catch (IOException e)
-					{
+					} catch (IOException e) {
 						attempt = processor.getCurrentAttempt();
 						processor.increment();
 					}
 				}
 			}
-		}
-		catch (IOException ex)
-		{
+		} catch (IOException ex) {
 			return optionalPassword;
 		}
 		return optionalPassword;
@@ -102,8 +87,7 @@ public class PrivateKeyBruteForceProcessorTest
 	 * Test method for test the class {@link BruteForceProcessor}
 	 */
 	@Test(enabled = false)
-	public void testPrivateKeyWithPassword()
-	{
+	public void testPrivateKeyWithPassword() {
 		File pemDir;
 		File encryptedPrivateKeyFile;
 		char[] possibleCharacters;
@@ -115,8 +99,8 @@ public class PrivateKeyBruteForceProcessorTest
 		pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
 		encryptedPrivateKeyFile = new File(pemDir, "test.key.pem");
 
-		possibleCharacters = new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
-				'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+		possibleCharacters = new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
+				'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 
 		processor = new BruteForceProcessor(possibleCharacters, 1);
 		start = System.currentTimeMillis();
@@ -128,8 +112,7 @@ public class PrivateKeyBruteForceProcessorTest
 		String expected = "bosco";
 		String actual = resolvePassword.get();
 		assertEquals(expected, actual);
-		log.info("Needed milliseconds for crack the password with brute force attack: "
-			+ elapsedMilliSeconds);
+		log.info("Needed milliseconds for crack the password with brute force attack: " + elapsedMilliSeconds);
 	}
 
 }

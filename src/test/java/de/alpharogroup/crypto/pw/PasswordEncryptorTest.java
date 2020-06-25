@@ -49,14 +49,12 @@ import de.alpharogroup.crypto.algorithm.HashAlgorithm;
 /**
  * The unit test class for the class {@link PasswordEncryptor}
  */
-public class PasswordEncryptorTest
-{
+public class PasswordEncryptorTest {
 
 	PasswordEncryptor instance;
 
 	@BeforeMethod
-	protected void setUp()
-	{
+	protected void setUp() {
 		instance = PasswordEncryptor.getInstance();
 	}
 
@@ -64,8 +62,7 @@ public class PasswordEncryptorTest
 	 * Test method for {@link PasswordEncryptor#getInstance()}
 	 */
 	@Test
-	public void testGetInstance()
-	{
+	public void testGetInstance() {
 		assertNotNull(instance);
 	}
 
@@ -73,8 +70,7 @@ public class PasswordEncryptorTest
 	 * Test method for {@link PasswordEncryptor#getRandomPassword(int)}
 	 */
 	@Test
-	public void testGetRandomPasswordInt()
-	{
+	public void testGetRandomPasswordInt() {
 		String randomPassword = instance.getRandomPassword(8);
 		assertNotNull(randomPassword);
 		assertEquals(8, randomPassword.length());
@@ -84,8 +80,7 @@ public class PasswordEncryptorTest
 	 * Test method for {@link PasswordEncryptor#getRandomPassword(Optional)}
 	 */
 	@Test
-	public void testGetRandomPasswordOptionalOfInteger()
-	{
+	public void testGetRandomPasswordOptionalOfInteger() {
 		String randomPassword = instance.getRandomPassword(Optional.of(8));
 		assertNotNull(randomPassword);
 		assertEquals(8, randomPassword.length());
@@ -95,8 +90,7 @@ public class PasswordEncryptorTest
 	 * Test method for {@link PasswordEncryptor#getRandomSalt()}
 	 */
 	@Test
-	public void testGetRandomSalt()
-	{
+	public void testGetRandomSalt() {
 		String randomSalt = instance.getRandomSalt();
 		assertNotNull(randomSalt);
 		assertEquals(8, randomSalt.length());
@@ -106,8 +100,7 @@ public class PasswordEncryptorTest
 	 * Test method for {@link PasswordEncryptor#getRandomSalt(int)}
 	 */
 	@Test
-	public void testGetRandomSaltInt()
-	{
+	public void testGetRandomSaltInt() {
 		String randomSalt = instance.getRandomSalt(8);
 		assertNotNull(randomSalt);
 		assertEquals(8, randomSalt.length());
@@ -116,29 +109,31 @@ public class PasswordEncryptorTest
 	/**
 	 * Test method for {@link PasswordEncryptor#hashAndHexPassword(String, String)}
 	 * 
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the MessageDigest object fails.
-	 * @throws UnsupportedEncodingException
-	 *             is thrown by get the byte array of the private key String object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cypher object fails.
-	 * @throws InvalidKeyException
-	 *             the invalid key exception is thrown if initialization of the cypher object fails.
-	 * @throws BadPaddingException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws IllegalBlockSizeException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchAlgorithmException           is thrown if instantiation of the
+	 *                                            MessageDigest object fails.
+	 * @throws UnsupportedEncodingException       is thrown by get the byte array of
+	 *                                            the private key String object
+	 *                                            fails.
+	 * @throws NoSuchPaddingException             is thrown if instantiation of the
+	 *                                            cipher object fails.
+	 * @throws InvalidKeyException                the invalid key exception is
+	 *                                            thrown if initialization of the
+	 *                                            cipher object fails.
+	 * @throws BadPaddingException                is thrown if
+	 *                                            {@link Cipher#doFinal(byte[])}
+	 *                                            fails.
+	 * @throws IllegalBlockSizeException          is thrown if
+	 *                                            {@link Cipher#doFinal(byte[])}
+	 *                                            fails.
+	 * @throws InvalidAlgorithmParameterException is thrown if initialization of the
+	 *                                            cipher object fails.
+	 * @throws InvalidKeySpecException            is thrown if generation of the
+	 *                                            SecretKey object fails.
 	 */
 	@Test
-	public void testHashAndHexPasswordStringString()
-		throws InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException,
-		NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException,
-		InvalidKeySpecException, InvalidAlgorithmParameterException
-	{
+	public void testHashAndHexPasswordStringString() throws InvalidKeyException, NoSuchAlgorithmException,
+			UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException,
+			InvalidKeySpecException, InvalidAlgorithmParameterException {
 		String actual;
 		String expected;
 		String salt;
@@ -154,29 +149,31 @@ public class PasswordEncryptorTest
 	 * Test method for
 	 * {@link PasswordEncryptor#hashAndHexPassword(String, String, HashAlgorithm, Charset)}
 	 * 
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the MessageDigest object fails.
-	 * @throws UnsupportedEncodingException
-	 *             is thrown by get the byte array of the private key String object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cypher object fails.
-	 * @throws InvalidKeyException
-	 *             the invalid key exception is thrown if initialization of the cypher object fails.
-	 * @throws BadPaddingException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws IllegalBlockSizeException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchAlgorithmException           is thrown if instantiation of the
+	 *                                            MessageDigest object fails.
+	 * @throws UnsupportedEncodingException       is thrown by get the byte array of
+	 *                                            the private key String object
+	 *                                            fails.
+	 * @throws NoSuchPaddingException             is thrown if instantiation of the
+	 *                                            cipher object fails.
+	 * @throws InvalidKeyException                the invalid key exception is
+	 *                                            thrown if initialization of the
+	 *                                            cipher object fails.
+	 * @throws BadPaddingException                is thrown if
+	 *                                            {@link Cipher#doFinal(byte[])}
+	 *                                            fails.
+	 * @throws IllegalBlockSizeException          is thrown if
+	 *                                            {@link Cipher#doFinal(byte[])}
+	 *                                            fails.
+	 * @throws InvalidAlgorithmParameterException is thrown if initialization of the
+	 *                                            cipher object fails.
+	 * @throws InvalidKeySpecException            is thrown if generation of the
+	 *                                            SecretKey object fails.
 	 */
 	@Test
-	public void testHashAndHexPasswordStringStringHashAlgorithmCharset()
-		throws InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException,
-		NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException,
-		InvalidKeySpecException, InvalidAlgorithmParameterException
-	{
+	public void testHashAndHexPasswordStringStringHashAlgorithmCharset() throws InvalidKeyException,
+			NoSuchAlgorithmException, UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException,
+			BadPaddingException, InvalidKeySpecException, InvalidAlgorithmParameterException {
 		String actual;
 		String expected;
 		String salt;
@@ -197,12 +194,11 @@ public class PasswordEncryptorTest
 	 * Test method for
 	 * {@link PasswordEncryptor#hashPassword(String, String, HashAlgorithm, Charset)}
 	 * 
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the MessageDigest object fails.
+	 * @throws NoSuchAlgorithmException is thrown if instantiation of the
+	 *                                  MessageDigest object fails.
 	 */
 	@Test
-	public void testHashPassword() throws NoSuchAlgorithmException
-	{
+	public void testHashPassword() throws NoSuchAlgorithmException {
 		String actual;
 		String salt;
 		String password;

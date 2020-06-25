@@ -41,41 +41,38 @@ import de.alpharogroup.crypto.factories.CipherFactory;
 import de.alpharogroup.crypto.model.CryptModel;
 
 /**
- * The class {@link PublicKeyEncryptor} can encrypt a byte array with his public key.
+ * The class {@link PublicKeyEncryptor} can encrypt a byte array with his public
+ * key.
  */
-public class PublicKeyEncryptor extends AbstractEncryptor<Cipher, PublicKey, byte[]>
-	implements
-		ByteArrayEncryptor
-{
+public class PublicKeyEncryptor extends AbstractEncryptor<Cipher, PublicKey, byte[]> implements ByteArrayEncryptor {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Instantiates a new {@link PublicKeyEncryptor} with the given {@link CryptModel}.
+	 * Instantiates a new {@link PublicKeyEncryptor} with the given
+	 * {@link CryptModel}.
 	 *
-	 * @param model
-	 *            The crypt model.
+	 * @param model The crypt model.
 	 *
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws UnsupportedEncodingException
-	 *             is thrown if the named charset is not supported.
+	 * @throws InvalidAlgorithmParameterException is thrown if initialization of the
+	 *                                            cipher object fails.
+	 * @throws NoSuchPaddingException             is thrown if instantiation of the
+	 *                                            SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException            is thrown if generation of the
+	 *                                            SecretKey object fails.
+	 * @throws NoSuchAlgorithmException           is thrown if instantiation of the
+	 *                                            SecretKeyFactory object fails.
+	 * @throws InvalidKeyException                is thrown if initialization of the
+	 *                                            cipher object fails.
+	 * @throws NoSuchAlgorithmException           is thrown if instantiation of the
+	 *                                            SecretKeyFactory object fails.
+	 * @throws UnsupportedEncodingException       is thrown if the named charset is
+	 *                                            not supported.
 	 */
 	public PublicKeyEncryptor(final CryptModel<Cipher, PublicKey, byte[]> model)
-		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
-		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
-	{
+			throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
+			InvalidAlgorithmParameterException, UnsupportedEncodingException {
 		super(model);
 	}
 
@@ -83,8 +80,7 @@ public class PublicKeyEncryptor extends AbstractEncryptor<Cipher, PublicKey, byt
 	 * {@inheritDoc}
 	 */
 	@Override
-	public byte[] encrypt(final byte[] toEncrypt) throws Exception
-	{
+	public byte[] encrypt(final byte[] toEncrypt) throws Exception {
 		final byte[] encrypted = getModel().getCipher().doFinal(toEncrypt);
 		return encrypted;
 	}
@@ -93,12 +89,9 @@ public class PublicKeyEncryptor extends AbstractEncryptor<Cipher, PublicKey, byt
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String newAlgorithm()
-	{
-		if (getModel().getAlgorithm() == null)
-		{
-			getModel().setAlgorithm(
-				KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding);
+	protected String newAlgorithm() {
+		if (getModel().getAlgorithm() == null) {
+			getModel().setAlgorithm(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding);
 		}
 		return getModel().getAlgorithm().getAlgorithm();
 	}
@@ -107,11 +100,9 @@ public class PublicKeyEncryptor extends AbstractEncryptor<Cipher, PublicKey, byt
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected Cipher newCipher(final PublicKey key, final String algorithm, final byte[] salt,
-		final int iterationCount, final int operationMode)
-		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
-		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
-	{
+	protected Cipher newCipher(final PublicKey key, final String algorithm, final byte[] salt, final int iterationCount,
+			final int operationMode) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
+			InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException {
 		final Cipher cipher = CipherFactory.newCipher(algorithm);
 		cipher.init(operationMode, key);
 		return cipher;

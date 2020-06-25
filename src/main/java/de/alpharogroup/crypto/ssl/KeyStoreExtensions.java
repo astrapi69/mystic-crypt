@@ -24,14 +24,15 @@
  */
 package de.alpharogroup.crypto.ssl;
 
-import java.security.*;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.PrivateKey;
 import java.security.cert.Certificate;
 
-public class KeyStoreExtensions
-{
+public class KeyStoreExtensions {
 
-    public static void addPrivateKey(final KeyStore keyStore, String alias, PrivateKey privateKey, char[] password, Certificate[] certChain)
-            throws KeyStoreException {
-        keyStore.setKeyEntry(alias, privateKey, password, certChain);
-    }
+	public static void addPrivateKey(final KeyStore keyStore, String alias, PrivateKey privateKey, char[] password,
+			Certificate[] certChain) throws KeyStoreException {
+		keyStore.setKeyEntry(alias, privateKey, password, certChain);
+	}
 }

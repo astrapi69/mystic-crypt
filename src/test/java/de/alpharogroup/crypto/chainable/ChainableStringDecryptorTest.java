@@ -35,19 +35,17 @@ import de.alpharogroup.crypto.hex.HexableEncryptor;
  * The unit test class for the class {@link ChainableStringEncryptor} and
  * {@link ChainableStringDecryptor}
  */
-public class ChainableStringDecryptorTest
-{
+public class ChainableStringDecryptorTest {
 
 	/**
-	 * Test chained encrypt and decrypt with {@link ChainableStringEncryptor#encrypt(String)} and
+	 * Test chained encrypt and decrypt with
+	 * {@link ChainableStringEncryptor#encrypt(String)} and
 	 * {@link ChainableStringDecryptor#decrypt(String)}
 	 *
-	 * @throws Exception
-	 *             is thrown if any security exception occured
+	 * @throws Exception is thrown if any security exception occured
 	 */
 	@Test
-	public void testChainedEncryptDecrypt() throws Exception
-	{
+	public void testChainedEncryptDecrypt() throws Exception {
 		String secretMessage;
 		String firstKey;
 		String secondKey;
@@ -79,8 +77,7 @@ public class ChainableStringDecryptorTest
 		decryptor = new ChainableStringDecryptor(thirdDecryptor, secondDecryptor, firstDecryptor);
 
 		decryted = decryptor.decrypt(encrypted);
-		assertTrue("String before encryption is not equal after decryption.",
-			secretMessage.equals(decryted));
+		assertTrue("String before encryption is not equal after decryption.", secretMessage.equals(decryted));
 	}
 
 }

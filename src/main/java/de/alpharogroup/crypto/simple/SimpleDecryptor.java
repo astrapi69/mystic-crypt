@@ -49,13 +49,13 @@ import de.alpharogroup.crypto.api.StringDecryptor;
 import de.alpharogroup.crypto.compound.CompoundAlgorithm;
 
 /**
- * The class {@link SimpleDecryptor} is a simple {@link StringDecryptor} implementation.
+ * The class {@link SimpleDecryptor} is a simple {@link StringDecryptor}
+ * implementation.
  *
  * @author Asterios Raptis
  * @version 1.0
  */
-public class SimpleDecryptor implements StringDecryptor, Cryptor
-{
+public class SimpleDecryptor implements StringDecryptor, Cryptor {
 
 	/**
 	 * The Cipher object.
@@ -63,7 +63,8 @@ public class SimpleDecryptor implements StringDecryptor, Cryptor
 	private Cipher cipher;
 
 	/**
-	 * The flag initialized that indicates if the cypher is initialized for decryption.
+	 * The flag initialized that indicates if the cipher is initialized for
+	 * decryption.
 	 *
 	 * @return true, if is initialized
 	 */
@@ -77,11 +78,9 @@ public class SimpleDecryptor implements StringDecryptor, Cryptor
 	/**
 	 * Instantiates a new {@link SimpleDecryptor} with the given private key.
 	 *
-	 * @param privateKey
-	 *            The private key.
+	 * @param privateKey The private key.
 	 */
-	public SimpleDecryptor(final String privateKey)
-	{
+	public SimpleDecryptor(final String privateKey) {
 		Objects.requireNonNull(privateKey);
 		this.privateKey = privateKey;
 	}
@@ -90,55 +89,49 @@ public class SimpleDecryptor implements StringDecryptor, Cryptor
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String decrypt(final String encypted)
-		throws IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException,
-		InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
-		NoSuchPaddingException, InvalidAlgorithmParameterException
-	{
+	public String decrypt(final String encypted) throws IllegalBlockSizeException, BadPaddingException,
+			UnsupportedEncodingException, InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
+			NoSuchPaddingException, InvalidAlgorithmParameterException {
 		initialize();
 		final byte[] dec = Base64.getDecoder().decode(encypted);
 		final byte[] utf8 = this.cipher.doFinal(dec);
 		return new String(utf8, StandardCharsets.UTF_8.name());
 	}
 
-	public String getPrivateKey()
-	{
+	public String getPrivateKey() {
 		return this.privateKey;
 	}
 
 	/**
 	 * Initializes the {@link SimpleDecryptor} object.
 	 *
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cypher object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cypher object fails.
+	 * @throws InvalidAlgorithmParameterException is thrown if initialization of the
+	 *                                            cipher object fails.
+	 * @throws NoSuchPaddingException             is thrown if instantiation of the
+	 *                                            cipher object fails.
+	 * @throws InvalidKeySpecException            is thrown if generation of the
+	 *                                            SecretKey object fails.
+	 * @throws NoSuchAlgorithmException           is thrown if instantiation of the
+	 *                                            SecretKeyFactory object fails.
+	 * @throws InvalidKeyException                is thrown if initialization of the
+	 *                                            cipher object fails.
 	 */
-	private void initialize() throws NoSuchAlgorithmException, InvalidKeySpecException,
-		NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException
-	{
-		if (!isInitialized())
-		{
+	private void initialize() throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
+			InvalidKeyException, InvalidAlgorithmParameterException {
+		if (!isInitialized()) {
 			KeySpec keySpec = new PBEKeySpec(this.getPrivateKey().toCharArray());
 			final SecretKeyFactory factory = SecretKeyFactory
-				.getInstance(CompoundAlgorithm.PBE_WITH_MD5_AND_DES.getAlgorithm());
+					.getInstance(CompoundAlgorithm.PBE_WITH_MD5_AND_DES.getAlgorithm());
 			final SecretKey key = factory.generateSecret(keySpec);
 			this.cipher = Cipher.getInstance(key.getAlgorithm());
 			final AlgorithmParameterSpec paramSpec = new PBEParameterSpec(CompoundAlgorithm.SALT,
-				CompoundAlgorithm.ITERATIONCOUNT);
+					CompoundAlgorithm.ITERATIONCOUNT);
 			this.cipher.init(newOperationMode(), key, paramSpec);
 			initialized = true;
 		}
 	}
 
-	private boolean isInitialized()
-	{
+	private boolean isInitialized() {
 		return this.initialized;
 	}
 
@@ -146,8 +139,7 @@ public class SimpleDecryptor implements StringDecryptor, Cryptor
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int newOperationMode()
-	{
+	public int newOperationMode() {
 		return Cipher.DECRYPT_MODE;
 	}
 }

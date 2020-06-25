@@ -42,10 +42,10 @@ import org.apache.commons.codec.binary.Hex;
 import de.alpharogroup.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
 
 /**
- * The class {@link PublicKeyHexEncryptor} can encrypt characters with his public key.
+ * The class {@link PublicKeyHexEncryptor} can encrypt characters with his
+ * public key.
  */
-public final class PublicKeyHexEncryptor
-{
+public final class PublicKeyHexEncryptor {
 
 	/**
 	 * the Cipher object
@@ -53,7 +53,8 @@ public final class PublicKeyHexEncryptor
 	private Cipher cipher;
 
 	/**
-	 * the flag initialized that indicates if the cipher is initialized for encryption.
+	 * the flag initialized that indicates if the cipher is initialized for
+	 * encryption.
 	 *
 	 * @return true, if is initialized
 	 */
@@ -65,13 +66,12 @@ public final class PublicKeyHexEncryptor
 	private final PublicKey publicKey;
 
 	/**
-	 * Instantiates a new {@link PublicKeyHexEncryptor} object with the given {@link PublicKey}
+	 * Instantiates a new {@link PublicKeyHexEncryptor} object with the given
+	 * {@link PublicKey}
 	 *
-	 * @param publicKey
-	 *            the public key
+	 * @param publicKey the public key
 	 */
-	public PublicKeyHexEncryptor(final PublicKey publicKey)
-	{
+	public PublicKeyHexEncryptor(final PublicKey publicKey) {
 		Objects.requireNonNull(publicKey);
 		this.publicKey = publicKey;
 	}
@@ -79,29 +79,26 @@ public final class PublicKeyHexEncryptor
 	/**
 	 * Encrypt the given {@link String} object
 	 *
-	 * @param string
-	 *            The {@link String} to encrypt
+	 * @param string The {@link String} to encrypt
 	 * @return The encrypted {@link String}
 	 * 
-	 * @throws InvalidKeyException
-	 *             the invalid key exception is thrown if initialization of the cypher object fails.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the cypher object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cypher object fails.
-	 * @throws IllegalBlockSizeException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws BadPaddingException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
+	 * @throws InvalidKeyException       the invalid key exception is thrown if
+	 *                                   initialization of the cipher object fails.
+	 * @throws NoSuchAlgorithmException  is thrown if instantiation of the cipher
+	 *                                   object fails.
+	 * @throws NoSuchPaddingException    is thrown if instantiation of the cipher
+	 *                                   object fails.
+	 * @throws IllegalBlockSizeException is thrown if {@link Cipher#doFinal(byte[])}
+	 *                                   fails.
+	 * @throws BadPaddingException       is thrown if {@link Cipher#doFinal(byte[])}
+	 *                                   fails.
+	 * @throws InvalidKeySpecException   is thrown if generation of the SecretKey
+	 *                                   object fails.
+	 * @throws IOException               Signals that an I/O exception has occurred.
 	 */
 	public String encrypt(final String string)
-		throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
-		IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException, IOException
-	{
+			throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException,
+			BadPaddingException, InvalidKeySpecException, IOException {
 		initialize();
 		final byte[] utf8 = string.getBytes("UTF-8");
 		final byte[] encrypt = this.cipher.doFinal(utf8);
@@ -109,45 +106,40 @@ public final class PublicKeyHexEncryptor
 		return new String(original);
 	}
 
-	public Cipher getCipher()
-	{
+	public Cipher getCipher() {
 		return this.cipher;
 	}
 
-	public PublicKey getPublicKey()
-	{
+	public PublicKey getPublicKey() {
 		return this.publicKey;
 	}
 
 	/**
 	 * Initializes this {@link PublicKeyHexEncryptor} object
 	 *
-	 * @throws UnsupportedEncodingException
-	 *             is thrown by get the byte array of the private key String object fails.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the cypher object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cypher object fails.
-	 * @throws InvalidKeyException
-	 *             the invalid key exception is thrown if initialization of the cypher object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws UnsupportedEncodingException is thrown by get the byte array of the
+	 *                                      private key String object fails.
+	 * @throws NoSuchAlgorithmException     is thrown if instantiation of the cipher
+	 *                                      object fails.
+	 * @throws NoSuchPaddingException       is thrown if instantiation of the cipher
+	 *                                      object fails.
+	 * @throws InvalidKeyException          the invalid key exception is thrown if
+	 *                                      initialization of the cipher object
+	 *                                      fails.
+	 * @throws InvalidKeySpecException      is thrown if generation of the SecretKey
+	 *                                      object fails.
 	 */
-	private void initialize() throws NoSuchAlgorithmException, InvalidKeySpecException,
-		UnsupportedEncodingException, NoSuchPaddingException, InvalidKeyException
-	{
-		if (!isInitialized())
-		{
+	private void initialize() throws NoSuchAlgorithmException, InvalidKeySpecException, UnsupportedEncodingException,
+			NoSuchPaddingException, InvalidKeyException {
+		if (!isInitialized()) {
 			cipher = Cipher
-				.getInstance(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding
-					.getAlgorithm());
+					.getInstance(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding.getAlgorithm());
 			cipher.init(Cipher.ENCRYPT_MODE, this.publicKey);
 			initialized = true;
 		}
 	}
 
-	private boolean isInitialized()
-	{
+	private boolean isInitialized() {
 		return this.initialized;
 	}
 }

@@ -40,18 +40,15 @@ import de.alpharogroup.file.search.PathFinder;
 /**
  * The unit test class for the class {@link PublicKeyEncryptor}
  */
-public class PublicKeyEncryptorTest
-{
+public class PublicKeyEncryptorTest {
 
 	/**
 	 * Test method for {@link PublicKeyEncryptor} constructors
 	 *
-	 * @throws Exception
-	 *             is thrown if a security error occurs
+	 * @throws Exception is thrown if a security error occurs
 	 */
 	@Test
-	public void testConstructors() throws Exception
-	{
+	public void testConstructors() throws Exception {
 		PublicKey publicKey;
 		PublicKeyEncryptor encryptor;
 		CryptModel<Cipher, PublicKey, byte[]> encryptModel;
@@ -62,7 +59,7 @@ public class PublicKeyEncryptorTest
 		publickeyDerFile = new File(publickeyDerDir, "public.der");
 		publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
 
-		encryptModel = CryptModel.<Cipher, PublicKey, byte[]> builder().key(publicKey).build();
+		encryptModel = CryptModel.<Cipher, PublicKey, byte[]>builder().key(publicKey).build();
 
 		encryptor = new PublicKeyEncryptor(encryptModel);
 		assertNotNull(encryptor);

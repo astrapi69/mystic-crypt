@@ -51,39 +51,36 @@ import de.alpharogroup.file.read.ReadFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 
 /**
- * The unit test class for the classes {@link CryptoCipherInputStream} and the classes
- * {@link CryptoCipherOutputStream}
+ * The unit test class for the classes {@link CryptoCipherInputStream} and the
+ * classes {@link CryptoCipherOutputStream}
  */
-public class CryptoCipherInputOutputStreamTest
-{
+public class CryptoCipherInputOutputStreamTest {
 
 	/**
 	 * Test read and write to decrypted file with cipher IO
 	 *
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws UnsupportedEncodingException
-	 *             is thrown if the named charset is not supported.
+	 * @throws InvalidKeySpecException            is thrown if generation of the
+	 *                                            SecretKey object fails.
+	 * @throws IOException                        Signals that an I/O exception has
+	 *                                            occurred.
+	 * @throws InvalidAlgorithmParameterException is thrown if initialization of the
+	 *                                            cipher object fails.
+	 * @throws NoSuchPaddingException             is thrown if instantiation of the
+	 *                                            SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException            is thrown if generation of the
+	 *                                            SecretKey object fails.
+	 * @throws NoSuchAlgorithmException           is thrown if instantiation of the
+	 *                                            SecretKeyFactory object fails.
+	 * @throws InvalidKeyException                is thrown if initialization of the
+	 *                                            cipher object fails.
+	 * @throws NoSuchAlgorithmException           is thrown if instantiation of the
+	 *                                            SecretKeyFactory object fails.
+	 * @throws UnsupportedEncodingException       is thrown if the named charset is
+	 *                                            not supported.
 	 */
 	@Test
-	public void testReadAndWriteToDecryptedFileWithCipherIO()
-		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
-		NoSuchPaddingException, InvalidAlgorithmParameterException, IOException
-	{
+	public void testReadAndWriteToDecryptedFileWithCipherIO() throws InvalidKeyException, NoSuchAlgorithmException,
+			InvalidKeySpecException, NoSuchPaddingException, InvalidAlgorithmParameterException, IOException {
 		String actual;
 		String expected;
 		String privateKey;
@@ -102,19 +99,16 @@ public class CryptoCipherInputOutputStreamTest
 		toEncrypt = new File(cryptDir, "test.txt");
 		encryptedFile = new File(cryptDir, "encrypted.txt");
 
-		encryptorModel = CryptModel.<Cipher, String, String> builder().key(privateKey)
-			.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).salt(CompoundAlgorithm.SALT)
-			.iterationCount(CompoundAlgorithm.ITERATIONCOUNT).operationMode(Cipher.ENCRYPT_MODE)
-			.build();
+		encryptorModel = CryptModel.<Cipher, String, String>builder().key(privateKey)
+				.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).salt(CompoundAlgorithm.SALT)
+				.iterationCount(CompoundAlgorithm.ITERATIONCOUNT).operationMode(Cipher.ENCRYPT_MODE).build();
 
 		encryptorCipher = CipherFactory.newCipher(encryptorModel);
 
 		try (InputStream fis = new FileInputStream(toEncrypt);
-			CryptoCipherInputStream cis = new CryptoCipherInputStream(fis, encryptorCipher);
-			FileOutputStream out = new FileOutputStream(encryptedFile))
-		{
-			while ((c = cis.read()) != -1)
-			{
+				CryptoCipherInputStream cis = new CryptoCipherInputStream(fis, encryptorCipher);
+				FileOutputStream out = new FileOutputStream(encryptedFile)) {
+			while ((c = cis.read()) != -1) {
 				out.write(c);
 			}
 		}
@@ -125,17 +119,15 @@ public class CryptoCipherInputOutputStreamTest
 		decryptorCipher = CipherFactory.newCipher(decryptorModel);
 
 		try (FileOutputStream decryptedOut = new FileOutputStream(outputDecrypted);
-			CryptoCipherOutputStream cos = new CryptoCipherOutputStream(decryptedOut,
-				decryptorCipher);
-			FileInputStream encryptedFis = new FileInputStream(encryptedFile))
-		{
+				CryptoCipherOutputStream cos = new CryptoCipherOutputStream(decryptedOut, decryptorCipher);
+				FileInputStream encryptedFis = new FileInputStream(encryptedFile)) {
 
-			while ((c = encryptedFis.read()) != -1)
-			{
+			while ((c = encryptedFis.read()) != -1) {
 				cos.write(c);
 			}
 		}
-		// Verify the enryption and decryption process by compare the content of files...
+		// Verify the enryption and decryption process by compare the content of
+		// files...
 		expected = ReadFileExtensions.readFromFile(toEncrypt);
 		actual = ReadFileExtensions.readFromFile(outputDecrypted);
 		assertEquals(expected, actual);

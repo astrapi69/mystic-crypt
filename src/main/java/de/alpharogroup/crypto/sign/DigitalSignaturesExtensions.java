@@ -24,51 +24,66 @@
  */
 package de.alpharogroup.crypto.sign;
 
-import de.alpharogroup.crypto.factories.CipherFactory;
+import java.security.InvalidKeyException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.cert.Certificate;
+import java.util.Arrays;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import java.security.*;
-import java.security.cert.Certificate;
-import java.util.Arrays;
+
+import de.alpharogroup.crypto.factories.CipherFactory;
 
 /**
- * The class {@link DigitalSignaturesExtensions} can sign and verify byte arrays. For signing and verifying
- * the class {@link MessageDigest} is used.
+ * The class {@link DigitalSignaturesExtensions} can sign and verify byte
+ * arrays. For signing and verifying the class {@link MessageDigest} is used.
  */
-public final class DigitalSignaturesExtensions
-{
+public final class DigitalSignaturesExtensions {
 
-	private DigitalSignaturesExtensions()
-	{
+	private static byte[] decryptBytes(Certificate certificate, String cipherAlgorithm, byte[] encrpytedBytesToVerify)
+			throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, BadPaddingException,
+			IllegalBlockSizeException {
+		Cipher cipher = CipherFactory.newCipher(cipherAlgorithm);
+		cipher.init(Cipher.DECRYPT_MODE, certificate);
+		return cipher.doFinal(encrpytedBytesToVerify);
+	}
+
+	private static byte[] decryptBytes(PublicKey publicKey, String cipherAlgorithm, byte[] encrpytedBytesToVerify)
+			throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, BadPaddingException,
+			IllegalBlockSizeException {
+		Cipher cipher = CipherFactory.newCipher(cipherAlgorithm);
+		cipher.init(Cipher.DECRYPT_MODE, publicKey);
+		return cipher.doFinal(encrpytedBytesToVerify);
 	}
 
 	/**
-	 * Sign the given byte array with the given private key and the appropriate algorithms
+	 * Sign the given byte array with the given private key and the appropriate
+	 * algorithms
 	 *
-	 * @param privateKey the private key
+	 * @param privateKey             the private key
 	 * @param messageDigestAlgorithm the message digest algorithm
-	 * @param cipherAlgorithm the cipher algorithm
-	 * @param bytesToSign the bytes to sign
+	 * @param cipherAlgorithm        the cipher algorithm
+	 * @param bytesToSign            the bytes to sign
 	 * @return the signed byte array
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the cypher object fails
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails
-	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cypher object fails
-	 * @throws BadPaddingException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails
-	 * @throws IllegalBlockSizeException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails
+	 * @throws NoSuchAlgorithmException  is thrown if instantiation of the cipher
+	 *                                   object fails
+	 * @throws NoSuchPaddingException    is thrown if instantiation of the
+	 *                                   SecretKeyFactory object fails
+	 * @throws InvalidKeyException       is thrown if initialization of the cipher
+	 *                                   object fails
+	 * @throws BadPaddingException       is thrown if {@link Cipher#doFinal(byte[])}
+	 *                                   fails
+	 * @throws IllegalBlockSizeException is thrown if {@link Cipher#doFinal(byte[])}
+	 *                                   fails
 	 */
-	public static byte[] sign(PrivateKey privateKey, String messageDigestAlgorithm,
-		String cipherAlgorithm, byte[] bytesToSign)
-		throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
-		BadPaddingException, IllegalBlockSizeException
-	{
+	public static byte[] sign(PrivateKey privateKey, String messageDigestAlgorithm, String cipherAlgorithm,
+			byte[] bytesToSign) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+			BadPaddingException, IllegalBlockSizeException {
 		MessageDigest messageDigest = MessageDigest.getInstance(messageDigestAlgorithm);
 		byte[] hash = messageDigest.digest(bytesToSign);
 
@@ -77,88 +92,67 @@ public final class DigitalSignaturesExtensions
 		return cipher.doFinal(hash);
 	}
 
-	private static byte[] decryptBytes(PublicKey publicKey, String cipherAlgorithm,
-		byte[] encrpytedBytesToVerify)
-		throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
-		BadPaddingException, IllegalBlockSizeException
-	{
-		Cipher cipher = CipherFactory.newCipher(cipherAlgorithm);
-		cipher.init(Cipher.DECRYPT_MODE, publicKey);
-		return cipher.doFinal(encrpytedBytesToVerify);
-	}
-
-	private static byte[] decryptBytes(Certificate certificate, String cipherAlgorithm,
-		byte[] encrpytedBytesToVerify)
-		throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
-		BadPaddingException, IllegalBlockSizeException
-	{
-		Cipher cipher = CipherFactory.newCipher(cipherAlgorithm);
-		cipher.init(Cipher.DECRYPT_MODE, certificate);
-		return cipher.doFinal(encrpytedBytesToVerify);
+	/**
+	 * Verify the given byte array with the given signed byte array with the given
+	 * certificate and the appropriate algorithms
+	 *
+	 * @param certificate            the certificate
+	 * @param messageDigestAlgorithm the message digest algorithm
+	 * @param cipherAlgorithm        the cipher algorithm
+	 * @param bytesToVerify          the bytes to verify
+	 * @param signedBytes            the signed byte array
+	 * @return true, if successful otherwise false
+	 * @throws NoSuchAlgorithmException  is thrown if instantiation of the cipher
+	 *                                   object fails.
+	 * @throws IllegalBlockSizeException is thrown if {@link Cipher#doFinal(byte[])}
+	 *                                   fails.
+	 * @throws InvalidKeyException       is thrown if initialization of the cipher
+	 *                                   object fails.
+	 * @throws BadPaddingException       is thrown if {@link Cipher#doFinal(byte[])}
+	 *                                   fails.
+	 * @throws NoSuchPaddingException    is thrown if instantiation of the
+	 *                                   SecretKeyFactory object fails.
+	 */
+	public static boolean verify(Certificate certificate, String messageDigestAlgorithm, String cipherAlgorithm,
+			byte[] bytesToVerify, byte[] signedBytes) throws NoSuchAlgorithmException, IllegalBlockSizeException,
+			InvalidKeyException, BadPaddingException, NoSuchPaddingException {
+		MessageDigest messageDigest = MessageDigest.getInstance(messageDigestAlgorithm);
+		byte[] hash = messageDigest.digest(bytesToVerify);
+		byte[] decryptedBytes = decryptBytes(certificate, cipherAlgorithm, signedBytes);
+		return Arrays.equals(hash, decryptedBytes);
 	}
 
 	/**
-	 * Verify the given byte array with the given signed byte array with the given public key and
-	 * the appropriate algorithms
+	 * Verify the given byte array with the given signed byte array with the given
+	 * public key and the appropriate algorithms
 	 *
-	 * @param publicKey the public key
+	 * @param publicKey              the public key
 	 * @param messageDigestAlgorithm the message digest algorithm
-	 * @param cipherAlgorithm the cipher algorithm
-	 * @param bytesToVerify the bytes to verify
-	 * @param signedBytes the signed byte array
+	 * @param cipherAlgorithm        the cipher algorithm
+	 * @param bytesToVerify          the bytes to verify
+	 * @param signedBytes            the signed byte array
 	 * @return true, if successful otherwise false
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the cypher object fails.
-	 * @throws IllegalBlockSizeException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws BadPaddingException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws NoSuchAlgorithmException  is thrown if instantiation of the cipher
+	 *                                   object fails.
+	 * @throws IllegalBlockSizeException is thrown if {@link Cipher#doFinal(byte[])}
+	 *                                   fails.
+	 * @throws InvalidKeyException       is thrown if initialization of the cipher
+	 *                                   object fails.
+	 * @throws BadPaddingException       is thrown if {@link Cipher#doFinal(byte[])}
+	 *                                   fails.
+	 * @throws NoSuchPaddingException    is thrown if instantiation of the
+	 *                                   SecretKeyFactory object fails.
 	 */
-	public static boolean verify(PublicKey publicKey, String messageDigestAlgorithm,
-		String cipherAlgorithm, byte[] bytesToVerify, byte[] signedBytes)
-		throws NoSuchAlgorithmException, IllegalBlockSizeException, InvalidKeyException,
-		BadPaddingException, NoSuchPaddingException
-	{
+	public static boolean verify(PublicKey publicKey, String messageDigestAlgorithm, String cipherAlgorithm,
+			byte[] bytesToVerify, byte[] signedBytes) throws NoSuchAlgorithmException, IllegalBlockSizeException,
+			InvalidKeyException, BadPaddingException, NoSuchPaddingException {
 		MessageDigest messageDigest = MessageDigest.getInstance(messageDigestAlgorithm);
 		byte[] hash = messageDigest.digest(bytesToVerify);
 		byte[] decryptedBytes = decryptBytes(publicKey, cipherAlgorithm, signedBytes);
 		return Arrays.equals(hash, decryptedBytes);
 	}
 
-	/**
-	 * Verify the given byte array with the given signed byte array with the given certificate and
-	 * the appropriate algorithms
-	 *
-	 * @param certificate the certificate
-	 * @param messageDigestAlgorithm the message digest algorithm
-	 * @param cipherAlgorithm the cipher algorithm
-	 * @param bytesToVerify the bytes to verify
-	 * @param signedBytes the signed byte array
-	 * @return true, if successful otherwise false
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the cypher object fails.
-	 * @throws IllegalBlockSizeException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws BadPaddingException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 */
-	public static boolean verify(Certificate certificate, String messageDigestAlgorithm,
-		String cipherAlgorithm, byte[] bytesToVerify, byte[] signedBytes)
-		throws NoSuchAlgorithmException, IllegalBlockSizeException, InvalidKeyException,
-		BadPaddingException, NoSuchPaddingException
-	{
-		MessageDigest messageDigest = MessageDigest.getInstance(messageDigestAlgorithm);
-		byte[] hash = messageDigest.digest(bytesToVerify);
-		byte[] decryptedBytes = decryptBytes(certificate, cipherAlgorithm, signedBytes);
-		return Arrays.equals(hash, decryptedBytes);
+	private DigitalSignaturesExtensions() {
 	}
 
 }

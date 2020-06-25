@@ -24,45 +24,71 @@
  */
 package de.alpharogroup.crypto.sign;
 
-import java.security.*;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.Signature;
+import java.security.SignatureException;
 import java.util.Objects;
 
+/**
+ * The class {@link Signer} provide sign algorithm for byte arrays
+ */
 public final class Signer {
 
-    private final Signature signature;
-    private final SignatureBean signatureBean;
-    private boolean initialized;
+	/** The {@link Signature} object for signing */
+	private final Signature signature;
 
-    public Signer(SignatureBean signatureBean) throws NoSuchAlgorithmException {
+	/** The {@link SignatureBean} object holds the model data for signing */
+	private final SignatureBean signatureBean;
 
-        Objects.requireNonNull(signatureBean);
-        Objects.requireNonNull(signatureBean.getPrivateKey());
-        Objects.requireNonNull(signatureBean.getSignatureAlgorithm());
-        this.signatureBean = signatureBean;
-        this.signature  = Signature.getInstance(this.signatureBean.getSignatureAlgorithm());
-    }
+	/** The flag that indicates if the {@link Signature} object is initialized */
+	private boolean initialized;
 
-    /**
-     * Sign the given byte array with the given private key and the appropriate algorithms
-     *
-     * @param bytesToSign        the bytes to sign
-     * @return the signed byte array
-     * @throws InvalidKeyException      is thrown if initialization of the cypher object fails
-     * @throws SignatureException       is thrown if the signature object is not initialized properly or if this signature algorithm is
-     *                                  unable to process the input data provided
-     */
-    public byte[] sign(byte[] bytesToSign)
-            throws InvalidKeyException, SignatureException
-    {
-        initialize();
-        signature.update(bytesToSign);
-        return signature.sign();
-    }
+	/**
+	 * Instantiates a new {@link Signer} object
+	 *
+	 * @param signatureBean the signature bean
+	 * @throws NoSuchAlgorithmException is thrown if instantiation of the
+	 *                                  SecretKeyFactory object fails.
+	 */
+	public Signer(SignatureBean signatureBean) throws NoSuchAlgorithmException {
 
-    private void initialize() throws InvalidKeyException {
-        if(!initialized){
-            signature.initSign(this.signatureBean.getPrivateKey());
-            initialized = true;
-        }
-    }
+		Objects.requireNonNull(signatureBean);
+		Objects.requireNonNull(signatureBean.getPrivateKey());
+		Objects.requireNonNull(signatureBean.getSignatureAlgorithm());
+		this.signatureBean = signatureBean;
+		this.signature = Signature.getInstance(this.signatureBean.getSignatureAlgorithm());
+	}
+
+	/**
+	 * Initializes the {@link Signature} object for signing
+	 *
+	 * @throws InvalidKeyException the invalid key exception
+	 */
+	private void initialize() throws InvalidKeyException {
+		if (!initialized) {
+			signature.initSign(this.signatureBean.getPrivateKey());
+			initialized = true;
+		}
+	}
+
+	/**
+	 * Sign the given byte array with the given private key and the appropriate
+	 * algorithms.
+	 *
+	 * @param bytesToSign the bytes to sign
+	 * @return the signed byte array
+	 * @throws InvalidKeyException is thrown if initialization of the cipher object
+	 *                             fails
+	 * @throws SignatureException  is thrown if the signature object is not
+	 *                             initialized properly or if this signature
+	 *                             algorithm is unable to process the input data
+	 *                             provided
+	 */
+	public synchronized byte[] sign(byte[] bytesToSign) throws InvalidKeyException, SignatureException {
+		initialize();
+		signature.update(bytesToSign);
+		return signature.sign();
+	}
+
 }

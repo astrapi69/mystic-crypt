@@ -27,11 +27,9 @@ package de.alpharogroup.crypto;
 /**
  * The class {@link Router} holds data for a router
  */
-public class Router
-{
+public class Router {
 
-	public static class RouterBuilder
-	{
+	public static class RouterBuilder {
 		private String accessType;
 		private String model;
 		private String notes;
@@ -41,75 +39,62 @@ public class Router
 		private String vendor;
 		private String version;
 
-		RouterBuilder()
-		{
+		RouterBuilder() {
 		}
 
-		public Router.RouterBuilder accessType(String accessType)
-		{
+		public Router.RouterBuilder accessType(String accessType) {
 			this.accessType = accessType;
 			return this;
 		}
 
-		public Router build()
-		{
+		public Router build() {
 			return new Router(accessType, model, notes, permissions, pw, username, vendor, version);
 		}
 
-		public Router.RouterBuilder model(String model)
-		{
+		public Router.RouterBuilder model(String model) {
 			this.model = model;
 			return this;
 		}
 
-		public Router.RouterBuilder notes(String notes)
-		{
+		public Router.RouterBuilder notes(String notes) {
 			this.notes = notes;
 			return this;
 		}
 
-		public Router.RouterBuilder permissions(String permissions)
-		{
+		public Router.RouterBuilder permissions(String permissions) {
 			this.permissions = permissions;
 			return this;
 		}
 
-		public Router.RouterBuilder pw(String pw)
-		{
+		public Router.RouterBuilder pw(String pw) {
 			this.pw = pw;
 			return this;
 		}
 
 		@Override
-		public String toString()
-		{
-			return "Router.RouterBuilder(accessType=" + this.accessType + ", model=" + this.model
-				+ ", notes=" + this.notes + ", permissions=" + this.permissions + ", pw=" + this.pw
-				+ ", username=" + this.username + ", vendor=" + this.vendor + ", version="
-				+ this.version + ")";
+		public String toString() {
+			return "Router.RouterBuilder(accessType=" + this.accessType + ", model=" + this.model + ", notes="
+					+ this.notes + ", permissions=" + this.permissions + ", pw=" + this.pw + ", username="
+					+ this.username + ", vendor=" + this.vendor + ", version=" + this.version + ")";
 		}
 
-		public Router.RouterBuilder username(String username)
-		{
+		public Router.RouterBuilder username(String username) {
 			this.username = username;
 			return this;
 		}
 
-		public Router.RouterBuilder vendor(String vendor)
-		{
+		public Router.RouterBuilder vendor(String vendor) {
 			this.vendor = vendor;
 			return this;
 		}
 
-		public Router.RouterBuilder version(String version)
-		{
+		public Router.RouterBuilder version(String version) {
 			this.version = version;
 			return this;
 		}
 	}
 
-	public static RouterBuilder builder()
-	{
+	public static RouterBuilder builder() {
 		return new RouterBuilder();
 	}
 
@@ -137,9 +122,8 @@ public class Router
 	/** The version. */
 	private String version;
 
-	Router(String accessType, String model, String notes, String permissions, String pw,
-		String username, String vendor, String version)
-	{
+	Router(String accessType, String model, String notes, String permissions, String pw, String username, String vendor,
+			String version) {
 		this.accessType = accessType;
 		this.model = model;
 		this.notes = notes;
@@ -150,26 +134,22 @@ public class Router
 		this.version = version;
 	}
 
-	protected boolean canEqual(final Object other)
-	{
+	protected boolean canEqual(final Object other) {
 		return other instanceof Router;
 	}
 
 	@Override
-	public boolean equals(final Object o)
-	{
+	public boolean equals(final Object o) {
 		if (o == this)
 			return true;
 		if (!(o instanceof Router))
 			return false;
-		final Router other = (Router)o;
+		final Router other = (Router) o;
 		if (!other.canEqual(this))
 			return false;
 		final Object this$accessType = this.getAccessType();
 		final Object other$accessType = other.getAccessType();
-		if (this$accessType == null
-			? other$accessType != null
-			: !this$accessType.equals(other$accessType))
+		if (this$accessType == null ? other$accessType != null : !this$accessType.equals(other$accessType))
 			return false;
 		final Object this$model = this.getModel();
 		final Object other$model = other.getModel();
@@ -181,9 +161,7 @@ public class Router
 			return false;
 		final Object this$permissions = this.getPermissions();
 		final Object other$permissions = other.getPermissions();
-		if (this$permissions == null
-			? other$permissions != null
-			: !this$permissions.equals(other$permissions))
+		if (this$permissions == null ? other$permissions != null : !this$permissions.equals(other$permissions))
 			return false;
 		final Object this$pw = this.getPw();
 		final Object other$pw = other.getPw();
@@ -204,49 +182,40 @@ public class Router
 		return true;
 	}
 
-	public String getAccessType()
-	{
+	public String getAccessType() {
 		return this.accessType;
 	}
 
-	public String getModel()
-	{
+	public String getModel() {
 		return this.model;
 	}
 
-	public String getNotes()
-	{
+	public String getNotes() {
 		return this.notes;
 	}
 
-	public String getPermissions()
-	{
+	public String getPermissions() {
 		return this.permissions;
 	}
 
-	public String getPw()
-	{
+	public String getPw() {
 		return this.pw;
 	}
 
-	public String getUsername()
-	{
+	public String getUsername() {
 		return this.username;
 	}
 
-	public String getVendor()
-	{
+	public String getVendor() {
 		return this.vendor;
 	}
 
-	public String getVersion()
-	{
+	public String getVersion() {
 		return this.version;
 	}
 
 	@Override
-	public int hashCode()
-	{
+	public int hashCode() {
 		final int PRIME = 59;
 		int result = 1;
 		final Object $accessType = this.getAccessType();
@@ -268,51 +237,42 @@ public class Router
 		return result;
 	}
 
-	public void setAccessType(String accessType)
-	{
+	public void setAccessType(String accessType) {
 		this.accessType = accessType;
 	}
 
-	public void setModel(String model)
-	{
+	public void setModel(String model) {
 		this.model = model;
 	}
 
-	public void setNotes(String notes)
-	{
+	public void setNotes(String notes) {
 		this.notes = notes;
 	}
 
-	public void setPermissions(String permissions)
-	{
+	public void setPermissions(String permissions) {
 		this.permissions = permissions;
 	}
 
-	public void setPw(String pw)
-	{
+	public void setPw(String pw) {
 		this.pw = pw;
 	}
 
-	public void setUsername(String username)
-	{
+	public void setUsername(String username) {
 		this.username = username;
 	}
 
-	public void setVendor(String vendor)
-	{
+	public void setVendor(String vendor) {
 		this.vendor = vendor;
 	}
 
-	public void setVersion(String version)
-	{
+	public void setVersion(String version) {
 		this.version = version;
 	}
 
-	public RouterBuilder toBuilder()
-	{
+	public RouterBuilder toBuilder() {
 		return new RouterBuilder().accessType(this.accessType).model(this.model).notes(this.notes)
-			.permissions(this.permissions).pw(this.pw).username(this.username).vendor(this.vendor)
-			.version(this.version);
+				.permissions(this.permissions).pw(this.pw).username(this.username).vendor(this.vendor)
+				.version(this.version);
 	}
 
 	/**
@@ -320,8 +280,7 @@ public class Router
 	 *
 	 * @return the string
 	 */
-	public String toLine()
-	{
+	public String toLine() {
 		final StringBuilder sb = new StringBuilder();
 		sb.append(this.vendor);
 		sb.append(";");
@@ -343,11 +302,9 @@ public class Router
 	}
 
 	@Override
-	public String toString()
-	{
-		return "Router(accessType=" + this.getAccessType() + ", model=" + this.getModel()
-			+ ", notes=" + this.getNotes() + ", permissions=" + this.getPermissions() + ", pw="
-			+ this.getPw() + ", username=" + this.getUsername() + ", vendor=" + this.getVendor()
-			+ ", version=" + this.getVersion() + ")";
+	public String toString() {
+		return "Router(accessType=" + this.getAccessType() + ", model=" + this.getModel() + ", notes=" + this.getNotes()
+				+ ", permissions=" + this.getPermissions() + ", pw=" + this.getPw() + ", username=" + this.getUsername()
+				+ ", vendor=" + this.getVendor() + ", version=" + this.getVersion() + ")";
 	}
 }

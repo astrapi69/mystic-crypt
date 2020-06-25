@@ -42,18 +42,15 @@ import de.alpharogroup.file.search.PathFinder;
 /**
  * The unit test class for the class {@link PrivateKeyDecryptor}
  */
-public class PrivateKeyDecryptorTest
-{
+public class PrivateKeyDecryptorTest {
 
 	/**
 	 * Test method for {@link PrivateKeyDecryptor} constructors
 	 *
-	 * @throws Exception
-	 *             is thrown if a security error occurs
+	 * @throws Exception is thrown if a security error occurs
 	 */
 	@Test
-	public void testConstructors() throws Exception
-	{
+	public void testConstructors() throws Exception {
 		String actual;
 		String expected;
 		PrivateKey privateKey;
@@ -73,9 +70,9 @@ public class PrivateKeyDecryptorTest
 
 		privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
 
-		decryptModel = CryptModel.<Cipher, PrivateKey, byte[]> builder().key(privateKey).build();
-		encryptor = new PublicKeyEncryptor(CryptModel.<Cipher, PublicKey, byte[]> builder()
-			.key(PrivateKeyExtensions.generatePublicKey(privateKey)).build());
+		decryptModel = CryptModel.<Cipher, PrivateKey, byte[]>builder().key(privateKey).build();
+		encryptor = new PublicKeyEncryptor(CryptModel.<Cipher, PublicKey, byte[]>builder()
+				.key(PrivateKeyExtensions.generatePublicKey(privateKey)).build());
 
 		decryptor = new PrivateKeyDecryptor(decryptModel);
 		assertNotNull(decryptor);

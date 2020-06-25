@@ -27,12 +27,12 @@ package de.alpharogroup.crypto.core;
 import de.alpharogroup.crypto.api.Decryptor;
 
 /**
- * The class {@link ChainableDecryptor} can take many {@code Decryptor} objects and decrypts the
- * given string with all the given {@code Decryptor} objects. The {@code Decryptor} objects must be
- * in a reverse order as they was given in the {@code ChainedEncryptor} object.
+ * The class {@link ChainableDecryptor} can take many {@code Decryptor} objects
+ * and decrypts the given string with all the given {@code Decryptor} objects.
+ * The {@code Decryptor} objects must be in a reverse order as they was given in
+ * the {@code ChainedEncryptor} object.
  */
-public abstract class ChainableDecryptor<T> implements Decryptor<T, T>
-{
+public abstract class ChainableDecryptor<T> implements Decryptor<T, T> {
 
 	/** The decryptors. */
 	private final Decryptor<T, T>[] decryptors;
@@ -40,12 +40,10 @@ public abstract class ChainableDecryptor<T> implements Decryptor<T, T>
 	/**
 	 * Instantiates a new {@link ChainableDecryptor} object.
 	 *
-	 * @param decryptors
-	 *            the decryptors
+	 * @param decryptors the decryptors
 	 */
 	@SafeVarargs
-	public ChainableDecryptor(final Decryptor<T, T>... decryptors)
-	{
+	public ChainableDecryptor(final Decryptor<T, T>... decryptors) {
 		this.decryptors = decryptors;
 	}
 
@@ -53,18 +51,15 @@ public abstract class ChainableDecryptor<T> implements Decryptor<T, T>
 	 * {@inheritDoc}
 	 */
 	@Override
-	public T decrypt(final T encypted) throws Exception
-	{
+	public T decrypt(final T encypted) throws Exception {
 		T result = encypted;
-		for (final Decryptor<T, T> encryptor : decryptors)
-		{
+		for (final Decryptor<T, T> encryptor : decryptors) {
 			result = encryptor.decrypt(result);
 		}
 		return result;
 	}
 
-	public Decryptor<T, T>[] getDecryptors()
-	{
+	public Decryptor<T, T>[] getDecryptors() {
 		return this.decryptors;
 	}
 }

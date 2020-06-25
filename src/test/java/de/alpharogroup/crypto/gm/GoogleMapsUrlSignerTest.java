@@ -36,15 +36,13 @@ import de.alpharogroup.random.object.RandomObjectsExtensions;
 /**
  * The class {@link GoogleMapsUrlSigner}
  */
-public class GoogleMapsUrlSignerTest
-{
+public class GoogleMapsUrlSignerTest {
 
 	/**
 	 * Test method for {@link GoogleMapsUrlSigner#convertToKeyByteArray(String)}
 	 */
 	@Test
-	public void testConvertToKeyByteArray()
-	{
+	public void testConvertToKeyByteArray() {
 		byte[] byteArray;
 
 		byteArray = GoogleMapsUrlSigner.convertToKeyByteArray("YOUR_PRIVATE_KEY");
@@ -52,11 +50,11 @@ public class GoogleMapsUrlSignerTest
 	}
 
 	/**
-	 * Test method for {@link GoogleMapsUrlSigner#signRequest(String, String, String)}
+	 * Test method for
+	 * {@link GoogleMapsUrlSigner#signRequest(String, String, String)}
 	 */
 	@Test
-	public void testSignRequestStringStringString() throws Exception
-	{
+	public void testSignRequestStringStringString() throws Exception {
 		String signRequest;
 
 		signRequest = GoogleMapsUrlSigner.signRequest("YOUR_PRIVATE_KEY", "/alpha/beta", "quest");
@@ -67,8 +65,7 @@ public class GoogleMapsUrlSignerTest
 	 * Test method for {@link GoogleMapsUrlSigner#signRequest(URL, String)}
 	 */
 	@Test
-	public void testSignRequestURLString() throws Exception
-	{
+	public void testSignRequestURLString() throws Exception {
 		URL url;
 		String signRequest;
 
@@ -82,8 +79,7 @@ public class GoogleMapsUrlSignerTest
 	 * Test method for {@link GoogleMapsUrlSigner} with {@link BeanTester}
 	 */
 	@Test
-	public void testWithBeanTester()
-	{
+	public void testWithBeanTester() {
 		final BeanTester beanTester = new BeanTester();
 		beanTester.testBean(GoogleMapsUrlSigner.class);
 	}

@@ -47,34 +47,37 @@ import de.alpharogroup.random.RandomExtensions;
 /**
  * The unit test class for the class {@link Hasher}
  */
-public class HasherTest
-{
+public class HasherTest {
 
 	/**
-	 * Test method for {@link Hasher#hashAndHex(String, String, HashAlgorithm, Charset)}
+	 * Test method for
+	 * {@link Hasher#hashAndHex(String, String, HashAlgorithm, Charset)}
 	 *
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the MessageDigest object fails.
-	 * @throws UnsupportedEncodingException
-	 *             is thrown by get the byte array of the private key String object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cypher object fails.
-	 * @throws InvalidKeyException
-	 *             the invalid key exception is thrown if initialization of the cypher object fails.
-	 * @throws BadPaddingException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws IllegalBlockSizeException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchAlgorithmException           is thrown if instantiation of the
+	 *                                            MessageDigest object fails.
+	 * @throws UnsupportedEncodingException       is thrown by get the byte array of
+	 *                                            the private key String object
+	 *                                            fails.
+	 * @throws NoSuchPaddingException             is thrown if instantiation of the
+	 *                                            cipher object fails.
+	 * @throws InvalidKeyException                the invalid key exception is
+	 *                                            thrown if initialization of the
+	 *                                            cipher object fails.
+	 * @throws BadPaddingException                is thrown if
+	 *                                            {@link Cipher#doFinal(byte[])}
+	 *                                            fails.
+	 * @throws IllegalBlockSizeException          is thrown if
+	 *                                            {@link Cipher#doFinal(byte[])}
+	 *                                            fails.
+	 * @throws InvalidAlgorithmParameterException is thrown if initialization of the
+	 *                                            cipher object fails.
+	 * @throws InvalidKeySpecException            is thrown if generation of the
+	 *                                            SecretKey object fails.
 	 */
 	@Test
-	public void testHashAndHex() throws NoSuchAlgorithmException, InvalidKeyException,
-		UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException,
-		BadPaddingException, InvalidKeySpecException, InvalidAlgorithmParameterException
-	{
+	public void testHashAndHex() throws NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException,
+			NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException,
+			InvalidAlgorithmParameterException {
 		String actual;
 		String expected;
 		Charset charset;
@@ -94,30 +97,34 @@ public class HasherTest
 	}
 
 	/**
-	 * Test method for {@link Hasher#hashAndHex(String, String, String, HashAlgorithm, Charset)}
+	 * Test method for
+	 * {@link Hasher#hashAndHex(String, String, String, HashAlgorithm, Charset)}
 	 *
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the MessageDigest object fails.
-	 * @throws UnsupportedEncodingException
-	 *             is thrown by get the byte array of the private key String object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cypher object fails.
-	 * @throws InvalidKeyException
-	 *             the invalid key exception is thrown if initialization of the cypher object fails.
-	 * @throws BadPaddingException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws IllegalBlockSizeException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchAlgorithmException           is thrown if instantiation of the
+	 *                                            MessageDigest object fails.
+	 * @throws UnsupportedEncodingException       is thrown by get the byte array of
+	 *                                            the private key String object
+	 *                                            fails.
+	 * @throws NoSuchPaddingException             is thrown if instantiation of the
+	 *                                            cipher object fails.
+	 * @throws InvalidKeyException                the invalid key exception is
+	 *                                            thrown if initialization of the
+	 *                                            cipher object fails.
+	 * @throws BadPaddingException                is thrown if
+	 *                                            {@link Cipher#doFinal(byte[])}
+	 *                                            fails.
+	 * @throws IllegalBlockSizeException          is thrown if
+	 *                                            {@link Cipher#doFinal(byte[])}
+	 *                                            fails.
+	 * @throws InvalidAlgorithmParameterException is thrown if initialization of the
+	 *                                            cipher object fails.
+	 * @throws InvalidKeySpecException            is thrown if generation of the
+	 *                                            SecretKey object fails.
 	 */
 	@Test
 	public void testHashAndHexWithPrivateKey() throws NoSuchAlgorithmException, InvalidKeyException,
-		UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException,
-		BadPaddingException, InvalidKeySpecException, InvalidAlgorithmParameterException
-	{
+			UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException,
+			InvalidKeySpecException, InvalidAlgorithmParameterException {
 		String actual;
 		String expected;
 		Charset charset;
@@ -142,8 +149,7 @@ public class HasherTest
 	 * Test method for {@link Hasher} with {@link BeanTester}
 	 */
 	@Test
-	public void testWithBeanTester()
-	{
+	public void testWithBeanTester() {
 		BeanTester beanTester = new BeanTester();
 		beanTester.testBean(Hasher.class);
 	}

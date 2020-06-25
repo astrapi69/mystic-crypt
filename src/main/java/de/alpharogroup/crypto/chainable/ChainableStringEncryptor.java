@@ -28,21 +28,19 @@ import de.alpharogroup.crypto.api.Encryptor;
 import de.alpharogroup.crypto.core.ChainableEncryptor;
 
 /**
- * The class {@link ChainableStringEncryptor} can take many {@code Encryptor} objects and encrypts
- * the given string with all the given {@code Encryptor} objects. For an example see the unit test.
+ * The class {@link ChainableStringEncryptor} can take many {@code Encryptor}
+ * objects and encrypts the given string with all the given {@code Encryptor}
+ * objects. For an example see the unit test.
  */
-public class ChainableStringEncryptor extends ChainableEncryptor<String>
-{
+public class ChainableStringEncryptor extends ChainableEncryptor<String> {
 
 	/**
 	 * Instantiates a new {@link ChainableStringEncryptor} object.
 	 *
-	 * @param encryptors
-	 *            the encryptors
+	 * @param encryptors the encryptors
 	 */
 	@SafeVarargs
-	public ChainableStringEncryptor(final Encryptor<String, String>... encryptors)
-	{
+	public ChainableStringEncryptor(final Encryptor<String, String>... encryptors) {
 		super(encryptors);
 	}
 

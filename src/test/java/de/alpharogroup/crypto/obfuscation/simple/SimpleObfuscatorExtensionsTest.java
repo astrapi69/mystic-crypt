@@ -40,8 +40,7 @@ import de.alpharogroup.crypto.obfuscation.rule.ObfuscationRule;
 /**
  * The unit test class for the class {@link SimpleObfuscatorExtensions}
  */
-public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, String>
-{
+public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, String> {
 
 	Character character;
 	Character replaceWith;
@@ -53,13 +52,11 @@ public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, Str
 	/**
 	 * Sets up method will be invoked before every unit test method in this class
 	 *
-	 * @throws Exception
-	 *             is thrown if an exception occurs
+	 * @throws Exception is thrown if an exception occurs
 	 */
 	@Override
 	@BeforeMethod
-	protected void setUp() throws Exception
-	{
+	protected void setUp() throws Exception {
 		super.setUp();
 		// create a rule for obfuscate the key
 		rules = SimpleObfuscationTestData.getFirstBiMapObfuscationRules();
@@ -69,8 +66,7 @@ public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, Str
 	 * Test method for {@link SimpleObfuscatorExtensions#disentangle(BiMap, String)}
 	 */
 	@Test
-	public void testDisentangle()
-	{
+	public void testDisentangle() {
 		// new scenario...
 		stringToDisentangle = "d";
 
@@ -88,8 +84,8 @@ public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, Str
 		// new scenario...
 		stringToDisentangle = "Lfpobsep";
 
-		actual = SimpleObfuscatorExtensions.disentangle(
-			SimpleObfuscationTestData.getFirstBiMapObfuscationRules(), stringToDisentangle);
+		actual = SimpleObfuscatorExtensions.disentangle(SimpleObfuscationTestData.getFirstBiMapObfuscationRules(),
+				stringToDisentangle);
 		expected = "Leonardo";
 		assertEquals(expected, actual);
 		// new scenario...
@@ -112,10 +108,8 @@ public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, Str
 	 * Test method for {@link SimpleObfuscatorExtensions#disentangleBiMap(BiMap)}
 	 */
 	@Test(enabled = true)
-	public void testDisentangleBiMap()
-	{
-		BiMap<Character, Character> biMap = ObfuscationBiMapTestData
-			.getSmallestBiMapObfuscationRules();
+	public void testDisentangleBiMap() {
+		BiMap<Character, Character> biMap = ObfuscationBiMapTestData.getSmallestBiMapObfuscationRules();
 		// new scenario...
 		stringToDisentangle = "be";
 
@@ -126,17 +120,15 @@ public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, Str
 		// new scenario...
 		stringToDisentangle = "bcbd";
 
-		actual = SimpleObfuscatorExtensions.disentangleBiMap(
-			SimpleObfuscatorExtensions.toCharacterBiMap(rules), stringToDisentangle);
+		actual = SimpleObfuscatorExtensions.disentangleBiMap(SimpleObfuscatorExtensions.toCharacterBiMap(rules),
+				stringToDisentangle);
 		expected = "abac";
 		assertEquals(expected, actual);
 		// new scenario...
 		stringToDisentangle = "Lfpobsep";
 
-		actual = SimpleObfuscatorExtensions
-			.disentangleBiMap(
-				SimpleObfuscatorExtensions
-					.toCharacterBiMap(SimpleObfuscationTestData.getFirstBiMapObfuscationRules()),
+		actual = SimpleObfuscatorExtensions.disentangleBiMap(
+				SimpleObfuscatorExtensions.toCharacterBiMap(SimpleObfuscationTestData.getFirstBiMapObfuscationRules()),
 				stringToDisentangle);
 		expected = "Leonardo";
 		assertEquals(expected, actual);
@@ -144,26 +136,26 @@ public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, Str
 
 		stringToDisentangle = "Lpsfn jqtvn epmps tju bnfu, tfb dpotvm wfsufsfn qfsgfdup je. Amjj qspnqub fmfdusbn uf ofd, bu njojnvn dpqjptbf rvp. Ept jvejdp opnjobuj pqpsufsf fj, vtv bu ejdub mfhfoept. Io optusvn jotpmfot ejtqvuboep qsp, jvtup frvjefn jvt je.";
 
-		actual = SimpleObfuscatorExtensions.disentangleBiMap(
-			SimpleObfuscatorExtensions.toCharacterBiMap(rules), stringToDisentangle);
+		actual = SimpleObfuscatorExtensions.disentangleBiMap(SimpleObfuscatorExtensions.toCharacterBiMap(rules),
+				stringToDisentangle);
 		expected = "Lorem ipsum dolor sit amet, sea consul verterem perfecto id. Alii prompta electram te nec, at minimum copiosae quo. Eos iudico nominati oportere ei, usu at dicta legendos. In nostrum insolens disputando pro, iusto equidem ius id.";
 		assertEquals(expected, actual);
 
 		// new scenario...
 		stringToDisentangle = "bcbde";
 
-		actual = SimpleObfuscatorExtensions.disentangleBiMap(
-			SimpleObfuscatorExtensions.toCharacterBiMap(rules), stringToDisentangle);
+		actual = SimpleObfuscatorExtensions.disentangleBiMap(SimpleObfuscatorExtensions.toCharacterBiMap(rules),
+				stringToDisentangle);
 		expected = "abacd";
 		assertEquals(expected, actual);
 	}
 
 	/**
-	 * Test method for {@link SimpleObfuscatorExtensions#obfuscateWith(BiMap, String)}
+	 * Test method for
+	 * {@link SimpleObfuscatorExtensions#obfuscateWith(BiMap, String)}
 	 */
 	@Test
-	public void testObfuscateWith()
-	{
+	public void testObfuscateWith() {
 		// new scenario...
 		stringToObfuscate = "abac";
 
@@ -178,11 +170,11 @@ public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, Str
 		assertEquals(expected, actual);
 		// new scenario...
 		stringToObfuscate = "Lorem ipsum dolor sit amet, sea consul verterem perfecto id. Alii prompta electram te nec, at minimum copiosae quo."
-			+ " Eos iudico nominati oportere ei, usu at dicta legendos. In nostrum insolens disputando pro, iusto equidem ius id.";
+				+ " Eos iudico nominati oportere ei, usu at dicta legendos. In nostrum insolens disputando pro, iusto equidem ius id.";
 
 		actual = SimpleObfuscatorExtensions.obfuscateWith(rules, stringToObfuscate);
 		expected = "Lpsfn jqtvn epmps tju bnfu, tfb dpotvm wfsufsfn qfsgfdup je. Amjj qspnqub fmfdusbn uf ofd, bu njojnvn dpqjptbf rvp."
-			+ " Ept jvejdp opnjobuj pqpsufsf fj, vtv bu ejdub mfhfoept. Io optusvn jotpmfot ejtqvuboep qsp, jvtup frvjefn jvt je.";
+				+ " Ept jvejdp opnjobuj pqpsufsf fj, vtv bu ejdub mfhfoept. Io optusvn jotpmfot ejtqvuboep qsp, jvtup frvjefn jvt je.";
 		assertEquals(expected, actual);
 	}
 
@@ -190,8 +182,7 @@ public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, Str
 	 * Test method for {@link SimpleObfuscatorExtensions#toCharacterBiMap(BiMap)}
 	 */
 	@Test(enabled = true)
-	public void testToCharacterBiMap()
-	{
+	public void testToCharacterBiMap() {
 		BiMap<Character, Character> actual;
 		BiMap<Character, Character> expected;
 		BiMap<Character, ObfuscationRule<Character, Character>> obfuscationRules;
@@ -220,8 +211,7 @@ public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, Str
 	 * Test method for {@link SimpleObfuscatorExtensions#validate(BiMap)}
 	 */
 	@Test(enabled = false)
-	public void testValidate()
-	{
+	public void testValidate() {
 		boolean actual;
 		boolean expected;
 		BiMap<Character, ObfuscationRule<Character, Character>> biMap;
@@ -236,8 +226,7 @@ public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, Str
 	 * Test method for {@link SimpleObfuscatorExtensions} with {@link BeanTester}
 	 */
 	@Test
-	public void testWithBeanTester()
-	{
+	public void testWithBeanTester() {
 		final BeanTester beanTester = new BeanTester();
 		beanTester.testBean(SimpleObfuscatorExtensions.class);
 	}
