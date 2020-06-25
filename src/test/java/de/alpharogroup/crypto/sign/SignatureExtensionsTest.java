@@ -1,8 +1,8 @@
 /**
  * The MIT License
- * <p>
+ *
  * Copyright (C) 2015 Asterios Raptis
- * <p>
+ *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -10,10 +10,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * <p>
+ *
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
- * <p>
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -36,9 +36,9 @@ import java.io.File;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.security.PrivateKey;
-import java.security.PublicKey;
+import java.security.*;
 import java.security.cert.Certificate;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.time.LocalDate;
 import java.time.Month;
@@ -94,10 +94,10 @@ public class SignatureExtensionsTest
 
 		expected = "O(��P�HN�ߐ\u0005�[�\u0002ƲN+�|�XjR�y�\u0018�t(L���U,����x���/�3��d�\u0003�\u0012,�H)�\f\u0007`<^�6Ip�U\u000B?\u0000��~i�.>7�m\u001E�;F�t\f�\u0012\u0003Q��w�q�_\u0004����\u0014\u0014\u0010*M\t���u�{&�\u0013_�7�\u0006qe�\u0004*���#X\u0007�n#��C��\u001C\u0002����|#�\"ny�2�R!��;��VV�\u0014�\u0014�����<f\u0016�\u07B4>8�m\u000E.\u000F�X�\u0383���b���E`gQ�\u0000��J�\u0006��K\u0007\u0014�6H�r�P\"����V>���lV0\u000B�b�=H\u000F";
 		assertEquals(actual, expected);
-		boolean verifed = SignatureExtensions
+		boolean verificationResult = SignatureExtensions
 			.verify(publicKey, signatureAlgorithm, value.getBytes(charset),
 				signedWithMessageDigest);
-		assertTrue(verifed);
+		assertTrue(verificationResult);
 	}
 
 	/**
@@ -111,14 +111,9 @@ public class SignatureExtensionsTest
 		String actual;
 		String expected;
 		String value;
-		String subject;
-		String issuer;
 		String signatureAlgorithm;
 		Charset charset;
-		Date start;
-		Date end;
-		BigInteger serialNumber;
-		X509Certificate cert;
+		Certificate certificate;
 		File publickeyDerDir;
 		File publickeyDerFile;
 		File privatekeyDerFile;
@@ -146,20 +141,12 @@ public class SignatureExtensionsTest
 		expected = "O(��P�HN�ߐ\u0005�[�\u0002ƲN+�|�XjR�y�\u0018�t(L���U,����x���/�3��d�\u0003�\u0012,�H)�\f\u0007`<^�6Ip�U\u000B?\u0000��~i�.>7�m\u001E�;F�t\f�\u0012\u0003Q��w�q�_\u0004����\u0014\u0014\u0010*M\t���u�{&�\u0013_�7�\u0006qe�\u0004*���#X\u0007�n#��C��\u001C\u0002����|#�\"ny�2�R!��;��VV�\u0014�\u0014�����<f\u0016�\u07B4>8�m\u000E.\u000F�X�\u0383���b���E`gQ�\u0000��J�\u0006��K\u0007\u0014�6H�r�P\"����V>���lV0\u000B�b�=H\u000F";
 		assertEquals(actual, expected);
 
-		subject = "CN=Test subject";
-		issuer = "CN=Test issue";
-
-		start = Date.from(
-			LocalDate.of(2020, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		end = Date.from(
-			LocalDate.of(2030, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		serialNumber = RandomExtensions.randomSerialNumber();
-		cert = CertFactory.newX509Certificate(publicKey, privateKey, serialNumber, subject, issuer,
-			signatureAlgorithm, start, end);
+		certificate = TestObjectFactory.newCertificateForTests(publicKey, privateKey,signatureAlgorithm);
 
 		boolean verifed = SignatureExtensions
-			.verify(cert, signatureAlgorithm, value.getBytes(charset), signedWithMessageDigest);
+			.verify(certificate, signatureAlgorithm, value.getBytes(charset), signedWithMessageDigest);
 		assertTrue(verifed);
 	}
+
 
 }
