@@ -1,8 +1,8 @@
 /**
  * The MIT License
- * <p>
+ *
  * Copyright (C) 2015 Asterios Raptis
- * <p>
+ *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -10,10 +10,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * <p>
+ *
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
- * <p>
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -24,37 +24,27 @@
  */
 package de.alpharogroup.crypto.ssl;
 
+import org.testng.annotations.Test;
+
+import java.io.File;
 import java.security.KeyStore;
-import java.security.KeyStoreException;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
 
+import static org.testng.Assert.*;
+
 /**
- * The extension class {@link KeyStoreExtensions} provides extension methods for the {@link KeyStore}
+ * The unit test class for the class {@link KeyStoreExtensions}
  */
-public final class KeyStoreExtensions
+public class KeyStoreExtensionsTest
 {
-	private KeyStoreExtensions()
-	{
-	}
 
 	/**
-	 * Add a private key to the given {@link KeyStore} object.
-	 *
-	 * @param keyStore
-	 *            the keystore
-	 * @param alias
-	 *            the alias
-	 * @param privateKey
-	 *            the private key
-	 * @param password
-	 *            the password
-	 * @param certificateChain
-	 *            the certificate chain
+	 * Test method for {@link KeyStoreExtensions#addPrivateKey(KeyStore, String, PrivateKey, char[], Certificate[])}
 	 */
-	public static void addPrivateKey(final KeyStore keyStore, String alias, PrivateKey privateKey,
-		char[] password, Certificate[] certificateChain) throws KeyStoreException
+	@Test
+	public void testAddPrivateKey()
 	{
-		keyStore.setKeyEntry(alias, privateKey, password, certificateChain);
+		// TODO FIXME
 	}
 }
