@@ -12,6 +12,10 @@ ADDED:
 - new class Signer for sign byte arrays
 - new class Verifier for verifying byte arrays
 
+CHANGED:
+
+- update of gradle version to 6.5
+
 Version 7.4
 -------------
 
