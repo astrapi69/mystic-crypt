@@ -145,6 +145,7 @@ Here is a list of awesome projects for cryptography:
  * [vault](https://github.com/hashicorp/vault) A tool for secrets management, encryption as a service, and privileged access management
  * [jasypt](http://www.jasypt.org/) Java Simplified Encryption
  * [CogniCrypt](https://github.com/eclipse-cognicrypt/CogniCrypt) CogniCrypt is an Eclipse plugin that supports Java developers in using Java Cryptographic APIs
+ * [Encryptor4j](https://github.com/martinwithaar/Encryptor4j) Strong encryption for Java simplified
 
 ## Credits
 
