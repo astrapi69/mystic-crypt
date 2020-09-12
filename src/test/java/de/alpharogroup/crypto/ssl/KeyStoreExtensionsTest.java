@@ -22,44 +22,29 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.hex;
-
-import static org.testng.AssertJUnit.assertTrue;
+package de.alpharogroup.crypto.ssl;
 
 import org.testng.annotations.Test;
 
+import java.io.File;
+import java.security.KeyStore;
+import java.security.PrivateKey;
+import java.security.cert.Certificate;
+
+import static org.testng.Assert.*;
+
 /**
- * The unit test class for the class {@link HexableEncryptor} and {@link HexableDecryptor}
+ * The unit test class for the class {@link KeyStoreExtensions}
  */
-public class HexableDecryptorTest
+public class KeyStoreExtensionsTest
 {
 
 	/**
-	 * Test chained encrypt and decrypt with {@link HexableEncryptor#encrypt(String)} and
-	 * {@link HexableDecryptor#decrypt(String)}.
-	 *
-	 * @throws Exception
-	 *             is thrown if any security exception occured.
+	 * Test method for {@link KeyStoreExtensions#addPrivateKey(KeyStore, String, PrivateKey, char[], Certificate[])}
 	 */
 	@Test
-	public void testEncryptDecrypt() throws Exception
+	public void testAddPrivateKey()
 	{
-		String test;
-		String key;
-		HexableEncryptor encryptor;
-		String encrypted;
-		HexableDecryptor decryptor;
-		String decryted;
-
-		test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
-		key = "1234567890123456";
-		encryptor = new HexableEncryptor(key);
-		encrypted = encryptor.encrypt(test);
-
-		decryptor = new HexableDecryptor(key);
-		decryted = decryptor.decrypt(encrypted);
-		assertTrue("String before encryption is not equal after decryption.",
-			test.equals(decryted));
+		// TODO FIXME
 	}
-
 }

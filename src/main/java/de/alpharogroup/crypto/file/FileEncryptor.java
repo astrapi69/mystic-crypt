@@ -72,7 +72,7 @@ public class FileEncryptor extends AbstractFileEncryptor
 	 * @throws NoSuchPaddingException
 	 *             the no such padding exception
 	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
+	 *             is thrown if initialization of the cipher object fails.
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
@@ -101,7 +101,7 @@ public class FileEncryptor extends AbstractFileEncryptor
 	 * @throws NoSuchPaddingException
 	 *             the no such padding exception
 	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
+	 *             is thrown if initialization of the cipher object fails.
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */

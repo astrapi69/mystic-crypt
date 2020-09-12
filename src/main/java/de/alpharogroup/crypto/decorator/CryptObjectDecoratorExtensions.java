@@ -126,7 +126,6 @@ public final class CryptObjectDecoratorExtensions
 		return result;
 	}
 
-
 	private static boolean startsWith(final byte[] array, byte[] prefix)
 	{
 		for (int i = 0; i < prefix.length; i++)
@@ -195,7 +194,6 @@ public final class CryptObjectDecoratorExtensions
 		}
 		return sb.toString();
 	}
-
 
 	public static String undecorateWithStringDecorator(final String decrypted,
 		final CryptObjectDecorator<String> decorator)

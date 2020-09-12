@@ -59,7 +59,7 @@ public abstract class AbstractEncryptor<C, K, T> extends AbstractCryptor<C, K, T
 	 * @param model
 	 *            The crypt model.
 	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
+	 *             is thrown if initialization of the cipher object fails.
 	 * @throws NoSuchPaddingException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeySpecException
@@ -67,7 +67,7 @@ public abstract class AbstractEncryptor<C, K, T> extends AbstractCryptor<C, K, T
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cypher object fails.
+	 *             is thrown if initialization of the cipher object fails.
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws UnsupportedEncodingException
@@ -86,7 +86,7 @@ public abstract class AbstractEncryptor<C, K, T> extends AbstractCryptor<C, K, T
 	 * @param key
 	 *            The key.
 	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
+	 *             is thrown if initialization of the cipher object fails.
 	 * @throws NoSuchPaddingException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeySpecException
@@ -94,7 +94,7 @@ public abstract class AbstractEncryptor<C, K, T> extends AbstractCryptor<C, K, T
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cypher object fails.
+	 *             is thrown if initialization of the cipher object fails.
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws UnsupportedEncodingException

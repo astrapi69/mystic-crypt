@@ -32,7 +32,6 @@ import de.alpharogroup.check.Check;
 import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
 import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
 
-
 /**
  * The class {@link CharacterObfuscator}
  */

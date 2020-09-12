@@ -65,7 +65,7 @@ public class CryptoCipherInputOutputStreamTest
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
+	 *             is thrown if initialization of the cipher object fails.
 	 * @throws NoSuchPaddingException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeySpecException
@@ -73,7 +73,7 @@ public class CryptoCipherInputOutputStreamTest
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cypher object fails.
+	 *             is thrown if initialization of the cipher object fails.
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws UnsupportedEncodingException
@@ -135,7 +135,8 @@ public class CryptoCipherInputOutputStreamTest
 				cos.write(c);
 			}
 		}
-		// Verify the enryption and decryption process by compare the content of files...
+		// Verify the enryption and decryption process by compare the content of
+		// files...
 		expected = ReadFileExtensions.readFromFile(toEncrypt);
 		actual = ReadFileExtensions.readFromFile(outputDecrypted);
 		assertEquals(expected, actual);

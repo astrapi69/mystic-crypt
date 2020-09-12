@@ -1,8 +1,8 @@
 /**
  * The MIT License
- *
+ * <p>
  * Copyright (C) 2015 Asterios Raptis
- *
+ * <p>
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -10,10 +10,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -22,44 +22,39 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.crypto.hex;
+package de.alpharogroup.crypto.ssl;
 
-import static org.testng.AssertJUnit.assertTrue;
-
-import org.testng.annotations.Test;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.PrivateKey;
+import java.security.cert.Certificate;
 
 /**
- * The unit test class for the class {@link HexableEncryptor} and {@link HexableDecryptor}
+ * The extension class {@link KeyStoreExtensions} provides extension methods for the {@link KeyStore}
  */
-public class HexableDecryptorTest
+public final class KeyStoreExtensions
 {
-
-	/**
-	 * Test chained encrypt and decrypt with {@link HexableEncryptor#encrypt(String)} and
-	 * {@link HexableDecryptor#decrypt(String)}.
-	 *
-	 * @throws Exception
-	 *             is thrown if any security exception occured.
-	 */
-	@Test
-	public void testEncryptDecrypt() throws Exception
+	private KeyStoreExtensions()
 	{
-		String test;
-		String key;
-		HexableEncryptor encryptor;
-		String encrypted;
-		HexableDecryptor decryptor;
-		String decryted;
-
-		test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
-		key = "1234567890123456";
-		encryptor = new HexableEncryptor(key);
-		encrypted = encryptor.encrypt(test);
-
-		decryptor = new HexableDecryptor(key);
-		decryted = decryptor.decrypt(encrypted);
-		assertTrue("String before encryption is not equal after decryption.",
-			test.equals(decryted));
 	}
 
+	/**
+	 * Add a private key to the given {@link KeyStore} object.
+	 *
+	 * @param keyStore
+	 *            the keystore
+	 * @param alias
+	 *            the alias
+	 * @param privateKey
+	 *            the private key
+	 * @param password
+	 *            the password
+	 * @param certificateChain
+	 *            the certificate chain
+	 */
+	public static void addPrivateKey(final KeyStore keyStore, String alias, PrivateKey privateKey,
+		char[] password, Certificate[] certificateChain) throws KeyStoreException
+	{
+		keyStore.setKeyEntry(alias, privateKey, password, certificateChain);
+	}
 }

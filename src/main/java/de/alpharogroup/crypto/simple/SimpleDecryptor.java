@@ -63,7 +63,7 @@ public class SimpleDecryptor implements StringDecryptor, Cryptor
 	private Cipher cipher;
 
 	/**
-	 * The flag initialized that indicates if the cypher is initialized for decryption.
+	 * The flag initialized that indicates if the cipher is initialized for decryption.
 	 *
 	 * @return true, if is initialized
 	 */
@@ -110,15 +110,15 @@ public class SimpleDecryptor implements StringDecryptor, Cryptor
 	 * Initializes the {@link SimpleDecryptor} object.
 	 *
 	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
+	 *             is thrown if initialization of the cipher object fails.
 	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cypher object fails.
+	 *             is thrown if instantiation of the cipher object fails.
 	 * @throws InvalidKeySpecException
 	 *             is thrown if generation of the SecretKey object fails.
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cypher object fails.
+	 *             is thrown if initialization of the cipher object fails.
 	 */
 	private void initialize() throws NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException

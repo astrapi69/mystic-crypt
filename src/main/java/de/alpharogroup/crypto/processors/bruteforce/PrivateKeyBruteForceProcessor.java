@@ -64,7 +64,6 @@ public final class PrivateKeyBruteForceProcessor
 			if (!isPasswordProtected)
 			{
 
-
 				String attempt;
 				attempt = processor.getCurrentAttempt();
 				Security.addProvider(new BouncyCastleProvider());

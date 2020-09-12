@@ -4,7 +4,17 @@
 Version 7.5-SNAPSHOT
 -------------
 
+ADDED:
+ 
+- new class DigitalSignaturesExtensions that signs and verify byte arrays with MessageDigest
+- new class SignatureExtensions that signs and verify byte arrays with Signature
+- new class KeyStoreExtensions for handle issues with keyStore objects
+- new class Signer for sign byte arrays
+- new class Verifier for verifying byte arrays
 
+CHANGED:
+
+- update of gradle version to 6.5
 
 Version 7.4
 -------------
