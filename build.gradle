@@ -1,18 +1,28 @@
 
-plugins {
-    id "java"
-    id "maven-publish"
-    id "signing"
-    id "com.github.ben-manes.versions" version "0.28.0"
-    id "com.github.hierynomus.license" version "0.15.0"
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "com.github.ben-manes:gradle-versions-plugin:$gradlePluginVersionsVersion"
+        classpath "gradle.plugin.com.hierynomus.gradle.plugins:license-gradle-plugin:$licenseGradlePluginVersion"
+    }
 }
 
+apply plugin: "java"
+apply plugin: "java-library"
+apply plugin: "maven-publish"
+apply plugin: "signing"
+apply plugin: "com.github.ben-manes.versions"
+apply plugin: "com.github.hierynomus.license"
 apply plugin: "jacoco"
 
-group = "de.alpharogroup"
+group = "$groupPackage"
 version = "$projectVersion"
-description = "mystic-crypt"
-sourceCompatibility = "1.8"
+description = "$rootProject.name"
+sourceCompatibility = "$projectSourceCompatibility"
 
 repositories {
     jcenter()
@@ -91,44 +101,60 @@ task javadocJar(type: Jar) {
     javadoc.properties.failOnError = true
 }
 
+jar {
+    manifest {
+        attributes(
+                "Name"                  : project.name,
+                "Manifest-Version"      : project.version,
+                "Implementation-Title"  : "$groupPackage" + "." + "$rootProject.name",
+                "Implementation-Version": project.version,
+                "Implementation-Vendor" : "$projectLeaderName",
+                "Created-By"            : "Gradle ${gradle.gradleVersion}",
+                "Built-By"              : "$projectLeaderName",
+                "Build-Timestamp"       : new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(new Date()),
+                "Build-Jdk"             : "${System.properties['java.version']} (${System.properties['java.vendor']} ${System.properties['java.vm.version']})",
+                "Build-OS"              : "${System.properties['os.name']} ${System.properties['os.arch']} ${System.properties['os.version']}")
+    }
+}
+
 def releaseVersion = !version.endsWith("SNAPSHOT")
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifactId = "${rootProject.name}"
+            artifactId = "$rootProject.name"
             from components.java
             artifact sourcesJar
             artifact javadocJar
             pom {
-                name = "${rootProject.name}"
-                description = "The target of this project is to make encryption and decryption as simple as possible."
-                url = "https://github.com/astrapi69/"+"${rootProject.name}"
+                name = "$rootProject.name"
+                description = "$projectDescription"
+                url = "$projectScmProviderUrl"+"$projectHolderUsername"+"$slash"+"$rootProject.name"
                 organization {
-                    name = "Alpha Ro Group UG (haftungsbeschrängt)"
-                    url = "http://www.alpharogroup.de/"
+                    name = "$projectOrganizationName"
+                    url = "$projectOrganizationUrl"
                 }
                 issueManagement {
-                    system = "GitHub"
-                    url = "https://github.com/astrapi69/"+"${rootProject.name}"+"/issues"
+                    system = "$projectIssueManagementSystem"
+                    url = "$projectScmProviderUrl"+"$projectHolderUsername"+"$slash"+"$rootProject.name"+"$issuesPath"
                 }
                 licenses {
                     license {
-                        name = "MIT License"
-                        url = "http://www.opensource.org/licenses/mit-license.php"
-                        distribution = "repo"
+                        name = "$projectLicenseName"
+                        url = "$projectLicenseUrl"
+                        distribution = "$projectLicenseDistribution"
                     }
                 }
                 developers {
                     developer {
-                        id = "astrapi69"
-                        name = "Asterios Raptis"
+                        id = "$projectHolderUsername"
+                        name = "$projectLeaderName"
                     }
                 }
                 scm {
-                    connection = "scm:git:git:@github.com:astrapi69/"+"${rootProject.name}"+".git"
-                    developerConnection = "scm:git:git@github.com:astrapi69/"+"${rootProject.name}"+".git"
-                    url = "git:@github.com:astrapi69/"+"${rootProject.name}"+".git"
+                    connection = "$projectScmGitUrlPrefix" + "$projectScmProviderDomain" + "$colon" + "$projectHolderUsername" + "$slash" + "$rootProject.name" + "$projectScmGitUrlSuffix"
+                    developerConnection = "$projectScmGitUrlPrefix" + "$projectScmProviderDomain" + "$colon" + "$projectHolderUsername" + "$slash" + "$rootProject.name" + "$projectScmGitUrlSuffix"
+                    url = "$projectScmGitUrlPrefix" + "$projectScmProviderDomain" + "$colon" + "$projectHolderUsername" + "$slash" + "$rootProject.name" + "$projectScmGitUrlSuffix"
                 }
             }
         }
@@ -136,11 +162,11 @@ publishing {
     repositories {
         maven {
             credentials {
-                username System.getenv("ossrhUsername") ?: project.property("ossrhUsername")
-                password System.getenv("ossrhPassword") ?: project.property("ossrhPassword")
+                username System.getenv("$projectRepositoriesUserNameKey") ?: project.property("$projectRepositoriesUserNameKey")
+                password System.getenv("$projectRepositoriesPasswordKey") ?: project.property("$projectRepositoriesPasswordKey")
             }
-            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
+            def releasesRepoUrl = "$projectRepositoriesReleasesRepoUrl"
+            def snapshotsRepoUrl = "$projectRepositoriesSnapshotsRepoUrl"
             url = releaseVersion ? releasesRepoUrl : snapshotsRepoUrl
         }
     }
@@ -169,7 +195,7 @@ test {
 jacocoTestReport {
     reports {
         xml.enabled true
-        html.enabled false
+        html.enabled true
     }
 }
 
