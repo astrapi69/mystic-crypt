@@ -20,9 +20,10 @@ CHANGED:
 - update of commons-codec version to 1.15
 - update of silly-collections version to 8.2
 - update of bouncycastle version to 1.66
+- update of jobj-core version to 3.6
 - update of testng test dependency version to 7.3.0
 - update of checksum-up test dependency version to 1.1
-- update of com.github.ben-manes.versions.gradle.plugin to new version 0.31.0
+- update of com.github.ben-manes.versions.gradle.plugin to new version 0.33.0
 - extracted project gradle plugin versions to gradle.properties
 
 Version 7.4
