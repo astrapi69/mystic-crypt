@@ -50,10 +50,12 @@ public final class Signer
 	 *
 	 * @param signatureBean
 	 *            the signature bean
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cipher object fails
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 */
-	public Signer(SignatureBean signatureBean) throws NoSuchAlgorithmException
+	public Signer(SignatureBean signatureBean) throws NoSuchAlgorithmException, InvalidKeyException
 	{
 
 		Objects.requireNonNull(signatureBean);
@@ -61,6 +63,7 @@ public final class Signer
 		Objects.requireNonNull(signatureBean.getSignatureAlgorithm());
 		this.signatureBean = signatureBean;
 		this.signature = Signature.getInstance(this.signatureBean.getSignatureAlgorithm());
+		initialize();
 	}
 
 	/**
@@ -84,16 +87,13 @@ public final class Signer
 	 * @param bytesToSign
 	 *            the bytes to sign
 	 * @return the signed byte array
-	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cipher object fails
 	 * @throws SignatureException
 	 *             is thrown if the signature object is not initialized properly or if this
 	 *             signature algorithm is unable to process the input data provided
 	 */
 	public synchronized byte[] sign(byte[] bytesToSign)
-		throws InvalidKeyException, SignatureException
+		throws SignatureException
 	{
-		initialize();
 		signature.update(bytesToSign);
 		return signature.sign();
 	}
