@@ -38,11 +38,11 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import de.alpharogroup.random.object.RandomObjectFactory;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.algorithm.HashAlgorithm;
-import de.alpharogroup.random.RandomExtensions;
 
 /**
  * The unit test class for the class {@link Hasher}
@@ -86,7 +86,7 @@ public class HasherTest
 		charset = Charset.forName("UTF-8");
 		password = "xxx";
 		newInsertPassword = "xxx";
-		salt = new String(RandomExtensions.getRandomSalt(8, charset), charset);
+		salt = new String(RandomObjectFactory.randomSalt(8, charset), charset);
 		hashAlgorithm = HashAlgorithm.SHA_512;
 		expected = Hasher.hashAndHex(password, salt, hashAlgorithm, charset);
 		actual = Hasher.hashAndHex(newInsertPassword, salt, hashAlgorithm, charset);
@@ -130,8 +130,8 @@ public class HasherTest
 		charset = Charset.forName("UTF-8");
 		password = "xxx";
 		newInsertPassword = "xxx";
-		privateKey = new String(RandomExtensions.getRandomSalt(16, charset), charset);
-		salt = new String(RandomExtensions.getRandomSalt(8, charset), charset);
+		privateKey = new String(RandomObjectFactory.randomSalt(16, charset), charset);
+		salt = new String(RandomObjectFactory.randomSalt(8, charset), charset);
 		hashAlgorithm = HashAlgorithm.SHA_512;
 		expected = Hasher.hashAndHex(password, privateKey, salt, hashAlgorithm, charset);
 		actual = Hasher.hashAndHex(newInsertPassword, privateKey, salt, hashAlgorithm, charset);

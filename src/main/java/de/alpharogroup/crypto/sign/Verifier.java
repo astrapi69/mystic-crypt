@@ -37,9 +37,6 @@ import java.util.Objects;
 public final class Verifier
 {
 
-	/** The flag that indicates if the {@link Signature} object is initialized. */
-	private boolean initialized;
-
 	/** The {@link Signature} object for the verification */
 	private final Signature signature;
 
@@ -54,7 +51,7 @@ public final class Verifier
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the cipher object fails
 	 */
-	public Verifier(VerifyBean verifyBean) throws NoSuchAlgorithmException
+	public Verifier(VerifyBean verifyBean) throws NoSuchAlgorithmException, InvalidKeyException
 	{
 
 		Objects.requireNonNull(verifyBean);
@@ -65,29 +62,11 @@ public final class Verifier
 		}
 		this.verifyBean = verifyBean;
 		this.signature = Signature.getInstance(this.verifyBean.getSignatureAlgorithm());
-	}
-
-	/**
-	 * Initializes the {@link Signature} object for verifying
-	 *
-	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cipher object fails
-	 */
-	private void initialize() throws InvalidKeyException
-	{
-		if (!initialized)
+		if (verifyBean.getPublicKey() != null)
 		{
-			if (verifyBean.getPublicKey() != null)
-			{
-				signature.initVerify(this.verifyBean.getPublicKey());
-				initialized = true;
-				return;
-			}
-			if (verifyBean.getCertificate() != null)
-			{
-				signature.initVerify(this.verifyBean.getCertificate());
-				initialized = true;
-			}
+			signature.initVerify(this.verifyBean.getPublicKey());
+		} else {
+			signature.initVerify(this.verifyBean.getCertificate());
 		}
 	}
 
@@ -109,7 +88,6 @@ public final class Verifier
 	public synchronized boolean verify(byte[] bytesToVerify, byte[] signedBytes)
 		throws InvalidKeyException, SignatureException
 	{
-		initialize();
 		if (verifyBean.getPublicKey() != null)
 		{
 			return verifyWithPublicKey(bytesToVerify, signedBytes);

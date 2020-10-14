@@ -41,8 +41,8 @@ import javax.crypto.NoSuchPaddingException;
 import de.alpharogroup.crypto.algorithm.HashAlgorithm;
 import de.alpharogroup.crypto.hash.HashExtensions;
 import de.alpharogroup.crypto.sha.Hasher;
-import de.alpharogroup.random.RandomExtensions;
-import de.alpharogroup.random.object.RandomObjectsExtensions;
+import de.alpharogroup.random.object.RandomObjectFactory;
+import de.alpharogroup.random.object.RandomWebObjectFactory;
 
 /**
  * The class {@link PasswordEncryptor} is a singleton and helps to generate secure encrypted random
@@ -93,7 +93,7 @@ public class PasswordEncryptor implements Serializable
 	 */
 	public String getRandomPassword(final int length)
 	{
-		return RandomObjectsExtensions.getRandomPassword(length);
+		return RandomWebObjectFactory.randomPassword(length);
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class PasswordEncryptor implements Serializable
 	 */
 	public String getRandomPassword(final Optional<Integer> length)
 	{
-		return RandomObjectsExtensions.getRandomPassword(length);
+		return RandomWebObjectFactory.randomPassword(length);
 	}
 
 	/**
@@ -127,7 +127,7 @@ public class PasswordEncryptor implements Serializable
 	 */
 	public String getRandomSalt(final int length)
 	{
-		return new String(RandomExtensions.getRandomSalt(length, DEFAULT_CHARSET), DEFAULT_CHARSET);
+		return new String(RandomObjectFactory.randomSalt(length, DEFAULT_CHARSET), DEFAULT_CHARSET);
 	}
 
 	/**

@@ -27,6 +27,7 @@ package de.alpharogroup.crypto.sign;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
@@ -36,10 +37,10 @@ import java.util.Objects;
 /**
  * The class {@link ObjectSigner} provide sign algorithm for byte arrays
  */
-public final class ObjectSigner<T>
+public final class ObjectSigner<T extends Serializable>
 {
-
-	Signer signer;
+	/* the signer for sign byte arrays. */
+	private Signer signer;
 
 	/**
 	 * Instantiates a new {@link ObjectSigner} object
@@ -54,7 +55,6 @@ public final class ObjectSigner<T>
 	public ObjectSigner(SignatureBean signatureBean)
 		throws NoSuchAlgorithmException, InvalidKeyException
 	{
-
 		this.signer = new Signer(signatureBean);
 	}
 
@@ -86,7 +86,7 @@ public final class ObjectSigner<T>
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	public byte[] toByteArray(final T object) throws IOException
+	private byte[] toByteArray(final T object) throws IOException
 	{
 		Objects.requireNonNull(object);
 		try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();

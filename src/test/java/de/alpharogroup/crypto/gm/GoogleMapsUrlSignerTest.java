@@ -28,10 +28,9 @@ import static org.testng.AssertJUnit.assertNotNull;
 
 import java.net.URL;
 
+import de.alpharogroup.random.object.RandomWebObjectFactory;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
-
-import de.alpharogroup.random.object.RandomObjectsExtensions;
 
 /**
  * The class {@link GoogleMapsUrlSigner}
@@ -72,7 +71,7 @@ public class GoogleMapsUrlSignerTest
 		URL url;
 		String signRequest;
 
-		url = new URL(RandomObjectsExtensions.getRandomWebsite());
+		url = new URL(RandomWebObjectFactory.randomWebsite());
 
 		signRequest = GoogleMapsUrlSigner.signRequest(url, "YOUR_PRIVATE_KEY");
 		assertNotNull(signRequest);

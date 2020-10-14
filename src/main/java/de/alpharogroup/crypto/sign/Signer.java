@@ -36,9 +36,6 @@ import java.util.Objects;
 public final class Signer
 {
 
-	/** The flag that indicates if the {@link Signature} object is initialized */
-	private boolean initialized;
-
 	/** The {@link Signature} object for signing */
 	private final Signature signature;
 
@@ -57,28 +54,12 @@ public final class Signer
 	 */
 	public Signer(SignatureBean signatureBean) throws NoSuchAlgorithmException, InvalidKeyException
 	{
-
 		Objects.requireNonNull(signatureBean);
 		Objects.requireNonNull(signatureBean.getPrivateKey());
 		Objects.requireNonNull(signatureBean.getSignatureAlgorithm());
 		this.signatureBean = signatureBean;
 		this.signature = Signature.getInstance(this.signatureBean.getSignatureAlgorithm());
-		initialize();
-	}
-
-	/**
-	 * Initializes the {@link Signature} object for signing
-	 *
-	 * @throws InvalidKeyException
-	 *             the invalid key exception
-	 */
-	private void initialize() throws InvalidKeyException
-	{
-		if (!initialized)
-		{
-			signature.initSign(this.signatureBean.getPrivateKey());
-			initialized = true;
-		}
+		this.signature.initSign(this.signatureBean.getPrivateKey());
 	}
 
 	/**

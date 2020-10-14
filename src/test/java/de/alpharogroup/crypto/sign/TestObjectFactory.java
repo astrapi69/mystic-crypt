@@ -38,7 +38,7 @@ import java.time.ZoneId;
 import java.util.Date;
 
 import de.alpharogroup.crypto.factories.CertFactory;
-import de.alpharogroup.random.RandomExtensions;
+import de.alpharogroup.random.number.RandomBigIntegerFactory;
 
 public final class TestObjectFactory
 {
@@ -59,7 +59,7 @@ public final class TestObjectFactory
 			LocalDate.of(2020, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
 		end = Date.from(
 			LocalDate.of(2030, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		serialNumber = RandomExtensions.randomSerialNumber();
+		serialNumber = RandomBigIntegerFactory.randomSerialNumber();
 		return CertFactory.newX509Certificate(publicKey, privateKey, serialNumber, subject, issuer,
 			signatureAlgorithm, start, end);
 	}

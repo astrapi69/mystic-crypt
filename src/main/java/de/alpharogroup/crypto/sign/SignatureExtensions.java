@@ -24,6 +24,10 @@
  */
 package de.alpharogroup.crypto.sign;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -31,6 +35,7 @@ import java.security.PublicKey;
 import java.security.Signature;
 import java.security.SignatureException;
 import java.security.cert.Certificate;
+import java.util.Objects;
 
 /**
  * The class {@link SignatureExtensions} can sign and verify byte arrays. For signing and verifying
@@ -134,4 +139,24 @@ public final class SignatureExtensions
 	{
 	}
 
+	/**
+	 * Copies the given object to a byte array
+	 *
+	 * @param object
+	 *            The object to copy
+	 * @return the byte array
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	public static<T extends Serializable> byte[] toByteArray(final T object) throws IOException
+	{
+		Objects.requireNonNull(object);
+		try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+			ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream))
+		{
+			objectOutputStream.writeObject(object);
+			objectOutputStream.flush();
+			return byteArrayOutputStream.toByteArray();
+		}
+	}
 }

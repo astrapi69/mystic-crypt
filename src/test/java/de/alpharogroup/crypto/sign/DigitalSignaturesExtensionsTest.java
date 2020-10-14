@@ -41,6 +41,7 @@ import java.time.Month;
 import java.time.ZoneId;
 import java.util.Date;
 
+import de.alpharogroup.random.number.RandomBigIntegerFactory;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.crypto.compound.CompoundAlgorithm;
@@ -48,7 +49,6 @@ import de.alpharogroup.crypto.factories.CertFactory;
 import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 import de.alpharogroup.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.file.search.PathFinder;
-import de.alpharogroup.random.RandomExtensions;
 
 /**
  * The unit test class for the class {@link DigitalSignaturesExtensions}
@@ -107,7 +107,7 @@ public class DigitalSignaturesExtensionsTest
 			LocalDate.of(2020, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
 		end = Date.from(
 			LocalDate.of(2030, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		serialNumber = RandomExtensions.randomSerialNumber();
+		serialNumber = RandomBigIntegerFactory.randomSerialNumber();
 		signatureAlgorithm = CompoundAlgorithm.SHA256_WITH_RSA.getAlgorithm(); // SHA256withRSA
 		cert = CertFactory.newX509Certificate(publicKey, privateKey, serialNumber, subject, issuer,
 			signatureAlgorithm, start, end);
