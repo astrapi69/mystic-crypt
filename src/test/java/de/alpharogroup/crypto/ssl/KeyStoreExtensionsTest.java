@@ -119,11 +119,9 @@ public class KeyStoreExtensionsTest
 	@Test
 	public void testAddPrivateKey() throws Exception
 	{
-		// TODO FIXME
-		String actual;
-		String expected;
+		PrivateKey actual;
+		PrivateKey expected;
 		KeyPair keyPair;
-		PrivateKey privateKey;
 		Certificate certificate;
 		Certificate[] certificateChain;
 		String alias;
@@ -131,21 +129,28 @@ public class KeyStoreExtensionsTest
 
 		keyPair = KeyPairFactory
 			.newKeyPair(KeyPairGeneratorAlgorithm.RSA, KeySize.KEYSIZE_2048);
-		privateKey = keyPair.getPrivate();
+		expected = keyPair.getPrivate();
 
 		keyStore = KeyStoreFactory.newKeyStore(KeystoreType.JKS.name(), password, privatekeyDerFile,
 			false);
 
-		certificate = TestObjectFactory.newCertificateForTests(privateKey);
+		certificate = TestObjectFactory.newCertificateForTests(expected);
 		certificateChain = ArrayFactory.newArray(certificate);
 
 		alias = "test-pk";
 
-		KeyStoreExtensions.addPrivateKey(keyStore, alias, privateKey, password.toCharArray(), certificateChain);
+		KeyStoreExtensions.addPrivateKey(keyStore, alias, expected, password.toCharArray(), certificateChain);
 
-		PrivateKey key = (PrivateKey) keyStore.getKey(alias, password.toCharArray());
-		assertNotNull(key);
-		assertEquals(key, privateKey);
+		actual = (PrivateKey) keyStore.getKey(alias, password.toCharArray());
+		assertNotNull(actual);
+		assertEquals(actual, expected);
+
+		KeyStore.PrivateKeyEntry entry = (KeyStore.PrivateKeyEntry)keyStore
+			.getEntry(alias, new KeyStore.PasswordProtection(password.toCharArray()));
+		entry.getPrivateKey();
+
+		Certificate certificate1 = keyStore.getCertificate(alias);
+		assertEquals(certificate, certificate1);
 	}
 	/**
 	 * Test method for {@link de.alpharogroup.crypto.key.KeyStoreExtensions#deleteAlias(File, String, String)}

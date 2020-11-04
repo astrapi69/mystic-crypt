@@ -31,10 +31,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
+import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 
@@ -48,7 +45,7 @@ public final class KeyStoreExtensions
 	}
 
 	/**
-	 * Add a private key to the given {@link KeyStore} object.
+	 * Add the given private key to the given {@link KeyStore} object
 	 *
 	 * @param keyStore
 	 *            the keystore
@@ -61,7 +58,7 @@ public final class KeyStoreExtensions
 	 * @param certificateChain
 	 *            the certificate chain
 	 * @throws KeyStoreException
-	 *             the key store exception
+	 *             is thrown if there is an error accessing the key store
 	 */
 	public static void addPrivateKey(final KeyStore keyStore, String alias, PrivateKey privateKey,
 		char[] password, Certificate[] certificateChain) throws KeyStoreException
@@ -70,7 +67,51 @@ public final class KeyStoreExtensions
 	}
 
 	/**
-	 * Delete the given alias from the given keystore file.
+	 * Add the given certificate to the given {@link KeyStore} object
+	 *
+	 * @param keyStore
+	 *            the keystore
+	 * @param alias
+	 *            the alias
+	 * @param certificate
+	 *            the certificate
+	 * @throws KeyStoreException
+	 *             is thrown if there is an error accessing the key store
+	 */
+	public static void addCertificate(final KeyStore keyStore, String alias, Certificate certificate)
+		throws KeyStoreException
+	{
+		keyStore.setCertificateEntry(alias, certificate);
+	}
+
+	/**
+	 * Gets the private key that is associated with the given alias from the given {@link KeyStore} object
+	 *
+	 * @param keyStore
+	 *            the keystore
+	 * @param alias
+	 *            the alias
+	 * @param password
+	 *            the password
+	 * @return
+	 *            the private key
+	 * @throws UnrecoverableEntryException
+	 *             is thrown if an entry in the keystore cannot be recovered
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails
+	 * @throws KeyStoreException
+	 *             is thrown if there is an error accessing the key store
+	 */
+	public static PrivateKey getPrivateKey(final KeyStore keyStore, String alias, char[] password)
+		throws UnrecoverableEntryException, NoSuchAlgorithmException, KeyStoreException
+	{
+		KeyStore.PrivateKeyEntry entry = (KeyStore.PrivateKeyEntry)keyStore
+			.getEntry(alias, new KeyStore.PasswordProtection(password));
+		return entry.getPrivateKey();
+	}
+
+	/**
+	 * Delete the given alias from the given keystore file
 	 *
 	 * @param keystoreFile
 	 *            the keystore file
@@ -79,13 +120,13 @@ public final class KeyStoreExtensions
 	 * @param password
 	 *            the password
 	 * @throws NoSuchAlgorithmException
-	 *             the no such algorithm exception
+	 *             is thrown if instantiation of the SecretKeyFactory object fails
 	 * @throws CertificateException
-	 *             the certificate exception
+	 *             is thrown if there is an error with an certificate
 	 * @throws FileNotFoundException
-	 *             the file not found exception
+	 *             is thrown if the keystore file not found
 	 * @throws KeyStoreException
-	 *             the key store exception
+	 *             is thrown if there is an error accessing the key store
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
@@ -99,4 +140,5 @@ public final class KeyStoreExtensions
 		keyStore.deleteEntry(alias);
 		keyStore.store(new FileOutputStream(keystoreFile), password.toCharArray());
 	}
+
 }
