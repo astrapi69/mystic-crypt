@@ -142,6 +142,8 @@ public final class SignatureExtensions
 	/**
 	 * Copies the given object to a byte array
 	 *
+	 * @param <T>
+	 *            the generic type of the given object
 	 * @param object
 	 *            The object to copy
 	 * @return the byte array
