@@ -25,70 +25,36 @@ description = "$rootProject.name"
 sourceCompatibility = "$projectSourceCompatibility"
 
 repositories {
-    jcenter()
     mavenLocal()
     mavenCentral()
+    jcenter()
 }
 
-dependencies {
-    compile "commons-codec:commons-codec:$commonsCodecVersion"
-    compile "de.alpharogroup:crypt-api:$cryptApiVersion"
-    compile "de.alpharogroup:crypt-data:$cryptDataVersion"
-    compile "de.alpharogroup:randomizer-core:$randomizerVersion"
-    compile "de.alpharogroup:file-worker:$fileWorkerVersion"
-    compile "de.alpharogroup:silly-collections:$sillyCollectionsVersion"
-    compile "de.alpharogroup:jobj-clone:$jobjCloneVersion"
-    compile "de.alpharogroup:jobj-core:$jobjCoreVersion"
-    compile "org.bouncycastle:bcprov-jdk15on:$bouncycastleVersion"
-    compile "org.bouncycastle:bcprov-ext-jdk15on:$bouncycastleVersion"
-    compile "org.bouncycastle:bcpkix-jdk15on:$bouncycastleVersion"
-    testCompile "de.alpharogroup:xml-extensions:$xmlExtensionsVersion"
-    testCompile "de.alpharogroup:checksum-up:$checksumUpVersion"
-    testCompile "de.alpharogroup:test-objects:$testObjectsVersion"
-    testCompile "de.alpharogroup:jcommons-lang:$jcommonsLangVersion"
-    testCompile "de.alpharogroup:jobj-contract-verifier:$jobjContractVerifierVersion"
-    testCompile "io.github.benas:random-beans:$randomBeansVersion"
-    testCompile "org.meanbean:meanbean:$meanbeanVersion"
-    testCompile "org.testng:testng:$testngVersion"
+tasks.withType(GenerateModuleMetadata) {
+    enabled = false
 }
 
-license {
-    ext.year="$projectInceptionYear"
-    ext.owner="$projectLeaderName"
-    header rootProject.file("src/main/resources/LICENSE.txt")
-    excludes(["**/README",
-              "**/README.md",
-              "**/LICENSE",
-              "**/NOTICE",
-              "**/*.xml",
-              "**/*.xsl",
-              "**/*.xsd",
-              "**/*.dtd",
-              "**/*.html",
-              "**/*.jsp",
-              "**/*.jpa",
-              "**/*.sql",
-              "**/*.properties",
-              "**/*.bat",
-              "**/*.gradle",
-              "**/*.MF",
-              "**/*.txt",
-              "**/*.vm",
-              "**/*.log",
-              "**/*.map",
-              "**/*.js.map",
-              "**/*.tmpl",
-              "**/*.js.tmpl",
-              "**/*.editorconfig",
-              "src/test/resources/**",
-              "src/main/resources/**",
-              "out/**",
-              "build/**"])
+javadoc {
+    failOnError = false
+    if(JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption("html5", true)
+    }
 }
 
-// workhack for license issue #76
-gradle.startParameter.excludedTaskNames += "licenseMain"
-gradle.startParameter.excludedTaskNames += "licenseTest"
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+test {
+    useTestNG()
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled true
+    }
+}
 
 task sourcesJar(type: Jar) {
     archiveClassifier.set("sources")
@@ -101,21 +67,7 @@ task javadocJar(type: Jar) {
     javadoc.properties.failOnError = true
 }
 
-jar {
-    manifest {
-        attributes(
-                "Name"                  : project.name,
-                "Manifest-Version"      : project.version,
-                "Implementation-Title"  : "$groupPackage" + "." + "$rootProject.name",
-                "Implementation-Version": project.version,
-                "Implementation-Vendor" : "$projectLeaderName",
-                "Created-By"            : "Gradle ${gradle.gradleVersion}",
-                "Built-By"              : "$projectLeaderName",
-                "Build-Timestamp"       : new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(new Date()),
-                "Build-Jdk"             : "${System.properties['java.version']} (${System.properties['java.vendor']} ${System.properties['java.vm.version']})",
-                "Build-OS"              : "${System.properties['os.name']} ${System.properties['os.arch']} ${System.properties['os.version']}")
-    }
-}
+check.dependsOn jacocoTestReport
 
 def releaseVersion = !version.endsWith("SNAPSHOT")
 
@@ -178,25 +130,77 @@ signing {
     }
 }
 
-javadoc {
-    if(JavaVersion.current().isJava9Compatible()) {
-        options.addBooleanOption("html5", true)
+jar {
+    manifest {
+        attributes(
+                "Name"                  : project.name,
+                "Manifest-Version"      : project.version,
+                "Implementation-Title"  : "$groupPackage" + "." + "$rootProject.name",
+                "Implementation-Version": project.version,
+                "Implementation-Vendor" : "$projectLeaderName",
+                "Created-By"            : "Gradle ${gradle.gradleVersion}",
+                "Built-By"              : "$projectLeaderName",
+                "Build-Timestamp"       : new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(new Date()),
+                "Build-Jdk"             : "${System.properties['java.version']} (${System.properties['java.vendor']} ${System.properties['java.vm.version']})",
+                "Build-OS"              : "${System.properties['os.name']} ${System.properties['os.arch']} ${System.properties['os.version']}")
     }
 }
 
-tasks.withType(JavaCompile) {
-    options.encoding = "UTF-8"
+license {
+    ext.year="$projectInceptionYear"
+    ext.owner="$projectLeaderName"
+    header rootProject.file("src/main/resources/LICENSE.txt")
+    excludes(["**/README",
+              "**/README.md",
+              "**/LICENSE",
+              "**/NOTICE",
+              "**/*.xml",
+              "**/*.xsl",
+              "**/*.xsd",
+              "**/*.dtd",
+              "**/*.html",
+              "**/*.jsp",
+              "**/*.jpa",
+              "**/*.sql",
+              "**/*.properties",
+              "**/*.bat",
+              "**/*.gradle",
+              "**/*.MF",
+              "**/*.txt",
+              "**/*.vm",
+              "**/*.log",
+              "**/*.map",
+              "**/*.js.map",
+              "**/*.tmpl",
+              "**/*.js.tmpl",
+              "**/*.editorconfig",
+              "src/test/resources/**",
+              "src/main/resources/**",
+              "out/**",
+              "build/**"])
 }
+// workhack for license issue #76
+gradle.startParameter.excludedTaskNames += "licenseMain"
+gradle.startParameter.excludedTaskNames += "licenseTest"
 
-test {
-    useTestNG()
+dependencies {
+    implementation("commons-codec:commons-codec:$commonsCodecVersion")
+    implementation("de.alpharogroup:crypt-api:$cryptApiVersion")
+    implementation("de.alpharogroup:crypt-data:$cryptDataVersion")
+    implementation("de.alpharogroup:randomizer-core:$randomizerVersion")
+    implementation("de.alpharogroup:file-worker:$fileWorkerVersion")
+    implementation("de.alpharogroup:silly-collections:$sillyCollectionsVersion")
+    implementation("de.alpharogroup:jobj-clone:$jobjCloneVersion")
+    implementation("de.alpharogroup:jobj-core:$jobjCoreVersion")
+    implementation("org.bouncycastle:bcprov-jdk15on:$bouncycastleVersion")
+    implementation("org.bouncycastle:bcprov-ext-jdk15on:$bouncycastleVersion")
+    implementation("org.bouncycastle:bcpkix-jdk15on:$bouncycastleVersion")
+    testImplementation("de.alpharogroup:xml-extensions:$xmlExtensionsVersion")
+    testImplementation("de.alpharogroup:checksum-up:$checksumUpVersion")
+    testImplementation("de.alpharogroup:test-objects:$testObjectsVersion")
+    testImplementation("de.alpharogroup:jcommons-lang:$jcommonsLangVersion")
+    testImplementation("de.alpharogroup:jobj-contract-verifier:$jobjContractVerifierVersion")
+    testImplementation("io.github.benas:random-beans:$randomBeansVersion")
+    testImplementation("org.meanbean:meanbean:$meanbeanVersion")
+    testImplementation("org.testng:testng:$testngVersion")
 }
-
-jacocoTestReport {
-    reports {
-        xml.enabled true
-        html.enabled true
-    }
-}
-
-check.dependsOn jacocoTestReport
