@@ -27,10 +27,7 @@ package de.alpharogroup.crypto.ssl;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
+import java.security.*;
 import java.security.cert.CertificateException;
 
 import javax.net.ssl.KeyManager;
@@ -61,17 +58,17 @@ public final class KeyTrustExtensions
 	 *            the key manager algorithm
 	 * @return the key manager[]
 	 * @throws NoSuchAlgorithmException
-	 *             the no such algorithm exception
+	 *             is thrown if instantiation of the SecretKeyFactory object fails
 	 * @throws CertificateException
-	 *             the certificate exception
+	 *             is thrown if there is an error with an certificate
 	 * @throws FileNotFoundException
-	 *             the file not found exception
+	 *             is thrown if the keystore file not found
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws KeyStoreException
-	 *             the key store exception
+	 *             is thrown if there is an error accessing the key store
 	 * @throws UnrecoverableKeyException
-	 *             the unrecoverable key exception
+	 *             is thrown if an key entry in the keystore cannot be recovered
 	 */
 	public static KeyManager[] resolveKeyManagers(final String keystoreType, final String password,
 		final File keystoreFile, final String keyManagerAlgorithm)
@@ -98,16 +95,17 @@ public final class KeyTrustExtensions
 	 * @param trustManagerAlgorithm
 	 *            the trust manager algorithm
 	 * @return the trust manager[]
+	 *
 	 * @throws NoSuchAlgorithmException
-	 *             the no such algorithm exception
+	 *             is thrown if instantiation of the SecretKeyFactory object fails
 	 * @throws CertificateException
-	 *             the certificate exception
+	 *             is thrown if there is an error with an certificate
 	 * @throws FileNotFoundException
-	 *             the file not found exception
+	 *             is thrown if the keystore file not found
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws KeyStoreException
-	 *             the key store exception
+	 *             is thrown if there is an error accessing the key store
 	 */
 	public static TrustManager[] resolveTrustManagers(final String keystoreType,
 		final String password, final File keystoreFile, final String trustManagerAlgorithm)

@@ -62,5 +62,4 @@ public class HexableDecryptorTest
 			test.equals(decryted));
 	}
 
-
 }

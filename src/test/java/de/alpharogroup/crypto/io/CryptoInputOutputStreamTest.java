@@ -98,7 +98,8 @@ public class CryptoInputOutputStreamTest
 			}
 		}
 
-		// Verify the enryption and decryption process by compare the content of files...
+		// Verify the enryption and decryption process by compare the content of
+		// files...
 		expected = ReadFileExtensions.readFromFile(toEncrypt);
 		actual = ReadFileExtensions.readFromFile(decryptedFile);
 		assertEquals(expected, actual);

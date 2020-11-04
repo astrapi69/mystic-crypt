@@ -73,7 +73,6 @@ public class WordlistsProcessor
 		this.toCheckAgainst = toCheckAgainst;
 	}
 
-
 	/**
 	 * Gets the current attempt.
 	 *

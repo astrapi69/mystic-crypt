@@ -153,7 +153,6 @@ public class KeyEncryptDecryptorTest
 		encryptor = new PublicKeyEncryptor(encryptModel);
 		decryptor = new PrivateKeyDecryptor(decryptModel);
 
-
 		encrypted = encryptor.encrypt(testBytes);
 
 		decrypted = decryptor.decrypt(encrypted);

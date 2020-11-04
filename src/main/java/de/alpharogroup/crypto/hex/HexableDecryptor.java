@@ -60,7 +60,7 @@ public class HexableDecryptor extends AbstractStringDecryptor
 	 * @param privateKey
 	 *            The private key.
 	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
+	 *             is thrown if initialization of the cipher object fails.
 	 * @throws NoSuchPaddingException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeySpecException
@@ -68,7 +68,7 @@ public class HexableDecryptor extends AbstractStringDecryptor
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cypher object fails.
+	 *             is thrown if initialization of the cipher object fails.
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
@@ -87,7 +87,7 @@ public class HexableDecryptor extends AbstractStringDecryptor
 	 * @param algorithm
 	 *            the algorithm
 	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
+	 *             is thrown if initialization of the cipher object fails.
 	 * @throws NoSuchPaddingException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeySpecException
@@ -95,7 +95,7 @@ public class HexableDecryptor extends AbstractStringDecryptor
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cypher object fails.
+	 *             is thrown if initialization of the cipher object fails.
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */

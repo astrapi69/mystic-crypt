@@ -260,7 +260,6 @@ public final class ObfuscatorExtensions
 		return invertedMap;
 	}
 
-
 	/**
 	 * Validate the given input if it can be obfuscated with the given rules. This means if the
 	 * given input is disentanglable. <br>
@@ -437,7 +436,6 @@ public final class ObfuscatorExtensions
 		}
 		return Optional.empty();
 	}
-
 
 	/**
 	 * Validate the given {@link BiMap} if a before obfuscated String can be disentangled

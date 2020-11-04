@@ -84,11 +84,11 @@ public final class PublicKeyHexEncryptor
 	 * @return The encrypted {@link String}
 	 * 
 	 * @throws InvalidKeyException
-	 *             the invalid key exception is thrown if initialization of the cypher object fails.
+	 *             the invalid key exception is thrown if initialization of the cipher object fails.
 	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the cypher object fails.
+	 *             is thrown if instantiation of the cipher object fails.
 	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cypher object fails.
+	 *             is thrown if instantiation of the cipher object fails.
 	 * @throws IllegalBlockSizeException
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
 	 * @throws BadPaddingException
@@ -125,11 +125,11 @@ public final class PublicKeyHexEncryptor
 	 * @throws UnsupportedEncodingException
 	 *             is thrown by get the byte array of the private key String object fails.
 	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the cypher object fails.
+	 *             is thrown if instantiation of the cipher object fails.
 	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cypher object fails.
+	 *             is thrown if instantiation of the cipher object fails.
 	 * @throws InvalidKeyException
-	 *             the invalid key exception is thrown if initialization of the cypher object fails.
+	 *             the invalid key exception is thrown if initialization of the cipher object fails.
 	 * @throws InvalidKeySpecException
 	 *             is thrown if generation of the SecretKey object fails.
 	 */

@@ -196,7 +196,6 @@ public class CryptObjectDecoratorExtensionsTest
 		assertEquals(actual, expected);
 	}
 
-
 	/**
 	 * Test method for undecorate an crypt object with {@link CharacterDecorator}
 	 */

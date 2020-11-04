@@ -1,6 +1,30 @@
 ## Change log
 ----------------------
 
+Version 7.5
+-------------
+
+ADDED:
+ 
+- new class DigitalSignaturesExtensions that signs and verify byte arrays with MessageDigest
+- new class SignatureExtensions that signs and verify byte arrays with Signature
+- new class KeyStoreExtensions for handle issues with keyStore objects
+- new area 'gradle-plugins versions' for hold the versions of the gradle plugins in gradle.properties
+- new jar task for build manifest file
+
+CHANGED:
+
+- update of gradle version to 6.7
+- update of commons-codec version to 1.15
+- update of silly-collections version to 8.4
+- update of bouncycastle version to 1.66
+- update of jobj-core version to 3.6
+- update of randomizer version to 8
+- update of testng test dependency version to 7.3.0
+- update of checksum-up test dependency version to 1.1
+- update of com.github.ben-manes.versions.gradle.plugin to new version 0.34.0
+- extracted project gradle plugin versions to gradle.properties
+
 Version 7.4
 -------------
 

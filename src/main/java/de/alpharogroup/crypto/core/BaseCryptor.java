@@ -60,7 +60,7 @@ public abstract class BaseCryptor extends AbstractCryptor<Cipher, String, String
 	 * @param model
 	 *            The crypt model.
 	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
+	 *             is thrown if initialization of the cipher object fails.
 	 * @throws NoSuchPaddingException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeySpecException
@@ -68,7 +68,7 @@ public abstract class BaseCryptor extends AbstractCryptor<Cipher, String, String
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cypher object fails.
+	 *             is thrown if initialization of the cipher object fails.
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws UnsupportedEncodingException
@@ -81,14 +81,13 @@ public abstract class BaseCryptor extends AbstractCryptor<Cipher, String, String
 		super(model);
 	}
 
-
 	/**
 	 * Constructor with a private key.
 	 *
 	 * @param privateKey
 	 *            The private key.
 	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
+	 *             is thrown if initialization of the cipher object fails.
 	 * @throws NoSuchPaddingException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeySpecException
@@ -96,7 +95,7 @@ public abstract class BaseCryptor extends AbstractCryptor<Cipher, String, String
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cypher object fails.
+	 *             is thrown if initialization of the cipher object fails.
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws UnsupportedEncodingException
@@ -127,11 +126,11 @@ public abstract class BaseCryptor extends AbstractCryptor<Cipher, String, String
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cypher object fails.
+	 *             is thrown if instantiation of the cipher object fails.
 	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cypher object fails.
+	 *             is thrown if initialization of the cipher object fails.
 	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
+	 *             is thrown if initialization of the cipher object fails.
 	 */
 	protected Cipher newCipher(final int operationMode, final SecretKey key,
 		final AlgorithmParameterSpec paramSpec, final String alg) throws NoSuchAlgorithmException,
@@ -162,11 +161,11 @@ public abstract class BaseCryptor extends AbstractCryptor<Cipher, String, String
 	 * @throws InvalidKeySpecException
 	 *             is thrown if generation of the SecretKey object fails.
 	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cypher object fails.
+	 *             is thrown if instantiation of the cipher object fails.
 	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cypher object fails.
+	 *             is thrown if initialization of the cipher object fails.
 	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
+	 *             is thrown if initialization of the cipher object fails.
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */

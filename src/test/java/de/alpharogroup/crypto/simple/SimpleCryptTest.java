@@ -89,5 +89,4 @@ public class SimpleCryptTest
 		beanTester.testBean(SimpleCrypt.class);
 	}
 
-
 }

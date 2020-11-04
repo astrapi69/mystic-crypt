@@ -74,7 +74,7 @@ You can first define the version properties and add than the following maven dep
 	<properties>
 			...
 		<!-- MYSTIC-CRYPT version -->
-		<mystic-crypt.version>7.4</mystic-crypt.version>
+		<mystic-crypt.version>7.5</mystic-crypt.version>
 			...
 	</properties>
 			...
@@ -96,7 +96,7 @@ You can first define the version in the ext section and add than the following g
 ```
 ext {
 			...
-    mysticCryptVersion = "7.4"
+    mysticCryptVersion = "7.5"
 			...
 }
 dependencies {
@@ -145,6 +145,7 @@ Here is a list of awesome projects for cryptography:
  * [vault](https://github.com/hashicorp/vault) A tool for secrets management, encryption as a service, and privileged access management
  * [jasypt](http://www.jasypt.org/) Java Simplified Encryption
  * [CogniCrypt](https://github.com/eclipse-cognicrypt/CogniCrypt) CogniCrypt is an Eclipse plugin that supports Java developers in using Java Cryptographic APIs
+ * [Encryptor4j](https://github.com/martinwithaar/Encryptor4j) Strong encryption for Java simplified
 
 ## Credits
 

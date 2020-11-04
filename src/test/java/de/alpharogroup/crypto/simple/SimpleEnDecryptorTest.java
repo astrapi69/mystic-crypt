@@ -58,15 +58,15 @@ public class SimpleEnDecryptorTest
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cypher object fails.
+	 *             is thrown if initialization of the cipher object fails.
 	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cypher object fails.
+	 *             is thrown if instantiation of the cipher object fails.
 	 * @throws InvalidKeySpecException
 	 *             is thrown if generation of the SecretKey object fails.
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cypher object fails.
+	 *             is thrown if initialization of the cipher object fails.
 	 */
 	@Test
 	public void testEncrypt() throws InvalidKeyException, UnsupportedEncodingException,
