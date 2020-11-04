@@ -24,10 +24,19 @@
  */
 package de.alpharogroup.crypto.ssl;
 
+import de.alpharogroup.crypto.algorithm.KeystoreType;
+import de.alpharogroup.crypto.factories.KeyStoreFactory;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
 
 /**
  * The extension class {@link KeyStoreExtensions} provides extension methods for the {@link KeyStore}
@@ -58,5 +67,36 @@ public final class KeyStoreExtensions
 		char[] password, Certificate[] certificateChain) throws KeyStoreException
 	{
 		keyStore.setKeyEntry(alias, privateKey, password, certificateChain);
+	}
+
+	/**
+	 * Delete the given alias from the given keystore file.
+	 *
+	 * @param keystoreFile
+	 *            the keystore file
+	 * @param alias
+	 *            the alias
+	 * @param password
+	 *            the password
+	 * @throws NoSuchAlgorithmException
+	 *             the no such algorithm exception
+	 * @throws CertificateException
+	 *             the certificate exception
+	 * @throws FileNotFoundException
+	 *             the file not found exception
+	 * @throws KeyStoreException
+	 *             the key store exception
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	public static void deleteAlias(final File keystoreFile, String alias, final String password)
+		throws NoSuchAlgorithmException, CertificateException, FileNotFoundException,
+		KeyStoreException, IOException
+	{
+		KeyStore keyStore = KeyStoreFactory.newKeyStore(KeystoreType.JKS.name(), password,
+			keystoreFile);
+
+		keyStore.deleteEntry(alias);
+		keyStore.store(new FileOutputStream(keystoreFile), password.toCharArray());
 	}
 }

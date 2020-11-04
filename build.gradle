@@ -53,8 +53,8 @@ dependencies {
 }
 
 license {
-    ext.year="2015"
-    ext.owner="Asterios Raptis"
+    ext.year="$projectInceptionYear"
+    ext.owner="$projectLeaderName"
     header rootProject.file("src/main/resources/LICENSE.txt")
     excludes(["**/README",
               "**/README.md",
