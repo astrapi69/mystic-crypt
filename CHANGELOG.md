@@ -4,6 +4,16 @@
 Version 7.6-SNAPSHOT
 -------------
 
+ADDED:
+ 
+- new dependency commons-io in version 2.8.0
+- new dependency commons-lang3 in version 3.11
+- new dependency silly-beans in version 1.1
+
+CHANGED:
+
+- update of file-worker dependency version to 5.7
+
 Version 7.5
 -------------
 

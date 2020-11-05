@@ -185,11 +185,14 @@ gradle.startParameter.excludedTaskNames += "licenseTest"
 
 dependencies {
     implementation("commons-codec:commons-codec:$commonsCodecVersion")
+    implementation("commons-io:commons-io:$commonsIoVersion")
+    implementation("org.apache.commons:commons-lang3:$commonsLang3Version")
     implementation("de.alpharogroup:crypt-api:$cryptApiVersion")
     implementation("de.alpharogroup:crypt-data:$cryptDataVersion")
     implementation("de.alpharogroup:randomizer-core:$randomizerVersion")
     implementation("de.alpharogroup:file-worker:$fileWorkerVersion")
     implementation("de.alpharogroup:silly-collections:$sillyCollectionsVersion")
+    implementation("de.alpharogroup:silly-beans:$sillyBeansVersion")
     implementation("de.alpharogroup:jobj-clone:$jobjCloneVersion")
     implementation("de.alpharogroup:jobj-core:$jobjCoreVersion")
     implementation("org.bouncycastle:bcprov-jdk15on:$bouncycastleVersion")
