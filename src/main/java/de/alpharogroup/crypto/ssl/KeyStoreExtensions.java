@@ -47,6 +47,9 @@ public final class KeyStoreExtensions
 	/**
 	 * Add the given private key to the given {@link KeyStore} object
 	 *
+	 * Note: it is added only to the {@link KeyStore} object. Do not forget to store the
+	 * {@link KeyStore} object, for store it permanently to the keystore file.
+	 *
 	 * @param keyStore
 	 *            the keystore
 	 * @param alias
@@ -67,7 +70,10 @@ public final class KeyStoreExtensions
 	}
 
 	/**
-	 * Add the given certificate to the given {@link KeyStore} object
+	 * Add the given certificate to the given {@link KeyStore} object.
+	 *
+	 * Note: it is added only to the {@link KeyStore} object. Do not forget to store the
+	 * {@link KeyStore} object, for store it permanently to the keystore file.
 	 *
 	 * @param keyStore
 	 *            the keystore

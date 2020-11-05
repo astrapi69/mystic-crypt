@@ -38,6 +38,7 @@ import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
 import de.alpharogroup.crypto.model.CryptModel;
 import de.alpharogroup.crypto.sign.TestObjectFactory;
 import de.alpharogroup.file.search.PathFinder;
+import org.apache.commons.io.FileUtils;
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
 import org.testng.AssertJUnit;
@@ -47,10 +48,13 @@ import org.testng.annotations.Test;
 
 import javax.crypto.Cipher;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.security.*;
 import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.security.spec.InvalidKeySpecException;
 
@@ -168,6 +172,70 @@ public class KeyStoreExtensionsTest
 		containsAlias = keyStore.containsAlias(alias);
 
 		assertFalse(containsAlias);
+	}
+
+
+	/**
+	 * Test method for {@link KeyStoreFactory#newKeyStore(String, String, File, boolean)}
+	 *
+	 * @throws NoSuchAlgorithmException
+	 *             if the algorithm used to check the integrity of the keystore cannot be found
+	 * @throws NoSuchProviderException
+	 *             is thrown if the specified provider is not registered in the security provider
+	 *             list
+	 * @throws CertificateException
+	 *             if any of the certificates in the keystore could not be loaded
+	 * @throws FileNotFoundException
+	 *             if the file not found
+	 * @throws KeyStoreException
+	 *             if the keystore has not been initialized (loaded).
+	 *
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	@Test(enabled = false)
+	public void testNewKeyStore()
+		throws NoSuchAlgorithmException, NoSuchProviderException, CertificateException,
+		FileNotFoundException, KeyStoreException, IOException, InvalidKeySpecException,
+		InvalidKeyException, SignatureException, UnrecoverableKeyException
+	{
+
+		PrivateKey actual;
+		File publickeyDerDir;
+		File keystoreJksFile;
+		KeyStore keystore;
+		PrivateKey expected;
+		Certificate certificate;
+		Certificate[] certificateChain;
+		String alias;
+		String password = "keystore-pw";
+
+		publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		keystoreJksFile = new File(publickeyDerDir, "keystore-new.jks");
+
+		keystore = KeyStoreFactory.newKeyStore(KeystoreType.JKS.name(), password,
+			keystoreJksFile, true);
+		AssertJUnit.assertNotNull(keystore);
+
+		KeyPair keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, KeySize.KEYSIZE_2048);
+		expected = keyPair.getPrivate();
+		certificate = TestObjectFactory.newCertificateForTests(expected);
+		certificateChain = ArrayFactory.newArray(certificate);
+
+		alias = "app-priv-key";
+
+		KeyStoreExtensions.addPrivateKey(keystore, alias, expected, password.toCharArray(), certificateChain);
+
+		actual = (PrivateKey) keystore.getKey(alias, password.toCharArray());
+		assertNotNull(actual);
+		assertEquals(actual, expected);
+
+		Certificate certificate1 = keystore.getCertificate(alias);
+		assertEquals(certificate, certificate1);
+
+		keystore.store(new FileOutputStream(keystoreJksFile), password.toCharArray());
+
+		//				FileUtils.deleteQuietly(keystoreJksFile);
 	}
 
 	/**
