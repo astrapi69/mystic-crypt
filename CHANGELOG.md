@@ -6,6 +6,8 @@ Version 7.6-SNAPSHOT
 
 ADDED:
  
+ 
+- new methods created for most common operations on a keystore object in class KeyStoreExtensions
 - new dependency commons-io in version 2.8.0
 - new dependency commons-lang3 in version 3.11
 - new dependency silly-beans in version 1.1
