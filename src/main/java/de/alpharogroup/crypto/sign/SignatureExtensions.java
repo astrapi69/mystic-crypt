@@ -72,6 +72,29 @@ public final class SignatureExtensions
 	}
 
 	/**
+	 * Copies the given object to a byte array
+	 *
+	 * @param <T>
+	 *            the generic type of the given object
+	 * @param object
+	 *            The object to copy
+	 * @return the byte array
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	public static <T extends Serializable> byte[] toByteArray(final T object) throws IOException
+	{
+		Objects.requireNonNull(object);
+		try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+			ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream))
+		{
+			objectOutputStream.writeObject(object);
+			objectOutputStream.flush();
+			return byteArrayOutputStream.toByteArray();
+		}
+	}
+
+	/**
 	 * Verify the given byte array with the given signed byte array with the given certificate and
 	 * the appropriate algorithms
 	 *
@@ -137,28 +160,5 @@ public final class SignatureExtensions
 
 	private SignatureExtensions()
 	{
-	}
-
-	/**
-	 * Copies the given object to a byte array
-	 *
-	 * @param <T>
-	 *            the generic type of the given object
-	 * @param object
-	 *            The object to copy
-	 * @return the byte array
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 */
-	public static<T extends Serializable> byte[] toByteArray(final T object) throws IOException
-	{
-		Objects.requireNonNull(object);
-		try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-			ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream))
-		{
-			objectOutputStream.writeObject(object);
-			objectOutputStream.flush();
-			return byteArrayOutputStream.toByteArray();
-		}
 	}
 }

@@ -24,6 +24,36 @@
  */
 package de.alpharogroup.crypto.ssl;
 
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.AssertJUnit.assertFalse;
+import static org.testng.AssertJUnit.assertTrue;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.security.InvalidKeyException;
+import java.security.KeyPair;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.PrivateKey;
+import java.security.SignatureException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.security.spec.InvalidKeySpecException;
+
+import org.meanbean.test.BeanTestException;
+import org.meanbean.test.BeanTester;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import de.alpharogroup.collections.array.ArrayFactory;
 import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
 import de.alpharogroup.crypto.algorithm.KeystoreType;
@@ -33,26 +63,6 @@ import de.alpharogroup.crypto.key.KeySize;
 import de.alpharogroup.crypto.key.reader.CertificateReader;
 import de.alpharogroup.crypto.sign.TestObjectFactory;
 import de.alpharogroup.file.search.PathFinder;
-import org.meanbean.test.BeanTestException;
-import org.meanbean.test.BeanTester;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.security.*;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-import java.security.spec.InvalidKeySpecException;
-
-import static org.testng.Assert.*;
-import static org.testng.AssertJUnit.assertFalse;
-import static org.testng.AssertJUnit.assertTrue;
 
 /**
  * The unit test class for the class {@link KeyStoreExtensions}
@@ -63,11 +73,11 @@ public class KeyStoreExtensionsTest
 	String alias = "alias-for-delete";
 	/** The certificate for tests. */
 	X509Certificate certificate;
+	File derDir;
+	File keystoreFile;
+
 	String newAlias = "new-alias";
 	String password = "foobar-secret-pw";
-
-	File keystoreFile;
-	File derDir;
 
 	/**
 	 * Sets up method will be invoked before every unit test method in this class.
@@ -109,6 +119,87 @@ public class KeyStoreExtensionsTest
 	}
 
 	/**
+	 * Test method for
+	 * {@link KeyStoreExtensions#addAndStoreCertificate(KeyStore, File, String, String, Certificate)}
+	 */
+	@Test
+	public void testAddAndStoreCertificate() throws Exception
+	{
+		Certificate actual;
+		Certificate expected;
+		PrivateKey privateKey;
+		KeyPair keyPair;
+		Certificate certificate;
+		String alias;
+		KeyStore keyStore;
+
+		keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, KeySize.KEYSIZE_2048);
+		privateKey = keyPair.getPrivate();
+
+		keyStore = KeyStoreFactory.newKeyStore(KeystoreType.JKS.name(), password, keystoreFile,
+			false);
+
+		certificate = TestObjectFactory.newCertificateForTests(privateKey);
+
+		alias = newAlias;
+
+		KeyStoreExtensions.addAndStoreCertificate(keyStore, keystoreFile, password, alias,
+			certificate);
+		// load again keystore from file
+		keyStore = KeyStoreFactory.newKeyStore(KeystoreType.JKS.name(), password, keystoreFile,
+			false);
+		actual = keyStore.getCertificate(alias);
+		assertNotNull(actual);
+		expected = certificate;
+		assertEquals(actual, expected);
+	}
+
+	/**
+	 * Test method for
+	 * {@link KeyStoreExtensions#addAndStorePrivateKey(KeyStore, File, String, PrivateKey, char[], Certificate[])}
+	 */
+	@Test
+	public void testAddAndStorePrivateKey() throws Exception
+	{
+		PrivateKey actual;
+		PrivateKey expected;
+		KeyPair keyPair;
+		Certificate certificate;
+		Certificate[] certificateChain;
+		String alias;
+		KeyStore keyStore;
+
+		keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, KeySize.KEYSIZE_2048);
+		expected = keyPair.getPrivate();
+
+		keyStore = KeyStoreFactory.newKeyStore(KeystoreType.JKS.name(), password, keystoreFile,
+			false);
+
+		certificate = TestObjectFactory.newCertificateForTests(expected);
+		certificateChain = ArrayFactory.newArray(certificate);
+
+		alias = "test-pk";
+
+		KeyStoreExtensions.addAndStorePrivateKey(keyStore, keystoreFile, alias, expected,
+			password.toCharArray(), certificateChain);
+		// load again keystore from file
+		keyStore = KeyStoreFactory.newKeyStore(KeystoreType.JKS.name(), password, keystoreFile,
+			false);
+
+		actual = (PrivateKey)keyStore.getKey(alias, password.toCharArray());
+		assertNotNull(actual);
+		assertEquals(actual, expected);
+
+		actual = KeyStoreExtensions.getPrivateKey(keyStore, alias, password.toCharArray());
+		assertNotNull(actual);
+		assertEquals(actual, expected);
+
+		Certificate certificate1 = keyStore.getCertificate(alias);
+		assertEquals(certificate, certificate1);
+	}
+
+
+	/**
 	 * Test method for {@link KeyStoreExtensions#addCertificate(KeyStore, String, Certificate)}
 	 */
 	@Test
@@ -122,8 +213,7 @@ public class KeyStoreExtensionsTest
 		String alias;
 		KeyStore keyStore;
 
-		keyPair = KeyPairFactory
-			.newKeyPair(KeyPairGeneratorAlgorithm.RSA, KeySize.KEYSIZE_2048);
+		keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, KeySize.KEYSIZE_2048);
 		privateKey = keyPair.getPrivate();
 
 		keyStore = KeyStoreFactory.newKeyStore(KeystoreType.JKS.name(), password, keystoreFile,
@@ -139,6 +229,66 @@ public class KeyStoreExtensionsTest
 		assertNotNull(actual);
 		expected = certificate;
 		assertEquals(actual, expected);
+	}
+
+	/**
+	 * Test method for
+	 * {@link KeyStoreExtensions#addPrivateKey(KeyStore, String, PrivateKey, char[], Certificate[])}
+	 */
+	@Test
+	public void testAddPrivateKey() throws Exception
+	{
+		PrivateKey actual;
+		PrivateKey expected;
+		KeyPair keyPair;
+		Certificate certificate;
+		Certificate[] certificateChain;
+		String alias;
+		KeyStore keyStore;
+
+		keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, KeySize.KEYSIZE_2048);
+		expected = keyPair.getPrivate();
+
+		keyStore = KeyStoreFactory.newKeyStore(KeystoreType.JKS.name(), password, keystoreFile,
+			false);
+
+		certificate = TestObjectFactory.newCertificateForTests(expected);
+		certificateChain = ArrayFactory.newArray(certificate);
+
+		alias = "test-pk";
+
+		KeyStoreExtensions.addPrivateKey(keyStore, alias, expected, password.toCharArray(),
+			certificateChain);
+
+		actual = (PrivateKey)keyStore.getKey(alias, password.toCharArray());
+		assertNotNull(actual);
+		assertEquals(actual, expected);
+
+		actual = KeyStoreExtensions.getPrivateKey(keyStore, alias, password.toCharArray());
+		assertNotNull(actual);
+		assertEquals(actual, expected);
+
+		Certificate certificate1 = keyStore.getCertificate(alias);
+		assertEquals(certificate, certificate1);
+	}
+
+	/**
+	 * Test method for
+	 * {@link de.alpharogroup.crypto.key.KeyStoreExtensions#deleteAlias(File, String, String)}
+	 */
+	@Test
+	public void testDeleteAlias() throws Exception
+	{
+		KeyStore keyStore;
+		boolean containsAlias;
+
+		KeyStoreExtensions.deleteAlias(keystoreFile, alias, password);
+
+		keyStore = KeyStoreFactory.newKeyStore(KeystoreType.JKS.name(), password, keystoreFile,
+			false);
+		containsAlias = keyStore.containsAlias(alias);
+
+		assertFalse(containsAlias);
 	}
 
 	/**
@@ -155,8 +305,7 @@ public class KeyStoreExtensionsTest
 		String alias;
 		KeyStore keyStore;
 
-		keyPair = KeyPairFactory
-			.newKeyPair(KeyPairGeneratorAlgorithm.RSA, KeySize.KEYSIZE_2048);
+		keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, KeySize.KEYSIZE_2048);
 		privateKey = keyPair.getPrivate();
 
 		keyStore = KeyStoreFactory.newKeyStore(KeystoreType.JKS.name(), password, keystoreFile,
@@ -169,42 +318,6 @@ public class KeyStoreExtensionsTest
 		KeyStoreExtensions.addCertificate(keyStore, alias, certificate);
 
 		actual = KeyStoreExtensions.getCertificate(keyStore, alias);
-		assertNotNull(actual);
-		expected = certificate;
-		assertEquals(actual, expected);
-	}
-
-
-	/**
-	 * Test method for {@link KeyStoreExtensions#addAndStoreCertificate(KeyStore, File, String, String, Certificate)}
-	 */
-	@Test
-	public void testAddAndStoreCertificate() throws Exception
-	{
-		Certificate actual;
-		Certificate expected;
-		PrivateKey privateKey;
-		KeyPair keyPair;
-		Certificate certificate;
-		String alias;
-		KeyStore keyStore;
-
-		keyPair = KeyPairFactory
-			.newKeyPair(KeyPairGeneratorAlgorithm.RSA, KeySize.KEYSIZE_2048);
-		privateKey = keyPair.getPrivate();
-
-		keyStore = KeyStoreFactory.newKeyStore(KeystoreType.JKS.name(), password, keystoreFile,
-			false);
-
-		certificate = TestObjectFactory.newCertificateForTests(privateKey);
-
-		alias = newAlias;
-
-		KeyStoreExtensions.addAndStoreCertificate(keyStore, keystoreFile, password, alias, certificate);
-		// load again keystore from file
-		keyStore = KeyStoreFactory.newKeyStore(KeystoreType.JKS.name(), password, keystoreFile,
-			false);
-		actual = keyStore.getCertificate(alias);
 		assertNotNull(actual);
 		expected = certificate;
 		assertEquals(actual, expected);
@@ -224,8 +337,7 @@ public class KeyStoreExtensionsTest
 		String alias;
 		KeyStore keyStore;
 
-		keyPair = KeyPairFactory
-			.newKeyPair(KeyPairGeneratorAlgorithm.RSA, KeySize.KEYSIZE_2048);
+		keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, KeySize.KEYSIZE_2048);
 		expected = keyPair.getPrivate();
 
 		keyStore = KeyStoreFactory.newKeyStore(KeystoreType.JKS.name(), password, keystoreFile,
@@ -236,116 +348,16 @@ public class KeyStoreExtensionsTest
 
 		alias = "test-pk";
 
-		KeyStoreExtensions.addPrivateKey(keyStore, alias, expected, password.toCharArray(), certificateChain);
+		KeyStoreExtensions.addPrivateKey(keyStore, alias, expected, password.toCharArray(),
+			certificateChain);
 
-		actual = (PrivateKey) keyStore.getKey(alias, password.toCharArray());
+		actual = (PrivateKey)keyStore.getKey(alias, password.toCharArray());
 		assertNotNull(actual);
 		assertEquals(actual, expected);
 
 		actual = KeyStoreExtensions.getPrivateKey(keyStore, alias, password.toCharArray());
 		assertNotNull(actual);
 		assertEquals(actual, expected);
-	}
-
-	/**
-	 * Test method for {@link KeyStoreExtensions#addPrivateKey(KeyStore, String, PrivateKey, char[], Certificate[])}
-	 */
-	@Test
-	public void testAddPrivateKey() throws Exception
-	{
-		PrivateKey actual;
-		PrivateKey expected;
-		KeyPair keyPair;
-		Certificate certificate;
-		Certificate[] certificateChain;
-		String alias;
-		KeyStore keyStore;
-
-		keyPair = KeyPairFactory
-			.newKeyPair(KeyPairGeneratorAlgorithm.RSA, KeySize.KEYSIZE_2048);
-		expected = keyPair.getPrivate();
-
-		keyStore = KeyStoreFactory.newKeyStore(KeystoreType.JKS.name(), password, keystoreFile,
-			false);
-
-		certificate = TestObjectFactory.newCertificateForTests(expected);
-		certificateChain = ArrayFactory.newArray(certificate);
-
-		alias = "test-pk";
-
-		KeyStoreExtensions.addPrivateKey(keyStore, alias, expected, password.toCharArray(), certificateChain);
-
-		actual = (PrivateKey) keyStore.getKey(alias, password.toCharArray());
-		assertNotNull(actual);
-		assertEquals(actual, expected);
-
-		actual = KeyStoreExtensions.getPrivateKey(keyStore, alias, password.toCharArray());
-		assertNotNull(actual);
-		assertEquals(actual, expected);
-
-		Certificate certificate1 = keyStore.getCertificate(alias);
-		assertEquals(certificate, certificate1);
-	}
-
-	/**
-	 * Test method for {@link KeyStoreExtensions#addAndStorePrivateKey(KeyStore, File, String, PrivateKey, char[], Certificate[])}
-	 */
-	@Test
-	public void testAddAndStorePrivateKey() throws Exception
-	{
-		PrivateKey actual;
-		PrivateKey expected;
-		KeyPair keyPair;
-		Certificate certificate;
-		Certificate[] certificateChain;
-		String alias;
-		KeyStore keyStore;
-
-		keyPair = KeyPairFactory
-			.newKeyPair(KeyPairGeneratorAlgorithm.RSA, KeySize.KEYSIZE_2048);
-		expected = keyPair.getPrivate();
-
-		keyStore = KeyStoreFactory.newKeyStore(KeystoreType.JKS.name(), password, keystoreFile,
-			false);
-
-		certificate = TestObjectFactory.newCertificateForTests(expected);
-		certificateChain = ArrayFactory.newArray(certificate);
-
-		alias = "test-pk";
-
-		KeyStoreExtensions.addAndStorePrivateKey(keyStore, keystoreFile, alias, expected, password.toCharArray(), certificateChain);
-		// load again keystore from file
-		keyStore = KeyStoreFactory.newKeyStore(KeystoreType.JKS.name(), password, keystoreFile,
-			false);
-
-		actual = (PrivateKey) keyStore.getKey(alias, password.toCharArray());
-		assertNotNull(actual);
-		assertEquals(actual, expected);
-
-		actual = KeyStoreExtensions.getPrivateKey(keyStore, alias, password.toCharArray());
-		assertNotNull(actual);
-		assertEquals(actual, expected);
-
-		Certificate certificate1 = keyStore.getCertificate(alias);
-		assertEquals(certificate, certificate1);
-	}
-
-	/**
-	 * Test method for {@link de.alpharogroup.crypto.key.KeyStoreExtensions#deleteAlias(File, String, String)}
-	 */
-	@Test
-	public void testDeleteAlias() throws Exception
-	{
-		KeyStore keyStore;
-		boolean containsAlias;
-
-		KeyStoreExtensions.deleteAlias(keystoreFile, alias, password);
-
-		keyStore = KeyStoreFactory.newKeyStore(KeystoreType.JKS.name(), password, keystoreFile,
-			false);
-		containsAlias = keyStore.containsAlias(alias);
-
-		assertFalse(containsAlias);
 	}
 
 
@@ -368,10 +380,9 @@ public class KeyStoreExtensionsTest
 	 *             Signals that an I/O exception has occurred.
 	 */
 	@Test(enabled = false)
-	public void testNewKeyStore()
-		throws NoSuchAlgorithmException, NoSuchProviderException, CertificateException,
-		FileNotFoundException, KeyStoreException, IOException, InvalidKeySpecException,
-		InvalidKeyException, SignatureException, UnrecoverableKeyException
+	public void testNewKeyStore() throws NoSuchAlgorithmException, NoSuchProviderException,
+		CertificateException, FileNotFoundException, KeyStoreException, IOException,
+		InvalidKeySpecException, InvalidKeyException, SignatureException, UnrecoverableKeyException
 	{
 
 		PrivateKey actual;
@@ -387,20 +398,22 @@ public class KeyStoreExtensionsTest
 		publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
 		keystoreJksFile = new File(publickeyDerDir, "keystore-new.jks");
 
-		keystore = KeyStoreFactory.newKeyStore(KeystoreType.JKS.name(), password,
-			keystoreJksFile, true);
+		keystore = KeyStoreFactory.newKeyStore(KeystoreType.JKS.name(), password, keystoreJksFile,
+			true);
 		assertNotNull(keystore);
 
-		KeyPair keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, KeySize.KEYSIZE_2048);
+		KeyPair keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA,
+			KeySize.KEYSIZE_2048);
 		expected = keyPair.getPrivate();
 		certificate = TestObjectFactory.newCertificateForTests(expected);
 		certificateChain = ArrayFactory.newArray(certificate);
 
 		alias = "app-priv-key";
 
-		KeyStoreExtensions.addPrivateKey(keystore, alias, expected, password.toCharArray(), certificateChain);
+		KeyStoreExtensions.addPrivateKey(keystore, alias, expected, password.toCharArray(),
+			certificateChain);
 
-		actual = (PrivateKey) keystore.getKey(alias, password.toCharArray());
+		actual = (PrivateKey)keystore.getKey(alias, password.toCharArray());
 		assertNotNull(actual);
 		assertEquals(actual, expected);
 
@@ -409,14 +422,14 @@ public class KeyStoreExtensionsTest
 
 		keystore.store(new FileOutputStream(keystoreJksFile), password.toCharArray());
 
-		//				FileUtils.deleteQuietly(keystoreJksFile);
+		// FileUtils.deleteQuietly(keystoreJksFile);
 	}
 
 	/**
 	 * Test method for {@link de.alpharogroup.crypto.key.KeyStoreExtensions} with {@link BeanTester}
 	 */
 	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
-		UnsupportedOperationException.class })
+			UnsupportedOperationException.class })
 	public void testWithBeanTester()
 	{
 		final BeanTester beanTester = new BeanTester();

@@ -28,9 +28,10 @@ import static org.testng.AssertJUnit.assertNotNull;
 
 import java.net.URL;
 
-import de.alpharogroup.random.object.RandomWebObjectFactory;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
+
+import de.alpharogroup.random.object.RandomWebObjectFactory;
 
 /**
  * The class {@link GoogleMapsUrlSigner}

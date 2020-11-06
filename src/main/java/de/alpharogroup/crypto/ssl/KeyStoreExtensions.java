@@ -24,9 +24,6 @@
  */
 package de.alpharogroup.crypto.ssl;
 
-import de.alpharogroup.crypto.algorithm.KeystoreType;
-import de.alpharogroup.crypto.factories.KeyStoreFactory;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -39,29 +36,39 @@ import java.security.UnrecoverableEntryException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 
+import de.alpharogroup.crypto.algorithm.KeystoreType;
+import de.alpharogroup.crypto.factories.KeyStoreFactory;
+
 /**
- * The extension class {@link KeyStoreExtensions} provides extension methods for the {@link KeyStore}
+ * The extension class {@link KeyStoreExtensions} provides extension methods for the
+ * {@link KeyStore}
  */
 public final class KeyStoreExtensions
 {
-	private KeyStoreExtensions()
-	{
-	}
-
 	/**
-	 * Add the given certificate to the given {@link KeyStore} object and stores it to the
-	 * given keystore file
+	 * Add the given certificate to the given {@link KeyStore} object and stores it to the given
+	 * keystore file
 	 *
-	 * @param keyStore     the keystore
-	 * @param keystoreFile the keystore file
-	 * @param password     the password
-	 * @param alias        the alias
-	 * @param certificate  the certificate
-	 * @throws KeyStoreException        is thrown if there is an error accessing the key store
-	 * @throws NoSuchAlgorithmException is thrown if instantiation of the SecretKeyFactory object fails
-	 * @throws CertificateException     is thrown if there is an error with an certificate
-	 * @throws FileNotFoundException    is thrown if the keystore file not found
-	 * @throws IOException              Signals that an I/O exception has occurred.
+	 * @param keyStore
+	 *            the keystore
+	 * @param keystoreFile
+	 *            the keystore file
+	 * @param password
+	 *            the password
+	 * @param alias
+	 *            the alias
+	 * @param certificate
+	 *            the certificate
+	 * @throws KeyStoreException
+	 *             is thrown if there is an error accessing the key store
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails
+	 * @throws CertificateException
+	 *             is thrown if there is an error with an certificate
+	 * @throws FileNotFoundException
+	 *             is thrown if the keystore file not found
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	public static void addAndStoreCertificate(final KeyStore keyStore, final File keystoreFile,
 		final String password, String alias, Certificate certificate)
@@ -72,20 +79,31 @@ public final class KeyStoreExtensions
 	}
 
 	/**
-	 * Add the given private key to the given {@link KeyStore} object and stores it to the
-	 * given keystore file
+	 * Add the given private key to the given {@link KeyStore} object and stores it to the given
+	 * keystore file
 	 *
-	 * @param keyStore         the keystore
-	 * @param keystoreFile     the keystore file
-	 * @param alias            the alias
-	 * @param privateKey       the private key
-	 * @param password         the password
-	 * @param certificateChain the certificate chain
-	 * @throws KeyStoreException        is thrown if there is an error accessing the key store
-	 * @throws NoSuchAlgorithmException is thrown if instantiation of the SecretKeyFactory object fails
-	 * @throws CertificateException     is thrown if there is an error with an certificate
-	 * @throws FileNotFoundException    is thrown if the keystore file not found
-	 * @throws IOException              Signals that an I/O exception has occurred.
+	 * @param keyStore
+	 *            the keystore
+	 * @param keystoreFile
+	 *            the keystore file
+	 * @param alias
+	 *            the alias
+	 * @param privateKey
+	 *            the private key
+	 * @param password
+	 *            the password
+	 * @param certificateChain
+	 *            the certificate chain
+	 * @throws KeyStoreException
+	 *             is thrown if there is an error accessing the key store
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails
+	 * @throws CertificateException
+	 *             is thrown if there is an error with an certificate
+	 * @throws FileNotFoundException
+	 *             is thrown if the keystore file not found
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	public static void addAndStorePrivateKey(final KeyStore keyStore, final File keystoreFile,
 		String alias, PrivateKey privateKey, char[] password, Certificate[] certificateChain)
@@ -101,10 +119,14 @@ public final class KeyStoreExtensions
 	 * Note: it is added only to the {@link KeyStore} object. Do not forget to store the
 	 * {@link KeyStore} object, for store it permanently to the keystore file.
 	 *
-	 * @param keyStore    the keystore
-	 * @param alias       the alias
-	 * @param certificate the certificate
-	 * @throws KeyStoreException is thrown if there is an error accessing the key store
+	 * @param keyStore
+	 *            the keystore
+	 * @param alias
+	 *            the alias
+	 * @param certificate
+	 *            the certificate
+	 * @throws KeyStoreException
+	 *             is thrown if there is an error accessing the key store
 	 */
 	public static void addCertificate(final KeyStore keyStore, String alias,
 		Certificate certificate) throws KeyStoreException
@@ -118,12 +140,18 @@ public final class KeyStoreExtensions
 	 * Note: it is added only to the {@link KeyStore} object. Do not forget to store the
 	 * {@link KeyStore} object, for store it permanently to the keystore file.
 	 *
-	 * @param keyStore         the keystore
-	 * @param alias            the alias
-	 * @param privateKey       the private key
-	 * @param password         the password
-	 * @param certificateChain the certificate chain
-	 * @throws KeyStoreException is thrown if there is an error accessing the key store
+	 * @param keyStore
+	 *            the keystore
+	 * @param alias
+	 *            the alias
+	 * @param privateKey
+	 *            the private key
+	 * @param password
+	 *            the password
+	 * @param certificateChain
+	 *            the certificate chain
+	 * @throws KeyStoreException
+	 *             is thrown if there is an error accessing the key store
 	 */
 	public static void addPrivateKey(final KeyStore keyStore, String alias, PrivateKey privateKey,
 		char[] password, Certificate[] certificateChain) throws KeyStoreException
@@ -134,33 +162,45 @@ public final class KeyStoreExtensions
 	/**
 	 * Delete the given alias from the given keystore file
 	 *
-	 * @param keystoreFile the keystore file
-	 * @param alias        the alias
-	 * @param password     the password
-	 * @throws NoSuchAlgorithmException is thrown if instantiation of the SecretKeyFactory object fails
-	 * @throws CertificateException     is thrown if there is an error with an certificate
-	 * @throws FileNotFoundException    is thrown if the keystore file not found
-	 * @throws KeyStoreException        is thrown if there is an error accessing the key store
-	 * @throws IOException              Signals that an I/O exception has occurred.
+	 * @param keystoreFile
+	 *            the keystore file
+	 * @param alias
+	 *            the alias
+	 * @param password
+	 *            the password
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails
+	 * @throws CertificateException
+	 *             is thrown if there is an error with an certificate
+	 * @throws FileNotFoundException
+	 *             is thrown if the keystore file not found
+	 * @throws KeyStoreException
+	 *             is thrown if there is an error accessing the key store
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	public static void deleteAlias(final File keystoreFile, String alias, final String password)
 		throws NoSuchAlgorithmException, CertificateException, FileNotFoundException,
 		KeyStoreException, IOException
 	{
-		KeyStore keyStore = KeyStoreFactory
-			.newKeyStore(KeystoreType.JKS.name(), password, keystoreFile);
+		KeyStore keyStore = KeyStoreFactory.newKeyStore(KeystoreType.JKS.name(), password,
+			keystoreFile);
 
 		keyStore.deleteEntry(alias);
 		store(keyStore, keystoreFile, password);
 	}
 
 	/**
-	 * Gets the certificate that is associated with the given alias from the given {@link KeyStore} object
+	 * Gets the certificate that is associated with the given alias from the given {@link KeyStore}
+	 * object
 	 *
-	 * @param keyStore the keystore
-	 * @param alias    the alias
+	 * @param keyStore
+	 *            the keystore
+	 * @param alias
+	 *            the alias
 	 * @return the certificate
-	 * @throws KeyStoreException is thrown if there is an error accessing the key store
+	 * @throws KeyStoreException
+	 *             is thrown if there is an error accessing the key store
 	 */
 	public static Certificate getCertificate(final KeyStore keyStore, String alias)
 		throws KeyStoreException
@@ -169,35 +209,50 @@ public final class KeyStoreExtensions
 	}
 
 	/**
-	 * Gets the private key that is associated with the given alias from the given {@link KeyStore} object
+	 * Gets the private key that is associated with the given alias from the given {@link KeyStore}
+	 * object
 	 *
-	 * @param keyStore the keystore
-	 * @param alias    the alias
-	 * @param password the password
+	 * @param keyStore
+	 *            the keystore
+	 * @param alias
+	 *            the alias
+	 * @param password
+	 *            the password
 	 * @return the private key
-	 * @throws UnrecoverableEntryException is thrown if an entry in the keystore cannot be recovered
-	 * @throws NoSuchAlgorithmException    is thrown if instantiation of the SecretKeyFactory object fails
-	 * @throws KeyStoreException           is thrown if there is an error accessing the key store
+	 * @throws UnrecoverableEntryException
+	 *             is thrown if an entry in the keystore cannot be recovered
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails
+	 * @throws KeyStoreException
+	 *             is thrown if there is an error accessing the key store
 	 */
 	public static PrivateKey getPrivateKey(final KeyStore keyStore, String alias, char[] password)
 		throws UnrecoverableEntryException, NoSuchAlgorithmException, KeyStoreException
 	{
-		KeyStore.PrivateKeyEntry entry = (KeyStore.PrivateKeyEntry)keyStore
-			.getEntry(alias, new KeyStore.PasswordProtection(password));
+		KeyStore.PrivateKeyEntry entry = (KeyStore.PrivateKeyEntry)keyStore.getEntry(alias,
+			new KeyStore.PasswordProtection(password));
 		return entry.getPrivateKey();
 	}
 
 	/**
 	 * Stores the given {@link KeyStore} object into the given keystore file
 	 *
-	 * @param keyStore     the keystore
-	 * @param keystoreFile the keystore file
-	 * @param password     the password
-	 * @throws KeyStoreException        is thrown if there is an error accessing the key store
-	 * @throws NoSuchAlgorithmException is thrown if instantiation of the SecretKeyFactory object fails
-	 * @throws CertificateException     is thrown if there is an error with an certificate
-	 * @throws FileNotFoundException    is thrown if the keystore file not found
-	 * @throws IOException              Signals that an I/O exception has occurred.
+	 * @param keyStore
+	 *            the keystore
+	 * @param keystoreFile
+	 *            the keystore file
+	 * @param password
+	 *            the password
+	 * @throws KeyStoreException
+	 *             is thrown if there is an error accessing the key store
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails
+	 * @throws CertificateException
+	 *             is thrown if there is an error with an certificate
+	 * @throws FileNotFoundException
+	 *             is thrown if the keystore file not found
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	public static void store(final KeyStore keyStore, final File keystoreFile,
 		final String password)
@@ -207,6 +262,10 @@ public final class KeyStoreExtensions
 		{
 			keyStore.store(fos, password.toCharArray());
 		}
+	}
+
+	private KeyStoreExtensions()
+	{
 	}
 
 }

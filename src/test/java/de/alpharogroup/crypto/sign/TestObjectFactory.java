@@ -25,7 +25,12 @@
 package de.alpharogroup.crypto.sign;
 
 import java.math.BigInteger;
-import java.security.*;
+import java.security.InvalidKeyException;
+import java.security.KeyPair;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.SignatureException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.spec.InvalidKeySpecException;
@@ -41,6 +46,36 @@ import de.alpharogroup.random.number.RandomBigIntegerFactory;
 
 public final class TestObjectFactory
 {
+	public static Certificate newCertificateForTests(final PrivateKey privateKey)
+		throws CertificateEncodingException, NoSuchAlgorithmException, InvalidKeyException,
+		SignatureException, InvalidKeySpecException
+	{
+		return newCertificateForTests(privateKey, CompoundAlgorithm.SHA256_WITH_RSA.getAlgorithm());
+	}
+
+
+	public static Certificate newCertificateForTests(final PrivateKey privateKey,
+		String signatureAlgorithm) throws CertificateEncodingException, NoSuchAlgorithmException,
+		InvalidKeyException, SignatureException, InvalidKeySpecException
+	{
+		String subject;
+		String issuer;
+		Date start;
+		Date end;
+		BigInteger serialNumber;
+
+		subject = "CN=Test subject";
+		issuer = "CN=Test issue";
+
+		start = Date.from(
+			LocalDate.of(2020, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+		end = Date.from(
+			LocalDate.of(2030, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+		serialNumber = RandomBigIntegerFactory.randomSerialNumber();
+		return CertFactory.newX509Certificate(PrivateKeyExtensions.generatePublicKey(privateKey),
+			privateKey, serialNumber, subject, issuer, signatureAlgorithm, start, end);
+	}
+
 	public static Certificate newCertificateForTests(final PublicKey publicKey,
 		final PrivateKey privateKey, String signatureAlgorithm) throws CertificateEncodingException,
 		NoSuchAlgorithmException, InvalidKeyException, SignatureException
@@ -61,35 +96,6 @@ public final class TestObjectFactory
 		serialNumber = RandomBigIntegerFactory.randomSerialNumber();
 		return CertFactory.newX509Certificate(publicKey, privateKey, serialNumber, subject, issuer,
 			signatureAlgorithm, start, end);
-	}
-
-
-	public static Certificate newCertificateForTests(final PrivateKey privateKey,
-		String signatureAlgorithm) throws CertificateEncodingException,
-		NoSuchAlgorithmException, InvalidKeyException, SignatureException, InvalidKeySpecException
-	{
-		String subject;
-		String issuer;
-		Date start;
-		Date end;
-		BigInteger serialNumber;
-
-		subject = "CN=Test subject";
-		issuer = "CN=Test issue";
-
-		start = Date.from(
-			LocalDate.of(2020, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		end = Date.from(
-			LocalDate.of(2030, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		serialNumber = RandomBigIntegerFactory.randomSerialNumber();
-		return CertFactory.newX509Certificate(PrivateKeyExtensions.generatePublicKey(privateKey), privateKey, serialNumber, subject, issuer,
-			signatureAlgorithm, start, end);
-	}
-
-	public static Certificate newCertificateForTests(final PrivateKey privateKey) throws CertificateEncodingException,
-		NoSuchAlgorithmException, InvalidKeyException, SignatureException, InvalidKeySpecException
-	{
-		return newCertificateForTests(privateKey, CompoundAlgorithm.SHA256_WITH_RSA.getAlgorithm());
 	}
 
 	public static KeyPair newTestKeyPair(final PrivateKey privateKey)
