@@ -187,6 +187,7 @@ dependencies {
     implementation("commons-codec:commons-codec:$commonsCodecVersion")
     implementation("commons-io:commons-io:$commonsIoVersion")
     implementation("org.apache.commons:commons-lang3:$commonsLang3Version")
+    implementation("com.google.guava:guava:$guavaVersion")
     implementation("de.alpharogroup:crypt-api:$cryptApiVersion")
     implementation("de.alpharogroup:crypt-data:$cryptDataVersion")
     implementation("de.alpharogroup:randomizer-core:$randomizerVersion")
