@@ -91,7 +91,15 @@ You can first define the version properties and add than the following maven dep
 			
 ## gradle dependency
 
-You can first define the version in the ext section and add than the following gradle dependency to your project `build.gradle` if you want to import the core functionality of mystic-crypt:
+You can first define the version in the ext section and add than the following gradle dependency to 
+your project `build.gradle` if you want to import the core functionality of mystic-crypt:
+
+define version in file gradle.properties
+```
+mysticCryptVersion=7.5
+```
+
+or in build.gradle ext area
 
 ```
 ext {
@@ -101,7 +109,7 @@ ext {
 }
 dependencies {
 			...
-compile "de.alpharogroup:mystic-crypt:$mysticCryptVersion"
+	implementation("de.alpharogroup:mystic-crypt:$mysticCryptVersion")
 			...
 }
 ```
