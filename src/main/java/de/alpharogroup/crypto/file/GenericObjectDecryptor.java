@@ -46,6 +46,8 @@ import de.alpharogroup.crypto.model.CryptModel;
 /**
  * The class {@link GenericObjectDecryptor} can decrypt files from the given crypt model bean
  *
+ * @param <R>
+ *            the generic type of the object to decrypt
  * @param <D>
  *            the generic type of the decorator objects
  */

@@ -99,4 +99,29 @@ public class GenericObjectEncryptDecryptorTest extends AbstractTestCase<Person, 
 		DeleteFileExtensions.delete(encrypted);
 	}
 
+	/**
+	 * Test method for the encrpytion with the class {@link FileEncryptor} and decryption with the
+	 * class {@link FileDecryptor} with given constructor files.
+	 *
+	 * @throws Exception
+	 *             is thrown if any error occurs on the execution
+	 */
+	@Test
+	public void testEncryptDecryptString() throws Exception
+	{
+		// new scenario...
+		GenericObjectEncryptor<String, String> encryptor = new GenericObjectEncryptor<>(cryptModel,
+			new File(cryptDir, "encryptedPerson.enc"));
+		String text = "Foo bar i will be encrypted and decypted";
+		encrypted = encryptor.encrypt(text);
+
+		GenericObjectDecryptor<String, String> decryptor = new GenericObjectDecryptor<>(cryptModel);
+
+		String decrypted = decryptor.decrypt(encrypted);
+
+		assertEquals(text, decrypted);
+		// clean up...
+		DeleteFileExtensions.delete(encrypted);
+	}
+
 }

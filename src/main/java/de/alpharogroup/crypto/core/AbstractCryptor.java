@@ -31,12 +31,16 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 import java.util.Objects;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 
+import de.alpharogroup.crypto.factories.CipherFactory;
+import de.alpharogroup.crypto.factories.KeySpecFactory;
 import org.apache.commons.lang3.ArrayUtils;
 
 import de.alpharogroup.check.Check;
@@ -298,5 +302,98 @@ public abstract class AbstractCryptor<C, K, T> implements Serializable, Cryptor
 	{
 		model.setCipher(newCipher(model.getKey()));
 		model.setInitialized(true);
+	}
+
+
+	/**
+	 * Factory method for creating a new {@link KeySpec} from the given private key. This method is
+	 * invoked in the constructor from the derived classes and can be overridden so users can
+	 * provide their own version of a new {@link KeySpec} from the given private key.
+	 *
+	 * @param privateKey
+	 *            the private key
+	 * @param salt
+	 *            the salt
+	 * @param iterationCount
+	 *            the iteration count
+	 * @return the new {@link KeySpec} from the given private key.
+	 */
+	protected KeySpec newKeySpec(final String privateKey, final byte[] salt,
+		final int iterationCount)
+	{
+		return KeySpecFactory.newPBEKeySpec(privateKey, salt, iterationCount);
+	}
+
+	/**
+	 * Factory method for creating a new {@link Cipher} from the given parameters. This method is
+	 * invoked in the constructor from the derived classes and can be overridden so users can
+	 * provide their own version of a new {@link Cipher} from the given parameters.
+	 *
+	 * @param operationMode
+	 *            the operation mode
+	 * @param key
+	 *            the key
+	 * @param paramSpec
+	 *            the param spec
+	 * @param alg
+	 *            the alg
+	 * @return the cipher
+	 *
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the cipher object fails.
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cipher object fails.
+	 */
+	protected Cipher newCipher(final int operationMode, final SecretKey key,
+		final AlgorithmParameterSpec paramSpec, final String alg) throws NoSuchAlgorithmException,
+		NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException
+	{
+		return CipherFactory.newCipher(operationMode, key, paramSpec, alg);
+	}
+
+	/**
+	 * Factory method for creating a new {@link Cipher} from the given parameters. This method is
+	 * invoked in the constructor from the derived classes and can be overridden so users can
+	 * provide their own version of a new {@link Cipher} from the given parameters.
+	 *
+	 * @param privateKey
+	 *            the private key
+	 * @param algorithm
+	 *            the algorithm
+	 * @param salt
+	 *            the salt.
+	 * @param iterationCount
+	 *            the iteration count
+	 * @param operationMode
+	 *            the operation mode for the new cipher object
+	 * @return the cipher
+	 *
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the cipher object fails.
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported.
+	 */
+	protected Cipher newCipher(final String privateKey, final String algorithm, final byte[] salt,
+		final int iterationCount, final int operationMode)
+		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
+		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+	{
+		final KeySpec keySpec = newKeySpec(privateKey, salt, iterationCount);
+		final SecretKeyFactory factory = newSecretKeyFactory(algorithm);
+		final SecretKey key = factory.generateSecret(keySpec);
+		final AlgorithmParameterSpec paramSpec = newAlgorithmParameterSpec(salt, iterationCount);
+		return newCipher(operationMode, key, paramSpec, key.getAlgorithm());
 	}
 }

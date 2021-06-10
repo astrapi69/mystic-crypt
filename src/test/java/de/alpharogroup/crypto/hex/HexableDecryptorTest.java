@@ -26,13 +26,33 @@ package de.alpharogroup.crypto.hex;
 
 import static org.testng.AssertJUnit.assertTrue;
 
+import javax.crypto.Cipher;
+
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import de.alpharogroup.crypto.algorithm.AesAlgorithm;
+import de.alpharogroup.crypto.model.CryptModel;
 
 /**
  * The unit test class for the class {@link HexableEncryptor} and {@link HexableDecryptor}
  */
 public class HexableDecryptorTest
 {
+
+	CryptModel<Cipher, String, String> cryptModel;
+	String firstKey;
+
+	/**
+	 * Sets up method will be invoked before every unit test method in this class
+	 */
+	@BeforeMethod
+	protected void setUp()
+	{
+		firstKey = "1234567890123456";
+		cryptModel = CryptModel.<Cipher, String, String> builder().key(firstKey)
+			.algorithm(AesAlgorithm.AES).build();
+	}
 
 	/**
 	 * Test chained encrypt and decrypt with {@link HexableEncryptor#encrypt(String)} and
@@ -57,6 +77,33 @@ public class HexableDecryptorTest
 		encrypted = encryptor.encrypt(test);
 
 		decryptor = new HexableDecryptor(key);
+		decryted = decryptor.decrypt(encrypted);
+		assertTrue("String before encryption is not equal after decryption.",
+			test.equals(decryted));
+	}
+
+	/**
+	 * Test chained encrypt and decrypt with {@link HexableEncryptor#encrypt(String)} and
+	 * {@link HexableDecryptor#decrypt(String)}.
+	 *
+	 * @throws Exception
+	 *             is thrown if any security exception occured.
+	 */
+	@Test
+	public void testEncryptDecryptWithModel() throws Exception
+	{
+		String test;
+		HexableEncryptor encryptor;
+		String encrypted;
+		HexableDecryptor decryptor;
+		String decryted;
+
+		test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
+		encryptor = new HexableEncryptor(cryptModel);
+		encrypted = encryptor.encrypt(test);
+
+		cryptModel.setOperationMode(Cipher.DECRYPT_MODE);
+		decryptor = new HexableDecryptor(cryptModel);
 		decryted = decryptor.decrypt(encrypted);
 		assertTrue("String before encryption is not equal after decryption.",
 			test.equals(decryted));

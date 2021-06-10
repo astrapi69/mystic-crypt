@@ -25,6 +25,7 @@
 package de.alpharogroup.crypto.hex;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -37,6 +38,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
+import de.alpharogroup.crypto.model.CryptModel;
 import org.apache.commons.codec.binary.Hex;
 
 import de.alpharogroup.check.Check;
@@ -57,6 +59,31 @@ public class HexableEncryptor extends AbstractStringEncryptor
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Instantiates a new {@link HexableEncryptor} from the given {@link CryptModel} parameter
+	 *
+	 * @param model
+	 *            The crypt model
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported.
+	 */
+	public HexableEncryptor(final CryptModel<Cipher, String, String> model)
+		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+	{
+		super(model);
+	}
 
 	/**
 	 * Instantiates a new {@link HexableEncryptor} from the given parameters.
@@ -144,7 +171,7 @@ public class HexableEncryptor extends AbstractStringEncryptor
 					.decorateWithStringDecorator(decoratedString, decorators.get(i));
 			}
 		}
-		final byte[] utf8 = decoratedString.getBytes("UTF-8");
+		final byte[] utf8 = decoratedString.getBytes(StandardCharsets.UTF_8);
 		final byte[] encrypt = getModel().getCipher().doFinal(utf8);
 		final char[] original = Hex.encodeHex(encrypt, false);
 		return new String(original);
@@ -173,7 +200,7 @@ public class HexableEncryptor extends AbstractStringEncryptor
 		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
 		final SecretKeySpec skeySpec = SecretKeyFactoryExtensions
-			.newSecretKeySpec(privateKey.getBytes("UTF-8"), algorithm);
+			.newSecretKeySpec(privateKey.getBytes(StandardCharsets.UTF_8), algorithm);
 		final Cipher cipher = Cipher.getInstance(algorithm);
 		cipher.init(operationMode, skeySpec);
 		return cipher;

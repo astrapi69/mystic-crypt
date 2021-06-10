@@ -78,7 +78,8 @@ public final class KeyTrustExtensions
 		throws NoSuchAlgorithmException, CertificateException, FileNotFoundException, IOException,
 		KeyStoreException, UnrecoverableKeyException
 	{
-		final KeyStore keyStore = KeyStoreFactory.newKeyStore(keystoreType, password, keystoreFile);
+		final KeyStore keyStore = KeyStoreFactory.loadKeyStore(keystoreFile, keystoreType,
+			password);
 		final KeyManagerFactory keyFactory = KeyManagerFactory.getInstance(keyManagerAlgorithm);
 		keyFactory.init(keyStore, password.toCharArray());
 		final KeyManager[] keyManagers = keyFactory.getKeyManagers();
@@ -115,7 +116,8 @@ public final class KeyTrustExtensions
 		throws NoSuchAlgorithmException, CertificateException, FileNotFoundException, IOException,
 		KeyStoreException
 	{
-		final KeyStore keyStore = KeyStoreFactory.newKeyStore(keystoreType, password, keystoreFile);
+		final KeyStore keyStore = KeyStoreFactory.loadKeyStore(keystoreFile, keystoreType,
+			password);
 		final TrustManagerFactory trustFactory = TrustManagerFactory
 			.getInstance(trustManagerAlgorithm);
 		trustFactory.init(keyStore);

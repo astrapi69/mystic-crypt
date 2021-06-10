@@ -183,8 +183,8 @@ public final class KeyStoreExtensions
 		throws NoSuchAlgorithmException, CertificateException, FileNotFoundException,
 		KeyStoreException, IOException
 	{
-		KeyStore keyStore = KeyStoreFactory.newKeyStore(KeystoreType.JKS.name(), password,
-			keystoreFile);
+		KeyStore keyStore = KeyStoreFactory.loadKeyStore(keystoreFile, KeystoreType.JKS.name(),
+			password);
 
 		keyStore.deleteEntry(alias);
 		store(keyStore, keystoreFile, password);

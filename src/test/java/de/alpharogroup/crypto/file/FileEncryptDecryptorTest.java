@@ -25,12 +25,18 @@
 package de.alpharogroup.crypto.file;
 
 import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertTrue;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 
 import javax.crypto.Cipher;
 
+import de.alpharogroup.crypto.algorithm.AesAlgorithm;
+import de.alpharogroup.crypto.hex.HexableDecryptor;
+import de.alpharogroup.crypto.hex.HexableEncryptor;
+import de.alpharogroup.file.read.ReadFileExtensions;
+import de.alpharogroup.file.write.WriteFileExtensions;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -86,10 +92,12 @@ public class FileEncryptDecryptorTest extends AbstractTestCase<String, String>
 	public void testEncryptDecryptConstructorFiles() throws Exception
 	{
 		// new scenario...
-		encryptor = new FileEncryptor(cryptModel, new File(cryptDir, "encryptedCnstr.enc"));
+		File encryptedCnstr = new File(cryptDir, "encryptedCnstr.enc");
+		File decryptedCnstr = new File(cryptDir, "decryptedCnstr.decrypted");
+		encryptor = new FileEncryptor(cryptModel, encryptedCnstr);
 		encrypted = encryptor.encrypt(toEncrypt);
 
-		decryptor = new FileDecryptor(cryptModel, new File(cryptDir, "decryptedCnstr.decrypted"));
+		decryptor = new FileDecryptor(cryptModel, decryptedCnstr);
 
 		decrypted = decryptor.decrypt(encrypted);
 
