@@ -55,12 +55,12 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.collections.array.ArrayFactory;
-import de.alpharogroup.crypto.algorithm.KeyPairGeneratorAlgorithm;
-import de.alpharogroup.crypto.algorithm.KeystoreType;
-import de.alpharogroup.crypto.factories.KeyPairFactory;
-import de.alpharogroup.crypto.factories.KeyStoreFactory;
-import de.alpharogroup.crypto.key.KeySize;
-import de.alpharogroup.crypto.key.reader.CertificateReader;
+import io.github.astrapi69.crypto.algorithm.KeyPairGeneratorAlgorithm;
+import io.github.astrapi69.crypto.algorithm.KeystoreType;
+import io.github.astrapi69.crypto.factories.KeyPairFactory;
+import io.github.astrapi69.crypto.factories.KeyStoreFactory;
+import io.github.astrapi69.crypto.key.KeySize;
+import io.github.astrapi69.crypto.key.reader.CertificateReader;
 import de.alpharogroup.crypto.sign.TestObjectFactory;
 import de.alpharogroup.file.search.PathFinder;
 
@@ -426,14 +426,14 @@ public class KeyStoreExtensionsTest
 	}
 
 	/**
-	 * Test method for {@link de.alpharogroup.crypto.key.KeyStoreExtensions} with {@link BeanTester}
+	 * Test method for {@link io.github.astrapi69.crypto.key.KeyStoreExtensions} with {@link BeanTester}
 	 */
 	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
 			UnsupportedOperationException.class })
 	public void testWithBeanTester()
 	{
 		final BeanTester beanTester = new BeanTester();
-		beanTester.testBean(de.alpharogroup.crypto.key.KeyStoreExtensions.class);
+		beanTester.testBean(io.github.astrapi69.crypto.key.KeyStoreExtensions.class);
 	}
 
 }

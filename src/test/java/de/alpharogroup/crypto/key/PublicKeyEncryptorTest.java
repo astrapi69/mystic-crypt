@@ -33,8 +33,8 @@ import javax.crypto.Cipher;
 
 import org.testng.annotations.Test;
 
-import de.alpharogroup.crypto.key.reader.PublicKeyReader;
-import de.alpharogroup.crypto.model.CryptModel;
+import io.github.astrapi69.crypto.key.reader.PublicKeyReader;
+import io.github.astrapi69.crypto.model.CryptModel;
 import de.alpharogroup.file.search.PathFinder;
 
 /**

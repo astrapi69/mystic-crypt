@@ -39,8 +39,8 @@ import javax.crypto.NoSuchPaddingException;
 
 import org.apache.commons.codec.DecoderException;
 
-import de.alpharogroup.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
-import de.alpharogroup.crypto.hex.HexExtensions;
+import io.github.astrapi69.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
+import io.github.astrapi69.crypto.hex.HexExtensions;
 
 /**
  * The class {@link PrivateKeyHexDecryptor} decrypts encrypted characters the was encrypted with the

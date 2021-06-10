@@ -44,7 +44,7 @@ import javax.crypto.NoSuchPaddingException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.crypto.algorithm.HashAlgorithm;
+import io.github.astrapi69.crypto.algorithm.HashAlgorithm;
 
 /**
  * The unit test class for the class {@link PasswordEncryptor}

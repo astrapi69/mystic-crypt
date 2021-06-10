@@ -41,7 +41,7 @@ import javax.crypto.CipherInputStream;
 import javax.crypto.NoSuchPaddingException;
 
 import de.alpharogroup.crypto.core.AbstractObjectDecryptor;
-import de.alpharogroup.crypto.model.CryptModel;
+import io.github.astrapi69.crypto.model.CryptModel;
 
 /**
  * The class {@link GenericObjectDecryptor} can decrypt files from the given crypt model bean

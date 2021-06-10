@@ -31,8 +31,8 @@ import javax.crypto.Cipher;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.crypto.algorithm.AesAlgorithm;
-import de.alpharogroup.crypto.model.CryptModel;
+import io.github.astrapi69.crypto.algorithm.AesAlgorithm;
+import io.github.astrapi69.crypto.model.CryptModel;
 
 /**
  * The unit test class for the class {@link HexableEncryptor} and {@link HexableDecryptor}

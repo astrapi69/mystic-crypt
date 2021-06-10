@@ -34,8 +34,8 @@ import java.security.spec.InvalidKeySpecException;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
-import de.alpharogroup.crypto.api.FileEncryptor;
-import de.alpharogroup.crypto.model.CryptModel;
+import io.github.astrapi69.crypto.api.FileEncryptor;
+import io.github.astrapi69.crypto.model.CryptModel;
 
 /**
  * The abstract class {@link AbstractFileEncryptor} provides a base implementation for encrypting

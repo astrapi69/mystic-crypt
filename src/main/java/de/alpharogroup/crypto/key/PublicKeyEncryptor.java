@@ -34,11 +34,11 @@ import java.security.spec.InvalidKeySpecException;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
-import de.alpharogroup.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
-import de.alpharogroup.crypto.api.ByteArrayEncryptor;
+import io.github.astrapi69.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
+import io.github.astrapi69.crypto.api.ByteArrayEncryptor;
 import de.alpharogroup.crypto.core.AbstractEncryptor;
-import de.alpharogroup.crypto.factories.CipherFactory;
-import de.alpharogroup.crypto.model.CryptModel;
+import io.github.astrapi69.crypto.factories.CipherFactory;
+import io.github.astrapi69.crypto.model.CryptModel;
 
 /**
  * The class {@link PublicKeyEncryptor} can encrypt a byte array with his public key.

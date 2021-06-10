@@ -39,7 +39,7 @@ import javax.crypto.NoSuchPaddingException;
 
 import org.testng.annotations.Test;
 
-import de.alpharogroup.crypto.compound.CompoundAlgorithm;
+import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
 
 /**
  * Test class for the {@link SimpleEncryptor} and {@link SimpleDecryptor}

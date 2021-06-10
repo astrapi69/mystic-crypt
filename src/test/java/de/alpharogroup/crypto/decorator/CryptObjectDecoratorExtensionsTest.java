@@ -30,9 +30,9 @@ import java.nio.charset.Charset;
 
 import org.testng.annotations.Test;
 
-import de.alpharogroup.crypto.model.CharacterDecorator;
-import de.alpharogroup.crypto.model.CryptObjectDecorator;
-import de.alpharogroup.crypto.model.StringDecorator;
+import io.github.astrapi69.crypto.model.CharacterDecorator;
+import io.github.astrapi69.crypto.model.CryptObjectDecorator;
+import io.github.astrapi69.crypto.model.StringDecorator;
 
 /**
  * The unit test class for the class {@link CryptObjectDecoratorExtensions}

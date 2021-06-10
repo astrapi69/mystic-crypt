@@ -30,8 +30,8 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
 import de.alpharogroup.collections.set.SetFactory;
-import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
-import de.alpharogroup.crypto.obfuscation.rule.Operation;
+import io.github.astrapi69.crypto.obfuscation.rule.ObfuscationOperationRule;
+import io.github.astrapi69.crypto.obfuscation.rule.Operation;
 
 /**
  * The class {@link ObfuscationOperationTestData} provides test data for test the obfuscation rules

@@ -32,7 +32,7 @@ import java.io.FileNotFoundException;
 
 import javax.crypto.Cipher;
 
-import de.alpharogroup.crypto.algorithm.AesAlgorithm;
+import io.github.astrapi69.crypto.algorithm.AesAlgorithm;
 import de.alpharogroup.crypto.hex.HexableDecryptor;
 import de.alpharogroup.crypto.hex.HexableEncryptor;
 import de.alpharogroup.file.read.ReadFileExtensions;
@@ -43,9 +43,9 @@ import org.testng.annotations.Test;
 import de.alpharogroup.AbstractTestCase;
 import de.alpharogroup.checksum.FileChecksumExtensions;
 import de.alpharogroup.crypto.algorithm.MdAlgorithm;
-import de.alpharogroup.crypto.algorithm.SunJCEAlgorithm;
-import de.alpharogroup.crypto.model.CryptModel;
-import de.alpharogroup.crypto.model.StringDecorator;
+import io.github.astrapi69.crypto.algorithm.SunJCEAlgorithm;
+import io.github.astrapi69.crypto.model.CryptModel;
+import io.github.astrapi69.crypto.model.StringDecorator;
 import de.alpharogroup.file.delete.DeleteFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 

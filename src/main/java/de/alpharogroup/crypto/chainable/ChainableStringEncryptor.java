@@ -24,7 +24,7 @@
  */
 package de.alpharogroup.crypto.chainable;
 
-import de.alpharogroup.crypto.api.Encryptor;
+import io.github.astrapi69.crypto.api.Encryptor;
 import de.alpharogroup.crypto.core.ChainableEncryptor;
 
 /**

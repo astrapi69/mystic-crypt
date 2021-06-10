@@ -36,8 +36,8 @@ import java.security.UnrecoverableEntryException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 
-import de.alpharogroup.crypto.algorithm.KeystoreType;
-import de.alpharogroup.crypto.factories.KeyStoreFactory;
+import io.github.astrapi69.crypto.algorithm.KeystoreType;
+import io.github.astrapi69.crypto.factories.KeyStoreFactory;
 
 /**
  * The extension class {@link KeyStoreExtensions} provides extension methods for the

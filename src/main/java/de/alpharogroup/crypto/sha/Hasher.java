@@ -36,9 +36,9 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import de.alpharogroup.crypto.algorithm.HashAlgorithm;
-import de.alpharogroup.crypto.compound.CompoundAlgorithm;
-import de.alpharogroup.crypto.hash.HashExtensions;
+import io.github.astrapi69.crypto.algorithm.HashAlgorithm;
+import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
+import io.github.astrapi69.crypto.hash.HashExtensions;
 import de.alpharogroup.crypto.hex.HexableEncryptor;
 
 /**

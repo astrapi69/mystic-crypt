@@ -39,17 +39,17 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 
-import de.alpharogroup.crypto.factories.CipherFactory;
-import de.alpharogroup.crypto.factories.KeySpecFactory;
+import io.github.astrapi69.crypto.factories.CipherFactory;
+import io.github.astrapi69.crypto.factories.KeySpecFactory;
 import org.apache.commons.lang3.ArrayUtils;
 
 import de.alpharogroup.check.Check;
-import de.alpharogroup.crypto.algorithm.SunJCEAlgorithm;
-import de.alpharogroup.crypto.api.Cryptor;
-import de.alpharogroup.crypto.compound.CompoundAlgorithm;
-import de.alpharogroup.crypto.factories.AlgorithmParameterSpecFactory;
-import de.alpharogroup.crypto.factories.SecretKeyFactoryExtensions;
-import de.alpharogroup.crypto.model.CryptModel;
+import io.github.astrapi69.crypto.algorithm.SunJCEAlgorithm;
+import io.github.astrapi69.crypto.api.Cryptor;
+import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
+import io.github.astrapi69.crypto.factories.AlgorithmParameterSpecFactory;
+import io.github.astrapi69.crypto.factories.SecretKeyFactoryExtensions;
+import io.github.astrapi69.crypto.model.CryptModel;
 
 /**
  * The abstract class {@link AbstractCryptor} provides factory methods that may or must be

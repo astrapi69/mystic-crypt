@@ -29,8 +29,8 @@ import java.util.Objects;
 import com.google.common.collect.BiMap;
 
 import de.alpharogroup.check.Check;
-import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
-import de.alpharogroup.crypto.obfuscation.rule.ObfuscationRule;
+import io.github.astrapi69.crypto.obfuscation.api.Obfuscatable;
+import io.github.astrapi69.crypto.obfuscation.rule.ObfuscationRule;
 
 /**
  * The class {@link SimpleCharacterObfuscator} provide as the name says obfuscation of a given text

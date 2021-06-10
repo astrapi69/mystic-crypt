@@ -38,8 +38,8 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import de.alpharogroup.crypto.algorithm.HashAlgorithm;
-import de.alpharogroup.crypto.hash.HashExtensions;
+import io.github.astrapi69.crypto.algorithm.HashAlgorithm;
+import io.github.astrapi69.crypto.hash.HashExtensions;
 import de.alpharogroup.crypto.sha.Hasher;
 import de.alpharogroup.random.object.RandomObjectFactory;
 import de.alpharogroup.random.object.RandomWebObjectFactory;

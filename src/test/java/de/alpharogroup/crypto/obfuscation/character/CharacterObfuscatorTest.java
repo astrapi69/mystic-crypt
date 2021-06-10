@@ -37,8 +37,8 @@ import org.testng.annotations.Test;
 import com.google.common.collect.BiMap;
 
 import de.alpharogroup.AbstractTestCase;
-import de.alpharogroup.crypto.obfuscation.api.Obfuscatable;
-import de.alpharogroup.crypto.obfuscation.rule.ObfuscationOperationRule;
+import io.github.astrapi69.crypto.obfuscation.api.Obfuscatable;
+import io.github.astrapi69.crypto.obfuscation.rule.ObfuscationOperationRule;
 
 /**
  * The unit test class for the class {@link CharacterObfuscator}

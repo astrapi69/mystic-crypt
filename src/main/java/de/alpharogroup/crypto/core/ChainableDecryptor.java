@@ -24,7 +24,7 @@
  */
 package de.alpharogroup.crypto.core;
 
-import de.alpharogroup.crypto.api.Decryptor;
+import io.github.astrapi69.crypto.api.Decryptor;
 
 /**
  * The class {@link ChainableDecryptor} can take many {@code Decryptor} objects and decrypts the

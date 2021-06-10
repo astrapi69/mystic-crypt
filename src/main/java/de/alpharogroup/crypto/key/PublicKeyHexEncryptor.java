@@ -39,7 +39,7 @@ import javax.crypto.NoSuchPaddingException;
 
 import org.apache.commons.codec.binary.Hex;
 
-import de.alpharogroup.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
+import io.github.astrapi69.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
 
 /**
  * The class {@link PublicKeyHexEncryptor} can encrypt characters with his public key.

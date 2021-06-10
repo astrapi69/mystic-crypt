@@ -46,8 +46,8 @@ import org.apache.commons.io.FilenameUtils;
 import de.alpharogroup.crypto.core.AbstractFileDecryptor;
 import de.alpharogroup.crypto.decorator.CryptObjectDecoratorExtensions;
 import de.alpharogroup.crypto.io.CryptoCipherOutputStream;
-import de.alpharogroup.crypto.model.CryptModel;
-import de.alpharogroup.crypto.model.CryptObjectDecorator;
+import io.github.astrapi69.crypto.model.CryptModel;
+import io.github.astrapi69.crypto.model.CryptObjectDecorator;
 import de.alpharogroup.file.read.ReadFileExtensions;
 import de.alpharogroup.file.write.WriteFileExtensions;
 

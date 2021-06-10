@@ -43,7 +43,7 @@ import javax.crypto.NoSuchPaddingException;
 
 import org.testng.annotations.Test;
 
-import de.alpharogroup.crypto.key.reader.PublicKeyReader;
+import io.github.astrapi69.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.file.search.PathFinder;
 
 /**

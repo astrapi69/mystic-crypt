@@ -36,8 +36,8 @@ import javax.net.ssl.TrustManagerFactory;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.crypto.algorithm.KeystoreType;
-import de.alpharogroup.crypto.factories.KeyStoreFactory;
+import io.github.astrapi69.crypto.algorithm.KeystoreType;
+import io.github.astrapi69.crypto.factories.KeyStoreFactory;
 import de.alpharogroup.file.search.PathFinder;
 
 /**

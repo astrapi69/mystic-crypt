@@ -35,9 +35,10 @@ import javax.crypto.Cipher;
 
 import org.testng.annotations.Test;
 
-import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
-import de.alpharogroup.crypto.model.CryptModel;
+import io.github.astrapi69.crypto.key.reader.PrivateKeyReader;
+import io.github.astrapi69.crypto.model.CryptModel;
 import de.alpharogroup.file.search.PathFinder;
+import io.github.astrapi69.crypto.key.PrivateKeyExtensions;
 
 /**
  * The unit test class for the class {@link PrivateKeyDecryptor}

@@ -44,9 +44,9 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
-import de.alpharogroup.crypto.api.Cryptor;
-import de.alpharogroup.crypto.api.StringDecryptor;
-import de.alpharogroup.crypto.compound.CompoundAlgorithm;
+import io.github.astrapi69.crypto.api.Cryptor;
+import io.github.astrapi69.crypto.api.StringDecryptor;
+import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
 
 /**
  * The class {@link SimpleDecryptor} is a simple {@link StringDecryptor} implementation.

@@ -38,16 +38,16 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
-import de.alpharogroup.crypto.model.CryptModel;
+import io.github.astrapi69.crypto.model.CryptModel;
 import org.apache.commons.codec.binary.Hex;
 
 import de.alpharogroup.check.Check;
-import de.alpharogroup.crypto.algorithm.AesAlgorithm;
-import de.alpharogroup.crypto.algorithm.Algorithm;
+import io.github.astrapi69.crypto.algorithm.AesAlgorithm;
+import io.github.astrapi69.crypto.algorithm.Algorithm;
 import de.alpharogroup.crypto.core.AbstractStringEncryptor;
 import de.alpharogroup.crypto.decorator.CryptObjectDecoratorExtensions;
-import de.alpharogroup.crypto.factories.SecretKeyFactoryExtensions;
-import de.alpharogroup.crypto.model.CryptObjectDecorator;
+import io.github.astrapi69.crypto.factories.SecretKeyFactoryExtensions;
+import io.github.astrapi69.crypto.model.CryptObjectDecorator;
 
 /**
  * The class {@link HexableEncryptor} is the pendant class of {@link HexableDecryptor} and encrypts

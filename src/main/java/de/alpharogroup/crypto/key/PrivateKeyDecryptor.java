@@ -34,11 +34,11 @@ import java.security.spec.InvalidKeySpecException;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
-import de.alpharogroup.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
-import de.alpharogroup.crypto.api.ByteArrayDecryptor;
+import io.github.astrapi69.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
+import io.github.astrapi69.crypto.api.ByteArrayDecryptor;
 import de.alpharogroup.crypto.core.AbstractDecryptor;
-import de.alpharogroup.crypto.factories.CipherFactory;
-import de.alpharogroup.crypto.model.CryptModel;
+import io.github.astrapi69.crypto.factories.CipherFactory;
+import io.github.astrapi69.crypto.model.CryptModel;
 
 /**
  * The class {@link PrivateKeyDecryptor} decrypts encrypted byte array the was encrypted with the

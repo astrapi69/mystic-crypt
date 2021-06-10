@@ -34,8 +34,8 @@ import java.security.spec.InvalidKeySpecException;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
-import de.alpharogroup.crypto.api.GenericObjectDecryptor;
-import de.alpharogroup.crypto.model.CryptModel;
+import io.github.astrapi69.crypto.api.GenericObjectDecryptor;
+import io.github.astrapi69.crypto.model.CryptModel;
 
 /**
  * The abstract class {@link AbstractObjectDecryptor} provides a base implementation for decrypting

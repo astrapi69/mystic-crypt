@@ -39,9 +39,9 @@ import java.time.Month;
 import java.time.ZoneId;
 import java.util.Date;
 
-import de.alpharogroup.crypto.compound.CompoundAlgorithm;
-import de.alpharogroup.crypto.factories.CertFactory;
-import de.alpharogroup.crypto.key.PrivateKeyExtensions;
+import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
+import io.github.astrapi69.crypto.factories.CertFactory;
+import io.github.astrapi69.crypto.key.PrivateKeyExtensions;
 import de.alpharogroup.random.number.RandomBigIntegerFactory;
 
 public final class TestObjectFactory

@@ -36,9 +36,9 @@ import java.security.cert.Certificate;
 
 import org.testng.annotations.Test;
 
-import de.alpharogroup.crypto.compound.CompoundAlgorithm;
-import de.alpharogroup.crypto.key.reader.PrivateKeyReader;
-import de.alpharogroup.crypto.key.reader.PublicKeyReader;
+import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
+import io.github.astrapi69.crypto.key.reader.PrivateKeyReader;
+import io.github.astrapi69.crypto.key.reader.PublicKeyReader;
 import de.alpharogroup.file.search.PathFinder;
 
 /**

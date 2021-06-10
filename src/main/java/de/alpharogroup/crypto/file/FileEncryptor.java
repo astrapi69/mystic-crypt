@@ -43,8 +43,8 @@ import org.apache.commons.io.FilenameUtils;
 import de.alpharogroup.crypto.core.AbstractFileEncryptor;
 import de.alpharogroup.crypto.decorator.CryptObjectDecoratorExtensions;
 import de.alpharogroup.crypto.io.CryptoCipherInputStream;
-import de.alpharogroup.crypto.model.CryptModel;
-import de.alpharogroup.crypto.model.CryptObjectDecorator;
+import io.github.astrapi69.crypto.model.CryptModel;
+import io.github.astrapi69.crypto.model.CryptObjectDecorator;
 
 /**
  * The class {@link FileEncryptor} can encrypt files with the given crypt model.
