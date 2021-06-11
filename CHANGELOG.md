@@ -15,6 +15,7 @@ ADDED:
 CHANGED:
 
 - update of gradle version to 6.9
+- changed to new package io.github.astrapi69
 - update of file-worker dependency version to 5.7
 - update of crypt-api dependency version to 7.4
 - update of crypt-data dependency version to 7.5
