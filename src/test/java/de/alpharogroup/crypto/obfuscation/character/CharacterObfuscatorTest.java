@@ -36,7 +36,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.collect.BiMap;
 
-import de.alpharogroup.AbstractTestCase;
+import io.github.astrapi69.AbstractTestCase;
 import io.github.astrapi69.crypto.obfuscation.api.Obfuscatable;
 import io.github.astrapi69.crypto.obfuscation.rule.ObfuscationOperationRule;
 

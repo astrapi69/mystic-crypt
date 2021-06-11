@@ -22,6 +22,7 @@ CHANGED:
 - update of bouncycastle dependency version to 1.69
 - update of xml-extensions test dependency version to 7.1
 - update of testng test dependency version to 7.4.0
+- update of test-objects test dependency version to 5.4
 - update of com.github.ben-manes.versions.gradle.plugin to new version 0.39.0
 
 Version 7.5

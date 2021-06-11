@@ -202,7 +202,7 @@ dependencies {
     implementation("org.bouncycastle:bcpkix-jdk15on:$bouncycastleVersion")
     testImplementation("de.alpharogroup:xml-extensions:$xmlExtensionsVersion")
     testImplementation("io.github.astrapi69:checksum-up:$checksumUpVersion")
-    testImplementation("de.alpharogroup:test-objects:$testObjectsVersion")
+    testImplementation("io.github.astrapi69:test-objects:$testObjectsVersion")
     testImplementation("de.alpharogroup:jcommons-lang:$jcommonsLangVersion")
     testImplementation("de.alpharogroup:jobj-contract-verifier:$jobjContractVerifierVersion")
     testImplementation("io.github.benas:random-beans:$randomBeansVersion")
