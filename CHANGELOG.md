@@ -1,6 +1,31 @@
 ## Change log
 ----------------------
 
+Version 7.6
+-------------
+
+ADDED:
+ 
+- new dependency guava in version 30.1.1-jre 
+- new methods created for most common operations on a keystore object in class KeyStoreExtensions
+- new dependency commons-io in version 2.9.0
+- new dependency commons-lang3 in version 3.12.0
+- new dependency silly-beans in version 1.1
+
+CHANGED:
+
+- update of gradle version to 6.9
+- changed to new package io.github.astrapi69
+- update of file-worker dependency version to 5.7
+- update of crypt-api dependency version to 7.4
+- update of crypt-data dependency version to 7.5
+- update of checksum-up dependency to version 1.2
+- update of bouncycastle dependency version to 1.69
+- update of xml-extensions test dependency version to 7.1
+- update of testng test dependency version to 7.4.0
+- update of test-objects test dependency version to 5.4
+- update of com.github.ben-manes.versions.gradle.plugin to new version 0.39.0
+
 Version 7.5
 -------------
 

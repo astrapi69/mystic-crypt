@@ -3,15 +3,15 @@
 <suite name="Suite">
   <test name="Test">
     <classes>
-		<class name="de.alpharogroup.crypto.decorator.CryptObjectDecoratorExtensionsTest"/>
-		<class name="de.alpharogroup.crypto.io.CryptoCipherInputOutputStreamTest"/>
-		<class name="de.alpharogroup.crypto.key.KeyEncryptDecryptorTest"/>
-		<class name="de.alpharogroup.crypto.key.KeyHexEncryptDecryptorTest"/>
-		<class name="de.alpharogroup.crypto.sha.HasherTest"/>
-		<class name="de.alpharogroup.crypto.simple.SimpleEnDecryptorTest"/>
-		<class name="de.alpharogroup.crypto.processors.bruteforce.BruteForceProcessorTest"/>
-		<class name="de.alpharogroup.crypto.simple.SimpleCryptTest"/>
-		<class name="de.alpharogroup.crypto.processors.wordlist.WordlistsProcessorTest"/>
+		<class name="io.github.astrapi69.crypto.decorator.CryptObjectDecoratorExtensionsTest"/>
+		<class name="io.github.astrapi69.crypto.io.CryptoCipherInputOutputStreamTest"/>
+		<class name="io.github.astrapi69.crypto.key.KeyEncryptDecryptorTest"/>
+		<class name="io.github.astrapi69.crypto.key.KeyHexEncryptDecryptorTest"/>
+		<class name="io.github.astrapi69.crypto.sha.HasherTest"/>
+		<class name="io.github.astrapi69.crypto.simple.SimpleEnDecryptorTest"/>
+		<class name="io.github.astrapi69.crypto.processors.bruteforce.BruteForceProcessorTest"/>
+		<class name="io.github.astrapi69.crypto.simple.SimpleCryptTest"/>
+		<class name="io.github.astrapi69.crypto.processors.wordlist.WordlistsProcessorTest"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->

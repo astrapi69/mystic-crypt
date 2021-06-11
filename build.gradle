@@ -43,6 +43,7 @@ javadoc {
 
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
+    // options.compilerArgs << "-Xlint:deprecation"
 }
 
 test {
@@ -185,19 +186,23 @@ gradle.startParameter.excludedTaskNames += "licenseTest"
 
 dependencies {
     implementation("commons-codec:commons-codec:$commonsCodecVersion")
-    implementation("de.alpharogroup:crypt-api:$cryptApiVersion")
-    implementation("de.alpharogroup:crypt-data:$cryptDataVersion")
+    implementation("commons-io:commons-io:$commonsIoVersion")
+    implementation("org.apache.commons:commons-lang3:$commonsLang3Version")
+    implementation("com.google.guava:guava:$guavaVersion")
+    implementation("io.github.astrapi69:crypt-api:$cryptApiVersion")
+    implementation("io.github.astrapi69:crypt-data:$cryptDataVersion")
     implementation("de.alpharogroup:randomizer-core:$randomizerVersion")
     implementation("de.alpharogroup:file-worker:$fileWorkerVersion")
     implementation("de.alpharogroup:silly-collections:$sillyCollectionsVersion")
+    implementation("de.alpharogroup:silly-beans:$sillyBeansVersion")
     implementation("de.alpharogroup:jobj-clone:$jobjCloneVersion")
     implementation("de.alpharogroup:jobj-core:$jobjCoreVersion")
     implementation("org.bouncycastle:bcprov-jdk15on:$bouncycastleVersion")
     implementation("org.bouncycastle:bcprov-ext-jdk15on:$bouncycastleVersion")
     implementation("org.bouncycastle:bcpkix-jdk15on:$bouncycastleVersion")
     testImplementation("de.alpharogroup:xml-extensions:$xmlExtensionsVersion")
-    testImplementation("de.alpharogroup:checksum-up:$checksumUpVersion")
-    testImplementation("de.alpharogroup:test-objects:$testObjectsVersion")
+    testImplementation("io.github.astrapi69:checksum-up:$checksumUpVersion")
+    testImplementation("io.github.astrapi69:test-objects:$testObjectsVersion")
     testImplementation("de.alpharogroup:jcommons-lang:$jcommonsLangVersion")
     testImplementation("de.alpharogroup:jobj-contract-verifier:$jobjContractVerifierVersion")
     testImplementation("io.github.benas:random-beans:$randomBeansVersion")
