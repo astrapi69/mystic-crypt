@@ -5,9 +5,9 @@
 [![Build Status](https://api.travis-ci.com/astrapi69/mystic-crypt.svg?branch=develop)](https://travis-ci.com/github/astrapi69/mystic-crypt)
 [![Coverage Status](https://codecov.io/gh/astrapi69/mystic-crypt/branch/develop/graph/badge.svg)](https://codecov.io/gh/astrapi69/mystic-crypt)
 [![Open Issues](https://img.shields.io/github/issues/astrapi69/mystic-crypt.svg?style=flat)](https://github.com/astrapi69/mystic-crypt/issues) 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.alpharogroup/mystic-crypt/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.alpharogroup/mystic-crypt)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/mystic-crypt/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/mystic-crypt)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT)
-[![Javadoc](http://www.javadoc.io/badge/de.alpharogroup/mystic-crypt.svg)](http://www.javadoc.io/doc/de.alpharogroup/mystic-crypt)
+[![Javadoc](http://www.javadoc.io/badge/io.github.astrapi69/mystic-crypt.svg)](http://www.javadoc.io/doc/io.github.astrapi69/mystic-crypt)
 
 </div>
 
@@ -111,7 +111,7 @@ You can first define the version properties and add than the following maven dep
 	<properties>
 			...
 		<!-- MYSTIC-CRYPT version -->
-		<mystic-crypt.version>7.5</mystic-crypt.version>
+		<mystic-crypt.version>7.6</mystic-crypt.version>
 			...
 	</properties>
 			...
@@ -119,7 +119,7 @@ You can first define the version properties and add than the following maven dep
 			...
 			<!-- MYSTIC-CRYPT DEPENDENCY -->
 			<dependency>
-				<groupId>de.alpharogroup</groupId>
+				<groupId>io.github.astrapi69</groupId>
 				<artifactId>mystic-crypt</artifactId>
 				<version>${mystic-crypt.version}</version>
 			</dependency>
@@ -133,7 +133,7 @@ your project `build.gradle` if you want to import the core functionality of myst
 
 define version in file gradle.properties
 ```
-mysticCryptVersion=7.5
+mysticCryptVersion=7.6
 ```
 
 or in build.gradle ext area
@@ -141,12 +141,12 @@ or in build.gradle ext area
 ```
 ext {
 			...
-    mysticCryptVersion = "7.5"
+    mysticCryptVersion = "7.6"
 			...
 }
 dependencies {
 			...
-	implementation("de.alpharogroup:mystic-crypt:$mysticCryptVersion")
+	implementation("io.github.astrapi69:mystic-crypt:$mysticCryptVersion")
 			...
 }
 ```
@@ -203,7 +203,7 @@ Here is a list of awesome projects for cryptography:
 
 |**Nexus Sonatype repositories**|
 |     :---:      |
-|[![sonatype repository](https://img.shields.io/nexus/r/https/oss.sonatype.org/de.alpharogroup/mystic-crypt.svg?style=for-the-badge)](https://oss.sonatype.org/index.html#nexus-search;gav~de.alpharogroup~mystic-crypt~~~) mystic-crypt|
+|[![sonatype repository](https://img.shields.io/nexus/r/https/oss.sonatype.org/io.github.astrapi69/mystic-crypt.svg?style=for-the-badge)](https://oss.sonatype.org/index.html#nexus-search;gav~io.github.astrapi69~mystic-crypt~~~) mystic-crypt|
 |Special thanks to [sonatype repository](https://www.sonatype.com) for providing a free maven repository service for open source projects|
 |     <img width=1000/>     |
 
@@ -215,7 +215,7 @@ Here is a list of awesome projects for cryptography:
 
 |**javadoc.io**|
 |     :---:      |
-|[![Javadoc](http://www.javadoc.io/badge/de.alpharogroup/mystic-crypt.svg)](http://www.javadoc.io/doc/de.alpharogroup/mystic-crypt) mystic-crypt|
+|[![Javadoc](http://www.javadoc.io/badge/io.github.astrapi69/mystic-crypt.svg)](http://www.javadoc.io/doc/io.github.astrapi69/mystic-crypt) mystic-crypt|
 |Special thanks to [javadoc.io](http://www.javadoc.io) for providing a free javadoc documentation for open source projects|
 |     <img width=1000/>     |
 
