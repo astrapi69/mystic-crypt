@@ -24,7 +24,7 @@
  */
 package de.alpharogroup.crypto.key;
 
-import static org.junit.Assert.assertNull;
+import static org.testng.AssertJUnit.assertNull;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertNotNull;
 

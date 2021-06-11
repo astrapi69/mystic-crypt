@@ -24,7 +24,7 @@
  */
 package de.alpharogroup.crypto.key;
 
-import static org.junit.Assert.assertNotNull;
+import static org.testng.AssertJUnit.assertNotNull;
 
 import java.io.File;
 import java.security.PublicKey;
