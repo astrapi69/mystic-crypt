@@ -8,14 +8,16 @@ ADDED:
  
 - new dependency guava in version 30.0-jre 
 - new methods created for most common operations on a keystore object in class KeyStoreExtensions
-- new dependency commons-io in version 2.8.0
-- new dependency commons-lang3 in version 3.11
+- new dependency commons-io in version 2.9.0
+- new dependency commons-lang3 in version 3.12.0
 - new dependency silly-beans in version 1.1
 
 CHANGED:
 
 - update of file-worker dependency version to 5.7
-- update of crypt-data dependency version to 7.4
+- update of crypt-api dependency version to 7.4
+- update of crypt-data dependency version to 7.5
+- update of checksum-up dependency to version 1.2
 
 Version 7.5
 -------------

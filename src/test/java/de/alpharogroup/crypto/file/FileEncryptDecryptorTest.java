@@ -25,29 +25,23 @@
 package de.alpharogroup.crypto.file;
 
 import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertTrue;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 
 import javax.crypto.Cipher;
 
-import io.github.astrapi69.crypto.algorithm.AesAlgorithm;
-import de.alpharogroup.crypto.hex.HexableDecryptor;
-import de.alpharogroup.crypto.hex.HexableEncryptor;
-import de.alpharogroup.file.read.ReadFileExtensions;
-import de.alpharogroup.file.write.WriteFileExtensions;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.AbstractTestCase;
-import de.alpharogroup.checksum.FileChecksumExtensions;
+import de.alpharogroup.file.delete.DeleteFileExtensions;
+import de.alpharogroup.file.search.PathFinder;
+import io.github.astrapi69.checksum.FileChecksumExtensions;
 import io.github.astrapi69.crypto.algorithm.MdAlgorithm;
 import io.github.astrapi69.crypto.algorithm.SunJCEAlgorithm;
 import io.github.astrapi69.crypto.model.CryptModel;
 import io.github.astrapi69.crypto.model.StringDecorator;
-import de.alpharogroup.file.delete.DeleteFileExtensions;
-import de.alpharogroup.file.search.PathFinder;
 
 /**
  * The unit test class for the class {@link FileEncryptor} and the class {@link FileDecryptor}
