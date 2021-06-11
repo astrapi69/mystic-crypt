@@ -42,7 +42,7 @@ import org.testng.annotations.Test;
 
 import de.alpharogroup.AbstractTestCase;
 import de.alpharogroup.checksum.FileChecksumExtensions;
-import de.alpharogroup.crypto.algorithm.MdAlgorithm;
+import io.github.astrapi69.crypto.algorithm.MdAlgorithm;
 import io.github.astrapi69.crypto.algorithm.SunJCEAlgorithm;
 import io.github.astrapi69.crypto.model.CryptModel;
 import io.github.astrapi69.crypto.model.StringDecorator;
@@ -101,8 +101,8 @@ public class FileEncryptDecryptorTest extends AbstractTestCase<String, String>
 
 		decrypted = decryptor.decrypt(encrypted);
 
-		expected = FileChecksumExtensions.getChecksum(toEncrypt, MdAlgorithm.MD5);
-		actual = FileChecksumExtensions.getChecksum(decrypted, MdAlgorithm.MD5);
+		expected = FileChecksumExtensions.getChecksum(toEncrypt, MdAlgorithm.MD5.name());
+		actual = FileChecksumExtensions.getChecksum(decrypted, MdAlgorithm.MD5.name());
 		assertEquals(actual, expected);
 		// clean up...
 		DeleteFileExtensions.delete(encrypted);
@@ -142,8 +142,8 @@ public class FileEncryptDecryptorTest extends AbstractTestCase<String, String>
 
 		decrypted = decryptor.decrypt(encrypted);
 
-		expected = FileChecksumExtensions.getChecksum(toEncrypt, MdAlgorithm.MD5);
-		actual = FileChecksumExtensions.getChecksum(decrypted, MdAlgorithm.MD5);
+		expected = FileChecksumExtensions.getChecksum(toEncrypt, MdAlgorithm.MD5.name());
+		actual = FileChecksumExtensions.getChecksum(decrypted, MdAlgorithm.MD5.name());
 		assertEquals(actual, expected);
 		// clean up...
 		DeleteFileExtensions.delete(encrypted);
@@ -189,8 +189,8 @@ public class FileEncryptDecryptorTest extends AbstractTestCase<String, String>
 
 		decrypted = decryptor.decrypt(encrypted);
 
-		expected = FileChecksumExtensions.getChecksum(toEncrypt, MdAlgorithm.MD5);
-		actual = FileChecksumExtensions.getChecksum(decrypted, MdAlgorithm.MD5);
+		expected = FileChecksumExtensions.getChecksum(toEncrypt, MdAlgorithm.MD5.name());
+		actual = FileChecksumExtensions.getChecksum(decrypted, MdAlgorithm.MD5.name());
 		assertEquals(actual, expected);
 
 		// clean up...
