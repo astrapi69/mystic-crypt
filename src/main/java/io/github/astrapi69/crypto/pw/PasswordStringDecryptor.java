@@ -22,49 +22,50 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.crypto.simple;
-
-import org.testng.annotations.Test;
+package io.github.astrapi69.crypto.pw;
 
 import java.nio.charset.StandardCharsets;
-
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
+import java.util.Base64;
 
 /**
- * The unit test class for the class {@link PasswordByteEncryptor}
+ * The class {@link PasswordStringDecryptor} can decrypt encrypted String objects with the given password.
+ * Internally it decorates the {@link PasswordByteDecryptor}
  *
  * @author Asterios Raptis
  * @version 1.0
  */
-public class PasswordByteEncryptorTest
+public class PasswordStringDecryptor
 {
 
 	/**
-	 * Test method for test the method {@link PasswordByteEncryptor#encrypt(byte[])}
+	 * The {@link PasswordByteDecryptor} object
 	 */
-	@Test public void testEncrypt() throws Exception
+	private final PasswordByteDecryptor decryptor;
+
+	/**
+	 * Instantiates a new {@link PasswordStringDecryptor} with the given password
+	 *
+	 * @param password
+	 *            The password
+	 */
+	public PasswordStringDecryptor(final String password)
 	{
-		// declare variables
-		byte[] actual;
-		byte[] expected;
-		String password;
-		String text;
-		byte[] textBytes;
-		byte[] encryptedBytes;
-		PasswordByteEncryptor encryptor;
-		// new scenario
-		// init variables for current scenario
-		password = "foo";
-		text = "bar";
-		textBytes = text.getBytes(StandardCharsets.UTF_8);
-		encryptor = new PasswordByteEncryptor(password);
-		// test method with current variables
-		encryptedBytes = encryptor.encrypt(textBytes);
-		assertNotNull(encryptedBytes);
-		actual = encryptedBytes;
-		expected = ByteArrayExtensions.newByteArray(-118, -125, -30, 16, 87, 88, -110, -94);
-		assertEquals(actual, expected);
+		this.decryptor = new PasswordByteDecryptor(password);
 	}
 
+	/**
+	 * Decrypt the given encrypted {@link String} object
+	 *
+	 * @param encrypted
+	 *            The {@link String} object to decrypt
+	 * @return The decrypted {@link String} object
+	 * @throws Exception
+	 *             is thrown if decryption fails.
+	 */
+	public String decrypt(final String encrypted) throws Exception
+	{
+		final byte[] dec = Base64.getDecoder().decode(encrypted);
+		final byte[] utf8 = this.decryptor.decrypt(dec);
+		return new String(utf8, StandardCharsets.UTF_8.name());
+	}
 }

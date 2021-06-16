@@ -1,8 +1,8 @@
 /**
  * The MIT License
- * <p>
+ *
  * Copyright (C) 2015 Asterios Raptis
- * <p>
+ *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -10,10 +10,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * <p>
+ *
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
- * <p>
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -22,12 +22,12 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.crypto.simple;
+package io.github.astrapi69.crypto.pw;
 
 import io.github.astrapi69.crypto.api.ByteArrayDecryptor;
 import io.github.astrapi69.crypto.api.Cryptor;
-import io.github.astrapi69.crypto.api.StringDecryptor;
 import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
+import io.github.astrapi69.crypto.simple.PBECipherFactory;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 
 import javax.crypto.Cipher;
@@ -92,6 +92,9 @@ public class PasswordByteDecryptor implements ByteArrayDecryptor, Cryptor
 		return decryptedBytes;
 	}
 
+	/**
+	 * Resets the password
+	 */
 	public synchronized void resetPassword()
 	{
 		this.normalizedPassword = null;

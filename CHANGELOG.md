@@ -4,7 +4,10 @@
 Version 7.7-SNAPSHOT
 -------------
 
+ADDED:
 
+-new encryptor that can encrypt byte arrays and the counterpart of it the decryptor
+-new encryptor that can encrypt String object and the counterpart of it the decryptor
 
 Version 7.6
 -------------
