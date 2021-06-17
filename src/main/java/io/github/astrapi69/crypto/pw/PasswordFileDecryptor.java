@@ -24,14 +24,10 @@
  */
 package io.github.astrapi69.crypto.pw;
 
-import io.github.astrapi69.crypto.api.ByteArrayDecryptor;
-import io.github.astrapi69.crypto.api.Cryptor;
-import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
-import io.github.astrapi69.crypto.factories.CipherFactory;
-import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
-
-import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -39,19 +35,34 @@ import java.security.spec.InvalidKeySpecException;
 import java.text.Normalizer;
 import java.util.Objects;
 
+import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
+
+import io.github.astrapi69.crypto.api.ByteArrayDecryptor;
+import io.github.astrapi69.crypto.api.Cryptor;
+import io.github.astrapi69.crypto.api.FileDecryptor;
+import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
+import io.github.astrapi69.crypto.factories.CipherFactory;
+import io.github.astrapi69.crypto.io.CryptoCipherOutputStream;
+import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
+import org.apache.commons.io.FilenameUtils;
+
 /**
- * The class {@link PasswordByteDecryptor} is a simple {@link ByteArrayDecryptor} implementation
+ * The class {@link PasswordFileDecryptor} is a simple {@link ByteArrayDecryptor} implementation
  *
  * @author Asterios Raptis
  * @version 1.0
  */
-public class PasswordByteDecryptor implements ByteArrayDecryptor, Cryptor
+public class PasswordFileDecryptor implements FileDecryptor, Cryptor
 {
 
 	/**
 	 * The Cipher object.
 	 */
 	private Cipher cipher;
+
+	/** The decrypted file. */
+	private File decryptedFile;
 
 	/**
 	 * The flag initialized that indicates if the cipher is initialized for decryption.
@@ -66,13 +77,14 @@ public class PasswordByteDecryptor implements ByteArrayDecryptor, Cryptor
 	private String normalizedPassword;
 
 	/**
-	 * Instantiates a new {@link PasswordByteDecryptor} with the given password
+	 * Instantiates a new {@link PasswordFileDecryptor} with the given password
 	 *
 	 * @param password The password
 	 */
-	public PasswordByteDecryptor(final String password)
+	public PasswordFileDecryptor(final String password, final File decryptedFile)
 	{
 		Objects.requireNonNull(password);
+		this.decryptedFile = decryptedFile;
 		String normalizedPassword = Normalizer.normalize(password, Normalizer.Form.NFC);
 		this.normalizedPassword = normalizedPassword;
 		RuntimeExceptionDecorator.decorate(() -> initialize());
@@ -81,15 +93,28 @@ public class PasswordByteDecryptor implements ByteArrayDecryptor, Cryptor
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override public byte[] decrypt(byte[] encryptedBytes) throws Exception
+	@Override
+	public File decrypt(final File encrypted) throws Exception
 	{
-		Objects.requireNonNull(encryptedBytes);
-		final byte[] decryptedBytes;
-		synchronized (this.cipher)
+		Objects.requireNonNull(encrypted);
+
+		if (decryptedFile == null)
 		{
-			decryptedBytes = this.cipher.doFinal(encryptedBytes);
+			final String filename = FilenameUtils.getBaseName(encrypted.getName());
+			decryptedFile = newDecryptedFile(encrypted.getParent(), filename + ".decrypted");
 		}
-		return decryptedBytes;
+		try (FileOutputStream decryptedOut = new FileOutputStream(decryptedFile);
+			CryptoCipherOutputStream cos = new CryptoCipherOutputStream(decryptedOut,
+				this.cipher);
+			InputStream fileInputStream = new FileInputStream(encrypted))
+		{
+			int c;
+			while ((c = fileInputStream.read()) != -1)
+			{
+				cos.write(c);
+			}
+		}
+		return decryptedFile;
 	}
 
 	/**
@@ -101,7 +126,7 @@ public class PasswordByteDecryptor implements ByteArrayDecryptor, Cryptor
 	}
 
 	/**
-	 * Initializes the {@link PasswordByteDecryptor} object.
+	 * Initializes the {@link PasswordFileDecryptor} object.
 	 *
 	 * @throws InvalidAlgorithmParameterException is thrown if initialization of the cipher object fails.
 	 * @throws NoSuchPaddingException             is thrown if instantiation of the cipher object fails.
@@ -136,4 +161,20 @@ public class PasswordByteDecryptor implements ByteArrayDecryptor, Cryptor
 		return Cipher.DECRYPT_MODE;
 	}
 
+	/**
+	 *
+	 * Factory method for creating the new decrypted {@link File} if it is not exists. This method
+	 * is invoked in the constructor from the derived classes and can be overridden so users can
+	 * provide their own version of creating the new decrypted {@link File}
+	 *
+	 * @param parent
+	 *            the parent directory
+	 * @param child
+	 *            the file name
+	 * @return the new {@link File} object
+	 */
+	protected File newDecryptedFile(final String parent, final String child)
+	{
+		return new File(parent, child);
+	}
 }

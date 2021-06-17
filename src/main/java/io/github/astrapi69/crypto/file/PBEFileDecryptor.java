@@ -27,39 +27,46 @@ package io.github.astrapi69.crypto.file;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.OutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.text.Normalizer;
 import java.util.List;
+import java.util.Objects;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
+import io.github.astrapi69.crypto.factories.CipherFactory;
 import org.apache.commons.io.FilenameUtils;
 
-import io.github.astrapi69.crypto.core.AbstractFileEncryptor;
+import de.alpharogroup.file.read.ReadFileExtensions;
+import de.alpharogroup.file.write.WriteFileExtensions;
+import io.github.astrapi69.crypto.core.AbstractFileDecryptor;
 import io.github.astrapi69.crypto.decorator.CryptObjectDecoratorExtensions;
-import io.github.astrapi69.crypto.io.CryptoCipherInputStream;
+import io.github.astrapi69.crypto.io.CryptoCipherOutputStream;
 import io.github.astrapi69.crypto.model.CryptModel;
 import io.github.astrapi69.crypto.model.CryptObjectDecorator;
 
 /**
- * The class {@link FileEncryptor} can encrypt files with the given crypt model.
+ * The class {@link PBEFileDecryptor} can decrypt files from the given crypt model bean.
  */
-public class FileEncryptor extends AbstractFileEncryptor
+public class PBEFileDecryptor extends AbstractFileDecryptor
 {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	/** The encrypted file. */
-	private File encryptedFile;
+	/** The decrypted file. */
+	private File decryptedFile;
 
 	/**
-	 * Instantiates a new {@link FileEncryptor} object with the given {@link CryptModel}
+	 * Instantiates a new {@link PBEFileDecryptor} object
 	 *
 	 * @param model
 	 *            the model
@@ -76,25 +83,24 @@ public class FileEncryptor extends AbstractFileEncryptor
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public FileEncryptor(final CryptModel<Cipher, String, String> model)
+	public PBEFileDecryptor(final CryptModel<Cipher, String, String> model)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		this(model, null);
+		super(model);
 	}
 
 	/**
-	 * Instantiates a new {@link FileEncryptor} object with the given {@link CryptModel} and the
-	 * given file
+	 * Instantiates a new file decryptor.
 	 *
 	 * @param model
 	 *            the model
-	 * @param encryptedFile
-	 *            The file that is the target of the result from the encryption, if null the default
-	 *            file will be created. If null the name convention is given name of the file that
-	 *            has to be encrypted with the extension '.enc'.
+	 * @param decryptedFile
+	 *            is the target of the result from the decryption, if null the default file will be
+	 *            created. If null the name convention is given name of the encrypted file with the
+	 *            extension '.decrypted'.
 	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cipher object fails.
+	 *             the invalid key exception
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the SecretKeyFactory object fails.
 	 * @throws InvalidKeySpecException
@@ -106,45 +112,25 @@ public class FileEncryptor extends AbstractFileEncryptor
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public FileEncryptor(final CryptModel<Cipher, String, String> model, final File encryptedFile)
+	public PBEFileDecryptor(final CryptModel<Cipher, String, String> model, final File decryptedFile)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
 		super(model);
-		this.encryptedFile = encryptedFile;
+		this.decryptedFile = decryptedFile;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public File encrypt(final File toEncrypt) throws Exception
+	public File decrypt(final File encrypted) throws Exception
 	{
-		if (encryptedFile == null)
-		{
-			final String filename = FilenameUtils.getBaseName(toEncrypt.getName());
-			encryptedFile = newEncryptedFile(toEncrypt.getParent(), filename + ".enc");
-		}
-		List<CryptObjectDecorator<String>> decorators = getModel().getDecorators();
-		if (decorators != null && !decorators.isEmpty())
-		{
-			for (int i = 0; i < decorators.size(); i++)
-			{
-				CryptObjectDecoratorExtensions.decorateFile(toEncrypt, decorators.get(i));
-			}
-		}
-		try (
-			CryptoCipherInputStream cis = new CryptoCipherInputStream(
-				new FileInputStream(toEncrypt), getModel().getCipher());
-			OutputStream out = new FileOutputStream(encryptedFile))
-		{
-			int c;
-			while ((c = cis.read()) != -1)
-			{
-				out.write(c);
-			}
-		}
-		return encryptedFile;
+		Objects.requireNonNull(encrypted);
+		onBeforeDecrypt(encrypted);
+		onDecrypt(encrypted);
+		onAfterDecrypt(encrypted);
+		return decryptedFile;
 	}
 
 	/**
@@ -159,9 +145,67 @@ public class FileEncryptor extends AbstractFileEncryptor
 	 *            the file name
 	 * @return the new {@link File} object
 	 */
-	protected File newEncryptedFile(final String parent, final String child)
+	protected File newDecryptedFile(final String parent, final String child)
 	{
 		return new File(parent, child);
 	}
 
+	protected void onAfterDecrypt(final File encrypted) throws IOException
+	{
+		Objects.requireNonNull(encrypted);
+		List<CryptObjectDecorator<String>> decorators = getModel().getDecorators();
+		if (decorators != null && !decorators.isEmpty())
+		{
+			String decryptedFileString = ReadFileExtensions.readFromFile(decryptedFile);
+			for (int i = decorators.size() - 1; 0 <= i; i--)
+			{
+				decryptedFileString = CryptObjectDecoratorExtensions.undecorateFile(decryptedFile,
+					decorators.get(i));
+			}
+			WriteFileExtensions.writeStringToFile(decryptedFile, decryptedFileString,
+				Charset.forName("UTF-8").name());
+		}
+	}
+
+	protected void onBeforeDecrypt(final File encrypted)
+	{
+		Objects.requireNonNull(encrypted);
+		if (decryptedFile == null)
+		{
+			final String filename = FilenameUtils.getBaseName(encrypted.getName());
+			decryptedFile = newDecryptedFile(encrypted.getParent(), filename + ".decrypted");
+		}
+	}
+
+	protected void onDecrypt(final File encrypted) throws Exception
+	{
+		Objects.requireNonNull(encrypted);
+		try (FileOutputStream decryptedOut = new FileOutputStream(decryptedFile);
+			CryptoCipherOutputStream cos = new CryptoCipherOutputStream(decryptedOut,
+				getModel().getCipher());
+			InputStream fileInputStream = new FileInputStream(encrypted))
+		{
+			int c;
+			while ((c = fileInputStream.read()) != -1)
+			{
+				cos.write(c);
+			}
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected Cipher newCipher(final String privateKey, final String algorithm, final byte[] salt,
+		final int iterationCount, final int operationMode)
+		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
+		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+	{
+		String normalizedPassword = Normalizer.normalize(privateKey, Normalizer.Form.NFC);
+		Cipher cipher = CipherFactory
+			.newPBECipher(normalizedPassword.toCharArray(), operationMode,
+				algorithm);
+		return cipher;
+	}
 }

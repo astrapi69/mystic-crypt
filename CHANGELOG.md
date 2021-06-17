@@ -6,8 +6,15 @@ Version 7.7-SNAPSHOT
 
 ADDED:
 
--new encryptor that can encrypt byte arrays and the counterpart of it the decryptor
--new encryptor that can encrypt String object and the counterpart of it the decryptor
+-new encryptor classes that can encrypt byte arrays with a password and the counterpart of it the decryptor
+-new encryptor classes that can encrypt String object with a password and the counterpart of it the decryptor
+-new encryptor classes that can encrypt File object with a password and the counterpart of it the decryptor
+
+CHANGED:
+
+- update of crypt-api dependency version to 7.5
+- update of crypt-data dependency version to 7.6
+- update of dependency commons-io dependency version to 2.10.0
 
 Version 7.6
 -------------

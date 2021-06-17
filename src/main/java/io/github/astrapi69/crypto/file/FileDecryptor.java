@@ -151,18 +151,18 @@ public class FileDecryptor extends AbstractFileDecryptor
 	protected void onAfterDecrypt(final File encrypted) throws IOException
 	{
 		Objects.requireNonNull(encrypted);
-		String decryptedFileString = ReadFileExtensions.readFromFile(decryptedFile);
 		List<CryptObjectDecorator<String>> decorators = getModel().getDecorators();
 		if (decorators != null && !decorators.isEmpty())
 		{
+			String decryptedFileString = ReadFileExtensions.readFromFile(decryptedFile);
 			for (int i = decorators.size() - 1; 0 <= i; i--)
 			{
 				decryptedFileString = CryptObjectDecoratorExtensions.undecorateFile(decryptedFile,
 					decorators.get(i));
 			}
+			WriteFileExtensions.writeStringToFile(decryptedFile, decryptedFileString,
+				Charset.forName("UTF-8").name());
 		}
-		WriteFileExtensions.writeStringToFile(decryptedFile, decryptedFileString,
-			Charset.forName("UTF-8").name());
 	}
 
 	protected void onBeforeDecrypt(final File encrypted)

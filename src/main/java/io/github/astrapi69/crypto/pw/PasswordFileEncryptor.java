@@ -24,6 +24,10 @@
  */
 package io.github.astrapi69.crypto.pw;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -36,23 +40,29 @@ import javax.crypto.NoSuchPaddingException;
 
 import io.github.astrapi69.crypto.api.ByteArrayEncryptor;
 import io.github.astrapi69.crypto.api.Cryptor;
+import io.github.astrapi69.crypto.api.FileEncryptor;
 import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
 import io.github.astrapi69.crypto.factories.CipherFactory;
+import io.github.astrapi69.crypto.io.CryptoCipherInputStream;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
+import org.apache.commons.io.FilenameUtils;
 
 /**
- * The class {@link PasswordByteEncryptor} is a simple {@link ByteArrayEncryptor} implementation.
+ * The class {@link PasswordFileEncryptor} is a simple {@link ByteArrayEncryptor} implementation.
  *
  * @author Asterios Raptis
  * @version 1.0
  */
-public class PasswordByteEncryptor implements ByteArrayEncryptor, Cryptor
+public class PasswordFileEncryptor implements FileEncryptor, Cryptor
 {
 
 	/**
 	 * The Cipher object.
 	 */
 	private Cipher cipher;
+
+	/** The encrypted file. */
+	private File encryptedFile;
 
 	/**
 	 * The flag initialized that indicates if the cipher is initialized for encryption
@@ -67,32 +77,44 @@ public class PasswordByteEncryptor implements ByteArrayEncryptor, Cryptor
 	private String normalizedPassword;
 
 	/**
-	 * Instantiates a new {@link PasswordByteEncryptor} with the given password
+	 * Instantiates a new {@link PasswordFileEncryptor} with the given password
 	 *
 	 * @param password
 	 *            The password
+	 * @param encryptedFile
+	 *            The file that is the target of the result from the encryption, if null the default file will be
+	 *            created. If null the name convention is given name of the file that has to be
+	 *            encrypted with the extension '.enc'.
 	 */
-	public PasswordByteEncryptor(final String password)
+	public PasswordFileEncryptor(final String password, final File encryptedFile)
 	{
 		Objects.requireNonNull(password);
+		this.encryptedFile = encryptedFile;
 		String normalizedPassword = Normalizer.normalize(password, Normalizer.Form.NFC);
 		this.normalizedPassword = normalizedPassword;
 		RuntimeExceptionDecorator.decorate(() -> initialize());
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public byte[] encrypt(byte[] toEncrypt) throws Exception
+	public File encrypt(final File toEncrypt) throws Exception
 	{
 		Objects.requireNonNull(toEncrypt);
-		byte[] encryptedBytes;
-		synchronized (this.cipher)
+		if (encryptedFile == null)
 		{
-			encryptedBytes = this.cipher.doFinal(toEncrypt);
+			final String filename = FilenameUtils.getBaseName(toEncrypt.getName());
+			encryptedFile = newEncryptedFile(toEncrypt.getParent(), filename + ".enc");
 		}
-		return encryptedBytes;
+		try (
+			CryptoCipherInputStream cis = new CryptoCipherInputStream(
+				new FileInputStream(toEncrypt), this.cipher);
+			OutputStream out = new FileOutputStream(encryptedFile))
+		{
+			int c;
+			while ((c = cis.read()) != -1)
+			{
+				out.write(c);
+			}
+		}
+		return encryptedFile;
 	}
 
 	/**
@@ -104,7 +126,7 @@ public class PasswordByteEncryptor implements ByteArrayEncryptor, Cryptor
 	}
 
 	/**
-	 * Initializes the {@link PasswordByteEncryptor} object.
+	 * Initializes the {@link PasswordFileEncryptor} object.
 	 *
 	 * @throws InvalidAlgorithmParameterException
 	 *             is thrown if initialization of the cipher object fails.
@@ -143,4 +165,20 @@ public class PasswordByteEncryptor implements ByteArrayEncryptor, Cryptor
 		return Cipher.ENCRYPT_MODE;
 	}
 
+	/**
+	 *
+	 * Factory method for creating the new decrypted {@link File} if it is not exists. This method
+	 * is invoked in the constructor from the derived classes and can be overridden so users can
+	 * provide their own version of creating the new decrypted {@link File}
+	 *
+	 * @param parent
+	 *            the parent directory
+	 * @param child
+	 *            the file name
+	 * @return the new {@link File} object
+	 */
+	protected File newEncryptedFile(final String parent, final String child)
+	{
+		return new File(parent, child);
+	}
 }

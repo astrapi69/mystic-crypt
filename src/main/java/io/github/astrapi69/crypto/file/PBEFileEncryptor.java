@@ -33,11 +33,13 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.text.Normalizer;
 import java.util.List;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
+import io.github.astrapi69.crypto.factories.CipherFactory;
 import org.apache.commons.io.FilenameUtils;
 
 import io.github.astrapi69.crypto.core.AbstractFileEncryptor;
@@ -47,9 +49,9 @@ import io.github.astrapi69.crypto.model.CryptModel;
 import io.github.astrapi69.crypto.model.CryptObjectDecorator;
 
 /**
- * The class {@link FileEncryptor} can encrypt files with the given crypt model.
+ * The class {@link PBEFileEncryptor} can encrypt files with the given crypt model.
  */
-public class FileEncryptor extends AbstractFileEncryptor
+public class PBEFileEncryptor extends AbstractFileEncryptor
 {
 
 	/** The Constant serialVersionUID. */
@@ -59,7 +61,7 @@ public class FileEncryptor extends AbstractFileEncryptor
 	private File encryptedFile;
 
 	/**
-	 * Instantiates a new {@link FileEncryptor} object with the given {@link CryptModel}
+	 * Instantiates a new {@link PBEFileEncryptor} object with the given {@link CryptModel}
 	 *
 	 * @param model
 	 *            the model
@@ -76,7 +78,7 @@ public class FileEncryptor extends AbstractFileEncryptor
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public FileEncryptor(final CryptModel<Cipher, String, String> model)
+	public PBEFileEncryptor(final CryptModel<Cipher, String, String> model)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
@@ -84,7 +86,7 @@ public class FileEncryptor extends AbstractFileEncryptor
 	}
 
 	/**
-	 * Instantiates a new {@link FileEncryptor} object with the given {@link CryptModel} and the
+	 * Instantiates a new {@link PBEFileEncryptor} object with the given {@link CryptModel} and the
 	 * given file
 	 *
 	 * @param model
@@ -106,7 +108,7 @@ public class FileEncryptor extends AbstractFileEncryptor
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public FileEncryptor(final CryptModel<Cipher, String, String> model, final File encryptedFile)
+	public PBEFileEncryptor(final CryptModel<Cipher, String, String> model, final File encryptedFile)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
@@ -164,4 +166,18 @@ public class FileEncryptor extends AbstractFileEncryptor
 		return new File(parent, child);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected Cipher newCipher(final String privateKey, final String algorithm, final byte[] salt,
+		final int iterationCount, final int operationMode)
+		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
+		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+	{
+		String normalizedPassword = Normalizer.normalize(privateKey, Normalizer.Form.NFC);
+		final Cipher cipher = CipherFactory.newPBECipher(normalizedPassword.toCharArray(),
+			operationMode, algorithm);
+		return cipher;
+	}
 }
