@@ -24,20 +24,21 @@
  */
 package io.github.astrapi69.crypto.pw;
 
-import io.github.astrapi69.crypto.api.ByteArrayDecryptor;
-import io.github.astrapi69.crypto.api.Cryptor;
-import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
-import io.github.astrapi69.crypto.factories.CipherFactory;
-import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
-
-import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.text.Normalizer;
 import java.util.Objects;
+
+import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
+
+import io.github.astrapi69.crypto.api.ByteArrayDecryptor;
+import io.github.astrapi69.crypto.api.Cryptor;
+import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
+import io.github.astrapi69.crypto.factories.CipherFactory;
+import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 
 /**
  * The class {@link PasswordByteDecryptor} is a simple {@link ByteArrayDecryptor} implementation
@@ -68,7 +69,8 @@ public class PasswordByteDecryptor implements ByteArrayDecryptor, Cryptor
 	/**
 	 * Instantiates a new {@link PasswordByteDecryptor} with the given password
 	 *
-	 * @param password The password
+	 * @param password
+	 *            The password
 	 */
 	public PasswordByteDecryptor(final String password)
 	{
@@ -81,7 +83,8 @@ public class PasswordByteDecryptor implements ByteArrayDecryptor, Cryptor
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override public byte[] decrypt(byte[] encryptedBytes) throws Exception
+	@Override
+	public byte[] decrypt(byte[] encryptedBytes) throws Exception
 	{
 		Objects.requireNonNull(encryptedBytes);
 		final byte[] decryptedBytes;
@@ -103,21 +106,24 @@ public class PasswordByteDecryptor implements ByteArrayDecryptor, Cryptor
 	/**
 	 * Initializes the {@link PasswordByteDecryptor} object.
 	 *
-	 * @throws InvalidAlgorithmParameterException is thrown if initialization of the cipher object fails.
-	 * @throws NoSuchPaddingException             is thrown if instantiation of the cipher object fails.
-	 * @throws InvalidKeySpecException            is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchAlgorithmException           is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeyException                is thrown if initialization of the cipher object fails.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the cipher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cipher object fails.
 	 */
-	private synchronized void initialize()
-		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
-		InvalidKeyException, InvalidAlgorithmParameterException
+	private synchronized void initialize() throws NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException
 	{
 		if (!isInitialized())
 		{
-			this.cipher = CipherFactory
-				.newPBECipher(this.normalizedPassword.toCharArray(), newOperationMode(),
-					CompoundAlgorithm.PBE_WITH_MD5_AND_DES.getAlgorithm());
+			this.cipher = CipherFactory.newPBECipher(this.normalizedPassword.toCharArray(),
+				newOperationMode(), CompoundAlgorithm.PBE_WITH_MD5_AND_DES.getAlgorithm());
 			resetPassword();
 			initialized = true;
 		}
@@ -131,7 +137,8 @@ public class PasswordByteDecryptor implements ByteArrayDecryptor, Cryptor
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override public int newOperationMode()
+	@Override
+	public int newOperationMode()
 	{
 		return Cipher.DECRYPT_MODE;
 	}

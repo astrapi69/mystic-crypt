@@ -33,6 +33,10 @@ package io.github.astrapi69.crypto.simple;
 public final class SimpleCrypt
 {
 
+	private SimpleCrypt()
+	{
+	}
+
 	/**
 	 * Decrypt the given String.
 	 *
@@ -99,10 +103,6 @@ public final class SimpleCrypt
 			sb.append(a);
 		}
 		return sb.toString().trim();
-	}
-
-	private SimpleCrypt()
-	{
 	}
 
 }

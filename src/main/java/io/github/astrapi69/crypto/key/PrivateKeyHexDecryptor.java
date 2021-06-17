@@ -49,21 +49,19 @@ import io.github.astrapi69.crypto.hex.HexExtensions;
 public final class PrivateKeyHexDecryptor
 {
 	/**
+	 * The private key
+	 */
+	private final PrivateKey privateKey;
+	/**
 	 * The Cipher object
 	 */
 	private Cipher cipher;
-
 	/**
 	 * The flag initialized that indicates if the cipher is initialized for decryption.
 	 *
 	 * @return true, if is initialized
 	 */
 	private boolean initialized;
-
-	/**
-	 * The private key
-	 */
-	private final PrivateKey privateKey;
 
 	/**
 	 * Instantiates a new {@link PrivateKeyHexDecryptor} with the given {@link PrivateKey}

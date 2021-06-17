@@ -49,6 +49,10 @@ import io.github.astrapi69.crypto.hex.HexableEncryptor;
 public final class Hasher
 {
 
+	private Hasher()
+	{
+	}
+
 	/**
 	 * Hashes and hex it with the given {@link String} object with the given parameters.
 	 *
@@ -126,10 +130,6 @@ public final class Hasher
 	{
 		final HexableEncryptor hexEncryptor = new HexableEncryptor(privateKey);
 		return hexEncryptor.encrypt(HashExtensions.hash(hashIt, salt, hashAlgorithm, charset));
-	}
-
-	private Hasher()
-	{
 	}
 
 }

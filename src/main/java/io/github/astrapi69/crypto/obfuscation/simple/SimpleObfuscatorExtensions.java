@@ -24,9 +24,9 @@
  */
 package io.github.astrapi69.crypto.obfuscation.simple;
 
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -38,6 +38,10 @@ import io.github.astrapi69.crypto.obfuscation.rule.ObfuscationRule;
  */
 public final class SimpleObfuscatorExtensions
 {
+
+	private SimpleObfuscatorExtensions()
+	{
+	}
 
 	/**
 	 * Disentangle the given obfuscated text with the given {@link BiMap} rules
@@ -199,10 +203,6 @@ public final class SimpleObfuscatorExtensions
 			}
 		}
 		return true;
-	}
-
-	private SimpleObfuscatorExtensions()
-	{
 	}
 
 }

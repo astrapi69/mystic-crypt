@@ -39,20 +39,23 @@ import java.time.Month;
 import java.time.ZoneId;
 import java.util.Date;
 
+import de.alpharogroup.random.number.RandomBigIntegerFactory;
 import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
 import io.github.astrapi69.crypto.factories.CertFactory;
 import io.github.astrapi69.crypto.key.PrivateKeyExtensions;
-import de.alpharogroup.random.number.RandomBigIntegerFactory;
 
 public final class TestObjectFactory
 {
+	private TestObjectFactory()
+	{
+	}
+
 	public static Certificate newCertificateForTests(final PrivateKey privateKey)
 		throws CertificateEncodingException, NoSuchAlgorithmException, InvalidKeyException,
 		SignatureException, InvalidKeySpecException
 	{
 		return newCertificateForTests(privateKey, CompoundAlgorithm.SHA256_WITH_RSA.getAlgorithm());
 	}
-
 
 	public static Certificate newCertificateForTests(final PrivateKey privateKey,
 		String signatureAlgorithm) throws CertificateEncodingException, NoSuchAlgorithmException,
@@ -102,9 +105,5 @@ public final class TestObjectFactory
 		throws NoSuchAlgorithmException, InvalidKeySpecException
 	{
 		return new KeyPair(PrivateKeyExtensions.generatePublicKey(privateKey), privateKey);
-	}
-
-	private TestObjectFactory()
-	{
 	}
 }

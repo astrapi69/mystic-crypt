@@ -35,6 +35,10 @@ import io.github.astrapi69.crypto.obfuscation.rule.ObfuscationRule;
 public final class SimpleObfuscationTestData
 {
 
+	private SimpleObfuscationTestData()
+	{
+	}
+
 	/**
 	 * Gets the {@link BiMap} for obfuscation rules with 26 rules for use in unit tests.
 	 *
@@ -267,10 +271,6 @@ public final class SimpleObfuscationTestData
 			.replaceWith(replaceWith).build();
 		rules.put(character, rule);
 		return rules;
-	}
-
-	private SimpleObfuscationTestData()
-	{
 	}
 
 }

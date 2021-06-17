@@ -41,6 +41,10 @@ import io.github.astrapi69.crypto.key.reader.PrivateKeyReader;
 public final class PrivateKeyBruteForceProcessor
 {
 
+	private PrivateKeyBruteForceProcessor()
+	{
+	}
+
 	/**
 	 * Resolve the password from the given private key file. If no password is set an empty Optional
 	 * will be returned.
@@ -88,10 +92,6 @@ public final class PrivateKeyBruteForceProcessor
 			return optionalPassword;
 		}
 		return optionalPassword;
-	}
-
-	private PrivateKeyBruteForceProcessor()
-	{
 	}
 
 }

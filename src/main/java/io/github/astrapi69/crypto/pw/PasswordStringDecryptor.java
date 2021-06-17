@@ -28,8 +28,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 /**
- * The class {@link PasswordStringDecryptor} can decrypt encrypted String objects with the given password.
- * Internally it decorates the {@link PasswordByteDecryptor}
+ * The class {@link PasswordStringDecryptor} can decrypt encrypted String objects with the given
+ * password. Internally it decorates the {@link PasswordByteDecryptor}
  *
  * @author Asterios Raptis
  * @version 1.0

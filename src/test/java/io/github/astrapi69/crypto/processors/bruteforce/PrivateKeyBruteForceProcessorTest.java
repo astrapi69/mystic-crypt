@@ -37,9 +37,9 @@ import java.util.logging.Logger;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.testng.annotations.Test;
 
+import de.alpharogroup.file.search.PathFinder;
 import io.github.astrapi69.crypto.key.reader.EncryptedPrivateKeyReader;
 import io.github.astrapi69.crypto.key.reader.PrivateKeyReader;
-import de.alpharogroup.file.search.PathFinder;
 
 /**
  * The unit test class for the class {@link BruteForceProcessor}

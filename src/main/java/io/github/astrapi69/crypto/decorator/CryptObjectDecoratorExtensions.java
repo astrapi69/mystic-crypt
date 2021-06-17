@@ -33,12 +33,16 @@ import java.util.Objects;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import de.alpharogroup.file.read.ReadFileExtensions;
 import io.github.astrapi69.crypto.model.CharacterDecorator;
 import io.github.astrapi69.crypto.model.CryptObjectDecorator;
-import de.alpharogroup.file.read.ReadFileExtensions;
 
 public final class CryptObjectDecoratorExtensions
 {
+	private CryptObjectDecoratorExtensions()
+	{
+	}
+
 	public static String decorateFile(final File toEncrypt,
 		final CryptObjectDecorator<String> decorator) throws IOException
 	{
@@ -211,9 +215,5 @@ public final class CryptObjectDecoratorExtensions
 
 		}
 		return result;
-	}
-
-	private CryptObjectDecoratorExtensions()
-	{
 	}
 }

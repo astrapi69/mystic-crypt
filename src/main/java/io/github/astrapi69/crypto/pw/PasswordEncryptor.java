@@ -38,11 +38,11 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import de.alpharogroup.random.object.RandomObjectFactory;
+import de.alpharogroup.random.object.RandomWebObjectFactory;
 import io.github.astrapi69.crypto.algorithm.HashAlgorithm;
 import io.github.astrapi69.crypto.hash.HashExtensions;
 import io.github.astrapi69.crypto.sha.Hasher;
-import de.alpharogroup.random.object.RandomObjectFactory;
-import de.alpharogroup.random.object.RandomWebObjectFactory;
 
 /**
  * The class {@link PasswordEncryptor} is a singleton and helps to generate secure encrypted random
@@ -60,6 +60,17 @@ public class PasswordEncryptor implements Serializable
 	 * The serialVersionUID.
 	 */
 	private static final long serialVersionUID = -4667877106378932018L;
+	/** The default algorithm. */
+	private final HashAlgorithm DEFAULT_ALGORITHM = HashAlgorithm.SHA_512;
+	/** The default charset. */
+	private final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
+
+	/**
+	 * Private constructor. Instantiates a new {@link PasswordEncryptor} object.
+	 */
+	private PasswordEncryptor()
+	{
+	}
 
 	/**
 	 * Gets the single instance of the {@link PasswordEncryptor} object.
@@ -69,19 +80,6 @@ public class PasswordEncryptor implements Serializable
 	public static PasswordEncryptor getInstance()
 	{
 		return instance;
-	}
-
-	/** The default algorithm. */
-	private final HashAlgorithm DEFAULT_ALGORITHM = HashAlgorithm.SHA_512;
-
-	/** The default charset. */
-	private final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
-
-	/**
-	 * Private constructor. Instantiates a new {@link PasswordEncryptor} object.
-	 */
-	private PasswordEncryptor()
-	{
 	}
 
 	/**

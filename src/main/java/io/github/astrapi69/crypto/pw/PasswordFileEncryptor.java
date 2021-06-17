@@ -38,6 +38,8 @@ import java.util.Objects;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
+import org.apache.commons.io.FilenameUtils;
+
 import io.github.astrapi69.crypto.api.ByteArrayEncryptor;
 import io.github.astrapi69.crypto.api.Cryptor;
 import io.github.astrapi69.crypto.api.FileEncryptor;
@@ -45,7 +47,6 @@ import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
 import io.github.astrapi69.crypto.factories.CipherFactory;
 import io.github.astrapi69.crypto.io.CryptoCipherInputStream;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
-import org.apache.commons.io.FilenameUtils;
 
 /**
  * The class {@link PasswordFileEncryptor} is a simple {@link ByteArrayEncryptor} implementation.
@@ -82,9 +83,9 @@ public class PasswordFileEncryptor implements FileEncryptor, Cryptor
 	 * @param password
 	 *            The password
 	 * @param encryptedFile
-	 *            The file that is the target of the result from the encryption, if null the default file will be
-	 *            created. If null the name convention is given name of the file that has to be
-	 *            encrypted with the extension '.enc'.
+	 *            The file that is the target of the result from the encryption, if null the default
+	 *            file will be created. If null the name convention is given name of the file that
+	 *            has to be encrypted with the extension '.enc'.
 	 */
 	public PasswordFileEncryptor(final String password, final File encryptedFile)
 	{

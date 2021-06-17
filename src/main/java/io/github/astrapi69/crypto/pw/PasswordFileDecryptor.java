@@ -38,6 +38,8 @@ import java.util.Objects;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
+import org.apache.commons.io.FilenameUtils;
+
 import io.github.astrapi69.crypto.api.ByteArrayDecryptor;
 import io.github.astrapi69.crypto.api.Cryptor;
 import io.github.astrapi69.crypto.api.FileDecryptor;
@@ -45,7 +47,6 @@ import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
 import io.github.astrapi69.crypto.factories.CipherFactory;
 import io.github.astrapi69.crypto.io.CryptoCipherOutputStream;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
-import org.apache.commons.io.FilenameUtils;
 
 /**
  * The class {@link PasswordFileDecryptor} is a simple {@link ByteArrayDecryptor} implementation
@@ -79,7 +80,8 @@ public class PasswordFileDecryptor implements FileDecryptor, Cryptor
 	/**
 	 * Instantiates a new {@link PasswordFileDecryptor} with the given password
 	 *
-	 * @param password The password
+	 * @param password
+	 *            The password
 	 */
 	public PasswordFileDecryptor(final String password, final File decryptedFile)
 	{
@@ -104,8 +106,7 @@ public class PasswordFileDecryptor implements FileDecryptor, Cryptor
 			decryptedFile = newDecryptedFile(encrypted.getParent(), filename + ".decrypted");
 		}
 		try (FileOutputStream decryptedOut = new FileOutputStream(decryptedFile);
-			CryptoCipherOutputStream cos = new CryptoCipherOutputStream(decryptedOut,
-				this.cipher);
+			CryptoCipherOutputStream cos = new CryptoCipherOutputStream(decryptedOut, this.cipher);
 			InputStream fileInputStream = new FileInputStream(encrypted))
 		{
 			int c;
@@ -128,21 +129,24 @@ public class PasswordFileDecryptor implements FileDecryptor, Cryptor
 	/**
 	 * Initializes the {@link PasswordFileDecryptor} object.
 	 *
-	 * @throws InvalidAlgorithmParameterException is thrown if initialization of the cipher object fails.
-	 * @throws NoSuchPaddingException             is thrown if instantiation of the cipher object fails.
-	 * @throws InvalidKeySpecException            is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchAlgorithmException           is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeyException                is thrown if initialization of the cipher object fails.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the cipher object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cipher object fails.
 	 */
-	private synchronized void initialize()
-		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
-		InvalidKeyException, InvalidAlgorithmParameterException
+	private synchronized void initialize() throws NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException
 	{
 		if (!isInitialized())
 		{
-			this.cipher = CipherFactory
-				.newPBECipher(this.normalizedPassword.toCharArray(), newOperationMode(),
-					CompoundAlgorithm.PBE_WITH_MD5_AND_DES.getAlgorithm());
+			this.cipher = CipherFactory.newPBECipher(this.normalizedPassword.toCharArray(),
+				newOperationMode(), CompoundAlgorithm.PBE_WITH_MD5_AND_DES.getAlgorithm());
 			resetPassword();
 			initialized = true;
 		}
@@ -156,7 +160,8 @@ public class PasswordFileDecryptor implements FileDecryptor, Cryptor
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override public int newOperationMode()
+	@Override
+	public int newOperationMode()
 	{
 		return Cipher.DECRYPT_MODE;
 	}

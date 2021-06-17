@@ -35,14 +35,12 @@ import de.alpharogroup.check.Check;
 public class WordlistsProcessor
 {
 
-	/** The current index. */
-	private int currentIndex;
-
-	/** The password to check against it. */
-	private String toCheckAgainst;
-
 	/** The word list. */
 	private final List<String> words;
+	/** The current index. */
+	private int currentIndex;
+	/** The password to check against it. */
+	private String toCheckAgainst;
 
 	/**
 	 * Instantiates a new {@link WordlistsProcessor} object.
@@ -93,6 +91,11 @@ public class WordlistsProcessor
 		return this.toCheckAgainst;
 	}
 
+	public void setToCheckAgainst(String toCheckAgainst)
+	{
+		this.toCheckAgainst = toCheckAgainst;
+	}
+
 	/**
 	 * Increments the word list current index.
 	 *
@@ -129,10 +132,5 @@ public class WordlistsProcessor
 			continueIterate = increment();
 		}
 		return found;
-	}
-
-	public void setToCheckAgainst(String toCheckAgainst)
-	{
-		this.toCheckAgainst = toCheckAgainst;
 	}
 }

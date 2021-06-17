@@ -33,13 +33,12 @@ import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 
-import io.github.astrapi69.crypto.ssl.KeyTrustExtensions;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
+import de.alpharogroup.file.search.PathFinder;
 import io.github.astrapi69.crypto.algorithm.KeystoreType;
 import io.github.astrapi69.crypto.factories.KeyStoreFactory;
-import de.alpharogroup.file.search.PathFinder;
 
 /**
  * The unit test class for the class {@link KeyTrustExtensions}

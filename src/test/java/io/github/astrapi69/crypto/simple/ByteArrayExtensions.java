@@ -36,7 +36,7 @@ public class ByteArrayExtensions
 			array = new byte[elements.length];
 			for (int i = 0; i < elements.length; ++i)
 			{
-				array[i] = (byte) elements[i];
+				array[i] = (byte)elements[i];
 			}
 		}
 		return array;

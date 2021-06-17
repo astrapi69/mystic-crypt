@@ -45,6 +45,10 @@ import io.github.astrapi69.crypto.factories.KeyStoreFactory;
  */
 public final class KeyStoreExtensions
 {
+	private KeyStoreExtensions()
+	{
+	}
+
 	/**
 	 * Add the given certificate to the given {@link KeyStore} object and stores it to the given
 	 * keystore file
@@ -262,10 +266,6 @@ public final class KeyStoreExtensions
 		{
 			keyStore.store(fos, password.toCharArray());
 		}
-	}
-
-	private KeyStoreExtensions()
-	{
 	}
 
 }

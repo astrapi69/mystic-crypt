@@ -26,7 +26,6 @@ package io.github.astrapi69.crypto.simple;
 
 import java.lang.reflect.InvocationTargetException;
 
-import io.github.astrapi69.crypto.simple.SimpleDecryptor;
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;

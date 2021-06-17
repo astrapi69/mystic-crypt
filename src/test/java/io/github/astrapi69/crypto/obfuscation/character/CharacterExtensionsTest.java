@@ -26,7 +26,6 @@ package io.github.astrapi69.crypto.obfuscation.character;
 
 import static org.testng.AssertJUnit.assertEquals;
 
-import io.github.astrapi69.crypto.obfuscation.character.CharacterExtensions;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 

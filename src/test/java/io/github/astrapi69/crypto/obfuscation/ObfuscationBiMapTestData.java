@@ -33,6 +33,10 @@ import com.google.common.collect.HashBiMap;
 public final class ObfuscationBiMapTestData
 {
 
+	private ObfuscationBiMapTestData()
+	{
+	}
+
 	/**
 	 * Gets the {@link BiMap} for obfuscation operation rules with 26 rules for use in unit tests.
 	 *
@@ -198,10 +202,6 @@ public final class ObfuscationBiMapTestData
 		replaceWith = 'e';
 		rules.put(character, replaceWith);
 		return rules;
-	}
-
-	private ObfuscationBiMapTestData()
-	{
 	}
 
 }

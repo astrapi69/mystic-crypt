@@ -40,6 +40,10 @@ import java.util.stream.Collectors;
 public final class CharacterSetCrypt
 {
 
+	private CharacterSetCrypt()
+	{
+	}
+
 	/**
 	 * Factory method for create new {@link ArrayList} of unique characters from the given text
 	 *
@@ -120,10 +124,6 @@ public final class CharacterSetCrypt
 			sb.append(characters.get(index));
 		}
 		return sb.toString();
-	}
-
-	private CharacterSetCrypt()
-	{
 	}
 
 }

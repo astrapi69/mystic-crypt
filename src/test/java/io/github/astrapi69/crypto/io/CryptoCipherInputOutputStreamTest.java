@@ -40,17 +40,15 @@ import java.security.spec.InvalidKeySpecException;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
-import io.github.astrapi69.crypto.io.CryptoCipherInputStream;
-import io.github.astrapi69.crypto.io.CryptoCipherOutputStream;
 import org.testng.annotations.Test;
 
+import de.alpharogroup.file.delete.DeleteFileExtensions;
+import de.alpharogroup.file.read.ReadFileExtensions;
+import de.alpharogroup.file.search.PathFinder;
 import io.github.astrapi69.crypto.algorithm.SunJCEAlgorithm;
 import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
 import io.github.astrapi69.crypto.factories.CipherFactory;
 import io.github.astrapi69.crypto.model.CryptModel;
-import de.alpharogroup.file.delete.DeleteFileExtensions;
-import de.alpharogroup.file.read.ReadFileExtensions;
-import de.alpharogroup.file.search.PathFinder;
 
 /**
  * The unit test class for the classes {@link CryptoCipherInputStream} and the classes

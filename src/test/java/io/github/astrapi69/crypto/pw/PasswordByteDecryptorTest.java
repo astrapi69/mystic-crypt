@@ -24,15 +24,14 @@
  */
 package io.github.astrapi69.crypto.pw;
 
-import io.github.astrapi69.crypto.pw.PasswordByteDecryptor;
-import io.github.astrapi69.crypto.pw.PasswordByteEncryptor;
-import io.github.astrapi69.crypto.simple.ByteArrayExtensions;
-import org.testng.annotations.Test;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
 
 import java.nio.charset.StandardCharsets;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
+import org.testng.annotations.Test;
+
+import io.github.astrapi69.crypto.simple.ByteArrayExtensions;
 
 /**
  * The unit test class for the class {@link PasswordByteDecryptor}
@@ -46,7 +45,8 @@ public class PasswordByteDecryptorTest
 	/**
 	 * Test method for test the method {@link PasswordByteDecryptor#decrypt(byte[])}
 	 */
-	@Test public void testEncrypt() throws Exception
+	@Test
+	public void testEncrypt() throws Exception
 	{
 		// declare variables
 		byte[] actual;
@@ -71,7 +71,7 @@ public class PasswordByteDecryptorTest
 		actual = encryptedBytes;
 		expected = ByteArrayExtensions.newByteArray(-118, -125, -30, 16, 87, 88, -110, -94);
 		assertEquals(actual, expected);
-		// test method with current encrypted bytes	
+		// test method with current encrypted bytes
 		decryptedBytes = decryptor.decrypt(encryptedBytes);
 		assertNotNull(decryptedBytes);
 		actual = decryptedBytes;

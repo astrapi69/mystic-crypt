@@ -42,6 +42,10 @@ import javax.crypto.spec.SecretKeySpec;
 public final class GoogleMapsUrlSigner
 {
 
+	private GoogleMapsUrlSigner()
+	{
+	}
+
 	/**
 	 * Converts the given private key as String to an base 64 encoded byte array.
 	 *
@@ -156,10 +160,6 @@ public final class GoogleMapsUrlSigner
 		final String urlGoogleMapSignedRequest = url.getProtocol() + "://" + url.getHost()
 			+ signedRequestPath;
 		return urlGoogleMapSignedRequest;
-	}
-
-	private GoogleMapsUrlSigner()
-	{
 	}
 
 }

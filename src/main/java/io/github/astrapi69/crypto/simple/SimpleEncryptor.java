@@ -58,21 +58,19 @@ public class SimpleEncryptor implements StringEncryptor, Cryptor
 {
 
 	/**
+	 * The private key.
+	 */
+	private final String privateKey;
+	/**
 	 * The Cipher object.
 	 */
 	private Cipher cipher;
-
 	/**
 	 * The flag initialized that indicates if the cipher is initialized for decryption.
 	 *
 	 * @return true, if is initialized
 	 */
 	private boolean initialized;
-
-	/**
-	 * The private key.
-	 */
-	private final String privateKey;
 
 	/**
 	 * Instantiates a new {@link SimpleEncryptor} with the given private key.

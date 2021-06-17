@@ -36,11 +36,10 @@ import java.util.Arrays;
 public class BruteForceProcessor
 {
 
-	/** The current attempt. */
-	private char[] currentAttempt;
-
 	/** The possibles characters. */
 	private final char[] possiblesCharacters;
+	/** The current attempt. */
+	private char[] currentAttempt;
 
 	/**
 	 * Instantiates a new {@link BruteForceProcessor} object.

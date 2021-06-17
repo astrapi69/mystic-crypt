@@ -41,7 +41,6 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import io.github.astrapi69.crypto.pw.PasswordEncryptor;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 

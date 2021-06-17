@@ -39,6 +39,10 @@ import io.github.astrapi69.crypto.obfuscation.rule.Operation;
 public final class ObfuscationOperationTestData
 {
 
+	private ObfuscationOperationTestData()
+	{
+	}
+
 	/**
 	 * Gets the {@link BiMap} for obfuscation operation rules with 25 rules for use in unit tests.
 	 *
@@ -306,10 +310,6 @@ public final class ObfuscationOperationTestData
 			.replaceWith(replaceWith).operation(operation).indexes(indexes).build();
 		rules.put(character, rule);
 		return rules;
-	}
-
-	private ObfuscationOperationTestData()
-	{
 	}
 
 }

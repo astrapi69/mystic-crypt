@@ -37,13 +37,11 @@ import io.github.astrapi69.crypto.obfuscation.rule.ObfuscationOperationRule;
  */
 public class CharacterObfuscator implements Obfuscatable
 {
-	boolean disentanglable;
-
 	/** The key. */
 	private final String key;
-
 	/** The rule. */
 	private final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules;
+	boolean disentanglable;
 
 	public CharacterObfuscator(
 		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,

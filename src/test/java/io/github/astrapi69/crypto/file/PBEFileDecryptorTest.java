@@ -24,6 +24,15 @@
  */
 package io.github.astrapi69.crypto.file;
 
+import static org.testng.AssertJUnit.assertEquals;
+
+import java.io.File;
+
+import javax.crypto.Cipher;
+
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import de.alpharogroup.file.delete.DeleteFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 import io.github.astrapi69.AbstractTestCase;
@@ -32,13 +41,6 @@ import io.github.astrapi69.crypto.algorithm.MdAlgorithm;
 import io.github.astrapi69.crypto.algorithm.SunJCEAlgorithm;
 import io.github.astrapi69.crypto.model.CryptModel;
 import io.github.astrapi69.crypto.model.StringDecorator;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
-import javax.crypto.Cipher;
-import java.io.File;
-
-import static org.testng.AssertJUnit.assertEquals;
 
 public class PBEFileDecryptorTest extends AbstractTestCase<String, String>
 {
@@ -69,7 +71,8 @@ public class PBEFileDecryptorTest extends AbstractTestCase<String, String>
 			.decorator(StringDecorator.builder().prefix("$").suffix("?").build()).build();
 	}
 
-	@Test public void testDecrypt() throws Exception
+	@Test
+	public void testDecrypt() throws Exception
 	{
 		// new scenario...
 		File encryptedCnstr = new File(cryptDir, "encryptedCnstr.enc");

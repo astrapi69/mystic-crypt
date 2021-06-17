@@ -46,6 +46,10 @@ import io.github.astrapi69.crypto.factories.CipherFactory;
 public final class DigitalSignaturesExtensions
 {
 
+	private DigitalSignaturesExtensions()
+	{
+	}
+
 	private static byte[] decryptBytes(Certificate certificate, String cipherAlgorithm,
 		byte[] encrpytedBytesToVerify) throws NoSuchAlgorithmException, NoSuchPaddingException,
 		InvalidKeyException, BadPaddingException, IllegalBlockSizeException
@@ -171,10 +175,6 @@ public final class DigitalSignaturesExtensions
 		byte[] hash = messageDigest.digest(bytesToVerify);
 		byte[] decryptedBytes = decryptBytes(publicKey, cipherAlgorithm, signedBytes);
 		return Arrays.equals(hash, decryptedBytes);
-	}
-
-	private DigitalSignaturesExtensions()
-	{
 	}
 
 }

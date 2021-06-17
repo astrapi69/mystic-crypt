@@ -29,10 +29,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -48,6 +48,10 @@ import io.github.astrapi69.crypto.obfuscation.rule.Operation;
  */
 public final class ObfuscatorExtensions
 {
+
+	private ObfuscatorExtensions()
+	{
+	}
 
 	/**
 	 * Disentangle the given obfuscated text with the given {@link BiMap} rules
@@ -461,10 +465,6 @@ public final class ObfuscatorExtensions
 			}
 		}
 		return true;
-	}
-
-	private ObfuscatorExtensions()
-	{
 	}
 
 }

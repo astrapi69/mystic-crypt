@@ -30,6 +30,10 @@ package io.github.astrapi69.crypto.obfuscation.character;
 public final class CharacterExtensions
 {
 
+	private CharacterExtensions()
+	{
+	}
+
 	/**
 	 * Compares this {@code Character} to another {@code Character}, ignoring case considerations.
 	 *
@@ -52,9 +56,5 @@ public final class CharacterExtensions
 		return Character.valueOf(Character.toLowerCase(character.charValue()))
 			.equals(Character.valueOf(Character.toLowerCase(another.charValue())));
 
-	}
-
-	private CharacterExtensions()
-	{
 	}
 }

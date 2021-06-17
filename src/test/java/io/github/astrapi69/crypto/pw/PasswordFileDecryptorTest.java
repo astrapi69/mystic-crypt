@@ -24,24 +24,18 @@
  */
 package io.github.astrapi69.crypto.pw;
 
+import static org.testng.AssertJUnit.assertEquals;
+
+import java.io.File;
+
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import de.alpharogroup.file.delete.DeleteFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
 import io.github.astrapi69.AbstractTestCase;
 import io.github.astrapi69.checksum.FileChecksumExtensions;
 import io.github.astrapi69.crypto.algorithm.MdAlgorithm;
-import io.github.astrapi69.crypto.algorithm.SunJCEAlgorithm;
-import io.github.astrapi69.crypto.file.FileDecryptor;
-import io.github.astrapi69.crypto.file.FileEncryptor;
-import io.github.astrapi69.crypto.model.CryptModel;
-import io.github.astrapi69.crypto.model.StringDecorator;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
-import javax.crypto.Cipher;
-import java.io.File;
-
-import static org.testng.Assert.*;
-import static org.testng.AssertJUnit.assertEquals;
 
 /**
  * The unit test class for the class {@link PasswordFileDecryptor}
@@ -49,8 +43,7 @@ import static org.testng.AssertJUnit.assertEquals;
  * @author Asterios Raptis
  * @version 1.0
  */
-public class PasswordFileDecryptorTest
-	extends AbstractTestCase<String, String>
+public class PasswordFileDecryptorTest extends AbstractTestCase<String, String>
 {
 
 	File cryptDir;
@@ -79,7 +72,8 @@ public class PasswordFileDecryptorTest
 	 * @throws Exception
 	 *             is thrown if any error occurs on the execution
 	 */
-	@Test public void testDecrypt() throws Exception
+	@Test
+	public void testDecrypt() throws Exception
 	{
 
 		File encryptedCnstr;

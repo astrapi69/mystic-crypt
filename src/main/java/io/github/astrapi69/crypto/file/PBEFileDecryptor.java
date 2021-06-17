@@ -42,13 +42,13 @@ import java.util.Objects;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
-import io.github.astrapi69.crypto.factories.CipherFactory;
 import org.apache.commons.io.FilenameUtils;
 
 import de.alpharogroup.file.read.ReadFileExtensions;
 import de.alpharogroup.file.write.WriteFileExtensions;
 import io.github.astrapi69.crypto.core.AbstractFileDecryptor;
 import io.github.astrapi69.crypto.decorator.CryptObjectDecoratorExtensions;
+import io.github.astrapi69.crypto.factories.CipherFactory;
 import io.github.astrapi69.crypto.io.CryptoCipherOutputStream;
 import io.github.astrapi69.crypto.model.CryptModel;
 import io.github.astrapi69.crypto.model.CryptObjectDecorator;
@@ -112,7 +112,8 @@ public class PBEFileDecryptor extends AbstractFileDecryptor
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public PBEFileDecryptor(final CryptModel<Cipher, String, String> model, final File decryptedFile)
+	public PBEFileDecryptor(final CryptModel<Cipher, String, String> model,
+		final File decryptedFile)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
@@ -203,9 +204,8 @@ public class PBEFileDecryptor extends AbstractFileDecryptor
 		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
 		String normalizedPassword = Normalizer.normalize(privateKey, Normalizer.Form.NFC);
-		Cipher cipher = CipherFactory
-			.newPBECipher(normalizedPassword.toCharArray(), operationMode,
-				algorithm);
+		Cipher cipher = CipherFactory.newPBECipher(normalizedPassword.toCharArray(), operationMode,
+			algorithm);
 		return cipher;
 	}
 }

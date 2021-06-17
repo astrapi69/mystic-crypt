@@ -24,15 +24,12 @@
  */
 package io.github.astrapi69.crypto.pw;
 
-import io.github.astrapi69.crypto.api.ByteArrayEncryptor;
-import org.apache.commons.lang3.SerializationUtils;
-
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 /**
  * The class {@link PasswordStringEncryptor} can encrypt String objects with the given password.
- * Internally it decorates the {@link PasswordByteEncryptor} 
+ * Internally it decorates the {@link PasswordByteEncryptor}
  *
  * @author Asterios Raptis
  * @version 1.0
@@ -54,7 +51,7 @@ public class PasswordStringEncryptor
 	{
 		this.encryptor = new PasswordByteEncryptor(password);
 	}
-	
+
 	/**
 	 * Encrypt the given {@link String} object
 	 *
@@ -68,8 +65,7 @@ public class PasswordStringEncryptor
 	{
 		final byte[] utf8 = toEncrypt.getBytes(StandardCharsets.UTF_8.name());
 		byte[] encrypt = this.encryptor.encrypt(utf8);
-		final String encrypted = Base64
-		.getEncoder().encodeToString(encrypt);
+		final String encrypted = Base64.getEncoder().encodeToString(encrypt);
 		return encrypted;
 	}
 }

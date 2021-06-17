@@ -48,21 +48,19 @@ public final class PublicKeyHexEncryptor
 {
 
 	/**
+	 * the public key
+	 */
+	private final PublicKey publicKey;
+	/**
 	 * the Cipher object
 	 */
 	private Cipher cipher;
-
 	/**
 	 * the flag initialized that indicates if the cipher is initialized for encryption.
 	 *
 	 * @return true, if is initialized
 	 */
 	private boolean initialized;
-
-	/**
-	 * the public key
-	 */
-	private final PublicKey publicKey;
 
 	/**
 	 * Instantiates a new {@link PublicKeyHexEncryptor} object with the given {@link PublicKey}

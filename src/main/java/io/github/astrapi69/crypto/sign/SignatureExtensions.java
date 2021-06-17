@@ -44,6 +44,10 @@ import java.util.Objects;
 public final class SignatureExtensions
 {
 
+	private SignatureExtensions()
+	{
+	}
+
 	/**
 	 * Sign the given byte array with the given private key and the appropriate algorithms
 	 *
@@ -156,9 +160,5 @@ public final class SignatureExtensions
 		signature.initVerify(publicKey);
 		signature.update(bytesToVerify);
 		return signature.verify(signedBytes);
-	}
-
-	private SignatureExtensions()
-	{
 	}
 }

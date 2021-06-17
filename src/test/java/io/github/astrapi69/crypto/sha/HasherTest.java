@@ -38,12 +38,11 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import io.github.astrapi69.crypto.sha.Hasher;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
-import io.github.astrapi69.crypto.algorithm.HashAlgorithm;
 import de.alpharogroup.random.object.RandomObjectFactory;
+import io.github.astrapi69.crypto.algorithm.HashAlgorithm;
 
 /**
  * The unit test class for the class {@link Hasher}

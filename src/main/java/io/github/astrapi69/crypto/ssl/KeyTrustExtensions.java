@@ -47,6 +47,10 @@ import io.github.astrapi69.crypto.factories.KeyStoreFactory;
 public final class KeyTrustExtensions
 {
 
+	private KeyTrustExtensions()
+	{
+	}
+
 	/**
 	 * Resolve the {@link KeyManager} array from the keystore that is resolved from the given
 	 * parameters.
@@ -123,10 +127,6 @@ public final class KeyTrustExtensions
 		trustFactory.init(keyStore);
 		final TrustManager[] trustManagers = trustFactory.getTrustManagers();
 		return trustManagers;
-	}
-
-	private KeyTrustExtensions()
-	{
 	}
 
 }

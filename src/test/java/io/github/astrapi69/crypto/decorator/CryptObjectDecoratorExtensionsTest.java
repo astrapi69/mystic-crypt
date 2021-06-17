@@ -28,7 +28,6 @@ import static org.testng.Assert.assertEquals;
 
 import java.nio.charset.Charset;
 
-import io.github.astrapi69.crypto.decorator.CryptObjectDecoratorExtensions;
 import org.testng.annotations.Test;
 
 import io.github.astrapi69.crypto.model.CharacterDecorator;

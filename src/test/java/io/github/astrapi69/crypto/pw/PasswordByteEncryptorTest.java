@@ -24,14 +24,14 @@
  */
 package io.github.astrapi69.crypto.pw;
 
-import io.github.astrapi69.crypto.pw.PasswordByteEncryptor;
-import io.github.astrapi69.crypto.simple.ByteArrayExtensions;
-import org.testng.annotations.Test;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
 
 import java.nio.charset.StandardCharsets;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
+import org.testng.annotations.Test;
+
+import io.github.astrapi69.crypto.simple.ByteArrayExtensions;
 
 /**
  * The unit test class for the class {@link PasswordByteEncryptor}
@@ -45,7 +45,8 @@ public class PasswordByteEncryptorTest
 	/**
 	 * Test method for test the method {@link PasswordByteEncryptor#encrypt(byte[])}
 	 */
-	@Test public void testEncrypt() throws Exception
+	@Test
+	public void testEncrypt() throws Exception
 	{
 		// declare variables
 		byte[] actual;

@@ -80,6 +80,7 @@ public class HexableDecryptor extends AbstractStringDecryptor
 	{
 		super(model);
 	}
+
 	/**
 	 * Instantiates a new {@link HexableDecryptor} from the given parameters.
 	 *
