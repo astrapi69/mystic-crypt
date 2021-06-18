@@ -4,14 +4,19 @@
 Version 7.8-SNAPSHOT
 -------------
 
+ADDED:
+
+- new encryptor class PublicKeyFileEncryptor that can encrypt File object with a public key
+- new decryptor class PrivateKeyFileDecryptor that can decrypt File object with the appropriate private key
+
 Version 7.7
 -------------
 
 ADDED:
 
--new encryptor classes that can encrypt byte arrays with a password and the counterpart of it the decryptor
--new encryptor classes that can encrypt String object with a password and the counterpart of it the decryptor
--new encryptor classes that can encrypt File object with a password and the counterpart of it the decryptor
+- new encryptor classes that can encrypt byte arrays with a password and the counterpart of it the decryptor
+- new encryptor classes that can encrypt String object with a password and the counterpart of it the decryptor
+- new encryptor classes that can encrypt File object with a password and the counterpart of it the decryptor
 
 CHANGED:
 
