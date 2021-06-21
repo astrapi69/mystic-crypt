@@ -187,7 +187,7 @@ dependencies {
     implementation("io.github.astrapi69:crypt-api:$cryptApiVersion")
     implementation("io.github.astrapi69:crypt-data:$cryptDataVersion")
     implementation("io.github.astrapi69:throw-able:$throwAbleVersion")
-    implementation("de.alpharogroup:randomizer-core:$randomizerVersion")
+    implementation("io.github.astrapi69:randomizer-core:$randomizerVersion")
     implementation("de.alpharogroup:file-worker:$fileWorkerVersion")
     implementation("de.alpharogroup:silly-collections:$sillyCollectionsVersion")
     implementation("de.alpharogroup:silly-beans:$sillyBeansVersion")

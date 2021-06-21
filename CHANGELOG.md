@@ -9,6 +9,10 @@ ADDED:
 - new encryptor class PublicKeyFileEncryptor that can encrypt File object with a public key
 - new decryptor class PrivateKeyFileDecryptor that can decrypt File object with the appropriate private key
 
+CHANGED:
+
+- update of randomizer version to 8.2
+
 Version 7.7
 -------------
 

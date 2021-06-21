@@ -31,7 +31,7 @@ import java.net.URL;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.random.object.RandomWebObjectFactory;
+import io.github.astrapi69.random.object.RandomWebObjectFactory;
 
 /**
  * The class {@link GoogleMapsUrlSigner}

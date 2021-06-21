@@ -28,6 +28,7 @@ import static org.testng.AssertJUnit.assertEquals;
 
 import java.io.File;
 
+import de.alpharogroup.file.delete.DeleteFileExtensions;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -86,5 +87,7 @@ public class PasswordFileEncryptorTest
 			-22, 40, 21, 81, 113, -73, 119, 68, -46, 110, -97, -108, 10, -75, 122, 8, 51, 68, -58,
 			-35);
 		assertEquals(actual, expected);
+		// clean up...
+		DeleteFileExtensions.delete(encrypted);
 	}
 }

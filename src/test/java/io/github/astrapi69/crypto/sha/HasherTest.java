@@ -41,7 +41,7 @@ import javax.crypto.NoSuchPaddingException;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.random.object.RandomObjectFactory;
+import io.github.astrapi69.random.object.RandomObjectFactory;
 import io.github.astrapi69.crypto.algorithm.HashAlgorithm;
 
 /**
