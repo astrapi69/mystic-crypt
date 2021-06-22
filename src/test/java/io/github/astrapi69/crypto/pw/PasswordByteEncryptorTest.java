@@ -31,7 +31,7 @@ import java.nio.charset.StandardCharsets;
 
 import org.testng.annotations.Test;
 
-import io.github.astrapi69.crypto.simple.ByteArrayExtensions;
+import io.github.astrapi69.collections.array.ArrayFactory;
 
 /**
  * The unit test class for the class {@link PasswordByteEncryptor}
@@ -66,7 +66,7 @@ public class PasswordByteEncryptorTest
 		encryptedBytes = encryptor.encrypt(textBytes);
 		assertNotNull(encryptedBytes);
 		actual = encryptedBytes;
-		expected = ByteArrayExtensions.newByteArray(-118, -125, -30, 16, 87, 88, -110, -94);
+		expected = ArrayFactory.newByteArray(-118, -125, -30, 16, 87, 88, -110, -94);
 		assertEquals(actual, expected);
 	}
 

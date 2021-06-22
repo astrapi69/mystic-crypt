@@ -128,9 +128,7 @@ public abstract class AbstractCryptor<C, K, T> implements Serializable, Cryptor
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		Check.get().notNull(key, "key");
-		model = CryptModel.<C, K, T> builder().key(key).build();
-		onInitialize();
+		this(CryptModel.<C, K, T> builder().key(key).build());
 	}
 
 	public CryptModel<C, K, T> getModel()
@@ -300,7 +298,8 @@ public abstract class AbstractCryptor<C, K, T> implements Serializable, Cryptor
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		model.setCipher(newCipher(model.getKey()));
+		final C cipher = newCipher(model.getKey());
+		model.setCipher(cipher);
 		model.setInitialized(true);
 	}
 

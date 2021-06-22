@@ -40,7 +40,6 @@ import javax.crypto.NoSuchPaddingException;
 
 import org.apache.commons.io.FilenameUtils;
 
-import io.github.astrapi69.crypto.api.ByteArrayEncryptor;
 import io.github.astrapi69.crypto.api.Cryptor;
 import io.github.astrapi69.crypto.api.FileEncryptor;
 import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
@@ -49,7 +48,7 @@ import io.github.astrapi69.crypto.io.CryptoCipherInputStream;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 
 /**
- * The class {@link PasswordFileEncryptor} is a simple {@link ByteArrayEncryptor} implementation.
+ * The class {@link PasswordFileEncryptor} is a simple {@link FileEncryptor} implementation.
  *
  * @author Asterios Raptis
  * @version 1.0
@@ -76,6 +75,17 @@ public class PasswordFileEncryptor implements FileEncryptor, Cryptor
 	 * The normalized password.
 	 */
 	private String normalizedPassword;
+
+	/**
+	 * Instantiates a new {@link PasswordFileEncryptor} with the given password
+	 *
+	 * @param password
+	 *            The password
+	 */
+	public PasswordFileEncryptor(final String password)
+	{
+		this(password, null);
+	}
 
 	/**
 	 * Instantiates a new {@link PasswordFileEncryptor} with the given password

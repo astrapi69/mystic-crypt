@@ -189,7 +189,7 @@ dependencies {
     implementation("io.github.astrapi69:throw-able:$throwAbleVersion")
     implementation("io.github.astrapi69:randomizer-core:$randomizerVersion")
     implementation("de.alpharogroup:file-worker:$fileWorkerVersion")
-    implementation("de.alpharogroup:silly-collections:$sillyCollectionsVersion")
+    implementation("io.github.astrapi69:silly-collections:$sillyCollectionsVersion")
     implementation("de.alpharogroup:silly-beans:$sillyBeansVersion")
     implementation("de.alpharogroup:jobj-clone:$jobjCloneVersion")
     implementation("de.alpharogroup:jobj-core:$jobjCoreVersion")

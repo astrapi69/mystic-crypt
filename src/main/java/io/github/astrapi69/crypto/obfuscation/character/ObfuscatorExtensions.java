@@ -38,8 +38,8 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
 import de.alpharogroup.clone.object.CloneObjectExtensions;
-import de.alpharogroup.collections.map.MapFactory;
 import de.alpharogroup.collections.pairs.KeyValuePair;
+import io.github.astrapi69.collections.map.MapFactory;
 import io.github.astrapi69.crypto.obfuscation.rule.ObfuscationOperationRule;
 import io.github.astrapi69.crypto.obfuscation.rule.Operation;
 

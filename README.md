@@ -1,6 +1,6 @@
 # Overview
 
-<div align="center">
+<div style="text-align: center">
 
 [![Build Status](https://api.travis-ci.com/astrapi69/mystic-crypt.svg?branch=develop)](https://travis-ci.com/github/astrapi69/mystic-crypt)
 [![Coverage Status](https://codecov.io/gh/astrapi69/mystic-crypt/branch/develop/graph/badge.svg)](https://codecov.io/gh/astrapi69/mystic-crypt)
@@ -132,6 +132,7 @@ You can first define the version in the ext section and add than the following g
 your project `build.gradle` if you want to import the core functionality of mystic-crypt:
 
 define version in file gradle.properties
+
 ```
 mysticCryptVersion=7.7
 ```
@@ -144,6 +145,11 @@ ext {
     mysticCryptVersion = "7.7"
 			...
 }
+```
+
+and then add the dependency to the dependencies area
+
+```
 dependencies {
 			...
 	implementation("io.github.astrapi69:mystic-crypt:$mysticCryptVersion")

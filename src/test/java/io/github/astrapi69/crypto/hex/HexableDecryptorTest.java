@@ -99,6 +99,7 @@ public class HexableDecryptorTest
 		String decryted;
 
 		test = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
+
 		encryptor = new HexableEncryptor(cryptModel);
 		encrypted = encryptor.encrypt(test);
 

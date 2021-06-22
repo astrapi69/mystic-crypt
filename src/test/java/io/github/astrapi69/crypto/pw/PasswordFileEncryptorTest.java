@@ -28,14 +28,16 @@ import static org.testng.AssertJUnit.assertEquals;
 
 import java.io.File;
 
-import de.alpharogroup.file.delete.DeleteFileExtensions;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.google.common.io.Files;
 
+import de.alpharogroup.file.delete.DeleteFileExtensions;
 import de.alpharogroup.file.search.PathFinder;
-import io.github.astrapi69.crypto.simple.ByteArrayExtensions;
+import de.alpharogroup.file.write.WriteFileExtensions;
+import io.github.astrapi69.collections.array.ArrayFactory;
+import io.github.astrapi69.random.object.RandomStringFactory;
 
 /**
  * The unit test class for the class {@link PasswordFileEncryptor}
@@ -82,12 +84,39 @@ public class PasswordFileEncryptorTest
 		encryptor = new PasswordFileEncryptor(password, encryptedCnstr);
 		encrypted = encryptor.encrypt(toEncrypt);
 		actual = Files.toByteArray(encryptedCnstr);
-		expected = ByteArrayExtensions.newByteArray(6, -1, 90, -29, -121, 43, -47, -27, -64, -81,
+		expected = ArrayFactory.newByteArray(6, -1, 90, -29, -121, 43, -47, -27, -64, -81,
 			-100, 3, -10, -112, 22, -78, 37, 76, -72, 63, -80, 125, -40, 99, 104, -106, -11, -97,
 			-22, 40, 21, 81, 113, -73, 119, 68, -46, 110, -97, -108, 10, -75, 122, 8, 51, 68, -58,
 			-35);
 		assertEquals(actual, expected);
 		// clean up...
 		DeleteFileExtensions.delete(encrypted);
+	}
+
+	/**
+	 * Test method for test the method {@link PasswordFileEncryptor#encrypt(File)}
+	 *
+	 * @throws Exception
+	 *             is thrown if any error occurs on the execution
+	 */
+	@Test
+	public void testEncryptBigFile() throws Exception
+	{
+		byte[] actual;
+		byte[] expected;
+		File encryptedCnstr;
+		String encryptedFilename;
+		String longString;
+		// new scenario...
+		encryptedFilename = "bigEncryptedFile.txt";
+		longString = RandomStringFactory.newRandomLongString(10000000);
+		encryptedCnstr = new File(cryptDir, encryptedFilename);
+		WriteFileExtensions.string2File(encryptedCnstr, longString);
+		encryptor = new PasswordFileEncryptor(password);
+		encrypted = encryptor.encrypt(encryptedCnstr);
+//		actual = Files.toByteArray(encryptedCnstr);
+//		// clean up...
+		DeleteFileExtensions.delete(encrypted);
+		DeleteFileExtensions.delete(encryptedCnstr);
 	}
 }
