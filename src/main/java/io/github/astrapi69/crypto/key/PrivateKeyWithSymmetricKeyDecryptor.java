@@ -104,7 +104,6 @@ public class PrivateKeyWithSymmetricKeyDecryptor extends AbstractDecryptor<Ciphe
 		throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException
 	{
 		SecretKey originalKey = new SecretKeySpec(decryptedKey, 0, decryptedKey.length, algorithm);
-
 		final Cipher cipher = Cipher.getInstance(algorithm);
 		cipher.init(operationMode, originalKey);
 		return cipher;
