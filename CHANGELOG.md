@@ -16,6 +16,7 @@ CHANGED:
 - update of dependency randomizer version to 8.2
 - update of dependency file-worker to new version to 5.8
 - update of dependency jobj-core to new version to 3.7
+- update of crypt-data dependency version to 7.7
 
 Version 7.7
 -------------
