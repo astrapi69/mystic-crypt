@@ -30,27 +30,24 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Objects;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+
+import org.apache.commons.lang3.SerializationUtils;
 
 import io.github.astrapi69.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
 import io.github.astrapi69.crypto.api.ByteArrayEncryptor;
 import io.github.astrapi69.crypto.core.AbstractEncryptor;
 import io.github.astrapi69.crypto.factories.CipherFactory;
+import io.github.astrapi69.crypto.model.AesRsaCryptModel;
 import io.github.astrapi69.crypto.model.CryptModel;
 
 /**
- * The class {@link PublicKeyEncryptor} can encrypt a byte array with his public key. <br>
- * <br>
- * Note: This class encrypts directly with the public key so you have to consider the length of the
- * encrypted data. As from the RSA documentation are described of the RSA algorithm can only encrypt
- * data that has a maximum byte length of he RSA key length in bits divided with eight minus eleven
- * padding bytes, i.e. number of maximum bytes = key length in bits / 8 - 11.
- *
- * @deprecated because of the above note this class is tagged as deprecated. Use instead the
- *             corresponding {@link PublicKeyWithSymmetricKeyEncryptor}. This class will be removed
- *             in the next major release.
+ * The class {@link PublicKeyEncryptor} can encrypt a byte array with his public
+ * key.
  */
 public class PublicKeyEncryptor extends AbstractEncryptor<Cipher, PublicKey, byte[]>
 	implements
@@ -59,12 +56,16 @@ public class PublicKeyEncryptor extends AbstractEncryptor<Cipher, PublicKey, byt
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+	private CryptModel<Cipher, SecretKey, String> symmetricKeyModel;
 
 	/**
-	 * Instantiates a new {@link PublicKeyEncryptor} with the given {@link CryptModel}.
+	 * Instantiates a new {@link PublicKeyEncryptor} with the given
+	 * {@link CryptModel} for the public key and the given {@link CryptModel} for the symmetric key
 	 *
 	 * @param model
-	 *            The crypt model.
+	 *            The crypt model
+	 * @param symmetricKeyModel
+	 *            The symmetric key model
 	 *
 	 * @throws InvalidAlgorithmParameterException
 	 *             is thrown if initialization of the cipher object fails.
@@ -81,11 +82,14 @@ public class PublicKeyEncryptor extends AbstractEncryptor<Cipher, PublicKey, byt
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	public PublicKeyEncryptor(final CryptModel<Cipher, PublicKey, byte[]> model)
+	public PublicKeyEncryptor(final CryptModel<Cipher, PublicKey, byte[]> model,
+		final CryptModel<Cipher, SecretKey, String> symmetricKeyModel)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
 		super(model);
+		Objects.requireNonNull(symmetricKeyModel);
+		this.symmetricKeyModel = symmetricKeyModel;
 	}
 
 	/**
@@ -94,8 +98,15 @@ public class PublicKeyEncryptor extends AbstractEncryptor<Cipher, PublicKey, byt
 	@Override
 	public byte[] encrypt(final byte[] toEncrypt) throws Exception
 	{
-		final byte[] encrypted = getModel().getCipher().doFinal(toEncrypt);
-		return encrypted;
+		final SecretKey symmetricKey = symmetricKeyModel.getKey();
+		Cipher symmetricKeyCipher = newSymmetricCipher(symmetricKey,
+			symmetricKeyModel.getAlgorithm().getAlgorithm(), symmetricKeyModel.getOperationMode());
+		byte[] symmetricKeyEncryptedBytes = symmetricKeyCipher.doFinal(toEncrypt);
+		byte[] encryptedKey = getModel().getCipher().doFinal(symmetricKey.getEncoded());
+		AesRsaCryptModel cryptData = AesRsaCryptModel.builder().encryptedKey(encryptedKey)
+			.symmetricKeyEncryptedObject(symmetricKeyEncryptedBytes).build();
+		byte[] encryptedCryptData = SerializationUtils.serialize(cryptData);
+		return encryptedCryptData;
 	}
 
 	/**
@@ -122,6 +133,15 @@ public class PublicKeyEncryptor extends AbstractEncryptor<Cipher, PublicKey, byt
 		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
 		final Cipher cipher = CipherFactory.newCipher(algorithm);
+		cipher.init(Cipher.PUBLIC_KEY, key);
+		return cipher;
+	}
+
+	private Cipher newSymmetricCipher(final SecretKey key, final String algorithm,
+		final int operationMode)
+		throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException
+	{
+		final Cipher cipher = Cipher.getInstance(algorithm);
 		cipher.init(operationMode, key);
 		return cipher;
 	}

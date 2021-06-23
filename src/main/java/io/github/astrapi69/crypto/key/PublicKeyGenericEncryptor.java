@@ -43,7 +43,7 @@ public class PublicKeyGenericEncryptor<T extends Serializable>
 	/**
 	 * The decorated encryptor object
 	 */
-	private final PublicKeyWithSymmetricKeyEncryptor encryptor;
+	private final PublicKeyEncryptor encryptor;
 
 	/**
 	 * Instantiates a new {@link PublicKeyGenericEncryptor} with the given {@link CryptModel} for
@@ -58,17 +58,17 @@ public class PublicKeyGenericEncryptor<T extends Serializable>
 		final CryptModel<Cipher, SecretKey, String> symmetricKeyModel)
 	{
 		this(RuntimeExceptionDecorator
-			.decorate(() -> new PublicKeyWithSymmetricKeyEncryptor(model, symmetricKeyModel)));
+			.decorate(() -> new PublicKeyEncryptor(model, symmetricKeyModel)));
 	}
 
 	/**
 	 * Instantiates a new {@link PublicKeyGenericEncryptor} with the given
-	 * {@link PublicKeyWithSymmetricKeyEncryptor} object
+	 * {@link PublicKeyEncryptor} object
 	 *
 	 * @param encryptor
 	 *            The encryptor that will do the most work
 	 */
-	public PublicKeyGenericEncryptor(final PublicKeyWithSymmetricKeyEncryptor encryptor)
+	public PublicKeyGenericEncryptor(final PublicKeyEncryptor encryptor)
 	{
 		this.encryptor = encryptor;
 	}

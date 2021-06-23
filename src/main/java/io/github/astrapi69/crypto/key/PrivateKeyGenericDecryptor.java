@@ -44,7 +44,7 @@ public class PrivateKeyGenericDecryptor<T extends Serializable>
 	/**
 	 * The decorated decryptor object
 	 */
-	private final PrivateKeyWithSymmetricKeyDecryptor decryptor;
+	private final PrivateKeyDecryptor decryptor;
 
 	/**
 	 * Instantiates a new {@link PrivateKeyGenericDecryptor} with the given {@link CryptModel}
@@ -55,17 +55,17 @@ public class PrivateKeyGenericDecryptor<T extends Serializable>
 	public PrivateKeyGenericDecryptor(final CryptModel<Cipher, PrivateKey, byte[]> model)
 	{
 		this(RuntimeExceptionDecorator
-			.decorate(() -> new PrivateKeyWithSymmetricKeyDecryptor(model)));
+			.decorate(() -> new PrivateKeyDecryptor(model)));
 	}
 
 	/**
 	 * Instantiates a new {@link PrivateKeyGenericDecryptor} with the given
-	 * {@link PrivateKeyWithSymmetricKeyDecryptor} object
+	 * {@link PrivateKeyDecryptor} object
 	 *
 	 * @param decryptor
 	 *            The decryptor that will do the most work
 	 */
-	public PrivateKeyGenericDecryptor(final PrivateKeyWithSymmetricKeyDecryptor decryptor)
+	public PrivateKeyGenericDecryptor(final PrivateKeyDecryptor decryptor)
 	{
 		Objects.requireNonNull(decryptor);
 		this.decryptor = decryptor;

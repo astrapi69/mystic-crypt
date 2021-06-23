@@ -75,8 +75,8 @@ public class PrivateKeyGenericEnDecryptorTest
 		CryptModel<Cipher, PrivateKey, byte[]> decryptModel;
 		File derDir;
 		File privatekeyDerFile;
-		PublicKeyWithSymmetricKeyEncryptor encryptor;
-		PrivateKeyWithSymmetricKeyDecryptor decryptor;
+		PublicKeyEncryptor encryptor;
+		PrivateKeyDecryptor decryptor;
 
 		PublicKeyGenericEncryptor<Person> genericEncryptor;
 		PrivateKeyGenericDecryptor<Person> genericDecryptor;
@@ -95,9 +95,9 @@ public class PrivateKeyGenericEnDecryptorTest
 		symmetricKeyModel = CryptModel.<Cipher, SecretKey, String> builder().key(symmetricKey)
 			.algorithm(AesAlgorithm.AES).operationMode(Cipher.ENCRYPT_MODE).build();
 
-		encryptor = new PublicKeyWithSymmetricKeyEncryptor(encryptModel, symmetricKeyModel);
+		encryptor = new PublicKeyEncryptor(encryptModel, symmetricKeyModel);
 		assertNotNull(encryptor);
-		decryptor = new PrivateKeyWithSymmetricKeyDecryptor(decryptModel);
+		decryptor = new PrivateKeyDecryptor(decryptModel);
 		assertNotNull(decryptor);
 
 		genericEncryptor = new PublicKeyGenericEncryptor<>(encryptor);
@@ -130,8 +130,8 @@ public class PrivateKeyGenericEnDecryptorTest
 		CryptModel<Cipher, PrivateKey, byte[]> decryptModel;
 		File derDir;
 		File privatekeyDerFile;
-		PublicKeyWithSymmetricKeyEncryptor encryptor;
-		PrivateKeyWithSymmetricKeyDecryptor decryptor;
+		PublicKeyEncryptor encryptor;
+		PrivateKeyDecryptor decryptor;
 
 		PublicKeyGenericEncryptor<String> genericEncryptor;
 		PrivateKeyGenericDecryptor<String> genericDecryptor;
@@ -152,9 +152,9 @@ public class PrivateKeyGenericEnDecryptorTest
 		symmetricKeyModel = CryptModel.<Cipher, SecretKey, String> builder().key(symmetricKey)
 			.algorithm(AesAlgorithm.AES).operationMode(Cipher.ENCRYPT_MODE).build();
 
-		encryptor = new PublicKeyWithSymmetricKeyEncryptor(encryptModel, symmetricKeyModel);
+		encryptor = new PublicKeyEncryptor(encryptModel, symmetricKeyModel);
 		assertNotNull(encryptor);
-		decryptor = new PrivateKeyWithSymmetricKeyDecryptor(decryptModel);
+		decryptor = new PrivateKeyDecryptor(decryptModel);
 		assertNotNull(decryptor);
 
 		genericEncryptor = new PublicKeyGenericEncryptor<>(encryptor);

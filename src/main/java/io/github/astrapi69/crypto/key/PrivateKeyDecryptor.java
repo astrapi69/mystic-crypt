@@ -33,27 +33,26 @@ import java.security.spec.InvalidKeySpecException;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
+import org.apache.commons.lang3.SerializationUtils;
+
+import io.github.astrapi69.crypto.algorithm.AesAlgorithm;
 import io.github.astrapi69.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
 import io.github.astrapi69.crypto.api.ByteArrayDecryptor;
 import io.github.astrapi69.crypto.core.AbstractDecryptor;
 import io.github.astrapi69.crypto.factories.CipherFactory;
+import io.github.astrapi69.crypto.model.AesRsaCryptModel;
 import io.github.astrapi69.crypto.model.CryptModel;
 
 /**
- * The class {@link PrivateKeyDecryptor} decrypts encrypted byte array the was encrypted with the
- * public key of the pendant private key of this class. <br>
- * <br>
- * Note: This class decrypts directly with the private key so you have to consider the length of the
- * encrypted data. As from the documentation are described of the RSA algorithm can only encrypt
- * data that has a maximum byte length of he RSA key length in bits divided with eight minus eleven
- * padding bytes, i.e. number of maximum bytes = key length in bits / 8 - 11.
- * 
- * @deprecated because of the above note this class is tagged as deprecated. Use instead the
- *             corresponding {@link PrivateKeyWithSymmetricKeyDecryptor}. This class will be removed
- *             in the next major release.
+ * The class {@link PrivateKeyDecryptor} decrypts encrypted byte array the was
+ * encrypted with the public key of the pendant private key of this class.
  */
-public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey, byte[]>
+public class PrivateKeyDecryptor
+	extends
+		AbstractDecryptor<Cipher, PrivateKey, byte[]>
 	implements
 		ByteArrayDecryptor
 {
@@ -62,7 +61,8 @@ public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey, b
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Instantiates a new {@link PrivateKeyDecryptor} with the given {@link CryptModel}.
+	 * Instantiates a new {@link PrivateKeyDecryptor} with the given
+	 * {@link CryptModel}.
 	 *
 	 * @param model
 	 *            The crypt model.
@@ -94,8 +94,22 @@ public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey, b
 	@Override
 	public byte[] decrypt(final byte[] encrypted) throws Exception
 	{
-		final byte[] decrypted = getModel().getCipher().doFinal(encrypted);
-		return decrypted;
+		AesRsaCryptModel cryptData = SerializationUtils.deserialize(encrypted);
+		byte[] decryptedKey = getModel().getCipher().doFinal(cryptData.getEncryptedKey());
+		Cipher cipher = newSymmetricCipher(decryptedKey, AesAlgorithm.AES.getAlgorithm(),
+			Cipher.DECRYPT_MODE);
+		byte[] decryptedObject = cipher.doFinal(cryptData.getSymmetricKeyEncryptedObject());
+		return decryptedObject;
+	}
+
+	private Cipher newSymmetricCipher(byte[] decryptedKey, final String algorithm,
+		final int operationMode)
+		throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException
+	{
+		SecretKey originalKey = new SecretKeySpec(decryptedKey, 0, decryptedKey.length, algorithm);
+		final Cipher cipher = Cipher.getInstance(algorithm);
+		cipher.init(operationMode, originalKey);
+		return cipher;
 	}
 
 	/**

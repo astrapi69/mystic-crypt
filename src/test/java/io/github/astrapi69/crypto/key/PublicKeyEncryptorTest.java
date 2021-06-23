@@ -31,63 +31,34 @@ import java.nio.charset.StandardCharsets;
 import java.security.PublicKey;
 
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.SecretKey;
 
 import org.testng.annotations.Test;
 
 import de.alpharogroup.file.search.PathFinder;
+import io.github.astrapi69.crypto.algorithm.AesAlgorithm;
+import io.github.astrapi69.crypto.factories.SecretKeyFactoryExtensions;
 import io.github.astrapi69.crypto.key.reader.PublicKeyReader;
 import io.github.astrapi69.crypto.model.CryptModel;
 import io.github.astrapi69.random.object.RandomStringFactory;
 
-/**
- * The unit test class for the class {@link PublicKeyEncryptor}
- */
 public class PublicKeyEncryptorTest
 {
 
-	/**
-	 * Test method for {@link PublicKeyEncryptor} constructors
-	 *
-	 * @throws Exception
-	 *             is thrown if a security error occurs
-	 */
-	@Test
-	public void testConstructors() throws Exception
+	@Test public void testEncrypt() throws Exception
 	{
-		PublicKey publicKey;
 		PublicKeyEncryptor encryptor;
+
+		PublicKey publicKey;
+		SecretKey symmetricKey;
 		CryptModel<Cipher, PublicKey, byte[]> encryptModel;
+		CryptModel<Cipher, SecretKey, String> symmetricKeyModel;
 		File publickeyDerDir;
 		File publickeyDerFile;
-
-		publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		publickeyDerFile = new File(publickeyDerDir, "public.der");
-		publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
-
-		encryptModel = CryptModel.<Cipher, PublicKey, byte[]> builder().key(publicKey).build();
-
-		encryptor = new PublicKeyEncryptor(encryptModel);
-		assertNotNull(encryptor);
-
-		byte[] encrypted = encryptor.encrypt("foo".getBytes("UTF-8"));
-		assertNotNull(encrypted);
-	}
-
-	/**
-	 * Test method for test the method {@link PublicKeyEncryptor#encrypt(byte[])}
-	 *
-	 * @throws Exception
-	 *             is thrown if any error occurs on the execution
-	 */
-	@Test(expectedExceptions = IllegalBlockSizeException.class)
-	public void testEncryptBigArray() throws Exception
-	{
-		PublicKey publicKey;
-		PublicKeyEncryptor encryptor;
-		CryptModel<Cipher, PublicKey, byte[]> encryptModel;
-		File publickeyDerDir;
-		File publickeyDerFile;
+		byte[] actual;
+		byte[] expected;
+		File encryptedCnstr;
+		String encryptedFilename;
 		String longString;
 		// new scenario...
 
@@ -96,13 +67,18 @@ public class PublicKeyEncryptorTest
 		publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
 
 		encryptModel = CryptModel.<Cipher, PublicKey, byte[]> builder().key(publicKey).build();
+		symmetricKey = SecretKeyFactoryExtensions
+			.newSecretKey(AesAlgorithm.AES.getAlgorithm(), 128);
+		symmetricKeyModel = CryptModel.<Cipher, SecretKey, String>builder().key(symmetricKey)
+			.algorithm(AesAlgorithm.AES)
+			.operationMode(Cipher.ENCRYPT_MODE)
+			.build();
 
-		encryptor = new PublicKeyEncryptor(encryptModel);
+		encryptor = new PublicKeyEncryptor(encryptModel, symmetricKeyModel);
 		assertNotNull(encryptor);
 		longString = RandomStringFactory.newRandomLongString(10000000);
 
 		byte[] encrypted = encryptor.encrypt(longString.getBytes(StandardCharsets.UTF_8));
 		assertNotNull(encrypted);
 	}
-
 }
