@@ -136,7 +136,7 @@ public class PrivateKeyGenericEnDecryptorTest
 		PublicKeyGenericEncryptor<String> genericEncryptor;
 		PrivateKeyGenericDecryptor<String> genericDecryptor;
 		Person personToEncrypt;
-		byte[] encrypt;
+		byte[] encryptedBytes;
 		String decryptedJson;
 
 		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
@@ -145,8 +145,8 @@ public class PrivateKeyGenericEnDecryptorTest
 		privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
 		publicKey = PrivateKeyExtensions.generatePublicKey(privateKey);
 
-		decryptModel = CryptModel.<Cipher, PrivateKey, byte[]> builder().key(privateKey).build();
 		encryptModel = CryptModel.<Cipher, PublicKey, byte[]> builder().key(publicKey).build();
+		decryptModel = CryptModel.<Cipher, PrivateKey, byte[]> builder().key(privateKey).build();
 		symmetricKey = SecretKeyFactoryExtensions.newSecretKey(AesAlgorithm.AES.getAlgorithm(),
 			128);
 		symmetricKeyModel = CryptModel.<Cipher, SecretKey, String> builder().key(symmetricKey)
@@ -162,8 +162,8 @@ public class PrivateKeyGenericEnDecryptorTest
 
 		personToEncrypt = Person.builder().about("about").name("Foo").gender(Gender.MALE).build();
 		actual = ObjectToJsonExtensions.toJson(personToEncrypt);
-		encrypt = genericEncryptor.encrypt(actual);
-		decryptedJson = genericDecryptor.decrypt(encrypt);
+		encryptedBytes = genericEncryptor.encrypt(actual);
+		decryptedJson = genericDecryptor.decrypt(encryptedBytes);
 		expected = decryptedJson;
 		assertEquals(actual, expected);
 		Person decryptedPerson = JsonStringToObjectExtensions.toObject(decryptedJson, Person.class);
