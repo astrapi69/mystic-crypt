@@ -10,10 +10,6 @@ ADDED:
 - new generic decryptor class PrivateKeyGenericDecryptor that can decrypt the byte array back to the serializable object
 - new encryptor class BaseByteArrayEncryptor that can encrypt byte array
 - new decryptor class BaseByteArrayDecryptor that can decrypt byte array
-- new encryptor class PublicKeyWithSymmetricKeyEncryptor that can encrypt any size byte array
-- new decryptor class PrivateKeyWithSymmetricKeyDecryptor that can decrypt any size byte array
-- new encryptor class PublicKeyFileEncryptor that can encrypt File object with a public key
-- new decryptor class PrivateKeyFileDecryptor that can decrypt File object with the appropriate private key
 
 CHANGED:
 
