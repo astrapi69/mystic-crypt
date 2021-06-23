@@ -30,6 +30,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Objects;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
@@ -41,11 +42,12 @@ import io.github.astrapi69.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
 import io.github.astrapi69.crypto.api.ByteArrayEncryptor;
 import io.github.astrapi69.crypto.core.AbstractEncryptor;
 import io.github.astrapi69.crypto.factories.CipherFactory;
-import io.github.astrapi69.crypto.model.AesRsaCryptData;
+import io.github.astrapi69.crypto.model.AesRsaCryptModel;
 import io.github.astrapi69.crypto.model.CryptModel;
 
 /**
- * The class {@link PublicKeyWithSymmetricKeyEncryptor} can encrypt a byte array with his public key.
+ * The class {@link PublicKeyWithSymmetricKeyEncryptor} can encrypt a byte array with his public
+ * key.
  */
 public class PublicKeyWithSymmetricKeyEncryptor extends AbstractEncryptor<Cipher, PublicKey, byte[]>
 	implements
@@ -57,10 +59,13 @@ public class PublicKeyWithSymmetricKeyEncryptor extends AbstractEncryptor<Cipher
 	private CryptModel<Cipher, SecretKey, String> symmetricKeyModel;
 
 	/**
-	 * Instantiates a new {@link PublicKeyWithSymmetricKeyEncryptor} with the given {@link CryptModel}
+	 * Instantiates a new {@link PublicKeyWithSymmetricKeyEncryptor} with the given
+	 * {@link CryptModel} for the public key and the given {@link CryptModel} for the symmetric key
 	 *
 	 * @param model
-	 *            The crypt model.
+	 *            The crypt model
+	 * @param symmetricKeyModel
+	 *            The symmetric key model
 	 *
 	 * @throws InvalidAlgorithmParameterException
 	 *             is thrown if initialization of the cipher object fails.
@@ -83,6 +88,7 @@ public class PublicKeyWithSymmetricKeyEncryptor extends AbstractEncryptor<Cipher
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
 		super(model);
+		Objects.requireNonNull(symmetricKeyModel);
 		this.symmetricKeyModel = symmetricKeyModel;
 	}
 
@@ -93,14 +99,12 @@ public class PublicKeyWithSymmetricKeyEncryptor extends AbstractEncryptor<Cipher
 	public byte[] encrypt(final byte[] toEncrypt) throws Exception
 	{
 		final SecretKey symmetricKey = symmetricKeyModel.getKey();
-			Cipher symmetricKeyCipher = newSymmetricCipher(symmetricKey,
-			symmetricKeyModel.getAlgorithm().getAlgorithm(),
-			symmetricKeyModel.getOperationMode());
-		byte[] symmetricKeyEncryptedBytes = symmetricKeyCipher
-			.doFinal(toEncrypt);
+		Cipher symmetricKeyCipher = newSymmetricCipher(symmetricKey,
+			symmetricKeyModel.getAlgorithm().getAlgorithm(), symmetricKeyModel.getOperationMode());
+		byte[] symmetricKeyEncryptedBytes = symmetricKeyCipher.doFinal(toEncrypt);
 		byte[] encryptedKey = getModel().getCipher().doFinal(symmetricKey.getEncoded());
-		AesRsaCryptData cryptData = AesRsaCryptData.builder().encryptedKey(encryptedKey)
-			.symmetricKeyEncryptedMessage(symmetricKeyEncryptedBytes).build();
+		AesRsaCryptModel cryptData = AesRsaCryptModel.builder().encryptedKey(encryptedKey)
+			.symmetricKeyEncryptedObject(symmetricKeyEncryptedBytes).build();
 		byte[] encryptedCryptData = SerializationUtils.serialize(cryptData);
 		return encryptedCryptData;
 	}
@@ -133,7 +137,8 @@ public class PublicKeyWithSymmetricKeyEncryptor extends AbstractEncryptor<Cipher
 		return cipher;
 	}
 
-	protected Cipher newSymmetricCipher(final SecretKey key, final String algorithm, final int operationMode)
+	private Cipher newSymmetricCipher(final SecretKey key, final String algorithm,
+		final int operationMode)
 		throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException
 	{
 		final Cipher cipher = Cipher.getInstance(algorithm);

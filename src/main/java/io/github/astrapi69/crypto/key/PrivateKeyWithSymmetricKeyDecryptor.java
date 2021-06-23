@@ -43,14 +43,16 @@ import io.github.astrapi69.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
 import io.github.astrapi69.crypto.api.ByteArrayDecryptor;
 import io.github.astrapi69.crypto.core.AbstractDecryptor;
 import io.github.astrapi69.crypto.factories.CipherFactory;
-import io.github.astrapi69.crypto.model.AesRsaCryptData;
+import io.github.astrapi69.crypto.model.AesRsaCryptModel;
 import io.github.astrapi69.crypto.model.CryptModel;
 
 /**
- * The class {@link PrivateKeyWithSymmetricKeyDecryptor} decrypts encrypted byte array the was encrypted with the
- * public key of the pendant private key of this class.
+ * The class {@link PrivateKeyWithSymmetricKeyDecryptor} decrypts encrypted byte array the was
+ * encrypted with the public key of the pendant private key of this class.
  */
-public class PrivateKeyWithSymmetricKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey, byte[]>
+public class PrivateKeyWithSymmetricKeyDecryptor
+	extends
+		AbstractDecryptor<Cipher, PrivateKey, byte[]>
 	implements
 		ByteArrayDecryptor
 {
@@ -59,7 +61,8 @@ public class PrivateKeyWithSymmetricKeyDecryptor extends AbstractDecryptor<Ciphe
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Instantiates a new {@link PrivateKeyWithSymmetricKeyDecryptor} with the given {@link CryptModel}.
+	 * Instantiates a new {@link PrivateKeyWithSymmetricKeyDecryptor} with the given
+	 * {@link CryptModel}.
 	 *
 	 * @param model
 	 *            The crypt model.
@@ -91,16 +94,16 @@ public class PrivateKeyWithSymmetricKeyDecryptor extends AbstractDecryptor<Ciphe
 	@Override
 	public byte[] decrypt(final byte[] encrypted) throws Exception
 	{
-		AesRsaCryptData cryptData = SerializationUtils.deserialize(encrypted);
+		AesRsaCryptModel cryptData = SerializationUtils.deserialize(encrypted);
 		byte[] decryptedKey = getModel().getCipher().doFinal(cryptData.getEncryptedKey());
 		Cipher cipher = newSymmetricCipher(decryptedKey, AesAlgorithm.AES.getAlgorithm(),
 			Cipher.DECRYPT_MODE);
-		byte[] bytePlainText = cipher
-			.doFinal(cryptData.getSymmetricKeyEncryptedMessage());
-		return bytePlainText;
+		byte[] decryptedObject = cipher.doFinal(cryptData.getSymmetricKeyEncryptedObject());
+		return decryptedObject;
 	}
 
-	protected Cipher newSymmetricCipher(byte[] decryptedKey, final String algorithm, final int operationMode)
+	private Cipher newSymmetricCipher(byte[] decryptedKey, final String algorithm,
+		final int operationMode)
 		throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException
 	{
 		SecretKey originalKey = new SecretKeySpec(decryptedKey, 0, decryptedKey.length, algorithm);
@@ -136,6 +139,5 @@ public class PrivateKeyWithSymmetricKeyDecryptor extends AbstractDecryptor<Ciphe
 		cipher.init(operationMode, key);
 		return cipher;
 	}
-
 
 }

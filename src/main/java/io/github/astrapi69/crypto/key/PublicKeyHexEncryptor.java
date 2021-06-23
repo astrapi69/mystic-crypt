@@ -42,8 +42,18 @@ import org.apache.commons.codec.binary.Hex;
 import io.github.astrapi69.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
 
 /**
- * The class {@link PublicKeyHexEncryptor} can encrypt characters with his public key.
+ * The class {@link PublicKeyHexEncryptor} can encrypt characters with his public key. <br>
+ * <br>
+ * Note: This class encrypts directly with the public key so you have to consider the length of the
+ * encrypted data. As from the RSA documentation are described of the RSA algorithm can only encrypt
+ * data that has a maximum byte length of he RSA key length in bits divided with eight minus eleven
+ * padding bytes, i.e. number of maximum bytes = key length in bits / 8 - 11.
+ *
+ * @deprecated because of the above note this class is tagged as deprecated. Use instead the
+ *             corresponding {@link PublicKeyWithSymmetricKeyEncryptor}. This class will be removed
+ *             in the next major release.
  */
+@Deprecated
 public final class PublicKeyHexEncryptor
 {
 
@@ -80,7 +90,7 @@ public final class PublicKeyHexEncryptor
 	 * @param string
 	 *            The {@link String} to encrypt
 	 * @return The encrypted {@link String}
-	 * 
+	 *
 	 * @throws InvalidKeyException
 	 *             the invalid key exception is thrown if initialization of the cipher object fails.
 	 * @throws NoSuchAlgorithmException

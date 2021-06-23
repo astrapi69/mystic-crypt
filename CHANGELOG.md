@@ -6,6 +6,8 @@ Version 7.8-SNAPSHOT
 
 ADDED:
 
+- new generic encryptor class PublicKeyGenericEncryptor that can encrypt serializable objects
+- new generic decryptor class PrivateKeyGenericDecryptor that can decrypt the byte array back to the serializable object
 - new encryptor class BaseByteArrayEncryptor that can encrypt byte array
 - new decryptor class BaseByteArrayDecryptor that can decrypt byte array
 - new encryptor class PublicKeyWithSymmetricKeyEncryptor that can encrypt any size byte array

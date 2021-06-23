@@ -51,8 +51,18 @@ import io.github.astrapi69.crypto.model.CryptModel;
 import io.github.astrapi69.crypto.model.CryptObjectDecorator;
 
 /**
- * The class {@link PublicKeyFileEncryptor} can encrypt a byte array with his public key.
+ * The class {@link PublicKeyFileEncryptor} can encrypt a byte array with his public key. <br>
+ * <br>
+ * Note: This class encrypts directly with the public key so you have to consider the length of the
+ * encrypted data. As from the RSA documentation are described of the RSA algorithm can only encrypt
+ * data that has a maximum byte length of he RSA key length in bits divided with eight minus eleven
+ * padding bytes, i.e. number of maximum bytes = key length in bits / 8 - 11.
+ *
+ * @deprecated because of the above note this class is tagged as deprecated. Use instead the
+ *             corresponding {@link PublicKeyWithSymmetricKeyEncryptor}. This class will be removed
+ *             in the next major release.
  */
+@Deprecated
 public class PublicKeyFileEncryptor extends AbstractEncryptor<Cipher, PublicKey, String>
 	implements
 		FileEncryptor

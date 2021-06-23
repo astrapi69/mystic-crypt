@@ -42,7 +42,16 @@ import io.github.astrapi69.crypto.model.CryptModel;
 
 /**
  * The class {@link PrivateKeyDecryptor} decrypts encrypted byte array the was encrypted with the
- * public key of the pendant private key of this class.
+ * public key of the pendant private key of this class. <br>
+ * <br>
+ * Note: This class decrypts directly with the private key so you have to consider the length of the
+ * encrypted data. As from the documentation are described of the RSA algorithm can only encrypt
+ * data that has a maximum byte length of he RSA key length in bits divided with eight minus eleven
+ * padding bytes, i.e. number of maximum bytes = key length in bits / 8 - 11.
+ * 
+ * @deprecated because of the above note this class is tagged as deprecated. Use instead the
+ *             corresponding {@link PrivateKeyWithSymmetricKeyDecryptor}. This class will be removed
+ *             in the next major release.
  */
 public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey, byte[]>
 	implements
