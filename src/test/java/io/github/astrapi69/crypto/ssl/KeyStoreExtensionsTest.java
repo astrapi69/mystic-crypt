@@ -55,7 +55,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import de.alpharogroup.collections.array.ArrayFactory;
-import de.alpharogroup.file.search.PathFinder;
+import io.github.astrapi69.search.PathFinder;
 import io.github.astrapi69.crypto.algorithm.KeyPairGeneratorAlgorithm;
 import io.github.astrapi69.crypto.algorithm.KeystoreType;
 import io.github.astrapi69.crypto.factories.KeyPairFactory;

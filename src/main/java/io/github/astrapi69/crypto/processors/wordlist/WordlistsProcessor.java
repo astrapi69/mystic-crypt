@@ -26,7 +26,7 @@ package io.github.astrapi69.crypto.processors.wordlist;
 
 import java.util.List;
 
-import de.alpharogroup.check.Check;
+import io.github.astrapi69.check.Check;
 
 /**
  * The class {@link WordlistsProcessor} can process a list of words. For an example see the unit

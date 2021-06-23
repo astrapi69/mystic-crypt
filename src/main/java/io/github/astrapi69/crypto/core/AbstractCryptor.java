@@ -41,7 +41,7 @@ import javax.crypto.SecretKeyFactory;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import de.alpharogroup.check.Check;
+import io.github.astrapi69.check.Check;
 import io.github.astrapi69.crypto.algorithm.SunJCEAlgorithm;
 import io.github.astrapi69.crypto.api.Cryptor;
 import io.github.astrapi69.crypto.compound.CompoundAlgorithm;

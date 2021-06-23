@@ -36,8 +36,8 @@ import org.testng.annotations.Test;
 
 import de.alpharogroup.collections.list.ListFactory;
 import de.alpharogroup.collections.set.SetFactory;
-import de.alpharogroup.file.read.ReadFileExtensions;
-import de.alpharogroup.file.search.PathFinder;
+import io.github.astrapi69.read.ReadFileExtensions;
+import io.github.astrapi69.search.PathFinder;
 
 /**
  * The unit test class for the class {@link WordlistsProcessor}

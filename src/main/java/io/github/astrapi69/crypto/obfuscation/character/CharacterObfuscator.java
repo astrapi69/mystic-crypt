@@ -28,7 +28,7 @@ import java.util.Objects;
 
 import com.google.common.collect.BiMap;
 
-import de.alpharogroup.check.Check;
+import io.github.astrapi69.check.Check;
 import io.github.astrapi69.crypto.obfuscation.api.Obfuscatable;
 import io.github.astrapi69.crypto.obfuscation.rule.ObfuscationOperationRule;
 

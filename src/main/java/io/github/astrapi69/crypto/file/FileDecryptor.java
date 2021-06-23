@@ -43,8 +43,8 @@ import javax.crypto.NoSuchPaddingException;
 
 import org.apache.commons.io.FilenameUtils;
 
-import de.alpharogroup.file.read.ReadFileExtensions;
-import de.alpharogroup.file.write.WriteFileExtensions;
+import io.github.astrapi69.read.ReadFileExtensions;
+import io.github.astrapi69.write.WriteFileExtensions;
 import io.github.astrapi69.crypto.core.AbstractFileDecryptor;
 import io.github.astrapi69.crypto.decorator.CryptObjectDecoratorExtensions;
 import io.github.astrapi69.crypto.io.CryptoCipherOutputStream;

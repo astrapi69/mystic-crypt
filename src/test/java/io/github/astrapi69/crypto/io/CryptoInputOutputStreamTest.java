@@ -34,9 +34,9 @@ import java.io.OutputStream;
 
 import org.testng.annotations.Test;
 
-import de.alpharogroup.file.delete.DeleteFileExtensions;
-import de.alpharogroup.file.read.ReadFileExtensions;
-import de.alpharogroup.file.search.PathFinder;
+import io.github.astrapi69.delete.DeleteFileExtensions;
+import io.github.astrapi69.read.ReadFileExtensions;
+import io.github.astrapi69.search.PathFinder;
 import io.github.astrapi69.crypto.core.AbstractStringDecryptor;
 import io.github.astrapi69.crypto.hex.HexableDecryptor;
 import io.github.astrapi69.crypto.hex.HexableEncryptor;

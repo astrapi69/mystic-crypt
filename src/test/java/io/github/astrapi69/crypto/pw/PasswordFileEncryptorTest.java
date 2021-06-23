@@ -33,9 +33,9 @@ import org.testng.annotations.Test;
 
 import com.google.common.io.Files;
 
-import de.alpharogroup.file.delete.DeleteFileExtensions;
-import de.alpharogroup.file.search.PathFinder;
-import de.alpharogroup.file.write.WriteFileExtensions;
+import io.github.astrapi69.delete.DeleteFileExtensions;
+import io.github.astrapi69.search.PathFinder;
+import io.github.astrapi69.write.WriteFileExtensions;
 import io.github.astrapi69.collections.array.ArrayFactory;
 import io.github.astrapi69.random.object.RandomStringFactory;
 

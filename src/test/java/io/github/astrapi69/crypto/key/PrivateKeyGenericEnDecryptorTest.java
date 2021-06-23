@@ -37,7 +37,7 @@ import javax.crypto.SecretKey;
 
 import org.testng.annotations.Test;
 
-import de.alpharogroup.file.search.PathFinder;
+import io.github.astrapi69.search.PathFinder;
 import de.alpharogroup.xml.json.JsonStringToObjectExtensions;
 import de.alpharogroup.xml.json.ObjectToJsonExtensions;
 import io.github.astrapi69.crypto.algorithm.AesAlgorithm;

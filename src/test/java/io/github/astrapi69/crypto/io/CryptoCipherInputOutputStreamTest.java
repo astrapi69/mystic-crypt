@@ -42,9 +42,9 @@ import javax.crypto.NoSuchPaddingException;
 
 import org.testng.annotations.Test;
 
-import de.alpharogroup.file.delete.DeleteFileExtensions;
-import de.alpharogroup.file.read.ReadFileExtensions;
-import de.alpharogroup.file.search.PathFinder;
+import io.github.astrapi69.delete.DeleteFileExtensions;
+import io.github.astrapi69.read.ReadFileExtensions;
+import io.github.astrapi69.search.PathFinder;
 import io.github.astrapi69.crypto.algorithm.SunJCEAlgorithm;
 import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
 import io.github.astrapi69.crypto.factories.CipherFactory;
