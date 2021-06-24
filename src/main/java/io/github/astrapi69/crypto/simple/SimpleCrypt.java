@@ -105,4 +105,30 @@ public final class SimpleCrypt
 		return sb.toString().trim();
 	}
 
+	/**
+	 * Encrypt and decrypt with the simple one time pad algorithm
+	 *
+	 * @param simpleKey
+	 *            the byte array that holds the key
+	 * @param message
+	 *            the byte array with the data to encrypt or decrypt
+	 * @return The encrypted or decrypted byte array
+	 */
+	public static byte[] oneTimePadCrypt(byte[] simpleKey, byte[] message)
+	{
+		final byte[] encoded = new byte[message.length];
+		for (int index = 0; index < message.length; index++)
+		{
+			int keyIndex = index;
+			// prevent that key length is smaller than the length of the given byte array
+			// to encrypt or decrypt
+			if (index >= simpleKey.length)
+			{
+				keyIndex = message.length % (simpleKey.length - 1);
+			}
+			encoded[index] = (byte)(message[index] ^ simpleKey[keyIndex]);
+		}
+		return encoded;
+	}
+
 }

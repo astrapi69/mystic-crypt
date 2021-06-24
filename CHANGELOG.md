@@ -6,6 +6,8 @@ Version 7.8-SNAPSHOT
 
 ADDED:
 
+- new encryptor class OneTimePadEncryptor that can encrypt byte array with the one time pad algorithm
+- new decryptor class OneTimePadDecryptor that can decrypt byte array with the one time pad algorithm
 - new generic encryptor class PublicKeyGenericEncryptor that can encrypt serializable objects
 - new generic decryptor class PrivateKeyGenericDecryptor that can decrypt the byte array back to the serializable object
 - new encryptor class BaseByteArrayEncryptor that can encrypt byte array
@@ -15,7 +17,7 @@ CHANGED:
 
 - update of dependency randomizer version to 8.2
 - update of dependency file-worker to new version to 5.8
-- update of dependency jobj-core to new version to 3.7
+- update of dependency jobj-core to new version to 3.8
 - update of crypt-data dependency version to 7.7
 
 Version 7.7

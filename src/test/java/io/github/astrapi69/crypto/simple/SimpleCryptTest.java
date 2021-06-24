@@ -25,9 +25,13 @@
 package io.github.astrapi69.crypto.simple;
 
 import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertTrue;
 
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
+
+import java.security.SecureRandom;
+import java.util.Arrays;
 
 /**
  * The unit test class for the class {@link SimpleCrypt}
@@ -37,6 +41,21 @@ import org.testng.annotations.Test;
  */
 public class SimpleCryptTest
 {
+	/**
+	 * Test method for test the method {@link SimpleCrypt#oneTimePadCrypt(byte[], byte[])}
+	 */
+	@Test
+	public void testOneTimePad(){
+		byte[] encoded;
+		byte[] decoded;
+		byte[] secret = "top-secret".getBytes();
+		byte[] key = new byte[secret.length];
+
+		encoded = SimpleCrypt.oneTimePadCrypt(key, secret);
+		decoded = SimpleCrypt.oneTimePadCrypt(key, encoded);
+
+		assertTrue(Arrays.equals(secret, decoded));
+	}
 
 	/**
 	 * Test method for test the method {@link SimpleCrypt#encode(String)} and

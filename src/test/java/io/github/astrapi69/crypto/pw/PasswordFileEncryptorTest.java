@@ -99,7 +99,7 @@ public class PasswordFileEncryptorTest
 	 * @throws Exception
 	 *             is thrown if any error occurs on the execution
 	 */
-	@Test
+	@Test(enabled = false)
 	public void testEncryptBigFile() throws Exception
 	{
 		byte[] actual;
