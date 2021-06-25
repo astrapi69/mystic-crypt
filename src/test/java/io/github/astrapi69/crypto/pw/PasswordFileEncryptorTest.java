@@ -33,11 +33,11 @@ import org.testng.annotations.Test;
 
 import com.google.common.io.Files;
 
+import io.github.astrapi69.collections.array.ArrayFactory;
 import io.github.astrapi69.delete.DeleteFileExtensions;
+import io.github.astrapi69.random.object.RandomStringFactory;
 import io.github.astrapi69.search.PathFinder;
 import io.github.astrapi69.write.WriteFileExtensions;
-import io.github.astrapi69.collections.array.ArrayFactory;
-import io.github.astrapi69.random.object.RandomStringFactory;
 
 /**
  * The unit test class for the class {@link PasswordFileEncryptor}
@@ -84,10 +84,9 @@ public class PasswordFileEncryptorTest
 		encryptor = new PasswordFileEncryptor(password, encryptedCnstr);
 		encrypted = encryptor.encrypt(toEncrypt);
 		actual = Files.toByteArray(encryptedCnstr);
-		expected = ArrayFactory.newByteArray(6, -1, 90, -29, -121, 43, -47, -27, -64, -81,
-			-100, 3, -10, -112, 22, -78, 37, 76, -72, 63, -80, 125, -40, 99, 104, -106, -11, -97,
-			-22, 40, 21, 81, 113, -73, 119, 68, -46, 110, -97, -108, 10, -75, 122, 8, 51, 68, -58,
-			-35);
+		expected = ArrayFactory.newByteArray(6, -1, 90, -29, -121, 43, -47, -27, -64, -81, -100, 3,
+			-10, -112, 22, -78, 37, 76, -72, 63, -80, 125, -40, 99, 104, -106, -11, -97, -22, 40,
+			21, 81, 113, -73, 119, 68, -46, 110, -97, -108, 10, -75, 122, 8, 51, 68, -58, -35);
 		assertEquals(actual, expected);
 		// clean up...
 		DeleteFileExtensions.delete(encrypted);
@@ -114,8 +113,8 @@ public class PasswordFileEncryptorTest
 		WriteFileExtensions.string2File(encryptedCnstr, longString);
 		encryptor = new PasswordFileEncryptor(password);
 		encrypted = encryptor.encrypt(encryptedCnstr);
-//		actual = Files.toByteArray(encryptedCnstr);
-//		// clean up...
+		// actual = Files.toByteArray(encryptedCnstr);
+		// // clean up...
 		DeleteFileExtensions.delete(encrypted);
 		DeleteFileExtensions.delete(encryptedCnstr);
 	}

@@ -36,17 +36,18 @@ import javax.crypto.SecretKey;
 
 import org.testng.annotations.Test;
 
-import io.github.astrapi69.search.PathFinder;
 import io.github.astrapi69.crypto.algorithm.AesAlgorithm;
 import io.github.astrapi69.crypto.factories.SecretKeyFactoryExtensions;
 import io.github.astrapi69.crypto.key.reader.PrivateKeyReader;
 import io.github.astrapi69.crypto.model.CryptModel;
 import io.github.astrapi69.random.object.RandomStringFactory;
+import io.github.astrapi69.search.PathFinder;
 
 public class PrivateKeyDecryptorTest
 {
 
-	@Test public void testDecrypt() throws Exception
+	@Test
+	public void testDecrypt() throws Exception
 	{
 		String actual;
 		String expected;
@@ -63,7 +64,7 @@ public class PrivateKeyDecryptorTest
 		PrivateKeyDecryptor decryptor;
 		byte[] decrypted;
 
-		actual  = RandomStringFactory.newRandomLongString(10000000);
+		actual = RandomStringFactory.newRandomLongString(10000000);
 
 		testBytes = actual.getBytes("UTF-8");
 
@@ -75,12 +76,10 @@ public class PrivateKeyDecryptorTest
 
 		decryptModel = CryptModel.<Cipher, PrivateKey, byte[]> builder().key(privateKey).build();
 		encryptModel = CryptModel.<Cipher, PublicKey, byte[]> builder().key(publicKey).build();
-		symmetricKey = SecretKeyFactoryExtensions
-			.newSecretKey(AesAlgorithm.AES.getAlgorithm(), 128);
-		symmetricKeyModel = CryptModel.<Cipher, SecretKey, String>builder().key(symmetricKey)
-			.algorithm(AesAlgorithm.AES)
-			.operationMode(Cipher.ENCRYPT_MODE)
-			.build();
+		symmetricKey = SecretKeyFactoryExtensions.newSecretKey(AesAlgorithm.AES.getAlgorithm(),
+			128);
+		symmetricKeyModel = CryptModel.<Cipher, SecretKey, String> builder().key(symmetricKey)
+			.algorithm(AesAlgorithm.AES).operationMode(Cipher.ENCRYPT_MODE).build();
 
 		encryptor = new PublicKeyEncryptor(encryptModel, symmetricKeyModel);
 		assertNotNull(encryptor);

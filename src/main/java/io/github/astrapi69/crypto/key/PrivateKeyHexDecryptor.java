@@ -52,8 +52,8 @@ import io.github.astrapi69.crypto.hex.HexExtensions;
  * padding bytes, i.e. number of maximum bytes = key length in bits / 8 - 11.
  * 
  * @deprecated because of the above note this class is tagged as deprecated. Use instead the
- *             corresponding {@link PrivateKeyDecryptor}. This class will be removed
- *             in the next major release.
+ *             corresponding {@link PrivateKeyDecryptor}. This class will be removed in the next
+ *             major release.
  */
 public final class PrivateKeyHexDecryptor
 {

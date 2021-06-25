@@ -46,8 +46,7 @@ import io.github.astrapi69.crypto.model.AesRsaCryptModel;
 import io.github.astrapi69.crypto.model.CryptModel;
 
 /**
- * The class {@link PublicKeyEncryptor} can encrypt a byte array with his public
- * key.
+ * The class {@link PublicKeyEncryptor} can encrypt a byte array with his public key.
  */
 public class PublicKeyEncryptor extends AbstractEncryptor<Cipher, PublicKey, byte[]>
 	implements
@@ -59,8 +58,8 @@ public class PublicKeyEncryptor extends AbstractEncryptor<Cipher, PublicKey, byt
 	private CryptModel<Cipher, SecretKey, String> symmetricKeyModel;
 
 	/**
-	 * Instantiates a new {@link PublicKeyEncryptor} with the given
-	 * {@link CryptModel} for the public key and the given {@link CryptModel} for the symmetric key
+	 * Instantiates a new {@link PublicKeyEncryptor} with the given {@link CryptModel} for the
+	 * public key and the given {@link CryptModel} for the symmetric key
 	 *
 	 * @param model
 	 *            The crypt model

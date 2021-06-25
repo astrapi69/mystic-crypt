@@ -47,12 +47,10 @@ import io.github.astrapi69.crypto.model.AesRsaCryptModel;
 import io.github.astrapi69.crypto.model.CryptModel;
 
 /**
- * The class {@link PrivateKeyDecryptor} decrypts encrypted byte array the was
- * encrypted with the public key of the pendant private key of this class.
+ * The class {@link PrivateKeyDecryptor} decrypts encrypted byte array the was encrypted with the
+ * public key of the pendant private key of this class.
  */
-public class PrivateKeyDecryptor
-	extends
-		AbstractDecryptor<Cipher, PrivateKey, byte[]>
+public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey, byte[]>
 	implements
 		ByteArrayDecryptor
 {
@@ -61,8 +59,7 @@ public class PrivateKeyDecryptor
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Instantiates a new {@link PrivateKeyDecryptor} with the given
-	 * {@link CryptModel}.
+	 * Instantiates a new {@link PrivateKeyDecryptor} with the given {@link CryptModel}.
 	 *
 	 * @param model
 	 *            The crypt model.

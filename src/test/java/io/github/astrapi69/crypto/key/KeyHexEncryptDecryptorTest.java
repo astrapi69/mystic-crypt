@@ -47,9 +47,9 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import io.github.astrapi69.search.PathFinder;
 import io.github.astrapi69.crypto.key.reader.PrivateKeyReader;
 import io.github.astrapi69.crypto.key.reader.PublicKeyReader;
+import io.github.astrapi69.search.PathFinder;
 
 /**
  * Test class for {@link PublicKeyHexEncryptor} and {@link PrivateKeyHexDecryptor}

@@ -38,14 +38,17 @@ import io.github.astrapi69.crypto.api.ByteArrayEncryptor;
 import io.github.astrapi69.crypto.model.CryptModel;
 
 /**
- * The abstract class {@link AbstractByteArrayEncryptor} provides a base implementation for encrypting
- * byte arrays
+ * The abstract class {@link AbstractByteArrayEncryptor} provides a base implementation for
+ * encrypting byte arrays
  *
  * @author Asterios Raptis
  * @version 1.0
  */
-public abstract class AbstractByteArrayEncryptor extends AbstractEncryptor<Cipher, SecretKey, String>
-	implements ByteArrayEncryptor
+public abstract class AbstractByteArrayEncryptor
+	extends
+		AbstractEncryptor<Cipher, SecretKey, String>
+	implements
+		ByteArrayEncryptor
 {
 
 	/** The Constant serialVersionUID. */

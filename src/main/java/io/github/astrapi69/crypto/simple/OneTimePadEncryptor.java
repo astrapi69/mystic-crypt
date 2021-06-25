@@ -38,7 +38,7 @@ public class OneTimePadEncryptor implements ByteArrayEncryptor
 {
 
 	/**
-	 * The  key
+	 * The key
 	 */
 	private final byte[] key;
 

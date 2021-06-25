@@ -44,6 +44,7 @@ public class BaseByteArrayEnDecryptorTest
 
 	CryptModel<Cipher, SecretKey, String> cryptModel;
 	SecretKey secretKey;
+
 	/**
 	 * Sets up method will be invoked before every unit test method in this class
 	 *

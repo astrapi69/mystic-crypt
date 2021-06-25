@@ -54,8 +54,7 @@ public class PrivateKeyGenericDecryptor<T extends Serializable>
 	 */
 	public PrivateKeyGenericDecryptor(final CryptModel<Cipher, PrivateKey, byte[]> model)
 	{
-		this(RuntimeExceptionDecorator
-			.decorate(() -> new PrivateKeyDecryptor(model)));
+		this(RuntimeExceptionDecorator.decorate(() -> new PrivateKeyDecryptor(model)));
 	}
 
 	/**

@@ -50,8 +50,8 @@ import io.github.astrapi69.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
  * padding bytes, i.e. number of maximum bytes = key length in bits / 8 - 11.
  *
  * @deprecated because of the above note this class is tagged as deprecated. Use instead the
- *             corresponding {@link PublicKeyEncryptor}. This class will be removed
- *             in the next major release.
+ *             corresponding {@link PublicKeyEncryptor}. This class will be removed in the next
+ *             major release.
  */
 @Deprecated
 public final class PublicKeyHexEncryptor
