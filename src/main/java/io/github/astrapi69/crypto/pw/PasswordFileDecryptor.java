@@ -82,6 +82,10 @@ public class PasswordFileDecryptor implements FileDecryptor, Cryptor
 	 *
 	 * @param password
 	 *            The password
+	 * @param decryptedFile
+	 *            is the target of the result from the decryption, if null the default file will be
+	 *            created. If null the name convention is given name of the encrypted file with the
+	 *            extension '.decrypted'.
 	 */
 	public PasswordFileDecryptor(final String password, final File decryptedFile)
 	{
