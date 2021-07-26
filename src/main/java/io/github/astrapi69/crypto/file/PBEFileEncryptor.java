@@ -54,11 +54,16 @@ import io.github.astrapi69.crypto.model.CryptObjectDecorator;
 public class PBEFileEncryptor extends AbstractFileEncryptor
 {
 
+	/** The constant for the default encrypted file extension */
+	public static final String DEFAULT_ENCRYPTED_FILE_EXTENSION = ".enc";
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/** The encrypted file. */
 	private File encryptedFile;
+
+	/** The encrypted file extension */
+	private String encryptedFileExtension = DEFAULT_ENCRYPTED_FILE_EXTENSION;
 
 	/**
 	 * Instantiates a new {@link PBEFileEncryptor} object with the given {@link CryptModel}
@@ -118,6 +123,41 @@ public class PBEFileEncryptor extends AbstractFileEncryptor
 	}
 
 	/**
+	 * Instantiates a new {@link PBEFileEncryptor} object with the given {@link CryptModel} and the
+	 * given file
+	 *
+	 * @param model
+	 *            the model
+	 * @param encryptedFile
+	 *            The file that is the target of the result from the encryption, if null the default
+	 *            file will be created. If null the name convention is given name of the file that
+	 *            has to be encrypted with the extension '.enc'.
+	 * @param encryptedFileExtension
+	 *            the encrypted file extension
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchPaddingException
+	 *             the no such padding exception
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported.
+	 */
+	public PBEFileEncryptor(final CryptModel<Cipher, String, String> model,
+		final File encryptedFile, String encryptedFileExtension)
+		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+	{
+		super(model);
+		this.encryptedFile = encryptedFile;
+		this.encryptedFileExtension = encryptedFileExtension;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
@@ -126,7 +166,8 @@ public class PBEFileEncryptor extends AbstractFileEncryptor
 		if (encryptedFile == null)
 		{
 			final String filename = FilenameUtils.getBaseName(toEncrypt.getName());
-			encryptedFile = newEncryptedFile(toEncrypt.getParent(), filename + ".enc");
+			encryptedFile = newEncryptedFile(toEncrypt.getParent(),
+				filename + encryptedFileExtension);
 		}
 		List<CryptObjectDecorator<String>> decorators = getModel().getDecorators();
 		if (decorators != null && !decorators.isEmpty())

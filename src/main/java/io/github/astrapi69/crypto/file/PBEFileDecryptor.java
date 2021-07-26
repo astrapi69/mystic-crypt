@@ -59,11 +59,16 @@ import io.github.astrapi69.write.WriteFileExtensions;
 public class PBEFileDecryptor extends AbstractFileDecryptor
 {
 
+	/** The constant for the default decrypted file extension */
+	public static final String DEFAULT_DECRYPTED_FILE_EXTENSION = ".decrypted";
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/** The decrypted file. */
 	private File decryptedFile;
+
+	/** The decrypted file extension */
+	private String decryptedFileExtension = DEFAULT_DECRYPTED_FILE_EXTENSION;
 
 	/**
 	 * Instantiates a new {@link PBEFileDecryptor} object
@@ -122,6 +127,40 @@ public class PBEFileDecryptor extends AbstractFileDecryptor
 	}
 
 	/**
+	 * Instantiates a new file decryptor.
+	 *
+	 * @param model
+	 *            the model
+	 * @param decryptedFile
+	 *            is the target of the result from the decryption, if null the default file will be
+	 *            created. If null the name convention is given name of the encrypted file with the
+	 *            extension '.decrypted'.
+	 * @param decryptedFileExtension
+	 *            the decrypted file extension
+	 * @throws InvalidKeyException
+	 *             the invalid key exception
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchPaddingException
+	 *             the no such padding exception
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported.
+	 */
+	public PBEFileDecryptor(final CryptModel<Cipher, String, String> model,
+		final File decryptedFile, String decryptedFileExtension)
+		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+	{
+		super(model);
+		this.decryptedFile = decryptedFile;
+		this.decryptedFileExtension = decryptedFileExtension;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
@@ -174,7 +213,8 @@ public class PBEFileDecryptor extends AbstractFileDecryptor
 		if (decryptedFile == null)
 		{
 			final String filename = FilenameUtils.getBaseName(encrypted.getName());
-			decryptedFile = newDecryptedFile(encrypted.getParent(), filename + ".decrypted");
+			decryptedFile = newDecryptedFile(encrypted.getParent(),
+				filename + decryptedFileExtension);
 		}
 	}
 

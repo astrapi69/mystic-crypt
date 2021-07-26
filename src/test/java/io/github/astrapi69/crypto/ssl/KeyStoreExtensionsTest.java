@@ -54,7 +54,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import de.alpharogroup.collections.array.ArrayFactory;
+import io.github.astrapi69.collections.array.ArrayFactory;
 import io.github.astrapi69.crypto.algorithm.KeyPairGeneratorAlgorithm;
 import io.github.astrapi69.crypto.algorithm.KeystoreType;
 import io.github.astrapi69.crypto.factories.KeyPairFactory;
@@ -274,7 +274,7 @@ public class KeyStoreExtensionsTest
 
 	/**
 	 * Test method for
-	 * {@link de.alpharogroup.crypto.key.KeyStoreExtensions#deleteAlias(File, String, String)}
+	 * {@link io.github.astrapi69.crypto.key.KeyStoreExtensions#deleteAlias(File, String, String)}
 	 */
 	@Test
 	public void testDeleteAlias() throws Exception

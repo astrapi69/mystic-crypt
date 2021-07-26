@@ -15,10 +15,14 @@ ADDED:
 
 CHANGED:
 
+- update gradle to new version 7.1
+- changed all dependencies from groupid de.alpharogroup to new groupid io.github.astrapi69
+- update gradle-plugin dependency of gradle.plugin.com.hierynomus.gradle.plugins:license-gradle-plugin to new version 0.16.1
 - update of dependency randomizer version to 8.2
 - update of dependency file-worker to new version to 5.8
 - update of dependency jobj-core to new version to 3.8
 - update of crypt-data dependency version to 7.7
+- update of test dependency test-objects to new version 5.5
 
 Version 7.7
 -------------
