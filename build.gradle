@@ -196,7 +196,7 @@ dependencies {
     implementation("org.bouncycastle:bcprov-jdk15on:$bouncycastleVersion")
     implementation("org.bouncycastle:bcprov-ext-jdk15on:$bouncycastleVersion")
     implementation("org.bouncycastle:bcpkix-jdk15on:$bouncycastleVersion")
-    testImplementation("de.alpharogroup:xml-extensions:$xmlExtensionsVersion")
+    testImplementation("io.github.astrapi69:json-extensions:$jsonExtensionsVersion")
     testImplementation("io.github.astrapi69:checksum-up:$checksumUpVersion")
     testImplementation("io.github.astrapi69:test-objects:$testObjectsVersion")
     testImplementation("io.github.astrapi69:silly-io:$sillyIoVersion")

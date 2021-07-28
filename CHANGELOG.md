@@ -12,17 +12,20 @@ ADDED:
 - new generic decryptor class PrivateKeyGenericDecryptor that can decrypt the byte array back to the serializable object
 - new encryptor class BaseByteArrayEncryptor that can encrypt byte array
 - new decryptor class BaseByteArrayDecryptor that can decrypt byte array
+- new test dependency json-extensions in version 1.1
 
 CHANGED:
 
 - update gradle to new version 7.1
 - changed all dependencies from groupid de.alpharogroup to new groupid io.github.astrapi69
 - update gradle-plugin dependency of gradle.plugin.com.hierynomus.gradle.plugins:license-gradle-plugin to new version 0.16.1
-- update of dependency randomizer version to 8.2
-- update of dependency file-worker to new version to 5.8
-- update of dependency jobj-core to new version to 3.8
-- update of crypt-data dependency version to 7.7
+- update of dependency randomizer version to 8.3
+- update of dependency file-worker to new version 5.8
+- update of dependency jobj-core to new version 3.8
+- update of dependency crypt-data to new version 7.7
 - update of test dependency test-objects to new version 5.5
+- update of dependency commons-io to new version 2.11.0
+- removed unused test dependency xml-extensions
 
 Version 7.7
 -------------

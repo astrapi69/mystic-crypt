@@ -37,8 +37,8 @@ import javax.crypto.SecretKey;
 
 import org.testng.annotations.Test;
 
-import de.alpharogroup.xml.json.JsonStringToObjectExtensions;
-import de.alpharogroup.xml.json.ObjectToJsonExtensions;
+import io.github.astrapi69.json.JsonStringToObjectExtensions;
+import io.github.astrapi69.json.ObjectToJsonExtensions;
 import io.github.astrapi69.crypto.algorithm.AesAlgorithm;
 import io.github.astrapi69.crypto.factories.SecretKeyFactoryExtensions;
 import io.github.astrapi69.crypto.key.reader.PrivateKeyReader;
