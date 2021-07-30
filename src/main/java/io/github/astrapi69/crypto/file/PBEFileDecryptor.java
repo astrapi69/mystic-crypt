@@ -50,6 +50,7 @@ import io.github.astrapi69.crypto.factories.CipherFactory;
 import io.github.astrapi69.crypto.io.CryptoCipherOutputStream;
 import io.github.astrapi69.crypto.model.CryptModel;
 import io.github.astrapi69.crypto.model.CryptObjectDecorator;
+import io.github.astrapi69.delete.DeleteFileExtensions;
 import io.github.astrapi69.read.ReadFileExtensions;
 import io.github.astrapi69.write.WriteFileExtensions;
 
@@ -63,10 +64,14 @@ public class PBEFileDecryptor extends AbstractFileDecryptor
 	public static final String DEFAULT_DECRYPTED_FILE_EXTENSION = ".decrypted";
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
-
+	/**
+	 * If this flag is true the given encrypted file that will be given for decryption will be
+	 * deleted and only the decrypted file will be the result, otherwise both files will not be
+	 * deleted
+	 */
+	private final boolean deleteEncryptedFileAfterDecryption;
 	/** The decrypted file. */
 	private File decryptedFile;
-
 	/** The decrypted file extension */
 	private String decryptedFileExtension = DEFAULT_DECRYPTED_FILE_EXTENSION;
 
@@ -92,7 +97,7 @@ public class PBEFileDecryptor extends AbstractFileDecryptor
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		super(model);
+		this(model, null);
 	}
 
 	/**
@@ -122,8 +127,7 @@ public class PBEFileDecryptor extends AbstractFileDecryptor
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		super(model);
-		this.decryptedFile = decryptedFile;
+		this(model, decryptedFile, DEFAULT_DECRYPTED_FILE_EXTENSION);
 	}
 
 	/**
@@ -155,9 +159,47 @@ public class PBEFileDecryptor extends AbstractFileDecryptor
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
+		this(model, decryptedFile, DEFAULT_DECRYPTED_FILE_EXTENSION, false);
+	}
+
+	/**
+	 * Instantiates a new file decryptor.
+	 *
+	 * @param model
+	 *            the model
+	 * @param decryptedFile
+	 *            is the target of the result from the decryption, if null the default file will be
+	 *            created. If null the name convention is given name of the encrypted file with the
+	 *            extension '.decrypted'.
+	 * @param decryptedFileExtension
+	 *            the decrypted file extension
+	 * @param deleteEncryptedFileAfterDecryption
+	 *            if this flag is true the given encrypted file that will be given for decryption
+	 *            will be deleted and only the decrypted file will be the result, otherwise both
+	 *            files will not be deleted
+	 * @throws InvalidKeyException
+	 *             the invalid key exception
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchPaddingException
+	 *             the no such padding exception
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported.
+	 */
+	public PBEFileDecryptor(final CryptModel<Cipher, String, String> model,
+		final File decryptedFile, final String decryptedFileExtension,
+		final boolean deleteEncryptedFileAfterDecryption)
+		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+	{
 		super(model);
 		this.decryptedFile = decryptedFile;
 		this.decryptedFileExtension = decryptedFileExtension;
+		this.deleteEncryptedFileAfterDecryption = deleteEncryptedFileAfterDecryption;
 	}
 
 	/**
@@ -204,6 +246,10 @@ public class PBEFileDecryptor extends AbstractFileDecryptor
 			}
 			WriteFileExtensions.writeStringToFile(decryptedFile, decryptedFileString,
 				Charset.forName("UTF-8").name());
+		}
+		if (this.deleteEncryptedFileAfterDecryption)
+		{
+			DeleteFileExtensions.delete(encrypted);
 		}
 	}
 

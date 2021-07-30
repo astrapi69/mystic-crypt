@@ -25,6 +25,8 @@
 package io.github.astrapi69.crypto.file;
 
 import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertFalse;
+import static org.testng.AssertJUnit.assertTrue;
 
 import java.io.File;
 
@@ -35,6 +37,7 @@ import org.testng.annotations.Test;
 
 import io.github.astrapi69.AbstractTestCase;
 import io.github.astrapi69.checksum.FileChecksumExtensions;
+import io.github.astrapi69.copy.CopyFileExtensions;
 import io.github.astrapi69.crypto.algorithm.MdAlgorithm;
 import io.github.astrapi69.crypto.algorithm.SunJCEAlgorithm;
 import io.github.astrapi69.crypto.model.CryptModel;
@@ -71,8 +74,41 @@ public class PBEFileDecryptorTest extends AbstractTestCase<String, String>
 			.decorator(StringDecorator.builder().prefix("$").suffix("?").build()).build();
 	}
 
+	/**
+	 * Test method for the encrpytion with the class {@link PBEFileEncryptor} and decryption with
+	 * the class {@link PBEFileDecryptor} with the constructor with model
+	 *
+	 * @throws Exception
+	 *             is thrown if any error occurs on the execution
+	 */
 	@Test
-	public void testDecrypt() throws Exception
+	public void testDecryptWithModel() throws Exception
+	{
+		// new scenario...
+		encryptor = new PBEFileEncryptor(cryptModel);
+		encrypted = encryptor.encrypt(toEncrypt);
+
+		decryptor = new PBEFileDecryptor(cryptModel);
+
+		decrypted = decryptor.decrypt(encrypted);
+
+		expected = FileChecksumExtensions.getChecksum(toEncrypt, MdAlgorithm.MD5.name());
+		actual = FileChecksumExtensions.getChecksum(decrypted, MdAlgorithm.MD5.name());
+		assertEquals(actual, expected);
+		// clean up...
+		DeleteFileExtensions.delete(encrypted);
+		DeleteFileExtensions.delete(decrypted);
+	}
+
+	/**
+	 * Test method for the encrpytion with the class {@link PBEFileEncryptor} and decryption with
+	 * the class {@link PBEFileDecryptor} with the constructor with model and file
+	 *
+	 * @throws Exception
+	 *             is thrown if any error occurs on the execution
+	 */
+	@Test
+	public void testDecryptWithModelAndFile() throws Exception
 	{
 		// new scenario...
 		File encryptedCnstr = new File(cryptDir, "encryptedCnstr.enc");
@@ -87,6 +123,82 @@ public class PBEFileDecryptorTest extends AbstractTestCase<String, String>
 		expected = FileChecksumExtensions.getChecksum(toEncrypt, MdAlgorithm.MD5.name());
 		actual = FileChecksumExtensions.getChecksum(decrypted, MdAlgorithm.MD5.name());
 		assertEquals(actual, expected);
+		// clean up...
+		DeleteFileExtensions.delete(encrypted);
+		DeleteFileExtensions.delete(decrypted);
+	}
+
+	/**
+	 * Test method for the encrpytion with the class {@link PBEFileEncryptor} and decryption with
+	 * the class {@link PBEFileDecryptor} with the constructor with model, file and custom file
+	 * extension
+	 *
+	 * @throws Exception
+	 *             is thrown if any error occurs on the execution
+	 */
+	@Test
+	public void testDecryptWithModelAndFileAndWithCustomFileExtension() throws Exception
+	{
+		// new scenario...
+		String customEncryptedFileExtension;
+		String customDecryptedFileExtension;
+
+		customEncryptedFileExtension = ".encfoo";
+		customDecryptedFileExtension = ".decryptfoo";
+		File encryptedCnstr = new File(cryptDir, "encryptedCnstr" + customEncryptedFileExtension);
+		File decryptedCnstr = new File(cryptDir, "decryptedCnstr" + customDecryptedFileExtension);
+		encryptor = new PBEFileEncryptor(cryptModel, encryptedCnstr, customEncryptedFileExtension);
+		encrypted = encryptor.encrypt(toEncrypt);
+
+		decryptor = new PBEFileDecryptor(cryptModel, decryptedCnstr, customDecryptedFileExtension);
+
+		decrypted = decryptor.decrypt(encrypted);
+
+		expected = FileChecksumExtensions.getChecksum(toEncrypt, MdAlgorithm.MD5.name());
+		actual = FileChecksumExtensions.getChecksum(decrypted, MdAlgorithm.MD5.name());
+		assertEquals(actual, expected);
+		// clean up...
+		DeleteFileExtensions.delete(encrypted);
+		DeleteFileExtensions.delete(decrypted);
+	}
+
+	/**
+	 * Test method for the encrpytion with the class {@link PBEFileEncryptor} and decryption with
+	 * the class {@link PBEFileDecryptor} with the constructor with model, file, custom file
+	 * extension and the delete flag
+	 *
+	 * @throws Exception
+	 *             is thrown if any error occurs on the execution
+	 */
+	@Test
+	public void testDecryptWithModelAndFileAndWithCustomFileExtensionAndDeleteFlag()
+		throws Exception
+	{
+		// new scenario...
+		String customEncryptedFileExtension;
+		String customDecryptedFileExtension;
+
+		customEncryptedFileExtension = ".encfoo";
+		customDecryptedFileExtension = ".decryptfoo";
+		File encryptedCnstr = new File(cryptDir, "encryptedCnstr" + customEncryptedFileExtension);
+		File decryptedCnstr = new File(cryptDir, "decryptedCnstr" + customDecryptedFileExtension);
+		encryptor = new PBEFileEncryptor(cryptModel, encryptedCnstr, customEncryptedFileExtension,
+			true);
+		File copyOfToEncrypt = new File(toEncrypt.getParent(), "copyOfToEncrypt.txt");
+		boolean copyFileSuccessful = CopyFileExtensions.copyFile(toEncrypt, copyOfToEncrypt);
+		assertTrue(copyFileSuccessful);
+		encrypted = encryptor.encrypt(copyOfToEncrypt);
+		assertFalse(copyOfToEncrypt.exists());
+
+		decryptor = new PBEFileDecryptor(cryptModel, decryptedCnstr, customDecryptedFileExtension,
+			true);
+
+		File copyOfToEncrypted = new File(toEncrypt.getParent(),
+			"copyOfEncryptedCnstr" + customEncryptedFileExtension);
+		copyFileSuccessful = CopyFileExtensions.copyFile(toEncrypt, copyOfToEncrypted);
+		assertTrue(copyFileSuccessful);
+		decrypted = decryptor.decrypt(copyOfToEncrypted);
+		assertFalse(copyOfToEncrypted.exists());
 		// clean up...
 		DeleteFileExtensions.delete(encrypted);
 		DeleteFileExtensions.delete(decrypted);

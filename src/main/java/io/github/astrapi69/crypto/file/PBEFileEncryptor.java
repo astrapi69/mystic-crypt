@@ -47,6 +47,7 @@ import io.github.astrapi69.crypto.factories.CipherFactory;
 import io.github.astrapi69.crypto.io.CryptoCipherInputStream;
 import io.github.astrapi69.crypto.model.CryptModel;
 import io.github.astrapi69.crypto.model.CryptObjectDecorator;
+import io.github.astrapi69.delete.DeleteFileExtensions;
 
 /**
  * The class {@link PBEFileEncryptor} can encrypt files with the given crypt model.
@@ -58,10 +59,13 @@ public class PBEFileEncryptor extends AbstractFileEncryptor
 	public static final String DEFAULT_ENCRYPTED_FILE_EXTENSION = ".enc";
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
-
+	/**
+	 * If this flag is true the given file that will be given for encryption will be deleted and
+	 * only the encrypted file will be the result, otherwise both files will not be deleted
+	 */
+	private final boolean deleteFileAfterEncryption;
 	/** The encrypted file. */
 	private File encryptedFile;
-
 	/** The encrypted file extension */
 	private String encryptedFileExtension = DEFAULT_ENCRYPTED_FILE_EXTENSION;
 
@@ -118,8 +122,7 @@ public class PBEFileEncryptor extends AbstractFileEncryptor
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		super(model);
-		this.encryptedFile = encryptedFile;
+		this(model, encryptedFile, DEFAULT_ENCRYPTED_FILE_EXTENSION);
 	}
 
 	/**
@@ -152,9 +155,48 @@ public class PBEFileEncryptor extends AbstractFileEncryptor
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
+		this(model, encryptedFile, encryptedFileExtension, false);
+	}
+
+	/**
+	 * Instantiates a new {@link PBEFileEncryptor} object with the given {@link CryptModel} and the
+	 * given file
+	 *
+	 * @param model
+	 *            the model
+	 * @param encryptedFile
+	 *            The file that is the target of the result from the encryption, if null the default
+	 *            file will be created. If null the name convention is given name of the file that
+	 *            has to be encrypted with the extension '.enc'.
+	 * @param encryptedFileExtension
+	 *            the encrypted file extension
+	 * @param deleteFileAfterEncryption
+	 *            if this flag is true the given file that will be given for encryption will be
+	 *            deleted and only the encrypted file will be the result, otherwise both files will
+	 *            not be deleted
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchPaddingException
+	 *             the no such padding exception
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported.
+	 */
+	public PBEFileEncryptor(final CryptModel<Cipher, String, String> model,
+		final File encryptedFile, final String encryptedFileExtension,
+		final boolean deleteFileAfterEncryption)
+		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+	{
 		super(model);
 		this.encryptedFile = encryptedFile;
 		this.encryptedFileExtension = encryptedFileExtension;
+		this.deleteFileAfterEncryption = deleteFileAfterEncryption;
 	}
 
 	/**
@@ -187,6 +229,10 @@ public class PBEFileEncryptor extends AbstractFileEncryptor
 			{
 				out.write(c);
 			}
+		}
+		if (this.deleteFileAfterEncryption)
+		{
+			DeleteFileExtensions.delete(toEncrypt);
 		}
 		return encryptedFile;
 	}

@@ -13,6 +13,10 @@ ADDED:
 - new encryptor class BaseByteArrayEncryptor that can encrypt byte array
 - new decryptor class BaseByteArrayDecryptor that can decrypt byte array
 - new test dependency json-extensions in version 1.1
+- new field in class PBEFileEncryptor for set a custom file extension for the encrypted file
+- new flag field in class PBEFileEncryptor if true the given file that will be given for encryption will be deleted
+- new field in class PBEFileDecryptor for set a custom file extension for the decrypted file
+- new flag field in class PBEFileDecryptor if true the given encrypted file that will be given for decryption will be deleted
 
 CHANGED:
 
