@@ -13,7 +13,72 @@
 
 The target of this parent project is to make encryption and decryption as simple as possible
 
-If you like this project put a ⭐ and donate
+> Please support this project by simply putting a Github <!-- Place this tag where you want the button to render. -->
+<a class="github-button" href="https://github.com/astrapi69/mystic-crypt" data-icon="octicon-star" aria-label="Star astrapi69/mystic-crypt on GitHub">Star ⭐</a>
+>
+> Share this library with friends on Twitter and everywhere else you can
+>
+> If you love this project [![donation](https://img.shields.io/badge/donate-❤-ff2244.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GVBTWLRAZ7HB8)
+
+## License
+
+The source code comes under the liberal MIT License, making mystic-crypt great for all types of applications.
+
+## Maven dependency
+
+Maven dependency is now available on sonatype.
+Check out [sonatype repository](https://oss.sonatype.org/index.html#nexus-search;quick~mystic-crypt) for latest snapshots and releases.
+
+You can first define the version properties and add than the following maven dependency to your project `pom.xml` if you want to import the core functionality of mystic-crypt:
+
+	<properties>
+			...
+		<!-- MYSTIC-CRYPT version -->
+		<mystic-crypt.version>7.8</mystic-crypt.version>
+			...
+	</properties>
+			...
+		<dependencies>
+			...
+			<!-- MYSTIC-CRYPT DEPENDENCY -->
+			<dependency>
+				<groupId>io.github.astrapi69</groupId>
+				<artifactId>mystic-crypt</artifactId>
+				<version>${mystic-crypt.version}</version>
+			</dependency>
+			...
+		</dependencies>	
+
+## gradle dependency
+
+You can first define the version in the ext section and add than the following gradle dependency to
+your project `build.gradle` if you want to import the core functionality of mystic-crypt:
+
+define version in file gradle.properties
+
+```
+mysticCryptVersion=7.8
+```
+
+or in build.gradle ext area
+
+```
+ext {
+			...
+    mysticCryptVersion = "7.8"
+			...
+}
+```
+
+and then add the dependency to the dependencies area
+
+```
+dependencies {
+			...
+	implementation("io.github.astrapi69:mystic-crypt:$mysticCryptVersion")
+			...
+}
+```
 
 ## Note
 
@@ -96,66 +161,6 @@ or over the donation buttons at the top.
 Encryption and decryption processes are always executed in the backround so it is a black box for the user. If you want to 
 see this library in action you can download this [gui client](https://github.com/astrapi69/mystic-crypt-ui) and see some features
 described above.
- 
-## License
-
-The source code comes under the liberal MIT License, making mystic-crypt great for all types of applications.
-
-## Maven dependency
-
-Maven dependency is now available on sonatype.
-Check out [sonatype repository](https://oss.sonatype.org/index.html#nexus-search;quick~mystic-crypt) for latest snapshots and releases.
-
-You can first define the version properties and add than the following maven dependency to your project `pom.xml` if you want to import the core functionality of mystic-crypt:
-
-	<properties>
-			...
-		<!-- MYSTIC-CRYPT version -->
-		<mystic-crypt.version>7.7</mystic-crypt.version>
-			...
-	</properties>
-			...
-		<dependencies>
-			...
-			<!-- MYSTIC-CRYPT DEPENDENCY -->
-			<dependency>
-				<groupId>io.github.astrapi69</groupId>
-				<artifactId>mystic-crypt</artifactId>
-				<version>${mystic-crypt.version}</version>
-			</dependency>
-			...
-		</dependencies>	
-			
-## gradle dependency
-
-You can first define the version in the ext section and add than the following gradle dependency to 
-your project `build.gradle` if you want to import the core functionality of mystic-crypt:
-
-define version in file gradle.properties
-
-```
-mysticCryptVersion=7.7
-```
-
-or in build.gradle ext area
-
-```
-ext {
-			...
-    mysticCryptVersion = "7.7"
-			...
-}
-```
-
-and then add the dependency to the dependencies area
-
-```
-dependencies {
-			...
-	implementation("io.github.astrapi69:mystic-crypt:$mysticCryptVersion")
-			...
-}
-```
 
 ## Semantic Versioning
 
