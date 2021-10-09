@@ -4,6 +4,11 @@
 Version 7.9-SNAPSHOT
 -------------
 
+ADDED:
+
+- new encryptor class CharacterSetEncryptor that can encrypt string objects with the character set key
+- new decryptor class CharacterSetDecryptor that can decrypt integer list with the character set key algorithm
+
 Version 7.8
 -------------
 

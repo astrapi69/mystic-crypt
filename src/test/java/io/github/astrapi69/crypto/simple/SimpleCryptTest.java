@@ -40,6 +40,7 @@ import org.testng.annotations.Test;
  */
 public class SimpleCryptTest
 {
+
 	/**
 	 * Test method for test the method {@link SimpleCrypt#oneTimePadCrypt(byte[], byte[])}
 	 */
