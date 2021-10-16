@@ -25,15 +25,15 @@
 package io.github.astrapi69.crypto.simple;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import io.github.astrapi69.collections.list.ListFactory;
-import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 
+import io.github.astrapi69.collections.CollectionExtensions;
 import io.github.astrapi69.collections.array.ArrayFactory;
+import io.github.astrapi69.collections.list.ListFactory;
 
 /**
  * The unit test class for the class {@link CharacterSetEncryptor}
@@ -42,7 +42,7 @@ public class CharacterSetEncryptorTest
 {
 
 	/**
-	 * Test method for the {@link CharacterSetEncryptor#encrypt(String)}  method
+	 * Test method for the {@link CharacterSetEncryptor#encrypt(String)} method
 	 *
 	 * @throws Exception
 	 *             is thrown if a security error occurs
@@ -50,14 +50,24 @@ public class CharacterSetEncryptorTest
 	@Test
 	public void testEncrypt() throws Exception
 	{
-
 		List<Integer> actual;
 		List<Integer> expected;
-		String text = "Lorem ipsum dolor sit amet, sea consul verterem perfecto id. Alii prompta electram te nec, at minimum copiosae quo. Eos iudico nominati oportere ei, usu at dicta legendos. In nostrum insolens disputando pro, iusto equidem ius id.";
-		List<Character> uniqueCharacters = CharacterSetCrypt.newCharacterList(text);
-		CharacterSetEncryptor encryptor = new CharacterSetEncryptor(uniqueCharacters);
+		List<Character> randomDefinedOrderCharacters;
+		List<Character> expectedUniqueCharacters;
+		String text;
+		List<Character> uniqueCharacters;
+		CharacterSetEncryptor encryptor;
+		// new scenario with ordered character set...
+		char[] expectedChars = ArrayFactory.newCharArray(' ', ',', '.', 'A', 'E', 'I', 'L', 'a',
+			'c', 'd', 'e', 'f', 'g', 'i', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v');
+		expectedUniqueCharacters = ListFactory.newCharacterArrayList(null, expectedChars);
+
+		text = "Lorem ipsum dolor sit amet, sea consul verterem perfecto id. Alii prompta electram te nec, at minimum copiosae quo. Eos iudico nominati oportere ei, usu at dicta legendos. In nostrum insolens disputando pro, iusto equidem ius id.";
+		uniqueCharacters = CharacterSetCrypt.newCharacterList(text);
+		assertTrue(
+			CollectionExtensions.isEqualCollection(uniqueCharacters, expectedUniqueCharacters));
+		encryptor = new CharacterSetEncryptor(uniqueCharacters);
 		actual = encryptor.encrypt(text);
-		System.out.println(actual);
 		expected = ListFactory.newArrayList(6, 17, 20, 10, 15, 0, 13, 18, 21, 23, 15, 0, 9, 17, 14,
 			17, 20, 0, 21, 13, 22, 0, 7, 15, 10, 22, 1, 0, 21, 10, 7, 0, 8, 17, 16, 21, 23, 14, 0,
 			24, 10, 20, 22, 10, 20, 10, 15, 0, 18, 10, 20, 11, 10, 8, 22, 17, 0, 13, 9, 2, 0, 3, 14,
@@ -68,6 +78,26 @@ public class CharacterSetEncryptorTest
 			22, 7, 0, 14, 10, 12, 10, 16, 9, 17, 21, 2, 0, 5, 16, 0, 16, 17, 21, 22, 20, 23, 15, 0,
 			13, 16, 21, 17, 14, 10, 16, 21, 0, 9, 13, 21, 18, 23, 22, 7, 16, 9, 17, 0, 18, 20, 17,
 			1, 0, 13, 23, 21, 22, 17, 0, 10, 19, 23, 13, 9, 10, 15, 0, 13, 23, 21, 0, 13, 9, 2);
-		AssertJUnit.assertEquals(actual, expected);
+		assertEquals(actual, expected);
+		// new scenario with random ordered character set...
+		char[] randomDefinedOrderChars = ArrayFactory.newCharArray('f', ' ', 'p', 'E', '.', 's',
+			'e', 't', 'A', 'v', 'd', 'c', 'a', 'o', 'q', 'r', 'L', 'g', 'u', 'm', 'l', 'I', 'i',
+			',', 'n');
+		randomDefinedOrderCharacters = ListFactory.newCharacterArrayList(null,
+			randomDefinedOrderChars);
+		encryptor = new CharacterSetEncryptor(randomDefinedOrderCharacters);
+		actual = encryptor.encrypt(text);
+		expected = ListFactory.newArrayList(16, 13, 15, 6, 19, 1, 22, 2, 5, 18, 19, 1, 10, 13, 20,
+			13, 15, 1, 5, 22, 7, 1, 12, 19, 6, 7, 23, 1, 5, 6, 12, 1, 11, 13, 24, 5, 18, 20, 1, 9,
+			6, 15, 7, 6, 15, 6, 19, 1, 2, 6, 15, 0, 6, 11, 7, 13, 1, 22, 10, 4, 1, 8, 20, 22, 22, 1,
+			2, 15, 13, 19, 2, 7, 12, 1, 6, 20, 6, 11, 7, 15, 12, 19, 1, 7, 6, 1, 24, 6, 11, 23, 1,
+			12, 7, 1, 19, 22, 24, 22, 19, 18, 19, 1, 11, 13, 2, 22, 13, 5, 12, 6, 1, 14, 18, 13, 4,
+			1, 3, 13, 5, 1, 22, 18, 10, 22, 11, 13, 1, 24, 13, 19, 22, 24, 12, 7, 22, 1, 13, 2, 13,
+			15, 7, 6, 15, 6, 1, 6, 22, 23, 1, 18, 5, 18, 1, 12, 7, 1, 10, 22, 11, 7, 12, 1, 20, 6,
+			17, 6, 24, 10, 13, 5, 4, 1, 21, 24, 1, 24, 13, 5, 7, 15, 18, 19, 1, 22, 24, 5, 13, 20,
+			6, 24, 5, 1, 10, 22, 5, 2, 18, 7, 12, 24, 10, 13, 1, 2, 15, 13, 23, 1, 22, 18, 5, 7, 13,
+			1, 6, 14, 18, 22, 10, 6, 19, 1, 22, 18, 5, 1, 22, 10, 4);
+		assertEquals(actual, expected);
 	}
+
 }

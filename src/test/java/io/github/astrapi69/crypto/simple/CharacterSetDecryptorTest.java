@@ -25,10 +25,15 @@
 package io.github.astrapi69.crypto.simple;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 import java.util.List;
 
+import io.github.astrapi69.collections.list.ListFactory;
 import org.testng.annotations.Test;
+
+import io.github.astrapi69.collections.CollectionExtensions;
+import io.github.astrapi69.collections.array.ArrayFactory;
 
 /**
  * The unit test class for the class {@link CharacterSetDecryptor}
@@ -47,12 +52,38 @@ public class CharacterSetDecryptorTest
 	{
 		String actual;
 		String expected;
-		String text = "Lorem ipsum dolor sit amet, sea consul verterem perfecto id. Alii prompta electram te nec, at minimum copiosae quo. Eos iudico nominati oportere ei, usu at dicta legendos. In nostrum insolens disputando pro, iusto equidem ius id.";
-		List<Character> uniqueCharacters = CharacterSetCrypt.newCharacterList(text);
-		List<Integer> indexesList = CharacterSetCrypt.toIndexList(text, uniqueCharacters);
-		CharacterSetDecryptor decryptor = new CharacterSetDecryptor(uniqueCharacters);
-		decryptor.decrypt(indexesList);
-		actual = decryptor.decrypt(indexesList);
+		List<Integer> encryptedIntegerList;
+		List<Character> randomDefinedOrderCharacters;
+		List<Character> expectedUniqueCharacters;
+		String text;
+		List<Character> uniqueCharacters;
+		CharacterSetEncryptor encryptor;
+		CharacterSetDecryptor decryptor;
+		// new scenario with ordered character set...
+		char[] expectedChars = ArrayFactory.newCharArray(' ', ',', '.', 'A', 'E', 'I', 'L', 'a',
+			'c', 'd', 'e', 'f', 'g', 'i', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v');
+		expectedUniqueCharacters = ListFactory.newCharacterArrayList(null, expectedChars);
+
+		text = "Lorem ipsum dolor sit amet, sea consul verterem perfecto id. Alii prompta electram te nec, at minimum copiosae quo. Eos iudico nominati oportere ei, usu at dicta legendos. In nostrum insolens disputando pro, iusto equidem ius id.";
+		uniqueCharacters = CharacterSetCrypt.newCharacterList(text);
+		assertTrue(
+			CollectionExtensions.isEqualCollection(uniqueCharacters, expectedUniqueCharacters));
+		encryptor = new CharacterSetEncryptor(uniqueCharacters);
+		encryptedIntegerList = encryptor.encrypt(text);
+		decryptor = new CharacterSetDecryptor(uniqueCharacters);
+		actual = decryptor.decrypt(encryptedIntegerList);
+		expected = text;
+		assertEquals(actual, expected);
+		// new scenario with random ordered character set...
+		char[] randomDefinedOrderChars = ArrayFactory.newCharArray('f', ' ', 'p', 'E', '.', 's',
+			'e', 't', 'A', 'v', 'd', 'c', 'a', 'o', 'q', 'r', 'L', 'g', 'u', 'm', 'l', 'I', 'i',
+			',', 'n');
+		randomDefinedOrderCharacters = ListFactory.newCharacterArrayList(null,
+			randomDefinedOrderChars);
+		encryptor = new CharacterSetEncryptor(randomDefinedOrderCharacters);
+		encryptedIntegerList = encryptor.encrypt(text);
+		decryptor = new CharacterSetDecryptor(randomDefinedOrderCharacters);
+		actual = decryptor.decrypt(encryptedIntegerList);
 		expected = text;
 		assertEquals(actual, expected);
 	}
