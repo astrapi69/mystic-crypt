@@ -45,45 +45,6 @@ public final class CharacterSetCrypt
 	}
 
 	/**
-	 * Factory method for create new {@link ArrayList} of unique characters from the given text
-	 *
-	 * @param text
-	 *            the text
-	 * @return the new {@link List} with the unique characters
-	 */
-	public static List<Character> newCharacterList(final String text)
-	{
-		Objects.requireNonNull(text);
-		return newCharacterList(text, Comparator.<Character> naturalOrder());
-	}
-
-	/**
-	 * Factory method for create new {@link ArrayList} of unique characters from the given text
-	 * sorted with the given {@link Comparator} <br>
-	 * <br>
-	 * Note: This method can be used for a custom Comparator that have a defined order. For example:
-	 * <code>
-	 * // defined custom order
-	 * List&lt;Character&gt; definedOrder = Arrays.asList('c', 'b', 'a', 'd', '.', ...);
-	 * Comparator&lt;Character&gt; customComparator = Comparator.comparing(character -&gt; definedOrder.indexOf(character));
-	 * </code>
-	 *
-	 * @param text
-	 *            the text
-	 * @param comparator
-	 *            the comparator
-	 * @return the new {@link List} with the unique characters
-	 */
-	public static List<Character> newCharacterList(final String text,
-		final Comparator<Character> comparator)
-	{
-		Objects.requireNonNull(text);
-		Objects.requireNonNull(comparator);
-		return new ArrayList<>(text.chars().mapToObj(i -> (char)i)
-			.collect(Collectors.toCollection(() -> new TreeSet<>(comparator))));
-	}
-
-	/**
 	 * To index list.
 	 *
 	 * @param text

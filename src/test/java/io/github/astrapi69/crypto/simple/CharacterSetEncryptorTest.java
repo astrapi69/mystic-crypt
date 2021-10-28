@@ -27,8 +27,10 @@ package io.github.astrapi69.crypto.simple;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
+import java.util.Comparator;
 import java.util.List;
 
+import io.github.astrapi69.string.StringExtensions;
 import org.testng.annotations.Test;
 
 import io.github.astrapi69.collections.CollectionExtensions;
@@ -63,7 +65,7 @@ public class CharacterSetEncryptorTest
 		expectedUniqueCharacters = ListFactory.newCharacterArrayList(null, expectedChars);
 
 		text = "Lorem ipsum dolor sit amet, sea consul verterem perfecto id. Alii prompta electram te nec, at minimum copiosae quo. Eos iudico nominati oportere ei, usu at dicta legendos. In nostrum insolens disputando pro, iusto equidem ius id.";
-		uniqueCharacters = CharacterSetCrypt.newCharacterList(text);
+		uniqueCharacters = StringExtensions.newCharacterList(text, Comparator.naturalOrder());
 		assertTrue(
 			CollectionExtensions.isEqualCollection(uniqueCharacters, expectedUniqueCharacters));
 		encryptor = new CharacterSetEncryptor(uniqueCharacters);

@@ -29,6 +29,7 @@ import static org.testng.AssertJUnit.assertEquals;
 import java.util.Comparator;
 import java.util.List;
 
+import io.github.astrapi69.string.StringExtensions;
 import org.testng.annotations.Test;
 
 import io.github.astrapi69.collections.list.ListExtensions;
@@ -44,44 +45,6 @@ public class CharacterSetCryptTest
 {
 
 	/**
-	 * Test method for test the method {@link CharacterSetCrypt#newCharacterList(String)}
-	 */
-	@Test
-	public void testNewCharacterList()
-	{
-		List<Character> actual;
-		List<Character> expected;
-
-		String text = "Lorem ipsum dolor sit amet, sea consul verterem perfecto id. Alii prompta electram te nec, at minimum copiosae quo. Eos iudico nominati oportere ei, usu at dicta legendos. In nostrum insolens disputando pro, iusto equidem ius id.";
-		actual = CharacterSetCrypt.newCharacterList(text);
-
-		expected = ListFactory.newArrayList(Character.valueOf((char)0x20), ',', '.', 'A', 'E', 'I',
-			'L', 'a', 'c', 'd', 'e', 'f', 'g', 'i', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-			'u', 'v');
-		assertEquals(actual, expected);
-	}
-
-	/**
-	 * Test method for test the method
-	 * {@link CharacterSetCrypt#newCharacterList(String, java.util.Comparator)}
-	 */
-	@Test
-	public void testNewCharacterListWithComparator()
-	{
-		List<Character> actual;
-		List<Character> expected;
-
-		String text = "Lorem ipsum dolor sit amet, sea consul verterem perfecto id. Alii prompta electram te nec, at minimum copiosae quo. Eos iudico nominati oportere ei, usu at dicta legendos. In nostrum insolens disputando pro, iusto equidem ius id.";
-		actual = CharacterSetCrypt.newCharacterList(text,
-			Comparator.<Character> naturalOrder().reversed());
-
-		expected = ListExtensions.revertOrder(ListFactory.newArrayList(
-			Character.valueOf((char)0x20), ',', '.', 'A', 'E', 'I', 'L', 'a', 'c', 'd', 'e', 'f',
-			'g', 'i', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v'));
-		assertEquals(actual, expected);
-	}
-
-	/**
 	 * Test method for test the method {@link CharacterSetCrypt#toIndexList(String, List)}
 	 */
 	@Test
@@ -90,7 +53,7 @@ public class CharacterSetCryptTest
 		List<Integer> actual;
 		List<Integer> expected;
 		String text = "Lorem ipsum dolor sit amet, sea consul verterem perfecto id. Alii prompta electram te nec, at minimum copiosae quo. Eos iudico nominati oportere ei, usu at dicta legendos. In nostrum insolens disputando pro, iusto equidem ius id.";
-		List<Character> uniqueCharacters = CharacterSetCrypt.newCharacterList(text);
+		List<Character> uniqueCharacters = StringExtensions.newCharacterList(text, Comparator.naturalOrder());
 		actual = CharacterSetCrypt.toIndexList(text, uniqueCharacters);
 		System.out.println(actual);
 		expected = ListFactory.newArrayList(6, 17, 20, 10, 15, 0, 13, 18, 21, 23, 15, 0, 9, 17, 14,
@@ -117,7 +80,7 @@ public class CharacterSetCryptTest
 		String actual;
 		String expected;
 		String text = "Lorem ipsum dolor sit amet, sea consul verterem perfecto id. Alii prompta electram te nec, at minimum copiosae quo. Eos iudico nominati oportere ei, usu at dicta legendos. In nostrum insolens disputando pro, iusto equidem ius id.";
-		List<Character> uniqueCharacters = CharacterSetCrypt.newCharacterList(text);
+		List<Character> uniqueCharacters = StringExtensions.newCharacterList(text, Comparator.naturalOrder());
 		List<Integer> indexesList = CharacterSetCrypt.toIndexList(text, uniqueCharacters);
 		actual = CharacterSetCrypt.toText(indexesList, uniqueCharacters);
 		expected = text;
