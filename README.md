@@ -38,7 +38,7 @@ You can first define the version properties and add than the following maven dep
 	<properties>
 			...
 		<!-- MYSTIC-CRYPT version -->
-		<mystic-crypt.version>7.8</mystic-crypt.version>
+		<mystic-crypt.version>7.9</mystic-crypt.version>
 			...
 	</properties>
 			...
@@ -61,7 +61,7 @@ your project `build.gradle` if you want to import the core functionality of myst
 define version in file gradle.properties
 
 ```
-mysticCryptVersion=7.8
+mysticCryptVersion=7.9
 ```
 
 or in build.gradle ext area
@@ -69,7 +69,7 @@ or in build.gradle ext area
 ```
 ext {
 			...
-    mysticCryptVersion = "7.8"
+    mysticCryptVersion = "7.9"
 			...
 }
 ```
