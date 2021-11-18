@@ -33,9 +33,8 @@ import java.util.Objects;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import io.github.astrapi69.crypto.model.CharacterDecorator;
 import io.github.astrapi69.crypto.model.CryptObjectDecorator;
-import io.github.astrapi69.read.ReadFileExtensions;
+import io.github.astrapi69.file.read.ReadFileExtensions;
 
 public final class CryptObjectDecoratorExtensions
 {
@@ -67,7 +66,7 @@ public final class CryptObjectDecoratorExtensions
 	}
 
 	public static String decorateWithCharacterDecorator(final String toEncrypt,
-		final CharacterDecorator decorator)
+		final CryptObjectDecorator<Character> decorator)
 	{
 		Objects.requireNonNull(toEncrypt);
 		Objects.requireNonNull(decorator);
@@ -173,7 +172,7 @@ public final class CryptObjectDecoratorExtensions
 	}
 
 	public static String undecorateWithCharacterDecorator(final String toEncrypt,
-		final CharacterDecorator decorator)
+		final CryptObjectDecorator<Character> decorator)
 	{
 		Objects.requireNonNull(toEncrypt);
 		Objects.requireNonNull(decorator);

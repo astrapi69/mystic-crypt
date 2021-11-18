@@ -30,9 +30,7 @@ import java.nio.charset.Charset;
 
 import org.testng.annotations.Test;
 
-import io.github.astrapi69.crypto.model.CharacterDecorator;
 import io.github.astrapi69.crypto.model.CryptObjectDecorator;
-import io.github.astrapi69.crypto.model.StringDecorator;
 
 /**
  * The unit test class for the class {@link CryptObjectDecoratorExtensions}
@@ -90,7 +88,7 @@ public class CryptObjectDecoratorExtensionsTest
 	}
 
 	/**
-	 * Test method for the decoration of an crypt object with {@link CharacterDecorator}
+	 * Test method for the decoration of an crypt object with {@link CryptObjectDecorator}
 	 */
 	@Test
 	public void testDecorateWithCharacterDecorator()
@@ -98,10 +96,10 @@ public class CryptObjectDecoratorExtensionsTest
 		String actual;
 		String expected;
 		String toEncrypt;
-		CharacterDecorator decorator;
+		CryptObjectDecorator<Character> decorator;
 
 		toEncrypt = "mile";
-		decorator = CharacterDecorator.builder().prefix('s').suffix('s').build();
+		decorator = CryptObjectDecorator.<Character>builder().prefix('s').suffix('s').build();
 
 		actual = CryptObjectDecoratorExtensions.decorateWithCharacterDecorator(toEncrypt,
 			decorator);
@@ -110,7 +108,7 @@ public class CryptObjectDecoratorExtensionsTest
 	}
 
 	/**
-	 * Test method for the decoration of an crypt object with {@link StringDecorator}
+	 * Test method for the decoration of an crypt object with {@link CryptObjectDecorator}
 	 */
 	@Test
 	public void testDecorateWithStringDecorator()
@@ -118,30 +116,30 @@ public class CryptObjectDecoratorExtensionsTest
 		String actual;
 		String expected;
 		String toEncrypt;
-		StringDecorator decorator;
+		CryptObjectDecorator<String> decorator;
 
 		toEncrypt = "mile";
-		decorator = StringDecorator.builder().prefix("s").suffix("s").build();
+		decorator = CryptObjectDecorator.<String>builder().prefix("s").suffix("s").build();
 
 		actual = CryptObjectDecoratorExtensions.decorateWithStringDecorator(toEncrypt, decorator);
 		expected = "smiles";
 		assertEquals(actual, expected);
 
 		// new scenario ...
-		decorator = StringDecorator.builder().prefix("").suffix("s").build();
+		decorator = CryptObjectDecorator.<String>builder().prefix("").suffix("s").build();
 
 		actual = CryptObjectDecoratorExtensions.decorateWithStringDecorator(toEncrypt, decorator);
 		expected = "miles";
 		assertEquals(actual, expected);
 
 		// new scenario ...
-		decorator = StringDecorator.builder().prefix("s").suffix("").build();
+		decorator = CryptObjectDecorator.<String>builder().prefix("s").suffix("").build();
 
 		actual = CryptObjectDecoratorExtensions.decorateWithStringDecorator(toEncrypt, decorator);
 		expected = "smile";
 		assertEquals(actual, expected);
 		// new scenario ...
-		decorator = StringDecorator.builder().prefix("").suffix("").build();
+		decorator = CryptObjectDecorator.<String>builder().prefix("").suffix("").build();
 
 		actual = CryptObjectDecoratorExtensions.decorateWithStringDecorator(toEncrypt, decorator);
 		expected = "mile";
@@ -197,7 +195,7 @@ public class CryptObjectDecoratorExtensionsTest
 	}
 
 	/**
-	 * Test method for undecorate an crypt object with {@link CharacterDecorator}
+	 * Test method for undecorate an crypt object with {@link CryptObjectDecorator}
 	 */
 	@Test
 	public void testUndecorateWithCharacterDecorator()
@@ -205,10 +203,10 @@ public class CryptObjectDecoratorExtensionsTest
 		String actual;
 		String expected;
 		String toEncrypt;
-		CharacterDecorator decorator;
+		CryptObjectDecorator<Character> decorator;
 
 		toEncrypt = "smiles";
-		decorator = CharacterDecorator.builder().prefix('s').suffix('s').build();
+		decorator = CryptObjectDecorator.<Character>builder().prefix('s').suffix('s').build();
 
 		actual = CryptObjectDecoratorExtensions.undecorateWithCharacterDecorator(toEncrypt,
 			decorator);
@@ -217,7 +215,7 @@ public class CryptObjectDecoratorExtensionsTest
 	}
 
 	/**
-	 * Test method for undecorate an crypt object with {@link StringDecorator}
+	 * Test method for undecorate an crypt object with {@link CryptObjectDecorator}
 	 */
 	@Test
 	public void testUndecorateWithStringDecorator()
@@ -225,30 +223,30 @@ public class CryptObjectDecoratorExtensionsTest
 		String actual;
 		String expected;
 		String toEncrypt;
-		StringDecorator decorator;
+		CryptObjectDecorator<String> decorator;
 
 		toEncrypt = "smiles";
-		decorator = StringDecorator.builder().prefix("s").suffix("s").build();
+		decorator = CryptObjectDecorator.<String>builder().prefix("s").suffix("s").build();
 
 		actual = CryptObjectDecoratorExtensions.undecorateWithStringDecorator(toEncrypt, decorator);
 		expected = "mile";
 		assertEquals(actual, expected);
 
 		// new scenario ...
-		decorator = StringDecorator.builder().prefix("").suffix("s").build();
+		decorator = CryptObjectDecorator.<String>builder().prefix("").suffix("s").build();
 
 		actual = CryptObjectDecoratorExtensions.undecorateWithStringDecorator(toEncrypt, decorator);
 		expected = "smile";
 		assertEquals(actual, expected);
 
 		// new scenario ...
-		decorator = StringDecorator.builder().prefix("s").suffix("").build();
+		decorator = CryptObjectDecorator.<String>builder().prefix("s").suffix("").build();
 
 		actual = CryptObjectDecoratorExtensions.undecorateWithStringDecorator(toEncrypt, decorator);
 		expected = "miles";
 		assertEquals(actual, expected);
 		// new scenario ...
-		decorator = StringDecorator.builder().prefix("").suffix("").build();
+		decorator = CryptObjectDecorator.<String>builder().prefix("").suffix("").build();
 
 		actual = CryptObjectDecoratorExtensions.undecorateWithStringDecorator(toEncrypt, decorator);
 		expected = "smiles";

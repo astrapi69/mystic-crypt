@@ -36,8 +36,8 @@ import org.testng.annotations.Test;
 import io.github.astrapi69.AbstractTestCase;
 import io.github.astrapi69.crypto.algorithm.SunJCEAlgorithm;
 import io.github.astrapi69.crypto.model.CryptModel;
-import io.github.astrapi69.delete.DeleteFileExtensions;
-import io.github.astrapi69.search.PathFinder;
+import io.github.astrapi69.file.delete.DeleteFileExtensions;
+import io.github.astrapi69.file.search.PathFinder;
 import io.github.astrapi69.test.objects.Person;
 import io.github.astrapi69.test.objects.enums.Gender;
 

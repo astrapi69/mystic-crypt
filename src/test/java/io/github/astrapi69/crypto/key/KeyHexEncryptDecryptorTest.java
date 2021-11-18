@@ -49,7 +49,7 @@ import org.testng.annotations.Test;
 
 import io.github.astrapi69.crypto.key.reader.PrivateKeyReader;
 import io.github.astrapi69.crypto.key.reader.PublicKeyReader;
-import io.github.astrapi69.search.PathFinder;
+import io.github.astrapi69.file.search.PathFinder;
 
 /**
  * Test class for {@link PublicKeyHexEncryptor} and {@link PrivateKeyHexDecryptor}

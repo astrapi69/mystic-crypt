@@ -30,6 +30,7 @@ import java.io.File;
 
 import javax.crypto.Cipher;
 
+import io.github.astrapi69.crypto.model.CryptObjectDecorator;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -38,9 +39,8 @@ import io.github.astrapi69.checksum.FileChecksumExtensions;
 import io.github.astrapi69.crypto.algorithm.MdAlgorithm;
 import io.github.astrapi69.crypto.algorithm.SunJCEAlgorithm;
 import io.github.astrapi69.crypto.model.CryptModel;
-import io.github.astrapi69.crypto.model.StringDecorator;
-import io.github.astrapi69.delete.DeleteFileExtensions;
-import io.github.astrapi69.search.PathFinder;
+import io.github.astrapi69.file.delete.DeleteFileExtensions;
+import io.github.astrapi69.file.search.PathFinder;
 
 public class PBEFileEncryptorTest extends AbstractTestCase<String, String>
 {
@@ -69,7 +69,7 @@ public class PBEFileEncryptorTest extends AbstractTestCase<String, String>
 		password = "foo";
 		cryptModel = CryptModel.<Cipher, String, String> builder().key(password)
 			.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES)
-			.decorator(StringDecorator.builder().prefix("$").suffix("?").build()).build();
+			.decorator(CryptObjectDecorator.<String>builder().prefix("$").suffix("?").build()).build();
 	}
 
 	@Test

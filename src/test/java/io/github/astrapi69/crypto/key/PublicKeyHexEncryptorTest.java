@@ -44,7 +44,7 @@ import javax.crypto.NoSuchPaddingException;
 import org.testng.annotations.Test;
 
 import io.github.astrapi69.crypto.key.reader.PublicKeyReader;
-import io.github.astrapi69.search.PathFinder;
+import io.github.astrapi69.file.search.PathFinder;
 
 /**
  * The unit test class for the class {@link PublicKeyHexEncryptor}

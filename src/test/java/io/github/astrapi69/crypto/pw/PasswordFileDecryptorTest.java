@@ -34,8 +34,8 @@ import org.testng.annotations.Test;
 import io.github.astrapi69.AbstractTestCase;
 import io.github.astrapi69.checksum.FileChecksumExtensions;
 import io.github.astrapi69.crypto.algorithm.MdAlgorithm;
-import io.github.astrapi69.delete.DeleteFileExtensions;
-import io.github.astrapi69.search.PathFinder;
+import io.github.astrapi69.file.delete.DeleteFileExtensions;
+import io.github.astrapi69.file.search.PathFinder;
 
 /**
  * The unit test class for the class {@link PasswordFileDecryptor}

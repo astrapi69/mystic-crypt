@@ -47,7 +47,7 @@ import io.github.astrapi69.crypto.factories.CipherFactory;
 import io.github.astrapi69.crypto.io.CryptoCipherInputStream;
 import io.github.astrapi69.crypto.model.CryptModel;
 import io.github.astrapi69.crypto.model.CryptObjectDecorator;
-import io.github.astrapi69.delete.DeleteFileExtensions;
+import io.github.astrapi69.file.delete.DeleteFileExtensions;
 
 /**
  * The class {@link PBEFileEncryptor} can encrypt files with the given crypt model.

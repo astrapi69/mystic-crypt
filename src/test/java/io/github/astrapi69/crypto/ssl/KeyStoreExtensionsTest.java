@@ -48,6 +48,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.security.spec.InvalidKeySpecException;
 
+import org.bouncycastle.operator.OperatorCreationException;
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.AfterMethod;
@@ -62,7 +63,7 @@ import io.github.astrapi69.crypto.factories.KeyStoreFactory;
 import io.github.astrapi69.crypto.key.KeySize;
 import io.github.astrapi69.crypto.key.reader.CertificateReader;
 import io.github.astrapi69.crypto.sign.TestObjectFactory;
-import io.github.astrapi69.search.PathFinder;
+import io.github.astrapi69.file.search.PathFinder;
 
 /**
  * The unit test class for the class {@link KeyStoreExtensions}
@@ -382,7 +383,8 @@ public class KeyStoreExtensionsTest
 	@Test(enabled = false)
 	public void testNewKeyStore() throws NoSuchAlgorithmException, NoSuchProviderException,
 		CertificateException, FileNotFoundException, KeyStoreException, IOException,
-		InvalidKeySpecException, InvalidKeyException, SignatureException, UnrecoverableKeyException
+		InvalidKeySpecException, InvalidKeyException, SignatureException, UnrecoverableKeyException,
+		OperatorCreationException
 	{
 
 		PrivateKey actual;

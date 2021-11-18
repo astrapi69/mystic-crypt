@@ -46,9 +46,9 @@ import io.github.astrapi69.crypto.algorithm.SunJCEAlgorithm;
 import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
 import io.github.astrapi69.crypto.factories.CipherFactory;
 import io.github.astrapi69.crypto.model.CryptModel;
-import io.github.astrapi69.delete.DeleteFileExtensions;
-import io.github.astrapi69.read.ReadFileExtensions;
-import io.github.astrapi69.search.PathFinder;
+import io.github.astrapi69.file.delete.DeleteFileExtensions;
+import io.github.astrapi69.file.read.ReadFileExtensions;
+import io.github.astrapi69.file.search.PathFinder;
 
 /**
  * The unit test class for the classes {@link CryptoCipherInputStream} and the classes

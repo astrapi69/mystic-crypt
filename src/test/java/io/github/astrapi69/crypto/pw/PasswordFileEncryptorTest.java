@@ -34,10 +34,10 @@ import org.testng.annotations.Test;
 import com.google.common.io.Files;
 
 import io.github.astrapi69.collections.array.ArrayFactory;
-import io.github.astrapi69.delete.DeleteFileExtensions;
+import io.github.astrapi69.file.delete.DeleteFileExtensions;
 import io.github.astrapi69.random.object.RandomStringFactory;
-import io.github.astrapi69.search.PathFinder;
-import io.github.astrapi69.write.WriteFileExtensions;
+import io.github.astrapi69.file.search.PathFinder;
+import io.github.astrapi69.file.write.WriteFileExtensions;
 
 /**
  * The unit test class for the class {@link PasswordFileEncryptor}

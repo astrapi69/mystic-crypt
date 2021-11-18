@@ -9,6 +9,15 @@ ADDED:
 - new encryptor class CharacterSetEncryptor that can encrypt string objects with the character set key
 - new decryptor class CharacterSetDecryptor that can decrypt integer list with the character set key algorithm
 - new dependency silly-strings in new version 8.1 
+- improve gradle build performance by adding new gradle parameters for caching, parallel, configure on demand and file
+  watch
+
+CHANGED:
+
+- update gradle to new version 7.3
+- update of crypt-api dependency version to 7.6.1
+- update of crypt-data dependency version to 7.9
+- update of dependency file-worker to new version 8.1
 
 Version 7.8
 -------------

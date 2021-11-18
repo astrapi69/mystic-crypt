@@ -37,9 +37,9 @@ import org.testng.annotations.Test;
 import io.github.astrapi69.crypto.core.AbstractStringDecryptor;
 import io.github.astrapi69.crypto.hex.HexableDecryptor;
 import io.github.astrapi69.crypto.hex.HexableEncryptor;
-import io.github.astrapi69.delete.DeleteFileExtensions;
-import io.github.astrapi69.read.ReadFileExtensions;
-import io.github.astrapi69.search.PathFinder;
+import io.github.astrapi69.file.delete.DeleteFileExtensions;
+import io.github.astrapi69.file.read.ReadFileExtensions;
+import io.github.astrapi69.file.search.PathFinder;
 
 /**
  * The unit test class for the classes {@link HexableEncryptor} and {@link CryptoInputStream} and
