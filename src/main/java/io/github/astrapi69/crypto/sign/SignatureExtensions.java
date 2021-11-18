@@ -40,8 +40,9 @@ import java.util.Objects;
 /**
  * The class {@link SignatureExtensions} can sign and verify byte arrays. For signing and verifying
  * the class {@link Signature} is used.
- * @deprecated use the classes from the project sign-and-verify
- * Note: will be removed on the next minor version
+ * 
+ * @deprecated use the classes from the project sign-and-verify Note: will be removed on the next
+ *             minor version
  */
 public final class SignatureExtensions
 {

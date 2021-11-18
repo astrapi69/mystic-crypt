@@ -40,11 +40,12 @@ import java.time.Month;
 import java.time.ZoneId;
 import java.util.Date;
 
+import org.bouncycastle.operator.OperatorCreationException;
+
 import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
 import io.github.astrapi69.crypto.factories.CertFactory;
 import io.github.astrapi69.crypto.key.PrivateKeyExtensions;
 import io.github.astrapi69.random.number.RandomBigIntegerFactory;
-import org.bouncycastle.operator.OperatorCreationException;
 
 public final class TestObjectFactory
 {
@@ -54,16 +55,15 @@ public final class TestObjectFactory
 
 	public static Certificate newCertificateForTests(final PrivateKey privateKey)
 		throws CertificateEncodingException, NoSuchAlgorithmException, InvalidKeyException,
-		SignatureException, InvalidKeySpecException, CertificateException,
-		OperatorCreationException
+		SignatureException, InvalidKeySpecException, CertificateException, OperatorCreationException
 	{
 		return newCertificateForTests(privateKey, CompoundAlgorithm.SHA256_WITH_RSA.getAlgorithm());
 	}
 
 	public static Certificate newCertificateForTests(final PrivateKey privateKey,
 		String signatureAlgorithm) throws CertificateEncodingException, NoSuchAlgorithmException,
-		InvalidKeyException, SignatureException, InvalidKeySpecException, CertificateException, CertificateException,
-		OperatorCreationException
+		InvalidKeyException, SignatureException, InvalidKeySpecException, CertificateException,
+		CertificateException, OperatorCreationException
 	{
 		String subject;
 		String issuer;
@@ -84,8 +84,9 @@ public final class TestObjectFactory
 	}
 
 	public static Certificate newCertificateForTests(final PublicKey publicKey,
-		final PrivateKey privateKey, String signatureAlgorithm) throws CertificateEncodingException,
-		NoSuchAlgorithmException, InvalidKeyException, SignatureException, CertificateException, OperatorCreationException
+		final PrivateKey privateKey, String signatureAlgorithm)
+		throws CertificateEncodingException, NoSuchAlgorithmException, InvalidKeyException,
+		SignatureException, CertificateException, OperatorCreationException
 	{
 		String subject;
 		String issuer;

@@ -31,7 +31,6 @@ import java.io.FileNotFoundException;
 
 import javax.crypto.Cipher;
 
-import io.github.astrapi69.crypto.model.CryptObjectDecorator;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -40,6 +39,7 @@ import io.github.astrapi69.checksum.FileChecksumExtensions;
 import io.github.astrapi69.crypto.algorithm.MdAlgorithm;
 import io.github.astrapi69.crypto.algorithm.SunJCEAlgorithm;
 import io.github.astrapi69.crypto.model.CryptModel;
+import io.github.astrapi69.crypto.model.CryptObjectDecorator;
 import io.github.astrapi69.file.delete.DeleteFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;
 
@@ -72,7 +72,8 @@ public class FileEncryptDecryptorTest extends AbstractTestCase<String, String>
 		firstKey = "D1D15ED36B887AF1";
 		cryptModel = CryptModel.<Cipher, String, String> builder().key(firstKey)
 			.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES)
-			.decorator(CryptObjectDecorator.<String>builder().prefix("$").suffix("?").build()).build();
+			.decorator(CryptObjectDecorator.<String> builder().prefix("$").suffix("?").build())
+			.build();
 	}
 
 	/**

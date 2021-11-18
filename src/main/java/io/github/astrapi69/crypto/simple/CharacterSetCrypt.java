@@ -25,11 +25,8 @@
 package io.github.astrapi69.crypto.simple;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 /**
  * The class {@link CharacterSetCrypt} provides algorithms for encrypt a text with a character set.

@@ -30,12 +30,12 @@ import static org.testng.Assert.assertTrue;
 import java.util.Comparator;
 import java.util.List;
 
-import io.github.astrapi69.string.StringExtensions;
 import org.testng.annotations.Test;
 
 import io.github.astrapi69.collections.CollectionExtensions;
 import io.github.astrapi69.collections.array.ArrayFactory;
 import io.github.astrapi69.collections.list.ListFactory;
+import io.github.astrapi69.string.StringExtensions;
 
 /**
  * The unit test class for the class {@link CharacterSetEncryptor}

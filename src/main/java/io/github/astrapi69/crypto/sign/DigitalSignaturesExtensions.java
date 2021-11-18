@@ -42,8 +42,9 @@ import io.github.astrapi69.crypto.factories.CipherFactory;
 /**
  * The class {@link DigitalSignaturesExtensions} can sign and verify byte arrays. For signing and
  * verifying the class {@link MessageDigest} is used.
- * @deprecated use the classes from the project sign-and-verify
- * Note: will be removed on the next minor version
+ * 
+ * @deprecated use the classes from the project sign-and-verify Note: will be removed on the next
+ *             minor version
  */
 public final class DigitalSignaturesExtensions
 {
