@@ -9,6 +9,7 @@
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT)
 [![Javadoc](http://www.javadoc.io/badge/io.github.astrapi69/mystic-crypt.svg)](http://www.javadoc.io/doc/io.github.astrapi69/mystic-crypt)
 [![Hits-of-Code](https://hitsofcode.com/github/astrapi69/mystic-crypt)](https://hitsofcode.com/github/astrapi69/mystic-crypt/view)
+[![Lines of Code](https://tokei.rs/b1/github/astrapi69/mystic-crypt)](https://github.com/astrapi69/mystic-crypt)
 
 </div>
 
