@@ -37,7 +37,7 @@ import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
 import io.github.astrapi69.crypto.algorithm.KeystoreType;
-import io.github.astrapi69.crypto.factories.KeyStoreFactory;
+import io.github.astrapi69.crypto.factory.KeyStoreFactory;
 import io.github.astrapi69.file.search.PathFinder;
 
 /**

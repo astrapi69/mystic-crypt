@@ -44,7 +44,7 @@ import io.github.astrapi69.crypto.api.ByteArrayDecryptor;
 import io.github.astrapi69.crypto.api.Cryptor;
 import io.github.astrapi69.crypto.api.FileDecryptor;
 import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
-import io.github.astrapi69.crypto.factories.CipherFactory;
+import io.github.astrapi69.crypto.factory.CipherFactory;
 import io.github.astrapi69.crypto.io.CryptoCipherOutputStream;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 

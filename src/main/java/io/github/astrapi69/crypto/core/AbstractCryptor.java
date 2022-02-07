@@ -45,10 +45,10 @@ import io.github.astrapi69.check.Check;
 import io.github.astrapi69.crypto.algorithm.SunJCEAlgorithm;
 import io.github.astrapi69.crypto.api.Cryptor;
 import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
-import io.github.astrapi69.crypto.factories.AlgorithmParameterSpecFactory;
-import io.github.astrapi69.crypto.factories.CipherFactory;
-import io.github.astrapi69.crypto.factories.KeySpecFactory;
-import io.github.astrapi69.crypto.factories.SecretKeyFactoryExtensions;
+import io.github.astrapi69.crypto.factory.AlgorithmParameterSpecFactory;
+import io.github.astrapi69.crypto.factory.CipherFactory;
+import io.github.astrapi69.crypto.factory.KeySpecFactory;
+import io.github.astrapi69.crypto.factory.SecretKeyFactoryExtensions;
 import io.github.astrapi69.crypto.model.CryptModel;
 
 /**

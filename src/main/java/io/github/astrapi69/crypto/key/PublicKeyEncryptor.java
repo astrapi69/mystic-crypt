@@ -41,7 +41,7 @@ import org.apache.commons.lang3.SerializationUtils;
 import io.github.astrapi69.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
 import io.github.astrapi69.crypto.api.ByteArrayEncryptor;
 import io.github.astrapi69.crypto.core.AbstractEncryptor;
-import io.github.astrapi69.crypto.factories.CipherFactory;
+import io.github.astrapi69.crypto.factory.CipherFactory;
 import io.github.astrapi69.crypto.model.AesRsaCryptModel;
 import io.github.astrapi69.crypto.model.CryptModel;
 

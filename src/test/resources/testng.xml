@@ -9,9 +9,9 @@
 		<class name="io.github.astrapi69.crypto.key.KeyHexEncryptDecryptorTest"/>
 		<class name="io.github.astrapi69.crypto.sha.HasherTest"/>
 		<class name="io.github.astrapi69.crypto.simple.SimpleEnDecryptorTest"/>
-		<class name="io.github.astrapi69.crypto.processors.bruteforce.BruteForceProcessorTest"/>
+		<class name="io.github.astrapi69.crypto.processor.bruteforce.BruteForceProcessorTest"/>
 		<class name="io.github.astrapi69.crypto.simple.SimpleCryptTest"/>
-		<class name="io.github.astrapi69.crypto.processors.wordlist.WordlistsProcessorTest"/>
+		<class name="io.github.astrapi69.crypto.processor.wordlist.WordlistsProcessorTest"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->

@@ -46,7 +46,7 @@ import org.apache.commons.io.FilenameUtils;
 
 import io.github.astrapi69.crypto.core.AbstractFileDecryptor;
 import io.github.astrapi69.crypto.decorator.CryptObjectDecoratorExtensions;
-import io.github.astrapi69.crypto.factories.CipherFactory;
+import io.github.astrapi69.crypto.factory.CipherFactory;
 import io.github.astrapi69.crypto.io.CryptoCipherOutputStream;
 import io.github.astrapi69.crypto.model.CryptModel;
 import io.github.astrapi69.crypto.model.CryptObjectDecorator;

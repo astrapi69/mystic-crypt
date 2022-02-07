@@ -37,7 +37,7 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import io.github.astrapi69.crypto.factories.CipherFactory;
+import io.github.astrapi69.crypto.factory.CipherFactory;
 
 /**
  * The class {@link DigitalSignaturesExtensions} can sign and verify byte arrays. For signing and

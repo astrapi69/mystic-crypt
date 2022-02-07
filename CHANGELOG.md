@@ -4,6 +4,13 @@
 Version 7.10-SNAPSHOT
 -------------
 
+
+CHANGED:
+
+- update gradle to new version 7.3.3
+- update of crypt-api dependency version to 7.7
+- update of crypt-data dependency version to 7.11
+
 Version 7.9
 -------------
 

@@ -35,7 +35,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import io.github.astrapi69.crypto.algorithm.AesAlgorithm;
-import io.github.astrapi69.crypto.factories.SecretKeyFactoryExtensions;
+import io.github.astrapi69.crypto.factory.SecretKeyFactoryExtensions;
 import io.github.astrapi69.crypto.model.CryptModel;
 import io.github.astrapi69.random.object.RandomStringFactory;
 

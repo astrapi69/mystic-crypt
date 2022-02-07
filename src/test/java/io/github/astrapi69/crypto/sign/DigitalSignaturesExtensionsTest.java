@@ -44,7 +44,7 @@ import java.util.Date;
 import org.testng.annotations.Test;
 
 import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
-import io.github.astrapi69.crypto.factories.CertFactory;
+import io.github.astrapi69.crypto.factory.CertFactory;
 import io.github.astrapi69.crypto.key.reader.PrivateKeyReader;
 import io.github.astrapi69.crypto.key.reader.PublicKeyReader;
 import io.github.astrapi69.file.search.PathFinder;
