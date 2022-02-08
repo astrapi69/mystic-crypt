@@ -38,10 +38,12 @@ import javax.crypto.SecretKey;
 
 import org.apache.commons.lang3.SerializationUtils;
 
+import io.github.astrapi69.crypto.algorithm.AesAlgorithm;
 import io.github.astrapi69.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
 import io.github.astrapi69.crypto.api.ByteArrayEncryptor;
 import io.github.astrapi69.crypto.core.AbstractEncryptor;
 import io.github.astrapi69.crypto.factory.CipherFactory;
+import io.github.astrapi69.crypto.factory.SecretKeyFactoryExtensions;
 import io.github.astrapi69.crypto.model.AesRsaCryptModel;
 import io.github.astrapi69.crypto.model.CryptModel;
 
@@ -89,6 +91,35 @@ public class PublicKeyEncryptor extends AbstractEncryptor<Cipher, PublicKey, byt
 		super(model);
 		Objects.requireNonNull(symmetricKeyModel);
 		this.symmetricKeyModel = symmetricKeyModel;
+	}
+
+	/**
+	 * Instantiates a new {@link PublicKeyEncryptor} object with the given {@link PublicKey}
+	 *
+	 * @param publicKey
+	 *            the public key
+	 *
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported.
+	 */
+	public PublicKeyEncryptor(final PublicKey publicKey)
+		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+	{
+		super(CryptModel.<Cipher, PublicKey, byte[]> builder().key(publicKey).build());
+		this.symmetricKeyModel = CryptModel.<Cipher, SecretKey, String> builder()
+			.key(SecretKeyFactoryExtensions.newSecretKey(AesAlgorithm.AES.getAlgorithm(), 128))
+			.algorithm(AesAlgorithm.AES).operationMode(Cipher.ENCRYPT_MODE).build();
 	}
 
 	/**

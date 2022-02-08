@@ -58,6 +58,17 @@ public class PrivateKeyGenericDecryptor<T extends Serializable>
 	}
 
 	/**
+	 * Instantiates a new {@link PrivateKeyGenericDecryptor} with the given {@link PrivateKey}
+	 *
+	 * @param privateKey
+	 *            The private key
+	 */
+	public PrivateKeyGenericDecryptor(final PrivateKey privateKey)
+	{
+		this(RuntimeExceptionDecorator.decorate(() -> new PrivateKeyDecryptor(privateKey)));
+	}
+
+	/**
 	 * Instantiates a new {@link PrivateKeyGenericDecryptor} with the given
 	 * {@link PrivateKeyDecryptor} object
 	 *

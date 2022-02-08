@@ -43,11 +43,64 @@ import io.github.astrapi69.crypto.model.CryptModel;
 import io.github.astrapi69.file.search.PathFinder;
 import io.github.astrapi69.random.object.RandomStringFactory;
 
+/**
+ * The unit test class for the class {@link PrivateKeyDecryptor}
+ */
 public class PrivateKeyDecryptorTest
 {
 
+	/**
+	 * Test method for {@link PrivateKeyDecryptor} constructor with {@link PrivateKey} object
+	 *
+	 * @throws Exception
+	 *             is thrown if instantiation of the cipher object fails.
+	 */
 	@Test
-	public void testDecrypt() throws Exception
+	public void testConstructorWithPrivateKey() throws Exception
+	{
+
+		String actual;
+		String expected;
+		PrivateKey privateKey;
+		PublicKey publicKey;
+		byte[] testBytes;
+		File derDir;
+		File privatekeyDerFile;
+		PublicKeyEncryptor encryptor;
+		PrivateKeyDecryptor decryptor;
+		byte[] decrypted;
+
+		actual = RandomStringFactory.newRandomLongString(10000000);
+
+		testBytes = actual.getBytes("UTF-8");
+
+		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		privatekeyDerFile = new File(derDir, "private.der");
+
+		privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
+		publicKey = PrivateKeyExtensions.generatePublicKey(privateKey);
+
+		encryptor = new PublicKeyEncryptor(publicKey);
+		assertNotNull(encryptor);
+
+		byte[] encrypt = encryptor.encrypt(testBytes);
+
+		decryptor = new PrivateKeyDecryptor(privateKey);
+		assertNotNull(decryptor);
+		decrypted = decryptor.decrypt(encrypt);
+		assertNotNull(decrypted);
+		expected = new String(decrypted, "UTF-8");
+		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test method for {@link PrivateKeyDecryptor} constructor with {@link CryptModel} object
+	 *
+	 * @throws Exception
+	 *             is thrown if instantiation of the cipher object fails.
+	 */
+	@Test
+	public void testConstructorWithCryptModel() throws Exception
 	{
 		String actual;
 		String expected;

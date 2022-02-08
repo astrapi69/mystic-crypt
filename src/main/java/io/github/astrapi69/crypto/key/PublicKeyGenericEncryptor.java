@@ -62,6 +62,17 @@ public class PublicKeyGenericEncryptor<T extends Serializable>
 	}
 
 	/**
+	 * Instantiates a new {@link PublicKeyGenericEncryptor} with the given {@link PublicKey} object
+	 *
+	 * @param publicKey
+	 *            the public key
+	 */
+	public PublicKeyGenericEncryptor(final PublicKey publicKey)
+	{
+		this(RuntimeExceptionDecorator.decorate(() -> new PublicKeyEncryptor(publicKey)));
+	}
+
+	/**
 	 * Instantiates a new {@link PublicKeyGenericEncryptor} with the given
 	 * {@link PublicKeyEncryptor} object
 	 *

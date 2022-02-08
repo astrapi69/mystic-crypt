@@ -24,53 +24,25 @@
  */
 package io.github.astrapi69.crypto.key;
 
-import java.io.IOException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+import java.nio.charset.StandardCharsets;
 import java.security.PrivateKey;
-import java.security.spec.InvalidKeySpecException;
 import java.util.Objects;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-
-import org.apache.commons.codec.DecoderException;
-
-import io.github.astrapi69.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
 import io.github.astrapi69.crypto.hex.HexExtensions;
+import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 
 /**
  * The class {@link PrivateKeyHexDecryptor} decrypts encrypted characters the was encrypted with the
  * public key of the pendant private key of this class. <br>
  * <br>
- * Note: This class decrypts directly with the private key so you have to consider the length of the
- * encrypted data. As from the documentation are described of the RSA algorithm can only encrypt
- * data that has a maximum byte length of he RSA key length in bits divided with eight minus eleven
- * padding bytes, i.e. number of maximum bytes = key length in bits / 8 - 11.
- * 
- * @deprecated because of the above note this class is tagged as deprecated. Use instead the
- *             corresponding {@link PrivateKeyDecryptor}. This class will be removed in the next
- *             major release.
  */
 public final class PrivateKeyHexDecryptor
 {
+
 	/**
-	 * The private key
+	 * The decorated decryptor object
 	 */
-	private final PrivateKey privateKey;
-	/**
-	 * The Cipher object
-	 */
-	private Cipher cipher;
-	/**
-	 * The flag initialized that indicates if the cipher is initialized for decryption.
-	 *
-	 * @return true, if is initialized
-	 */
-	private boolean initialized;
+	private final PrivateKeyDecryptor decryptor;
 
 	/**
 	 * Instantiates a new {@link PrivateKeyHexDecryptor} with the given {@link PrivateKey}
@@ -81,7 +53,8 @@ public final class PrivateKeyHexDecryptor
 	public PrivateKeyHexDecryptor(final PrivateKey privateKey)
 	{
 		Objects.requireNonNull(privateKey);
-		this.privateKey = privateKey;
+		this.decryptor = RuntimeExceptionDecorator
+			.decorate(() -> new PrivateKeyDecryptor(privateKey));
 	}
 
 	/**
@@ -90,79 +63,14 @@ public final class PrivateKeyHexDecryptor
 	 * @param encypted
 	 *            The encrypted {@link String} to decrypt
 	 * @return The decrypted {@link String}
-	 *
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the cipher object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cipher object fails.
-	 * @throws InvalidKeyException
-	 *             the invalid key exception is thrown if initialization of the cipher object fails.
-	 * @throws DecoderException
-	 *             is thrown if an odd number or illegal of characters is supplied
-	 * @throws IllegalBlockSizeException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws BadPaddingException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cipher object fails.
+	 * @throws Exception
+	 *             is thrown if decryption fails.
 	 */
-	public String decrypt(final String encypted)
-		throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
-		DecoderException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException,
-		InvalidAlgorithmParameterException, IOException
+	public String decrypt(final String encypted) throws Exception
 	{
-		initialize();
 		final byte[] dec = HexExtensions.decodeHex(encypted.toCharArray());
-		final byte[] utf8 = this.cipher.doFinal(dec);
-		return new String(utf8, "UTF-8");
+		final byte[] utf8 = this.decryptor.decrypt(dec);
+		return new String(utf8, StandardCharsets.UTF_8);
 	}
 
-	public Cipher getCipher()
-	{
-		return this.cipher;
-	}
-
-	public PrivateKey getPrivateKey()
-	{
-		return this.privateKey;
-	}
-
-	/**
-	 * Initializes the {@link PrivateKeyHexDecryptor} object
-	 *
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the cipher object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cipher object fails.
-	 * @throws InvalidKeyException
-	 *             the invalid key exception is thrown if initialization of the cipher object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cipher object fails.
-	 */
-	private void initialize()
-		throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
-		InvalidKeySpecException, IOException, InvalidAlgorithmParameterException
-	{
-		if (!isInitialized())
-		{
-			cipher = Cipher
-				.getInstance(KeyPairWithModeAndPaddingAlgorithm.RSA_ECB_OAEPWithSHA1AndMGF1Padding
-					.getAlgorithm());
-			cipher.init(Cipher.DECRYPT_MODE, privateKey);
-			initialized = true;
-		}
-	}
-
-	private boolean isInitialized()
-	{
-		return this.initialized;
-	}
 }

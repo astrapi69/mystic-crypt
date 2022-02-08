@@ -48,8 +48,8 @@ import io.github.astrapi69.test.objects.Person;
 import io.github.astrapi69.test.objects.enums.Gender;
 
 /**
- * The unit test class for the class {@link PublicKeyGenericEncryptor} and
- * {@link PrivateKeyGenericDecryptor}
+ * The unit test class for the encryption and decryption with the class
+ * {@link PublicKeyGenericEncryptor} and {@link PrivateKeyGenericDecryptor}
  */
 public class PrivateKeyGenericEnDecryptorTest
 {
@@ -60,7 +60,7 @@ public class PrivateKeyGenericEnDecryptorTest
 	 * {@link Person}
 	 *
 	 * @throws Exception
-	 *             is thrown if a security error occurs
+	 *             is thrown if any error occurs
 	 */
 	@Test
 	public void testDecrypt() throws Exception
@@ -115,7 +115,7 @@ public class PrivateKeyGenericEnDecryptorTest
 	 * method {@link PrivateKeyGenericDecryptor#decrypt(byte[])} with json object
 	 *
 	 * @throws Exception
-	 *             is thrown if a security error occurs
+	 *             is thrown if any error occurs
 	 */
 	@Test
 	public void testDecryptJson() throws Exception
@@ -169,4 +169,85 @@ public class PrivateKeyGenericEnDecryptorTest
 		Person decryptedPerson = JsonStringToObjectExtensions.toObject(decryptedJson, Person.class);
 		assertEquals(personToEncrypt, decryptedPerson);
 	}
+
+	/**
+	 * Test method for {@link PublicKeyGenericEncryptor#encrypt(Serializable)} and the corresponding
+	 * method {@link PrivateKeyGenericDecryptor#decrypt(byte[])} with json object with only
+	 * {@link PrivateKey} and {@link PublicKey} object
+	 *
+	 * @throws Exception
+	 *             is thrown if any error occurs
+	 */
+	@Test
+	public void testDecryptJsonWithPrivateKeyAndPublicKey() throws Exception
+	{
+		String actual;
+		String expected;
+		PrivateKey privateKey;
+		PublicKey publicKey;
+		File derDir;
+		File privatekeyDerFile;
+
+		PublicKeyGenericEncryptor<String> genericEncryptor;
+		PrivateKeyGenericDecryptor<String> genericDecryptor;
+		Person personToEncrypt;
+		byte[] encryptedBytes;
+		String decryptedJson;
+
+		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		privatekeyDerFile = new File(derDir, "private.der");
+
+		privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
+		publicKey = PrivateKeyExtensions.generatePublicKey(privateKey);
+
+		genericEncryptor = new PublicKeyGenericEncryptor<>(publicKey);
+		genericDecryptor = new PrivateKeyGenericDecryptor<>(privateKey);
+
+		personToEncrypt = Person.builder().about("about").name("Foo").gender(Gender.MALE).build();
+		actual = ObjectToJsonExtensions.toJson(personToEncrypt);
+		encryptedBytes = genericEncryptor.encrypt(actual);
+		decryptedJson = genericDecryptor.decrypt(encryptedBytes);
+		expected = decryptedJson;
+		assertEquals(actual, expected);
+		Person decryptedPerson = JsonStringToObjectExtensions.toObject(decryptedJson, Person.class);
+		assertEquals(personToEncrypt, decryptedPerson);
+	}
+
+	/**
+	 * Test method for {@link PublicKeyGenericEncryptor#encrypt(Serializable)} and the corresponding
+	 * method {@link PrivateKeyGenericDecryptor#decrypt(byte[])} with serializable test object
+	 * {@link Person} with only {@link PrivateKey} and {@link PublicKey} object
+	 *
+	 * @throws Exception
+	 *             is thrown if any error occurs
+	 */
+	@Test
+	public void testDecryptWithPrivateKeyAndPublicKey() throws Exception
+	{
+		Person actual;
+		Person expected;
+		PrivateKey privateKey;
+		PublicKey publicKey;
+		File derDir;
+		File privatekeyDerFile;
+
+		PublicKeyGenericEncryptor<Person> genericEncryptor;
+		PrivateKeyGenericDecryptor<Person> genericDecryptor;
+
+		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		privatekeyDerFile = new File(derDir, "private.der");
+
+		privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
+		publicKey = PrivateKeyExtensions.generatePublicKey(privateKey);
+
+		genericEncryptor = new PublicKeyGenericEncryptor<>(publicKey);
+		genericDecryptor = new PrivateKeyGenericDecryptor<Person>(privateKey);
+
+		actual = Person.builder().about("about").name("Foo").gender(Gender.MALE).build();
+		byte[] encrypt = genericEncryptor.encrypt(actual);
+		Person decryptedPerson = genericDecryptor.decrypt(encrypt);
+		expected = decryptedPerson;
+		assertEquals(actual, expected);
+	}
+
 }

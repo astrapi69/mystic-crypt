@@ -24,22 +24,10 @@
  */
 package io.github.astrapi69.crypto.key;
 
-import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertNotNull;
-import static org.testng.AssertJUnit.assertNull;
 
 import java.io.File;
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.PublicKey;
-import java.security.spec.InvalidKeySpecException;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 
 import org.testng.annotations.Test;
 
@@ -55,28 +43,11 @@ public class PublicKeyHexEncryptorTest
 	/**
 	 * Test method for {@link PublicKeyHexEncryptor} constructors
 	 *
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the cipher object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchProviderException
-	 *             is thrown if the specified provider is not registered in the security provider
-	 *             list.
-	 * @throws InvalidKeyException
-	 *             the invalid key exception is thrown if initialization of the cipher object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cipher object fails.
-	 * @throws IllegalBlockSizeException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws BadPaddingException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
+	 * @throws Exception
+	 *             is thrown if any error occurs
 	 */
 	@Test
-	public void testConstructors() throws NoSuchAlgorithmException, InvalidKeySpecException,
-		NoSuchProviderException, IOException, InvalidKeyException, NoSuchPaddingException,
-		IllegalBlockSizeException, BadPaddingException
+	public void testConstructors() throws Exception
 	{
 		PublicKey publicKey;
 		File publickeyDerDir;
@@ -89,10 +60,7 @@ public class PublicKeyHexEncryptorTest
 		publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
 		encryptor = new PublicKeyHexEncryptor(publicKey);
 		assertNotNull(encryptor);
-		assertEquals(publicKey, encryptor.getPublicKey());
-		assertNull(encryptor.getCipher());
 		encrypted = encryptor.encrypt("foo");
 		assertNotNull(encrypted);
-		assertNotNull(encryptor.getCipher());
 	}
 }

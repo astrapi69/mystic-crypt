@@ -4,9 +4,17 @@
 Version 7.11-SNAPSHOT
 -------------
 
+ADDED:
+
+- new constructor with private key in class PrivateKeyDecryptor
+- new constructor with private key in class PrivateKeyGenericDecryptor
+- new constructor with public key in class PublicKeyEncryptor
+- new constructor with public key in class PublicKeyGenericEncryptor
+
 CHANGED:
 
 - update of dependency randomizer to new version 8.5
+- refactored class PublicKeyHexEncryptor and PrivateKeyHexDecryptor and removed deprecated status
 
 Version 7.10
 -------------

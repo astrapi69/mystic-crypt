@@ -42,11 +42,48 @@ import io.github.astrapi69.crypto.model.CryptModel;
 import io.github.astrapi69.file.search.PathFinder;
 import io.github.astrapi69.random.object.RandomStringFactory;
 
+/**
+ * The unit test class for the class {@link PublicKeyEncryptor}
+ */
 public class PublicKeyEncryptorTest
 {
 
+	/**
+	 * Test method for {@link PublicKeyEncryptor} constructor with {@link PublicKey} object
+	 *
+	 * @throws Exception
+	 *             is thrown if any error occurs
+	 */
 	@Test
-	public void testEncrypt() throws Exception
+	public void testConstructorWithPublicKey() throws Exception
+	{
+		PublicKey publicKey;
+		File publickeyDerDir;
+		File publickeyDerFile;
+		PublicKeyEncryptor encryptor;
+		byte[] encrypted;
+		String longString;
+
+		publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		publickeyDerFile = new File(publickeyDerDir, "public.der");
+		publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
+		encryptor = new PublicKeyEncryptor(publicKey);
+		assertNotNull(encryptor);
+		assertNotNull(encryptor);
+		longString = RandomStringFactory.newRandomLongString(10000000);
+
+		encrypted = encryptor.encrypt(longString.getBytes(StandardCharsets.UTF_8));
+		assertNotNull(encrypted);
+	}
+
+	/**
+	 * Test method for {@link PublicKeyEncryptor} constructor with {@link CryptModel} object
+	 * 
+	 * @throws Exception
+	 *             is thrown if any error occurs
+	 */
+	@Test
+	public void testConstructorWithCryptModel() throws Exception
 	{
 		PublicKeyEncryptor encryptor;
 
@@ -56,10 +93,6 @@ public class PublicKeyEncryptorTest
 		CryptModel<Cipher, SecretKey, String> symmetricKeyModel;
 		File publickeyDerDir;
 		File publickeyDerFile;
-		byte[] actual;
-		byte[] expected;
-		File encryptedCnstr;
-		String encryptedFilename;
 		String longString;
 		// new scenario...
 

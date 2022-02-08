@@ -86,6 +86,33 @@ public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey, b
 	}
 
 	/**
+	 * Instantiates a new {@link PrivateKeyDecryptor} with the given {@link PrivateKey}
+	 *
+	 * @param privateKey
+	 *            The private key
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported.
+	 */
+	public PrivateKeyDecryptor(final PrivateKey privateKey)
+		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+	{
+		super(CryptModel.<Cipher, PrivateKey, byte[]> builder().key(privateKey).build());
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
@@ -95,8 +122,7 @@ public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey, b
 		byte[] decryptedKey = getModel().getCipher().doFinal(cryptData.getEncryptedKey());
 		Cipher cipher = newSymmetricCipher(decryptedKey, AesAlgorithm.AES.getAlgorithm(),
 			Cipher.DECRYPT_MODE);
-		byte[] decryptedObject = cipher.doFinal(cryptData.getSymmetricKeyEncryptedObject());
-		return decryptedObject;
+		return cipher.doFinal(cryptData.getSymmetricKeyEncryptedObject());
 	}
 
 	private Cipher newSymmetricCipher(byte[] decryptedKey, final String algorithm,

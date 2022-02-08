@@ -26,30 +26,18 @@ package io.github.astrapi69.crypto.key;
 
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertNotNull;
-import static org.testng.AssertJUnit.assertNull;
 
 import java.io.File;
-import java.io.IOException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
-import java.security.spec.InvalidKeySpecException;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-
-import org.apache.commons.codec.DecoderException;
 import org.testng.annotations.Test;
 
 import io.github.astrapi69.crypto.key.reader.PrivateKeyReader;
 import io.github.astrapi69.file.search.PathFinder;
 
 /**
- * The class {@link PrivateKeyHexDecryptor}
+ *
+ * The unit test class for the class {@link PrivateKeyHexDecryptor}
  */
 public class PrivateKeyHexDecryptorTest
 {
@@ -57,34 +45,11 @@ public class PrivateKeyHexDecryptorTest
 	/**
 	 * Test method for {@link PrivateKeyHexDecryptor} constructors
 	 *
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the cipher object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchProviderException
-	 *             is thrown if the specified provider is not registered in the security provider
-	 *             list.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cipher object fails.
-	 * @throws InvalidKeyException
-	 *             the invalid key exception is thrown if initialization of the cipher object fails.
-	 * @throws DecoderException
-	 *             is thrown if an odd number or illegal of characters is supplied
-	 * @throws IllegalBlockSizeException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws BadPaddingException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cipher object fails.
-	 *
+	 * @throws Exception
+	 *             is thrown if any error occurs
 	 */
 	@Test
-	public void testConstructors()
-		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException,
-		IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException,
-		BadPaddingException, InvalidAlgorithmParameterException, DecoderException
+	public void testConstructors() throws Exception
 	{
 		String actual;
 		String expected;
@@ -101,13 +66,10 @@ public class PrivateKeyHexDecryptorTest
 
 		decryptor = new PrivateKeyHexDecryptor(privateKey);
 		assertNotNull(decryptor);
-		assertEquals(privateKey, decryptor.getPrivateKey());
-		assertNull(decryptor.getCipher());
-		encypted = "02A3DD9BD09B568B3DE6B812542D65A85A7D61CB3C5FF0962504929A509A9B9344958D17148F4B863E712A05B1D8BBB91656C421E5D2F0D4E388DFF9453EAB85F1140D5549509BA4E1A58BB62BDF5AF23FA0F852DE7F13F66959F83D823FD5C2F7A7C940FEF9E2E97A8759571DABD9B551C7034581BD71E6E3D403FD3125CC20CADE8DD3B7FE79D5D3D8CDCE46C7629E1FAE18C3DB9EE4B36D624DE59AB0F87B73405C5514864184F3A8E22FBB9BC2E3E489E5B12F74C133267FFCF281BE63544187EE199FC96BB370BBE0424646F314C777FC4E98EB3BBD1671789FA880B601A0ACF8EF4CC51F226B1B7B8F8F2E607EE5C4A1A67092DF545CED067ECAF63BE7";
+		encypted = "ACED000573720031696F2E6769746875622E6173747261706936392E63727970746F2E6D6F64656C2E41657352736143727970744D6F64656C00000000000000010200025B000C656E637279707465644B65797400025B425B001B73796D6D65747269634B6579456E637279707465644F626A65637471007E00017870757200025B42ACF317F8060854E00200007870000001001A4D3AE68958C7F057155542ED8913CCC9E27A10B6B20DAE22A9D93AAB8074C54B9B22A90F7F38549608027DC86684C56033725309FFA6C7D9E77464FDCA82AA2C7F925FA3BF136AB8314AF981BD89B56DF6B4046EAB7EA65844BFD3D33AC45168C1894F62FC6693CAF6C0E8834E634C2679693787ADA132434C43A9C828882B659379C039076E7BC193780A229CED9656066FC147674CAAB5BCD0E4676501068A5E78D16E042A81F9D3B0EDC493B90051F401B2C222A7E3037DCE1DBD80FDFF9AE6D016BE37548788A2C9E137343A2B36E3D4C60C554BFC04838CEA5407EC2EAD8CE3086B248EC8E6D987C1FAA6FD3F8EE2FB91C3C1316D39855FDD85F8CDDB7571007E000300000010F91E2212D00DB79DC6B306705DDC9B88";
 		actual = decryptor.decrypt(encypted);
 		assertNotNull(actual);
 		expected = "foo";
 		assertEquals(actual, expected);
-		assertNotNull(decryptor.getCipher());
 	}
 }
