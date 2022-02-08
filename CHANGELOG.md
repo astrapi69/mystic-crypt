@@ -13,6 +13,7 @@ ADDED:
 
 CHANGED:
 
+- update gradle to new version 7.4
 - update of dependency randomizer to new version 8.5
 - refactored class PublicKeyHexEncryptor and PrivateKeyHexDecryptor and removed deprecated status
 
@@ -35,7 +36,7 @@ CHANGED:
 - update of dependency bouncycastle to new version 1.70
 - update of test dependency test-objects to new version 5.7
 - update of test dependency silly-io to new version 1.7
-- update of test dependency testng to new version to 7.4.0
+- update of test dependency testng to new version to 7.5
 
 Version 7.9
 -------------
