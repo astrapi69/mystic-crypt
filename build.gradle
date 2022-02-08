@@ -1,3 +1,6 @@
+group = "$groupPackage" as Object
+version = "$projectVersion" as Object
+description = "$rootProject.name"
 
 buildscript {
     repositories {
@@ -8,6 +11,8 @@ buildscript {
     dependencies {
         classpath "com.github.ben-manes:gradle-versions-plugin:$gradlePluginVersionsVersion"
         classpath "gradle.plugin.com.hierynomus.gradle.plugins:license-gradle-plugin:$licenseGradlePluginVersion"
+        classpath "org.ajoberstar.grgit:grgit-gradle:$grgitGradlePluginVersion"
+        classpath "com.diffplug.spotless:spotless-plugin-gradle:$spotlessGradlePluginVersion"
     }
 }
 
@@ -18,21 +23,46 @@ apply plugin: "signing"
 apply plugin: "com.github.ben-manes.versions"
 apply plugin: "com.github.hierynomus.license"
 apply plugin: "jacoco"
+apply plugin: "org.ajoberstar.grgit"
+apply plugin: "com.diffplug.spotless"
 
-group = "$groupPackage"
-version = "$projectVersion"
-description = "$rootProject.name"
-sourceCompatibility = "$projectSourceCompatibility"
+spotless {
+
+    format "misc", {
+        // define the files to apply `misc` to
+        target "*.gradle", "*.md", ".gitignore"
+
+        // define the steps to apply to those files
+        trimTrailingWhitespace()
+        indentWithSpaces() // or spaces. Takes an integer argument if you don"t like 4
+        endWithNewline()
+    }
+    java {
+        eclipse("4.19.0").configFile("src/main/resources/alpharo-formatter.xml")
+    }
+}
+
+task tagRelease {
+    description = "Tags the current head with the project\'s version."
+    doLast {
+        grgit.tag.add {
+            name = "RELEASE-${project.version.toString()}"
+            message = "New release in version ${version}"
+        }
+    }
+}
+
+sourceCompatibility = "$projectSourceCompatibility" as Object
 
 repositories {
     mavenLocal()
     mavenCentral()
-}
-
-javadoc {
-    failOnError = false
-    if(JavaVersion.current().isJava9Compatible()) {
-        options.addBooleanOption("html5", true)
+    maven {
+        name "Sonatype Nexus Snapshots"
+        url "https://oss.sonatype.org/content/repositories/snapshots"
+        mavenContent {
+            snapshotsOnly()
+        }
     }
 }
 
@@ -40,17 +70,8 @@ tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
     // uncomment the next line for build with compiler argument -Xlint:deprecation
     // options.compilerArgs << "-Xlint:deprecation"
-}
-
-test {
-    useTestNG()
-}
-
-jacocoTestReport {
-    reports {
-        xml.enabled true
-        html.enabled true
-    }
+    // uncomment the next line for build with compiler argument -Xlint:unchecked
+    // options.compilerArgs << "-Xlint:unchecked"
 }
 
 task sourcesJar(type: Jar) {
@@ -64,7 +85,12 @@ task javadocJar(type: Jar) {
     javadoc.properties.failOnError = true
 }
 
-check.dependsOn jacocoTestReport
+javadoc {
+    failOnError = false
+    if(JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption("html5", true)
+    }
+}
 
 def releaseVersion = !version.endsWith("SNAPSHOT")
 
@@ -179,6 +205,19 @@ license {
 // workhack for license issue #76
 gradle.startParameter.excludedTaskNames += "licenseMain"
 gradle.startParameter.excludedTaskNames += "licenseTest"
+
+test {
+    useTestNG()
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled true
+    }
+}
+
+check.dependsOn jacocoTestReport
 
 dependencies {
     implementation("commons-codec:commons-codec:$commonsCodecVersion")

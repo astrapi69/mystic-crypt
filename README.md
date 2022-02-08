@@ -4,7 +4,7 @@
 
 [![Build Status](https://api.travis-ci.com/astrapi69/mystic-crypt.svg?branch=develop)](https://travis-ci.com/github/astrapi69/mystic-crypt)
 [![Coverage Status](https://codecov.io/gh/astrapi69/mystic-crypt/branch/develop/graph/badge.svg)](https://codecov.io/gh/astrapi69/mystic-crypt)
-[![Open Issues](https://img.shields.io/github/issues/astrapi69/mystic-crypt.svg?style=flat)](https://github.com/astrapi69/mystic-crypt/issues) 
+[![Open Issues](https://img.shields.io/github/issues/astrapi69/mystic-crypt.svg?style=flat)](https://github.com/astrapi69/mystic-crypt/issues)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/mystic-crypt/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/mystic-crypt)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT)
 [![Javadoc](http://www.javadoc.io/badge/io.github.astrapi69/mystic-crypt.svg)](http://www.javadoc.io/doc/io.github.astrapi69/mystic-crypt)
@@ -37,23 +37,23 @@ Check out [sonatype repository](https://oss.sonatype.org/index.html#nexus-search
 
 You can first define the version properties and add than the following maven dependency to your project `pom.xml` if you want to import the core functionality of mystic-crypt:
 
-	<properties>
-			...
-		<!-- MYSTIC-CRYPT version -->
-		<mystic-crypt.version>7.9</mystic-crypt.version>
-			...
-	</properties>
-			...
-		<dependencies>
-			...
-			<!-- MYSTIC-CRYPT DEPENDENCY -->
-			<dependency>
-				<groupId>io.github.astrapi69</groupId>
-				<artifactId>mystic-crypt</artifactId>
-				<version>${mystic-crypt.version}</version>
-			</dependency>
-			...
-		</dependencies>	
+    <properties>
+            ...
+        <!-- MYSTIC-CRYPT version -->
+        <mystic-crypt.version>7.9</mystic-crypt.version>
+            ...
+    </properties>
+            ...
+        <dependencies>
+            ...
+            <!-- MYSTIC-CRYPT DEPENDENCY -->
+            <dependency>
+                <groupId>io.github.astrapi69</groupId>
+                <artifactId>mystic-crypt</artifactId>
+                <version>${mystic-crypt.version}</version>
+            </dependency>
+            ...
+        </dependencies>
 
 ## gradle dependency
 
@@ -70,9 +70,9 @@ or in build.gradle ext area
 
 ```
 ext {
-			...
+            ...
     mysticCryptVersion = "7.9"
-			...
+            ...
 }
 ```
 
@@ -80,9 +80,9 @@ and then add the dependency to the dependencies area
 
 ```
 dependencies {
-			...
-	implementation("io.github.astrapi69:mystic-crypt:$mysticCryptVersion")
-			...
+            ...
+    implementation("io.github.astrapi69:mystic-crypt:$mysticCryptVersion")
+            ...
 }
 ```
 
@@ -166,9 +166,9 @@ or over flattr:
  * hash byte arrays, strings such as passwords
  * simple encode and decode of string objects with relocation
  * resolve the TrustManagers and KeyManagers from keystore files
- 
- 
-Encryption and decryption processes are always executed in the backround so it is a black box for the user. If you want to 
+
+
+Encryption and decryption processes are always executed in the backround so it is a black box for the user. If you want to
 see this library in action you can download this [gui client](https://github.com/astrapi69/mystic-crypt-ui) and see some features
 described above.
 
@@ -205,7 +205,7 @@ Here is a list of awesome projects for cryptography:
  * [JSch](http://www.jcraft.com/jsch/) JSch is a pure Java implementation of SSH2.
  * [Apache Shiro](https://github.com/apache/shiro) Apache Shiro is a powerful and easy-to-use Java security framework that performs authentication, authorization, cryptography, and session management.
  * [commons-ssl](http://juliusdavies.ca/commons-ssl/) Not-Yet-Commons-SSL
- * [lockbox-java](https://github.com/eloquent/lockbox-java) Simple, strong encryption. 
+ * [lockbox-java](https://github.com/eloquent/lockbox-java) Simple, strong encryption.
  * [jsql-injection](https://github.com/ron190/jsql-injection) jSQL Injection is a Java application for automatic SQL database injection.
  * [curve25519](https://github.com/signalapp/curve25519-java) Pure Java and JNI backed Curve25519 implementation
  * [vault](https://github.com/hashicorp/vault) A tool for secrets management, encryption as a service, and privileged access management
@@ -239,4 +239,3 @@ Here is a list of awesome projects for cryptography:
 |[![Javadoc](http://www.javadoc.io/badge/io.github.astrapi69/mystic-crypt.svg)](http://www.javadoc.io/doc/io.github.astrapi69/mystic-crypt) mystic-crypt|
 |Special thanks to [javadoc.io](http://www.javadoc.io) for providing a free javadoc documentation for open source projects|
 |     <img width=1000/>     |
-
