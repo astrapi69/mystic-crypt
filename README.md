@@ -37,13 +37,13 @@ your project `build.gradle` if you want to import the core functionality of myst
 define version in file gradle.properties
 
 ```
-mysticCryptVersion=7.10
+mysticCryptVersion=7.11
 ```
 
 or in build.gradle ext area
 
 ```
-    mysticCryptVersion = "7.10"
+    mysticCryptVersion = "7.11"
 ```
 
 and then add the dependency to the dependencies area
@@ -62,7 +62,7 @@ You can first define the version properties and add than the following maven dep
     <properties>
             ...
         <!-- MYSTIC-CRYPT version -->
-        <mystic-crypt.version>7.10</mystic-crypt.version>
+        <mystic-crypt.version>7.11</mystic-crypt.version>
             ...
     </properties>
             ...
