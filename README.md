@@ -29,6 +29,29 @@ The target of this parent project is to make encryption and decryption as simple
 
 The source code comes under the liberal MIT License, making mystic-crypt great for all types of applications.
 
+## gradle dependency
+
+You can first define the version in the ext section and add than the following gradle dependency to
+your project `build.gradle` if you want to import the core functionality of mystic-crypt:
+
+define version in file gradle.properties
+
+```
+mysticCryptVersion=7.10
+```
+
+or in build.gradle ext area
+
+```
+    mysticCryptVersion = "7.10"
+```
+
+and then add the dependency to the dependencies area
+
+```
+    implementation("io.github.astrapi69:mystic-crypt:$mysticCryptVersion")
+```
+
 ## Maven dependency
 
 Maven dependency is now available on sonatype.
@@ -39,7 +62,7 @@ You can first define the version properties and add than the following maven dep
     <properties>
             ...
         <!-- MYSTIC-CRYPT version -->
-        <mystic-crypt.version>7.9</mystic-crypt.version>
+        <mystic-crypt.version>7.10</mystic-crypt.version>
             ...
     </properties>
             ...
@@ -53,37 +76,6 @@ You can first define the version properties and add than the following maven dep
             </dependency>
             ...
         </dependencies>
-
-## gradle dependency
-
-You can first define the version in the ext section and add than the following gradle dependency to
-your project `build.gradle` if you want to import the core functionality of mystic-crypt:
-
-define version in file gradle.properties
-
-```
-mysticCryptVersion=7.9
-```
-
-or in build.gradle ext area
-
-```
-ext {
-            ...
-    mysticCryptVersion = "7.9"
-            ...
-}
-```
-
-and then add the dependency to the dependencies area
-
-```
-dependencies {
-            ...
-    implementation("io.github.astrapi69:mystic-crypt:$mysticCryptVersion")
-            ...
-}
-```
 
 ## Note
 
