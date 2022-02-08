@@ -4,7 +4,9 @@
 Version 7.11-SNAPSHOT
 -------------
 
+CHANGED:
 
+- update of dependency randomizer to new version 8.5
 
 Version 7.10
 -------------

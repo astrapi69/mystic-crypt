@@ -234,7 +234,7 @@ dependencies {
     implementation("io.github.astrapi69:crypt-api:$cryptApiVersion")
     implementation("io.github.astrapi69:crypt-data:$cryptDataVersion")
     implementation("io.github.astrapi69:throw-able:$throwAbleVersion")
-    implementation("io.github.astrapi69:randomizer-core:$randomizerVersion")
+    implementation("io.github.astrapi69:randomizer:$randomizerVersion")
     implementation("io.github.astrapi69:file-worker:$fileWorkerVersion")
     implementation("io.github.astrapi69:silly-collections:$sillyCollectionsVersion")
     implementation("io.github.astrapi69:jobj-core:$jobjCoreVersion")
