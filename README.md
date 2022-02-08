@@ -2,14 +2,13 @@
 
 <div style="text-align: center">
 
-[![Build Status](https://api.travis-ci.com/astrapi69/mystic-crypt.svg?branch=develop)](https://travis-ci.com/github/astrapi69/mystic-crypt)
+[![Java CI with Gradle](https://github.com/astrapi69/mystic-crypt/actions/workflows/gradle.yml/badge.svg)](https://github.com/astrapi69/mystic-crypt/actions/workflows/gradle.yml)
 [![Coverage Status](https://codecov.io/gh/astrapi69/mystic-crypt/branch/develop/graph/badge.svg)](https://codecov.io/gh/astrapi69/mystic-crypt)
 [![Open Issues](https://img.shields.io/github/issues/astrapi69/mystic-crypt.svg?style=flat)](https://github.com/astrapi69/mystic-crypt/issues)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/mystic-crypt/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/mystic-crypt)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT)
 [![Javadoc](http://www.javadoc.io/badge/io.github.astrapi69/mystic-crypt.svg)](http://www.javadoc.io/doc/io.github.astrapi69/mystic-crypt)
 [![Hits-of-Code](https://hitsofcode.com/github/astrapi69/mystic-crypt)](https://hitsofcode.com/github/astrapi69/mystic-crypt/view)
-[![Lines of Code](https://tokei.rs/b1/github/astrapi69/mystic-crypt)](https://github.com/astrapi69/mystic-crypt)
 
 </div>
 
