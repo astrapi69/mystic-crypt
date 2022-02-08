@@ -15,7 +15,7 @@ CHANGED:
 - update gradle to new version 7.3.3
 - update gradle-plugin dependency of com.github.ben-manes.versions.gradle.plugin to new version 0.42.0
 - update of crypt-api dependency version to 7.7
-- update of crypt-data dependency version to 7.11
+- update of crypt-data dependency version to 7.11.1
 - update of dependency jobj-core to new version 5.3
 - update of dependency bouncycastle to new version 1.70
 - update of test dependency test-objects to new version 5.7
