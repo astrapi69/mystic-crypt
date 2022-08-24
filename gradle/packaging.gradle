@@ -1,0 +1,17 @@
+import java.text.SimpleDateFormat
+
+jar {
+    manifest {
+        attributes(
+                "Name": project.name,
+                "Manifest-Version": project.version,
+                "Implementation-Title": "$groupPackage" + "." + "$rootProject.name",
+                "Implementation-Version": project.version,
+                "Implementation-Vendor": "$projectLeaderName",
+                "Created-By": "Gradle ${gradle.gradleVersion}",
+                "Built-By": "$projectLeaderName",
+                "Build-Timestamp": new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(new Date()),
+                "Build-Jdk": "${System.properties['java.version']} (${System.properties['java.vendor']} ${System.properties['java.vm.version']})",
+                "Build-OS": "${System.properties['os.name']} ${System.properties['os.arch']} ${System.properties['os.version']}")
+    }
+}

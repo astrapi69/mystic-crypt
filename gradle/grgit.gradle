@@ -1,0 +1,9 @@
+task tagRelease {
+    description = "Tags the current head with the project\'s version."
+    doLast {
+        grgit.tag.add {
+            name = "RELEASE-${project.version.toString()}"
+            message = "New release in version ${version}"
+        }
+    }
+}

@@ -1,0 +1,18 @@
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+        name "Sonatype Nexus Releases"
+        url "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+        mavenContent {
+            releasesOnly()
+        }
+    }
+    maven {
+        name "Sonatype Nexus Snapshots"
+        url "https://oss.sonatype.org/content/repositories/snapshots"
+        mavenContent {
+            snapshotsOnly()
+        }
+    }
+}

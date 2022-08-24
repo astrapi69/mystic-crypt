@@ -1,0 +1,37 @@
+license {
+    ext.year = "$projectInceptionYear"
+    ext.owner = "$projectLeaderName"
+    ignoreFailures = true
+    header rootProject.file("src/main/resources/LICENSE.txt")
+    excludes(["**/README",
+              "**/README.md",
+              "**/LICENSE",
+              "**/NOTICE",
+              "**/*.xml",
+              "**/*.xsl",
+              "**/*.xsd",
+              "**/*.dtd",
+              "**/*.html",
+              "**/*.jsp",
+              "**/*.jpa",
+              "**/*.sql",
+              "**/*.properties",
+              "**/*.bat",
+              "**/*.gradle",
+              "**/*.MF",
+              "**/*.txt",
+              "**/*.vm",
+              "**/*.log",
+              "**/*.map",
+              "**/*.js.map",
+              "**/*.tmpl",
+              "**/*.js.tmpl",
+              "**/*.editorconfig",
+              "src/test/resources/**",
+              "src/main/resources/**",
+              "out/**",
+              "build/**"])
+}
+// workhack for license issue #76
+gradle.startParameter.excludedTaskNames += "licenseMain"
+gradle.startParameter.excludedTaskNames += "licenseTest"
