@@ -34,8 +34,8 @@ import java.util.Set;
 
 import org.testng.annotations.Test;
 
-import io.github.astrapi69.collections.list.ListFactory;
-import io.github.astrapi69.collections.set.SetFactory;
+import io.github.astrapi69.collection.list.ListFactory;
+import io.github.astrapi69.collection.set.SetFactory;
 import io.github.astrapi69.file.read.ReadFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;
 

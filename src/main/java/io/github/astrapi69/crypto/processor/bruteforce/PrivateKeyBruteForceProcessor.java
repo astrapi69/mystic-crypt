@@ -32,8 +32,8 @@ import java.util.Optional;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
-import io.github.astrapi69.crypto.key.reader.EncryptedPrivateKeyReader;
-import io.github.astrapi69.crypto.key.reader.PrivateKeyReader;
+import io.github.astrapi69.crypt.data.key.reader.EncryptedPrivateKeyReader;
+import io.github.astrapi69.crypt.data.key.reader.PrivateKeyReader;
 
 /**
  * The class {@link PrivateKeyBruteForceProcessor}

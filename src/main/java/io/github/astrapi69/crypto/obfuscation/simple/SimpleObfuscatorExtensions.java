@@ -31,7 +31,7 @@ import java.util.Map.Entry;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
-import io.github.astrapi69.crypto.obfuscation.rule.ObfuscationRule;
+import io.github.astrapi69.crypt.data.obfuscation.rule.ObfuscationRule;
 
 /**
  * The class {@link SimpleObfuscatorExtensions} provides algorithms for obfuscate strings.

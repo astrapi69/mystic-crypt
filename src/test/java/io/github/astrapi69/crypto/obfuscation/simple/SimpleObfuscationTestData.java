@@ -27,7 +27,7 @@ package io.github.astrapi69.crypto.obfuscation.simple;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
-import io.github.astrapi69.crypto.obfuscation.rule.ObfuscationRule;
+import io.github.astrapi69.crypt.data.obfuscation.rule.ObfuscationRule;
 
 /**
  * The class {@link SimpleObfuscationTestData} provides test data for test the obfuscation rules

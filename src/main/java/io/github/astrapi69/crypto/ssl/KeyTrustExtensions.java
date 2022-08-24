@@ -38,7 +38,7 @@ import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 
-import io.github.astrapi69.crypto.factory.KeyStoreFactory;
+import io.github.astrapi69.crypt.data.factory.KeyStoreFactory;
 
 /**
  * The factory class {@link KeyTrustExtensions} holds methods for creating {@link TrustManager}

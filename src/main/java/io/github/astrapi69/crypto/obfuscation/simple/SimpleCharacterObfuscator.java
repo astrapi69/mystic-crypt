@@ -30,7 +30,7 @@ import com.google.common.collect.BiMap;
 
 import io.github.astrapi69.check.Check;
 import io.github.astrapi69.crypto.obfuscation.api.Obfuscatable;
-import io.github.astrapi69.crypto.obfuscation.rule.ObfuscationRule;
+import io.github.astrapi69.crypt.data.obfuscation.rule.ObfuscationRule;
 
 /**
  * The class {@link SimpleCharacterObfuscator} provide as the name says obfuscation of a given text

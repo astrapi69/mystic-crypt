@@ -33,7 +33,7 @@ import java.util.Objects;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import io.github.astrapi69.crypto.model.CryptObjectDecorator;
+import io.github.astrapi69.crypt.data.model.CryptObjectDecorator;
 import io.github.astrapi69.file.read.ReadFileExtensions;
 
 public final class CryptObjectDecoratorExtensions

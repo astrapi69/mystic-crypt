@@ -36,9 +36,9 @@ import javax.crypto.SecretKey;
 import org.testng.annotations.Test;
 
 import io.github.astrapi69.crypto.algorithm.AesAlgorithm;
-import io.github.astrapi69.crypto.factory.SecretKeyFactoryExtensions;
-import io.github.astrapi69.crypto.key.reader.PublicKeyReader;
-import io.github.astrapi69.crypto.model.CryptModel;
+import io.github.astrapi69.crypt.data.factory.SecretKeyFactoryExtensions;
+import io.github.astrapi69.crypt.data.key.reader.PublicKeyReader;
+import io.github.astrapi69.crypt.data.model.CryptModel;
 import io.github.astrapi69.file.search.PathFinder;
 import io.github.astrapi69.random.object.RandomStringFactory;
 

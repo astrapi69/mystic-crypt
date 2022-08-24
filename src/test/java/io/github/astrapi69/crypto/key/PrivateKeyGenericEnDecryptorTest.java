@@ -35,17 +35,18 @@ import java.security.PublicKey;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 
+import io.github.astrapi69.crypt.data.key.PrivateKeyExtensions;
 import org.testng.annotations.Test;
 
 import io.github.astrapi69.crypto.algorithm.AesAlgorithm;
-import io.github.astrapi69.crypto.factory.SecretKeyFactoryExtensions;
-import io.github.astrapi69.crypto.key.reader.PrivateKeyReader;
-import io.github.astrapi69.crypto.model.CryptModel;
+import io.github.astrapi69.crypt.data.factory.SecretKeyFactoryExtensions;
+import io.github.astrapi69.crypt.data.key.reader.PrivateKeyReader;
+import io.github.astrapi69.crypt.data.model.CryptModel;
 import io.github.astrapi69.file.search.PathFinder;
 import io.github.astrapi69.json.JsonStringToObjectExtensions;
 import io.github.astrapi69.json.ObjectToJsonExtensions;
-import io.github.astrapi69.test.objects.Person;
-import io.github.astrapi69.test.objects.enums.Gender;
+import io.github.astrapi69.test.object.Person;
+import io.github.astrapi69.test.object.enumtype.Gender;
 
 /**
  * The unit test class for the encryption and decryption with the class

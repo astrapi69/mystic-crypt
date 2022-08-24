@@ -45,11 +45,11 @@ import io.github.astrapi69.check.Check;
 import io.github.astrapi69.crypto.algorithm.SunJCEAlgorithm;
 import io.github.astrapi69.crypto.api.Cryptor;
 import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
-import io.github.astrapi69.crypto.factory.AlgorithmParameterSpecFactory;
-import io.github.astrapi69.crypto.factory.CipherFactory;
-import io.github.astrapi69.crypto.factory.KeySpecFactory;
-import io.github.astrapi69.crypto.factory.SecretKeyFactoryExtensions;
-import io.github.astrapi69.crypto.model.CryptModel;
+import io.github.astrapi69.crypt.data.factory.AlgorithmParameterSpecFactory;
+import io.github.astrapi69.crypt.data.factory.CipherFactory;
+import io.github.astrapi69.crypt.data.factory.KeySpecFactory;
+import io.github.astrapi69.crypt.data.factory.SecretKeyFactoryExtensions;
+import io.github.astrapi69.crypt.data.model.CryptModel;
 
 /**
  * The abstract class {@link AbstractCryptor} provides factory methods that may or must be

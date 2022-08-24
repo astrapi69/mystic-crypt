@@ -44,8 +44,8 @@ import org.testng.annotations.Test;
 
 import io.github.astrapi69.crypto.algorithm.SunJCEAlgorithm;
 import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
-import io.github.astrapi69.crypto.factory.CipherFactory;
-import io.github.astrapi69.crypto.model.CryptModel;
+import io.github.astrapi69.crypt.data.factory.CipherFactory;
+import io.github.astrapi69.crypt.data.model.CryptModel;
 import io.github.astrapi69.file.delete.DeleteFileExtensions;
 import io.github.astrapi69.file.read.ReadFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;

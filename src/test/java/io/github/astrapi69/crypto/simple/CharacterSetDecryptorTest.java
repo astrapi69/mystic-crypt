@@ -32,9 +32,9 @@ import java.util.List;
 
 import org.testng.annotations.Test;
 
-import io.github.astrapi69.collections.CollectionExtensions;
-import io.github.astrapi69.collections.array.ArrayFactory;
-import io.github.astrapi69.collections.list.ListFactory;
+import io.github.astrapi69.collection.CollectionExtensions;
+import io.github.astrapi69.collection.array.ArrayFactory;
+import io.github.astrapi69.collection.list.ListFactory;
 import io.github.astrapi69.string.StringExtensions;
 
 /**

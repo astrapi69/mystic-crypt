@@ -38,9 +38,9 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
 import io.github.astrapi69.clone.object.CloneObjectExtensions;
-import io.github.astrapi69.collections.map.MapFactory;
-import io.github.astrapi69.collections.pairs.KeyValuePair;
-import io.github.astrapi69.crypto.obfuscation.rule.ObfuscationOperationRule;
+import io.github.astrapi69.collection.map.MapFactory;
+import io.github.astrapi69.collection.pair.KeyValuePair;
+import io.github.astrapi69.crypt.data.obfuscation.rule.ObfuscationOperationRule;
 import io.github.astrapi69.crypto.obfuscation.rule.Operation;
 
 /**

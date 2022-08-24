@@ -30,7 +30,7 @@ import java.nio.charset.Charset;
 
 import org.testng.annotations.Test;
 
-import io.github.astrapi69.crypto.model.CryptObjectDecorator;
+import io.github.astrapi69.crypt.data.model.CryptObjectDecorator;
 
 /**
  * The unit test class for the class {@link CryptObjectDecoratorExtensions}

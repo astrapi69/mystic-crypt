@@ -31,7 +31,7 @@ import java.nio.charset.StandardCharsets;
 
 import org.testng.annotations.Test;
 
-import io.github.astrapi69.collections.array.ArrayFactory;
+import io.github.astrapi69.collection.array.ArrayFactory;
 
 /**
  * The unit test class for the class {@link PasswordByteEncryptor}

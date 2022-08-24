@@ -43,7 +43,7 @@ import org.apache.commons.io.FilenameUtils;
 import io.github.astrapi69.crypto.api.Cryptor;
 import io.github.astrapi69.crypto.api.FileEncryptor;
 import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
-import io.github.astrapi69.crypto.factory.CipherFactory;
+import io.github.astrapi69.crypt.data.factory.CipherFactory;
 import io.github.astrapi69.crypto.io.CryptoCipherInputStream;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 

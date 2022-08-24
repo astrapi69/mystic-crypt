@@ -33,7 +33,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.io.Files;
 
-import io.github.astrapi69.collections.array.ArrayFactory;
+import io.github.astrapi69.collection.array.ArrayFactory;
 import io.github.astrapi69.file.delete.DeleteFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;
 import io.github.astrapi69.file.write.WriteFileExtensions;

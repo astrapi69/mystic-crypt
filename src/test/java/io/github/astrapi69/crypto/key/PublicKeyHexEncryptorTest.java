@@ -31,7 +31,7 @@ import java.security.PublicKey;
 
 import org.testng.annotations.Test;
 
-import io.github.astrapi69.crypto.key.reader.PublicKeyReader;
+import io.github.astrapi69.crypt.data.key.reader.PublicKeyReader;
 import io.github.astrapi69.file.search.PathFinder;
 
 /**

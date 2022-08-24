@@ -45,9 +45,9 @@ import io.github.astrapi69.crypto.algorithm.AesAlgorithm;
 import io.github.astrapi69.crypto.algorithm.Algorithm;
 import io.github.astrapi69.crypto.core.AbstractStringEncryptor;
 import io.github.astrapi69.crypto.decorator.CryptObjectDecoratorExtensions;
-import io.github.astrapi69.crypto.factory.SecretKeyFactoryExtensions;
-import io.github.astrapi69.crypto.model.CryptModel;
-import io.github.astrapi69.crypto.model.CryptObjectDecorator;
+import io.github.astrapi69.crypt.data.factory.SecretKeyFactoryExtensions;
+import io.github.astrapi69.crypt.data.model.CryptModel;
+import io.github.astrapi69.crypt.data.model.CryptObjectDecorator;
 
 /**
  * The class {@link HexableEncryptor} is the pendant class of {@link HexableDecryptor} and encrypts

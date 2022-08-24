@@ -46,10 +46,10 @@ import org.apache.commons.io.FilenameUtils;
 
 import io.github.astrapi69.crypto.core.AbstractFileDecryptor;
 import io.github.astrapi69.crypto.decorator.CryptObjectDecoratorExtensions;
-import io.github.astrapi69.crypto.factory.CipherFactory;
+import io.github.astrapi69.crypt.data.factory.CipherFactory;
 import io.github.astrapi69.crypto.io.CryptoCipherOutputStream;
-import io.github.astrapi69.crypto.model.CryptModel;
-import io.github.astrapi69.crypto.model.CryptObjectDecorator;
+import io.github.astrapi69.crypt.data.model.CryptModel;
+import io.github.astrapi69.crypt.data.model.CryptObjectDecorator;
 import io.github.astrapi69.file.delete.DeleteFileExtensions;
 import io.github.astrapi69.file.read.ReadFileExtensions;
 import io.github.astrapi69.file.write.WriteFileExtensions;

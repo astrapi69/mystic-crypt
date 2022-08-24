@@ -35,7 +35,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
 import io.github.astrapi69.crypto.api.ByteArrayEncryptor;
-import io.github.astrapi69.crypto.model.CryptModel;
+import io.github.astrapi69.crypt.data.model.CryptModel;
 
 /**
  * The abstract class {@link AbstractByteArrayEncryptor} provides a base implementation for

@@ -42,9 +42,9 @@ import io.github.astrapi69.crypto.algorithm.AesAlgorithm;
 import io.github.astrapi69.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
 import io.github.astrapi69.crypto.api.ByteArrayDecryptor;
 import io.github.astrapi69.crypto.core.AbstractDecryptor;
-import io.github.astrapi69.crypto.factory.CipherFactory;
-import io.github.astrapi69.crypto.model.AesRsaCryptModel;
-import io.github.astrapi69.crypto.model.CryptModel;
+import io.github.astrapi69.crypt.data.factory.CipherFactory;
+import io.github.astrapi69.crypt.data.model.AesRsaCryptModel;
+import io.github.astrapi69.crypt.data.model.CryptModel;
 
 /**
  * The class {@link PrivateKeyDecryptor} decrypts encrypted byte array the was encrypted with the

@@ -31,7 +31,7 @@ import java.util.List;
 
 import org.testng.annotations.Test;
 
-import io.github.astrapi69.collections.list.ListFactory;
+import io.github.astrapi69.collection.list.ListFactory;
 import io.github.astrapi69.string.StringExtensions;
 
 /**

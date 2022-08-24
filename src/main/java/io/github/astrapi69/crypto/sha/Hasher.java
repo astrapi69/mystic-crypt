@@ -38,7 +38,7 @@ import javax.crypto.NoSuchPaddingException;
 
 import io.github.astrapi69.crypto.algorithm.HashAlgorithm;
 import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
-import io.github.astrapi69.crypto.hash.HashExtensions;
+import io.github.astrapi69.crypt.data.hash.HashExtensions;
 import io.github.astrapi69.crypto.hex.HexableEncryptor;
 
 /**

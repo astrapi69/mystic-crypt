@@ -32,7 +32,7 @@ import javax.crypto.SecretKey;
 
 import org.apache.commons.lang3.SerializationUtils;
 
-import io.github.astrapi69.crypto.model.CryptModel;
+import io.github.astrapi69.crypt.data.model.CryptModel;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 
 /**

@@ -42,10 +42,10 @@ import io.github.astrapi69.crypto.algorithm.AesAlgorithm;
 import io.github.astrapi69.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
 import io.github.astrapi69.crypto.api.ByteArrayEncryptor;
 import io.github.astrapi69.crypto.core.AbstractEncryptor;
-import io.github.astrapi69.crypto.factory.CipherFactory;
-import io.github.astrapi69.crypto.factory.SecretKeyFactoryExtensions;
-import io.github.astrapi69.crypto.model.AesRsaCryptModel;
-import io.github.astrapi69.crypto.model.CryptModel;
+import io.github.astrapi69.crypt.data.factory.CipherFactory;
+import io.github.astrapi69.crypt.data.factory.SecretKeyFactoryExtensions;
+import io.github.astrapi69.crypt.data.model.AesRsaCryptModel;
+import io.github.astrapi69.crypt.data.model.CryptModel;
 
 /**
  * The class {@link PublicKeyEncryptor} can encrypt a byte array with his public key.

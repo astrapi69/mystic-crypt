@@ -35,7 +35,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
 import io.github.astrapi69.crypto.core.AbstractByteArrayDecryptor;
-import io.github.astrapi69.crypto.model.CryptModel;
+import io.github.astrapi69.crypt.data.model.CryptModel;
 
 /**
  * The class {@link BaseByteArrayDecryptor} can decrypt a byte array with his symmetric key

@@ -55,13 +55,13 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import io.github.astrapi69.collections.array.ArrayFactory;
+import io.github.astrapi69.collection.array.ArrayFactory;
 import io.github.astrapi69.crypto.algorithm.KeyPairGeneratorAlgorithm;
 import io.github.astrapi69.crypto.algorithm.KeystoreType;
-import io.github.astrapi69.crypto.factory.KeyPairFactory;
-import io.github.astrapi69.crypto.factory.KeyStoreFactory;
+import io.github.astrapi69.crypt.data.factory.KeyPairFactory;
+import io.github.astrapi69.crypt.data.factory.KeyStoreFactory;
 import io.github.astrapi69.crypto.key.KeySize;
-import io.github.astrapi69.crypto.key.reader.CertificateReader;
+import io.github.astrapi69.crypt.data.key.reader.CertificateReader;
 import io.github.astrapi69.crypto.sign.TestObjectFactory;
 import io.github.astrapi69.file.search.PathFinder;
 
@@ -428,7 +428,7 @@ public class KeyStoreExtensionsTest
 	}
 
 	/**
-	 * Test method for {@link io.github.astrapi69.crypto.key.KeyStoreExtensions} with
+	 * Test method for {@link io.github.astrapi69.crypt.data.key.KeyStoreExtensions} with
 	 * {@link BeanTester}
 	 */
 	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
@@ -436,7 +436,7 @@ public class KeyStoreExtensionsTest
 	public void testWithBeanTester()
 	{
 		final BeanTester beanTester = new BeanTester();
-		beanTester.testBean(io.github.astrapi69.crypto.key.KeyStoreExtensions.class);
+		beanTester.testBean(io.github.astrapi69.crypt.data.key.KeyStoreExtensions.class);
 	}
 
 }

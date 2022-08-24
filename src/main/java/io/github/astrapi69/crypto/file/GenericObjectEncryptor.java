@@ -41,7 +41,7 @@ import javax.crypto.CipherOutputStream;
 import javax.crypto.NoSuchPaddingException;
 
 import io.github.astrapi69.crypto.core.AbstractObjectEncryptor;
-import io.github.astrapi69.crypto.model.CryptModel;
+import io.github.astrapi69.crypt.data.model.CryptModel;
 
 /**
  * The class {@link GenericObjectEncryptor} can encrypt files with the given crypt model.

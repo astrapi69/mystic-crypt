@@ -28,7 +28,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.PrivateKey;
 import java.util.Objects;
 
-import io.github.astrapi69.crypto.hex.HexExtensions;
+import io.github.astrapi69.crypt.data.hex.HexExtensions;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 
 /**

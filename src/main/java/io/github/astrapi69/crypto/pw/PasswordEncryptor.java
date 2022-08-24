@@ -39,7 +39,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 import io.github.astrapi69.crypto.algorithm.HashAlgorithm;
-import io.github.astrapi69.crypto.hash.HashExtensions;
+import io.github.astrapi69.crypt.data.hash.HashExtensions;
 import io.github.astrapi69.crypto.sha.Hasher;
 import io.github.astrapi69.random.object.RandomObjectFactory;
 import io.github.astrapi69.random.object.RandomWebObjectFactory;

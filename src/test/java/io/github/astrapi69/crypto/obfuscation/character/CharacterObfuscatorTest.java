@@ -38,7 +38,7 @@ import com.google.common.collect.BiMap;
 
 import io.github.astrapi69.AbstractTestCase;
 import io.github.astrapi69.crypto.obfuscation.api.Obfuscatable;
-import io.github.astrapi69.crypto.obfuscation.rule.ObfuscationOperationRule;
+import io.github.astrapi69.crypt.data.obfuscation.rule.ObfuscationOperationRule;
 
 /**
  * The unit test class for the class {@link CharacterObfuscator}

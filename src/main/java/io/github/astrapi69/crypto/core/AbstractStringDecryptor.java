@@ -34,7 +34,7 @@ import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
 import io.github.astrapi69.crypto.api.StringDecryptor;
-import io.github.astrapi69.crypto.model.CryptModel;
+import io.github.astrapi69.crypt.data.model.CryptModel;
 
 /**
  * The abstract class {@link AbstractStringDecryptor} provides a base implementation for decrypting
