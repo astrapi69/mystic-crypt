@@ -9,12 +9,13 @@ CHANGED:
 - update to jdk version 11
 - update gradle to new version 7.5.1
 - update of gradle-plugin dependency 'com.diffplug.spotless:spotless-plugin-gradle' to new minor version 6.10.0
+- update of crypt-api dependency version to 8.3
+- update of crypt-data dependency version to 8.1
 - update of dependency file-worker to new version to 11.1
 - update of dependency silly-collection to new version to 20
 - update of test dependency test-object to new version 7.1
 - update of test dependency jobj-core to new version 6.1
-- update of crypt-api dependency version to 8.2
-- update of crypt-data dependency version to 8
+- update of test dependency checksum-up to new version 2.1
 
 Version 7.11
 -------------

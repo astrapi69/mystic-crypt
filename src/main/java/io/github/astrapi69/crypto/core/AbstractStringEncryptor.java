@@ -33,7 +33,7 @@ import java.security.spec.InvalidKeySpecException;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
-import io.github.astrapi69.crypto.api.StringEncryptor;
+import io.github.astrapi69.crypt.api.StringEncryptor;
 import io.github.astrapi69.crypt.data.model.CryptModel;
 
 /**

@@ -42,8 +42,8 @@ import javax.crypto.NoSuchPaddingException;
 
 import org.testng.annotations.Test;
 
-import io.github.astrapi69.crypto.algorithm.SunJCEAlgorithm;
-import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
+import io.github.astrapi69.crypt.api.algorithm.SunJCEAlgorithm;
+import io.github.astrapi69.crypt.api.compound.CompoundAlgorithm;
 import io.github.astrapi69.crypt.data.factory.CipherFactory;
 import io.github.astrapi69.crypt.data.model.CryptModel;
 import io.github.astrapi69.file.delete.DeleteFileExtensions;

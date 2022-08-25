@@ -38,13 +38,13 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.lang3.SerializationUtils;
 
-import io.github.astrapi69.crypto.algorithm.AesAlgorithm;
-import io.github.astrapi69.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
-import io.github.astrapi69.crypto.api.ByteArrayDecryptor;
-import io.github.astrapi69.crypto.core.AbstractDecryptor;
+import io.github.astrapi69.crypt.api.ByteArrayDecryptor;
+import io.github.astrapi69.crypt.api.algorithm.AesAlgorithm;
+import io.github.astrapi69.crypt.api.algorithm.KeyPairWithModeAndPaddingAlgorithm;
 import io.github.astrapi69.crypt.data.factory.CipherFactory;
 import io.github.astrapi69.crypt.data.model.AesRsaCryptModel;
 import io.github.astrapi69.crypt.data.model.CryptModel;
+import io.github.astrapi69.crypto.core.AbstractDecryptor;
 
 /**
  * The class {@link PrivateKeyDecryptor} decrypts encrypted byte array the was encrypted with the

@@ -31,7 +31,7 @@ import javax.crypto.Cipher;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import io.github.astrapi69.crypto.algorithm.AesAlgorithm;
+import io.github.astrapi69.crypt.api.algorithm.AesAlgorithm;
 import io.github.astrapi69.crypt.data.model.CryptModel;
 
 /**

@@ -41,13 +41,13 @@ import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.codec.binary.Hex;
 
 import io.github.astrapi69.check.Check;
-import io.github.astrapi69.crypto.algorithm.AesAlgorithm;
-import io.github.astrapi69.crypto.algorithm.Algorithm;
-import io.github.astrapi69.crypto.core.AbstractStringEncryptor;
-import io.github.astrapi69.crypto.decorator.CryptObjectDecoratorExtensions;
+import io.github.astrapi69.crypt.api.algorithm.AesAlgorithm;
+import io.github.astrapi69.crypt.api.algorithm.Algorithm;
 import io.github.astrapi69.crypt.data.factory.SecretKeyFactoryExtensions;
 import io.github.astrapi69.crypt.data.model.CryptModel;
 import io.github.astrapi69.crypt.data.model.CryptObjectDecorator;
+import io.github.astrapi69.crypto.core.AbstractStringEncryptor;
+import io.github.astrapi69.crypto.decorator.CryptObjectDecoratorExtensions;
 
 /**
  * The class {@link HexableEncryptor} is the pendant class of {@link HexableDecryptor} and encrypts

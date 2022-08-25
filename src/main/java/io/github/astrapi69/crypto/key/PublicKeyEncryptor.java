@@ -38,14 +38,14 @@ import javax.crypto.SecretKey;
 
 import org.apache.commons.lang3.SerializationUtils;
 
-import io.github.astrapi69.crypto.algorithm.AesAlgorithm;
-import io.github.astrapi69.crypto.algorithm.KeyPairWithModeAndPaddingAlgorithm;
-import io.github.astrapi69.crypto.api.ByteArrayEncryptor;
-import io.github.astrapi69.crypto.core.AbstractEncryptor;
+import io.github.astrapi69.crypt.api.ByteArrayEncryptor;
+import io.github.astrapi69.crypt.api.algorithm.AesAlgorithm;
+import io.github.astrapi69.crypt.api.algorithm.KeyPairWithModeAndPaddingAlgorithm;
 import io.github.astrapi69.crypt.data.factory.CipherFactory;
 import io.github.astrapi69.crypt.data.factory.SecretKeyFactoryExtensions;
 import io.github.astrapi69.crypt.data.model.AesRsaCryptModel;
 import io.github.astrapi69.crypt.data.model.CryptModel;
+import io.github.astrapi69.crypto.core.AbstractEncryptor;
 
 /**
  * The class {@link PublicKeyEncryptor} can encrypt a byte array with his public key.

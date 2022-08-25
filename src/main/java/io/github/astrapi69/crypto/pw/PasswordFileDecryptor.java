@@ -40,10 +40,10 @@ import javax.crypto.NoSuchPaddingException;
 
 import org.apache.commons.io.FilenameUtils;
 
-import io.github.astrapi69.crypto.api.ByteArrayDecryptor;
-import io.github.astrapi69.crypto.api.Cryptor;
-import io.github.astrapi69.crypto.api.FileDecryptor;
-import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
+import io.github.astrapi69.crypt.api.ByteArrayDecryptor;
+import io.github.astrapi69.crypt.api.Cryptor;
+import io.github.astrapi69.crypt.api.FileDecryptor;
+import io.github.astrapi69.crypt.api.compound.CompoundAlgorithm;
 import io.github.astrapi69.crypt.data.factory.CipherFactory;
 import io.github.astrapi69.crypto.io.CryptoCipherOutputStream;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;

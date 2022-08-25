@@ -42,7 +42,7 @@ import java.util.Date;
 
 import org.bouncycastle.operator.OperatorCreationException;
 
-import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
+import io.github.astrapi69.crypt.api.compound.CompoundAlgorithm;
 import io.github.astrapi69.crypt.data.factory.CertFactory;
 import io.github.astrapi69.crypt.data.key.PrivateKeyExtensions;
 import io.github.astrapi69.random.number.RandomBigIntegerFactory;

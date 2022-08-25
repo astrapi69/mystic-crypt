@@ -27,7 +27,7 @@ package io.github.astrapi69.crypto.simple;
 import java.util.List;
 import java.util.Objects;
 
-import io.github.astrapi69.crypto.api.Decryptor;
+import io.github.astrapi69.crypt.api.Decryptor;
 
 /**
  * The class {@link CharacterSetDecryptor} is a simple {@link Decryptor} for decrypt a integer list

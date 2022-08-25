@@ -24,7 +24,7 @@
  */
 package io.github.astrapi69.crypto.core;
 
-import io.github.astrapi69.crypto.api.Encryptor;
+import io.github.astrapi69.crypt.api.Encryptor;
 
 /**
  * The class {@link ChainableEncryptor} can take many {@code Encryptor} objects and encrypts the

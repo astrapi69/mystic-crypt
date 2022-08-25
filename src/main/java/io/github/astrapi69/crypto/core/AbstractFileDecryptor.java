@@ -34,7 +34,7 @@ import java.security.spec.InvalidKeySpecException;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
-import io.github.astrapi69.crypto.api.FileDecryptor;
+import io.github.astrapi69.crypt.api.FileDecryptor;
 import io.github.astrapi69.crypt.data.model.CryptModel;
 
 /**

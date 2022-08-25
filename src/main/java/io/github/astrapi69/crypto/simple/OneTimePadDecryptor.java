@@ -25,7 +25,7 @@
 package io.github.astrapi69.crypto.simple;
 
 import io.github.astrapi69.check.Argument;
-import io.github.astrapi69.crypto.api.ByteArrayDecryptor;
+import io.github.astrapi69.crypt.api.ByteArrayDecryptor;
 
 /**
  * The class {@link OneTimePadDecryptor} is a simple {@link ByteArrayDecryptor} for the one time pad

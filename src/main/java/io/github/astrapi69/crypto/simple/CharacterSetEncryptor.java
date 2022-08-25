@@ -27,7 +27,7 @@ package io.github.astrapi69.crypto.simple;
 import java.util.List;
 import java.util.Objects;
 
-import io.github.astrapi69.crypto.api.Encryptor;
+import io.github.astrapi69.crypt.api.Encryptor;
 
 /**
  * The class {@link CharacterSetEncryptor} is a simple {@link Encryptor} for encrypt a text with a

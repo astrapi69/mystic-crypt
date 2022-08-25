@@ -34,7 +34,7 @@ import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
-import io.github.astrapi69.crypto.api.ByteArrayDecryptor;
+import io.github.astrapi69.crypt.api.ByteArrayDecryptor;
 import io.github.astrapi69.crypt.data.model.CryptModel;
 
 /**

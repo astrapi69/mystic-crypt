@@ -44,9 +44,9 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
-import io.github.astrapi69.crypto.api.Cryptor;
-import io.github.astrapi69.crypto.api.StringEncryptor;
-import io.github.astrapi69.crypto.compound.CompoundAlgorithm;
+import io.github.astrapi69.crypt.api.Cryptor;
+import io.github.astrapi69.crypt.api.StringEncryptor;
+import io.github.astrapi69.crypt.api.compound.CompoundAlgorithm;
 
 /**
  * The class {@link SimpleEncryptor} is a simple {@link StringEncryptor} implementation.

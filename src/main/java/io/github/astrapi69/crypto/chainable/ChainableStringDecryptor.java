@@ -24,7 +24,7 @@
  */
 package io.github.astrapi69.crypto.chainable;
 
-import io.github.astrapi69.crypto.api.Decryptor;
+import io.github.astrapi69.crypt.api.Decryptor;
 import io.github.astrapi69.crypto.core.ChainableDecryptor;
 
 /**

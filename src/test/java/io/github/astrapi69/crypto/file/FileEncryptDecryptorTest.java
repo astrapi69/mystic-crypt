@@ -36,8 +36,8 @@ import org.testng.annotations.Test;
 
 import io.github.astrapi69.AbstractTestCase;
 import io.github.astrapi69.checksum.FileChecksumExtensions;
-import io.github.astrapi69.crypto.algorithm.MdAlgorithm;
-import io.github.astrapi69.crypto.algorithm.SunJCEAlgorithm;
+import io.github.astrapi69.crypt.api.algorithm.MdAlgorithm;
+import io.github.astrapi69.crypt.api.algorithm.SunJCEAlgorithm;
 import io.github.astrapi69.crypt.data.model.CryptModel;
 import io.github.astrapi69.crypt.data.model.CryptObjectDecorator;
 import io.github.astrapi69.file.delete.DeleteFileExtensions;
