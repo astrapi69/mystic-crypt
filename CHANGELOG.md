@@ -1,12 +1,13 @@
 ## Change log
 ----------------------
 
-Version 8-SNAPSHOT
+Version 8
 -------------
 
 CHANGED:
 
 - update to jdk version 11
+- rename of main package from 'io.github.astrapi69.crypto.*' to new 'io.github.astrapi69.mystic.crypt.*'
 - update gradle to new version 7.5.1
 - update of gradle-plugin dependency 'com.diffplug.spotless:spotless-plugin-gradle' to new minor version 6.10.0
 - update of crypt-api dependency version to 8.3
