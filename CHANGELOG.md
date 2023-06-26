@@ -4,7 +4,26 @@
 Version 8.1-SNAPSHOT
 -------------
 
+CHANGED:
 
+- update gradle to new version 8.2-rc-2
+- update of gradle-plugin dependency 'com.github.ben-manes.versions.gradle.plugin' to new version 0.47.0
+- update of gradle-plugin dependency 'org.ajoberstar.grgit:grgit-gradle' to new version 5.2.0
+- update of gradle-plugin dependency 'com.diffplug.spotless:spotless-plugin-gradle' to new minor version 6.19.0
+- update of crypt-api dependency version to 8.4
+- update of dependency commons-codec dependency version to 2.13.0
+- update of dependency commons-io dependency version to 1.16.0
+- update of dependency guava version to new version 32.0.1-jre
+- update of dependency randomizer to new version 9
+- update of dependency file-worker to new version to 11.6
+- update of dependency silly-collection to new version to 21
+- update of dependency jobj-core to new version 7.1
+- update of dependency guava version to new version 32.0.1-jre
+- update of test dependency json-extensions to new version 2.4
+- update of test dependency checksum-up to new version 2.2
+- update of test dependency test-object to new version 7.2
+- update of test dependency silly-io to new version 2.2
+- update of test dependency testng to new version to 7.8.0
 
 Version 8
 -------------
