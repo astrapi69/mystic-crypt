@@ -24,12 +24,14 @@
  */
 package io.github.astrapi69.mystic.crypt.key;
 
+import java.security.Key;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 
 import io.github.astrapi69.crypt.data.factory.KeyAgreementFactory;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
@@ -37,11 +39,12 @@ import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 public class SharedSecretEncryptor
 {
 
-	SecretKey secretKey;
+	byte[] secretKey;
 	final String provider;
 	final String cipherTransformation;
 
 	IvParameterSpec ivSpec;
+	String algorithm;
 
 	public SharedSecretEncryptor(final PrivateKey privateKey, final PublicKey publicKey,
 		final String algorithm, final String secretKeyAlgorithm, final String provider,
@@ -49,15 +52,17 @@ public class SharedSecretEncryptor
 	{
 		ivSpec = new IvParameterSpec(iv);
 		this.provider = provider;
+		this.algorithm = algorithm;
 		this.cipherTransformation = cipherTransformation;
 		secretKey = RuntimeExceptionDecorator.decorate(() -> KeyAgreementFactory
-			.newSharedSecret(privateKey, publicKey, algorithm, secretKeyAlgorithm, provider));
+			.newSharedSecret(privateKey, publicKey, algorithm, provider, true));
 	}
 
 	public byte[] encrypt(final byte[] toEncrypt) throws Exception
 	{
+		Key secretKeySpec = new SecretKeySpec(secretKey, algorithm);
 		Cipher cipher = Cipher.getInstance(cipherTransformation, provider);
-		cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivSpec);
+		cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivSpec);
 		byte[] encryptedCryptData = new byte[cipher.getOutputSize(toEncrypt.length)];
 		int encryptedLength = cipher.update(toEncrypt, 0, toEncrypt.length, encryptedCryptData, 0);
 		cipher.doFinal(encryptedCryptData, encryptedLength);

@@ -10,6 +10,6 @@ spotless {
         endWithNewline()
     }
     java {
-        eclipse("4.19.0").configFile("src/test/resources/alpharo-formatter.xml")
+        eclipse("4.21").configFile("src/test/resources/alpharo-formatter.xml")
     }
 }

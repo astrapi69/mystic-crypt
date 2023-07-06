@@ -9,6 +9,7 @@ import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.Security;
 
+import io.github.astrapi69.crypt.data.factory.KeyPairGeneratorFactory;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.testng.annotations.Test;
 
@@ -38,10 +39,10 @@ public class SharedSecretEncryptorTest
 
 		iv = new SecureRandom().generateSeed(16);
 
-		KeyPair keyPairBob = KeyPairFactory.newKeyPairGenerator("brainpoolp256r1", "ECDH", "BC")
-			.generateKeyPair();
-		KeyPair keyPairAlice = KeyPairFactory.newKeyPairGenerator("brainpoolp256r1", "ECDH", "BC")
-			.generateKeyPair();
+		KeyPair keyPairBob = KeyPairGeneratorFactory
+			.newKeyPairGenerator("brainpoolp256r1", "ECDH", "BC").generateKeyPair();
+		KeyPair keyPairAlice = KeyPairGeneratorFactory
+			.newKeyPairGenerator("brainpoolp256r1", "ECDH", "BC").generateKeyPair();
 
 
 		encryptor = new SharedSecretEncryptor(keyPairBob.getPrivate(), keyPairAlice.getPublic(),

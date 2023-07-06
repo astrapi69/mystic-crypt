@@ -39,10 +39,12 @@ import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 public class SharedSecretDecryptor
 {
 
-	SecretKey secretKey;
+	byte[] secretKey;
 	final String provider;
 	final String cipherTransformation;
 	IvParameterSpec ivSpec;
+
+	String algorithm;
 
 	public SharedSecretDecryptor(final PrivateKey privateKey, final PublicKey publicKey,
 		final String algorithm, final String secretKeyAlgorithm, final String provider,
@@ -50,14 +52,15 @@ public class SharedSecretDecryptor
 	{
 		ivSpec = new IvParameterSpec(iv);
 		this.provider = provider;
+		this.algorithm = algorithm;
 		this.cipherTransformation = cipherTransformation;
 		secretKey = RuntimeExceptionDecorator.decorate(() -> KeyAgreementFactory
-			.newSharedSecret(privateKey, publicKey, algorithm, secretKeyAlgorithm, provider));
+			.newSharedSecret(privateKey, publicKey, algorithm, provider, true));
 	}
 
 	public byte[] decrypt(final byte[] encrypted) throws Exception
 	{
-		Key secretKeySpec = new SecretKeySpec(secretKey.getEncoded(), secretKey.getAlgorithm());
+		Key secretKeySpec = new SecretKeySpec(secretKey, algorithm);
 		Cipher cipher = Cipher.getInstance(cipherTransformation, provider);
 		byte[] decryptedData;
 

@@ -39,6 +39,7 @@ import javax.crypto.spec.SecretKeySpec;
 import io.github.astrapi69.check.Check;
 import io.github.astrapi69.crypt.api.algorithm.AesAlgorithm;
 import io.github.astrapi69.crypt.api.algorithm.Algorithm;
+import io.github.astrapi69.crypt.data.factory.KeySpecFactory;
 import io.github.astrapi69.crypt.data.factory.SecretKeyFactoryExtensions;
 import io.github.astrapi69.crypt.data.hex.HexExtensions;
 import io.github.astrapi69.crypt.data.model.CryptModel;
@@ -179,7 +180,7 @@ public class HexableDecryptor extends AbstractStringDecryptor
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
 		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		final SecretKeySpec skeySpec = SecretKeyFactoryExtensions
+		final SecretKeySpec skeySpec = KeySpecFactory
 			.newSecretKeySpec(privateKey.getBytes(StandardCharsets.UTF_8), algorithm);
 		final Cipher cipher = Cipher.getInstance(algorithm);
 		cipher.init(operationMode, skeySpec);

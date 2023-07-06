@@ -38,6 +38,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
+import io.github.astrapi69.crypt.data.factory.KeySpecFactory;
 import org.apache.commons.codec.binary.Hex;
 
 import io.github.astrapi69.check.Check;
@@ -199,7 +200,7 @@ public class HexableEncryptor extends AbstractStringEncryptor
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
 		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		final SecretKeySpec skeySpec = SecretKeyFactoryExtensions
+		final SecretKeySpec skeySpec = KeySpecFactory
 			.newSecretKeySpec(privateKey.getBytes(StandardCharsets.UTF_8), algorithm);
 		final Cipher cipher = Cipher.getInstance(algorithm);
 		cipher.init(operationMode, skeySpec);
