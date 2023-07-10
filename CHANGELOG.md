@@ -4,14 +4,18 @@
 Version 8.1-SNAPSHOT
 -------------
 
+ADDED:
+
+- new constructor to SharedSecretEncryptor with corresponding model
+- new constructor to SharedSecretDecryptor with corresponding model
+
 CHANGED:
 
 - update gradle to new version 8.2
 - update of gradle-plugin dependency 'com.github.ben-manes.versions.gradle.plugin' to new version 0.47.0
 - update of gradle-plugin dependency 'org.ajoberstar.grgit:grgit-gradle' to new version 5.2.0
 - update of gradle-plugin dependency 'com.diffplug.spotless:spotless-plugin-gradle' to new minor version 6.19.0
-- update of crypt-api dependency version to 8.4
-- update of crypt-data dependency version to 8.3
+- update of crypt-data dependency version to 8.4
 - update of dependency commons-codec dependency version to 2.13.0
 - update of dependency commons-io dependency version to 1.16.0
 - update of dependency guava version to new version 32.1.1-jre

@@ -24,45 +24,49 @@
  */
 package io.github.astrapi69.mystic.crypt.key;
 
-import java.security.Key;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 
 import io.github.astrapi69.crypt.data.factory.KeyAgreementFactory;
+import io.github.astrapi69.crypt.data.model.SharedSecretModel;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 
 public class SharedSecretEncryptor
 {
 
-	byte[] secretKey;
+	SecretKey secretKey;
 	final String provider;
 	final String cipherTransformation;
 
 	IvParameterSpec ivSpec;
-	String algorithm;
+
+	SharedSecretModel model;
+	public SharedSecretEncryptor(final SharedSecretModel model) {
+		this(model.getPrivateKey(), model.getPublicKey(),
+			model.getKeyAgreementAlgorithm(), model.getSecretKeyAlgorithm(), model.getProvider(),
+			model.getCipherTransformation(), model.getIv());
+		this.model = model;
+	}
 
 	public SharedSecretEncryptor(final PrivateKey privateKey, final PublicKey publicKey,
-		final String algorithm, final String secretKeyAlgorithm, final String provider,
+		final String keyAgreementAlgorithm, final String secretKeyAlgorithm, final String provider,
 		final String cipherTransformation, final byte[] iv)
 	{
 		ivSpec = new IvParameterSpec(iv);
 		this.provider = provider;
-		this.algorithm = algorithm;
 		this.cipherTransformation = cipherTransformation;
 		secretKey = RuntimeExceptionDecorator.decorate(() -> KeyAgreementFactory
-			.newSharedSecret(privateKey, publicKey, algorithm, provider, true));
+			.newSharedSecret(privateKey, publicKey, keyAgreementAlgorithm, secretKeyAlgorithm, provider));
 	}
 
 	public byte[] encrypt(final byte[] toEncrypt) throws Exception
 	{
-		Key secretKeySpec = new SecretKeySpec(secretKey, algorithm);
 		Cipher cipher = Cipher.getInstance(cipherTransformation, provider);
-		cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivSpec);
+		cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivSpec);
 		byte[] encryptedCryptData = new byte[cipher.getOutputSize(toEncrypt.length)];
 		int encryptedLength = cipher.update(toEncrypt, 0, toEncrypt.length, encryptedCryptData, 0);
 		cipher.doFinal(encryptedCryptData, encryptedLength);

@@ -34,33 +34,39 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import io.github.astrapi69.crypt.data.factory.KeyAgreementFactory;
+import io.github.astrapi69.crypt.data.model.SharedSecretModel;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 
 public class SharedSecretDecryptor
 {
 
-	byte[] secretKey;
+	SecretKey secretKey;
 	final String provider;
 	final String cipherTransformation;
 	IvParameterSpec ivSpec;
+	SharedSecretModel model;
+	public SharedSecretDecryptor(final SharedSecretModel model) {
+		this(model.getPrivateKey(), model.getPublicKey(),
+			model.getKeyAgreementAlgorithm(), model.getSecretKeyAlgorithm(), model.getProvider(),
+			model.getCipherTransformation(), model.getIv());
+		this.model = model;
+	}
 
-	String algorithm;
 
 	public SharedSecretDecryptor(final PrivateKey privateKey, final PublicKey publicKey,
-		final String algorithm, final String secretKeyAlgorithm, final String provider,
+		final String keyAgreementAlgorithm, final String secretKeyAlgorithm, final String provider,
 		final String cipherTransformation, final byte[] iv)
 	{
 		ivSpec = new IvParameterSpec(iv);
 		this.provider = provider;
-		this.algorithm = algorithm;
 		this.cipherTransformation = cipherTransformation;
 		secretKey = RuntimeExceptionDecorator.decorate(() -> KeyAgreementFactory
-			.newSharedSecret(privateKey, publicKey, algorithm, provider, true));
+			.newSharedSecret(privateKey, publicKey, keyAgreementAlgorithm, secretKeyAlgorithm, provider));
 	}
 
 	public byte[] decrypt(final byte[] encrypted) throws Exception
 	{
-		Key secretKeySpec = new SecretKeySpec(secretKey, algorithm);
+		Key secretKeySpec = new SecretKeySpec(secretKey.getEncoded(), secretKey.getAlgorithm());
 		Cipher cipher = Cipher.getInstance(cipherTransformation, provider);
 		byte[] decryptedData;
 
