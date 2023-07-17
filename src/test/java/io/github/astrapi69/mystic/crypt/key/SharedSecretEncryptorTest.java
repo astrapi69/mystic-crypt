@@ -33,12 +33,11 @@ import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.Security;
 
-import io.github.astrapi69.crypt.data.factory.KeyPairGeneratorFactory;
-import io.github.astrapi69.crypt.data.model.SharedSecretModel;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.testng.annotations.Test;
 
-import io.github.astrapi69.crypt.data.factory.KeyPairFactory;
+import io.github.astrapi69.crypt.data.factory.KeyPairGeneratorFactory;
+import io.github.astrapi69.crypt.data.model.SharedSecretModel;
 
 public class SharedSecretEncryptorTest
 {

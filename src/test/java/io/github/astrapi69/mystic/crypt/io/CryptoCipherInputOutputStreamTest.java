@@ -40,8 +40,6 @@ import java.security.spec.InvalidKeySpecException;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
-import io.github.astrapi69.mystic.crypt.io.CryptoCipherInputStream;
-import io.github.astrapi69.mystic.crypt.io.CryptoCipherOutputStream;
 import org.testng.annotations.Test;
 
 import io.github.astrapi69.crypt.api.algorithm.SunJCEAlgorithm;

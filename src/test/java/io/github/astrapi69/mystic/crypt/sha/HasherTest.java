@@ -38,7 +38,6 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import io.github.astrapi69.mystic.crypt.sha.Hasher;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 

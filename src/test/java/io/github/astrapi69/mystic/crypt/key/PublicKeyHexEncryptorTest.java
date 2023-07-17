@@ -29,7 +29,6 @@ import static org.testng.AssertJUnit.assertNotNull;
 import java.io.File;
 import java.security.PublicKey;
 
-import io.github.astrapi69.mystic.crypt.key.PublicKeyHexEncryptor;
 import org.testng.annotations.Test;
 
 import io.github.astrapi69.crypt.data.key.reader.PublicKeyReader;

@@ -29,7 +29,6 @@ import static org.testng.AssertJUnit.assertTrue;
 
 import java.util.Arrays;
 
-import io.github.astrapi69.mystic.crypt.simple.SimpleCrypt;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 

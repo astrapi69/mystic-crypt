@@ -33,7 +33,6 @@ import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 
-import io.github.astrapi69.mystic.crypt.ssl.KeyTrustExtensions;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 

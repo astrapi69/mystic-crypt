@@ -30,8 +30,6 @@ import static org.testng.Assert.assertTrue;
 import java.util.Comparator;
 import java.util.List;
 
-import io.github.astrapi69.mystic.crypt.simple.CharacterSetDecryptor;
-import io.github.astrapi69.mystic.crypt.simple.CharacterSetEncryptor;
 import org.testng.annotations.Test;
 
 import io.github.astrapi69.collection.CollectionExtensions;

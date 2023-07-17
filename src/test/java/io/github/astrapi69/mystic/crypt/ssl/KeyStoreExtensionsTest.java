@@ -48,7 +48,6 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.security.spec.InvalidKeySpecException;
 
-import io.github.astrapi69.mystic.crypt.ssl.KeyStoreExtensions;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
@@ -58,13 +57,13 @@ import org.testng.annotations.Test;
 
 import io.github.astrapi69.collection.array.ArrayFactory;
 import io.github.astrapi69.crypt.api.algorithm.key.KeyPairGeneratorAlgorithm;
-import io.github.astrapi69.crypt.api.type.KeystoreType;
 import io.github.astrapi69.crypt.api.key.KeySize;
+import io.github.astrapi69.crypt.api.type.KeystoreType;
 import io.github.astrapi69.crypt.data.factory.KeyPairFactory;
 import io.github.astrapi69.crypt.data.factory.KeyStoreFactory;
 import io.github.astrapi69.crypt.data.key.reader.CertificateReader;
-import io.github.astrapi69.mystic.crypt.sign.TestObjectFactory;
 import io.github.astrapi69.file.search.PathFinder;
+import io.github.astrapi69.mystic.crypt.sign.TestObjectFactory;
 
 /**
  * The unit test class for the class {@link KeyStoreExtensions}

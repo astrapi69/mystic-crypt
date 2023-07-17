@@ -40,9 +40,9 @@ import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 public class SharedSecretDecryptor
 {
 
-	SecretKey secretKey;
 	final String provider;
 	final String cipherAlgorithm;
+	SecretKey secretKey;
 	IvParameterSpec ivSpec;
 	SharedSecretModel model;
 

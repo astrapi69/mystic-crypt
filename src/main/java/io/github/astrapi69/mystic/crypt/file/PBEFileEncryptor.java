@@ -44,10 +44,10 @@ import org.apache.commons.io.FilenameUtils;
 import io.github.astrapi69.crypt.data.factory.CipherFactory;
 import io.github.astrapi69.crypt.data.model.CryptModel;
 import io.github.astrapi69.crypt.data.model.CryptObjectDecorator;
+import io.github.astrapi69.file.delete.DeleteFileExtensions;
 import io.github.astrapi69.mystic.crypt.core.AbstractFileEncryptor;
 import io.github.astrapi69.mystic.crypt.decorator.CryptObjectDecoratorExtensions;
 import io.github.astrapi69.mystic.crypt.io.CryptoCipherInputStream;
-import io.github.astrapi69.file.delete.DeleteFileExtensions;
 
 /**
  * The class {@link PBEFileEncryptor} can encrypt files with the given crypt model.

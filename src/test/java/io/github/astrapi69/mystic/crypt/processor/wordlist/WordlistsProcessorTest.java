@@ -32,7 +32,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
-import io.github.astrapi69.mystic.crypt.processor.wordlist.WordlistsProcessor;
 import org.testng.annotations.Test;
 
 import io.github.astrapi69.collection.list.ListFactory;

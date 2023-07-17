@@ -28,7 +28,6 @@ import static org.testng.AssertJUnit.assertNotNull;
 
 import java.net.URL;
 
-import io.github.astrapi69.mystic.crypt.gm.GoogleMapsUrlSigner;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 

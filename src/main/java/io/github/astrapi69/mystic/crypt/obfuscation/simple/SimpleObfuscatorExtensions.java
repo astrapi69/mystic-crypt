@@ -24,9 +24,9 @@
  */
 package io.github.astrapi69.mystic.crypt.obfuscation.simple;
 
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
-import java.util.Map.Entry;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;

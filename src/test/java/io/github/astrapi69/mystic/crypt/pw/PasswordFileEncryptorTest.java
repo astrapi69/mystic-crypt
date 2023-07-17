@@ -28,7 +28,6 @@ import static org.testng.AssertJUnit.assertEquals;
 
 import java.io.File;
 
-import io.github.astrapi69.mystic.crypt.pw.PasswordFileEncryptor;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 

@@ -29,7 +29,6 @@ import static org.testng.AssertJUnit.assertEquals;
 import java.util.Comparator;
 import java.util.List;
 
-import io.github.astrapi69.mystic.crypt.simple.CharacterSetCrypt;
 import org.testng.annotations.Test;
 
 import io.github.astrapi69.collection.list.ListFactory;

@@ -28,7 +28,6 @@ import static org.testng.Assert.assertEquals;
 
 import java.nio.charset.StandardCharsets;
 
-import io.github.astrapi69.mystic.crypt.simple.OneTimePadEncryptor;
 import org.testng.annotations.Test;
 
 import io.github.astrapi69.collection.array.ArrayFactory;

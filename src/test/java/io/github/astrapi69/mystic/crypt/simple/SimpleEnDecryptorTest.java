@@ -37,8 +37,6 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import io.github.astrapi69.mystic.crypt.simple.SimpleDecryptor;
-import io.github.astrapi69.mystic.crypt.simple.SimpleEncryptor;
 import org.testng.annotations.Test;
 
 import io.github.astrapi69.crypt.api.compound.CompoundAlgorithm;
