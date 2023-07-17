@@ -40,7 +40,7 @@ import org.apache.commons.lang3.SerializationUtils;
 
 import io.github.astrapi69.crypt.api.ByteArrayEncryptor;
 import io.github.astrapi69.crypt.api.algorithm.AesAlgorithm;
-import io.github.astrapi69.crypt.api.algorithm.KeyPairWithModeAndPaddingAlgorithm;
+import io.github.astrapi69.crypt.api.algorithm.key.KeyPairWithModeAndPaddingAlgorithm;
 import io.github.astrapi69.crypt.data.factory.CipherFactory;
 import io.github.astrapi69.crypt.data.factory.SecretKeyFactoryExtensions;
 import io.github.astrapi69.crypt.data.model.AesRsaCryptModel;

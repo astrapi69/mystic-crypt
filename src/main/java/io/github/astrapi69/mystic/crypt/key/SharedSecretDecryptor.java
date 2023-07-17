@@ -42,32 +42,35 @@ public class SharedSecretDecryptor
 
 	SecretKey secretKey;
 	final String provider;
-	final String cipherTransformation;
+	final String cipherAlgorithm;
 	IvParameterSpec ivSpec;
 	SharedSecretModel model;
-	public SharedSecretDecryptor(final SharedSecretModel model) {
-		this(model.getPrivateKey(), model.getPublicKey(),
-			model.getKeyAgreementAlgorithm(), model.getSecretKeyAlgorithm(), model.getProvider(),
-			model.getCipherTransformation(), model.getIv());
+
+	public SharedSecretDecryptor(final SharedSecretModel model)
+	{
+		this(model.getPrivateKey(), model.getPublicKey(), model.getKeyAgreementAlgorithm(),
+			model.getSecretKeyAlgorithm(), model.getProvider(), model.getCipherAlgorithm(),
+			model.getIv());
 		this.model = model;
 	}
 
 
 	public SharedSecretDecryptor(final PrivateKey privateKey, final PublicKey publicKey,
 		final String keyAgreementAlgorithm, final String secretKeyAlgorithm, final String provider,
-		final String cipherTransformation, final byte[] iv)
+		final String cipherAlgorithm, final byte[] iv)
 	{
 		ivSpec = new IvParameterSpec(iv);
 		this.provider = provider;
-		this.cipherTransformation = cipherTransformation;
-		secretKey = RuntimeExceptionDecorator.decorate(() -> KeyAgreementFactory
-			.newSharedSecret(privateKey, publicKey, keyAgreementAlgorithm, secretKeyAlgorithm, provider));
+		this.cipherAlgorithm = cipherAlgorithm;
+		secretKey = RuntimeExceptionDecorator
+			.decorate(() -> KeyAgreementFactory.newSharedSecret(privateKey, publicKey,
+				keyAgreementAlgorithm, secretKeyAlgorithm, provider));
 	}
 
 	public byte[] decrypt(final byte[] encrypted) throws Exception
 	{
 		Key secretKeySpec = new SecretKeySpec(secretKey.getEncoded(), secretKey.getAlgorithm());
-		Cipher cipher = Cipher.getInstance(cipherTransformation, provider);
+		Cipher cipher = Cipher.getInstance(cipherAlgorithm, provider);
 		byte[] decryptedData;
 
 		cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivSpec);

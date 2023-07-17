@@ -37,7 +37,7 @@ import io.github.astrapi69.mystic.crypt.ssl.KeyTrustExtensions;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
-import io.github.astrapi69.crypt.api.algorithm.KeystoreType;
+import io.github.astrapi69.crypt.api.type.KeystoreType;
 import io.github.astrapi69.crypt.data.factory.KeyStoreFactory;
 import io.github.astrapi69.file.search.PathFinder;
 
