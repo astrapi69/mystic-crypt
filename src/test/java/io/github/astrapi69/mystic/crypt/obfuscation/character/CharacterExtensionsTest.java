@@ -29,7 +29,7 @@ import static org.testng.AssertJUnit.assertEquals;
 import org.meanbean.test.BeanTester;
 import org.testng.annotations.Test;
 
-import io.github.astrapi69.AbstractTestCase;
+import io.github.astrapi69.test.base.AbstractTestCase;
 
 /**
  * The unit test class for the class {@link CharacterExtensions}

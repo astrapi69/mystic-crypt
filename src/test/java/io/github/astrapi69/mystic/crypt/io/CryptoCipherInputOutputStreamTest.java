@@ -137,8 +137,8 @@ public class CryptoCipherInputOutputStreamTest
 		}
 		// Verify the enryption and decryption process by compare the content of
 		// files...
-		expected = ReadFileExtensions.readFromFile(toEncrypt);
-		actual = ReadFileExtensions.readFromFile(outputDecrypted);
+		expected = ReadFileExtensions.fromFile(toEncrypt);
+		actual = ReadFileExtensions.fromFile(outputDecrypted);
 		assertEquals(expected, actual);
 		// clean up...
 		DeleteFileExtensions.delete(encryptedFile);

@@ -33,9 +33,9 @@ import org.testng.annotations.Test;
 
 import com.google.common.collect.BiMap;
 
-import io.github.astrapi69.AbstractTestCase;
 import io.github.astrapi69.crypt.data.obfuscation.rule.ObfuscationRule;
 import io.github.astrapi69.mystic.crypt.obfuscation.ObfuscationBiMapTestData;
+import io.github.astrapi69.test.base.AbstractTestCase;
 
 /**
  * The unit test class for the class {@link SimpleObfuscatorExtensions}
@@ -109,7 +109,7 @@ public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, Str
 	}
 
 	/**
-	 * Test method for {@link SimpleObfuscatorExtensions#disentangleBiMap(BiMap)}
+	 * Test method for {@link SimpleObfuscatorExtensions#disentangleBiMap(BiMap, String)}
 	 */
 	@Test(enabled = true)
 	public void testDisentangleBiMap()

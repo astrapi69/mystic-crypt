@@ -36,9 +36,9 @@ import org.testng.annotations.Test;
 
 import com.google.common.collect.BiMap;
 
-import io.github.astrapi69.AbstractTestCase;
 import io.github.astrapi69.crypt.api.obfuscation.Obfuscatable;
 import io.github.astrapi69.crypt.data.obfuscation.rule.ObfuscationOperationRule;
+import io.github.astrapi69.test.base.AbstractTestCase;
 
 /**
  * The unit test class for the class {@link CharacterObfuscator}

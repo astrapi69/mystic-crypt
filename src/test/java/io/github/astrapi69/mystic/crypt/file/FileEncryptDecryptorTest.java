@@ -34,7 +34,6 @@ import javax.crypto.Cipher;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import io.github.astrapi69.AbstractTestCase;
 import io.github.astrapi69.checksum.FileChecksumExtensions;
 import io.github.astrapi69.crypt.api.algorithm.MdAlgorithm;
 import io.github.astrapi69.crypt.api.algorithm.SunJCEAlgorithm;
@@ -42,6 +41,7 @@ import io.github.astrapi69.crypt.data.model.CryptModel;
 import io.github.astrapi69.crypt.data.model.CryptObjectDecorator;
 import io.github.astrapi69.file.delete.DeleteFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;
+import io.github.astrapi69.test.base.AbstractTestCase;
 
 /**
  * The unit test class for the class {@link FileEncryptor} and the class {@link FileDecryptor}

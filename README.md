@@ -31,19 +31,22 @@ The source code comes under the liberal MIT License, making mystic-crypt great f
 
 ## gradle dependency
 
+Replace the variable ${latestVersion} with the current latest
+version: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/mystic-crypt/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/mystic-crypt)
+
 You can first define the version in the ext section and add than the following gradle dependency to
 your project `build.gradle` if you want to import the core functionality of mystic-crypt:
 
 define version in file gradle.properties
 
 ```
-mysticCryptVersion=8.1
+mysticCryptVersion=${latestVersion}
 ```
 
 or in build.gradle ext area
 
 ```
-    mysticCryptVersion = "8.1"
+    mysticCryptVersion = "${latestVersion}"
 ```
 
 and then add the dependency to the dependencies area
@@ -62,7 +65,7 @@ You can first define the version properties and add than the following maven dep
     <properties>
             ...
         <!-- MYSTIC-CRYPT version -->
-        <mystic-crypt.version>8.1</mystic-crypt.version>
+        <mystic-crypt.version>${latestVersion}</mystic-crypt.version>
             ...
     </properties>
             ...

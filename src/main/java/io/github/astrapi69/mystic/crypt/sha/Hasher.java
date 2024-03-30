@@ -88,7 +88,7 @@ public final class Hasher
 		NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException,
 		InvalidKeySpecException, InvalidAlgorithmParameterException
 	{
-		return hashAndHex(hashIt, CompoundAlgorithm.PRIVATE_KEY, salt, hashAlgorithm, charset);
+		return hashAndHex(hashIt, CompoundAlgorithm.PASSWORD, salt, hashAlgorithm, charset);
 	}
 
 	/**

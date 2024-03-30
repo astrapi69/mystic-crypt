@@ -47,7 +47,7 @@ public final class CryptObjectDecoratorExtensions
 	{
 		Objects.requireNonNull(toEncrypt);
 		Objects.requireNonNull(decorator);
-		return decorateWithStringDecorator(ReadFileExtensions.readFromFile(toEncrypt), decorator);
+		return decorateWithStringDecorator(ReadFileExtensions.fromFile(toEncrypt), decorator);
 	}
 
 	public static String decorateWithBytearrayDecorator(final String toEncrypt,
@@ -146,7 +146,7 @@ public final class CryptObjectDecoratorExtensions
 	{
 		Objects.requireNonNull(decrypted);
 		Objects.requireNonNull(decorator);
-		return undecorateWithStringDecorator(ReadFileExtensions.readFromFile(decrypted), decorator);
+		return undecorateWithStringDecorator(ReadFileExtensions.fromFile(decrypted), decorator);
 	}
 
 	public static String undecorateWithBytearrayDecorator(final String toEncrypt,

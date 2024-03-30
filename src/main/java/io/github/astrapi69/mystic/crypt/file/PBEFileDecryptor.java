@@ -49,7 +49,7 @@ import io.github.astrapi69.crypt.data.model.CryptModel;
 import io.github.astrapi69.crypt.data.model.CryptObjectDecorator;
 import io.github.astrapi69.file.delete.DeleteFileExtensions;
 import io.github.astrapi69.file.read.ReadFileExtensions;
-import io.github.astrapi69.file.write.WriteFileExtensions;
+import io.github.astrapi69.file.write.StoreFileExtensions;
 import io.github.astrapi69.mystic.crypt.core.AbstractFileDecryptor;
 import io.github.astrapi69.mystic.crypt.decorator.CryptObjectDecoratorExtensions;
 import io.github.astrapi69.mystic.crypt.io.CryptoCipherOutputStream;
@@ -238,13 +238,13 @@ public class PBEFileDecryptor extends AbstractFileDecryptor
 		List<CryptObjectDecorator<String>> decorators = getModel().getDecorators();
 		if (decorators != null && !decorators.isEmpty())
 		{
-			String decryptedFileString = ReadFileExtensions.readFromFile(decryptedFile);
+			String decryptedFileString = ReadFileExtensions.fromFile(decryptedFile);
 			for (int i = decorators.size() - 1; 0 <= i; i--)
 			{
 				decryptedFileString = CryptObjectDecoratorExtensions.undecorateFile(decryptedFile,
 					decorators.get(i));
 			}
-			WriteFileExtensions.writeStringToFile(decryptedFile, decryptedFileString,
+			StoreFileExtensions.toFile(decryptedFile, decryptedFileString,
 				Charset.forName("UTF-8").name());
 		}
 		if (this.deleteEncryptedFileAfterDecryption)

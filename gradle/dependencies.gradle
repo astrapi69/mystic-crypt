@@ -22,6 +22,6 @@ dependencies {
     testImplementation("io.github.astrapi69:test-object:$testObjectVersion")
     testImplementation("io.github.astrapi69:silly-io:$sillyIoVersion")
     testImplementation("io.github.benas:random-beans:$randomBeansVersion")
-    testImplementation("org.meanbean:meanbean:$meanbeanVersion")
+    testImplementation("com.github.meanbeanlib:meanbean:$meanbeanVersion")
     testImplementation("org.testng:testng:$testngVersion")
 }

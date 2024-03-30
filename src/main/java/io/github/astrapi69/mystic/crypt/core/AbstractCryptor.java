@@ -305,22 +305,21 @@ public abstract class AbstractCryptor<C, K, T> implements Serializable, Cryptor
 
 
 	/**
-	 * Factory method for creating a new {@link KeySpec} from the given private key. This method is
+	 * Factory method for creating a new {@link KeySpec} from the given password. This method is
 	 * invoked in the constructor from the derived classes and can be overridden so users can
-	 * provide their own version of a new {@link KeySpec} from the given private key.
+	 * provide their own version of a new {@link KeySpec} from the given password
 	 *
-	 * @param privateKey
-	 *            the private key
+	 * @param password
+	 *            the password
 	 * @param salt
 	 *            the salt
 	 * @param iterationCount
 	 *            the iteration count
 	 * @return the new {@link KeySpec} from the given private key.
 	 */
-	protected KeySpec newKeySpec(final String privateKey, final byte[] salt,
-		final int iterationCount)
+	protected KeySpec newKeySpec(final String password, final byte[] salt, final int iterationCount)
 	{
-		return KeySpecFactory.newPBEKeySpec(privateKey, salt, iterationCount);
+		return KeySpecFactory.newPBEKeySpec(password, salt, iterationCount);
 	}
 
 	/**
@@ -359,12 +358,12 @@ public abstract class AbstractCryptor<C, K, T> implements Serializable, Cryptor
 	 * invoked in the constructor from the derived classes and can be overridden so users can
 	 * provide their own version of a new {@link Cipher} from the given parameters.
 	 *
-	 * @param privateKey
-	 *            the private key
+	 * @param password
+	 *            the password
 	 * @param algorithm
 	 *            the algorithm
 	 * @param salt
-	 *            the salt.
+	 *            the salt
 	 * @param iterationCount
 	 *            the iteration count
 	 * @param operationMode
@@ -384,15 +383,11 @@ public abstract class AbstractCryptor<C, K, T> implements Serializable, Cryptor
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
-	protected Cipher newCipher(final String privateKey, final String algorithm, final byte[] salt,
+	protected Cipher newCipher(final String password, final String algorithm, final byte[] salt,
 		final int iterationCount, final int operationMode)
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
 		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		final KeySpec keySpec = newKeySpec(privateKey, salt, iterationCount);
-		final SecretKeyFactory factory = newSecretKeyFactory(algorithm);
-		final SecretKey key = factory.generateSecret(keySpec);
-		final AlgorithmParameterSpec paramSpec = newAlgorithmParameterSpec(salt, iterationCount);
-		return newCipher(operationMode, key, paramSpec, key.getAlgorithm());
+		return CipherFactory.newCipher(password, algorithm, salt, iterationCount, operationMode);
 	}
 }

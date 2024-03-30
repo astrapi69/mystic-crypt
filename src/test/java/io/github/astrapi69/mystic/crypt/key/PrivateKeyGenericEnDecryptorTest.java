@@ -46,7 +46,7 @@ import io.github.astrapi69.file.search.PathFinder;
 import io.github.astrapi69.json.JsonStringToObjectExtensions;
 import io.github.astrapi69.json.ObjectToJsonExtensions;
 import io.github.astrapi69.test.object.Person;
-import io.github.astrapi69.test.object.enumtype.Gender;
+import io.github.astrapi69.test.object.enumeration.Gender;
 
 /**
  * The unit test class for the encryption and decryption with the class

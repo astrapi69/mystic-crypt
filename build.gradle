@@ -35,7 +35,12 @@ apply from: "gradle/publishing.gradle"
 apply from: "gradle/repositories.gradle"
 apply from: "gradle/testing.gradle"
 
-sourceCompatibility = "$projectSourceCompatibility"
+java {
+    sourceCompatibility = "$projectSourceCompatibility" as Object
+    toolchain {
+        languageVersion = JavaLanguageVersion.of("$projectSourceCompatibility")
+    }
+}
 
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"

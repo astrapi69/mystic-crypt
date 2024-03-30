@@ -32,7 +32,7 @@ import java.util.logging.Logger;
 
 import org.testng.annotations.Test;
 
-import io.github.astrapi69.io.annotations.ScanPackageExtensions;
+import io.github.astrapi69.io.annotation.ScanPackageExtensions;
 
 /**
  * The unit test class for the class {@link BruteForceProcessor}
