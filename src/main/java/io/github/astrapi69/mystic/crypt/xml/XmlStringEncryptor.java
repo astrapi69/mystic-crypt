@@ -1,6 +1,5 @@
 package io.github.astrapi69.mystic.crypt.xml;
 
-import java.nio.charset.StandardCharsets;
 import java.security.PublicKey;
 
 import javax.crypto.Cipher;
@@ -9,7 +8,6 @@ import javax.crypto.SecretKey;
 import io.github.astrapi69.crypt.data.model.CryptModel;
 import io.github.astrapi69.mystic.crypt.key.PublicKeyEncryptor;
 import io.github.astrapi69.mystic.crypt.key.PublicKeyGenericEncryptor;
-import org.apache.commons.codec.binary.Hex;
 
 /**
  * The class {@link XmlStringEncryptor} can encrypt xml strings with his public key

@@ -110,6 +110,12 @@ public class HexableEncryptor extends AbstractStringEncryptor
 		this(privateKey, AesAlgorithm.AES);
 	}
 
+	@Override
+	public byte[] encrypt(byte[] toEncrypt) throws Exception
+	{
+		throw new UnsupportedOperationException("");
+	}
+
 	/**
 	 * Instantiates a new {@link HexableEncryptor} from the given parameters.
 	 *

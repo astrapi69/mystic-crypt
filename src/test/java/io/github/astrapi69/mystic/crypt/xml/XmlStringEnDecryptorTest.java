@@ -1,20 +1,19 @@
 package io.github.astrapi69.mystic.crypt.xml;
 
-import io.github.astrapi69.crypt.data.key.reader.PrivateKeyReader;
-import io.github.astrapi69.crypt.data.key.reader.PublicKeyReader;
-import io.github.astrapi69.file.read.ReadFileExtensions;
-import io.github.astrapi69.file.search.PathFinder;
-import org.testng.annotations.Test;
-
-import io.github.astrapi69.mystic.crypt.key.PrivateKeyHexDecryptor;
-import io.github.astrapi69.mystic.crypt.key.PublicKeyHexEncryptor;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertNotNull;
 
 import java.io.File;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertNotNull;
+import org.testng.annotations.Test;
+
+import io.github.astrapi69.crypt.data.key.reader.PrivateKeyReader;
+import io.github.astrapi69.crypt.data.key.reader.PublicKeyReader;
+import io.github.astrapi69.file.read.ReadFileExtensions;
+import io.github.astrapi69.file.search.PathFinder;
+import io.github.astrapi69.mystic.crypt.key.PrivateKeyHexDecryptor;
 
 public class XmlStringEnDecryptorTest
 {
@@ -43,7 +42,7 @@ public class XmlStringEnDecryptorTest
 		publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
 		publickeyDerFile = new File(publickeyDerDir, "public.der");
 		publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
-		xml = PathFinder.getRelativePath(PathFinder.getSrcTestResourcesDir(), "xml","company.xml");
+		xml = PathFinder.getRelativePath(PathFinder.getSrcTestResourcesDir(), "xml", "company.xml");
 		xmlString = ReadFileExtensions.fromFile(xml);
 		expected = xmlString;
 

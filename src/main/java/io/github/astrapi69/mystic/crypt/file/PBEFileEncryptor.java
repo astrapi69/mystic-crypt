@@ -94,6 +94,12 @@ public class PBEFileEncryptor extends AbstractFileEncryptor
 		this(model, null);
 	}
 
+	@Override
+	public byte[] encrypt(byte[] toEncrypt) throws Exception
+	{
+		throw new UnsupportedOperationException("");
+	}
+
 	/**
 	 * Instantiates a new {@link PBEFileEncryptor} object with the given {@link CryptModel} and the
 	 * given file

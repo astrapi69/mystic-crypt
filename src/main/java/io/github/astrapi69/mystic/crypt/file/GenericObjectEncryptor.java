@@ -146,12 +146,17 @@ public class GenericObjectEncryptor<T, D> extends AbstractObjectEncryptor<T, D>
 	}
 
 	@Override
-	protected Cipher newCipher(String key, String algorithm, byte[] salt, int iterationCount, int operationMode) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException {
-		return super.newCipher(key, algorithm, salt, iterationCount,operationMode);
+	protected Cipher newCipher(String key, String algorithm, byte[] salt, int iterationCount,
+		int operationMode)
+		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
+		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+	{
+		return super.newCipher(key, algorithm, salt, iterationCount, operationMode);
 	}
 
 	@Override
-	public byte[] encrypt(byte[] toEncrypt) throws Exception {
+	public byte[] encrypt(byte[] toEncrypt) throws Exception
+	{
 		return new byte[0];
 	}
 }

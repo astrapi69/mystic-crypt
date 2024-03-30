@@ -40,6 +40,7 @@ import javax.crypto.NoSuchPaddingException;
 
 import org.apache.commons.io.FilenameUtils;
 
+import io.github.astrapi69.crypt.data.factory.CipherFactory;
 import io.github.astrapi69.crypt.data.model.CryptModel;
 import io.github.astrapi69.crypt.data.model.CryptObjectDecorator;
 import io.github.astrapi69.mystic.crypt.core.AbstractFileEncryptor;
@@ -81,6 +82,21 @@ public class FileEncryptor extends AbstractFileEncryptor
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
 		this(model, null);
+	}
+
+	@Override
+	public byte[] encrypt(byte[] toEncrypt) throws Exception
+	{
+		throw new UnsupportedOperationException("");
+	}
+
+	@Override
+	protected Cipher newCipher(String key, String algorithm, byte[] salt, int iterationCount,
+		int operationMode)
+		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
+		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+	{
+		return CipherFactory.newCipher(key, algorithm, salt, iterationCount, operationMode);
 	}
 
 	/**
