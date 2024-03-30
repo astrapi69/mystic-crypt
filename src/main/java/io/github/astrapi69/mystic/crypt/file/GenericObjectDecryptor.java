@@ -82,6 +82,11 @@ public class GenericObjectDecryptor<R, D> extends AbstractObjectDecryptor<R, D>
 		super(model);
 	}
 
+	@Override
+	protected Cipher newCipher(String key, String algorithm, byte[] salt, int iterationCount, int operationMode) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException {
+		return super.newCipher(key, algorithm, salt, iterationCount,operationMode);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */

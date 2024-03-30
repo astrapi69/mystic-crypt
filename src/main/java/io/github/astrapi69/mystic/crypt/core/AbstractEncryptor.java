@@ -116,4 +116,5 @@ public abstract class AbstractEncryptor<C, K, T> extends AbstractCryptor<C, K, T
 		return Cipher.ENCRYPT_MODE;
 	}
 
+	public abstract byte[] encrypt(byte[] toEncrypt) throws Exception;
 }

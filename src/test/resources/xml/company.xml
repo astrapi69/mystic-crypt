@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Company>
+    <Customers>
+        <Customer id="1">
+            <age>34</age>
+            <name>John</name>
+            <gender>Male</gender>
+            <role>Cpp Developer</role>
+        </Customer>
+        <Customer id="2">
+            <age>32</age>
+            <name>Nelly</name>
+            <gender>Female</gender>
+            <role>CEO</role>
+        </Customer>
+        <Customer id="3">
+            <age>20</age>
+            <name>Jim</name>
+            <gender>Male</gender>
+            <role>Manager</role>
+        </Customer>
+        <Customer id="4">
+            <age>28</age>
+            <name>Tanja</name>
+            <gender>Female</gender>
+            <role>Manager</role>
+        </Customer>
+    </Customers>
+</Company>
