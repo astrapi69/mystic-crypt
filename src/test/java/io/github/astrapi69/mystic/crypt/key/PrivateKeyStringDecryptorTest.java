@@ -29,47 +29,64 @@ import static org.testng.AssertJUnit.assertNotNull;
 
 import java.io.File;
 import java.security.PrivateKey;
+import java.security.PublicKey;
 
 import org.testng.annotations.Test;
 
 import io.github.astrapi69.crypt.data.key.reader.PrivateKeyReader;
+import io.github.astrapi69.crypt.data.key.reader.PublicKeyReader;
+import io.github.astrapi69.file.read.ReadFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;
 
-/**
- *
- * The unit test class for the class {@link PrivateKeyHexDecryptor}
- */
-public class PrivateKeyHexDecryptorTest
+public class PrivateKeyStringDecryptorTest
 {
 
+
 	/**
-	 * Test method for {@link PrivateKeyHexDecryptor} constructors
+	 * Test to encrypt with {@link PrivateKeyStringDecryptor#decrypt(byte[])}
 	 *
 	 * @throws Exception
-	 *             is thrown if any error occurs
+	 *             is thrown if the encryption or the decryption fails
 	 */
-	@Test(enabled = true)
-	public void testConstructors() throws Exception
+	@Test
+	public void testConstructorWithPrivateKey() throws Exception
 	{
 		String actual;
 		String expected;
+		String xmlString;
+		PublicKeyStringEncryptor encryptor;
+		PublicKey publicKey;
+		File publickeyDerDir;
+		File publickeyDerFile;
+		File xml;
+		byte[] encrypted;
 		PrivateKey privateKey;
 		File derDir;
 		File privatekeyDerFile;
-		PrivateKeyHexDecryptor decryptor;
-		String encypted;
+		PrivateKeyStringDecryptor decryptor;
+
+		publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		publickeyDerFile = new File(publickeyDerDir, "public.der");
+		publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
+		xml = PathFinder.getRelativePath(PathFinder.getSrcTestResourcesDir(), "xml", "company.xml");
+		xmlString = ReadFileExtensions.fromFile(xml);
+		expected = xmlString;
+
+		encryptor = new PublicKeyStringEncryptor(publicKey);
+		assertNotNull(encryptor);
+		encrypted = encryptor.encrypt(xmlString);
+		assertNotNull(encrypted);
+
 
 		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
 		privatekeyDerFile = new File(derDir, "private.der");
 
 		privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
 
-		decryptor = new PrivateKeyHexDecryptor(privateKey);
-		assertNotNull(decryptor);
-		encypted = "ACED000573720035696F2E6769746875622E6173747261706936392E63727970742E646174612E6D6F64656C2E41657352736143727970744D6F64656C00000000000000010200025B000C656E637279707465644B65797400025B425B001B73796D6D65747269634B6579456E637279707465644F626A65637471007E00017870757200025B42ACF317F8060854E002000078700000010070C16DFFA2AD6679421B978D36CB4CBE8C9EF32B239B2D7972A62DF2BA67B7EE435F161C5843463072F974EBFEF5064CB97638B0DC8A7F47B74EB8F04FD2D0E01B7CB24B59FE72644AB78700A3352462BFC6491800F74A84BA4949DEDF06B6DDF5D977110AB5E48C44449DEE59D971F1511D530B5E5316C7E468D89FA076164A6357A80C656566D7EE1C11BC8AC01952EB185B909939CAE8B5EC90BE2D8D6853C9C9D0A0215BAC44662093D8D1EE26D49A1496D3DB7DF37AF4D3DEE26137567E06C9D71C4EF6B25620173F3D78D859720E3807B0E8F51785D8311FEE7A9EC53497D8C6B20E951D3158863EFAFC5BABF0D67D9A817FC442E8D4C150FF20A295CD7571007E0003000000100DB6F03FD2D284AF4D1F4BA1092FE507";
-		actual = decryptor.decrypt(encypted);
-		assertNotNull(actual);
-		expected = "foo";
-		assertEquals(actual, expected);
+		decryptor = new PrivateKeyStringDecryptor(privateKey);
+
+		String decrypted = decryptor.decrypt(encrypted);
+		actual = decrypted;
+		assertEquals(expected, actual);
 	}
 }

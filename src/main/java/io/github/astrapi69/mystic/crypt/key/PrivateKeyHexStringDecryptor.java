@@ -24,57 +24,51 @@
  */
 package io.github.astrapi69.mystic.crypt.key;
 
-import java.nio.charset.StandardCharsets;
-import java.security.PublicKey;
+import java.security.PrivateKey;
 import java.util.Objects;
 
-import org.apache.commons.codec.binary.Hex;
-
+import io.github.astrapi69.crypt.data.hex.HexExtensions;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 
 /**
- * The class {@link PublicKeyHexEncryptor} can encrypt characters with his public key. <br>
+ * The class {@link PrivateKeyHexStringDecryptor} decrypts encrypted characters the was encrypted
+ * with the public key of the pendant private key of this class. <br>
  * <br>
- * 
- * @deprecated use instead the class {@link PublicKeyHexStringEncryptor}. Note: will be removed in
- *             next major version.
  */
-public final class PublicKeyHexEncryptor
+public final class PrivateKeyHexStringDecryptor
 {
 
 	/**
-	 * The decorated encryptor object
+	 * The decorated decryptor object
 	 */
-	private final PublicKeyEncryptor encryptor;
+	private final PrivateKeyStringDecryptor decryptor;
 
 	/**
-	 * Instantiates a new {@link PublicKeyHexEncryptor} object with the given {@link PublicKey}
+	 * Instantiates a new {@link PrivateKeyHexStringDecryptor} with the given {@link PrivateKey}
 	 *
-	 * @param publicKey
-	 *            the public key
+	 * @param privateKey
+	 *            The private key
 	 */
-	public PublicKeyHexEncryptor(final PublicKey publicKey)
+	public PrivateKeyHexStringDecryptor(final PrivateKey privateKey)
 	{
-		Objects.requireNonNull(publicKey);
-		this.encryptor = RuntimeExceptionDecorator
-			.decorate(() -> new PublicKeyEncryptor(publicKey));
+		Objects.requireNonNull(privateKey);
+		this.decryptor = RuntimeExceptionDecorator
+			.decorate(() -> new PrivateKeyStringDecryptor(privateKey));
 	}
 
 	/**
-	 * Encrypt the given {@link String} object
+	 * Decrypt the given encrypted {@link String}
 	 *
-	 * @param string
-	 *            The {@link String} to encrypt
-	 * @return The encrypted {@link String}
-	 *
+	 * @param encypted
+	 *            The encrypted {@link String} to decrypt
+	 * @return The decrypted {@link String}
 	 * @throws Exception
-	 *             is thrown if encryption fails
+	 *             is thrown if decryption fails.
 	 */
-	public String encrypt(final String string) throws Exception
+	public String decrypt(final String encypted) throws Exception
 	{
-		final byte[] utf8 = string.getBytes(StandardCharsets.UTF_8);
-		final byte[] encrypt = this.encryptor.encrypt(utf8);
-		final char[] original = Hex.encodeHex(encrypt, false);
-		return new String(original);
+		final byte[] dec = HexExtensions.decodeHex(encypted.toCharArray());
+		return this.decryptor.decrypt(dec);
 	}
+
 }

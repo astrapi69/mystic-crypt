@@ -24,57 +24,55 @@
  */
 package io.github.astrapi69.mystic.crypt.key;
 
-import java.nio.charset.StandardCharsets;
 import java.security.PublicKey;
-import java.util.Objects;
 
-import org.apache.commons.codec.binary.Hex;
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
 
-import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
+import io.github.astrapi69.crypt.data.model.CryptModel;
 
 /**
- * The class {@link PublicKeyHexEncryptor} can encrypt characters with his public key. <br>
- * <br>
- * 
- * @deprecated use instead the class {@link PublicKeyHexStringEncryptor}. Note: will be removed in
- *             next major version.
+ * The class {@link PublicKeyStringEncryptor} can encrypt strings with the given public key
  */
-public final class PublicKeyHexEncryptor
+public class PublicKeyStringEncryptor extends PublicKeyGenericEncryptor<String>
 {
 
 	/**
-	 * The decorated encryptor object
+	 * Instantiates a new {@link PublicKeyStringEncryptor} with the given {@link CryptModel} for the
+	 * public key and the given {@link CryptModel} for the symmetric key
+	 *
+	 * @param model
+	 *            The crypt model
+	 * @param symmetricKeyModel
+	 *            The symmetric key model
 	 */
-	private final PublicKeyEncryptor encryptor;
+	public PublicKeyStringEncryptor(CryptModel<Cipher, PublicKey, byte[]> model,
+		CryptModel<Cipher, SecretKey, String> symmetricKeyModel)
+	{
+		super(model, symmetricKeyModel);
+	}
 
 	/**
-	 * Instantiates a new {@link PublicKeyHexEncryptor} object with the given {@link PublicKey}
+	 * Instantiates a new {@link PublicKeyStringEncryptor} with the given {@link PublicKey} object
 	 *
 	 * @param publicKey
 	 *            the public key
 	 */
-	public PublicKeyHexEncryptor(final PublicKey publicKey)
+	public PublicKeyStringEncryptor(PublicKey publicKey)
 	{
-		Objects.requireNonNull(publicKey);
-		this.encryptor = RuntimeExceptionDecorator
-			.decorate(() -> new PublicKeyEncryptor(publicKey));
+		super(publicKey);
 	}
 
 	/**
-	 * Encrypt the given {@link String} object
+	 * Instantiates a new {@link PublicKeyStringEncryptor} with the given {@link PublicKeyEncryptor}
+	 * object
 	 *
-	 * @param string
-	 *            The {@link String} to encrypt
-	 * @return The encrypted {@link String}
-	 *
-	 * @throws Exception
-	 *             is thrown if encryption fails
+	 * @param encryptor
+	 *            The encryptor that will do all the work
 	 */
-	public String encrypt(final String string) throws Exception
+	public PublicKeyStringEncryptor(PublicKeyEncryptor encryptor)
 	{
-		final byte[] utf8 = string.getBytes(StandardCharsets.UTF_8);
-		final byte[] encrypt = this.encryptor.encrypt(utf8);
-		final char[] original = Hex.encodeHex(encrypt, false);
-		return new String(original);
+		super(encryptor);
 	}
+
 }

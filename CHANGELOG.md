@@ -4,6 +4,13 @@
 Version 9-SNAPSHOT
 -------------
 
+ADDED:
+
+- new class PublicKeyStringEncryptor that can encrypt strings with the given public key
+- new class PublicKeyHexStringEncryptor that can encrypt and hex characters with the given public key
+- new class PrivateKeyStringDecryptor that decrypts encrypted strings the was encrypted with the corresponding public key
+- new class PrivateKeyHexStringDecryptor that decrypts encrypted hex strings the was encrypted with the corresponding public key
+
 CHANGED:
 
 - update jdk to version 17

@@ -24,7 +24,6 @@
  */
 package io.github.astrapi69.mystic.crypt.key;
 
-import java.nio.charset.StandardCharsets;
 import java.security.PublicKey;
 import java.util.Objects;
 
@@ -33,31 +32,30 @@ import org.apache.commons.codec.binary.Hex;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 
 /**
- * The class {@link PublicKeyHexEncryptor} can encrypt characters with his public key. <br>
+ * The class {@link PublicKeyHexStringEncryptor} can encrypt and hex characters with the given
+ * public key <br>
  * <br>
- * 
- * @deprecated use instead the class {@link PublicKeyHexStringEncryptor}. Note: will be removed in
- *             next major version.
  */
-public final class PublicKeyHexEncryptor
+public final class PublicKeyHexStringEncryptor
 {
 
 	/**
 	 * The decorated encryptor object
 	 */
-	private final PublicKeyEncryptor encryptor;
+	private final PublicKeyStringEncryptor encryptor;
 
 	/**
-	 * Instantiates a new {@link PublicKeyHexEncryptor} object with the given {@link PublicKey}
+	 * Instantiates a new {@link PublicKeyHexStringEncryptor} object with the given
+	 * {@link PublicKey}
 	 *
 	 * @param publicKey
 	 *            the public key
 	 */
-	public PublicKeyHexEncryptor(final PublicKey publicKey)
+	public PublicKeyHexStringEncryptor(final PublicKey publicKey)
 	{
 		Objects.requireNonNull(publicKey);
 		this.encryptor = RuntimeExceptionDecorator
-			.decorate(() -> new PublicKeyEncryptor(publicKey));
+			.decorate(() -> new PublicKeyStringEncryptor(publicKey));
 	}
 
 	/**
@@ -72,8 +70,7 @@ public final class PublicKeyHexEncryptor
 	 */
 	public String encrypt(final String string) throws Exception
 	{
-		final byte[] utf8 = string.getBytes(StandardCharsets.UTF_8);
-		final byte[] encrypt = this.encryptor.encrypt(utf8);
+		final byte[] encrypt = this.encryptor.encrypt(string);
 		final char[] original = Hex.encodeHex(encrypt, false);
 		return new String(original);
 	}

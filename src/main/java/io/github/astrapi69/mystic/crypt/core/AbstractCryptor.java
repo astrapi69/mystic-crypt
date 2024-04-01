@@ -131,6 +131,11 @@ public abstract class AbstractCryptor<C, K, T> implements Serializable, Cryptor
 		this(CryptModel.<C, K, T> builder().key(key).build());
 	}
 
+	/**
+	 * Gets the current model
+	 * 
+	 * @return the model
+	 */
 	public CryptModel<C, K, T> getModel()
 	{
 		return this.model;
@@ -279,7 +284,6 @@ public abstract class AbstractCryptor<C, K, T> implements Serializable, Cryptor
 
 	/**
 	 * This method initialize the cipher object.
-	 * <p>
 	 *
 	 * @throws InvalidAlgorithmParameterException
 	 *             is thrown if initialization of the cipher object fails.

@@ -35,6 +35,9 @@ import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
  * The class {@link PrivateKeyHexDecryptor} decrypts encrypted characters the was encrypted with the
  * public key of the pendant private key of this class. <br>
  * <br>
+ * 
+ * @deprecated use instead the class {@link PrivateKeyHexStringDecryptor}. Note: will be removed in
+ *             next major version.
  */
 public final class PrivateKeyHexDecryptor
 {
