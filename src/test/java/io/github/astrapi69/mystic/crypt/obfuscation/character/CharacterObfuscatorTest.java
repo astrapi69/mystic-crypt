@@ -122,7 +122,7 @@ public class CharacterObfuscatorTest extends AbstractTestCase<String, String>
 	/**
 	 * Test method for {@link CharacterObfuscator#obfuscate()}
 	 */
-	@Test(enabled = true) // TODO inspect and fix...
+	@Test(enabled = true)
 	public void testObfuscateEightChars()
 	{
 		// new scenario...

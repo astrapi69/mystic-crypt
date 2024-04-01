@@ -116,10 +116,10 @@ public class PublicKeyEncryptor extends AbstractEncryptor<Cipher, PublicKey, byt
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		super(CryptModel.<Cipher, PublicKey, byte[]> builder().key(publicKey).build());
-		this.symmetricKeyModel = CryptModel.<Cipher, SecretKey, String> builder()
-			.key(SecretKeyFactoryExtensions.newSecretKey(AesAlgorithm.AES.getAlgorithm(), 128))
-			.algorithm(AesAlgorithm.AES).operationMode(Cipher.ENCRYPT_MODE).build();
+		this(CryptModel.<Cipher, PublicKey, byte[]> builder().key(publicKey).build(),
+			CryptModel.<Cipher, SecretKey, String> builder()
+				.key(SecretKeyFactoryExtensions.newSecretKey(AesAlgorithm.AES.getAlgorithm(), 128))
+				.algorithm(AesAlgorithm.AES).operationMode(Cipher.ENCRYPT_MODE).build());
 	}
 
 	/**
