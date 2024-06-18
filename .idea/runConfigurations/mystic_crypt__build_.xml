@@ -15,19 +15,7 @@
       </option>
       <option name="vmOptions" value="" />
     </ExternalSystemSettings>
-    <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-    <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-    <EXTENSION ID="com.intellij.execution.ExternalSystemRunConfigurationJavaExtension">
-      <extension name="de.eudaemon.ideaswag.SwingspectorExtension">
-        <Swingspector>
-          <keystroke code="59" modifiers="130" />
-          <active value="false" />
-          <timeout>5.0</timeout>
-        </Swingspector>
-      </extension>
-    </EXTENSION>
-    <DebugAllEnabled>false</DebugAllEnabled>
-    <RunAsTest>false</RunAsTest>
+    <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
     <method v="2" />
   </configuration>
 </component>

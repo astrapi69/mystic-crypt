@@ -1,0 +1,72 @@
+[versions]
+bcpkix-jdk15on-version = "1.70"
+bcprov-ext-jdk15on-version = "1.70"
+bcprov-jdk15on-version = "1.70"
+checksum-up-version = "3"
+commons-codec-version = "1.16.1"
+commons-io-version = "2.16.0"
+commons-lang3-version = "3.14.0"
+crypt-api-version = "9"
+crypt-data-version = "9"
+file-worker-version = "17.1"
+gradle-plugin-grgit-version = "5.2.2"
+gradle-plugin-license-version = "0.16.1"
+gradle-plugin-spotless-version = "7.0.0.BETA1"
+gradle-plugin-version-catalog-update-version = "0.8.4"
+gradle-plugin-versions-version = "0.51.0"
+guava-version = "33.1.0-jre"
+jobj-clone-version = "3.4"
+jobj-core-version = "8.2"
+json-extensions-version = "3"
+meanbean-version = "3.0.0-M9"
+random-beans-version = "3.9.0"
+randomizer-version = "10.2"
+silly-bean-version = "2"
+silly-collection-version = "27"
+silly-io-version = "3"
+silly-strings-version = "9"
+test-object-version = "8.2"
+testng-version = "7.9.0"
+throwable-version = "2.3"
+xml-base-version = "1.6"
+
+[libraries]
+bcpkix-jdk15on = { module = "org.bouncycastle:bcpkix-jdk15on", version.ref = "bcpkix-jdk15on-version" }
+bcprov-ext-jdk15on = { module = "org.bouncycastle:bcprov-ext-jdk15on", version.ref = "bcprov-ext-jdk15on-version" }
+bcprov-jdk15on = { module = "org.bouncycastle:bcprov-jdk15on", version.ref = "bcprov-jdk15on-version" }
+checksum-up = { module = "io.github.astrapi69:checksum-up", version.ref = "checksum-up-version" }
+commons-codec = { module = "commons-codec:commons-codec", version.ref = "commons-codec-version" }
+commons-io = { module = "commons-io:commons-io", version.ref = "commons-io-version" }
+commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commons-lang3-version" }
+crypt-api = { module = "io.github.astrapi69:crypt-api", version.ref = "crypt-api-version" }
+crypt-data = { module = "io.github.astrapi69:crypt-data", version.ref = "crypt-data-version" }
+file-worker = { module = "io.github.astrapi69:file-worker", version.ref = "file-worker-version" }
+guava = { module = "com.google.guava:guava", version.ref = "guava-version" }
+jobj-clone = { module = "io.github.astrapi69:jobj-clone", version.ref = "jobj-clone-version" }
+jobj-core = { module = "io.github.astrapi69:jobj-core", version.ref = "jobj-core-version" }
+json-extensions = { module = "io.github.astrapi69:json-extensions", version.ref = "json-extensions-version" }
+meanbean = { module = "com.github.meanbeanlib:meanbean", version.ref = "meanbean-version" }
+random-beans = { module = "io.github.benas:random-beans", version.ref = "random-beans-version" }
+randomizer = { module = "io.github.astrapi69:randomizer", version.ref = "randomizer-version" }
+silly-bean = { module = "io.github.astrapi69:silly-bean", version.ref = "silly-bean-version" }
+silly-collection = { module = "io.github.astrapi69:silly-collection", version.ref = "silly-collection-version" }
+silly-io = { module = "io.github.astrapi69:silly-io", version.ref = "silly-io-version" }
+silly-strings = { module = "io.github.astrapi69:silly-strings", version.ref = "silly-strings-version" }
+test-object = { module = "io.github.astrapi69:test-object", version.ref = "test-object-version" }
+testng = { module = "org.testng:testng", version.ref = "testng-version" }
+throwable = { module = "io.github.astrapi69:throwable", version.ref = "throwable-version" }
+xml-base = { module = "io.github.astrapi69:xml-base", version.ref = "xml-base-version" }
+
+[bundles]
+unit-testing = [
+    "meanbean",
+    "test-object",
+    "testng",
+]
+
+[plugins]
+gradle-versions-plugin = { id = "com.github.ben-manes.versions", version.ref = "gradle-plugin-versions-version" }
+grgit-gradle = { id = "org.ajoberstar.grgit", version.ref = "gradle-plugin-grgit-version" }
+license-gradle-plugin = { id = "com.github.hierynomus.license", version.ref = "gradle-plugin-license-version" }
+spotless-plugin-gradle = { id = "com.diffplug.spotless", version.ref = "gradle-plugin-spotless-version" }
+version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "gradle-plugin-version-catalog-update-version" }

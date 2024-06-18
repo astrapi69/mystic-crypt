@@ -1,28 +1,30 @@
-
 dependencies {
-    implementation("commons-codec:commons-codec:$commonsCodecVersion")
-    implementation("commons-io:commons-io:$commonsIoVersion")
-    implementation("org.apache.commons:commons-lang3:$commonsLang3Version")
-    implementation("com.google.guava:guava:$guavaVersion")
-    implementation("io.github.astrapi69:crypt-api:$cryptApiVersion")
-    implementation("io.github.astrapi69:crypt-data:$cryptDataVersion")
-    implementation("io.github.astrapi69:throwable:$throwableVersion")
-    implementation("io.github.astrapi69:randomizer:$randomizerVersion")
-    implementation("io.github.astrapi69:file-worker:$fileWorkerVersion")
-    implementation("io.github.astrapi69:silly-collection:$sillyCollectionVersion")
-    implementation("io.github.astrapi69:jobj-core:$jobjCoreVersion")
-    implementation("io.github.astrapi69:silly-bean:$sillyBeanVersion")
-    implementation("io.github.astrapi69:jobj-clone:$jobjCloneVersion")
-    implementation("org.bouncycastle:bcprov-jdk15on:$bouncycastleVersion")
-    implementation("org.bouncycastle:bcprov-ext-jdk15on:$bouncycastleVersion")
-    implementation("org.bouncycastle:bcpkix-jdk15on:$bouncycastleVersion")
-    implementation("io.github.astrapi69:xml-base:$xmlBaseVersion")
-    testImplementation("io.github.astrapi69:silly-strings:$sillyStringsVersion")
-    testImplementation("io.github.astrapi69:json-extensions:$jsonExtensionsVersion")
-    testImplementation("io.github.astrapi69:checksum-up:$checksumUpVersion")
-    testImplementation("io.github.astrapi69:test-object:$testObjectVersion")
-    testImplementation("io.github.astrapi69:silly-io:$sillyIoVersion")
-    testImplementation("io.github.benas:random-beans:$randomBeansVersion")
-    testImplementation("com.github.meanbeanlib:meanbean:$meanbeanVersion")
-    testImplementation("org.testng:testng:$testngVersion")
+
+    implementation libs.commons.codec
+    implementation libs.commons.io
+    implementation libs.commons.lang3
+    implementation libs.guava
+    implementation libs.crypt.api
+    implementation libs.crypt.data
+    implementation libs.throwable
+    implementation libs.randomizer
+    implementation libs.file.worker
+    implementation libs.silly.collection
+    implementation libs.jobj.core
+    implementation libs.silly.bean
+    implementation libs.jobj.clone
+    implementation libs.bcprov.jdk15on
+    implementation libs.bcprov.ext.jdk15on
+    implementation libs.bcpkix.jdk15on
+    implementation libs.xml.base
+
+    testImplementation libs.silly.strings
+    testImplementation libs.json.extensions
+    testImplementation libs.checksum.up
+    testImplementation libs.test.object
+    testImplementation libs.silly.io
+    testImplementation libs.random.beans
+    // Note: use of bundles...
+    testImplementation libs.bundles.unit.testing
+
 }
