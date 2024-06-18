@@ -55,6 +55,24 @@ and then add the dependency to the dependencies area
     implementation("io.github.astrapi69:mystic-crypt:$mysticCryptVersion")
 ```
 
+# with new libs.versions.toml file
+
+If you use the new libs.versions.toml file for new automatic catalog versions update
+
+```
+[versions]
+mystic-crypt-version=${latestVersion}
+
+[libraries]
+mystic-crypt = { module = "io.github.astrapi69:mystic-crypt", version.ref = "mystic-crypt-version" }
+```
+then add the dependency to the dependencies area
+
+```
+    implementation libs.mystic.crypt
+```
+
+
 ## Maven dependency
 
 Maven dependency is now available on sonatype.
