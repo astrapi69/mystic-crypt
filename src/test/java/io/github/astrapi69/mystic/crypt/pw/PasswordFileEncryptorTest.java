@@ -36,6 +36,7 @@ import com.google.common.io.Files;
 import io.github.astrapi69.collection.array.ArrayFactory;
 import io.github.astrapi69.file.delete.DeleteFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;
+import io.github.astrapi69.file.write.StoreFileExtensions;
 import io.github.astrapi69.file.write.WriteFileExtensions;
 import io.github.astrapi69.random.object.RandomStringFactory;
 
@@ -110,7 +111,7 @@ public class PasswordFileEncryptorTest
 		encryptedFilename = "bigEncryptedFile.txt";
 		longString = RandomStringFactory.newRandomLongString(10000000);
 		encryptedCnstr = new File(cryptDir, encryptedFilename);
-		WriteFileExtensions.string2File(encryptedCnstr, longString);
+		StoreFileExtensions.toFile(encryptedCnstr, longString);
 		encryptor = new PasswordFileEncryptor(password);
 		encrypted = encryptor.encrypt(encryptedCnstr);
 		// actual = Files.toByteArray(encryptedCnstr);
