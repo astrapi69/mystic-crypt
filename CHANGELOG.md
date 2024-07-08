@@ -15,10 +15,13 @@ CHANGED:
 - update of gradle-plugin dependency 'com.diffplug.spotless:spotless-plugin-gradle' to new minor version 7.0.0.BETA1
 - update of dependency commons-codec dependency version to 1.17.0
 - update of dependency commons-io dependency version to 2.16.1
-- update of dependency file-worker to new version to 17.2
+- update of dependency file-worker to new version to 17.3
 - update of dependency xml-base to new version to 2
 - update of dependency guava version to new version 33.2.1-jre
 - update of dependency silly-collection to new version to 27.1
+- update of dependency silly-strings to new minor version 9.1
+- update of dependency throwable to new major version 3
+- update of test dependency silly-io to new version 3.1
 - update of test dependency testng to new version to 7.10.2
 
 Version 9
