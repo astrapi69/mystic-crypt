@@ -24,8 +24,8 @@
  */
 package io.github.astrapi69.mystic.crypt.pw;
 
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
@@ -41,8 +41,8 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.crypt.api.algorithm.HashAlgorithm;
 
@@ -54,7 +54,7 @@ public class PasswordEncryptorTest
 
 	PasswordEncryptor instance;
 
-	@BeforeMethod
+	@BeforeEach
 	protected void setUp()
 	{
 		instance = PasswordEncryptor.getInstance();

@@ -24,12 +24,12 @@
  */
 package io.github.astrapi69.mystic.crypt.key;
 
-import static org.testng.AssertJUnit.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 import java.security.PublicKey;
 
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.crypt.data.key.reader.PublicKeyReader;
 import io.github.astrapi69.file.search.PathFinder;

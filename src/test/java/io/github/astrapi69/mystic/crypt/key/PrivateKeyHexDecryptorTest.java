@@ -24,13 +24,13 @@
  */
 package io.github.astrapi69.mystic.crypt.key;
 
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 import java.security.PrivateKey;
 
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.crypt.data.key.reader.PrivateKeyReader;
 import io.github.astrapi69.file.search.PathFinder;
@@ -48,7 +48,7 @@ public class PrivateKeyHexDecryptorTest
 	 * @throws Exception
 	 *             is thrown if any error occurs
 	 */
-	@Test(enabled = true)
+	@Test
 	public void testConstructors() throws Exception
 	{
 		String actual;

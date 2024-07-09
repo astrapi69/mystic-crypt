@@ -24,7 +24,7 @@
  */
 package io.github.astrapi69.mystic.crypt.key;
 
-import static org.testng.AssertJUnit.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 import java.security.PrivateKey;
@@ -32,8 +32,8 @@ import java.security.PublicKey;
 import java.security.Security;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.crypt.data.key.reader.PrivateKeyReader;
 import io.github.astrapi69.crypt.data.key.reader.PublicKeyReader;
@@ -50,7 +50,7 @@ public class KeyHexEncryptDecryptorTest
 	/**
 	 * Sets up method will be invoked before every unit test method in this class
 	 */
-	@BeforeMethod
+	@BeforeEach
 	protected void setUp()
 	{
 		Security.addProvider(new BouncyCastleProvider());
@@ -63,7 +63,7 @@ public class KeyHexEncryptDecryptorTest
 	 * @throws Exception
 	 *             is thrown if the encryption or the decryption fails
 	 */
-	@Test(enabled = true)
+	@Test
 	public void testEncryptDecrypt() throws Exception
 	{
 
@@ -105,7 +105,7 @@ public class KeyHexEncryptDecryptorTest
 	 * @throws Exception
 	 *             is thrown if the encryption or the decryption fails
 	 */
-	@Test(enabled = true)
+	@Test
 	public void testEncryptDecryptPemFiles() throws Exception
 	{
 		String actual;

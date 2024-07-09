@@ -24,12 +24,14 @@
  */
 package io.github.astrapi69.mystic.crypt.pw;
 
-import static org.testng.AssertJUnit.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.io.Files;
 
@@ -58,7 +60,7 @@ public class PasswordFileEncryptorTest
 	/**
 	 * Sets up method will be invoked before every unit test method in this class
 	 */
-	@BeforeMethod
+	@BeforeEach
 	protected void setUp()
 	{
 		password = "foo";
@@ -88,7 +90,7 @@ public class PasswordFileEncryptorTest
 		expected = ArrayFactory.newByteArray(6, -1, 90, -29, -121, 43, -47, -27, -64, -81, -100, 3,
 			-10, -112, 22, -78, 37, 76, -72, 63, -80, 125, -40, 99, 104, -106, -11, -97, -22, 40,
 			21, 81, 113, -73, 119, 68, -46, 110, -97, -108, 10, -75, 122, 8, 51, 68, -58, -35);
-		assertEquals(actual, expected);
+		assertArrayEquals(actual, expected);
 		// clean up...
 		DeleteFileExtensions.delete(encrypted);
 	}
@@ -99,7 +101,8 @@ public class PasswordFileEncryptorTest
 	 * @throws Exception
 	 *             is thrown if any error occurs on the execution
 	 */
-	@Test(enabled = false)
+	@Test
+	@Disabled
 	public void testEncryptBigFile() throws Exception
 	{
 		byte[] actual;

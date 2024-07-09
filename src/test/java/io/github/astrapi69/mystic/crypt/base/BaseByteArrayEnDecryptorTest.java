@@ -24,15 +24,15 @@
  */
 package io.github.astrapi69.mystic.crypt.base;
 
-import static org.testng.AssertJUnit.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.nio.charset.StandardCharsets;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.crypt.api.algorithm.AesAlgorithm;
 import io.github.astrapi69.crypt.data.factory.SecretKeyFactoryExtensions;
@@ -51,7 +51,7 @@ public class BaseByteArrayEnDecryptorTest
 	 * @throws Exception
 	 *             is thrown if a security error occurs
 	 */
-	@BeforeMethod
+	@BeforeEach
 	protected void setUp() throws Exception
 	{
 		secretKey = SecretKeyFactoryExtensions.newSecretKey(AesAlgorithm.AES.name(), 128);

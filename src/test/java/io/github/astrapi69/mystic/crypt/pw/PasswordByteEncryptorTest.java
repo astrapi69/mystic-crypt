@@ -24,12 +24,13 @@
  */
 package io.github.astrapi69.mystic.crypt.pw;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.nio.charset.StandardCharsets;
 
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.collection.array.ArrayFactory;
 
@@ -67,7 +68,7 @@ public class PasswordByteEncryptorTest
 		assertNotNull(encryptedBytes);
 		actual = encryptedBytes;
 		expected = ArrayFactory.newByteArray(-118, -125, -30, 16, 87, 88, -110, -94);
-		assertEquals(actual, expected);
+		assertArrayEquals(actual, expected);
 	}
 
 }

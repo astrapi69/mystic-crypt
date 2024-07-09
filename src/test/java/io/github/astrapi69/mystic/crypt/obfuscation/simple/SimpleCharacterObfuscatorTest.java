@@ -24,11 +24,11 @@
  */
 package io.github.astrapi69.mystic.crypt.obfuscation.simple;
 
-import static org.testng.AssertJUnit.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.BiMap;
 
@@ -53,7 +53,7 @@ public class SimpleCharacterObfuscatorTest extends AbstractTestCase<String, Stri
 	 *             is thrown if an exception occurs
 	 */
 	@Override
-	@BeforeMethod
+	@BeforeEach
 	protected void setUp() throws Exception
 	{
 		super.setUp();
@@ -68,7 +68,7 @@ public class SimpleCharacterObfuscatorTest extends AbstractTestCase<String, Stri
 	 *             is thrown if an exception occurs
 	 */
 	@Override
-	@AfterMethod
+	@AfterEach
 	protected void tearDown() throws Exception
 	{
 		super.tearDown();
@@ -80,7 +80,7 @@ public class SimpleCharacterObfuscatorTest extends AbstractTestCase<String, Stri
 	/**
 	 * Test method for {@link SimpleCharacterObfuscator#disentangle()}
 	 */
-	@Test(enabled = true)
+	@Test
 	public void testDisentangle()
 	{
 		stringToObfuscate = "abac";
@@ -98,7 +98,7 @@ public class SimpleCharacterObfuscatorTest extends AbstractTestCase<String, Stri
 	/**
 	 * Test method for {@link SimpleCharacterObfuscator#obfuscate()}
 	 */
-	@Test(enabled = true)
+	@Test
 	public void testObfuscate()
 	{
 		// a key for obfuscation

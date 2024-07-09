@@ -24,13 +24,14 @@
  */
 package io.github.astrapi69.mystic.crypt.processor.bruteforce;
 
-import static org.testng.AssertJUnit.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.io.annotation.ScanPackageExtensions;
 
@@ -48,7 +49,8 @@ public class BruteForceProcessorTest
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	@Test(enabled = false)
+	@Test
+	@Disabled
 	public void test() throws IOException
 	{
 

@@ -24,13 +24,13 @@
  */
 package io.github.astrapi69.mystic.crypt.simple;
 
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 
+import org.junit.jupiter.api.Test;
 import org.meanbean.test.BeanTester;
-import org.testng.annotations.Test;
 
 /**
  * The unit test class for the class {@link SimpleCrypt}

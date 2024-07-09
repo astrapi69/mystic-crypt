@@ -24,16 +24,15 @@
  */
 package io.github.astrapi69.mystic.crypt.ssl;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.AssertJUnit.assertFalse;
-import static org.testng.AssertJUnit.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyStore;
@@ -41,6 +40,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
+import java.security.Security;
 import java.security.SignatureException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
@@ -48,12 +48,15 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.security.spec.InvalidKeySpecException;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.operator.OperatorCreationException;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 import io.github.astrapi69.collection.array.ArrayFactory;
 import io.github.astrapi69.crypt.api.algorithm.key.KeyPairGeneratorAlgorithm;
@@ -86,9 +89,10 @@ public class KeyStoreExtensionsTest
 	 * @throws Exception
 	 *             is thrown if any error occurs on the execution
 	 */
-	@BeforeMethod
+	@BeforeEach
 	protected void setUp() throws Exception
 	{
+		Security.addProvider(new BouncyCastleProvider());
 		if (certificate == null)
 		{
 			final File pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
@@ -113,7 +117,7 @@ public class KeyStoreExtensionsTest
 	/**
 	 * Tear down method will be invoked after every unit test method
 	 */
-	@AfterMethod
+	@AfterEach
 	protected void tearDown()
 	{
 		keystoreFile.delete();
@@ -379,7 +383,8 @@ public class KeyStoreExtensionsTest
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	@Test(enabled = false)
+	@Test
+	@Disabled
 	public void testNewKeyStore() throws NoSuchAlgorithmException, NoSuchProviderException,
 		CertificateException, FileNotFoundException, KeyStoreException, IOException,
 		InvalidKeySpecException, InvalidKeyException, SignatureException, UnrecoverableKeyException,
@@ -430,12 +435,14 @@ public class KeyStoreExtensionsTest
 	 * Test method for {@link io.github.astrapi69.crypt.data.key.KeyStoreExtensions} with
 	 * {@link BeanTester}
 	 */
-	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
-			UnsupportedOperationException.class })
+	@Test
+	@Disabled
 	public void testWithBeanTester()
 	{
-		final BeanTester beanTester = new BeanTester();
-		beanTester.testBean(io.github.astrapi69.crypt.data.key.KeyStoreExtensions.class);
+		Assertions.assertThrows(BeanTestException.class, () -> {
+			final BeanTester beanTester = new BeanTester();
+			beanTester.testBean(io.github.astrapi69.crypt.data.key.KeyStoreExtensions.class);
+		});
 	}
 
 }

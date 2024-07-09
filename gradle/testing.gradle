@@ -1,5 +1,5 @@
 test {
-    useTestNG()
+    useJUnitPlatform()
 }
 
 jacocoTestReport {

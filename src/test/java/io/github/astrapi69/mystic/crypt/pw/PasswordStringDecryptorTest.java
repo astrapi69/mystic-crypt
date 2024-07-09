@@ -24,10 +24,10 @@
  */
 package io.github.astrapi69.mystic.crypt.pw;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * The unit test class for the class {@link PasswordStringDecryptor}

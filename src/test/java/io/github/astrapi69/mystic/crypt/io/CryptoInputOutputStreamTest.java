@@ -24,7 +24,7 @@
  */
 package io.github.astrapi69.mystic.crypt.io;
 
-import static org.testng.AssertJUnit.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,7 +32,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.file.delete.DeleteFileExtensions;
 import io.github.astrapi69.file.read.ReadFileExtensions;

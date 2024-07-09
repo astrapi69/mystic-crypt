@@ -7,10 +7,11 @@ Version 9.1-SNAPSHOT
 ADDED:
 
 - new libs.versions.toml file for new automatic catalog versions update
-
+- new test dependency org.junit.jupiter:junit-jupiter in version 5.11.0-M2
 
 CHANGED:
 
+- remove of test dependency testng
 - update gradle to new version 8.8
 - update of gradle-plugin dependency 'com.diffplug.spotless:spotless-plugin-gradle' to new minor version 7.0.0.BETA1
 - update of dependency commons-codec dependency version to 1.17.0
@@ -22,7 +23,8 @@ CHANGED:
 - update of dependency silly-strings to new minor version 9.1
 - update of dependency throwable to new major version 3
 - update of test dependency silly-io to new version 3.1
-- update of test dependency testng to new version to 7.10.2
+- remove of test dependency testng
+- migrate from testng to new junit-jupiter
 
 Version 9
 -------------

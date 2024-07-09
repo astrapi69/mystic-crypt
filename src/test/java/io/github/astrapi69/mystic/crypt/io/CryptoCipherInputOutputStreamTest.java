@@ -24,7 +24,7 @@
  */
 package io.github.astrapi69.mystic.crypt.io;
 
-import static org.testng.AssertJUnit.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,7 +40,7 @@ import java.security.spec.InvalidKeySpecException;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.crypt.api.algorithm.SunJCEAlgorithm;
 import io.github.astrapi69.crypt.api.compound.CompoundAlgorithm;

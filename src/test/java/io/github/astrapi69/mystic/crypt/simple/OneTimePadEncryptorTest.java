@@ -24,11 +24,12 @@
  */
 package io.github.astrapi69.mystic.crypt.simple;
 
-import static org.testng.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.nio.charset.StandardCharsets;
 
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.collection.array.ArrayFactory;
 
@@ -63,6 +64,6 @@ public class OneTimePadEncryptorTest
 		expected = ArrayFactory.newByteArray(38, 14, 30, 23, 10, 14, 33, 17, 6, 26, 29, 20, 53, 18,
 			16, 7, 28, 1, 10, 93, 29, 22, 4, 33, 18, 29, 23, 28, 30, 63, 28, 29, 20, 32, 7, 1, 26,
 			29, 20, 91, 66, 67, 90);
-		assertEquals(actual, expected);
+		assertArrayEquals(actual, expected);
 	}
 }

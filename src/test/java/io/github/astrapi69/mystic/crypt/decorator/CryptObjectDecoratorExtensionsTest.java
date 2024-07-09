@@ -24,11 +24,11 @@
  */
 package io.github.astrapi69.mystic.crypt.decorator;
 
-import static org.testng.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.nio.charset.Charset;
 
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.crypt.data.model.CryptObjectDecorator;
 

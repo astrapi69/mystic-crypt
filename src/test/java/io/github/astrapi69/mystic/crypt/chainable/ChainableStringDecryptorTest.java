@@ -24,9 +24,9 @@
  */
 package io.github.astrapi69.mystic.crypt.chainable;
 
-import static org.testng.AssertJUnit.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.mystic.crypt.hex.HexableDecryptor;
 import io.github.astrapi69.mystic.crypt.hex.HexableEncryptor;
@@ -79,8 +79,8 @@ public class ChainableStringDecryptorTest
 		decryptor = new ChainableStringDecryptor(thirdDecryptor, secondDecryptor, firstDecryptor);
 
 		decryted = decryptor.decrypt(encrypted);
-		assertTrue("String before encryption is not equal after decryption.",
-			secretMessage.equals(decryted));
+		assertTrue(secretMessage.equals(decryted),
+			"String before encryption is not equal after decryption.");
 	}
 
 }

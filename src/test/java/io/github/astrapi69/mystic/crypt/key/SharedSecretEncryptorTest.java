@@ -24,8 +24,8 @@
  */
 package io.github.astrapi69.mystic.crypt.key;
 
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
@@ -34,7 +34,7 @@ import java.security.SecureRandom;
 import java.security.Security;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.crypt.data.factory.KeyPairGeneratorFactory;
 import io.github.astrapi69.crypt.data.model.SharedSecretModel;

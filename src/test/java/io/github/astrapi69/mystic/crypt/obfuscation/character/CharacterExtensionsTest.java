@@ -24,10 +24,10 @@
  */
 package io.github.astrapi69.mystic.crypt.obfuscation.character;
 
-import static org.testng.AssertJUnit.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.jupiter.api.Test;
 import org.meanbean.test.BeanTester;
-import org.testng.annotations.Test;
 
 import io.github.astrapi69.test.base.AbstractTestCase;
 
@@ -40,7 +40,7 @@ public class CharacterExtensionsTest extends AbstractTestCase<Boolean, Boolean>
 	/**
 	 * Test method for {@link CharacterExtensions#equalsIgnoreCase(Character, Character)}
 	 */
-	@Test(enabled = true)
+	@Test
 	public void testEqualsIgnoreCase()
 	{
 

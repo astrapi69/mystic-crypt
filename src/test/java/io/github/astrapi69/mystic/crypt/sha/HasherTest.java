@@ -24,7 +24,7 @@
  */
 package io.github.astrapi69.mystic.crypt.sha;
 
-import static org.testng.AssertJUnit.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
@@ -38,8 +38,8 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import org.junit.jupiter.api.Test;
 import org.meanbean.test.BeanTester;
-import org.testng.annotations.Test;
 
 import io.github.astrapi69.crypt.api.algorithm.HashAlgorithm;
 import io.github.astrapi69.random.object.RandomObjectFactory;

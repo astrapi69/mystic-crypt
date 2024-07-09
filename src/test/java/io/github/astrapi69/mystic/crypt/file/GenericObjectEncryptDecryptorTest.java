@@ -24,14 +24,14 @@
  */
 package io.github.astrapi69.mystic.crypt.file;
 
-import static org.testng.AssertJUnit.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 
 import javax.crypto.Cipher;
 
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.crypt.api.algorithm.SunJCEAlgorithm;
 import io.github.astrapi69.crypt.data.model.CryptModel;
@@ -62,7 +62,7 @@ public class GenericObjectEncryptDecryptorTest extends AbstractTestCase<Person, 
 	 * Sets up method will be invoked before every unit test method in this class
 	 */
 	@Override
-	@BeforeMethod
+	@BeforeEach
 	protected void setUp()
 	{
 		cryptDir = new File(PathFinder.getSrcTestResourcesDir(), "crypt");

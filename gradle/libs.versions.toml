@@ -26,11 +26,16 @@ silly-collection-version = "27.1"
 silly-io-version = "3.1"
 silly-strings-version = "9.1"
 test-object-version = "8.2"
-testng-version = "7.10.2"
 throwable-version = "3"
 xml-base-version = "2"
+junit-jupiter-params-version = "5.11.0-M2"
+junit-jupiter-version = "5.11.0-M2"
+junit-platform-launcher-version = "1.11.0-M2"
 
 [libraries]
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter-version" }
+junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit-jupiter-params-version" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-platform-launcher-version" }
 bcpkix-jdk15on = { module = "org.bouncycastle:bcpkix-jdk15on", version.ref = "bcpkix-jdk15on-version" }
 bcprov-ext-jdk15on = { module = "org.bouncycastle:bcprov-ext-jdk15on", version.ref = "bcprov-ext-jdk15on-version" }
 bcprov-jdk15on = { module = "org.bouncycastle:bcprov-jdk15on", version.ref = "bcprov-jdk15on-version" }
@@ -53,7 +58,6 @@ silly-collection = { module = "io.github.astrapi69:silly-collection", version.re
 silly-io = { module = "io.github.astrapi69:silly-io", version.ref = "silly-io-version" }
 silly-strings = { module = "io.github.astrapi69:silly-strings", version.ref = "silly-strings-version" }
 test-object = { module = "io.github.astrapi69:test-object", version.ref = "test-object-version" }
-testng = { module = "org.testng:testng", version.ref = "testng-version" }
 throwable = { module = "io.github.astrapi69:throwable", version.ref = "throwable-version" }
 xml-base = { module = "io.github.astrapi69:xml-base", version.ref = "xml-base-version" }
 
@@ -61,7 +65,8 @@ xml-base = { module = "io.github.astrapi69:xml-base", version.ref = "xml-base-ve
 unit-testing = [
     "meanbean",
     "test-object",
-    "testng",
+    "junit-jupiter",
+    "junit-jupiter-params",
 ]
 
 [plugins]

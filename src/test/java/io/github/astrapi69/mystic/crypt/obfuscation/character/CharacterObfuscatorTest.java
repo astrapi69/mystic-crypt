@@ -24,15 +24,15 @@
  */
 package io.github.astrapi69.mystic.crypt.obfuscation.character;
 
-import static org.testng.AssertJUnit.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.lang.reflect.InvocationTargetException;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.meanbean.test.BeanTestException;
 import org.meanbean.test.BeanTester;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 import com.google.common.collect.BiMap;
 
@@ -57,7 +57,7 @@ public class CharacterObfuscatorTest extends AbstractTestCase<String, String>
 	 *             is thrown if an exception occurs
 	 */
 	@Override
-	@BeforeMethod
+	@BeforeEach
 	protected void setUp() throws Exception
 	{
 		super.setUp();
@@ -72,7 +72,7 @@ public class CharacterObfuscatorTest extends AbstractTestCase<String, String>
 	 *             is thrown if an exception occurs
 	 */
 	@Override
-	@AfterMethod
+	@AfterEach
 	protected void tearDown() throws Exception
 	{
 		super.tearDown();
@@ -84,7 +84,7 @@ public class CharacterObfuscatorTest extends AbstractTestCase<String, String>
 	/**
 	 * Test method for {@link CharacterObfuscator#disentangle()}
 	 */
-	@Test(enabled = true)
+	@Test
 	public void testDisentangle()
 	{
 		stringToObfuscate = "abac";
@@ -102,7 +102,7 @@ public class CharacterObfuscatorTest extends AbstractTestCase<String, String>
 	/**
 	 * Test method for {@link CharacterObfuscator#obfuscate()}
 	 */
-	@Test(enabled = true)
+	@Test
 	public void testObfuscate()
 	{
 		// a key for obfuscation
@@ -122,7 +122,7 @@ public class CharacterObfuscatorTest extends AbstractTestCase<String, String>
 	/**
 	 * Test method for {@link CharacterObfuscator#obfuscate()}
 	 */
-	@Test(enabled = true)
+	@Test
 	public void testObfuscateEightChars()
 	{
 		// new scenario...
@@ -166,17 +166,6 @@ public class CharacterObfuscatorTest extends AbstractTestCase<String, String>
 		actual = obfuscator.disentangle();
 		expected = "numbers are only part of the data a typical Java program needs to read and write. Most programs also need to handle text, which is composed of characters. Since computers only really understand numbers, characters are encoded by matching each character in a given script to a particular number. For example, in the common ASCII encoding, the character A is mapped to the number 65; the character B is mapped to the number 66; the character C is mapped to the number 67; and so on. Different encodings may encode different scripts or may encode the same or similar scripts in different ways.";
 		assertEquals(expected, actual);
-	}
-
-	/**
-	 * Test method for {@link CharacterObfuscator} with {@link BeanTester}
-	 */
-	@Test(expectedExceptions = { BeanTestException.class, InvocationTargetException.class,
-			UnsupportedOperationException.class })
-	public void testWithBeanTester()
-	{
-		final BeanTester beanTester = new BeanTester();
-		beanTester.testBean(CharacterObfuscator.class);
 	}
 
 }

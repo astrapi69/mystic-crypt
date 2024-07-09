@@ -24,7 +24,7 @@
  */
 package io.github.astrapi69.mystic.crypt.ssl;
 
-import static org.testng.AssertJUnit.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 
@@ -33,8 +33,8 @@ import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 
+import org.junit.jupiter.api.Test;
 import org.meanbean.test.BeanTester;
-import org.testng.annotations.Test;
 
 import io.github.astrapi69.crypt.api.type.KeystoreType;
 import io.github.astrapi69.crypt.data.factory.KeyStoreFactory;

@@ -24,7 +24,7 @@
  */
 package io.github.astrapi69.mystic.crypt.key;
 
-import static org.testng.AssertJUnit.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
@@ -33,7 +33,7 @@ import java.security.PublicKey;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.crypt.api.algorithm.AesAlgorithm;
 import io.github.astrapi69.crypt.data.factory.SecretKeyFactoryExtensions;

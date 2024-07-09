@@ -24,12 +24,12 @@
  */
 package io.github.astrapi69.mystic.crypt.hex;
 
-import static org.testng.AssertJUnit.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javax.crypto.Cipher;
 
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.crypt.api.algorithm.AesAlgorithm;
 import io.github.astrapi69.crypt.data.model.CryptModel;
@@ -46,7 +46,7 @@ public class HexableDecryptorTest
 	/**
 	 * Sets up method will be invoked before every unit test method in this class
 	 */
-	@BeforeMethod
+	@BeforeEach
 	protected void setUp()
 	{
 		firstKey = "1234567890123456";
@@ -78,8 +78,8 @@ public class HexableDecryptorTest
 
 		decryptor = new HexableDecryptor(key);
 		decryted = decryptor.decrypt(encrypted);
-		assertTrue("String before encryption is not equal after decryption.",
-			test.equals(decryted));
+		assertTrue(test.equals(decryted),
+			"String before encryption is not equal after decryption.");
 	}
 
 	/**
@@ -106,8 +106,8 @@ public class HexableDecryptorTest
 		cryptModel.setOperationMode(Cipher.DECRYPT_MODE);
 		decryptor = new HexableDecryptor(cryptModel);
 		decryted = decryptor.decrypt(encrypted);
-		assertTrue("String before encryption is not equal after decryption.",
-			test.equals(decryted));
+		assertTrue(test.equals(decryted),
+			"String before encryption is not equal after decryption.");
 	}
 
 }

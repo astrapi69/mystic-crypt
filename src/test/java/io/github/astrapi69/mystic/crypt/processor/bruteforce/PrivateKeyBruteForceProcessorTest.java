@@ -24,8 +24,8 @@
  */
 package io.github.astrapi69.mystic.crypt.processor.bruteforce;
 
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,7 +35,8 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.crypt.data.key.reader.EncryptedPrivateKeyReader;
 import io.github.astrapi69.crypt.data.key.reader.PrivateKeyReader;
@@ -101,7 +102,8 @@ public class PrivateKeyBruteForceProcessorTest
 	/**
 	 * Test method for test the class {@link BruteForceProcessor}
 	 */
-	@Test(enabled = false)
+	@Test
+	@Disabled
 	public void testPrivateKeyWithPassword()
 	{
 		File pemDir;

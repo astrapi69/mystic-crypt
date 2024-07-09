@@ -24,15 +24,15 @@
  */
 package io.github.astrapi69.mystic.crypt.processor.wordlist;
 
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.collection.list.ListFactory;
 import io.github.astrapi69.collection.set.SetFactory;
@@ -51,7 +51,7 @@ public class WordlistsProcessorTest
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	@Test(enabled = true)
+	@Test
 	public void test() throws IOException
 	{
 		WordlistsProcessor processor;

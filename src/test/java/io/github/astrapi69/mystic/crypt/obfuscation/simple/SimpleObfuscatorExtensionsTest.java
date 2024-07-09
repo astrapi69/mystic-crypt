@@ -24,12 +24,13 @@
  */
 package io.github.astrapi69.mystic.crypt.obfuscation.simple;
 
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.meanbean.test.BeanTester;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 import com.google.common.collect.BiMap;
 
@@ -57,7 +58,7 @@ public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, Str
 	 *             is thrown if an exception occurs
 	 */
 	@Override
-	@BeforeMethod
+	@BeforeEach
 	protected void setUp() throws Exception
 	{
 		super.setUp();
@@ -111,7 +112,7 @@ public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, Str
 	/**
 	 * Test method for {@link SimpleObfuscatorExtensions#disentangleBiMap(BiMap, String)}
 	 */
-	@Test(enabled = true)
+	@Test
 	public void testDisentangleBiMap()
 	{
 		BiMap<Character, Character> biMap = ObfuscationBiMapTestData
@@ -189,7 +190,7 @@ public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, Str
 	/**
 	 * Test method for {@link SimpleObfuscatorExtensions#toCharacterBiMap(BiMap)}
 	 */
-	@Test(enabled = true)
+	@Test
 	public void testToCharacterBiMap()
 	{
 		BiMap<Character, Character> actual;
@@ -219,7 +220,8 @@ public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, Str
 	/**
 	 * Test method for {@link SimpleObfuscatorExtensions#validate(BiMap)}
 	 */
-	@Test(enabled = false)
+	@Test
+	@Disabled
 	public void testValidate()
 	{
 		boolean actual;

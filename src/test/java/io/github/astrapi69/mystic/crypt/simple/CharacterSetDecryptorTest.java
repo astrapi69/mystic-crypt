@@ -24,13 +24,13 @@
  */
 package io.github.astrapi69.mystic.crypt.simple;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Comparator;
 import java.util.List;
 
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.collection.CollectionExtensions;
 import io.github.astrapi69.collection.array.ArrayFactory;

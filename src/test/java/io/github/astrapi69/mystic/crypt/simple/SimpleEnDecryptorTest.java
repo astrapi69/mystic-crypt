@@ -24,7 +24,7 @@
  */
 package io.github.astrapi69.mystic.crypt.simple;
 
-import static org.testng.AssertJUnit.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
@@ -37,7 +37,7 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.crypt.api.compound.CompoundAlgorithm;
 
@@ -86,7 +86,7 @@ public class SimpleEnDecryptorTest
 		encrypted = encryptor.encrypt(expected);
 		decryptor = new SimpleDecryptor(CompoundAlgorithm.PASSWORD);
 		actual = decryptor.decrypt(encrypted);
-		assertEquals("String before encryption is not equal after decryption.", expected, actual);
+		assertEquals(expected, actual, "String before encryption is not equal after decryption.");
 	}
 
 }

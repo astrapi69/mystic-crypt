@@ -24,12 +24,12 @@
  */
 package io.github.astrapi69.mystic.crypt.pw;
 
-import static org.testng.AssertJUnit.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.checksum.FileChecksumExtensions;
 import io.github.astrapi69.crypt.api.algorithm.MdAlgorithm;
@@ -58,7 +58,7 @@ public class PasswordFileDecryptorTest extends AbstractTestCase<String, String>
 	 * Sets up method will be invoked before every unit test method in this class
 	 */
 	@Override
-	@BeforeMethod
+	@BeforeEach
 	protected void setUp()
 	{
 		password = "foo";

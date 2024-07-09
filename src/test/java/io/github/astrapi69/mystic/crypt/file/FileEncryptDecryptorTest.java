@@ -24,15 +24,16 @@
  */
 package io.github.astrapi69.mystic.crypt.file;
 
-import static org.testng.AssertJUnit.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 
 import javax.crypto.Cipher;
 
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.checksum.FileChecksumExtensions;
 import io.github.astrapi69.crypt.api.algorithm.MdAlgorithm;
@@ -63,7 +64,7 @@ public class FileEncryptDecryptorTest extends AbstractTestCase<String, String>
 	 * Sets up method will be invoked before every unit test method in this class
 	 */
 	@Override
-	@BeforeMethod
+	@BeforeEach
 	protected void setUp()
 	{
 		cryptDir = new File(PathFinder.getSrcTestResourcesDir(), "crypt");
@@ -112,12 +113,14 @@ public class FileEncryptDecryptorTest extends AbstractTestCase<String, String>
 	 * @throws Exception
 	 *             is thrown if any error occurs on the execution
 	 */
-	@Test(expectedExceptions = FileNotFoundException.class)
+	@Test
 	public void testEncryptDecryptConstructorFilesThrowFileNotFoundException() throws Exception
 	{
-		// new scenario...
-		encryptor = new FileEncryptor(cryptModel, new File(cryptDir, "foodenc"));
-		encrypted = encryptor.encrypt(dirToEncrypt);
+		Assertions.assertThrows(FileNotFoundException.class, () -> {
+			// new scenario...
+			encryptor = new FileEncryptor(cryptModel, new File(cryptDir, "foodenc"));
+			encrypted = encryptor.encrypt(dirToEncrypt);
+		});
 	}
 
 	/**
