@@ -24,7 +24,7 @@
  */
 package io.github.astrapi69.mystic.crypt.simple;
 
-import static org.testng.AssertJUnit.assertTrue;
+import static org.testng.AssertJUnit.assertEquals;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
@@ -81,13 +81,12 @@ public class SimpleEnDecryptorTest
 
 		expected = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
 
-		encryptor = new SimpleEncryptor(CompoundAlgorithm.PRIVATE_KEY);
+		encryptor = new SimpleEncryptor(CompoundAlgorithm.PASSWORD);
 
 		encrypted = encryptor.encrypt(expected);
-		decryptor = new SimpleDecryptor(CompoundAlgorithm.PRIVATE_KEY);
+		decryptor = new SimpleDecryptor(CompoundAlgorithm.PASSWORD);
 		actual = decryptor.decrypt(encrypted);
-		assertTrue("String before encryption is not equal after decryption.",
-			expected.equals(actual));
+		assertEquals("String before encryption is not equal after decryption.", expected, actual);
 	}
 
 }

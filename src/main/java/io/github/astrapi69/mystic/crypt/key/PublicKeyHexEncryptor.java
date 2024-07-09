@@ -35,9 +35,6 @@ import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 /**
  * The class {@link PublicKeyHexEncryptor} can encrypt characters with his public key. <br>
  * <br>
- * 
- * @deprecated use instead the class {@link PublicKeyHexStringEncryptor}. Note: will be removed in
- *             next major version.
  */
 public final class PublicKeyHexEncryptor
 {
