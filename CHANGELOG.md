@@ -8,6 +8,7 @@ ADDED:
 
 - new libs.versions.toml file for new automatic catalog versions update
 - new test dependency org.junit.jupiter:junit-jupiter in version 5.11.0-M2
+- new verifier class KeystoreVerifier that checks if a given Keystore file is valid
 
 CHANGED:
 
@@ -25,6 +26,7 @@ CHANGED:
 - update of test dependency silly-io to new version 3.1
 - remove of test dependency testng
 - migrate from testng to new junit-jupiter
+- javadoc extended
 
 Version 9
 -------------

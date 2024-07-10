@@ -62,6 +62,11 @@ public abstract class ChainableEncryptor<T> implements Encryptor<T, T>
 		return result;
 	}
 
+	/**
+	 * Get the array of the encryptors
+	 *
+	 * @return the array of the encryptors
+	 */
 	public Encryptor<T, T>[] getEncryptors()
 	{
 		return this.encryptors;

@@ -33,16 +33,59 @@ import io.github.astrapi69.crypt.api.obfuscation.Obfuscatable;
 import io.github.astrapi69.crypt.data.obfuscation.rule.ObfuscationOperationRule;
 
 /**
- * The class {@link CharacterObfuscator}
+ * Provides methods for obfuscating and disentangling character sequences based on predefined rules.
+ * This class implements the {@link Obfuscatable} interface, supporting the obfuscation and
+ * potentially reversible disentanglement of text using a bidirectional map of obfuscation rules.
+ *
+ * <p>
+ * Initialization of this class is dependent on a set of {@link ObfuscationOperationRule}s and a key
+ * which are mandatory for its operations. Optionally, the constructor can validate the possibility
+ * of disentanglement based on the provided rules and the key.
+ * </p>
+ *
+ * <h2>Usage:</h2>
+ * 
+ * <pre>
+ * BiMap&lt;Character, ObfuscationOperationRule&lt;Character, Character&gt;&gt; rules = HashBiMap.create();
+ * rules.put('a', new ObfuscationOperationRule&lt;e&lt;('a', 'x'));
+ * CharacterObfuscator obfuscator = new CharacterObfuscator(rules, "someKey", true);
+ * </pre>
+ *
+ * @author Asterios Raptis
+ * @version 1.0
+ * @since 2015
+ * @see Obfuscatable
+ * @see ObfuscationOperationRule
+ * @see BiMap
  */
 public class CharacterObfuscator implements Obfuscatable
 {
-	/** The key. */
+	/**
+	 * The key used for obfuscation operations.
+	 */
 	private final String key;
-	/** The rule. */
-	private final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules;
-	boolean disentanglable;
 
+	/**
+	 * Mapping of characters to their corresponding obfuscation rules.
+	 */
+	private final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules;
+
+	/**
+	 * Indicates whether the obfuscation can be reversed using the current rules and key.
+	 */
+	private boolean disentanglable;
+
+	/**
+	 * Constructs a new {@code CharacterObfuscator} instance with the specified rules and key.
+	 * Disentanglement validation is not performed by default.
+	 *
+	 * @param rules
+	 *            the character to rule bi-directional map, must not be empty
+	 * @param key
+	 *            the key for obfuscation, must not be empty
+	 * @throws NullPointerException
+	 *             if rules or key are null
+	 */
 	public CharacterObfuscator(
 		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
 		final String key)
@@ -50,6 +93,19 @@ public class CharacterObfuscator implements Obfuscatable
 		this(rules, key, false);
 	}
 
+	/**
+	 * Constructs a new {@code CharacterObfuscator} with validation option. This constructor allows
+	 * enabling the validation check for reversible obfuscation based on the provided rules.
+	 *
+	 * @param rules
+	 *            the character to rule bi-directional map, must not be empty
+	 * @param key
+	 *            the key for obfuscation, must not be empty
+	 * @param validate
+	 *            if {@code true}, checks if disentanglement is possible
+	 * @throws NullPointerException
+	 *             if rules or key are null
+	 */
 	public CharacterObfuscator(
 		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
 		final String key, final boolean validate)
@@ -66,19 +122,31 @@ public class CharacterObfuscator implements Obfuscatable
 		}
 	}
 
+	/**
+	 * Disentangles the obfuscated output based on the rules.
+	 *
+	 * @return the original text if disentanglement is possible, otherwise an unspecified string
+	 */
 	@Override
 	public String disentangle()
 	{
 		return ObfuscatorExtensions.disentangle(rules, obfuscate());
 	}
 
+	/**
+	 * Checks if the current configuration supports reversible obfuscation.
+	 *
+	 * @return {@code true} if disentanglement is feasible, {@code false} otherwise
+	 */
 	public boolean isDisentanglable()
 	{
 		return this.disentanglable;
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Obfuscates the text based on the provided rules and key.
+	 *
+	 * @return the obfuscated text
 	 */
 	@Override
 	public String obfuscate()

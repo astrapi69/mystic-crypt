@@ -30,6 +30,9 @@ import io.github.astrapi69.crypt.api.Decryptor;
  * The class {@link ChainableDecryptor} can take many {@code Decryptor} objects and decrypts the
  * given string with all the given {@code Decryptor} objects. The {@code Decryptor} objects must be
  * in a reverse order as they was given in the {@code ChainedEncryptor} object.
+ *
+ * @param <T>
+ *            the type parameter
  */
 public abstract class ChainableDecryptor<T> implements Decryptor<T, T>
 {
@@ -63,6 +66,11 @@ public abstract class ChainableDecryptor<T> implements Decryptor<T, T>
 		return result;
 	}
 
+	/**
+	 * Get the array of the decryptors
+	 *
+	 * @return the array of the decryptors
+	 */
 	public Decryptor<T, T>[] getDecryptors()
 	{
 		return this.decryptors;
