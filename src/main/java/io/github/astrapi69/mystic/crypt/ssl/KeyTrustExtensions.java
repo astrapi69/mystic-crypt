@@ -108,25 +108,21 @@ public final class KeyTrustExtensions
 	 *             is thrown if instantiation of the SecretKeyFactory object fails
 	 * @throws CertificateException
 	 *             is thrown if there is an error with an certificate
-	 * @throws FileNotFoundException
-	 *             is thrown if the keystore file not found
 	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
+	 *             Signals that an I/O exception has occurred
 	 * @throws KeyStoreException
 	 *             is thrown if there is an error accessing the key store
 	 */
 	public static TrustManager[] resolveTrustManagers(final String keystoreType,
 		final String password, final File keystoreFile, final String trustManagerAlgorithm)
-		throws NoSuchAlgorithmException, CertificateException, FileNotFoundException, IOException,
-		KeyStoreException
+		throws NoSuchAlgorithmException, CertificateException, IOException, KeyStoreException
 	{
 		final KeyStore keyStore = KeyStoreFactory.loadKeyStore(keystoreFile, keystoreType,
 			password);
 		final TrustManagerFactory trustFactory = TrustManagerFactory
 			.getInstance(trustManagerAlgorithm);
 		trustFactory.init(keyStore);
-		final TrustManager[] trustManagers = trustFactory.getTrustManagers();
-		return trustManagers;
+		return trustFactory.getTrustManagers();
 	}
 
 }

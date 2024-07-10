@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.security.Key;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -262,10 +263,58 @@ public final class KeyStoreExtensions
 		final String password)
 		throws KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException
 	{
+		store(keyStore, keystoreFile, password.toCharArray());
+	}
+
+	/**
+	 * Stores the given {@link KeyStore} object into the given keystore file
+	 *
+	 * @param keyStore
+	 *            the keystore
+	 * @param keystoreFile
+	 *            the keystore file
+	 * @param password
+	 *            the password as char array
+	 * @throws KeyStoreException
+	 *             is thrown if there is an error accessing the key store
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails
+	 * @throws CertificateException
+	 *             is thrown if there is an error with an certificate
+	 * @throws FileNotFoundException
+	 *             is thrown if the keystore file not found
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	public static void store(final KeyStore keyStore, final File keystoreFile,
+		final char[] password)
+		throws KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException
+	{
 		try (FileOutputStream fos = new FileOutputStream(keystoreFile))
 		{
-			keyStore.store(fos, password.toCharArray());
+			keyStore.store(fos, password);
 		}
+	}
+
+	/**
+	 * Assigns the given key to the given alias, protecting it with the given password
+	 *
+	 * @param alias
+	 *            the alias name
+	 * @param key
+	 *            the key to be associated with the alias
+	 * @param password
+	 *            the password as char array
+	 * @param chain
+	 *            the certificate chain for the corresponding public key
+	 *
+	 * @throws KeyStoreException
+	 *             is thrown if there is an error accessing the key store
+	 */
+	public static void setKeyEntry(final KeyStore keyStore, final String alias, final Key key,
+		final char[] password, Certificate[] chain) throws KeyStoreException
+	{
+		keyStore.setKeyEntry(alias, key, password, chain);
 	}
 
 }
