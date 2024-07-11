@@ -37,6 +37,7 @@ import java.time.Month;
 import java.time.ZoneId;
 import java.util.Date;
 
+import io.github.astrapi69.crypt.data.certificate.CertificateAttributes;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
@@ -62,8 +63,16 @@ public class KeyToolExample
 		String signatureAlgorithm;
 		X509Certificate cert;
 		String dn;
+		CertificateAttributes dnInfo = CertificateAttributes.builder()
+				.commonName("Tyler Durden")
+				.countryCode("GR")
+				.location("Katerini")
+				.organisation("Cool Company")
+				.organisationUnit("IT Department")
+				.state("Macedonia")
+				.build();
 
-		dn = "CN=Tyler Durden,OU=light,O=heaven,L=Katerini,ST=macedonia,C=gr";
+		dn = dnInfo.toRepresentableString();
 		serial = BigInteger.ONE;
 		notBefore = Date.from(
 			LocalDate.of(2024, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
@@ -71,9 +80,9 @@ public class KeyToolExample
 			LocalDate.of(2034, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
 		subject = new X500Name(dn);
 		signatureAlgorithm = "SHA256withRSA";
+		issuer = new X500Name(dn);
 		// Generate a key pair
 		keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, 2048);
-		issuer = new X500Name(dn);
 
 		// Create a self-signed certificate
 		cert = CertFactory.newX509CertificateV3(keyPair, issuer, serial, notBefore, notAfter,
@@ -98,7 +107,6 @@ public class KeyToolExample
 			"password".toCharArray(), new Certificate[] { cert });
 		// Save the KeyStore to a file
 		KeyStoreExtensions.store(trustStore, trustStoreFile, "password");
-
 
 	}
 
