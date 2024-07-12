@@ -37,14 +37,16 @@ import java.time.Month;
 import java.time.ZoneId;
 import java.util.Date;
 
-import io.github.astrapi69.crypt.data.certificate.CertificateAttributes;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import io.github.astrapi69.crypt.api.algorithm.key.KeyPairGeneratorAlgorithm;
+import io.github.astrapi69.crypt.data.certificate.CertificateAttributes;
 import io.github.astrapi69.crypt.data.factory.CertFactory;
 import io.github.astrapi69.crypt.data.factory.KeyPairFactory;
 import io.github.astrapi69.crypt.data.factory.KeyStoreFactory;
+import io.github.astrapi69.crypt.data.model.DistinguishedNameInfo;
+import io.github.astrapi69.crypt.data.model.KeyPairInfo;
 import io.github.astrapi69.file.create.FileFactory;
 import io.github.astrapi69.file.search.PathFinder;
 import io.github.astrapi69.mystic.crypt.ssl.KeyStoreExtensions;
@@ -62,25 +64,25 @@ public class KeyToolExample
 		X500Name subject;
 		String signatureAlgorithm;
 		X509Certificate cert;
-		String dn;
-		CertificateAttributes dnInfo = CertificateAttributes.builder()
-				.commonName("Tyler Durden")
-				.countryCode("GR")
-				.location("Katerini")
-				.organisation("Cool Company")
-				.organisationUnit("IT Department")
-				.state("Macedonia")
-				.build();
+		String distinguishedName;
+		DistinguishedNameInfo distinguishedNameInfo = DistinguishedNameInfo.builder()
+			.commonName("Tyler Durden").countryCode("GR").location("Katerini")
+			.organisation("Cool Company").organisationUnit("IT Department").state("Macedonia")
+			.build();
 
-		dn = dnInfo.toRepresentableString();
+		distinguishedName = distinguishedNameInfo.toRepresentableString();
 		serial = BigInteger.ONE;
 		notBefore = Date.from(
 			LocalDate.of(2024, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
 		notAfter = Date.from(
 			LocalDate.of(2034, Month.JANUARY, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-		subject = new X500Name(dn);
+		subject = new X500Name(distinguishedName);
 		signatureAlgorithm = "SHA256withRSA";
-		issuer = new X500Name(dn);
+		issuer = new X500Name(distinguishedName);
+
+		// Create KeyPairInfo object with necessary information
+		KeyPairInfo keyPairInfo = KeyPairInfo.builder().algorithm("RSA").keySize(2048).build();
+
 		// Generate a key pair
 		keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, 2048);
 

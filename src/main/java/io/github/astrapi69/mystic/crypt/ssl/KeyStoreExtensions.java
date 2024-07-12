@@ -43,7 +43,11 @@ import io.github.astrapi69.crypt.data.factory.KeyStoreFactory;
 /**
  * The extension class {@link KeyStoreExtensions} provides extension methods for the
  * {@link KeyStore}
+ * 
+ * @deprecated use instead the class with the same name from module crypt-data. <br>
+ *             Note: will be removed with the next minor version
  */
+@Deprecated
 public final class KeyStoreExtensions
 {
 	private KeyStoreExtensions()
