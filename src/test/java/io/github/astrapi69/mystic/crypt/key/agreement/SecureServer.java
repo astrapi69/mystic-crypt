@@ -62,14 +62,11 @@ public class SecureServer
 	public static void main(String[] args) throws Exception
 	{
 		char[] password;
-		// File keystoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(),
-		// "keystore.jks");
-		// File trustStoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(),
-		// "truststore.jks");
+
 		File keystoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(),
-			"new-keystore.jks");
+			"ssl-keystore.jks");
 		File trustStoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(),
-			"new-truststore.jks");
+			"ssl-truststore.jks");
 		// Step 2: Load KeyStore and TrustStore
 		KeyStore keyStore = KeyStore.getInstance("JKS");
 		password = "password".toCharArray();
@@ -91,28 +88,30 @@ public class SecureServer
 		// Step 5: Use SSLContext for Secure Communication
 
 		SSLServerSocketFactory ssf = sslContext.getServerSocketFactory();
-		SSLServerSocket sss = (SSLServerSocket)ssf.createServerSocket(8443);
-
-		System.out.println("Secure server started. Waiting for connections...");
-
-		while (true)
+		try (SSLServerSocket sss = (SSLServerSocket)ssf.createServerSocket(8443))
 		{
-			try (SSLSocket socket = (SSLSocket)sss.accept();
-				var out = socket.getOutputStream();
-				var in = socket.getInputStream())
+
+			System.out.println("Secure server started. Waiting for connections...");
+
+			while (true)
 			{
-				System.out.println("Client connected");
+				try (SSLSocket socket = (SSLSocket)sss.accept();
+					var out = socket.getOutputStream();
+					var in = socket.getInputStream())
+				{
+					System.out.println("Client connected");
 
-				// Read client message
-				byte[] buffer = new byte[1024];
-				int bytesRead = in.read(buffer);
-				String clientMessage = new String(buffer, 0, bytesRead);
-				System.out.println("Received from client: " + clientMessage);
+					// Read client message
+					byte[] buffer = new byte[1024];
+					int bytesRead = in.read(buffer);
+					String clientMessage = new String(buffer, 0, bytesRead);
+					System.out.println("Received from client: " + clientMessage);
 
-				// Send response to client
-				String response = "Hello from secure server!";
-				out.write(response.getBytes());
-				out.flush();
+					// Send response to client
+					String response = "Hello from secure server!";
+					out.write(response.getBytes());
+					out.flush();
+				}
 			}
 		}
 	}

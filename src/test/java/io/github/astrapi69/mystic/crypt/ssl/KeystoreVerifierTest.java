@@ -1,13 +1,13 @@
 package io.github.astrapi69.mystic.crypt.ssl;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.KeyStore;
-import java.security.PrivateKey;
 import java.security.Security;
 import java.security.cert.X509Certificate;
 import java.time.ZonedDateTime;
@@ -18,20 +18,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.collection.array.ArrayFactory;
-import io.github.astrapi69.crypt.api.algorithm.key.KeyPairGeneratorAlgorithm;
 import io.github.astrapi69.crypt.data.factory.CertFactory;
-import io.github.astrapi69.crypt.data.factory.KeyPairFactory;
 import io.github.astrapi69.crypt.data.factory.KeyStoreFactory;
 import io.github.astrapi69.crypt.data.key.KeyStoreExtensions;
 import io.github.astrapi69.crypt.data.model.DistinguishedNameInfo;
 import io.github.astrapi69.crypt.data.model.ExtensionInfo;
 import io.github.astrapi69.crypt.data.model.KeyPairInfo;
-import io.github.astrapi69.crypt.data.model.KeyStoreInfo;
 import io.github.astrapi69.crypt.data.model.Validity;
 import io.github.astrapi69.crypt.data.model.X509CertificateV1Info;
 import io.github.astrapi69.crypt.data.model.X509CertificateV3Info;
 import io.github.astrapi69.file.create.FileFactory;
-import io.github.astrapi69.file.create.FileInfo;
 import io.github.astrapi69.file.delete.DeleteFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;
 import io.github.astrapi69.random.number.RandomBigIntegerFactory;
@@ -43,7 +39,7 @@ import io.github.astrapi69.random.number.RandomBigIntegerFactory;
 class KeystoreVerifierTest
 {
 
-	private static final String KEYSTORE_FILENAME = "new-keystore.jks";
+	private static final String KEYSTORE_FILENAME = "ssl-keystore.jks";
 	private static final String PASSWORD = "password";
 	private File keystoreFile;
 

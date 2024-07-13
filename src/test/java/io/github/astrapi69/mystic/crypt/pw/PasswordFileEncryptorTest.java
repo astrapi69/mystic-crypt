@@ -25,7 +25,6 @@
 package io.github.astrapi69.mystic.crypt.pw;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 
@@ -39,7 +38,6 @@ import io.github.astrapi69.collection.array.ArrayFactory;
 import io.github.astrapi69.file.delete.DeleteFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;
 import io.github.astrapi69.file.write.StoreFileExtensions;
-import io.github.astrapi69.file.write.WriteFileExtensions;
 import io.github.astrapi69.random.object.RandomStringFactory;
 
 /**

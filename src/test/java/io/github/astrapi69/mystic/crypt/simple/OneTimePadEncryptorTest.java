@@ -25,7 +25,6 @@
 package io.github.astrapi69.mystic.crypt.simple;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.nio.charset.StandardCharsets;
 

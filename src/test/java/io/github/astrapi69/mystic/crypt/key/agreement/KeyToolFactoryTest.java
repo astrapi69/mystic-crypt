@@ -98,7 +98,7 @@ public class KeyToolFactoryTest
 		privateKey = keyPair.getPrivate();
 
 		// Initialize a KeyStore and store the key pair and certificate
-		keystoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(), "new-keystore.jks");
+		keystoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(), "ssl-keystore.jks");
 		keystoreFileInfo = FileInfo.toFileInfo(keystoreFile);
 		keyStoreInfo = KeyStoreInfo.builder().fileInfo(keystoreFileInfo).type("JKS")
 			.keystorePassword(password).build();
@@ -107,7 +107,7 @@ public class KeyToolFactoryTest
 
 		// Initialize a KeyStore for the truststore and store the key pair and certificate
 		trustStoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(),
-			"new-truststore.jks");
+			"ssl-truststore.jks");
 		trustStoreFileInfo = FileInfo.toFileInfo(trustStoreFile);
 		KeyStoreInfo trustStoreInfo = KeyStoreInfo.builder().fileInfo(trustStoreFileInfo)
 			.type("JKS").keystorePassword(password).build();
@@ -170,7 +170,7 @@ public class KeyToolFactoryTest
 		cert = CertFactory.newX509CertificateV3(keyPair, issuer, serial, notBefore, notAfter,
 			subject, signatureAlgorithm);
 
-		keystoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(), "new-keystore.jks");
+		keystoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(), "ssl-keystore.jks");
 
 		// Initialize a KeyStore and store the key pair and certificate
 		keyStore = KeyStoreFactory.newKeyStore(keystoreFile, "JKS", "password");
@@ -180,7 +180,7 @@ public class KeyToolFactoryTest
 		KeyStoreExtensions.store(keyStore, keystoreFile, "password");
 
 		trustStoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(),
-			"new-truststore.jks");
+			"ssl-truststore.jks");
 
 		// Initialize a KeyStore for the truststore and store the key pair and certificate
 		trustStore = KeyStoreFactory.newKeyStore(trustStoreFile, "JKS", "password");

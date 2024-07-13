@@ -64,17 +64,12 @@ public class SecureClient
 	{
 
 		char[] password;
-
 		password = "password".toCharArray();
 
-		// File keystoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(),
-		// "keystore.jks");
-		// File trustStoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(),
-		// "truststore.jks");
 		File keystoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(),
-			"new-keystore.jks");
+			"ssl-keystore.jks");
 		File trustStoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(),
-			"new-truststore.jks");
+			"ssl-truststore.jks");
 		// Step 2: Load KeyStore and TrustStore
 		KeyStore keyStore = KeyStore.getInstance("JKS");
 		keyStore.load(new FileInputStream(keystoreFile), password);
