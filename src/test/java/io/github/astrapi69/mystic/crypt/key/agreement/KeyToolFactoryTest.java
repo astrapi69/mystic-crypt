@@ -102,8 +102,8 @@ public class KeyToolFactoryTest
 		keystoreFileInfo = FileInfo.toFileInfo(keystoreFile);
 		keyStoreInfo = KeyStoreInfo.builder().fileInfo(keystoreFileInfo).type("JKS")
 			.keystorePassword(password).build();
-		KeyStore keyStore = KeyStoreFactory.newKeystoreAndSaveForSsl(keyStoreInfo, privateKey,
-			certificate, certificateAlias, password);
+		KeyStoreFactory.newKeystoreAndSaveForSsl(keyStoreInfo, privateKey, certificate,
+			certificateAlias, password);
 
 		// Initialize a KeyStore for the truststore and store the key pair and certificate
 		trustStoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(),
