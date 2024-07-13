@@ -4,11 +4,37 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
+import java.security.KeyPair;
+import java.security.KeyStore;
+import java.security.PrivateKey;
+import java.security.Security;
+import java.security.cert.X509Certificate;
+import java.time.ZonedDateTime;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import io.github.astrapi69.collection.array.ArrayFactory;
+import io.github.astrapi69.crypt.api.algorithm.key.KeyPairGeneratorAlgorithm;
+import io.github.astrapi69.crypt.data.factory.CertFactory;
+import io.github.astrapi69.crypt.data.factory.KeyPairFactory;
+import io.github.astrapi69.crypt.data.factory.KeyStoreFactory;
+import io.github.astrapi69.crypt.data.key.KeyStoreExtensions;
+import io.github.astrapi69.crypt.data.model.DistinguishedNameInfo;
+import io.github.astrapi69.crypt.data.model.ExtensionInfo;
+import io.github.astrapi69.crypt.data.model.KeyPairInfo;
+import io.github.astrapi69.crypt.data.model.KeyStoreInfo;
+import io.github.astrapi69.crypt.data.model.Validity;
+import io.github.astrapi69.crypt.data.model.X509CertificateV1Info;
+import io.github.astrapi69.crypt.data.model.X509CertificateV3Info;
 import io.github.astrapi69.file.create.FileFactory;
+import io.github.astrapi69.file.create.FileInfo;
+import io.github.astrapi69.file.delete.DeleteFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;
+import io.github.astrapi69.random.number.RandomBigIntegerFactory;
 
 /**
  * This class contains JUnit 5 tests for the KeystoreChecker class. It aims to cover all methods
@@ -17,19 +43,78 @@ import io.github.astrapi69.file.search.PathFinder;
 class KeystoreVerifierTest
 {
 
+	private static final String KEYSTORE_FILENAME = "new-keystore.jks";
+	private static final String PASSWORD = "password";
+	private File keystoreFile;
+
+	/**
+	 * Setup method to initialize a keystore for the tests.
+	 */
+	@BeforeEach
+	public void setUp() throws Exception
+	{
+		Security.addProvider(new BouncyCastleProvider());
+
+		DistinguishedNameInfo distinguishedNameInfo;
+		KeyPair keyPair;
+
+		KeyPairInfo keyPairInfo;
+		BigInteger serial;
+		X509Certificate certificate;
+		ExtensionInfo[] extensionInfos;
+
+		distinguishedNameInfo = DistinguishedNameInfo.builder().commonName("Test Server")
+			.countryCode("GB").location("London").organisation("My Company")
+			.organisationUnit("IT Department").state("Greater London").build();
+
+		keyPairInfo = KeyPairInfo.builder().algorithm("RSA").keySize(2048).build();
+
+		keyPair = KeyPairInfo.toKeyPair(keyPairInfo);
+		extensionInfos = ArrayFactory.newArray(ExtensionInfo.builder()
+			.extensionId("1.3.6.1.5.5.7.3.2").critical(false).value("foo bar").build());
+
+		serial = RandomBigIntegerFactory.randomBigInteger();
+		X509CertificateV1Info x509CertificateV1Info = X509CertificateV1Info.builder()
+			.issuer(distinguishedNameInfo).serial(serial)
+			.validity(Validity.builder().notBefore(ZonedDateTime.parse("2024-01-01T00:00:00Z"))
+				.notAfter(ZonedDateTime.parse("2034-01-01T00:00:00Z")).build())
+			.subject(distinguishedNameInfo).signatureAlgorithm("SHA256withRSA").build();
+
+		X509CertificateV3Info x509CertificateV3Info = X509CertificateV3Info.builder()
+			.certificateV1Info(x509CertificateV1Info).extensions(extensionInfos).build();
+
+		certificate = CertFactory.newX509CertificateV3(keyPair, x509CertificateV3Info);
+
+		keystoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(), KEYSTORE_FILENAME);
+
+		KeyStore keyStore = KeyStoreFactory.newKeyStore(keystoreFile, "JKS", PASSWORD);
+		KeyStoreExtensions.setKeyEntry(keyStore, "serverKey", keyPair.getPrivate(),
+			PASSWORD.toCharArray(), new X509Certificate[] { certificate });
+		KeyStoreExtensions.store(keyStore, keystoreFile, PASSWORD);
+	}
+
+	/**
+	 * Tear down method will be invoked after every unit test method in this class
+	 *
+	 * @throws Exception
+	 *             is thrown if an exception occurs
+	 */
+	@AfterEach
+	public void tearDown() throws IOException
+	{
+
+		DeleteFileExtensions.delete(keystoreFile);
+	}
+
 	/**
 	 * Test to verify that a valid keystore file is correctly identified.
 	 */
 	@Test
 	public void testValidKeystore() throws IOException
 	{
-		File keystoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(),
-			"new-keystore.jks");
 		String validKeystorePath = keystoreFile.getAbsolutePath();
-		String password = "password";
-		assertTrue(KeystoreVerifier.isKeystoreFile(validKeystorePath, password));
+		assertTrue(KeystoreVerifier.isKeystoreFile(validKeystorePath, PASSWORD));
 	}
-
 
 	/**
 	 * Test to verify that an invalid keystore file is correctly identified as invalid.
@@ -38,8 +123,7 @@ class KeystoreVerifierTest
 	public void testInvalidKeystore()
 	{
 		String invalidKeystorePath = "path/to/invalid/keystore.jks";
-		String password = "password";
-		assertFalse(KeystoreVerifier.isKeystoreFile(invalidKeystorePath, password));
+		assertFalse(KeystoreVerifier.isKeystoreFile(invalidKeystorePath, PASSWORD));
 	}
 
 	/**
@@ -48,26 +132,20 @@ class KeystoreVerifierTest
 	@Test
 	public void testValidKeystoreWithType() throws IOException
 	{
-		File keystoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(),
-			"new-keystore.jks");
 		String validKeystorePath = keystoreFile.getAbsolutePath();
-		String password = "password";
 		String type = "JKS";
-		assertTrue(KeystoreVerifier.isKeystoreFile(validKeystorePath, password, type));
+		assertTrue(KeystoreVerifier.isKeystoreFile(validKeystorePath, PASSWORD, type));
 	}
 
 	/**
-	 * Test to verify that a valid keystore file of a specific types is recognized.
+	 * Test to verify that a valid keystore file of specific types is recognized.
 	 */
 	@Test
 	public void testValidKeystoreWithTypes() throws IOException
 	{
-		File keystoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(),
-			"new-keystore.jks");
 		String validKeystorePath = keystoreFile.getAbsolutePath();
-		String password = "password";
 		String[] types = { "JKS", "PKCS12" };
-		assertTrue(KeystoreVerifier.isKeystoreFile(validKeystorePath, password, types));
+		assertTrue(KeystoreVerifier.isKeystoreFile(validKeystorePath, PASSWORD, types));
 	}
 
 	/**
@@ -77,9 +155,8 @@ class KeystoreVerifierTest
 	public void testInvalidKeystoreWithType()
 	{
 		String invalidKeystorePath = "path/to/invalid/keystore.jks";
-		String password = "wrongpassword";
 		String[] types = { "JKS", "PKCS12" };
-		assertFalse(KeystoreVerifier.isKeystoreFile(invalidKeystorePath, password, types));
+		assertFalse(KeystoreVerifier.isKeystoreFile(invalidKeystorePath, "wrongpassword", types));
 	}
 
 	/**
@@ -88,11 +165,7 @@ class KeystoreVerifierTest
 	@Test
 	public void testKeystoreFileObject() throws IOException
 	{
-		File keystoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(),
-			"new-keystore.jks");
-		String validKeystorePath = keystoreFile.getAbsolutePath();
-		String password = "password";
-		assertTrue(KeystoreVerifier.isKeystoreFile(keystoreFile, password));
+		assertTrue(KeystoreVerifier.isKeystoreFile(keystoreFile, PASSWORD));
 	}
 
 	/**
@@ -101,12 +174,7 @@ class KeystoreVerifierTest
 	@Test
 	public void testKeystoreFileObjectWithTypes() throws IOException
 	{
-		File keystoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(),
-			"new-keystore.jks");
-		String validKeystorePath = keystoreFile.getAbsolutePath();
 		String[] types = { "JKS", "PKCS12" };
-		String password = "password";
-		assertTrue(KeystoreVerifier.isKeystoreFile(keystoreFile, password, types));
+		assertTrue(KeystoreVerifier.isKeystoreFile(keystoreFile, PASSWORD, types));
 	}
-
 }

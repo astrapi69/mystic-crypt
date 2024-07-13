@@ -61,7 +61,7 @@ public class SecureServer
 {
 	public static void main(String[] args) throws Exception
 	{
-
+		char[] password;
 		// File keystoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(),
 		// "keystore.jks");
 		// File trustStoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(),
@@ -72,14 +72,15 @@ public class SecureServer
 			"new-truststore.jks");
 		// Step 2: Load KeyStore and TrustStore
 		KeyStore keyStore = KeyStore.getInstance("JKS");
-		keyStore.load(new FileInputStream(keystoreFile), "password".toCharArray());
+		password = "password".toCharArray();
+		keyStore.load(new FileInputStream(keystoreFile), password);
 
 		KeyStore trustStore = KeyStore.getInstance("JKS");
-		trustStore.load(new FileInputStream(trustStoreFile), "password".toCharArray());
+		trustStore.load(new FileInputStream(trustStoreFile), password);
 
 		// Step 3: Initialize KeyManagerFactory and TrustManagerFactory
 		KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
-		kmf.init(keyStore, "password".toCharArray());
+		kmf.init(keyStore, password);
 
 		TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
 		tmf.init(trustStore);

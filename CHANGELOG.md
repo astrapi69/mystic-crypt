@@ -16,6 +16,7 @@ CHANGED:
 - update gradle to new version 8.8
 - update of gradle-plugin dependency 'com.diffplug.spotless:spotless-plugin-gradle' to new minor version 7.0.0.BETA1
 - update of dependency commons-codec dependency version to 1.17.0
+- update of crypt-data dependency to the new minor version 9.2
 - update of dependency commons-io dependency version to 2.16.1
 - update of dependency file-worker to new version to 17.3
 - update of dependency xml-base to new version to 2

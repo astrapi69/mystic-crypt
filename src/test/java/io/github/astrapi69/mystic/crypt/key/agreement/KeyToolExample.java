@@ -25,7 +25,6 @@
 package io.github.astrapi69.mystic.crypt.key.agreement;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.KeyStore;
@@ -41,15 +40,13 @@ import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import io.github.astrapi69.crypt.api.algorithm.key.KeyPairGeneratorAlgorithm;
-import io.github.astrapi69.crypt.data.certificate.CertificateAttributes;
 import io.github.astrapi69.crypt.data.factory.CertFactory;
 import io.github.astrapi69.crypt.data.factory.KeyPairFactory;
 import io.github.astrapi69.crypt.data.factory.KeyStoreFactory;
+import io.github.astrapi69.crypt.data.key.KeyStoreExtensions;
 import io.github.astrapi69.crypt.data.model.DistinguishedNameInfo;
-import io.github.astrapi69.crypt.data.model.KeyPairInfo;
 import io.github.astrapi69.file.create.FileFactory;
 import io.github.astrapi69.file.search.PathFinder;
-import io.github.astrapi69.mystic.crypt.ssl.KeyStoreExtensions;
 
 public class KeyToolExample
 {
@@ -65,10 +62,20 @@ public class KeyToolExample
 		String signatureAlgorithm;
 		X509Certificate cert;
 		String distinguishedName;
-		DistinguishedNameInfo distinguishedNameInfo = DistinguishedNameInfo.builder()
-			.commonName("Tyler Durden").countryCode("GR").location("Katerini")
-			.organisation("Cool Company").organisationUnit("IT Department").state("Macedonia")
-			.build();
+		char[] password;
+		DistinguishedNameInfo distinguishedNameInfo;
+		String certificateAlias;
+		File keystoreFile;
+		KeyStore keyStore;
+		KeyStore trustStore;
+		File trustStoreFile;
+
+		certificateAlias = "serverKey";
+		password = "password".toCharArray();
+
+		distinguishedNameInfo = DistinguishedNameInfo.builder().commonName("Tyler Durden")
+			.countryCode("GR").location("Katerini").organisation("Cool Company")
+			.organisationUnit("IT Department").state("Macedonia").build();
 
 		distinguishedName = distinguishedNameInfo.toRepresentableString();
 		serial = BigInteger.ONE;
@@ -80,9 +87,6 @@ public class KeyToolExample
 		signatureAlgorithm = "SHA256withRSA";
 		issuer = new X500Name(distinguishedName);
 
-		// Create KeyPairInfo object with necessary information
-		KeyPairInfo keyPairInfo = KeyPairInfo.builder().algorithm("RSA").keySize(2048).build();
-
 		// Generate a key pair
 		keyPair = KeyPairFactory.newKeyPair(KeyPairGeneratorAlgorithm.RSA, 2048);
 
@@ -90,23 +94,22 @@ public class KeyToolExample
 		cert = CertFactory.newX509CertificateV3(keyPair, issuer, serial, notBefore, notAfter,
 			subject, signatureAlgorithm);
 
-		File keystoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(),
-			"new-keystore.jks");
+		keystoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(), "new-keystore.jks");
 
 		// Initialize a KeyStore and store the key pair and certificate
-		KeyStore keyStore = KeyStoreFactory.newKeyStore(keystoreFile, "JKS", "password");
-		KeyStoreExtensions.setKeyEntry(keyStore, "serverKey", keyPair.getPrivate(),
-			"password".toCharArray(), new Certificate[] { cert });
+		keyStore = KeyStoreFactory.newKeyStore(keystoreFile, "JKS", "password");
+		KeyStoreExtensions.setKeyEntry(keyStore, certificateAlias, keyPair.getPrivate(), password,
+			new Certificate[] { cert });
 		// Save the KeyStore to a file
 		KeyStoreExtensions.store(keyStore, keystoreFile, "password");
 
-		File trustStoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(),
+		trustStoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(),
 			"new-truststore.jks");
 
 		// Initialize a KeyStore for the truststore and store the key pair and certificate
-		KeyStore trustStore = KeyStoreFactory.newKeyStore(trustStoreFile, "JKS", "password");
-		KeyStoreExtensions.setKeyEntry(trustStore, "serverKey", keyPair.getPrivate(),
-			"password".toCharArray(), new Certificate[] { cert });
+		trustStore = KeyStoreFactory.newKeyStore(trustStoreFile, "JKS", "password");
+		KeyStoreExtensions.setKeyEntry(trustStore, certificateAlias, keyPair.getPrivate(), password,
+			new Certificate[] { cert });
 		// Save the KeyStore to a file
 		KeyStoreExtensions.store(trustStore, trustStoreFile, "password");
 
