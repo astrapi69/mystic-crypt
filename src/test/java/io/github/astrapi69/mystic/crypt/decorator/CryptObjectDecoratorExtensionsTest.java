@@ -27,8 +27,11 @@ package io.github.astrapi69.mystic.crypt.decorator;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 
 import io.github.astrapi69.crypt.data.model.CryptObjectDecorator;
 
@@ -37,6 +40,115 @@ import io.github.astrapi69.crypt.data.model.CryptObjectDecorator;
  */
 public class CryptObjectDecoratorExtensionsTest
 {
+
+	/**
+	 * Test method for
+	 * {@link CryptObjectDecoratorExtensions#decorateWithStringDecorator(String, CryptObjectDecorator)}.
+	 *
+	 * @param input
+	 *            the input string to be decorated
+	 * @param prefix
+	 *            the prefix for decoration
+	 * @param suffix
+	 *            the suffix for decoration
+	 * @param expected
+	 *            the expected result after decoration
+	 */
+	@ParameterizedTest
+	@CsvFileSource(resources = "/decorateStringTest.csv", numLinesToSkip = 1)
+	void testDecorateWithStringDecorator(String input, String prefix, String suffix,
+		String expected)
+	{
+		CryptObjectDecorator<String> decorator;
+
+		decorator = CryptObjectDecorator.<String> builder().prefix(prefix).suffix(suffix).build();
+		String result = CryptObjectDecoratorExtensions.decorateWithStringDecorator(input,
+			decorator);
+		assertEquals(expected, result);
+	}
+
+	/**
+	 * Test method for
+	 * {@link CryptObjectDecoratorExtensions#undecorateWithStringDecorator(String, CryptObjectDecorator)}.
+	 *
+	 * @param input
+	 *            the input string to be undecorated
+	 * @param prefix
+	 *            the prefix for undecoration
+	 * @param suffix
+	 *            the suffix for undecoration
+	 * @param expected
+	 *            the expected result after undecoration
+	 */
+	@ParameterizedTest
+	@CsvFileSource(resources = "/undecorateStringTest.csv", numLinesToSkip = 1)
+	void testUndecorateWithStringDecorator(String input, String prefix, String suffix,
+		String expected)
+	{
+		CryptObjectDecorator<String> decorator;
+
+		decorator = CryptObjectDecorator.<String> builder().prefix(prefix).suffix(suffix).build();
+		String result = CryptObjectDecoratorExtensions.undecorateWithStringDecorator(input,
+			decorator);
+		assertEquals(expected, result);
+	}
+
+	/**
+	 * Test method for
+	 * {@link CryptObjectDecoratorExtensions#decorateWithBytearrayDecorator(String, CryptObjectDecorator, Charset)}.
+	 *
+	 * @param input
+	 *            the input string to be decorated
+	 * @param prefix
+	 *            the prefix for decoration
+	 * @param suffix
+	 *            the suffix for decoration
+	 * @param expected
+	 *            the expected result after decoration
+	 */
+	@ParameterizedTest
+	@CsvFileSource(resources = "/decorateBytearrayTest.csv", numLinesToSkip = 1)
+	void testDecorateWithBytearrayDecorator(String input, String prefix, String suffix,
+		String expected)
+	{
+
+		CryptObjectDecorator<byte[]> decorator;
+
+		decorator = CryptObjectDecorator.<byte[]> builder()
+			.prefix(prefix.getBytes(StandardCharsets.UTF_8))
+			.suffix(suffix.getBytes(StandardCharsets.UTF_8)).build();
+		String result = CryptObjectDecoratorExtensions.decorateWithBytearrayDecorator(input,
+			decorator, StandardCharsets.UTF_8);
+		assertEquals(expected, result);
+	}
+
+	/**
+	 * Test method for
+	 * {@link CryptObjectDecoratorExtensions#undecorateWithBytearrayDecorator(String, CryptObjectDecorator)}.
+	 *
+	 * @param input
+	 *            the input string to be undecorated
+	 * @param prefix
+	 *            the prefix for undecoration
+	 * @param suffix
+	 *            the suffix for undecoration
+	 * @param expected
+	 *            the expected result after undecoration
+	 */
+	@ParameterizedTest
+	@CsvFileSource(resources = "/undecorateBytearrayTest.csv", numLinesToSkip = 1)
+	void testUndecorateWithBytearrayDecorator(String input, String prefix, String suffix,
+		String expected)
+	{
+		CryptObjectDecorator<byte[]> decorator;
+
+		decorator = CryptObjectDecorator.<byte[]> builder()
+			.prefix(prefix.getBytes(StandardCharsets.UTF_8))
+			.suffix(suffix.getBytes(StandardCharsets.UTF_8)).build();
+		String result = CryptObjectDecoratorExtensions.undecorateWithBytearrayDecorator(input,
+			decorator);
+		assertEquals(expected, result);
+	}
 
 	/**
 	 * Test method for the decoration of an crypt object with {@link CryptObjectDecorator} with byte

@@ -36,12 +36,26 @@ import org.apache.commons.lang3.StringUtils;
 import io.github.astrapi69.crypt.data.model.CryptObjectDecorator;
 import io.github.astrapi69.file.read.ReadFileExtensions;
 
+/**
+ * Utility class for decorating and undecorating cryptographic objects.
+ */
 public final class CryptObjectDecoratorExtensions
 {
 	private CryptObjectDecoratorExtensions()
 	{
 	}
 
+	/**
+	 * Decorates the content of the given file using the specified decorator.
+	 *
+	 * @param toEncrypt
+	 *            the file to be encrypted
+	 * @param decorator
+	 *            the decorator to be used
+	 * @return the decorated string
+	 * @throws IOException
+	 *             if an I/O error occurs
+	 */
 	public static String decorateFile(final File toEncrypt,
 		final CryptObjectDecorator<String> decorator) throws IOException
 	{
@@ -50,6 +64,17 @@ public final class CryptObjectDecoratorExtensions
 		return decorateWithStringDecorator(ReadFileExtensions.fromFile(toEncrypt), decorator);
 	}
 
+	/**
+	 * Decorates the given string using a byte array decorator.
+	 *
+	 * @param toEncrypt
+	 *            the string to be encrypted
+	 * @param decorator
+	 *            the decorator to be used
+	 * @param charset
+	 *            the charset to be used for encoding
+	 * @return the decorated string
+	 */
 	public static String decorateWithBytearrayDecorator(final String toEncrypt,
 		final CryptObjectDecorator<byte[]> decorator, final Charset charset)
 	{
@@ -58,13 +83,20 @@ public final class CryptObjectDecoratorExtensions
 		Objects.requireNonNull(charset);
 		StringBuilder sb = new StringBuilder();
 		sb.append(new String(decorator.getPrefix(), charset));
-
 		sb.append(toEncrypt);
-
 		sb.append(new String(decorator.getSuffix(), charset));
 		return sb.toString();
 	}
 
+	/**
+	 * Decorates the given string using a character decorator.
+	 *
+	 * @param toEncrypt
+	 *            the string to be encrypted
+	 * @param decorator
+	 *            the decorator to be used
+	 * @return the decorated string
+	 */
 	public static String decorateWithCharacterDecorator(final String toEncrypt,
 		final CryptObjectDecorator<Character> decorator)
 	{
@@ -77,6 +109,15 @@ public final class CryptObjectDecoratorExtensions
 		return sb.toString();
 	}
 
+	/**
+	 * Decorates the given string using a string decorator.
+	 *
+	 * @param toEncrypt
+	 *            the string to be encrypted
+	 * @param decorator
+	 *            the decorator to be used
+	 * @return the decorated string
+	 */
 	public static String decorateWithStringDecorator(final String toEncrypt,
 		final CryptObjectDecorator<String> decorator)
 	{
@@ -141,6 +182,17 @@ public final class CryptObjectDecoratorExtensions
 		return true;
 	}
 
+	/**
+	 * Undecorates the content of the given file using the specified decorator.
+	 *
+	 * @param decrypted
+	 *            the file to be decrypted
+	 * @param decorator
+	 *            the decorator to be used
+	 * @return the undecorated string
+	 * @throws IOException
+	 *             if an I/O error occurs
+	 */
 	public static String undecorateFile(final File decrypted,
 		final CryptObjectDecorator<String> decorator) throws IOException
 	{
@@ -149,6 +201,15 @@ public final class CryptObjectDecoratorExtensions
 		return undecorateWithStringDecorator(ReadFileExtensions.fromFile(decrypted), decorator);
 	}
 
+	/**
+	 * Undecorates the given string using a byte array decorator.
+	 *
+	 * @param toEncrypt
+	 *            the string to be decrypted
+	 * @param decorator
+	 *            the decorator to be used
+	 * @return the undecorated string
+	 */
 	public static String undecorateWithBytearrayDecorator(final String toEncrypt,
 		final CryptObjectDecorator<byte[]> decorator)
 	{
@@ -171,6 +232,15 @@ public final class CryptObjectDecoratorExtensions
 		return new String(result);
 	}
 
+	/**
+	 * Undecorates the given string using a character decorator.
+	 *
+	 * @param toEncrypt
+	 *            the string to be decrypted
+	 * @param decorator
+	 *            the decorator to be used
+	 * @return the undecorated string
+	 */
 	public static String undecorateWithCharacterDecorator(final String toEncrypt,
 		final CryptObjectDecorator<Character> decorator)
 	{
@@ -193,11 +263,19 @@ public final class CryptObjectDecoratorExtensions
 			{
 				sb.deleteCharAt(toEncrypt.length() - 1);
 			}
-
 		}
 		return sb.toString();
 	}
 
+	/**
+	 * Undecorates the given string using a string decorator.
+	 *
+	 * @param decrypted
+	 *            the string to be decrypted
+	 * @param decorator
+	 *            the decorator to be used
+	 * @return the undecorated string
+	 */
 	public static String undecorateWithStringDecorator(final String decrypted,
 		final CryptObjectDecorator<String> decorator)
 	{
@@ -211,7 +289,6 @@ public final class CryptObjectDecoratorExtensions
 		if (decrypted.endsWith(decorator.getSuffix()))
 		{
 			result = StringUtils.removeEnd(result, decorator.getSuffix());
-
 		}
 		return result;
 	}
