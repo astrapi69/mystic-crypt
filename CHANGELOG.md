@@ -28,6 +28,7 @@ CHANGED:
 - remove of test dependency testng
 - migrate from testng to new junit-jupiter
 - javadoc extended
+- replaced obsolete package.html with package-info.java files
 
 Version 9
 -------------
