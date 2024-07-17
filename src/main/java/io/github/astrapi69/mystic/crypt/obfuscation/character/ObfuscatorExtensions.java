@@ -37,7 +37,7 @@ import java.util.Set;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
-import io.github.astrapi69.clone.object.CloneObjectExtensions;
+import io.github.astrapi69.clone.CloneObjectExtensions;
 import io.github.astrapi69.collection.map.MapFactory;
 import io.github.astrapi69.collection.pair.KeyValuePair;
 import io.github.astrapi69.crypt.api.obfuscation.rule.Operation;
@@ -433,8 +433,7 @@ public final class ObfuscatorExtensions
 		{
 			return Optional.of(CloneObjectExtensions.clone(object));
 		}
-		catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException
-			| ClassNotFoundException | InstantiationException | IOException e)
+		catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e)
 		{
 			// Do nothing
 		}

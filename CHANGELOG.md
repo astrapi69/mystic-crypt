@@ -6,6 +6,7 @@ Version 9.1-SNAPSHOT
 
 ADDED:
 
+- new module-info.java file for modularization
 - new libs.versions.toml file for new automatic catalog versions update
 - new test dependency org.junit.jupiter:junit-jupiter in version 5.11.0-M2
 - new verifier class KeystoreVerifier that checks if a given Keystore file is valid
@@ -30,6 +31,7 @@ CHANGED:
 - migrate from testng to new junit-jupiter
 - javadoc extended
 - replaced obsolete package.html with package-info.java files
+- replace obsolete dependency jobj-clone with new dependency jobj-cloner
 
 Version 9
 -------------

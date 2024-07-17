@@ -15,7 +15,7 @@ gradle-plugin-spotless-version = "7.0.0.BETA1"
 gradle-plugin-version-catalog-update-version = "0.8.4"
 gradle-plugin-versions-version = "0.51.0"
 guava-version = "33.2.1-jre"
-jobj-clone-version = "3.4"
+jobj-cloner-version = "2.1"
 jobj-core-version = "8.2"
 json-extensions-version = "3"
 junit-jupiter-params-version = "5.11.0-M2"
@@ -44,7 +44,7 @@ crypt-api = { module = "io.github.astrapi69:crypt-api", version.ref = "crypt-api
 crypt-data = { module = "io.github.astrapi69:crypt-data", version.ref = "crypt-data-version" }
 file-worker = { module = "io.github.astrapi69:file-worker", version.ref = "file-worker-version" }
 guava = { module = "com.google.guava:guava", version.ref = "guava-version" }
-jobj-clone = { module = "io.github.astrapi69:jobj-clone", version.ref = "jobj-clone-version" }
+jobj-cloner = { module = "io.github.astrapi69:jobj-cloner", version.ref = "jobj-cloner-version" }
 jobj-core = { module = "io.github.astrapi69:jobj-core", version.ref = "jobj-core-version" }
 json-extensions = { module = "io.github.astrapi69:json-extensions", version.ref = "json-extensions-version" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter-version" }

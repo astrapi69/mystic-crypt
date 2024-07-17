@@ -12,7 +12,7 @@ dependencies {
     implementation libs.silly.collection
     implementation libs.jobj.core
     implementation libs.silly.bean
-    implementation libs.jobj.clone
+    implementation libs.jobj.cloner
     implementation libs.bcprov.jdk15on
     implementation libs.bcprov.ext.jdk15on
     implementation libs.bcpkix.jdk15on
