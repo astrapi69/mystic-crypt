@@ -36,7 +36,7 @@ import javax.crypto.NoSuchPaddingException;
 
 import io.github.astrapi69.crypt.api.ByteArrayEncryptor;
 import io.github.astrapi69.crypt.api.Cryptor;
-import io.github.astrapi69.crypt.api.compound.CompoundAlgorithm;
+import io.github.astrapi69.crypt.api.algorithm.compound.CompoundAlgorithm;
 import io.github.astrapi69.crypt.data.factory.CipherFactory;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 

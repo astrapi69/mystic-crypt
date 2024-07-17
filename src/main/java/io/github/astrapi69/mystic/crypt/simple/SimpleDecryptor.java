@@ -46,7 +46,7 @@ import javax.crypto.spec.PBEParameterSpec;
 
 import io.github.astrapi69.crypt.api.Cryptor;
 import io.github.astrapi69.crypt.api.StringDecryptor;
-import io.github.astrapi69.crypt.api.compound.CompoundAlgorithm;
+import io.github.astrapi69.crypt.api.algorithm.compound.CompoundAlgorithm;
 
 /**
  * The class {@link SimpleDecryptor} is a simple {@link StringDecryptor} implementation.

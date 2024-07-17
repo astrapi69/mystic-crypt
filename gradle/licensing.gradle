@@ -7,6 +7,7 @@ license {
               "**/README.md",
               "**/LICENSE",
               "**/NOTICE",
+              "**/package-info.java",
               "**/*.xml",
               "**/*.xsl",
               "**/*.xsd",

@@ -3,10 +3,10 @@ bcpkix-jdk15on-version = "1.70"
 bcprov-ext-jdk15on-version = "1.70"
 bcprov-jdk15on-version = "1.70"
 checksum-up-version = "3"
-commons-codec-version = "1.17.0"
+commons-codec-version = "1.17.1"
 commons-io-version = "2.16.1"
 commons-lang3-version = "3.14.0"
-crypt-api-version = "9"
+crypt-api-version = "9.1"
 crypt-data-version = "9.2"
 file-worker-version = "17.3"
 gradle-plugin-grgit-version = "5.2.2"
@@ -18,6 +18,9 @@ guava-version = "33.2.1-jre"
 jobj-clone-version = "3.4"
 jobj-core-version = "8.2"
 json-extensions-version = "3"
+junit-jupiter-params-version = "5.11.0-M2"
+junit-jupiter-version = "5.11.0-M2"
+junit-platform-launcher-version = "1.11.0-M2"
 meanbean-version = "3.0.0-M9"
 random-beans-version = "3.9.0"
 randomizer-version = "10.2"
@@ -28,14 +31,8 @@ silly-strings-version = "9.1"
 test-object-version = "8.2"
 throwable-version = "3"
 xml-base-version = "2"
-junit-jupiter-params-version = "5.11.0-M2"
-junit-jupiter-version = "5.11.0-M2"
-junit-platform-launcher-version = "1.11.0-M2"
 
 [libraries]
-junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter-version" }
-junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit-jupiter-params-version" }
-junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-platform-launcher-version" }
 bcpkix-jdk15on = { module = "org.bouncycastle:bcpkix-jdk15on", version.ref = "bcpkix-jdk15on-version" }
 bcprov-ext-jdk15on = { module = "org.bouncycastle:bcprov-ext-jdk15on", version.ref = "bcprov-ext-jdk15on-version" }
 bcprov-jdk15on = { module = "org.bouncycastle:bcprov-jdk15on", version.ref = "bcprov-jdk15on-version" }
@@ -50,6 +47,9 @@ guava = { module = "com.google.guava:guava", version.ref = "guava-version" }
 jobj-clone = { module = "io.github.astrapi69:jobj-clone", version.ref = "jobj-clone-version" }
 jobj-core = { module = "io.github.astrapi69:jobj-core", version.ref = "jobj-core-version" }
 json-extensions = { module = "io.github.astrapi69:json-extensions", version.ref = "json-extensions-version" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter-version" }
+junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit-jupiter-params-version" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-platform-launcher-version" }
 meanbean = { module = "com.github.meanbeanlib:meanbean", version.ref = "meanbean-version" }
 random-beans = { module = "io.github.benas:random-beans", version.ref = "random-beans-version" }
 randomizer = { module = "io.github.astrapi69:randomizer", version.ref = "randomizer-version" }
@@ -63,10 +63,10 @@ xml-base = { module = "io.github.astrapi69:xml-base", version.ref = "xml-base-ve
 
 [bundles]
 unit-testing = [
-    "meanbean",
-    "test-object",
     "junit-jupiter",
     "junit-jupiter-params",
+    "meanbean",
+    "test-object",
 ]
 
 [plugins]

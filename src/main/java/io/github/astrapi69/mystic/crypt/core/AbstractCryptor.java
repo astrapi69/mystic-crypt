@@ -44,7 +44,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import io.github.astrapi69.check.Check;
 import io.github.astrapi69.crypt.api.Cryptor;
 import io.github.astrapi69.crypt.api.algorithm.SunJCEAlgorithm;
-import io.github.astrapi69.crypt.api.compound.CompoundAlgorithm;
+import io.github.astrapi69.crypt.api.algorithm.compound.CompoundAlgorithm;
 import io.github.astrapi69.crypt.data.factory.AlgorithmParameterSpecFactory;
 import io.github.astrapi69.crypt.data.factory.CipherFactory;
 import io.github.astrapi69.crypt.data.factory.KeySpecFactory;
