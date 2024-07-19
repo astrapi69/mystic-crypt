@@ -24,15 +24,7 @@ version = "$projectVersion" as Object
 description = "$rootProject.name"
 
 // import gradle files
-apply from: "gradle/dependencies.gradle"
-apply from: "gradle/formatting.gradle"
-apply from: "gradle/grgit.gradle"
-apply from: "gradle/licensing.gradle"
-apply from: "gradle/packaging.gradle"
-apply from: "gradle/publishing.gradle"
-apply from: "gradle/repositories.gradle"
-apply from: "gradle/testing.gradle"
-apply from: "gradle/version-catalog-update.gradle"
+apply from: "gradle/apply-gradle-files.gradle"
 
 java {
     sourceCompatibility = "$projectSourceCompatibility" as Object

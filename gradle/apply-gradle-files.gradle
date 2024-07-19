@@ -1,0 +1,8 @@
+// import gradle files
+// Read the list of Gradle files from a file
+def gradleFiles = file('gradle/gradle-files.list').readLines()
+
+// Apply the Gradle files
+gradleFiles.each { file ->
+    apply from: file
+}
