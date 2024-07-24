@@ -100,6 +100,11 @@ public class SimpleEncryptor implements StringEncryptor, Cryptor
 		return encrypted;
 	}
 
+	/**
+	 * Gets private key.
+	 *
+	 * @return the private key
+	 */
 	public String getPrivateKey()
 	{
 		return this.privateKey;

@@ -26,13 +26,9 @@ package io.github.astrapi69.mystic.crypt.obfuscation.character;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.meanbean.test.BeanTestException;
-import org.meanbean.test.BeanTester;
 
 import com.google.common.collect.BiMap;
 

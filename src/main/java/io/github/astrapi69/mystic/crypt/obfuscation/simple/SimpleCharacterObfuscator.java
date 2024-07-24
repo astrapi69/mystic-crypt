@@ -76,6 +76,13 @@ public class SimpleCharacterObfuscator implements Obfuscatable
 		return disentangle(obfuscated);
 	}
 
+	/**
+	 * Disentangle the given obfuscated text
+	 *
+	 * @param obfuscated
+	 *            the obfuscated text
+	 * @return the disentangled string
+	 */
 	public String disentangle(String obfuscated)
 	{
 		final String disentangled = SimpleObfuscatorExtensions.disentangleBiMap(biMap, obfuscated);

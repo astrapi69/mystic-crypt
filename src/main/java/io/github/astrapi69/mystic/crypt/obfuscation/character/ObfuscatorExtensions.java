@@ -24,7 +24,6 @@
  */
 package io.github.astrapi69.mystic.crypt.obfuscation.character;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
@@ -44,7 +43,7 @@ import io.github.astrapi69.crypt.api.obfuscation.rule.Operation;
 import io.github.astrapi69.crypt.data.obfuscation.rule.ObfuscationOperationRule;
 
 /**
- * The class {@link ObfuscatorExtensions} provides algorithms for obfuscate strings.
+ * The class {@link ObfuscatorExtensions} provides algorithms to obfuscate and disentangle strings.
  */
 public final class ObfuscatorExtensions
 {
@@ -54,13 +53,13 @@ public final class ObfuscatorExtensions
 	}
 
 	/**
-	 * Disentangle the given obfuscated text with the given {@link BiMap} rules
+	 * Disentangle the given obfuscated text using the specified {@link BiMap} rules
 	 *
 	 * @param rules
 	 *            the rules
 	 * @param obfuscated
 	 *            the obfuscated text
-	 * @return the string
+	 * @return the disentangled string
 	 */
 	public static String disentangle(
 		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
@@ -109,7 +108,6 @@ public final class ObfuscatorExtensions
 						else
 						{
 							sb.append(Operation.operate(currentChar, operation, false));
-
 						}
 						processed = true;
 						continue;
@@ -137,13 +135,13 @@ public final class ObfuscatorExtensions
 	}
 
 	/**
-	 * Disentangle the given obfuscated text with the given {@link List} rules
+	 * Disentangle the given obfuscated text using the specified {@link List} rules
 	 *
 	 * @param rules
 	 *            the rules
 	 * @param obfuscated
 	 *            the obfuscated text
-	 * @return the string
+	 * @return the disentangled string
 	 */
 	public static String disentangle(
 		final List<KeyValuePair<Character, ObfuscationOperationRule<Character, Character>>> rules,
@@ -171,13 +169,13 @@ public final class ObfuscatorExtensions
 	}
 
 	/**
-	 * Disentangle the given obfuscated text with the given {@link BiMap} rules
+	 * Disentangle the given obfuscated text using the specified {@link BiMap} rules
 	 *
 	 * @param rules
 	 *            the rules
 	 * @param obfuscated
 	 *            the obfuscated text
-	 * @return the string
+	 * @return the disentangled string
 	 */
 	public static String disentangleImproved(
 		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
@@ -218,6 +216,13 @@ public final class ObfuscatorExtensions
 		return sb.toString();
 	}
 
+	/**
+	 * Inverse the given BiMap rules
+	 *
+	 * @param rules
+	 *            the rules
+	 * @return the inversed BiMap
+	 */
 	public static BiMap<ObfuscationOperationRule<Character, Character>, Character> inverse(
 		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules)
 	{
@@ -243,6 +248,12 @@ public final class ObfuscatorExtensions
 		return invertedBiMap;
 	}
 
+	/**
+	 * Inverse the given ObfuscationOperationRule
+	 *
+	 * @param rule
+	 *            the rule
+	 */
 	public static void inverse(final ObfuscationOperationRule<Character, Character> rule)
 	{
 		Objects.requireNonNull(rule);
@@ -253,6 +264,13 @@ public final class ObfuscatorExtensions
 		rule.setInverted(!rule.isInverted());
 	}
 
+	/**
+	 * Inverse the given BiMap rules to a Map
+	 *
+	 * @param rules
+	 *            the rules
+	 * @return the inversed Map
+	 */
 	public static Map<ObfuscationOperationRule<Character, Character>, Character> inverseToMap(
 		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules)
 	{
@@ -265,15 +283,14 @@ public final class ObfuscatorExtensions
 	}
 
 	/**
-	 * Validate the given input if it can be obfuscated with the given rules. This means if the
-	 * given input is disentanglable. <br>
-	 * <br>
+	 * Validate if the given input can be obfuscated with the specified rules. This means if the
+	 * given input is disentanglable
 	 *
 	 * @param rules
 	 *            the rules
 	 * @param input
 	 *            the input
-	 * @return true if the given {@link BiMap} is obfuscable with the given input otherwise false
+	 * @return true if the given BiMap is obfuscable with the given input otherwise false
 	 */
 	public static boolean isObfuscableAndDisentanglable(
 		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
@@ -291,13 +308,13 @@ public final class ObfuscatorExtensions
 	}
 
 	/**
-	 * Obfuscate with the given {@link BiMap}
+	 * Obfuscate with the given BiMap
 	 *
 	 * @param rules
 	 *            the rules
 	 * @param toObfuscate
-	 *            the {@link String} object to obfuscate
-	 * @return the string
+	 *            the String object to obfuscate
+	 * @return the obfuscated string
 	 */
 	public static String obfuscateWith(
 		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
@@ -340,13 +357,13 @@ public final class ObfuscatorExtensions
 	}
 
 	/**
-	 * Obfuscate with the given {@link BiMap}
+	 * Obfuscate with the given BiMap
 	 *
 	 * @param rules
 	 *            the rules
 	 * @param toObfuscate
-	 *            the {@link String} object to obfuscate
-	 * @return the string
+	 *            the String object to obfuscate
+	 * @return the obfuscated string
 	 */
 	public static String obfuscateWithCharArray(
 		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
@@ -387,6 +404,13 @@ public final class ObfuscatorExtensions
 		return new String(result);
 	}
 
+	/**
+	 * Swap the given BiMap with ReplaceWith as key
+	 *
+	 * @param rules
+	 *            the rules
+	 * @return the swapped map
+	 */
 	public static Map<Character, Character> swapMapWithReplaceWithAsKey(
 		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules)
 	{
@@ -406,6 +430,13 @@ public final class ObfuscatorExtensions
 		return swapped;
 	}
 
+	/**
+	 * Swap the given BiMap with Operated character as key
+	 *
+	 * @param rules
+	 *            the rules
+	 * @return the swapped map
+	 */
 	public static Map<Character, ObfuscationOperationRule<Character, Character>> swapOperatedMapWithReplaceWithAsKey(
 		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules)
 	{
@@ -426,6 +457,15 @@ public final class ObfuscatorExtensions
 		return swapped;
 	}
 
+	/**
+	 * Try to clone the given object
+	 *
+	 * @param <T>
+	 *            the type of the object
+	 * @param object
+	 *            the object
+	 * @return the optional containing the cloned object or empty if cloning failed
+	 */
 	public static <T> Optional<T> tryToClone(final T object)
 	{
 		Objects.requireNonNull(object);
@@ -441,11 +481,11 @@ public final class ObfuscatorExtensions
 	}
 
 	/**
-	 * Validate the given {@link BiMap} if a before obfuscated String can be disentangled
+	 * Validate if the given BiMap can be disentangled after obfuscation
 	 *
 	 * @param rules
 	 *            the rules
-	 * @return if true is returned the given {@link BiMap} is disentanglable
+	 * @return true if the given BiMap is disentanglable, otherwise false
 	 */
 	public static boolean validate(
 		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules)

@@ -57,6 +57,8 @@ public class PublicKeyEncryptor extends AbstractEncryptor<Cipher, PublicKey, byt
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+
+	/** The symmetric key model */
 	private CryptModel<Cipher, SecretKey, String> symmetricKeyModel;
 
 	/**

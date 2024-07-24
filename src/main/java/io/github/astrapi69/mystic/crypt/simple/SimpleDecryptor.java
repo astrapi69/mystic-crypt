@@ -99,6 +99,11 @@ public class SimpleDecryptor implements StringDecryptor, Cryptor
 		return new String(utf8, StandardCharsets.UTF_8.name());
 	}
 
+	/**
+	 * Gets private key.
+	 *
+	 * @return the private key
+	 */
 	public String getPrivateKey()
 	{
 		return this.privateKey;

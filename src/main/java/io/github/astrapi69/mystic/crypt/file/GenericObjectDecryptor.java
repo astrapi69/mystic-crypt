@@ -104,11 +104,23 @@ public class GenericObjectDecryptor<R, D> extends AbstractObjectDecryptor<R, D>
 		return genericObject;
 	}
 
+	/**
+	 * Method to be called after decryption. It handles any post-decryption processing
+	 *
+	 * @param encrypted
+	 *            the encrypted file
+	 */
 	protected void onAfterDecrypt(final File encrypted)
 	{
 		Objects.requireNonNull(encrypted);
 	}
 
+	/**
+	 * Method to be called before decryption. It handles any pre-decryption processing.
+	 *
+	 * @param encrypted
+	 *            the encrypted file
+	 */
 	protected void onBeforeDecrypt(final File encrypted)
 	{
 		Objects.requireNonNull(encrypted);

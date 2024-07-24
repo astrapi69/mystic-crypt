@@ -86,11 +86,22 @@ public class WordlistsProcessor
 		return null;
 	}
 
+	/**
+	 * Gets to check against.
+	 *
+	 * @return the to check against
+	 */
 	public String getToCheckAgainst()
 	{
 		return this.toCheckAgainst;
 	}
 
+	/**
+	 * Sets to check against.
+	 *
+	 * @param toCheckAgainst
+	 *            the to check against
+	 */
 	public void setToCheckAgainst(String toCheckAgainst)
 	{
 		this.toCheckAgainst = toCheckAgainst;

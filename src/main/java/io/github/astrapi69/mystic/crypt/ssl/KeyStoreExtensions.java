@@ -303,6 +303,8 @@ public final class KeyStoreExtensions
 	/**
 	 * Assigns the given key to the given alias, protecting it with the given password
 	 *
+	 * @param keyStore
+	 *            the keystore
 	 * @param alias
 	 *            the alias name
 	 * @param key

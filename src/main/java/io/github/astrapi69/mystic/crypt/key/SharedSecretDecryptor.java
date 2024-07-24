@@ -37,15 +37,39 @@ import io.github.astrapi69.crypt.data.factory.KeyAgreementFactory;
 import io.github.astrapi69.crypt.data.model.SharedSecretModel;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 
+/**
+ * The type SharedSecretDecryptor is responsible for decrypting data using a shared secret key
+ */
 public class SharedSecretDecryptor
 {
 
+	/**
+	 * The Provider
+	 */
 	final String provider;
+	/**
+	 * The Cipher algorithm
+	 */
 	final String cipherAlgorithm;
+	/**
+	 * The Secret key
+	 */
 	SecretKey secretKey;
+	/**
+	 * The Iv spec
+	 */
 	IvParameterSpec ivSpec;
+	/**
+	 * The Model
+	 */
 	SharedSecretModel model;
 
+	/**
+	 * Instantiates a new SharedSecretDecryptor
+	 *
+	 * @param model
+	 *            the model containing all necessary parameters for decryption
+	 */
 	public SharedSecretDecryptor(final SharedSecretModel model)
 	{
 		this(model.getPrivateKey(), model.getPublicKey(), model.getKeyAgreementAlgorithm(),
@@ -55,6 +79,24 @@ public class SharedSecretDecryptor
 	}
 
 
+	/**
+	 * Instantiates a new SharedSecretDecryptor
+	 *
+	 * @param privateKey
+	 *            the private key
+	 * @param publicKey
+	 *            the public key
+	 * @param keyAgreementAlgorithm
+	 *            the key agreement algorithm
+	 * @param secretKeyAlgorithm
+	 *            the secret key algorithm
+	 * @param provider
+	 *            the provider
+	 * @param cipherAlgorithm
+	 *            the cipher algorithm
+	 * @param iv
+	 *            the initialization vector
+	 */
 	public SharedSecretDecryptor(final PrivateKey privateKey, final PublicKey publicKey,
 		final String keyAgreementAlgorithm, final String secretKeyAlgorithm, final String provider,
 		final String cipherAlgorithm, final byte[] iv)
@@ -67,6 +109,15 @@ public class SharedSecretDecryptor
 				keyAgreementAlgorithm, secretKeyAlgorithm, provider));
 	}
 
+	/**
+	 * Decrypts the given encrypted data
+	 *
+	 * @param encrypted
+	 *            the encrypted data
+	 * @return the decrypted byte array
+	 * @throws Exception
+	 *             if any decryption error occurs
+	 */
 	public byte[] decrypt(final byte[] encrypted) throws Exception
 	{
 		Key secretKeySpec = new SecretKeySpec(secretKey.getEncoded(), secretKey.getAlgorithm());
@@ -79,5 +130,4 @@ public class SharedSecretDecryptor
 		cipher.doFinal(decryptedData, decryptLength);
 		return decryptedData;
 	}
-
 }

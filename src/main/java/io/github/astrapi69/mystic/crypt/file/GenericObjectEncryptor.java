@@ -122,11 +122,23 @@ public class GenericObjectEncryptor<T, D> extends AbstractObjectEncryptor<T, D>
 		return new File(parent, child);
 	}
 
+	/**
+	 * Method to be called after encryption. It handles any post-encryption processing
+	 *
+	 * @param toEncrypt
+	 *            the generic object to encrypt
+	 */
 	protected void onAfterEncrypt(final T toEncrypt)
 	{
 		Objects.requireNonNull(toEncrypt);
 	}
 
+	/**
+	 * Method to be called before encryption. It handles any pre-encryption processing
+	 *
+	 * @param toEncrypt
+	 *            the generic object to encrypt
+	 */
 	protected void onBeforeEncrypt(final T toEncrypt)
 	{
 		Objects.requireNonNull(toEncrypt);

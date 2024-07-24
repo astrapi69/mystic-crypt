@@ -232,6 +232,14 @@ public class PBEFileDecryptor extends AbstractFileDecryptor
 		return new File(parent, child);
 	}
 
+	/**
+	 * Method to be called after decryption. It handles any post-decryption processing
+	 *
+	 * @param encrypted
+	 *            the encrypted file
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred
+	 */
 	protected void onAfterDecrypt(final File encrypted) throws IOException
 	{
 		Objects.requireNonNull(encrypted);
@@ -253,6 +261,12 @@ public class PBEFileDecryptor extends AbstractFileDecryptor
 		}
 	}
 
+	/**
+	 * Method to be called before decryption. It handles any pre-decryption processing.
+	 *
+	 * @param encrypted
+	 *            the encrypted file
+	 */
 	protected void onBeforeDecrypt(final File encrypted)
 	{
 		Objects.requireNonNull(encrypted);
@@ -264,6 +278,14 @@ public class PBEFileDecryptor extends AbstractFileDecryptor
 		}
 	}
 
+	/**
+	 * Performs the actual decryption process.
+	 *
+	 * @param encrypted
+	 *            the encrypted file
+	 * @throws Exception
+	 *             if an error occurs during decryption
+	 */
 	protected void onDecrypt(final File encrypted) throws Exception
 	{
 		Objects.requireNonNull(encrypted);
