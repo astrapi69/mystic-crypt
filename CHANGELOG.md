@@ -33,6 +33,7 @@ CHANGED:
 - javadoc extended
 - replaced obsolete package.html with package-info.java files
 - replace obsolete dependency jobj-clone with new dependency jobj-cloner
+- removed all deprecated calls
 
 Version 9
 -------------

@@ -38,6 +38,7 @@ import org.meanbean.test.BeanTester;
 
 import io.github.astrapi69.crypt.api.type.KeystoreType;
 import io.github.astrapi69.crypt.data.factory.KeyStoreFactory;
+import io.github.astrapi69.file.delete.DeleteFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;
 
 /**
@@ -65,8 +66,7 @@ public class KeyTrustExtensionsTest
 		keystoreType = KeystoreType.JKS.name();
 
 		password = "secret-pw";
-
-		KeyStoreFactory.newKeyStore(keystoreType, password, keystoreFile, true);
+		KeyStoreFactory.newKeyStore(keystoreFile, keystoreType, password);
 
 		keyManagerAlgorithm = KeyManagerFactory.getDefaultAlgorithm();
 		keyManagers = KeyTrustExtensions.resolveKeyManagers(keystoreType, password, keystoreFile,
@@ -74,7 +74,7 @@ public class KeyTrustExtensionsTest
 
 		assertNotNull(keyManagers);
 		// cleanup...
-		keystoreFile.delete();
+		DeleteFileExtensions.delete(keystoreFile);
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class KeyTrustExtensionsTest
 		keystoreType = KeystoreType.JKS.name();
 
 		password = "secret-pw";
-		KeyStoreFactory.newKeyStore(keystoreType, password, keystoreFile, true);
+		KeyStoreFactory.newKeyStore(keystoreFile, keystoreType, password);
 
 		trustManagerAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
 		trustManagers = KeyTrustExtensions.resolveTrustManagers(keystoreType, password,
@@ -104,7 +104,7 @@ public class KeyTrustExtensionsTest
 
 		assertNotNull(trustManagers);
 		// cleanup...
-		keystoreFile.delete();
+		DeleteFileExtensions.delete(keystoreFile);
 	}
 
 	/**
