@@ -31,18 +31,29 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.spec.ECGenParameterSpec;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyAgreement;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.DESKeySpec;
 
 import org.junit.jupiter.api.Test;
+
+import io.github.astrapi69.crypt.data.factory.SecretKeyFactoryExtensions;
 
 public class TestKeyAgreement
 {
 
 	@Test
 	public void testKeyAgreementWithDiffieHellman()
-		throws NoSuchAlgorithmException, InvalidKeyException
+		throws NoSuchAlgorithmException, InvalidKeyException, InvalidKeySpecException,
+		NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException
 	{
 		// Step 2: Generate Key Pairs for Both Parties
 		KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("DH");
@@ -68,11 +79,31 @@ public class TestKeyAgreement
 		// Print Shared Secret (Base64 Encoded)
 		System.out.println("Shared Secret A: " + Base64.getEncoder().encodeToString(sharedSecretA));
 		System.out.println("Shared Secret B: " + Base64.getEncoder().encodeToString(sharedSecretB));
+
+		String cipherAlgorithm = "DES/ECB/PKCS5Padding";
+		String secretKeyAlgorithm = "DES";
+		SecretKey aSecretKey = SecretKeyFactoryExtensions.newSecretKey(sharedSecretA,
+			secretKeyAlgorithm);
+		// encrypt a message...
+		Cipher aCipher = Cipher.getInstance(cipherAlgorithm);
+		aCipher.init(Cipher.ENCRYPT_MODE, aSecretKey);
+		byte[] encryptedByteArray = aCipher
+			.doFinal("Free your mind and get the best out of you".getBytes());
+		SecretKeyFactory bSecretKeyFactory = SecretKeyFactory.getInstance(secretKeyAlgorithm);
+		DESKeySpec bKeySpec = new DESKeySpec(sharedSecretB);
+		SecretKey bSecretKey = bSecretKeyFactory.generateSecret(bKeySpec);
+
+		Cipher bCipher = Cipher.getInstance(cipherAlgorithm);
+		bCipher.init(Cipher.DECRYPT_MODE, bSecretKey);
+		byte[] plaintext = bCipher.doFinal(encryptedByteArray);
+		String text = new String(plaintext);
+		System.out.println("Plain text:\n" + text);
 	}
 
 	@Test
-	public void testKeyAgreementWithEllipticCurveDiffieHellman()
-		throws NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException
+	public void testKeyAgreementWithEllipticCurveDiffieHellman() throws NoSuchAlgorithmException,
+		InvalidKeyException, InvalidKeySpecException, NoSuchPaddingException,
+		IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException
 	{
 		// Step 2: Generate Key Pairs for Both Parties
 		KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("EC");
@@ -100,6 +131,25 @@ public class TestKeyAgreement
 		// Print Shared Secret (Base64 Encoded)
 		System.out.println("Shared Secret A: " + Base64.getEncoder().encodeToString(sharedSecretA));
 		System.out.println("Shared Secret B: " + Base64.getEncoder().encodeToString(sharedSecretB));
+
+		String cipherAlgorithm = "DES/ECB/PKCS5Padding";
+		String secretKeyAlgorithm = "DES";
+		SecretKey aSecretKey = SecretKeyFactoryExtensions.newSecretKey(sharedSecretA,
+			secretKeyAlgorithm);
+		// encrypt a message...
+		Cipher aCipher = Cipher.getInstance(cipherAlgorithm);
+		aCipher.init(Cipher.ENCRYPT_MODE, aSecretKey);
+		byte[] encryptedByteArray = aCipher
+			.doFinal("Free your mind and get the best out of you".getBytes());
+		SecretKeyFactory bSecretKeyFactory = SecretKeyFactory.getInstance(secretKeyAlgorithm);
+		DESKeySpec bKeySpec = new DESKeySpec(sharedSecretB);
+		SecretKey bSecretKey = bSecretKeyFactory.generateSecret(bKeySpec);
+
+		Cipher bCipher = Cipher.getInstance(cipherAlgorithm);
+		bCipher.init(Cipher.DECRYPT_MODE, bSecretKey);
+		byte[] plaintext = bCipher.doFinal(encryptedByteArray);
+		String text = new String(plaintext);
+		System.out.println("Plain text:\n" + text);
 
 	}
 }
