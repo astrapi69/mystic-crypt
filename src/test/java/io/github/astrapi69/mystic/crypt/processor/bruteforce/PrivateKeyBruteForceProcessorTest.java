@@ -35,6 +35,7 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.pkcs.PKCSException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -85,6 +86,11 @@ public class PrivateKeyBruteForceProcessorTest
 						break;
 					}
 					catch (IOException e)
+					{
+						attempt = processor.getCurrentAttempt();
+						processor.increment();
+					}
+					catch (PKCSException e)
 					{
 						attempt = processor.getCurrentAttempt();
 						processor.increment();

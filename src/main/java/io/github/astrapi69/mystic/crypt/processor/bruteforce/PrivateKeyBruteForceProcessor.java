@@ -31,6 +31,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.pkcs.PKCSException;
 
 import io.github.astrapi69.crypt.data.key.reader.EncryptedPrivateKeyReader;
 import io.github.astrapi69.crypt.data.key.reader.PrivateKeyReader;
@@ -80,6 +81,11 @@ public final class PrivateKeyBruteForceProcessor
 						break;
 					}
 					catch (IOException e)
+					{
+						attempt = processor.getCurrentAttempt();
+						processor.increment();
+					}
+					catch (PKCSException e)
 					{
 						attempt = processor.getCurrentAttempt();
 						processor.increment();

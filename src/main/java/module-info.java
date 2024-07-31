@@ -37,6 +37,7 @@ module io.github.astrapisixtynine.mystic.crypt
 	requires randomizer.main;
 	requires silly.bean.main;
 	requires silly.collection;
+	requires org.bouncycastle.pkix;
 
 
 	exports io.github.astrapi69.mystic.crypt.base;
