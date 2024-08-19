@@ -30,10 +30,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.io.File;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.Security;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.crypt.api.algorithm.AesAlgorithm;
@@ -49,6 +52,15 @@ import io.github.astrapi69.random.object.RandomStringFactory;
  */
 public class PrivateKeyDecryptorTest
 {
+
+	/**
+	 * Sets up method will be invoked before every unit test method in this class
+	 */
+	@BeforeEach
+	protected void setUp()
+	{
+		Security.addProvider(new BouncyCastleProvider());
+	}
 
 	/**
 	 * Test method for {@link PrivateKeyDecryptor} constructor with {@link PrivateKey} object
@@ -147,4 +159,5 @@ public class PrivateKeyDecryptorTest
 		expected = new String(decrypted, "UTF-8");
 		assertEquals(expected, actual);
 	}
+
 }
