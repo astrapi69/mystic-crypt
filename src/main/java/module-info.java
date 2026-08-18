@@ -29,14 +29,14 @@ module io.github.astrapisixtynine.mystic.crypt
 	requires io.github.astrapisixtynine.crypt.data;
 	requires io.github.astrapisixtynine.throwable;
 	requires jobj.cloner.main;
-	requires jobj.core.main;
+	requires io.github.astrapisixtynine.jobj.core;
 	requires org.apache.commons.codec;
 	requires org.apache.commons.io;
 	requires org.apache.commons.lang3;
 	requires org.bouncycastle.provider;
 	requires randomizer.main;
-	requires silly.bean.main;
-	requires silly.collection;
+	requires io.github.astrapisixtynine.silly.bean;
+	requires io.github.astrapisixtynine.silly.collection;
 	requires org.bouncycastle.pkix;
 
 
