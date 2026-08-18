@@ -152,7 +152,7 @@ public class PrivateKeyDecryptorTest
 
 		byte[] encrypt = encryptor.encrypt(testBytes);
 
-		decryptor = new PrivateKeyDecryptor(decryptModel);
+		decryptor = new PrivateKeyDecryptor(decryptModel, AesAlgorithm.AES);
 		assertNotNull(decryptor);
 		decrypted = decryptor.decrypt(encrypt);
 		assertNotNull(decrypted);

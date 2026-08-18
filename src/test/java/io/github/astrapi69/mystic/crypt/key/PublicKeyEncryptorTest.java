@@ -24,11 +24,13 @@
  */
 package io.github.astrapi69.mystic.crypt.key;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.security.PublicKey;
+import java.util.Arrays;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -112,5 +114,29 @@ public class PublicKeyEncryptorTest
 
 		byte[] encrypted = encryptor.encrypt(longString.getBytes(StandardCharsets.UTF_8));
 		assertNotNull(encrypted);
+	}
+
+	/**
+	 * Regression test proving the default symmetric transformation is no longer deterministic ECB:
+	 * encrypting the same plaintext twice on the same {@link PublicKeyEncryptor} instance must
+	 * produce different ciphertext each time (a fresh GCM nonce per call).
+	 *
+	 * @throws Exception
+	 *             is thrown if any error occurs
+	 */
+	@Test
+	public void testEncryptTwiceOnSameInstanceProducesDifferentCiphertext() throws Exception
+	{
+		File publickeyDerDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		File publickeyDerFile = new File(publickeyDerDir, "public.der");
+		PublicKey publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
+		PublicKeyEncryptor encryptor = new PublicKeyEncryptor(publicKey);
+		byte[] plaintext = "the quick brown fox jumps over the lazy dog"
+			.getBytes(StandardCharsets.UTF_8);
+
+		byte[] first = encryptor.encrypt(plaintext);
+		byte[] second = encryptor.encrypt(plaintext);
+
+		assertFalse(Arrays.equals(first, second));
 	}
 }

@@ -30,20 +30,25 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Objects;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.SerializationUtils;
 
 import io.github.astrapi69.crypt.api.ByteArrayDecryptor;
 import io.github.astrapi69.crypt.api.algorithm.AesAlgorithm;
+import io.github.astrapi69.crypt.api.algorithm.Algorithm;
 import io.github.astrapi69.crypt.api.algorithm.key.KeyPairWithModeAndPaddingAlgorithm;
 import io.github.astrapi69.crypt.data.factory.CipherFactory;
 import io.github.astrapi69.crypt.data.model.AesRsaCryptModel;
 import io.github.astrapi69.crypt.data.model.CryptModel;
+import io.github.astrapi69.mystic.crypt.algorithm.MysticSymmetricAlgorithm;
 import io.github.astrapi69.mystic.crypt.core.AbstractDecryptor;
 
 /**
@@ -57,6 +62,9 @@ public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey, b
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+
+	/** The symmetric transformation used to decrypt the payload. */
+	private final Algorithm symmetricAlgorithm;
 
 	/**
 	 * Instantiates a new {@link PrivateKeyDecryptor} with the given {@link CryptModel}.
@@ -82,7 +90,40 @@ public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey, b
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
+		this(model, MysticSymmetricAlgorithm.AES_GCM_NO_PADDING);
+	}
+
+	/**
+	 * Instantiates a new {@link PrivateKeyDecryptor} with the given {@link CryptModel} and an
+	 * explicit symmetric transformation. Use this to decrypt data whose symmetric leg was encrypted
+	 * with an explicitly configured, non-default transformation on {@code PublicKeyEncryptor}'s
+	 * {@code symmetricKeyModel} (e.g. the legacy {@link AesAlgorithm#AES}).
+	 *
+	 * @param model
+	 *            The crypt model.
+	 * @param symmetricAlgorithm
+	 *            the symmetric transformation that was used to encrypt the payload
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws NoSuchPaddingException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeyException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported.
+	 */
+	public PrivateKeyDecryptor(final CryptModel<Cipher, PrivateKey, byte[]> model,
+		final Algorithm symmetricAlgorithm)
+		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+	{
 		super(model);
+		Objects.requireNonNull(symmetricAlgorithm);
+		this.symmetricAlgorithm = symmetricAlgorithm;
 	}
 
 	/**
@@ -109,7 +150,7 @@ public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey, b
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		super(CryptModel.<Cipher, PrivateKey, byte[]> builder().key(privateKey).build());
+		this(CryptModel.<Cipher, PrivateKey, byte[]> builder().key(privateKey).build());
 	}
 
 	/**
@@ -120,20 +161,60 @@ public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey, b
 	{
 		AesRsaCryptModel cryptData = SerializationUtils.deserialize(encrypted);
 		byte[] decryptedKey = getModel().getCipher().doFinal(cryptData.getEncryptedKey());
-		Cipher cipher = newSymmetricCipher(decryptedKey, AesAlgorithm.AES.getAlgorithm(),
-			Cipher.DECRYPT_MODE);
-		return cipher.doFinal(cryptData.getSymmetricKeyEncryptedObject());
+		byte[] symmetricBlob = cryptData.getSymmetricKeyEncryptedObject();
+		String algorithm = symmetricAlgorithm.getAlgorithm();
+		if (isGcmTransformation(algorithm))
+		{
+			if (symmetricBlob.length < GCM_IV_LENGTH)
+			{
+				throw new IllegalArgumentException(
+					"encrypted data too short to contain a GCM initialization vector");
+			}
+			byte[] iv = ArrayUtils.subarray(symmetricBlob, 0, GCM_IV_LENGTH);
+			byte[] cipherBytes = ArrayUtils.subarray(symmetricBlob, GCM_IV_LENGTH,
+				symmetricBlob.length);
+			Cipher cipher = newSymmetricCipher(decryptedKey, algorithm, iv, Cipher.DECRYPT_MODE);
+			return cipher.doFinal(cipherBytes);
+		}
+		Cipher cipher = newSymmetricCipher(decryptedKey, algorithm, null, Cipher.DECRYPT_MODE);
+		return cipher.doFinal(symmetricBlob);
 	}
 
-	private Cipher newSymmetricCipher(byte[] decryptedKey, final String algorithm,
-		final int operationMode)
-		throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException
+	private Cipher newSymmetricCipher(byte[] decryptedKey, final String algorithm, final byte[] iv,
+		final int operationMode) throws NoSuchPaddingException, NoSuchAlgorithmException,
+		InvalidKeyException, InvalidAlgorithmParameterException
 	{
-		SecretKey originalKey = new SecretKeySpec(decryptedKey, 0, decryptedKey.length, algorithm);
+		SecretKey originalKey = new SecretKeySpec(decryptedKey, 0, decryptedKey.length,
+			AesAlgorithm.AES.getAlgorithm());
 		final Cipher cipher = Cipher.getInstance(algorithm);
-		cipher.init(operationMode, originalKey);
+		if (isGcmTransformation(algorithm))
+		{
+			cipher.init(operationMode, originalKey, new GCMParameterSpec(GCM_TAG_LENGTH_BITS, iv));
+		}
+		else
+		{
+			cipher.init(operationMode, originalKey);
+		}
 		return cipher;
 	}
+
+	/**
+	 * Checks if the given transformation is the GCM transformation used as the new default.
+	 *
+	 * @param algorithm
+	 *            the transformation to check
+	 * @return true if it is the GCM transformation
+	 */
+	private static boolean isGcmTransformation(final String algorithm)
+	{
+		return MysticSymmetricAlgorithm.AES_GCM_NO_PADDING.getAlgorithm().equals(algorithm);
+	}
+
+	/** The length in bytes of a GCM initialization vector (96-bit nonce, NIST SP 800-38D). */
+	private static final int GCM_IV_LENGTH = 12;
+
+	/** The length in bits of the GCM authentication tag. */
+	private static final int GCM_TAG_LENGTH_BITS = 128;
 
 	/**
 	 * {@inheritDoc}

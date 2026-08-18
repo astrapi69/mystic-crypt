@@ -27,7 +27,11 @@ package io.github.astrapi69.mystic.crypt.key;
 import java.security.PrivateKey;
 import java.util.Objects;
 
+import javax.crypto.Cipher;
+
+import io.github.astrapi69.crypt.api.algorithm.Algorithm;
 import io.github.astrapi69.crypt.data.hex.HexExtensions;
+import io.github.astrapi69.crypt.data.model.CryptModel;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 
 /**
@@ -54,6 +58,27 @@ public final class PrivateKeyHexStringDecryptor
 		Objects.requireNonNull(privateKey);
 		this.decryptor = RuntimeExceptionDecorator
 			.decorate(() -> new PrivateKeyStringDecryptor(privateKey));
+	}
+
+	/**
+	 * Instantiates a new {@link PrivateKeyHexStringDecryptor} with the given {@link PrivateKey} and
+	 * an explicit symmetric transformation. Use this to decrypt data whose symmetric leg was
+	 * encrypted with an explicitly configured, non-default transformation.
+	 *
+	 * @param privateKey
+	 *            The private key
+	 * @param symmetricAlgorithm
+	 *            the symmetric transformation that was used to encrypt the payload
+	 */
+	public PrivateKeyHexStringDecryptor(final PrivateKey privateKey,
+		final Algorithm symmetricAlgorithm)
+	{
+		Objects.requireNonNull(privateKey);
+		Objects.requireNonNull(symmetricAlgorithm);
+		this.decryptor = RuntimeExceptionDecorator
+			.decorate(() -> new PrivateKeyStringDecryptor(new PrivateKeyDecryptor(
+				CryptModel.<Cipher, PrivateKey, byte[]> builder().key(privateKey).build(),
+				symmetricAlgorithm)));
 	}
 
 	/**

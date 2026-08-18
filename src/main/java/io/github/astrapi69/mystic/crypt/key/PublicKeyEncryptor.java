@@ -35,7 +35,9 @@ import java.util.Objects;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.GCMParameterSpec;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.SerializationUtils;
 
 import io.github.astrapi69.crypt.api.ByteArrayEncryptor;
@@ -45,7 +47,9 @@ import io.github.astrapi69.crypt.data.factory.CipherFactory;
 import io.github.astrapi69.crypt.data.factory.SecretKeyFactoryExtensions;
 import io.github.astrapi69.crypt.data.model.AesRsaCryptModel;
 import io.github.astrapi69.crypt.data.model.CryptModel;
+import io.github.astrapi69.mystic.crypt.algorithm.MysticSymmetricAlgorithm;
 import io.github.astrapi69.mystic.crypt.core.AbstractEncryptor;
+import io.github.astrapi69.random.number.RandomByteFactory;
 
 /**
  * The class {@link PublicKeyEncryptor} can encrypt a byte array with his public key.
@@ -121,7 +125,8 @@ public class PublicKeyEncryptor extends AbstractEncryptor<Cipher, PublicKey, byt
 		this(CryptModel.<Cipher, PublicKey, byte[]> builder().key(publicKey).build(),
 			CryptModel.<Cipher, SecretKey, String> builder()
 				.key(SecretKeyFactoryExtensions.newSecretKey(AesAlgorithm.AES.getAlgorithm(), 128))
-				.algorithm(AesAlgorithm.AES).operationMode(Cipher.ENCRYPT_MODE).build());
+				.algorithm(MysticSymmetricAlgorithm.AES_GCM_NO_PADDING)
+				.operationMode(Cipher.ENCRYPT_MODE).build());
 	}
 
 	/**
@@ -131,9 +136,23 @@ public class PublicKeyEncryptor extends AbstractEncryptor<Cipher, PublicKey, byt
 	public byte[] encrypt(final byte[] toEncrypt) throws Exception
 	{
 		final SecretKey symmetricKey = symmetricKeyModel.getKey();
-		Cipher symmetricKeyCipher = newSymmetricCipher(symmetricKey,
-			symmetricKeyModel.getAlgorithm().getAlgorithm(), symmetricKeyModel.getOperationMode());
-		byte[] symmetricKeyEncryptedBytes = symmetricKeyCipher.doFinal(toEncrypt);
+		final String symmetricAlgorithm = symmetricKeyModel.getAlgorithm().getAlgorithm();
+		byte[] symmetricKeyEncryptedBytes;
+		if (isGcmTransformation(symmetricAlgorithm))
+		{
+			// a fresh nonce must be generated for every GCM encryption
+			final byte[] iv = RandomByteFactory.randomByteArray(GCM_IV_LENGTH);
+			Cipher symmetricKeyCipher = newSymmetricCipher(symmetricKey, symmetricAlgorithm, iv,
+				symmetricKeyModel.getOperationMode());
+			symmetricKeyEncryptedBytes = ArrayUtils.addAll(iv,
+				symmetricKeyCipher.doFinal(toEncrypt));
+		}
+		else
+		{
+			Cipher symmetricKeyCipher = newSymmetricCipher(symmetricKey, symmetricAlgorithm, null,
+				symmetricKeyModel.getOperationMode());
+			symmetricKeyEncryptedBytes = symmetricKeyCipher.doFinal(toEncrypt);
+		}
 		byte[] encryptedKey = getModel().getCipher().doFinal(symmetricKey.getEncoded());
 		AesRsaCryptModel cryptData = AesRsaCryptModel.builder().encryptedKey(encryptedKey)
 			.symmetricKeyEncryptedObject(symmetricKeyEncryptedBytes).build();
@@ -169,13 +188,38 @@ public class PublicKeyEncryptor extends AbstractEncryptor<Cipher, PublicKey, byt
 		return cipher;
 	}
 
-	private Cipher newSymmetricCipher(final SecretKey key, final String algorithm,
-		final int operationMode)
-		throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException
+	private Cipher newSymmetricCipher(final SecretKey key, final String algorithm, final byte[] iv,
+		final int operationMode) throws NoSuchPaddingException, NoSuchAlgorithmException,
+		InvalidKeyException, InvalidAlgorithmParameterException
 	{
 		final Cipher cipher = Cipher.getInstance(algorithm);
-		cipher.init(operationMode, key);
+		if (isGcmTransformation(algorithm))
+		{
+			cipher.init(operationMode, key, new GCMParameterSpec(GCM_TAG_LENGTH_BITS, iv));
+		}
+		else
+		{
+			cipher.init(operationMode, key);
+		}
 		return cipher;
 	}
+
+	/**
+	 * Checks if the given transformation is the GCM transformation used as the new default.
+	 *
+	 * @param algorithm
+	 *            the transformation to check
+	 * @return true if it is the GCM transformation
+	 */
+	private static boolean isGcmTransformation(final String algorithm)
+	{
+		return MysticSymmetricAlgorithm.AES_GCM_NO_PADDING.getAlgorithm().equals(algorithm);
+	}
+
+	/** The length in bytes of a GCM initialization vector (96-bit nonce, NIST SP 800-38D). */
+	private static final int GCM_IV_LENGTH = 12;
+
+	/** The length in bits of the GCM authentication tag. */
+	private static final int GCM_TAG_LENGTH_BITS = 128;
 
 }

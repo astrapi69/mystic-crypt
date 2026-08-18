@@ -98,7 +98,7 @@ public class PrivateKeyGenericEnDecryptorTest
 
 		encryptor = new PublicKeyEncryptor(encryptModel, symmetricKeyModel);
 		assertNotNull(encryptor);
-		decryptor = new PrivateKeyDecryptor(decryptModel);
+		decryptor = new PrivateKeyDecryptor(decryptModel, AesAlgorithm.AES);
 		assertNotNull(decryptor);
 
 		genericEncryptor = new PublicKeyGenericEncryptor<>(encryptor);
@@ -155,7 +155,7 @@ public class PrivateKeyGenericEnDecryptorTest
 
 		encryptor = new PublicKeyEncryptor(encryptModel, symmetricKeyModel);
 		assertNotNull(encryptor);
-		decryptor = new PrivateKeyDecryptor(decryptModel);
+		decryptor = new PrivateKeyDecryptor(decryptModel, AesAlgorithm.AES);
 		assertNotNull(decryptor);
 
 		genericEncryptor = new PublicKeyGenericEncryptor<>(encryptor);
