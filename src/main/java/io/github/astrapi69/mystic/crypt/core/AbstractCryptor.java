@@ -29,6 +29,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.Security;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
@@ -40,16 +41,17 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import io.github.astrapi69.check.Check;
 import io.github.astrapi69.crypt.api.Cryptor;
-import io.github.astrapi69.crypt.api.algorithm.SunJCEAlgorithm;
 import io.github.astrapi69.crypt.api.algorithm.compound.CompoundAlgorithm;
 import io.github.astrapi69.crypt.data.factory.AlgorithmParameterSpecFactory;
 import io.github.astrapi69.crypt.data.factory.CipherFactory;
 import io.github.astrapi69.crypt.data.factory.KeySpecFactory;
 import io.github.astrapi69.crypt.data.factory.SecretKeyFactoryExtensions;
 import io.github.astrapi69.crypt.data.model.CryptModel;
+import io.github.astrapi69.random.number.RandomByteFactory;
 
 /**
  * The abstract class {@link AbstractCryptor} provides factory methods that may or must be
@@ -70,6 +72,28 @@ public abstract class AbstractCryptor<C, K, T> implements Serializable, Cryptor
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Default length in bytes for a generated salt. Fixed at 8 bytes so a generated salt remains
+	 * compatible with the legacy {@code PBEWithMD5AndDES} algorithm as well as the current default
+	 * (the JDK's SunJCE provider rejects any salt for {@code PBEWithMD5AndDES} that isn't exactly 8
+	 * bytes long).
+	 */
+	public static final int DEFAULT_SALT_LENGTH = 8;
+
+	/**
+	 * Default PBE iteration count used when the caller does not supply one. Replaces the previous
+	 * silent default of 19 (effectively no key-stretching).
+	 */
+	public static final int DEFAULT_ITERATION_COUNT = 65536;
+
+	static
+	{
+		if (Security.getProvider("BC") == null)
+		{
+			Security.addProvider(new BouncyCastleProvider());
+		}
+	}
 
 	/** The crypto model. */
 	protected final CryptModel<C, K, T> model;
@@ -151,7 +175,7 @@ public abstract class AbstractCryptor<C, K, T> implements Serializable, Cryptor
 	{
 		if (model.getAlgorithm() == null)
 		{
-			return SunJCEAlgorithm.PBEWithMD5AndDES.getAlgorithm();
+			return CompoundAlgorithm.PBE_WITH_SHA1_AND_128BIT_AES_CBC_BC.getAlgorithm();
 		}
 		return model.getAlgorithm().getAlgorithm();
 	}
@@ -246,13 +270,16 @@ public abstract class AbstractCryptor<C, K, T> implements Serializable, Cryptor
 	{
 		if (model.getIterationCount() == null)
 		{
-			return CompoundAlgorithm.ITERATIONCOUNT;
+			return DEFAULT_ITERATION_COUNT;
 		}
 		return model.getIterationCount();
 	}
 
 	/**
-	 * Factory method for creating a new salt that will be used with the cipher object.
+	 * Factory method for creating a new salt that will be used with the cipher object. If the model
+	 * does not already have a salt, a fresh, cryptographically random salt is generated and written
+	 * back onto the model so that a {@link CryptModel} instance shared between an encryptor and a
+	 * decryptor stays internally consistent.
 	 *
 	 * @return the salt byte array
 	 */
@@ -260,7 +287,8 @@ public abstract class AbstractCryptor<C, K, T> implements Serializable, Cryptor
 	{
 		if (ArrayUtils.isEmpty(getModel().getSalt()))
 		{
-			return CompoundAlgorithm.SALT;
+			final byte[] generatedSalt = RandomByteFactory.randomByteArray(DEFAULT_SALT_LENGTH);
+			getModel().setSalt(generatedSalt);
 		}
 		return getModel().getSalt();
 	}
