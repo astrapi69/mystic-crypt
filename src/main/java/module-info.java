@@ -40,6 +40,7 @@ module io.github.astrapisixtynine.mystic.crypt
 	requires org.bouncycastle.pkix;
 
 
+	exports io.github.astrapi69.mystic.crypt.algorithm;
 	exports io.github.astrapi69.mystic.crypt.base;
 	exports io.github.astrapi69.mystic.crypt.chainable;
 	exports io.github.astrapi69.mystic.crypt.core;

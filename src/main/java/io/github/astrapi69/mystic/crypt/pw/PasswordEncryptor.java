@@ -129,43 +129,15 @@ public class PasswordEncryptor implements Serializable
 	}
 
 	/**
-	 * Hash and hex password with the given salt.
+	 * Hash and hex the given password with the given private key, salt, hash algorithm and charset.
+	 * Unlike the removed {@code hashAndHexPassword(password, salt)} convenience overloads, this
+	 * method requires the caller to supply their own secret key rather than silently using a
+	 * hardcoded, publicly known default.
 	 *
 	 * @param password
 	 *            the password
-	 * @param salt
-	 *            the salt
-	 * @return the generated {@link String} object
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the MessageDigest object fails.
-	 * @throws UnsupportedEncodingException
-	 *             is thrown by get the byte array of the private key String object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cipher object fails.
-	 * @throws InvalidKeyException
-	 *             the invalid key exception is thrown if initialization of the cipher object fails.
-	 * @throws BadPaddingException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws IllegalBlockSizeException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cipher object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 */
-	public String hashAndHexPassword(final String password, final String salt)
-		throws NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException,
-		NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException,
-		InvalidKeySpecException, InvalidAlgorithmParameterException
-	{
-		return hashAndHexPassword(password, salt, DEFAULT_ALGORITHM, DEFAULT_CHARSET);
-	}
-
-	/**
-	 * Hash and hex the given password with the given salt, hash algorithm and charset.
-	 *
-	 * @param password
-	 *            the password
+	 * @param privateKey
+	 *            the private key used to encrypt the digest
 	 * @param salt
 	 *            the salt
 	 * @param hashAlgorithm
@@ -190,14 +162,13 @@ public class PasswordEncryptor implements Serializable
 	 * @throws InvalidKeySpecException
 	 *             is thrown if generation of the SecretKey object fails.
 	 */
-	public String hashAndHexPassword(final String password, final String salt,
-		final HashAlgorithm hashAlgorithm, final Charset charset)
+	public String hashAndHexPassword(final String password, final String privateKey,
+		final String salt, final HashAlgorithm hashAlgorithm, final Charset charset)
 		throws NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException,
 		NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException,
 		InvalidKeySpecException, InvalidAlgorithmParameterException
 	{
-		final String hashedPassword = Hasher.hashAndHex(password, salt, hashAlgorithm, charset);
-		return hashedPassword;
+		return Hasher.hashAndHex(password, privateKey, salt, hashAlgorithm, charset);
 	}
 
 	/**

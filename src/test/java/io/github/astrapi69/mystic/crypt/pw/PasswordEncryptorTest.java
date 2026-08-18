@@ -25,6 +25,7 @@
 package io.github.astrapi69.mystic.crypt.pw;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.UnsupportedEncodingException;
@@ -114,46 +115,17 @@ public class PasswordEncryptorTest
 	}
 
 	/**
-	 * Test method for {@link PasswordEncryptor#hashAndHexPassword(String, String)}
-	 * 
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the MessageDigest object fails.
-	 * @throws UnsupportedEncodingException
-	 *             is thrown by get the byte array of the private key String object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cipher object fails.
-	 * @throws InvalidKeyException
-	 *             the invalid key exception is thrown if initialization of the cipher object fails.
-	 * @throws BadPaddingException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws IllegalBlockSizeException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cipher object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 */
-	@Test
-	public void testHashAndHexPasswordStringString()
-		throws InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException,
-		NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException,
-		InvalidKeySpecException, InvalidAlgorithmParameterException
-	{
-		String actual;
-		String expected;
-		String salt;
-		String password;
-		salt = "uLc34JGr";
-		password = "foo";
-		actual = instance.hashAndHexPassword(password, salt);
-		expected = "654FFC22A68F74C4E3DF480AE1FE8828EC5A3890ABCA6AFFBFCE772DB1E0E0900D96A3E63C2F2E8361960C9E4E30267B71D569A68C8DD3635531B89B9AAF6D9BEBC38BCA5F0543C8CD157D8F04133227CBDA8D4A8D243BC011EAF86E51EB4D3E4CF53B24BBEEC74904CD8D2811281338B6EF21FFADB4A5E83A04FF82FFDE96C0";
-		assertEquals(expected, actual);
-	}
-
-	/**
 	 * Test method for
-	 * {@link PasswordEncryptor#hashAndHexPassword(String, String, HashAlgorithm, Charset)}
-	 * 
+	 * {@link PasswordEncryptor#hashAndHexPassword(String, String, String, HashAlgorithm, Charset)}
+	 *
+	 * <p>
+	 * Replaces the removed {@code hashAndHexPassword(password, salt)}/
+	 * {@code hashAndHexPassword(password, salt, hashAlgorithm, charset)} overloads, which silently
+	 * used a hardcoded, publicly known key. The new overload requires an explicit private key and -
+	 * since the underlying {@link io.github.astrapi69.mystic.crypt.hex.HexableEncryptor} now uses a
+	 * fresh random GCM nonce per call - produces different ciphertext on every call even for
+	 * identical inputs, and a different private key must produce a different result too.
+	 *
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the MessageDigest object fails.
 	 * @throws UnsupportedEncodingException
@@ -172,25 +144,27 @@ public class PasswordEncryptorTest
 	 *             is thrown if generation of the SecretKey object fails.
 	 */
 	@Test
-	public void testHashAndHexPasswordStringStringHashAlgorithmCharset()
+	public void testHashAndHexPasswordWithExplicitPrivateKey()
 		throws InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException,
 		NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException,
 		InvalidKeySpecException, InvalidAlgorithmParameterException
 	{
-		String actual;
-		String expected;
-		String salt;
-		String password;
-		HashAlgorithm hashAlgorithm;
-		Charset charset;
-		salt = "uLc34JGr";
-		password = "foo";
-		hashAlgorithm = HashAlgorithm.SHA_1;
-		charset = StandardCharsets.UTF_8;
+		String salt = "uLc34JGr";
+		String password = "foo";
+		String firstPrivateKey = "1234567890123456";
+		String secondPrivateKey = "6543210987654321";
+		HashAlgorithm hashAlgorithm = HashAlgorithm.SHA_512;
+		Charset charset = StandardCharsets.UTF_8;
 
-		actual = instance.hashAndHexPassword(password, salt, hashAlgorithm, charset);
-		expected = "D3AF4F7472B54F73F6D4F1E80D9EFF45EE4303DBE481ACF4D25DFC581CAC739E9D2D51E6B01C536D34A444D224A82CE0";
-		assertEquals(expected, actual);
+		String first = instance.hashAndHexPassword(password, firstPrivateKey, salt, hashAlgorithm,
+			charset);
+		String second = instance.hashAndHexPassword(password, firstPrivateKey, salt, hashAlgorithm,
+			charset);
+		assertNotEquals(first, second);
+
+		String withDifferentKey = instance.hashAndHexPassword(password, secondPrivateKey, salt,
+			hashAlgorithm, charset);
+		assertNotEquals(first, withDifferentKey);
 	}
 
 	/**

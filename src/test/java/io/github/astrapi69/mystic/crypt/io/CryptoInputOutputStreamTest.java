@@ -32,8 +32,12 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import javax.crypto.Cipher;
+
 import org.junit.jupiter.api.Test;
 
+import io.github.astrapi69.crypt.api.algorithm.AesAlgorithm;
+import io.github.astrapi69.crypt.data.model.CryptModel;
 import io.github.astrapi69.file.delete.DeleteFileExtensions;
 import io.github.astrapi69.file.read.ReadFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;
@@ -52,6 +56,13 @@ public class CryptoInputOutputStreamTest
 	 * Test method for
 	 * {@link CryptoOutputStream#CryptoOutputStream(OutputStream, AbstractStringDecryptor)} for read
 	 * and write to decrypted file with cipher IO
+	 *
+	 * <p>
+	 * Uses the explicit legacy {@link AesAlgorithm#AES} transformation rather than the new GCM
+	 * default: {@link CryptoInputStream}/{@link CryptoOutputStream} wrap the raw, construction-time
+	 * cached {@code Cipher} directly, with no channel to transport a per-message GCM nonce between
+	 * the two independently-constructed streams, so only the (IV-less) legacy transformation is
+	 * safe to use with this streaming API.
 	 */
 	@Test
 	public void testCryptoOutputStream() throws Exception
@@ -71,7 +82,8 @@ public class CryptoInputOutputStreamTest
 		toEncrypt = new File(cryptDir, "test.txt");
 		encryptedFile = new File(cryptDir, "encryptedWithCryptoInputStream.txt");
 		key = "D1D15ED36B887AF1";
-		encryptor = new HexableEncryptor(key);
+		encryptor = new HexableEncryptor(CryptModel.<Cipher, String, String> builder().key(key)
+			.algorithm(AesAlgorithm.AES).build());
 
 		try (InputStream fis = new FileInputStream(toEncrypt);
 			InputStream cis = new CryptoInputStream(fis, encryptor);
@@ -85,7 +97,8 @@ public class CryptoInputOutputStreamTest
 		}
 
 		decryptedFile = new File(cryptDir, "decryptedWithCryptoOutputStream.txt");
-		decryptor = new HexableDecryptor(key);
+		decryptor = new HexableDecryptor(CryptModel.<Cipher, String, String> builder().key(key)
+			.algorithm(AesAlgorithm.AES).build());
 
 		try (OutputStream fileOutput = new FileOutputStream(decryptedFile);
 			OutputStream cos = new CryptoOutputStream(fileOutput, decryptor);

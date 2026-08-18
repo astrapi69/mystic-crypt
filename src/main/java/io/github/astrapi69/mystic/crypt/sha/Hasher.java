@@ -37,7 +37,6 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 import io.github.astrapi69.crypt.api.algorithm.HashAlgorithm;
-import io.github.astrapi69.crypt.api.algorithm.compound.CompoundAlgorithm;
 import io.github.astrapi69.crypt.data.hash.HashExtensions;
 import io.github.astrapi69.mystic.crypt.hex.HexableEncryptor;
 
@@ -51,44 +50,6 @@ public final class Hasher
 
 	private Hasher()
 	{
-	}
-
-	/**
-	 * Hashes and hex it with the given {@link String} object with the given parameters.
-	 *
-	 * @param hashIt
-	 *            the hash it
-	 * @param salt
-	 *            the salt
-	 * @param hashAlgorithm
-	 *            the hash algorithm
-	 * @param charset
-	 *            the charset
-	 * @return the generated {@link String} object
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the MessageDigest object fails.
-	 * @throws UnsupportedEncodingException
-	 *             is thrown by get the byte array of the private key String object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cipher object fails.
-	 * @throws InvalidKeyException
-	 *             the invalid key exception is thrown if initialization of the cipher object fails.
-	 * @throws BadPaddingException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws IllegalBlockSizeException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cipher object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 */
-	public static String hashAndHex(final String hashIt, final String salt,
-		final HashAlgorithm hashAlgorithm, final Charset charset)
-		throws NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException,
-		NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException,
-		InvalidKeySpecException, InvalidAlgorithmParameterException
-	{
-		return hashAndHex(hashIt, CompoundAlgorithm.PASSWORD, salt, hashAlgorithm, charset);
 	}
 
 	/**

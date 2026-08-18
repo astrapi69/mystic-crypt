@@ -25,6 +25,7 @@
 package io.github.astrapi69.mystic.crypt.sha;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
@@ -42,6 +43,7 @@ import org.junit.jupiter.api.Test;
 import org.meanbean.test.BeanTester;
 
 import io.github.astrapi69.crypt.api.algorithm.HashAlgorithm;
+import io.github.astrapi69.mystic.crypt.hex.HexableDecryptor;
 import io.github.astrapi69.random.object.RandomObjectFactory;
 
 /**
@@ -51,51 +53,15 @@ public class HasherTest
 {
 
 	/**
-	 * Test method for {@link Hasher#hashAndHex(String, String, HashAlgorithm, Charset)}
-	 *
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the MessageDigest object fails.
-	 * @throws UnsupportedEncodingException
-	 *             is thrown by get the byte array of the private key String object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cipher object fails.
-	 * @throws InvalidKeyException
-	 *             the invalid key exception is thrown if initialization of the cipher object fails.
-	 * @throws BadPaddingException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws IllegalBlockSizeException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cipher object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 */
-	@Test
-	public void testHashAndHex() throws NoSuchAlgorithmException, InvalidKeyException,
-		UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException,
-		BadPaddingException, InvalidKeySpecException, InvalidAlgorithmParameterException
-	{
-		String actual;
-		String expected;
-		Charset charset;
-		String password;
-		String newInsertPassword;
-		String salt;
-		HashAlgorithm hashAlgorithm;
-
-		charset = Charset.forName("UTF-8");
-		password = "xxx";
-		newInsertPassword = "xxx";
-		salt = new String(RandomObjectFactory.randomSalt(8, charset), charset);
-		hashAlgorithm = HashAlgorithm.SHA_512;
-		expected = Hasher.hashAndHex(password, salt, hashAlgorithm, charset);
-		actual = Hasher.hashAndHex(newInsertPassword, salt, hashAlgorithm, charset);
-		assertEquals(actual, expected);
-	}
-
-	/**
 	 * Test method for {@link Hasher#hashAndHex(String, String, String, HashAlgorithm, Charset)}
 	 *
+	 * <p>
+	 * Since {@link HexableEncryptor}'s default transformation now uses a fresh random GCM nonce per
+	 * call, encrypting the same digest twice must no longer produce identical ciphertext - the old
+	 * determinism assumption this test used to make is itself the security defect that was fixed.
+	 * Round-tripping through {@link HexableDecryptor} still recovers the identical digest both
+	 * times.
+	 *
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the MessageDigest object fails.
 	 * @throws UnsupportedEncodingException
@@ -114,28 +80,26 @@ public class HasherTest
 	 *             is thrown if generation of the SecretKey object fails.
 	 */
 	@Test
-	public void testHashAndHexWithPrivateKey() throws NoSuchAlgorithmException, InvalidKeyException,
-		UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException,
-		BadPaddingException, InvalidKeySpecException, InvalidAlgorithmParameterException
+	public void testHashAndHexWithPrivateKey() throws Exception
 	{
-		String actual;
-		String expected;
 		Charset charset;
 		String password;
-		String newInsertPassword;
 		String privateKey;
 		String salt;
 		HashAlgorithm hashAlgorithm;
 
 		charset = Charset.forName("UTF-8");
 		password = "xxx";
-		newInsertPassword = "xxx";
 		privateKey = new String(RandomObjectFactory.randomSalt(16, charset), charset);
 		salt = new String(RandomObjectFactory.randomSalt(8, charset), charset);
 		hashAlgorithm = HashAlgorithm.SHA_512;
-		expected = Hasher.hashAndHex(password, privateKey, salt, hashAlgorithm, charset);
-		actual = Hasher.hashAndHex(newInsertPassword, privateKey, salt, hashAlgorithm, charset);
-		assertEquals(actual, expected);
+
+		String first = Hasher.hashAndHex(password, privateKey, salt, hashAlgorithm, charset);
+		String second = Hasher.hashAndHex(password, privateKey, salt, hashAlgorithm, charset);
+		assertNotEquals(first, second);
+
+		HexableDecryptor decryptor = new HexableDecryptor(privateKey);
+		assertEquals(decryptor.decrypt(first), decryptor.decrypt(second));
 	}
 
 	/**

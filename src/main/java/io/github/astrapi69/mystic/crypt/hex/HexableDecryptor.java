@@ -34,7 +34,10 @@ import java.util.List;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import io.github.astrapi69.check.Check;
 import io.github.astrapi69.crypt.api.algorithm.AesAlgorithm;
@@ -43,8 +46,10 @@ import io.github.astrapi69.crypt.data.factory.KeySpecFactory;
 import io.github.astrapi69.crypt.data.hex.HexExtensions;
 import io.github.astrapi69.crypt.data.model.CryptModel;
 import io.github.astrapi69.crypt.data.model.CryptObjectDecorator;
+import io.github.astrapi69.mystic.crypt.algorithm.MysticSymmetricAlgorithm;
 import io.github.astrapi69.mystic.crypt.core.AbstractStringDecryptor;
 import io.github.astrapi69.mystic.crypt.decorator.CryptObjectDecoratorExtensions;
+import io.github.astrapi69.random.number.RandomByteFactory;
 
 /**
  * The class {@link HexableDecryptor} is the pendant class of {@link HexableEncryptor} and decrypts
@@ -104,7 +109,7 @@ public class HexableDecryptor extends AbstractStringDecryptor
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		this(privateKey, AesAlgorithm.AES);
+		this(privateKey, MysticSymmetricAlgorithm.AES_GCM_NO_PADDING);
 	}
 
 	/**
@@ -143,7 +148,25 @@ public class HexableDecryptor extends AbstractStringDecryptor
 	public String decrypt(final String encypted) throws Exception
 	{
 		final byte[] dec = HexExtensions.decodeHex(encypted.toCharArray());
-		final byte[] utf8 = getModel().getCipher().doFinal(dec);
+		final String algorithm = newAlgorithm();
+		final byte[] utf8;
+		if (isGcmTransformation(algorithm))
+		{
+			if (dec.length < GCM_IV_LENGTH)
+			{
+				throw new IllegalArgumentException(
+					"encrypted data too short to contain a GCM initialization vector");
+			}
+			final byte[] iv = ArrayUtils.subarray(dec, 0, GCM_IV_LENGTH);
+			final byte[] cipherBytes = ArrayUtils.subarray(dec, GCM_IV_LENGTH, dec.length);
+			final Cipher cipher = newAesCipher(getModel().getKey(), algorithm, iv,
+				Cipher.DECRYPT_MODE);
+			utf8 = cipher.doFinal(cipherBytes);
+		}
+		else
+		{
+			utf8 = getModel().getCipher().doFinal(dec);
+		}
 		String string = new String(utf8, StandardCharsets.UTF_8);
 		List<CryptObjectDecorator<String>> decorators = getModel().getDecorators();
 		if (decorators != null && !decorators.isEmpty())
@@ -165,7 +188,7 @@ public class HexableDecryptor extends AbstractStringDecryptor
 	{
 		if (getModel().getAlgorithm() == null)
 		{
-			getModel().setAlgorithm(AesAlgorithm.AES);
+			getModel().setAlgorithm(MysticSymmetricAlgorithm.AES_GCM_NO_PADDING);
 		}
 		return getModel().getAlgorithm().getAlgorithm();
 	}
@@ -179,11 +202,63 @@ public class HexableDecryptor extends AbstractStringDecryptor
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
 		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		final SecretKeySpec skeySpec = KeySpecFactory
-			.newSecretKeySpec(privateKey.getBytes(StandardCharsets.UTF_8), algorithm);
+		final byte[] iv = isGcmTransformation(algorithm)
+			? RandomByteFactory.randomByteArray(GCM_IV_LENGTH)
+			: null;
+		return newAesCipher(privateKey, algorithm, iv, operationMode);
+	}
+
+	/**
+	 * Builds a new AES {@link Cipher} for the given transformation. For the GCM transformation the
+	 * given {@code iv} is used to build a {@link GCMParameterSpec}; for any other (legacy)
+	 * transformation the {@code iv} is ignored and the cipher is initialized without parameters, as
+	 * before.
+	 *
+	 * @param privateKey
+	 *            the private key
+	 * @param algorithm
+	 *            the full cipher transformation, e.g. {@code "AES/GCM/NoPadding"} or the legacy
+	 *            bare {@code "AES"}
+	 * @param iv
+	 *            the initialization vector for GCM, or {@code null} for the legacy transformation
+	 * @param operationMode
+	 *            the operation mode for the new cipher object
+	 * @return the initialized cipher
+	 */
+	private Cipher newAesCipher(final String privateKey, final String algorithm, final byte[] iv,
+		final int operationMode) throws NoSuchAlgorithmException, NoSuchPaddingException,
+		InvalidKeyException, InvalidAlgorithmParameterException
+	{
+		final SecretKeySpec skeySpec = KeySpecFactory.newSecretKeySpec(
+			privateKey.getBytes(StandardCharsets.UTF_8), AesAlgorithm.AES.getAlgorithm());
 		final Cipher cipher = Cipher.getInstance(algorithm);
-		cipher.init(operationMode, skeySpec);
+		if (isGcmTransformation(algorithm))
+		{
+			cipher.init(operationMode, skeySpec, new GCMParameterSpec(GCM_TAG_LENGTH_BITS, iv));
+		}
+		else
+		{
+			cipher.init(operationMode, skeySpec);
+		}
 		return cipher;
 	}
+
+	/**
+	 * Checks if the given transformation is the GCM transformation used as the new default.
+	 *
+	 * @param algorithm
+	 *            the transformation to check
+	 * @return true if it is the GCM transformation
+	 */
+	private static boolean isGcmTransformation(final String algorithm)
+	{
+		return MysticSymmetricAlgorithm.AES_GCM_NO_PADDING.getAlgorithm().equals(algorithm);
+	}
+
+	/** The length in bytes of a GCM initialization vector (96-bit nonce, NIST SP 800-38D). */
+	private static final int GCM_IV_LENGTH = 12;
+
+	/** The length in bits of the GCM authentication tag. */
+	private static final int GCM_TAG_LENGTH_BITS = 128;
 
 }

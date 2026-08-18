@@ -36,9 +36,11 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.lang3.ArrayUtils;
 
 import io.github.astrapi69.check.Check;
 import io.github.astrapi69.crypt.api.algorithm.AesAlgorithm;
@@ -46,8 +48,10 @@ import io.github.astrapi69.crypt.api.algorithm.Algorithm;
 import io.github.astrapi69.crypt.data.factory.KeySpecFactory;
 import io.github.astrapi69.crypt.data.model.CryptModel;
 import io.github.astrapi69.crypt.data.model.CryptObjectDecorator;
+import io.github.astrapi69.mystic.crypt.algorithm.MysticSymmetricAlgorithm;
 import io.github.astrapi69.mystic.crypt.core.AbstractStringEncryptor;
 import io.github.astrapi69.mystic.crypt.decorator.CryptObjectDecoratorExtensions;
+import io.github.astrapi69.random.number.RandomByteFactory;
 
 /**
  * The class {@link HexableEncryptor} is the pendant class of {@link HexableDecryptor} and encrypts
@@ -107,7 +111,7 @@ public class HexableEncryptor extends AbstractStringEncryptor
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		this(privateKey, AesAlgorithm.AES);
+		this(privateKey, MysticSymmetricAlgorithm.AES_GCM_NO_PADDING);
 	}
 
 	@Override
@@ -163,9 +167,9 @@ public class HexableEncryptor extends AbstractStringEncryptor
 	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
 	 */
 	@Override
-	public String encrypt(final String string)
-		throws InvalidKeyException, UnsupportedEncodingException, NoSuchAlgorithmException,
-		NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException
+	public String encrypt(final String string) throws InvalidKeyException,
+		UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException,
+		IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException
 	{
 		List<CryptObjectDecorator<String>> decorators = getModel().getDecorators();
 		String decoratedString = string;
@@ -178,8 +182,22 @@ public class HexableEncryptor extends AbstractStringEncryptor
 			}
 		}
 		final byte[] utf8 = decoratedString.getBytes(StandardCharsets.UTF_8);
-		final byte[] encrypt = getModel().getCipher().doFinal(utf8);
-		final char[] original = Hex.encodeHex(encrypt, false);
+		final String algorithm = newAlgorithm();
+		final byte[] output;
+		if (isGcmTransformation(algorithm))
+		{
+			// a fresh nonce must be generated for every GCM encryption; the cipher cached at
+			// construction time (if any) must never be reused across calls
+			final byte[] iv = RandomByteFactory.randomByteArray(GCM_IV_LENGTH);
+			final Cipher cipher = newAesCipher(getModel().getKey(), algorithm, iv,
+				Cipher.ENCRYPT_MODE);
+			output = ArrayUtils.addAll(iv, cipher.doFinal(utf8));
+		}
+		else
+		{
+			output = getModel().getCipher().doFinal(utf8);
+		}
+		final char[] original = Hex.encodeHex(output, false);
 		return new String(original);
 	}
 
@@ -191,7 +209,7 @@ public class HexableEncryptor extends AbstractStringEncryptor
 	{
 		if (getModel().getAlgorithm() == null)
 		{
-			getModel().setAlgorithm(AesAlgorithm.AES);
+			getModel().setAlgorithm(MysticSymmetricAlgorithm.AES_GCM_NO_PADDING);
 		}
 		return getModel().getAlgorithm().getAlgorithm();
 	}
@@ -205,11 +223,63 @@ public class HexableEncryptor extends AbstractStringEncryptor
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
 		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		final SecretKeySpec skeySpec = KeySpecFactory
-			.newSecretKeySpec(privateKey.getBytes(StandardCharsets.UTF_8), algorithm);
+		final byte[] iv = isGcmTransformation(algorithm)
+			? RandomByteFactory.randomByteArray(GCM_IV_LENGTH)
+			: null;
+		return newAesCipher(privateKey, algorithm, iv, operationMode);
+	}
+
+	/**
+	 * Builds a new AES {@link Cipher} for the given transformation. For the GCM transformation the
+	 * given {@code iv} is used to build a {@link GCMParameterSpec}; for any other (legacy)
+	 * transformation the {@code iv} is ignored and the cipher is initialized without parameters, as
+	 * before.
+	 *
+	 * @param privateKey
+	 *            the private key
+	 * @param algorithm
+	 *            the full cipher transformation, e.g. {@code "AES/GCM/NoPadding"} or the legacy
+	 *            bare {@code "AES"}
+	 * @param iv
+	 *            the initialization vector for GCM, or {@code null} for the legacy transformation
+	 * @param operationMode
+	 *            the operation mode for the new cipher object
+	 * @return the initialized cipher
+	 */
+	private Cipher newAesCipher(final String privateKey, final String algorithm, final byte[] iv,
+		final int operationMode) throws NoSuchAlgorithmException, NoSuchPaddingException,
+		InvalidKeyException, InvalidAlgorithmParameterException
+	{
+		final SecretKeySpec skeySpec = KeySpecFactory.newSecretKeySpec(
+			privateKey.getBytes(StandardCharsets.UTF_8), AesAlgorithm.AES.getAlgorithm());
 		final Cipher cipher = Cipher.getInstance(algorithm);
-		cipher.init(operationMode, skeySpec);
+		if (isGcmTransformation(algorithm))
+		{
+			cipher.init(operationMode, skeySpec, new GCMParameterSpec(GCM_TAG_LENGTH_BITS, iv));
+		}
+		else
+		{
+			cipher.init(operationMode, skeySpec);
+		}
 		return cipher;
 	}
+
+	/**
+	 * Checks if the given transformation is the GCM transformation used as the new default.
+	 *
+	 * @param algorithm
+	 *            the transformation to check
+	 * @return true if it is the GCM transformation
+	 */
+	private static boolean isGcmTransformation(final String algorithm)
+	{
+		return MysticSymmetricAlgorithm.AES_GCM_NO_PADDING.getAlgorithm().equals(algorithm);
+	}
+
+	/** The length in bytes of a GCM initialization vector (96-bit nonce, NIST SP 800-38D). */
+	private static final int GCM_IV_LENGTH = 12;
+
+	/** The length in bits of the GCM authentication tag. */
+	private static final int GCM_TAG_LENGTH_BITS = 128;
 
 }
