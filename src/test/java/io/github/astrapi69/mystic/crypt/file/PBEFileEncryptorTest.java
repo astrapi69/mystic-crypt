@@ -25,8 +25,10 @@
 package io.github.astrapi69.mystic.crypt.file;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.io.File;
+import java.nio.file.Files;
 
 import javax.crypto.Cipher;
 
@@ -92,5 +94,38 @@ public class PBEFileEncryptorTest extends AbstractTestCase<String, String>
 		// clean up...
 		DeleteFileExtensions.delete(encrypted);
 		DeleteFileExtensions.delete(decrypted);
+	}
+
+	/**
+	 * Regression test for a bug where
+	 * {@link PBEFileEncryptor#newCipher(String, String, byte[], int, int)} silently discarded the
+	 * salt/iterationCount it was given, always falling back to
+	 * {@link io.github.astrapi69.crypt.api.algorithm.compound.CompoundAlgorithm}'s hardcoded
+	 * defaults regardless of what was set on the {@link CryptModel}.
+	 */
+	@Test
+	public void testEncryptWithDifferentExplicitSaltsProducesDifferentCiphertext() throws Exception
+	{
+		byte[] firstSalt = { 1, 2, 3, 4, 5, 6, 7, 8 };
+		byte[] secondSalt = { 8, 7, 6, 5, 4, 3, 2, 1 };
+		CryptModel<Cipher, String, String> firstModel = CryptModel
+			.<Cipher, String, String> builder().key(password)
+			.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).salt(firstSalt).build();
+		CryptModel<Cipher, String, String> secondModel = CryptModel
+			.<Cipher, String, String> builder().key(password)
+			.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).salt(secondSalt).build();
+
+		File firstEncrypted = new File(cryptDir, "firstSalt.enc");
+		File secondEncrypted = new File(cryptDir, "secondSalt.enc");
+		new PBEFileEncryptor(firstModel, firstEncrypted).encrypt(toEncrypt);
+		new PBEFileEncryptor(secondModel, secondEncrypted).encrypt(toEncrypt);
+
+		byte[] firstBytes = Files.readAllBytes(firstEncrypted.toPath());
+		byte[] secondBytes = Files.readAllBytes(secondEncrypted.toPath());
+		assertFalse(java.util.Arrays.equals(firstBytes, secondBytes));
+
+		// clean up...
+		DeleteFileExtensions.delete(firstEncrypted);
+		DeleteFileExtensions.delete(secondEncrypted);
 	}
 }

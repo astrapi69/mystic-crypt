@@ -271,7 +271,7 @@ public class PBEFileEncryptor extends AbstractFileEncryptor
 	{
 		String normalizedPassword = Normalizer.normalize(privateKey, Normalizer.Form.NFC);
 		final Cipher cipher = CipherFactory.newPBECipher(normalizedPassword.toCharArray(),
-			operationMode, algorithm);
+			operationMode, algorithm, salt, iterationCount);
 		return cipher;
 	}
 }

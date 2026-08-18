@@ -313,7 +313,7 @@ public class PBEFileDecryptor extends AbstractFileDecryptor
 	{
 		String normalizedPassword = Normalizer.normalize(privateKey, Normalizer.Form.NFC);
 		Cipher cipher = CipherFactory.newPBECipher(normalizedPassword.toCharArray(), operationMode,
-			algorithm);
+			algorithm, salt, iterationCount);
 		return cipher;
 	}
 }
