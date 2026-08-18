@@ -13,9 +13,9 @@ dependencies {
     implementation libs.jobj.core
     implementation libs.silly.bean
     implementation libs.jobj.cloner
-    implementation libs.bcprov.jdk15on
-    implementation libs.bcprov.ext.jdk15on
-    implementation libs.bcpkix.jdk15on
+    implementation libs.bcprov.jdk18on
+    implementation libs.bcprov.ext.jdk18on
+    implementation libs.bcpkix.jdk18on
     implementation libs.xml.base
 
     testImplementation libs.silly.strings

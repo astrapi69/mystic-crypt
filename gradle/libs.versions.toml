@@ -1,7 +1,7 @@
 [versions]
-bcpkix-jdk15on-version = "1.70"
-bcprov-ext-jdk15on-version = "1.70"
-bcprov-jdk15on-version = "1.70"
+bcpkix-jdk18on-version = "1.80"
+bcprov-ext-jdk18on-version = "1.78.1"
+bcprov-jdk18on-version = "1.80"
 checksum-up-version = "3"
 commons-codec-version = "1.17.1"
 commons-io-version = "2.16.1"
@@ -33,9 +33,9 @@ throwable-version = "3"
 xml-base-version = "2"
 
 [libraries]
-bcpkix-jdk15on = { module = "org.bouncycastle:bcpkix-jdk15on", version.ref = "bcpkix-jdk15on-version" }
-bcprov-ext-jdk15on = { module = "org.bouncycastle:bcprov-ext-jdk15on", version.ref = "bcprov-ext-jdk15on-version" }
-bcprov-jdk15on = { module = "org.bouncycastle:bcprov-jdk15on", version.ref = "bcprov-jdk15on-version" }
+bcpkix-jdk18on = { module = "org.bouncycastle:bcpkix-jdk18on", version.ref = "bcpkix-jdk18on-version" }
+bcprov-ext-jdk18on = { module = "org.bouncycastle:bcprov-ext-jdk18on", version.ref = "bcprov-ext-jdk18on-version" }
+bcprov-jdk18on = { module = "org.bouncycastle:bcprov-jdk18on", version.ref = "bcprov-jdk18on-version" }
 checksum-up = { module = "io.github.astrapi69:checksum-up", version.ref = "checksum-up-version" }
 commons-codec = { module = "commons-codec:commons-codec", version.ref = "commons-codec-version" }
 commons-io = { module = "commons-io:commons-io", version.ref = "commons-io-version" }
