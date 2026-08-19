@@ -1,9 +1,38 @@
 ## Change log
 ----------------------
 
-Version 9.2-SNAPSHOT
+Version 10.0.0
 -------------
 
+This release fixes multiple cryptographic weaknesses in the default configuration of
+PBE- and AES-based encryptors: a hardcoded fixed salt, an iteration count of 19, silent
+use of AES/ECB with no IV, PBEWithMD5AndDES as the default cipher, and a reversible
+"hash" helper that encrypted with a hardcoded, publicly known key. Ciphertext produced
+with the previous defaults cannot be decrypted with the new defaults without explicitly
+reconstructing the old configuration; see MIGRATION below.
+
+ADDED:
+
+- new class MysticSymmetricAlgorithm providing an AES/GCM/NoPadding Algorithm constant
+- AES/GCM/NoPadding support (with a fresh nonce per call) in HexableEncryptor/HexableDecryptor, PublicKeyEncryptor/PrivateKeyDecryptor and BaseByteArrayEncryptor/BaseByteArrayDecryptor
+- new explicit symmetricAlgorithm constructor parameter on PrivateKeyDecryptor, PrivateKeyHexDecryptor and PrivateKeyHexStringDecryptor, for reading data encrypted with a non-default symmetric transformation
+- new PasswordEncryptor#hashAndHexPassword(String, String, String, HashAlgorithm, Charset) overload requiring an explicit key
+- new AbstractCryptorTest, HexableEncryptorTest and coverage for the previously-untested salt/iterationCount/algorithm factory-method branches in AbstractCryptor
+
+CHANGED:
+
+- SECURITY: AbstractCryptor now generates a cryptographically random 8-byte salt and defaults to 65536 PBE iterations when the caller does not supply them, instead of the fixed CompoundAlgorithm.SALT and ITERATIONCOUNT=19; the default PBE algorithm changed from PBEWithMD5AndDES to PBEWITHSHA1AND128BITAES-CBC-BC (Bouncy Castle, now registered as a static security provider)
+- SECURITY: HexableEncryptor/HexableDecryptor and PublicKeyEncryptor/PrivateKeyDecryptor now default to AES/GCM/NoPadding with a random per-message nonce instead of bare "AES" (which silently resolved to AES/ECB/PKCS5Padding); the legacy AesAlgorithm.AES transformation remains fully usable via explicit configuration
+- SECURITY: fixed PBEFileEncryptor/PBEFileDecryptor silently discarding caller-supplied salt/iterationCount, always falling back to CompoundAlgorithm's hardcoded defaults
+- SECURITY: removed Hasher#hashAndHex(String, String, HashAlgorithm, Charset) and PasswordEncryptor#hashAndHexPassword(String, String) / (String, String, HashAlgorithm, Charset), which silently used the hardcoded, publicly known key CompoundAlgorithm.PASSWORD ("privatetopsecret") to reversibly encrypt what was presented as a one-way hash; use PasswordEncryptor#hashPassword(...) for a genuine one-way hash, or the new explicit-key hashAndHexPassword overload
+- rewrote PasswordByteEncryptor/PasswordByteDecryptor and PasswordFileEncryptor/PasswordFileDecryptor onto a shared PbeCipherSupport helper, removing duplicated cipher-initialization boilerplate; their constructors no longer eagerly build a cipher, so they no longer swallow checked exceptions internally
+- rewrote SimpleEncryptor/SimpleDecryptor as thin delegates to PasswordByteEncryptor/PasswordByteDecryptor, matching the existing PasswordStringEncryptor/PasswordStringDecryptor pattern
+- replaced deprecated StringUtils.removeStart/removeEnd with Strings.CS equivalents in CryptObjectDecoratorExtensions
+- update of dependency randomizer to the new minor version 10.3
+
+MIGRATION:
+
+- data encrypted under the previous defaults can still be decrypted by explicitly reconstructing the old configuration: for PBE-based classes, build a CryptModel with .salt(CompoundAlgorithm.SALT).iterationCount(CompoundAlgorithm.ITERATIONCOUNT).algorithm(SunJCEAlgorithm.PBEWithMD5AndDES); for HexableEncryptor/HexableDecryptor and PublicKeyEncryptor/PrivateKeyDecryptor, pass AesAlgorithm.AES explicitly (PrivateKeyDecryptor, PrivateKeyHexDecryptor and PrivateKeyHexStringDecryptor now take this as an explicit constructor parameter). Re-encrypt under the new defaults for storage going forward.
 
 Version 9.1
 -------------
