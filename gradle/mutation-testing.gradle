@@ -1,0 +1,12 @@
+// Note: running this task has been observed to leave src/test/resources/crypt/test.txt
+// deleted afterwards (some file-based test's cleanup interacting badly with PIT's forked/
+// parallel test execution). Run `git checkout -- src/test/resources/crypt/test.txt` after
+// a pitest run if the next `./gradlew build` fails with a FileNotFoundException there.
+pitest {
+    junit5PluginVersion = libs.versions.pitest.junit5.plugin.version.get()
+    pitestVersion = libs.versions.pitest.version.get()
+    targetClasses = ["io.github.astrapi69.mystic.crypt.*"]
+    threads = 4
+    outputFormats = ["HTML"]
+    timestampedReports = false
+}

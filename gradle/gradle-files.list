@@ -2,6 +2,7 @@ gradle/dependencies.gradle
 gradle/formatting.gradle
 gradle/grgit.gradle
 gradle/licensing.gradle
+gradle/mutation-testing.gradle
 gradle/packaging.gradle
 gradle/publishing.gradle
 gradle/repositories.gradle

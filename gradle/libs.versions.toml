@@ -11,6 +11,7 @@ crypt-data-version = "10.3-SNAPSHOT"
 file-worker-version = "19.0"
 gradle-plugin-grgit-version = "5.3.3"
 gradle-plugin-license-version = "0.16.1"
+gradle-plugin-pitest-version = "1.19.0"
 gradle-plugin-spotless-version = "8.10.0"
 gradle-plugin-version-catalog-update-version = "1.1.1"
 gradle-plugin-versions-version = "0.61.0"
@@ -22,6 +23,8 @@ junit-jupiter-params-version = "6.1.3"
 junit-jupiter-version = "6.1.3"
 junit-platform-launcher-version = "6.1.3"
 meanbean-version = "3.0.0-M9"
+pitest-junit5-plugin-version = "1.2.3"
+pitest-version = "1.25.9"
 random-beans-version = "3.9.0"
 randomizer-version = "10.3"
 silly-bean-version = "3.0"
@@ -73,5 +76,6 @@ unit-testing = [
 gradle-versions-plugin = { id = "com.github.ben-manes.versions", version.ref = "gradle-plugin-versions-version" }
 grgit-gradle = { id = "org.ajoberstar.grgit", version.ref = "gradle-plugin-grgit-version" }
 license-gradle-plugin = { id = "com.github.hierynomus.license", version.ref = "gradle-plugin-license-version" }
+pitest-gradle-plugin = { id = "info.solidsoft.pitest", version.ref = "gradle-plugin-pitest-version" }
 spotless-plugin-gradle = { id = "com.diffplug.spotless", version.ref = "gradle-plugin-spotless-version" }
 version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "gradle-plugin-version-catalog-update-version" }
