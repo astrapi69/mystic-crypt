@@ -30,6 +30,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.Arrays;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -99,9 +100,16 @@ public final class X25519KeyExchange
 	{
 		final byte[] rawSharedSecret = KeyAgreementFactory.newSharedSecret(privateKey, publicKey,
 			KeyAgreementAlgorithm.X25519.getAlgorithm(), null, true);
-		final byte[] derivedKeyBytes = HkdfExtensions.deriveKey(rawSharedSecret, null, null,
-			keyLengthBytes);
-		return new SecretKeySpec(derivedKeyBytes, AesAlgorithm.AES.getAlgorithm());
+		try
+		{
+			final byte[] derivedKeyBytes = HkdfExtensions.deriveKey(rawSharedSecret, null, null,
+				keyLengthBytes);
+			return new SecretKeySpec(derivedKeyBytes, AesAlgorithm.AES.getAlgorithm());
+		}
+		finally
+		{
+			Arrays.fill(rawSharedSecret, (byte)0);
+		}
 	}
 
 }

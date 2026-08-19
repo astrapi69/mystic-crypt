@@ -25,6 +25,7 @@
 package io.github.astrapi69.mystic.crypt.pw;
 
 import java.security.MessageDigest;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Objects;
 
@@ -38,6 +39,10 @@ import io.github.astrapi69.random.number.RandomByteFactory;
  * ({@code $argon2id$v=19$m=<memoryKB>,t=<iterations>,p=<parallelism>$<salt>$<hash>}) so the
  * parameters travel with the hash - a hash produced with one set of parameters can still be
  * verified even if the defaults below change later.
+ * <p>
+ * Both {@link #hash(char[])} and {@link #verify(char[], String)} zero the given {@code password}
+ * array before returning (success, failure, or exception) - callers must not reuse the array
+ * afterwards.
  */
 final class Argon2Support
 {
@@ -74,10 +79,17 @@ final class Argon2Support
 	static String hash(final char[] password)
 	{
 		Objects.requireNonNull(password);
-		final byte[] salt = RandomByteFactory.randomByteArray(SALT_LENGTH);
-		final byte[] hash = rawHash(password, salt, DEFAULT_ITERATIONS, DEFAULT_MEMORY_KB,
-			DEFAULT_PARALLELISM);
-		return encode(salt, hash, DEFAULT_ITERATIONS, DEFAULT_MEMORY_KB, DEFAULT_PARALLELISM);
+		try
+		{
+			final byte[] salt = RandomByteFactory.randomByteArray(SALT_LENGTH);
+			final byte[] hash = rawHash(password, salt, DEFAULT_ITERATIONS, DEFAULT_MEMORY_KB,
+				DEFAULT_PARALLELISM);
+			return encode(salt, hash, DEFAULT_ITERATIONS, DEFAULT_MEMORY_KB, DEFAULT_PARALLELISM);
+		}
+		finally
+		{
+			Arrays.fill(password, '\0');
+		}
 	}
 
 	/**
@@ -94,18 +106,25 @@ final class Argon2Support
 	{
 		Objects.requireNonNull(password);
 		Objects.requireNonNull(encoded);
-		final Decoded decoded;
 		try
 		{
-			decoded = decode(encoded);
+			final Decoded decoded;
+			try
+			{
+				decoded = decode(encoded);
+			}
+			catch (final RuntimeException malformed)
+			{
+				return false;
+			}
+			final byte[] actualHash = rawHash(password, decoded.salt, decoded.iterations,
+				decoded.memoryKB, decoded.parallelism);
+			return MessageDigest.isEqual(decoded.hash, actualHash);
 		}
-		catch (final RuntimeException malformed)
+		finally
 		{
-			return false;
+			Arrays.fill(password, '\0');
 		}
-		final byte[] actualHash = rawHash(password, decoded.salt, decoded.iterations,
-			decoded.memoryKB, decoded.parallelism);
-		return MessageDigest.isEqual(decoded.hash, actualHash);
 	}
 
 	private static byte[] rawHash(final char[] password, final byte[] salt, final int iterations,

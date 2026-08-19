@@ -36,6 +36,8 @@ import org.junit.jupiter.api.Test;
 public class Pbkdf2SupportTest
 {
 
+	private static final String PASSWORD = "correct horse battery staple";
+
 	/**
 	 * Test method for {@link Pbkdf2Support#hash(char[])} and
 	 * {@link Pbkdf2Support#verify(char[], String)}
@@ -43,10 +45,9 @@ public class Pbkdf2SupportTest
 	@Test
 	public void testHashAndVerify()
 	{
-		final char[] password = "correct horse battery staple".toCharArray();
-		final String encoded = Pbkdf2Support.hash(password);
+		final String encoded = Pbkdf2Support.hash(PASSWORD.toCharArray());
 
-		assertTrue(Pbkdf2Support.verify(password, encoded));
+		assertTrue(Pbkdf2Support.verify(PASSWORD.toCharArray(), encoded));
 	}
 
 	/**
@@ -55,7 +56,7 @@ public class Pbkdf2SupportTest
 	@Test
 	public void testVerifyFailsForWrongPassword()
 	{
-		final String encoded = Pbkdf2Support.hash("correct horse battery staple".toCharArray());
+		final String encoded = Pbkdf2Support.hash(PASSWORD.toCharArray());
 
 		assertFalse(Pbkdf2Support.verify("wrong password".toCharArray(), encoded));
 	}
@@ -67,13 +68,12 @@ public class Pbkdf2SupportTest
 	@Test
 	public void testHashIsNonDeterministic()
 	{
-		final char[] password = "correct horse battery staple".toCharArray();
-		final String first = Pbkdf2Support.hash(password);
-		final String second = Pbkdf2Support.hash(password);
+		final String first = Pbkdf2Support.hash(PASSWORD.toCharArray());
+		final String second = Pbkdf2Support.hash(PASSWORD.toCharArray());
 
 		assertNotEquals(first, second);
-		assertTrue(Pbkdf2Support.verify(password, first));
-		assertTrue(Pbkdf2Support.verify(password, second));
+		assertTrue(Pbkdf2Support.verify(PASSWORD.toCharArray(), first));
+		assertTrue(Pbkdf2Support.verify(PASSWORD.toCharArray(), second));
 	}
 
 	/**
@@ -82,12 +82,11 @@ public class Pbkdf2SupportTest
 	@Test
 	public void testVerifyFailsForTamperedHash()
 	{
-		final char[] password = "correct horse battery staple".toCharArray();
-		final String encoded = Pbkdf2Support.hash(password);
+		final String encoded = Pbkdf2Support.hash(PASSWORD.toCharArray());
 		final String tampered = encoded.substring(0, encoded.length() - 1)
 			+ (encoded.charAt(encoded.length() - 1) == 'A' ? 'B' : 'A');
 
-		assertFalse(Pbkdf2Support.verify(password, tampered));
+		assertFalse(Pbkdf2Support.verify(PASSWORD.toCharArray(), tampered));
 	}
 
 	/**
@@ -97,6 +96,41 @@ public class Pbkdf2SupportTest
 	public void testVerifyFailsForMalformedEncoded()
 	{
 		assertFalse(Pbkdf2Support.verify("password".toCharArray(), "not-a-valid-hash"));
+	}
+
+	/**
+	 * Test method for {@link Pbkdf2Support#hash(char[])} confirming the password array is zeroed
+	 * after use
+	 */
+	@Test
+	public void testHashZeroesPasswordArray()
+	{
+		final char[] password = PASSWORD.toCharArray();
+
+		Pbkdf2Support.hash(password);
+
+		for (final char c : password)
+		{
+			assertTrue(c == '\0');
+		}
+	}
+
+	/**
+	 * Test method for {@link Pbkdf2Support#verify(char[], String)} confirming the password array is
+	 * zeroed after use
+	 */
+	@Test
+	public void testVerifyZeroesPasswordArray()
+	{
+		final String encoded = Pbkdf2Support.hash(PASSWORD.toCharArray());
+		final char[] password = PASSWORD.toCharArray();
+
+		Pbkdf2Support.verify(password, encoded);
+
+		for (final char c : password)
+		{
+			assertTrue(c == '\0');
+		}
 	}
 
 }

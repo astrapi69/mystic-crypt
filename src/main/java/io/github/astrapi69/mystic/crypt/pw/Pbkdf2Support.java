@@ -27,6 +27,7 @@ package io.github.astrapi69.mystic.crypt.pw;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Objects;
 
@@ -44,6 +45,10 @@ import io.github.astrapi69.random.number.RandomByteFactory;
  * parallelization on GPUs/ASICs even at a high iteration count. Prefer
  * {@link PasswordEncryptor#hashPasswordArgon2id(String)} for new code; this exists for interop with
  * systems that specifically require PBKDF2.
+ * <p>
+ * Both {@link #hash(char[])} and {@link #verify(char[], String)} zero the given {@code password}
+ * array before returning (success, failure, or exception) - callers must not reuse the array
+ * afterwards.
  */
 final class Pbkdf2Support
 {
@@ -80,9 +85,16 @@ final class Pbkdf2Support
 	static String hash(final char[] password)
 	{
 		Objects.requireNonNull(password);
-		final byte[] salt = RandomByteFactory.randomByteArray(SALT_LENGTH);
-		final byte[] hash = rawHash(password, salt, DEFAULT_ITERATIONS);
-		return encode(salt, hash, DEFAULT_ITERATIONS);
+		try
+		{
+			final byte[] salt = RandomByteFactory.randomByteArray(SALT_LENGTH);
+			final byte[] hash = rawHash(password, salt, DEFAULT_ITERATIONS);
+			return encode(salt, hash, DEFAULT_ITERATIONS);
+		}
+		finally
+		{
+			Arrays.fill(password, '\0');
+		}
 	}
 
 	/**
@@ -99,17 +111,24 @@ final class Pbkdf2Support
 	{
 		Objects.requireNonNull(password);
 		Objects.requireNonNull(encoded);
-		final Decoded decoded;
 		try
 		{
-			decoded = decode(encoded);
+			final Decoded decoded;
+			try
+			{
+				decoded = decode(encoded);
+			}
+			catch (final RuntimeException malformed)
+			{
+				return false;
+			}
+			final byte[] actualHash = rawHash(password, decoded.salt, decoded.iterations);
+			return MessageDigest.isEqual(decoded.hash, actualHash);
 		}
-		catch (final RuntimeException malformed)
+		finally
 		{
-			return false;
+			Arrays.fill(password, '\0');
 		}
-		final byte[] actualHash = rawHash(password, decoded.salt, decoded.iterations);
-		return MessageDigest.isEqual(decoded.hash, actualHash);
 	}
 
 	private static byte[] rawHash(final char[] password, final byte[] salt, final int iterations)
