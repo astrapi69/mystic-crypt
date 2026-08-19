@@ -243,4 +243,37 @@ public class PasswordEncryptor implements Serializable
 		return Argon2Support.verify(password.toCharArray(), encodedHash);
 	}
 
+	/**
+	 * Hashes the given password with PBKDF2-HMAC-SHA256. A fresh random salt is generated per call;
+	 * the salt and iteration count are encoded together with the hash in the returned string, so
+	 * {@link #matchPbkdf2(String, String)} needs only the password and this string to verify.
+	 * <p>
+	 * Prefer {@link #hashPasswordArgon2id(String)} for new code: PBKDF2 is not memory-hard and is
+	 * comparatively cheap to attack in parallel on GPUs/ASICs even at a high iteration count. This
+	 * method exists for interop with systems that specifically require PBKDF2.
+	 *
+	 * @param password
+	 *            the password
+	 * @return the encoded PBKDF2 hash
+	 */
+	public String hashPasswordPbkdf2(final String password)
+	{
+		return Pbkdf2Support.hash(password.toCharArray());
+	}
+
+	/**
+	 * Verifies the given password against a hash previously produced by
+	 * {@link #hashPasswordPbkdf2(String)}.
+	 *
+	 * @param password
+	 *            the password to check
+	 * @param encodedHash
+	 *            the encoded PBKDF2 hash to check against
+	 * @return true if the password matches
+	 */
+	public boolean matchPbkdf2(final String password, final String encodedHash)
+	{
+		return Pbkdf2Support.verify(password.toCharArray(), encodedHash);
+	}
+
 }
