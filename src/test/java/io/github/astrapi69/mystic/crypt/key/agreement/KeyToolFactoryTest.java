@@ -56,7 +56,7 @@ import io.github.astrapi69.crypt.data.model.Validity;
 import io.github.astrapi69.crypt.data.model.X509CertificateV1Info;
 import io.github.astrapi69.crypt.data.model.X509CertificateV3Info;
 import io.github.astrapi69.file.create.FileFactory;
-import io.github.astrapi69.file.create.FileInfo;
+import io.github.astrapi69.file.create.model.FileInfo;
 import io.github.astrapi69.file.delete.DeleteFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;
 import io.github.astrapi69.random.number.RandomBigIntegerFactory;

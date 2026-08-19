@@ -22,6 +22,11 @@ CHANGED:
 
 - requires crypt-api 9.6 and crypt-data 10.2 (new Ed25519 constant, HkdfExtensions,
   SignatureFactory)
+- updated file-worker to 19.0 and pinned jacoco to 0.8.15; fixed module-info.java for
+  file-worker's renamed JPMS module (now io.github.astrapisixtynine.file.worker) and updated
+  test imports for FileInfo's new package (io.github.astrapi69.file.create.model)
+- Ed25519Verifier#verify no longer declares SignatureException: SignatureFactory#verify now
+  returns false for malformed/tampered signatures instead of letting the exception escape
 
 Version 10.0.0
 -------------

@@ -2,6 +2,10 @@ test {
     useJUnitPlatform()
 }
 
+jacoco {
+    toolVersion = '0.8.15'
+}
+
 jacocoTestReport {
     reports {
         xml.required.set(true)

@@ -27,7 +27,6 @@ package io.github.astrapi69.mystic.crypt.key;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
-import java.security.SignatureException;
 import java.util.Objects;
 
 import io.github.astrapi69.crypt.api.algorithm.key.KeyPairGeneratorAlgorithm;
@@ -61,17 +60,15 @@ public class Ed25519Verifier
 	 *            the data that was signed
 	 * @param signature
 	 *            the signature to verify
-	 * @return true if the signature is valid for the given data and public key
+	 * @return true if the signature is valid for the given data and public key, false if it is
+	 *         invalid or malformed
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the {@link java.security.Signature} object fails
 	 * @throws InvalidKeyException
 	 *             is thrown if the public key is invalid for Ed25519
-	 * @throws SignatureException
-	 *             is thrown if the {@link java.security.Signature} object is not properly
-	 *             initialized
 	 */
 	public boolean verify(final byte[] data, final byte[] signature)
-		throws NoSuchAlgorithmException, InvalidKeyException, SignatureException
+		throws NoSuchAlgorithmException, InvalidKeyException
 	{
 		return SignatureFactory.verify(publicKey, KeyPairGeneratorAlgorithm.Ed25519.getAlgorithm(),
 			data, signature);

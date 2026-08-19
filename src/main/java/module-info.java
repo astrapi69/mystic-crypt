@@ -24,7 +24,7 @@
 module io.github.astrapisixtynine.mystic.crypt
 {
 	requires com.google.common;
-	requires file.worker;
+	requires io.github.astrapisixtynine.file.worker;
 	requires io.github.astrapi69.crypt.api;
 	requires io.github.astrapisixtynine.crypt.data;
 	requires io.github.astrapisixtynine.throwable;
