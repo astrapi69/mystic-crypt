@@ -121,4 +121,37 @@ public class BaseByteArrayEnDecryptorTest
 			new String(decryptor.decrypt(secondEncrypted), StandardCharsets.UTF_8));
 	}
 
+	/**
+	 * Test method proving ChaCha20-Poly1305 support: a caller who explicitly opts into
+	 * {@link MysticSymmetricAlgorithm#CHACHA20_POLY1305} must be able to round-trip through
+	 * {@link BaseByteArrayEncryptor}/{@link BaseByteArrayDecryptor}, and two encryptions of the
+	 * same plaintext must produce different ciphertext (a fresh nonce per call). ChaCha20 keys must
+	 * be exactly 32 bytes (256 bits), unlike AES which also accepts 128/192 bits.
+	 *
+	 * @throws Exception
+	 *             is thrown if a security error occurs
+	 */
+	@Test
+	public void testEncryptDecryptWithChaCha20Poly1305() throws Exception
+	{
+		SecretKey chaChaKey = SecretKeyFactoryExtensions.newSecretKey(AesAlgorithm.AES.name(), 256);
+		CryptModel<Cipher, SecretKey, String> chaChaModel = CryptModel
+			.<Cipher, SecretKey, String> builder().key(chaChaKey)
+			.algorithm(MysticSymmetricAlgorithm.CHACHA20_POLY1305).build();
+
+		BaseByteArrayEncryptor encryptor = new BaseByteArrayEncryptor(chaChaModel);
+		BaseByteArrayDecryptor decryptor = new BaseByteArrayDecryptor(chaChaModel);
+		byte[] plainMessageBytes = "the quick brown fox jumps over the lazy dog"
+			.getBytes(StandardCharsets.UTF_8);
+
+		byte[] firstEncrypted = encryptor.encrypt(plainMessageBytes);
+		byte[] secondEncrypted = encryptor.encrypt(plainMessageBytes);
+		assertFalse(Arrays.equals(firstEncrypted, secondEncrypted));
+
+		assertEquals(new String(plainMessageBytes, StandardCharsets.UTF_8),
+			new String(decryptor.decrypt(firstEncrypted), StandardCharsets.UTF_8));
+		assertEquals(new String(plainMessageBytes, StandardCharsets.UTF_8),
+			new String(decryptor.decrypt(secondEncrypted), StandardCharsets.UTF_8));
+	}
+
 }

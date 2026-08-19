@@ -34,7 +34,14 @@ public enum MysticSymmetricAlgorithm implements Algorithm
 {
 
 	/** The enum constant for the 'AES/GCM/NoPadding' transformation */
-	AES_GCM_NO_PADDING("AES/GCM/NoPadding");
+	AES_GCM_NO_PADDING("AES/GCM/NoPadding"),
+
+	/**
+	 * The enum constant for the 'ChaCha20-Poly1305' transformation, natively supported by the JDK
+	 * (SunJCE). An authenticated cipher like AES/GCM/NoPadding, typically faster in software on
+	 * platforms without AES hardware acceleration (e.g. older ARM chips).
+	 */
+	CHACHA20_POLY1305("ChaCha20-Poly1305");
 
 	/** The algorithm. */
 	private final String algorithm;

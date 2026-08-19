@@ -34,6 +34,7 @@ import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.spec.IvParameterSpec;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -113,17 +114,17 @@ public class BaseByteArrayDecryptor extends AbstractByteArrayDecryptor
 	public byte[] decrypt(byte[] encrypted) throws Exception
 	{
 		final String algorithm = newAlgorithm();
-		if (isGcmTransformation(algorithm))
+		if (needsRandomNonce(algorithm))
 		{
-			if (encrypted.length < GCM_IV_LENGTH)
+			if (encrypted.length < NONCE_LENGTH)
 			{
 				throw new IllegalArgumentException(
-					"encrypted data too short to contain a GCM initialization vector");
+					"encrypted data too short to contain a nonce/initialization vector");
 			}
-			final byte[] iv = ArrayUtils.subarray(encrypted, 0, GCM_IV_LENGTH);
-			final byte[] cipherBytes = ArrayUtils.subarray(encrypted, GCM_IV_LENGTH,
+			final byte[] iv = ArrayUtils.subarray(encrypted, 0, NONCE_LENGTH);
+			final byte[] cipherBytes = ArrayUtils.subarray(encrypted, NONCE_LENGTH,
 				encrypted.length);
-			final Cipher cipher = newAesCipher(getModel().getKey(), algorithm, iv,
+			final Cipher cipher = newSymmetricCipher(getModel().getKey(), algorithm, iv,
 				newOperationMode());
 			return cipher.doFinal(cipherBytes);
 		}
@@ -140,28 +141,30 @@ public class BaseByteArrayDecryptor extends AbstractByteArrayDecryptor
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
 		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		final byte[] iv = isGcmTransformation(algorithm)
-			? RandomByteFactory.randomByteArray(GCM_IV_LENGTH)
+		final byte[] iv = needsRandomNonce(algorithm)
+			? RandomByteFactory.randomByteArray(NONCE_LENGTH)
 			: null;
-		return newAesCipher(key, algorithm, iv, operationMode);
+		return newSymmetricCipher(key, algorithm, iv, operationMode);
 	}
 
 	/**
-	 * Builds a new {@link Cipher} for the given transformation. For the GCM transformation the
-	 * given {@code iv} is used to build a {@link GCMParameterSpec}; for any other transformation
-	 * the {@code iv} is ignored and the cipher is initialized without parameters, as before.
+	 * Builds a new {@link Cipher} for the given transformation. For GCM the given {@code iv} is
+	 * used to build a {@link GCMParameterSpec}; for ChaCha20-Poly1305 it is used to build a plain
+	 * {@link IvParameterSpec}; for any other transformation the {@code iv} is ignored and the
+	 * cipher is initialized without parameters, as before.
 	 *
 	 * @param key
 	 *            the key
 	 * @param algorithm
 	 *            the full cipher transformation
 	 * @param iv
-	 *            the initialization vector for GCM, or {@code null} for any other transformation
+	 *            the initialization vector/nonce, or {@code null} for a transformation that doesn't
+	 *            need one
 	 * @param operationMode
 	 *            the operation mode for the new cipher object
 	 * @return the initialized cipher
 	 */
-	private Cipher newAesCipher(final SecretKey key, final String algorithm, final byte[] iv,
+	private Cipher newSymmetricCipher(final SecretKey key, final String algorithm, final byte[] iv,
 		final int operationMode) throws NoSuchAlgorithmException, NoSuchPaddingException,
 		InvalidKeyException, InvalidAlgorithmParameterException
 	{
@@ -169,6 +172,10 @@ public class BaseByteArrayDecryptor extends AbstractByteArrayDecryptor
 		if (isGcmTransformation(algorithm))
 		{
 			cipher.init(operationMode, key, new GCMParameterSpec(GCM_TAG_LENGTH_BITS, iv));
+		}
+		else if (isChaCha20Poly1305Transformation(algorithm))
+		{
+			cipher.init(operationMode, key, new IvParameterSpec(iv));
 		}
 		else
 		{
@@ -178,7 +185,7 @@ public class BaseByteArrayDecryptor extends AbstractByteArrayDecryptor
 	}
 
 	/**
-	 * Checks if the given transformation is the GCM transformation used as the new default.
+	 * Checks if the given transformation is the GCM transformation used as the default.
 	 *
 	 * @param algorithm
 	 *            the transformation to check
@@ -189,8 +196,36 @@ public class BaseByteArrayDecryptor extends AbstractByteArrayDecryptor
 		return MysticSymmetricAlgorithm.AES_GCM_NO_PADDING.getAlgorithm().equals(algorithm);
 	}
 
-	/** The length in bytes of a GCM initialization vector (96-bit nonce, NIST SP 800-38D). */
-	private static final int GCM_IV_LENGTH = 12;
+	/**
+	 * Checks if the given transformation is the ChaCha20-Poly1305 transformation.
+	 *
+	 * @param algorithm
+	 *            the transformation to check
+	 * @return true if it is the ChaCha20-Poly1305 transformation
+	 */
+	private static boolean isChaCha20Poly1305Transformation(final String algorithm)
+	{
+		return MysticSymmetricAlgorithm.CHACHA20_POLY1305.getAlgorithm().equals(algorithm);
+	}
+
+	/**
+	 * Checks if the given transformation requires a fresh random nonce/IV that was prepended to the
+	 * ciphertext.
+	 *
+	 * @param algorithm
+	 *            the transformation to check
+	 * @return true if a nonce is required
+	 */
+	private static boolean needsRandomNonce(final String algorithm)
+	{
+		return isGcmTransformation(algorithm) || isChaCha20Poly1305Transformation(algorithm);
+	}
+
+	/**
+	 * The length in bytes of a nonce/initialization vector (96-bit, shared by GCM per NIST SP
+	 * 800-38D and by ChaCha20-Poly1305 per RFC 8439).
+	 */
+	private static final int NONCE_LENGTH = 12;
 
 	/** The length in bits of the GCM authentication tag. */
 	private static final int GCM_TAG_LENGTH_BITS = 128;

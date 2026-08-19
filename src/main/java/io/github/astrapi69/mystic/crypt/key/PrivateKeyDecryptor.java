@@ -36,6 +36,7 @@ import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -163,15 +164,15 @@ public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey, b
 		byte[] decryptedKey = getModel().getCipher().doFinal(cryptData.getEncryptedKey());
 		byte[] symmetricBlob = cryptData.getSymmetricKeyEncryptedObject();
 		String algorithm = symmetricAlgorithm.getAlgorithm();
-		if (isGcmTransformation(algorithm))
+		if (needsRandomNonce(algorithm))
 		{
-			if (symmetricBlob.length < GCM_IV_LENGTH)
+			if (symmetricBlob.length < NONCE_LENGTH)
 			{
 				throw new IllegalArgumentException(
-					"encrypted data too short to contain a GCM initialization vector");
+					"encrypted data too short to contain a nonce/initialization vector");
 			}
-			byte[] iv = ArrayUtils.subarray(symmetricBlob, 0, GCM_IV_LENGTH);
-			byte[] cipherBytes = ArrayUtils.subarray(symmetricBlob, GCM_IV_LENGTH,
+			byte[] iv = ArrayUtils.subarray(symmetricBlob, 0, NONCE_LENGTH);
+			byte[] cipherBytes = ArrayUtils.subarray(symmetricBlob, NONCE_LENGTH,
 				symmetricBlob.length);
 			Cipher cipher = newSymmetricCipher(decryptedKey, algorithm, iv, Cipher.DECRYPT_MODE);
 			return cipher.doFinal(cipherBytes);
@@ -191,6 +192,10 @@ public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey, b
 		{
 			cipher.init(operationMode, originalKey, new GCMParameterSpec(GCM_TAG_LENGTH_BITS, iv));
 		}
+		else if (isChaCha20Poly1305Transformation(algorithm))
+		{
+			cipher.init(operationMode, originalKey, new IvParameterSpec(iv));
+		}
 		else
 		{
 			cipher.init(operationMode, originalKey);
@@ -199,7 +204,7 @@ public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey, b
 	}
 
 	/**
-	 * Checks if the given transformation is the GCM transformation used as the new default.
+	 * Checks if the given transformation is the GCM transformation used as the default.
 	 *
 	 * @param algorithm
 	 *            the transformation to check
@@ -210,8 +215,36 @@ public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey, b
 		return MysticSymmetricAlgorithm.AES_GCM_NO_PADDING.getAlgorithm().equals(algorithm);
 	}
 
-	/** The length in bytes of a GCM initialization vector (96-bit nonce, NIST SP 800-38D). */
-	private static final int GCM_IV_LENGTH = 12;
+	/**
+	 * Checks if the given transformation is the ChaCha20-Poly1305 transformation.
+	 *
+	 * @param algorithm
+	 *            the transformation to check
+	 * @return true if it is the ChaCha20-Poly1305 transformation
+	 */
+	private static boolean isChaCha20Poly1305Transformation(final String algorithm)
+	{
+		return MysticSymmetricAlgorithm.CHACHA20_POLY1305.getAlgorithm().equals(algorithm);
+	}
+
+	/**
+	 * Checks if the given transformation requires a fresh random nonce/IV that was prepended to the
+	 * ciphertext.
+	 *
+	 * @param algorithm
+	 *            the transformation to check
+	 * @return true if a nonce is required
+	 */
+	private static boolean needsRandomNonce(final String algorithm)
+	{
+		return isGcmTransformation(algorithm) || isChaCha20Poly1305Transformation(algorithm);
+	}
+
+	/**
+	 * The length in bytes of a nonce/initialization vector (96-bit, shared by GCM per NIST SP
+	 * 800-38D and by ChaCha20-Poly1305 per RFC 8439).
+	 */
+	private static final int NONCE_LENGTH = 12;
 
 	/** The length in bits of the GCM authentication tag. */
 	private static final int GCM_TAG_LENGTH_BITS = 128;

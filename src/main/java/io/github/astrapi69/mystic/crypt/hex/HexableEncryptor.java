@@ -37,6 +37,7 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Hex;
@@ -184,12 +185,12 @@ public class HexableEncryptor extends AbstractStringEncryptor
 		final byte[] utf8 = decoratedString.getBytes(StandardCharsets.UTF_8);
 		final String algorithm = newAlgorithm();
 		final byte[] output;
-		if (isGcmTransformation(algorithm))
+		if (needsRandomNonce(algorithm))
 		{
-			// a fresh nonce must be generated for every GCM encryption; the cipher cached at
-			// construction time (if any) must never be reused across calls
-			final byte[] iv = RandomByteFactory.randomByteArray(GCM_IV_LENGTH);
-			final Cipher cipher = newAesCipher(getModel().getKey(), algorithm, iv,
+			// a fresh nonce must be generated for every encryption with this transformation; the
+			// cipher cached at construction time (if any) must never be reused across calls
+			final byte[] iv = RandomByteFactory.randomByteArray(NONCE_LENGTH);
+			final Cipher cipher = newSymmetricCipher(getModel().getKey(), algorithm, iv,
 				Cipher.ENCRYPT_MODE);
 			output = ArrayUtils.addAll(iv, cipher.doFinal(utf8));
 		}
@@ -223,17 +224,17 @@ public class HexableEncryptor extends AbstractStringEncryptor
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
 		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		final byte[] iv = isGcmTransformation(algorithm)
-			? RandomByteFactory.randomByteArray(GCM_IV_LENGTH)
+		final byte[] iv = needsRandomNonce(algorithm)
+			? RandomByteFactory.randomByteArray(NONCE_LENGTH)
 			: null;
-		return newAesCipher(privateKey, algorithm, iv, operationMode);
+		return newSymmetricCipher(privateKey, algorithm, iv, operationMode);
 	}
 
 	/**
-	 * Builds a new AES {@link Cipher} for the given transformation. For the GCM transformation the
-	 * given {@code iv} is used to build a {@link GCMParameterSpec}; for any other (legacy)
-	 * transformation the {@code iv} is ignored and the cipher is initialized without parameters, as
-	 * before.
+	 * Builds a new {@link Cipher} for the given transformation. For GCM the given {@code iv} is
+	 * used to build a {@link GCMParameterSpec}; for ChaCha20-Poly1305 it is used to build a plain
+	 * {@link IvParameterSpec}; for any other (legacy) transformation the {@code iv} is ignored and
+	 * the cipher is initialized without parameters, as before.
 	 *
 	 * @param privateKey
 	 *            the private key
@@ -241,14 +242,15 @@ public class HexableEncryptor extends AbstractStringEncryptor
 	 *            the full cipher transformation, e.g. {@code "AES/GCM/NoPadding"} or the legacy
 	 *            bare {@code "AES"}
 	 * @param iv
-	 *            the initialization vector for GCM, or {@code null} for the legacy transformation
+	 *            the initialization vector/nonce, or {@code null} for a transformation that doesn't
+	 *            need one
 	 * @param operationMode
 	 *            the operation mode for the new cipher object
 	 * @return the initialized cipher
 	 */
-	private Cipher newAesCipher(final String privateKey, final String algorithm, final byte[] iv,
-		final int operationMode) throws NoSuchAlgorithmException, NoSuchPaddingException,
-		InvalidKeyException, InvalidAlgorithmParameterException
+	private Cipher newSymmetricCipher(final String privateKey, final String algorithm,
+		final byte[] iv, final int operationMode) throws NoSuchAlgorithmException,
+		NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException
 	{
 		final SecretKeySpec skeySpec = KeySpecFactory.newSecretKeySpec(
 			privateKey.getBytes(StandardCharsets.UTF_8), AesAlgorithm.AES.getAlgorithm());
@@ -256,6 +258,10 @@ public class HexableEncryptor extends AbstractStringEncryptor
 		if (isGcmTransformation(algorithm))
 		{
 			cipher.init(operationMode, skeySpec, new GCMParameterSpec(GCM_TAG_LENGTH_BITS, iv));
+		}
+		else if (isChaCha20Poly1305Transformation(algorithm))
+		{
+			cipher.init(operationMode, skeySpec, new IvParameterSpec(iv));
 		}
 		else
 		{
@@ -265,7 +271,7 @@ public class HexableEncryptor extends AbstractStringEncryptor
 	}
 
 	/**
-	 * Checks if the given transformation is the GCM transformation used as the new default.
+	 * Checks if the given transformation is the GCM transformation used as the default.
 	 *
 	 * @param algorithm
 	 *            the transformation to check
@@ -276,8 +282,39 @@ public class HexableEncryptor extends AbstractStringEncryptor
 		return MysticSymmetricAlgorithm.AES_GCM_NO_PADDING.getAlgorithm().equals(algorithm);
 	}
 
-	/** The length in bytes of a GCM initialization vector (96-bit nonce, NIST SP 800-38D). */
-	private static final int GCM_IV_LENGTH = 12;
+	/**
+	 * Checks if the given transformation is the ChaCha20-Poly1305 transformation. Note that a
+	 * ChaCha20 key must be exactly 32 bytes - unlike AES, which accepts 16/24/32 - so the
+	 * {@code privateKey} String's UTF-8 byte length must be exactly 32 when using this
+	 * transformation.
+	 *
+	 * @param algorithm
+	 *            the transformation to check
+	 * @return true if it is the ChaCha20-Poly1305 transformation
+	 */
+	private static boolean isChaCha20Poly1305Transformation(final String algorithm)
+	{
+		return MysticSymmetricAlgorithm.CHACHA20_POLY1305.getAlgorithm().equals(algorithm);
+	}
+
+	/**
+	 * Checks if the given transformation requires a fresh random nonce/IV to be generated for every
+	 * encryption and prepended to the ciphertext.
+	 *
+	 * @param algorithm
+	 *            the transformation to check
+	 * @return true if a fresh nonce is required
+	 */
+	private static boolean needsRandomNonce(final String algorithm)
+	{
+		return isGcmTransformation(algorithm) || isChaCha20Poly1305Transformation(algorithm);
+	}
+
+	/**
+	 * The length in bytes of a nonce/initialization vector (96-bit, shared by GCM per NIST SP
+	 * 800-38D and by ChaCha20-Poly1305 per RFC 8439).
+	 */
+	private static final int NONCE_LENGTH = 12;
 
 	/** The length in bits of the GCM authentication tag. */
 	private static final int GCM_TAG_LENGTH_BITS = 128;
