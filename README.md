@@ -6,7 +6,7 @@
 [![Coverage Status](https://codecov.io/gh/astrapi69/mystic-crypt/branch/develop/graph/badge.svg)](https://codecov.io/gh/astrapi69/mystic-crypt)
 [![Mutation Coverage](https://img.shields.io/badge/mutation%20coverage-69%25-yellow)](https://pitest.org/)
 [![Open Issues](https://img.shields.io/github/issues/astrapi69/mystic-crypt.svg?style=flat)](https://github.com/astrapi69/mystic-crypt/issues)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/mystic-crypt/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/mystic-crypt)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.astrapi69/mystic-crypt.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/io.github.astrapi69/mystic-crypt)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT)
 [![Javadoc](http://www.javadoc.io/badge/io.github.astrapi69/mystic-crypt.svg)](http://www.javadoc.io/doc/io.github.astrapi69/mystic-crypt)
 [![Hits-of-Code](https://hitsofcode.com/github/astrapi69/mystic-crypt)](https://hitsofcode.com/github/astrapi69/mystic-crypt/view)
@@ -33,7 +33,7 @@ The source code comes under the liberal MIT License, making mystic-crypt great f
 ## gradle dependency
 
 Replace the variable ${latestVersion} with the current latest
-version: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/mystic-crypt/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/mystic-crypt)
+version: [![Maven Central](https://img.shields.io/maven-central/v/io.github.astrapi69/mystic-crypt.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/io.github.astrapi69/mystic-crypt)
 
 You can first define the version in the ext section and add than the following gradle dependency to
 your project `build.gradle` if you want to import the core functionality of mystic-crypt:
