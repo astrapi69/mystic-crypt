@@ -182,6 +182,8 @@ or over flattr:
  * simple encode and decode of string objects with relocation
  * resolve the TrustManagers and KeyManagers from keystore files
 
+See [docs/CRYPTO_CAPABILITIES.md](docs/CRYPTO_CAPABILITIES.md) for a full capability matrix of
+what's implemented across this library family (and what's deliberately out of scope, and why).
 
 Encryption and decryption processes are always executed in the backround so it is a black box for the user. If you want to
 see this library in action you can download this [gui client](https://github.com/astrapi69/mystic-crypt-ui) and see some features
