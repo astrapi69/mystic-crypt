@@ -31,7 +31,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 
 import io.github.astrapi69.crypt.data.model.CryptObjectDecorator;
 import io.github.astrapi69.file.read.ReadFileExtensions;
@@ -284,11 +284,11 @@ public final class CryptObjectDecoratorExtensions
 		String result = decrypted;
 		if (decrypted.startsWith(decorator.getPrefix()))
 		{
-			result = StringUtils.removeStart(result, decorator.getPrefix());
+			result = Strings.CS.removeStart(result, decorator.getPrefix());
 		}
 		if (decrypted.endsWith(decorator.getSuffix()))
 		{
-			result = StringUtils.removeEnd(result, decorator.getSuffix());
+			result = Strings.CS.removeEnd(result, decorator.getSuffix());
 		}
 		return result;
 	}
