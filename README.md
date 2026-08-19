@@ -4,6 +4,7 @@
 
 [![Java CI with Gradle](https://github.com/astrapi69/mystic-crypt/actions/workflows/gradle.yml/badge.svg)](https://github.com/astrapi69/mystic-crypt/actions/workflows/gradle.yml)
 [![Coverage Status](https://codecov.io/gh/astrapi69/mystic-crypt/branch/develop/graph/badge.svg)](https://codecov.io/gh/astrapi69/mystic-crypt)
+[![Mutation Coverage](https://img.shields.io/badge/mutation%20coverage-69%25-yellow)](https://pitest.org/)
 [![Open Issues](https://img.shields.io/github/issues/astrapi69/mystic-crypt.svg?style=flat)](https://github.com/astrapi69/mystic-crypt/issues)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/mystic-crypt/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/mystic-crypt)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT)
