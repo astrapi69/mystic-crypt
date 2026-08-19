@@ -2,16 +2,6 @@ repositories {
     mavenLocal()
     mavenCentral()
     /**
-     * This repository is intended for release versions
-     **/
-    maven {
-        name "$projectRepositoriesReleasesName"
-        url "$projectRepositoriesReleasesRepoUrl"
-        mavenContent {
-            releasesOnly()
-        }
-    }
-    /**
      * This repository is intended for snapshot versions that are previously deployed
      * on the specified url for snapshots
      **/

@@ -58,21 +58,15 @@ publishing {
             }
         }
     }
-    repositories {
-        maven {
-            credentials {
-                username System.getenv("$projectRepositoriesUserNameKey") ?: project.property("$projectRepositoriesUserNameKey")
-                password System.getenv("$projectRepositoriesPasswordKey") ?: project.property("$projectRepositoriesPasswordKey")
-            }
-            def releasesRepoUrl = "$projectRepositoriesReleasesRepoUrl" as Object
-            def snapshotsRepoUrl = "$projectRepositoriesSnapshotsRepoUrl" as Object
-            url = releaseVersion ? releasesRepoUrl : snapshotsRepoUrl
-        }
-    }
 }
 
 signing {
     if (releaseVersion) {
+        def signingKey = System.getenv("GPG_PRIVATE_KEY")
+        def signingPassphrase = System.getenv("GPG_PASSPHRASE")
+        if (signingKey && signingPassphrase) {
+            useInMemoryPgpKeys(signingKey, signingPassphrase)
+        }
         sign publishing.publications.mavenJava
     }
 }
