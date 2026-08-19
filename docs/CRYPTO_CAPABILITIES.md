@@ -18,7 +18,10 @@ Status key:
   the wrong layer to implement them in. Reasoning given per item.
 
 Last verified: 2026-08-19, against `mystic-crypt` 10.1-SNAPSHOT, `crypt-data` 10.3-SNAPSHOT
-(10.2 released), `crypt-api` 9.7-SNAPSHOT (9.6 released).
+(10.2 released), `crypt-api` 9.7-SNAPSHOT (9.6 released). The capability tables below are current
+as of this date; the mutation-coverage numbers in the section further down predate this round's
+PQC/J-PAKE/PKCS#11 additions and will read a little low until the next `./gradlew pitest` run
+picks up their tests.
 
 ---
 
@@ -31,7 +34,7 @@ Last verified: 2026-08-19, against `mystic-crypt` 10.1-SNAPSHOT, `crypt-data` 10
 | AES-GCM | ✅ | `MysticSymmetricAlgorithm.AES_GCM_NO_PADDING`; wired into `BaseByteArrayEncryptor`/`Decryptor`, `HexableEncryptor`/`Decryptor`, `PublicKeyEncryptor`/`PrivateKeyDecryptor` (all `mystic-crypt`). Random 12-byte IV per call, 128-bit tag, IV prepended to ciphertext. |
 | AES-CBC | ⚠️ | Defined in `Mode`/algorithm enums (`crypt-api`); legacy PBE paths in `mystic-crypt` still support it for backward compatibility, but AES-GCM is the default everywhere. |
 | AES-ECB | ⚠️ | Still definable via raw JCA transformation strings; no longer a default anywhere (removed in the 10.0.0 security hardening pass). Never use — no authentication, patterns leak. |
-| ChaCha20-Poly1305 | ⚠️ | `CipherAlgorithm.ChaCha20` / `.ChaCha20_Poly1305` constants exist (`crypt-api`). Zero call sites anywhere else — no cipher/encryptor path uses it. |
+| ChaCha20-Poly1305 | ✅ | `MysticSymmetricAlgorithm.CHACHA20_POLY1305`; wired into the same six classes as AES-GCM above. JDK-native (SunJCE), no Bouncy Castle. Requires a 256-bit key (unlike AES's 128/192/256). |
 
 ### Asymmetric encryption
 
@@ -58,7 +61,7 @@ Last verified: 2026-08-19, against `mystic-crypt` 10.1-SNAPSHOT, `crypt-data` 10
 | Topic | Status | Where |
 |---|---|---|
 | Argon2id | ✅ | `Argon2Support` (package-private) + `PasswordEncryptor.hashPasswordArgon2id()`/`.matchArgon2id()` (`mystic-crypt`). Bouncy Castle `Argon2BytesGenerator`, PHC string format (`$argon2id$v=19$m=...,t=...,p=...$salt$hash`) so parameters travel with the hash. |
-| PBKDF2 | ⚠️ | `PasswordHashType.PBKDF2`, `CompoundAlgorithm.PBKDF2_WITH_HMAC_SHA1` (`crypt-api`) defined; no call site actually invokes PBKDF2 key derivation in main source. |
+| PBKDF2 | ✅ | `Pbkdf2Support` (package-private) + `PasswordEncryptor.hashPasswordPbkdf2()`/`.matchPbkdf2()` (`mystic-crypt`). Pure JDK (`SecretKeyFactory`), PBKDF2-HMAC-SHA256, 600k iterations by default (OWASP 2023 guidance). Argon2id remains the recommended default; this is for interop with systems that specifically require PBKDF2. |
 | bcrypt / scrypt | ❌ | Not present anywhere. |
 
 ### Certificates / PKI
@@ -73,7 +76,9 @@ Last verified: 2026-08-19, against `mystic-crypt` 10.1-SNAPSHOT, `crypt-data` 10
 
 | Topic | Status | Where |
 |---|---|---|
-| ML-KEM / Kyber, ML-DSA / Dilithium, SLH-DSA / SPHINCS+ | ❌ | Not present. Bouncy Castle (already a dependency) does provide these, so adding them is a real, scoped option if/when needed — nothing architectural blocks it. |
+| ML-KEM / Kyber (FIPS 203) | ✅ | `MlKemKeyExchange` (`mystic-crypt`) wraps `KemFactory` (`crypt-data`, generic `javax.crypto.KEM` wrapper) — Bouncy Castle-backed (`ML-KEM-512/768/1024`), requires BC registered as a security provider. Verified end-to-end (encapsulate/decapsulate, shared secrets match) before wiring. |
+| ML-DSA / Dilithium (FIPS 204) | ✅ | `MlDsaSigner`/`MlDsaVerifier` (`mystic-crypt`) — Bouncy Castle-backed (`ML-DSA-44/65/87`), same `SignatureFactory` primitive as Ed25519. |
+| SLH-DSA / SPHINCS+ (FIPS 205) | ✅ | `SlhDsaSigner`/`SlhDsaVerifier` (`mystic-crypt`) — Bouncy Castle-backed, covers all 12 pure parameter sets (SHA2/SHAKE × 128/192/256 × S/F). Conservative hash-based signatures; large (tens of KB) and, for "S" sets, slow to sign — offered as a fallback if ML-DSA's lattice-based security assumption is ever broken. |
 
 ---
 
@@ -84,9 +89,9 @@ Last verified: 2026-08-19, against `mystic-crypt` 10.1-SNAPSHOT, `crypt-data` 10
 | Static vs. ephemeral DH | ✅ (ephemeral by default) | `X25519KeyExchange.newKeyPair()` generates a fresh keypair per call; nothing caches/reuses a long-term DH keypair for repeated exchanges. |
 | Authenticated Key Exchange (STS, SIGMA, Noise) | 🚫 | These are session-establishment *protocols* (message flows, transcripts, replay handling) — a different problem from "derive a key from two public keys," which is what this library provides as a primitive. Building STS/Noise on top of `X25519KeyExchange` + `Ed25519Signer` is an application-level concern. |
 | HKDF (RFC 5869) | ✅ | `HkdfExtensions` (`crypt-data`) — Bouncy Castle `HKDFBytesGenerator`/SHA-256. Used by `X25519KeyExchange` to derive the final AES key from the raw ECDH secret instead of truncating it. |
-| KEM (Key Encapsulation) | ❌ | No KEM implementation (this is the interactive-DH-vs-encapsulation distinction; relevant mainly once PQC/ML-KEM is added, since PQC key exchange is KEM-shaped, not DH-shaped). |
+| KEM (Key Encapsulation) | ✅ | `KemFactory` (`crypt-data`) wraps the JDK-standard `javax.crypto.KEM` API (JDK 21+), algorithm-agnostic. Used by `MlKemKeyExchange` (`mystic-crypt`) for ML-KEM. |
 | Signal Protocol (X3DH, Double Ratchet) | 🚫 | Full messaging protocol with session state, ratcheting, out-of-order message handling — an application/protocol layer built *on top of* primitives like X25519 + HKDF + AEAD, all of which this library already provides. Not a fit for a stateless utility library. |
-| PAKE (SRP, OPAQUE, SPAKE2/CPace) | ❌ | Not present. Real gap if a password-authenticated channel is ever needed directly (today, Argon2id covers password *storage*, not password-authenticated *key exchange*). |
+| PAKE (J-PAKE, SRP, OPAQUE, SPAKE2/CPace) | ✅ (J-PAKE) | `JpakeKeyExchange` (`mystic-crypt`) wraps Bouncy Castle's `JPAKEParticipant` (Password-Authenticated Key Exchange by Juggling) - the only PAKE BC actually ships (no SPAKE2/CPace/SRP). A genuine 3-round interactive protocol, unlike this package's other key-exchange classes: the wrapper only adds sane-default participant creation and HKDF-based `SecretKey` derivation from the raw keying material; the round1/2/3 payload exchange is direct `JPAKEParticipant` API (documented with a full example in the class Javadoc). Verified end-to-end: matching passwords derive identical keys and pass round-3 confirmation, mismatched passwords derive different keys and round-3 confirmation throws. |
 | Group key agreement / MLS / TreeKEM | 🚫 | Multi-party session/state-machine protocol (member add/remove, tree rebalancing) — same reasoning as Signal Protocol above. |
 | AES Key Wrap (RFC 3394) | ✅ | `KeyWrapFactory` (`crypt-data`) — JDK-native `"AESWrap"` transformation (SunJCE), no Bouncy Castle needed. Implicit integrity check: tampered wrapped bytes throw `InvalidKeyException` on unwrap. |
 | Key hierarchy (Master/KEK/DEK) | ⚠️ | The *primitive* (`KeyWrapFactory`) needed to build a KEK→DEK hierarchy exists; the hierarchy itself (master key never leaving an HSM, rotation policy, etc.) is an application/infrastructure design, not a library API. |
@@ -104,8 +109,8 @@ Last verified: 2026-08-19, against `mystic-crypt` 10.1-SNAPSHOT, `crypt-data` 10
 | Key generation (RNG) | ✅ | All key generation goes through `SecureRandom` (JDK) or Bouncy Castle equivalents — no use of non-cryptographic RNGs anywhere in the three repos. |
 | Key storage (files, keystores) | ✅ | `CertFactory`/`KeyStoreFactory`/`KeyStoreInfo` etc. (`crypt-data`) read/write PKCS#8/PKCS#12/JKS keystores. No integration with OS keychains or Vault/SOPS — appropriately out of scope, those are deployment-environment concerns. |
 | Key rotation / revocation policy | 🚫 | Operational/infrastructure concern (CRL/OCSP serving, rotation scheduling) — the library provides the primitives (cert generation, key wrap) that a rotation system would use, not the policy engine itself. |
-| Key destruction (secure wipe) | ❌ | No explicit zeroing of key material in memory (e.g. no `Arrays.fill(key, (byte) 0)` after use). A real, scoped hardening candidate if ever prioritized — low effort, meaningfully reduces memory-dump exposure window. |
-| HSM / PKCS#11 | ⚠️ | `KeystoreType.PKCS11`, `SecureRandomAlgorithm.PKCS11`, `SecurityProvider.SunPKCS11` (`crypt-api`) are name-only constants. No `Security.getProvider("SunPKCS11")` config/slot wiring exists. This is architecturally reasonable to add later (JCA's standard extension point), but nothing calls it today. |
+| Key destruction (secure wipe) | ✅ (password paths + X25519) | `Argon2Support`/`Pbkdf2Support` zero their `char[] password` argument in a `finally` block after `hash()`/`verify()` (`mystic-crypt`); `X25519KeyExchange.deriveSharedSecret` zeroes the raw ECDH shared secret after HKDF derivation. Not applied everywhere key material exists (e.g. `SecretKeySpec`/`SecretKey` objects generally aren't zeroable via the JCA `Destroyable` interface in practice - a known JCA limitation, not something this library can work around). |
+| HSM / PKCS#11 | ✅ | `Pkcs11Factory` (`crypt-data`) configures the JDK's built-in `SunPKCS11` provider from a config file and opens the token's keystore; the returned `Provider` then works with any standard JCA factory method (`KeyPairGenerator`, `Signature`, etc.), so key material generated/used through it never leaves the token. Verified end-to-end against a real (software) PKCS#11 module - SoftHSM2, installed specifically for this rather than touching the real desktop GNOME Keyring PKCS#11 module: token init, provider config, keystore open, on-token EC keypair generation, sign/verify all confirmed working. `Pkcs11FactoryTest` skips itself (doesn't fail) when no PKCS#11 test module is configured, since that's external test infrastructure. |
 | TPM | 🚫 | Platform-specific hardware integration (`tpm2-pkcs11` et al.) — outside a portable Java library's remit; would layer on top of the PKCS#11 gap above if ever needed. |
 | Secure Enclaves (SGX/TrustZone/Secure Enclave) | 🚫 | OS/platform-specific, no portable JCA path exists for these at all. |
 | FIDO2/WebAuthn | 🚫 | Full authenticator protocol (attestation, challenge-response ceremonies) — a different problem domain from "encrypt this data with this key." |
@@ -122,13 +127,37 @@ Last verified: 2026-08-19, against `mystic-crypt` 10.1-SNAPSHOT, `crypt-data` 10
 
 ## Summary: real gaps vs. correctly out of scope
 
-**Actual gaps worth considering, roughly in order of value:**
+**Every gap identified in the original pass through this document is now closed:** PBKDF2 wiring,
+ChaCha20-Poly1305 wiring, the full NIST post-quantum suite (ML-KEM, ML-DSA, SLH-DSA), key zeroing
+for password/shared-secret material, PAKE (J-PAKE), and PKCS#11/HSM provider configuration are all
+✅ — see the tables above for the classes involved, and each item's commit message for how it was
+verified before being wired in (this library's standing discipline: confirm an algorithm/API
+actually behaves as expected via a throwaway empirical test *before* writing the real
+implementation against it, not after).
 
-1. **PBKDF2 wiring** — constant exists, unused; cheapest possible addition if a PBKDF2-compatible path is ever needed (e.g. interop with a system that mandates it).
-2. **ChaCha20-Poly1305 wiring** — same situation, useful on platforms without AES hardware acceleration.
-3. **Key zeroing** — explicit wipe of `SecretKey`/byte-array key material after use; low effort, real memory-exposure reduction.
-4. **PAKE (OPAQUE or SPAKE2/CPace)** — the one clear category-level gap if a password-authenticated key exchange (not just password storage) is ever required.
-5. **Post-Quantum primitives (ML-KEM/ML-DSA)** — Bouncy Castle already provides them; no architectural blocker, just not yet prioritized.
-6. **PKCS#11/HSM wiring** — constants exist as the correct JCA extension point; needs actual provider configuration code once a consumer needs hardware-backed keys.
+**Residual, narrower items not pursued further** (each is a real but genuinely marginal
+improvement, not a category-level gap):
+
+- **Verifiable Secret Sharing (Feldman/Pedersen VSS)** — would close Shamir SSS's "too-few-shares
+  silently gives a wrong result" limitation, at the cost of a second, more complex primitive.
+- **Key-committing AEAD** — only matters for multi-recipient encryption / abuse-reporting use
+  cases this library doesn't currently target.
+- **SRP/OPAQUE specifically** (as opposed to J-PAKE, which is what's actually implemented) — would
+  require either hand-rolling the protocol math (SRP) or a dependency neither the JDK nor Bouncy
+  Castle currently ships (OPAQUE).
 
 **Everything marked 🚫 is correctly out of scope**, not missing: session/messaging protocols (Signal, MLS, STS, Noise), hardware/platform integrations this library can't portably reach (TPM, secure enclaves, QKD, FIDO2), and infrastructure/policy concerns (key rotation scheduling, certificate pinning policy, key transparency logs). Adding any of those would mean turning a key/data-encryption utility library into a protocol or infrastructure framework — a different, much larger project.
+
+---
+
+## Test quality: mutation testing
+
+All three repos now have [PIT](https://pitest.org/) mutation testing configured (`info.solidsoft.pitest` Gradle plugin), run via `./gradlew pitest` — deliberately **not** wired into `check`/`build`, since mutation testing is slow (minutes, not seconds) and belongs in an occasional, deliberately-triggered run rather than every CI build. Baseline scores (mutations killed / generated):
+
+| Repo | Mutation coverage | Line coverage (mutated classes) |
+|---|---|---|
+| `crypt-api` | 96% (75/78) | 99% |
+| `crypt-data` | 77% (610/793) | 91% |
+| `mystic-crypt` | 69% (415/605) | 79% |
+
+`mystic-crypt`'s lower score reflects its larger, more integration-heavy surface (file I/O, streaming, SSL/keystore glue) rather than the newer crypto primitives specifically — most of the newly-added classes this round (PQC, ChaCha20, PBKDF2, key wrap, secret sharing) have direct, focused unit tests. Known rough edge: running `./gradlew pitest` in `mystic-crypt` has been observed to leave `src/test/resources/crypt/test.txt` deleted afterwards (a file-based test's cleanup interacting badly with PIT's forked/parallel execution) — run `git checkout -- src/test/resources/crypt/test.txt` afterward if the next build fails with a `FileNotFoundException` there.
