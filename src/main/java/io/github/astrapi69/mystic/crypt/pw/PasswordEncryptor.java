@@ -29,6 +29,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Optional;
@@ -194,7 +195,9 @@ public class PasswordEncryptor implements Serializable
 	}
 
 	/**
-	 * Matches the given strings and returns true if they are equal.
+	 * Matches the given strings and returns true if they are equal. Uses a constant-time comparison
+	 * ({@link MessageDigest#isEqual(byte[], byte[])}) rather than {@link String#equals} to avoid
+	 * leaking information about the hash via response-time differences.
 	 *
 	 * @param hashedPassword
 	 *            the hashed password
@@ -204,7 +207,40 @@ public class PasswordEncryptor implements Serializable
 	 */
 	public boolean match(final String hashedPassword, final String dbHashedPassword)
 	{
-		return hashedPassword.equals(dbHashedPassword);
+		return MessageDigest.isEqual(hashedPassword.getBytes(DEFAULT_CHARSET),
+			dbHashedPassword.getBytes(DEFAULT_CHARSET));
+	}
+
+	/**
+	 * Hashes the given password with Argon2id, a memory-hard password-hashing algorithm suitable
+	 * for password storage (unlike {@link #hashPassword(String, String, HashAlgorithm, Charset)},
+	 * which uses a general-purpose hash function that is deliberately fast - the opposite of what
+	 * password hashing needs). A fresh random salt is generated per call; the salt and parameters
+	 * are encoded together with the hash in the returned string (PHC format), so
+	 * {@link #matchArgon2id(String, String)} needs only the password and this string to verify.
+	 *
+	 * @param password
+	 *            the password
+	 * @return the encoded Argon2id hash
+	 */
+	public String hashPasswordArgon2id(final String password)
+	{
+		return Argon2Support.hash(password.toCharArray());
+	}
+
+	/**
+	 * Verifies the given password against a hash previously produced by
+	 * {@link #hashPasswordArgon2id(String)}.
+	 *
+	 * @param password
+	 *            the password to check
+	 * @param encodedHash
+	 *            the encoded Argon2id hash to check against
+	 * @return true if the password matches
+	 */
+	public boolean matchArgon2id(final String password, final String encodedHash)
+	{
+		return Argon2Support.verify(password.toCharArray(), encodedHash);
 	}
 
 }

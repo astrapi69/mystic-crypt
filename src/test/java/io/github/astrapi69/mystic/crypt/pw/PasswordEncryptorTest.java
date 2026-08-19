@@ -25,8 +25,10 @@
 package io.github.astrapi69.mystic.crypt.pw;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
@@ -170,7 +172,7 @@ public class PasswordEncryptorTest
 	/**
 	 * Test method for
 	 * {@link PasswordEncryptor#hashPassword(String, String, HashAlgorithm, Charset)}
-	 * 
+	 *
 	 * @throws NoSuchAlgorithmException
 	 *             is thrown if instantiation of the MessageDigest object fails.
 	 */
@@ -188,6 +190,69 @@ public class PasswordEncryptorTest
 		charset = StandardCharsets.UTF_8;
 		actual = instance.hashPassword(password, salt, hashAlgorithm, charset);
 		assertNotNull(actual);
+	}
+
+	/**
+	 * Test method for {@link PasswordEncryptor#hashPasswordArgon2id(String)} and
+	 * {@link PasswordEncryptor#matchArgon2id(String, String)}
+	 */
+	@Test
+	public void testHashPasswordArgon2idAndMatch()
+	{
+		String password = "correct horse battery staple";
+
+		String encoded = instance.hashPasswordArgon2id(password);
+		assertNotNull(encoded);
+		assertTrue(encoded.startsWith("$argon2id$"));
+
+		assertTrue(instance.matchArgon2id(password, encoded));
+		assertFalse(instance.matchArgon2id("wrong password", encoded));
+	}
+
+	/**
+	 * Test method for {@link PasswordEncryptor#hashPasswordArgon2id(String)}
+	 *
+	 * <p>
+	 * A random salt is generated per call, so hashing the same password twice must produce
+	 * different encoded output.
+	 */
+	@Test
+	public void testHashPasswordArgon2idTwiceProducesDifferentOutput()
+	{
+		String password = "correct horse battery staple";
+
+		String first = instance.hashPasswordArgon2id(password);
+		String second = instance.hashPasswordArgon2id(password);
+
+		assertNotEquals(first, second);
+		assertTrue(instance.matchArgon2id(password, first));
+		assertTrue(instance.matchArgon2id(password, second));
+	}
+
+	/**
+	 * Test method for {@link PasswordEncryptor#matchArgon2id(String, String)}
+	 *
+	 * <p>
+	 * A malformed/tampered encoded hash must fail to match rather than throw.
+	 */
+	@Test
+	public void testMatchArgon2idWithTamperedEncodedHashFails()
+	{
+		String password = "correct horse battery staple";
+		String encoded = instance.hashPasswordArgon2id(password);
+		String tampered = encoded.substring(0, encoded.length() - 4) + "abcd";
+
+		assertFalse(instance.matchArgon2id(password, tampered));
+	}
+
+	/**
+	 * Test method for {@link PasswordEncryptor#match(String, String)}
+	 */
+	@Test
+	public void testMatch()
+	{
+		assertTrue(instance.match("hash-value", "hash-value"));
+		assertFalse(instance.match("hash-value", "other-value"));
 	}
 
 }
