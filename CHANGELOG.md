@@ -1,7 +1,7 @@
 ## Change log
 ----------------------
 
-Version 10.1-SNAPSHOT
+Version 10.1
 -------------
 
 ADDED:
@@ -17,16 +17,37 @@ ADDED:
   The derived key can be used directly with BaseByteArrayEncryptor/BaseByteArrayDecryptor.
 - fixed PasswordEncryptor#match(String, String) using a plain String.equals() comparison
   (not constant-time) instead of MessageDigest.isEqual
+- Post-quantum cryptography: MlKemKeyExchange (ML-KEM, FIPS 203 key encapsulation),
+  MlDsaSigner/MlDsaVerifier (ML-DSA, FIPS 204 signatures), SlhDsaSigner/SlhDsaVerifier
+  (SLH-DSA, FIPS 205 hash-based signatures, all 12 pure parameter sets). All Bouncy
+  Castle-backed; require BC registered as a security provider.
+- ChaCha20-Poly1305: MysticSymmetricAlgorithm.CHACHA20_POLY1305, wired as a selectable
+  authenticated cipher into every class that already supported AES/GCM/NoPadding
+  (BaseByteArrayEncryptor/Decryptor, HexableEncryptor/Decryptor, PublicKeyEncryptor/
+  PrivateKeyDecryptor). Natively supported by the JDK (SunJCE); requires a 256-bit key.
+- PBKDF2-HMAC-SHA256 password hashing: PasswordEncryptor#hashPasswordPbkdf2(String)/
+  matchPbkdf2(String, String), 600k iterations by default (OWASP 2023 guidance). Argon2id
+  remains the recommended default; this is for interop with systems that require PBKDF2.
+- J-PAKE password-authenticated key exchange: new class JpakeKeyExchange, wrapping Bouncy
+  Castle's JPAKEParticipant. Unlike the other key-exchange classes here, this is a 3-round
+  interactive protocol - see the class Javadoc for a full usage example.
+- Key zeroing: Argon2Support/Pbkdf2Support now zero their password char[] argument after use;
+  X25519KeyExchange zeroes the raw ECDH shared secret after HKDF derivation.
 
 CHANGED:
 
-- requires crypt-api 9.6 and crypt-data 10.2 (new Ed25519 constant, HkdfExtensions,
-  SignatureFactory)
+- requires crypt-api 9.7 and crypt-data 10.3 (new PQC algorithm constants, KemFactory,
+  Pkcs11Factory)
 - updated file-worker to 19.0 and pinned jacoco to 0.8.15; fixed module-info.java for
   file-worker's renamed JPMS module (now io.github.astrapisixtynine.file.worker) and updated
   test imports for FileInfo's new package (io.github.astrapi69.file.create.model)
 - Ed25519Verifier#verify no longer declares SignatureException: SignatureFactory#verify now
   returns false for malformed/tampered signatures instead of letting the exception escape
+- migrated Maven Central publishing to the Central Portal (the legacy oss.sonatype.org
+  endpoints this project's pipeline still pointed at were sunset 2025-06-30 and would have
+  silently failed on the next release)
+- added PIT mutation testing (opt-in, run via `./gradlew pitest`), not wired into check/build
+- fixed the dead Maven Central README badge (maven-badges.herokuapp.com is gone)
 
 Version 10.0.0
 -------------
