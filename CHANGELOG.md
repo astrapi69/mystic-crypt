@@ -1,6 +1,28 @@
 ## Change log
 ----------------------
 
+Version 10.1-SNAPSHOT
+-------------
+
+ADDED:
+
+- Argon2id password hashing: PasswordEncryptor#hashPasswordArgon2id(String)/
+  matchArgon2id(String, String), storing salt and parameters together with the hash in the
+  standard PHC string format. hashPassword(...) (general-purpose, deliberately fast hashing)
+  is unchanged and remains available for non-password use cases.
+- Ed25519 digital signatures: new classes Ed25519Signer/Ed25519Verifier. Natively supported
+  by the JDK since JDK 15, no Bouncy Castle involved.
+- X25519 key agreement: new class X25519KeyExchange, deriving a properly-sized shared AES key
+  via HKDF from the raw X25519 shared secret (natively supported by the JDK since JDK 11).
+  The derived key can be used directly with BaseByteArrayEncryptor/BaseByteArrayDecryptor.
+- fixed PasswordEncryptor#match(String, String) using a plain String.equals() comparison
+  (not constant-time) instead of MessageDigest.isEqual
+
+CHANGED:
+
+- requires crypt-api 9.6 and crypt-data 10.2 (new Ed25519 constant, HkdfExtensions,
+  SignatureFactory)
+
 Version 10.0.0
 -------------
 

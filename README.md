@@ -168,7 +168,7 @@ or over flattr:
  * encryption and decryption strings with character set
  * encryption and decryption of single files
  * sign requests for your google maps urls
- * hex encryption and decryption
+ * hex encryption and decryption, backed by AES/GCM with a fresh nonce per call
  * encryption with PublicKey and decryption with PrivateKey objects that was generated with openssl or java
  * encryption and decryption from .pem, .der files that was generated with openssl
  * obfuscate text with specified map
@@ -176,6 +176,9 @@ or over flattr:
  * brute-force processing for crack passwords
  * wordlist processing for crack passwords
  * hash byte arrays, strings such as passwords
+ * Argon2id password hashing (memory-hard, suitable for password storage) via `PasswordEncryptor`
+ * Ed25519 digital signatures (`Ed25519Signer`/`Ed25519Verifier`), natively via the JDK
+ * X25519 key agreement with HKDF key derivation (`X25519KeyExchange`), natively via the JDK
  * simple encode and decode of string objects with relocation
  * resolve the TrustManagers and KeyManagers from keystore files
 
