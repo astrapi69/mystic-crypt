@@ -24,14 +24,13 @@
  */
 package io.github.astrapi69.mystic.crypt.pw;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
-
-import io.github.astrapi69.collection.array.ArrayFactory;
 
 /**
  * The unit test class for the class {@link PasswordByteEncryptor}
@@ -44,30 +43,23 @@ public class PasswordByteEncryptorTest
 
 	/**
 	 * Test method for test the method {@link PasswordByteEncryptor#encrypt(byte[])}
+	 *
+	 * <p>
+	 * A random salt is now generated per call, so the exact ciphertext is no longer deterministic;
+	 * assert non-determinism across two calls instead of a golden byte literal.
 	 */
 	@Test
 	public void testEncrypt() throws Exception
 	{
-		// declare variables
-		byte[] actual;
-		byte[] expected;
-		String password;
-		String text;
-		byte[] textBytes;
-		byte[] encryptedBytes;
-		PasswordByteEncryptor encryptor;
-		// new scenario
-		// init variables for current scenario
-		password = "foo";
-		text = "bar";
-		textBytes = text.getBytes(StandardCharsets.UTF_8);
-		encryptor = new PasswordByteEncryptor(password);
-		// test method with current variables
-		encryptedBytes = encryptor.encrypt(textBytes);
-		assertNotNull(encryptedBytes);
-		actual = encryptedBytes;
-		expected = ArrayFactory.newByteArray(-118, -125, -30, 16, 87, 88, -110, -94);
-		assertArrayEquals(actual, expected);
+		String password = "foo";
+		byte[] textBytes = "bar".getBytes(StandardCharsets.UTF_8);
+		PasswordByteEncryptor encryptor = new PasswordByteEncryptor(password);
+
+		byte[] first = encryptor.encrypt(textBytes);
+		byte[] second = encryptor.encrypt(textBytes);
+		assertNotNull(first);
+		assertNotNull(second);
+		assertFalse(Arrays.equals(first, second));
 	}
 
 }

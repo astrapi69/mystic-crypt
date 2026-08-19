@@ -24,32 +24,23 @@
  */
 package io.github.astrapi69.mystic.crypt.simple;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.AlgorithmParameterSpec;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.KeySpec;
 import java.util.Base64;
 import java.util.Objects;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.PBEParameterSpec;
 
 import io.github.astrapi69.crypt.api.Cryptor;
 import io.github.astrapi69.crypt.api.StringDecryptor;
-import io.github.astrapi69.crypt.api.algorithm.compound.CompoundAlgorithm;
+import io.github.astrapi69.mystic.crypt.pw.PasswordByteDecryptor;
 
 /**
  * The class {@link SimpleDecryptor} is a simple {@link StringDecryptor} implementation.
+ *
+ * <p>
+ * Thin composition over {@link PasswordByteDecryptor} (the same pattern
+ * {@code PasswordStringDecryptor} already uses), which now supplies the actual, secure PBE cipher
+ * construction.
  *
  * @author Asterios Raptis
  * @version 1.0
@@ -61,16 +52,11 @@ public class SimpleDecryptor implements StringDecryptor, Cryptor
 	 * The private key.
 	 */
 	private final String privateKey;
+
 	/**
-	 * The Cipher object.
+	 * The delegate that does the actual decryption work.
 	 */
-	private Cipher cipher;
-	/**
-	 * The flag initialized that indicates if the cipher is initialized for decryption.
-	 *
-	 * @return true, if is initialized
-	 */
-	private boolean initialized;
+	private final PasswordByteDecryptor decryptor;
 
 	/**
 	 * Instantiates a new {@link SimpleDecryptor} with the given private key.
@@ -82,21 +68,18 @@ public class SimpleDecryptor implements StringDecryptor, Cryptor
 	{
 		Objects.requireNonNull(privateKey);
 		this.privateKey = privateKey;
+		this.decryptor = new PasswordByteDecryptor(privateKey);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String decrypt(final String encypted)
-		throws IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException,
-		InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
-		NoSuchPaddingException, InvalidAlgorithmParameterException
+	public String decrypt(final String encypted) throws Exception
 	{
-		initialize();
 		final byte[] dec = Base64.getDecoder().decode(encypted);
-		final byte[] utf8 = this.cipher.doFinal(dec);
-		return new String(utf8, StandardCharsets.UTF_8.name());
+		final byte[] utf8 = this.decryptor.decrypt(dec);
+		return new String(utf8, StandardCharsets.UTF_8);
 	}
 
 	/**
@@ -107,42 +90,6 @@ public class SimpleDecryptor implements StringDecryptor, Cryptor
 	public String getPrivateKey()
 	{
 		return this.privateKey;
-	}
-
-	/**
-	 * Initializes the {@link SimpleDecryptor} object.
-	 *
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cipher object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cipher object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cipher object fails.
-	 */
-	private void initialize() throws NoSuchAlgorithmException, InvalidKeySpecException,
-		NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException
-	{
-		if (!isInitialized())
-		{
-			KeySpec keySpec = new PBEKeySpec(this.getPrivateKey().toCharArray());
-			final SecretKeyFactory factory = SecretKeyFactory
-				.getInstance(CompoundAlgorithm.PBE_WITH_MD5_AND_DES.getAlgorithm());
-			final SecretKey key = factory.generateSecret(keySpec);
-			this.cipher = Cipher.getInstance(key.getAlgorithm());
-			final AlgorithmParameterSpec paramSpec = new PBEParameterSpec(CompoundAlgorithm.SALT,
-				CompoundAlgorithm.ITERATIONCOUNT);
-			this.cipher.init(newOperationMode(), key, paramSpec);
-			initialized = true;
-		}
-	}
-
-	private boolean isInitialized()
-	{
-		return this.initialized;
 	}
 
 	/**

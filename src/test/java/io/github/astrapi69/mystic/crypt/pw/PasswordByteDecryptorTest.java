@@ -25,9 +25,11 @@
 package io.github.astrapi69.mystic.crypt.pw;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
 
@@ -44,39 +46,29 @@ public class PasswordByteDecryptorTest
 
 	/**
 	 * Test method for test the method {@link PasswordByteDecryptor#decrypt(byte[])}
+	 *
+	 * <p>
+	 * A random salt is now generated per call, so the exact ciphertext is no longer deterministic;
+	 * assert non-determinism across two calls plus successful round-trip decryption instead of a
+	 * golden byte literal.
 	 */
 	@Test
 	public void testEncrypt() throws Exception
 	{
-		// declare variables
-		byte[] actual;
-		byte[] expected;
-		String password;
-		String text;
-		byte[] textBytes;
-		byte[] encryptedBytes;
-		byte[] decryptedBytes;
-		PasswordByteEncryptor encryptor;
-		PasswordByteDecryptor decryptor;
-		// new scenario
-		// init variables for current scenario
-		password = "foo";
-		text = "bar";
-		textBytes = text.getBytes(StandardCharsets.UTF_8);
-		encryptor = new PasswordByteEncryptor(password);
-		decryptor = new PasswordByteDecryptor(password);
-		// prepare encrypted bytes with current variables
-		encryptedBytes = encryptor.encrypt(textBytes);
-		assertNotNull(encryptedBytes);
-		actual = encryptedBytes;
-		expected = ArrayFactory.newByteArray(-118, -125, -30, 16, 87, 88, -110, -94);
-		assertArrayEquals(actual, expected);
-		// test method with current encrypted bytes
-		decryptedBytes = decryptor.decrypt(encryptedBytes);
-		assertNotNull(decryptedBytes);
-		actual = decryptedBytes;
-		expected = ArrayFactory.newByteArray(98, 97, 114);
-		assertArrayEquals(actual, expected);
+		String password = "foo";
+		byte[] textBytes = "bar".getBytes(StandardCharsets.UTF_8);
+		PasswordByteEncryptor encryptor = new PasswordByteEncryptor(password);
+		PasswordByteDecryptor decryptor = new PasswordByteDecryptor(password);
+
+		byte[] firstEncrypted = encryptor.encrypt(textBytes);
+		byte[] secondEncrypted = encryptor.encrypt(textBytes);
+		assertNotNull(firstEncrypted);
+		assertNotNull(secondEncrypted);
+		assertFalse(Arrays.equals(firstEncrypted, secondEncrypted));
+
+		byte[] decryptedBytes = decryptor.decrypt(firstEncrypted);
+		assertArrayEquals(ArrayFactory.newByteArray(98, 97, 114), decryptedBytes);
+		assertArrayEquals(textBytes, decryptor.decrypt(secondEncrypted));
 	}
 
 }

@@ -25,17 +25,7 @@
 package io.github.astrapi69.mystic.crypt.simple;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.jupiter.api.Test;
 
@@ -51,27 +41,11 @@ public class SimpleEnDecryptorTest
 	 * Test encrypt and decrypt with {@link SimpleEncryptor#encrypt(String)} and
 	 * {@link SimpleDecryptor#decrypt(String)}
 	 *
-	 * @throws BadPaddingException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws IllegalBlockSizeException
-	 *             is thrown if {@link Cipher#doFinal(byte[])} fails.
-	 * @throws UnsupportedEncodingException
-	 *             is thrown if the named charset is not supported.
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cipher object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cipher object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cipher object fails.
+	 * @throws Exception
+	 *             is thrown if any security error occurs
 	 */
 	@Test
-	public void testEncrypt() throws InvalidKeyException, UnsupportedEncodingException,
-		IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException,
-		InvalidKeySpecException, NoSuchPaddingException, InvalidAlgorithmParameterException
+	public void testEncrypt() throws Exception
 	{
 		String actual;
 		String expected;
@@ -87,6 +61,26 @@ public class SimpleEnDecryptorTest
 		decryptor = new SimpleDecryptor(CompoundAlgorithm.PASSWORD);
 		actual = decryptor.decrypt(encrypted);
 		assertEquals(expected, actual, "String before encryption is not equal after decryption.");
+	}
+
+	/**
+	 * Regression test proving the default PBE algorithm/salt is no longer deterministic: encrypting
+	 * the same plaintext twice on the same {@link SimpleEncryptor} instance must produce different
+	 * ciphertext each time (a fresh salt per call).
+	 *
+	 * @throws Exception
+	 *             is thrown if any security error occurs
+	 */
+	@Test
+	public void testEncryptTwiceProducesDifferentCiphertext() throws Exception
+	{
+		SimpleEncryptor encryptor = new SimpleEncryptor(CompoundAlgorithm.PASSWORD);
+		String plaintext = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
+
+		String first = encryptor.encrypt(plaintext);
+		String second = encryptor.encrypt(plaintext);
+
+		assertNotEquals(first, second);
 	}
 
 }

@@ -25,6 +25,7 @@
 package io.github.astrapi69.mystic.crypt.pw;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
@@ -40,36 +41,27 @@ public class PasswordStringDecryptorTest
 
 	/**
 	 * Test method for test the method {@link PasswordStringDecryptor#decrypt(String)}
+	 *
+	 * <p>
+	 * A random salt is now generated per call, so the exact ciphertext is no longer deterministic;
+	 * assert non-determinism across two calls plus successful round-trip decryption instead of a
+	 * golden string literal.
 	 */
 	@Test
 	public void testDecrypt() throws Exception
 	{
-		// declare variables
-		String actual;
-		String expected;
-		String password;
-		String text;
-		String encryptedMessage;
-		String decryptedMessage;
-		PasswordStringEncryptor encryptor;
-		PasswordStringDecryptor decryptor;
-		// new scenario
-		// init variables for current scenario
-		password = "foo";
-		text = "bar";
-		encryptor = new PasswordStringEncryptor(password);
-		decryptor = new PasswordStringDecryptor(password);
-		// prepare encrypted message with current variables
-		encryptedMessage = encryptor.encrypt(text);
-		assertNotNull(encryptedMessage);
-		actual = encryptedMessage;
-		expected = "ioPiEFdYkqI=";
-		assertEquals(actual, expected);
-		// test method with current encrypted message
-		decryptedMessage = decryptor.decrypt(encryptedMessage);
-		assertNotNull(decryptedMessage);
-		actual = decryptedMessage;
-		expected = text;
-		assertEquals(actual, expected);
+		String password = "foo";
+		String text = "bar";
+		PasswordStringEncryptor encryptor = new PasswordStringEncryptor(password);
+		PasswordStringDecryptor decryptor = new PasswordStringDecryptor(password);
+
+		String firstEncrypted = encryptor.encrypt(text);
+		String secondEncrypted = encryptor.encrypt(text);
+		assertNotNull(firstEncrypted);
+		assertNotNull(secondEncrypted);
+		assertNotEquals(firstEncrypted, secondEncrypted);
+
+		assertEquals(text, decryptor.decrypt(firstEncrypted));
+		assertEquals(text, decryptor.decrypt(secondEncrypted));
 	}
 }

@@ -24,7 +24,7 @@
  */
 package io.github.astrapi69.mystic.crypt.pw;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
@@ -40,27 +40,22 @@ public class PasswordStringEncryptorTest
 
 	/**
 	 * Test method for test the method {@link PasswordStringEncryptor#encrypt(String)}
+	 *
+	 * <p>
+	 * A random salt is now generated per call, so the exact ciphertext is no longer deterministic;
+	 * assert non-determinism across two calls instead of a golden string literal.
 	 */
 	@Test
 	public void testEncrypt() throws Exception
 	{
-		// declare variables
-		String actual;
-		String expected;
-		String password;
-		String text;
-		String encryptedMessage;
-		PasswordStringEncryptor encryptor;
-		// new scenario
-		// init variables for current scenario
-		password = "foo";
-		text = "bar";
-		encryptor = new PasswordStringEncryptor(password);
-		// test method with current variables
-		encryptedMessage = encryptor.encrypt(text);
-		assertNotNull(encryptedMessage);
-		actual = encryptedMessage;
-		expected = "ioPiEFdYkqI=";
-		assertEquals(actual, expected);
+		String password = "foo";
+		String text = "bar";
+		PasswordStringEncryptor encryptor = new PasswordStringEncryptor(password);
+
+		String first = encryptor.encrypt(text);
+		String second = encryptor.encrypt(text);
+		assertNotNull(first);
+		assertNotNull(second);
+		assertNotEquals(first, second);
 	}
 }

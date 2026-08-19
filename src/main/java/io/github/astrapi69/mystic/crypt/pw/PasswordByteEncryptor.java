@@ -24,21 +24,15 @@
  */
 package io.github.astrapi69.mystic.crypt.pw;
 
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.text.Normalizer;
 import java.util.Objects;
 
 import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import io.github.astrapi69.crypt.api.ByteArrayEncryptor;
 import io.github.astrapi69.crypt.api.Cryptor;
-import io.github.astrapi69.crypt.api.algorithm.compound.CompoundAlgorithm;
-import io.github.astrapi69.crypt.data.factory.CipherFactory;
-import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 
 /**
  * The class {@link PasswordByteEncryptor} is a simple {@link ByteArrayEncryptor} implementation.
@@ -48,18 +42,6 @@ import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
  */
 public class PasswordByteEncryptor implements ByteArrayEncryptor, Cryptor
 {
-
-	/**
-	 * The Cipher object.
-	 */
-	private Cipher cipher;
-
-	/**
-	 * The flag initialized that indicates if the cipher is initialized for encryption
-	 *
-	 * @return true, if is initialized
-	 */
-	private boolean initialized;
 
 	/**
 	 * The normalized password.
@@ -75,63 +57,37 @@ public class PasswordByteEncryptor implements ByteArrayEncryptor, Cryptor
 	public PasswordByteEncryptor(final String password)
 	{
 		Objects.requireNonNull(password);
-		String normalizedPassword = Normalizer.normalize(password, Normalizer.Form.NFC);
-		this.normalizedPassword = normalizedPassword;
-		RuntimeExceptionDecorator.decorate(() -> initialize());
+		this.normalizedPassword = Normalizer.normalize(password, Normalizer.Form.NFC);
 	}
 
 	/**
 	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * A fresh, random salt is generated and prepended to the returned bytes on every call.
 	 */
 	@Override
 	public byte[] encrypt(byte[] toEncrypt) throws Exception
 	{
 		Objects.requireNonNull(toEncrypt);
+		byte[] salt = PbeCipherSupport.newSalt();
+		Cipher cipher = PbeCipherSupport.newCipher(normalizedPassword, newOperationMode(), salt);
 		byte[] encryptedBytes;
-		synchronized (this.cipher)
+		synchronized (this)
 		{
-			encryptedBytes = this.cipher.doFinal(toEncrypt);
+			encryptedBytes = cipher.doFinal(toEncrypt);
 		}
-		return encryptedBytes;
+		return ArrayUtils.addAll(salt, encryptedBytes);
 	}
 
 	/**
-	 * Resets the password
+	 * Resets the password, wiping it from memory. Since the password is now needed on every
+	 * {@link #encrypt(byte[])} call rather than only once at construction, calling this makes any
+	 * subsequent {@code encrypt} call fail.
 	 */
 	public synchronized void resetPassword()
 	{
 		this.normalizedPassword = null;
-	}
-
-	/**
-	 * Initializes the {@link PasswordByteEncryptor} object.
-	 *
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cipher object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cipher object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cipher object fails.
-	 */
-	private synchronized void initialize() throws NoSuchAlgorithmException, InvalidKeySpecException,
-		NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException
-	{
-		if (!isInitialized())
-		{
-			this.cipher = CipherFactory.newPBECipher(this.normalizedPassword.toCharArray(),
-				newOperationMode(), CompoundAlgorithm.PBE_WITH_MD5_AND_DES.getAlgorithm());
-			resetPassword();
-			initialized = true;
-		}
-	}
-
-	private boolean isInitialized()
-	{
-		return this.initialized;
 	}
 
 	/**

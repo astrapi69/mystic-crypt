@@ -24,9 +24,11 @@
  */
 package io.github.astrapi69.mystic.crypt.pw;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.io.File;
+import java.util.Arrays;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -34,7 +36,8 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.io.Files;
 
-import io.github.astrapi69.collection.array.ArrayFactory;
+import io.github.astrapi69.checksum.FileChecksumExtensions;
+import io.github.astrapi69.crypt.api.algorithm.MdAlgorithm;
 import io.github.astrapi69.file.delete.DeleteFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;
 import io.github.astrapi69.file.write.StoreFileExtensions;
@@ -69,28 +72,34 @@ public class PasswordFileEncryptorTest
 	/**
 	 * Test method for test the method {@link PasswordFileEncryptor#encrypt(File)}
 	 *
+	 * <p>
+	 * A random salt is now generated per call, so the encrypted file content is no longer
+	 * deterministic; assert round-trip correctness via checksum and non-determinism across two
+	 * encryptions instead of a golden byte literal.
+	 *
 	 * @throws Exception
 	 *             is thrown if any error occurs on the execution
 	 */
 	@Test
 	public void testEncrypt() throws Exception
 	{
-		byte[] actual;
-		byte[] expected;
-		File encryptedCnstr;
-		String encryptedFilename;
-		// new scenario...
-		encryptedFilename = "encryptedCnstr.enc";
-		encryptedCnstr = new File(cryptDir, encryptedFilename);
-		encryptor = new PasswordFileEncryptor(password, encryptedCnstr);
-		encrypted = encryptor.encrypt(toEncrypt);
-		actual = Files.toByteArray(encryptedCnstr);
-		expected = ArrayFactory.newByteArray(6, -1, 90, -29, -121, 43, -47, -27, -64, -81, -100, 3,
-			-10, -112, 22, -78, 37, 76, -72, 63, -80, 125, -40, 99, 104, -106, -11, -97, -22, 40,
-			21, 81, 113, -73, 119, 68, -46, 110, -97, -108, 10, -75, 122, 8, 51, 68, -58, -35);
-		assertArrayEquals(actual, expected);
+		File firstEncrypted = new File(cryptDir, "encryptedCnstr.enc");
+		File secondEncrypted = new File(cryptDir, "encryptedCnstrSecond.enc");
+		new PasswordFileEncryptor(password, firstEncrypted).encrypt(toEncrypt);
+		new PasswordFileEncryptor(password, secondEncrypted).encrypt(toEncrypt);
+
+		assertFalse(
+			Arrays.equals(Files.toByteArray(firstEncrypted), Files.toByteArray(secondEncrypted)));
+
+		File decrypted = new File(cryptDir, "decryptedCnstr.decrypted");
+		new PasswordFileDecryptor(password, decrypted).decrypt(firstEncrypted);
+		assertEquals(FileChecksumExtensions.getChecksum(toEncrypt, MdAlgorithm.MD5.name()),
+			FileChecksumExtensions.getChecksum(decrypted, MdAlgorithm.MD5.name()));
+
 		// clean up...
-		DeleteFileExtensions.delete(encrypted);
+		DeleteFileExtensions.delete(firstEncrypted);
+		DeleteFileExtensions.delete(secondEncrypted);
+		DeleteFileExtensions.delete(decrypted);
 	}
 
 	/**

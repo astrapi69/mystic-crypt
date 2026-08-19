@@ -28,24 +28,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.text.Normalizer;
 import java.util.Objects;
 
 import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
 
 import org.apache.commons.io.FilenameUtils;
 
 import io.github.astrapi69.crypt.api.Cryptor;
 import io.github.astrapi69.crypt.api.FileEncryptor;
-import io.github.astrapi69.crypt.api.algorithm.compound.CompoundAlgorithm;
-import io.github.astrapi69.crypt.data.factory.CipherFactory;
 import io.github.astrapi69.mystic.crypt.io.CryptoCipherInputStream;
-import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 
 /**
  * The class {@link PasswordFileEncryptor} is a simple {@link FileEncryptor} implementation.
@@ -56,20 +48,8 @@ import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 public class PasswordFileEncryptor implements FileEncryptor, Cryptor
 {
 
-	/**
-	 * The Cipher object.
-	 */
-	private Cipher cipher;
-
 	/** The encrypted file. */
 	private File encryptedFile;
-
-	/**
-	 * The flag initialized that indicates if the cipher is initialized for encryption
-	 *
-	 * @return true, if is initialized
-	 */
-	private boolean initialized;
 
 	/**
 	 * The normalized password.
@@ -101,11 +81,16 @@ public class PasswordFileEncryptor implements FileEncryptor, Cryptor
 	{
 		Objects.requireNonNull(password);
 		this.encryptedFile = encryptedFile;
-		String normalizedPassword = Normalizer.normalize(password, Normalizer.Form.NFC);
-		this.normalizedPassword = normalizedPassword;
-		RuntimeExceptionDecorator.decorate(() -> initialize());
+		this.normalizedPassword = Normalizer.normalize(password, Normalizer.Form.NFC);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * A fresh, random salt is generated and written as the first bytes of the encrypted file on
+	 * every call.
+	 */
 	public File encrypt(final File toEncrypt) throws Exception
 	{
 		Objects.requireNonNull(toEncrypt);
@@ -114,57 +99,32 @@ public class PasswordFileEncryptor implements FileEncryptor, Cryptor
 			final String filename = FilenameUtils.getBaseName(toEncrypt.getName());
 			encryptedFile = newEncryptedFile(toEncrypt.getParent(), filename + ".enc");
 		}
-		try (
-			CryptoCipherInputStream cis = new CryptoCipherInputStream(
-				new FileInputStream(toEncrypt), this.cipher);
-			OutputStream out = new FileOutputStream(encryptedFile))
+		byte[] salt = PbeCipherSupport.newSalt();
+		Cipher cipher = PbeCipherSupport.newCipher(normalizedPassword, newOperationMode(), salt);
+		try (OutputStream out = new FileOutputStream(encryptedFile))
 		{
-			int c;
-			while ((c = cis.read()) != -1)
+			out.write(salt);
+			try (CryptoCipherInputStream cis = new CryptoCipherInputStream(
+				new FileInputStream(toEncrypt), cipher))
 			{
-				out.write(c);
+				int c;
+				while ((c = cis.read()) != -1)
+				{
+					out.write(c);
+				}
 			}
 		}
 		return encryptedFile;
 	}
 
 	/**
-	 * Resets the password
+	 * Resets the password, wiping it from memory. Since the password is now needed on every
+	 * {@link #encrypt(File)} call rather than only once at construction, calling this makes any
+	 * subsequent {@code encrypt} call fail.
 	 */
 	public synchronized void resetPassword()
 	{
 		this.normalizedPassword = null;
-	}
-
-	/**
-	 * Initializes the {@link PasswordFileEncryptor} object.
-	 *
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cipher object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cipher object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cipher object fails.
-	 */
-	private synchronized void initialize() throws NoSuchAlgorithmException, InvalidKeySpecException,
-		NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException
-	{
-		if (!isInitialized())
-		{
-			this.cipher = CipherFactory.newPBECipher(this.normalizedPassword.toCharArray(),
-				newOperationMode(), CompoundAlgorithm.PBE_WITH_MD5_AND_DES.getAlgorithm());
-			resetPassword();
-			initialized = true;
-		}
-	}
-
-	private boolean isInitialized()
-	{
-		return this.initialized;
 	}
 
 	/**

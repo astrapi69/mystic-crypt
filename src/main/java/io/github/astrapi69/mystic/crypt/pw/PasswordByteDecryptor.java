@@ -24,21 +24,15 @@
  */
 package io.github.astrapi69.mystic.crypt.pw;
 
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.text.Normalizer;
 import java.util.Objects;
 
 import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import io.github.astrapi69.crypt.api.ByteArrayDecryptor;
 import io.github.astrapi69.crypt.api.Cryptor;
-import io.github.astrapi69.crypt.api.algorithm.compound.CompoundAlgorithm;
-import io.github.astrapi69.crypt.data.factory.CipherFactory;
-import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 
 /**
  * The class {@link PasswordByteDecryptor} is a simple {@link ByteArrayDecryptor} implementation
@@ -48,18 +42,6 @@ import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
  */
 public class PasswordByteDecryptor implements ByteArrayDecryptor, Cryptor
 {
-
-	/**
-	 * The Cipher object.
-	 */
-	private Cipher cipher;
-
-	/**
-	 * The flag initialized that indicates if the cipher is initialized for decryption.
-	 *
-	 * @return true, if is initialized
-	 */
-	private boolean initialized;
 
 	/**
 	 * The normalized password.
@@ -75,63 +57,44 @@ public class PasswordByteDecryptor implements ByteArrayDecryptor, Cryptor
 	public PasswordByteDecryptor(final String password)
 	{
 		Objects.requireNonNull(password);
-		String normalizedPassword = Normalizer.normalize(password, Normalizer.Form.NFC);
-		this.normalizedPassword = normalizedPassword;
-		RuntimeExceptionDecorator.decorate(() -> initialize());
+		this.normalizedPassword = Normalizer.normalize(password, Normalizer.Form.NFC);
 	}
 
 	/**
 	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The salt is read from the first bytes of {@code encryptedBytes}, matching what
+	 * {@link PasswordByteEncryptor#encrypt(byte[])} prepends.
 	 */
 	@Override
 	public byte[] decrypt(byte[] encryptedBytes) throws Exception
 	{
 		Objects.requireNonNull(encryptedBytes);
-		final byte[] decryptedBytes;
-		synchronized (this.cipher)
+		if (encryptedBytes.length < PbeCipherSupport.SALT_LENGTH)
 		{
-			decryptedBytes = this.cipher.doFinal(encryptedBytes);
+			throw new IllegalArgumentException("encrypted data too short to contain a salt prefix");
+		}
+		byte[] salt = ArrayUtils.subarray(encryptedBytes, 0, PbeCipherSupport.SALT_LENGTH);
+		byte[] cipherBytes = ArrayUtils.subarray(encryptedBytes, PbeCipherSupport.SALT_LENGTH,
+			encryptedBytes.length);
+		Cipher cipher = PbeCipherSupport.newCipher(normalizedPassword, newOperationMode(), salt);
+		final byte[] decryptedBytes;
+		synchronized (this)
+		{
+			decryptedBytes = cipher.doFinal(cipherBytes);
 		}
 		return decryptedBytes;
 	}
 
 	/**
-	 * Resets the password
+	 * Resets the password, wiping it from memory. Since the password is now needed on every
+	 * {@link #decrypt(byte[])} call rather than only once at construction, calling this makes any
+	 * subsequent {@code decrypt} call fail.
 	 */
 	public synchronized void resetPassword()
 	{
 		this.normalizedPassword = null;
-	}
-
-	/**
-	 * Initializes the {@link PasswordByteDecryptor} object.
-	 *
-	 * @throws InvalidAlgorithmParameterException
-	 *             is thrown if initialization of the cipher object fails.
-	 * @throws NoSuchPaddingException
-	 *             is thrown if instantiation of the cipher object fails.
-	 * @throws InvalidKeySpecException
-	 *             is thrown if generation of the SecretKey object fails.
-	 * @throws NoSuchAlgorithmException
-	 *             is thrown if instantiation of the SecretKeyFactory object fails.
-	 * @throws InvalidKeyException
-	 *             is thrown if initialization of the cipher object fails.
-	 */
-	private synchronized void initialize() throws NoSuchAlgorithmException, InvalidKeySpecException,
-		NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException
-	{
-		if (!isInitialized())
-		{
-			this.cipher = CipherFactory.newPBECipher(this.normalizedPassword.toCharArray(),
-				newOperationMode(), CompoundAlgorithm.PBE_WITH_MD5_AND_DES.getAlgorithm());
-			resetPassword();
-			initialized = true;
-		}
-	}
-
-	private synchronized boolean isInitialized()
-	{
-		return this.initialized;
 	}
 
 	/**
