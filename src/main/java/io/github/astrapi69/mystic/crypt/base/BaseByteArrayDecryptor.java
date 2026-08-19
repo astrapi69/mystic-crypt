@@ -33,9 +33,14 @@ import java.security.spec.InvalidKeySpecException;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.GCMParameterSpec;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import io.github.astrapi69.crypt.data.model.CryptModel;
+import io.github.astrapi69.mystic.crypt.algorithm.MysticSymmetricAlgorithm;
 import io.github.astrapi69.mystic.crypt.core.AbstractByteArrayDecryptor;
+import io.github.astrapi69.random.number.RandomByteFactory;
 
 /**
  * The class {@link BaseByteArrayDecryptor} can decrypt a byte array with his symmetric key
@@ -107,6 +112,21 @@ public class BaseByteArrayDecryptor extends AbstractByteArrayDecryptor
 	@Override
 	public byte[] decrypt(byte[] encrypted) throws Exception
 	{
+		final String algorithm = newAlgorithm();
+		if (isGcmTransformation(algorithm))
+		{
+			if (encrypted.length < GCM_IV_LENGTH)
+			{
+				throw new IllegalArgumentException(
+					"encrypted data too short to contain a GCM initialization vector");
+			}
+			final byte[] iv = ArrayUtils.subarray(encrypted, 0, GCM_IV_LENGTH);
+			final byte[] cipherBytes = ArrayUtils.subarray(encrypted, GCM_IV_LENGTH,
+				encrypted.length);
+			final Cipher cipher = newAesCipher(getModel().getKey(), algorithm, iv,
+				newOperationMode());
+			return cipher.doFinal(cipherBytes);
+		}
 		final byte[] decrypted = getModel().getCipher().doFinal(encrypted);
 		return decrypted;
 	}
@@ -120,8 +140,58 @@ public class BaseByteArrayDecryptor extends AbstractByteArrayDecryptor
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
 		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
+		final byte[] iv = isGcmTransformation(algorithm)
+			? RandomByteFactory.randomByteArray(GCM_IV_LENGTH)
+			: null;
+		return newAesCipher(key, algorithm, iv, operationMode);
+	}
+
+	/**
+	 * Builds a new {@link Cipher} for the given transformation. For the GCM transformation the
+	 * given {@code iv} is used to build a {@link GCMParameterSpec}; for any other transformation
+	 * the {@code iv} is ignored and the cipher is initialized without parameters, as before.
+	 *
+	 * @param key
+	 *            the key
+	 * @param algorithm
+	 *            the full cipher transformation
+	 * @param iv
+	 *            the initialization vector for GCM, or {@code null} for any other transformation
+	 * @param operationMode
+	 *            the operation mode for the new cipher object
+	 * @return the initialized cipher
+	 */
+	private Cipher newAesCipher(final SecretKey key, final String algorithm, final byte[] iv,
+		final int operationMode) throws NoSuchAlgorithmException, NoSuchPaddingException,
+		InvalidKeyException, InvalidAlgorithmParameterException
+	{
 		final Cipher cipher = Cipher.getInstance(algorithm);
-		cipher.init(operationMode, key);
+		if (isGcmTransformation(algorithm))
+		{
+			cipher.init(operationMode, key, new GCMParameterSpec(GCM_TAG_LENGTH_BITS, iv));
+		}
+		else
+		{
+			cipher.init(operationMode, key);
+		}
 		return cipher;
 	}
+
+	/**
+	 * Checks if the given transformation is the GCM transformation used as the new default.
+	 *
+	 * @param algorithm
+	 *            the transformation to check
+	 * @return true if it is the GCM transformation
+	 */
+	private static boolean isGcmTransformation(final String algorithm)
+	{
+		return MysticSymmetricAlgorithm.AES_GCM_NO_PADDING.getAlgorithm().equals(algorithm);
+	}
+
+	/** The length in bytes of a GCM initialization vector (96-bit nonce, NIST SP 800-38D). */
+	private static final int GCM_IV_LENGTH = 12;
+
+	/** The length in bits of the GCM authentication tag. */
+	private static final int GCM_TAG_LENGTH_BITS = 128;
 }
