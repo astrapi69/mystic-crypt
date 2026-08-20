@@ -1,28 +1,3 @@
 ```java
-# Compiled Java classes
-*.class
 
-# Build directories
-target/
-build/
-dist/
-
-# IDE files
-.idea/
-.vscode/
-*.iml
-*.ipr
-*.iws
-
-# Logs
-*.log
-
-# Temporary files
-*.tmp
-*.temp
-
-# Package manager caches
-.gradle/
-.m2/repository/
-.ivy2/
 ```
