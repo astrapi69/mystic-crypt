@@ -1,11 +1,54 @@
 ```
-# Gradle
-.gradle/
-build/
-
-# Java class files
+# Compiled and build artifacts
 *.class
+*.o
+*.obj
+*.out
+build/
+target/
 
-# Reports
-**/reports/
+# Dependencies
+lib/
+vendor/
+node_modules/
+.gradle/
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+
+# Environment
+.env
+.env.local
+*.env.*
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python specific
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Java specific
+*.jar
+*.war
+*.ear
+hs_err_pid*
+
+# Coverage reports
+coverage/
+htmlcov/
+.coverage
+
+# OS generated files
+.DS_Store
+Thumbs.db
 ```
