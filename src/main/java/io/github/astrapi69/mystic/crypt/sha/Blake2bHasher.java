@@ -97,7 +97,7 @@ public final class Blake2bHasher
 				"Digest length must be between " + MIN_DIGEST_LENGTH + " and " + MAX_DIGEST_LENGTH);
 		}
 
-		final Blake2bDigest digest = new Blake2bDigest(null, false, digestLength * 8, null);
+		final Blake2bDigest digest = new Blake2bDigest(digestLength * 8);
 		digest.update(data, 0, data.length);
 
 		final byte[] result = new byte[digestLength];
@@ -191,7 +191,15 @@ public final class Blake2bHasher
 				"Digest length must be between " + MIN_DIGEST_LENGTH + " and " + MAX_DIGEST_LENGTH);
 		}
 
-		final Blake2bDigest digest = new Blake2bDigest(key, false, digestLength * 8, null);
+		final Blake2bDigest digest;
+		if (key != null)
+		{
+			digest = new Blake2bDigest(key);
+		}
+		else
+		{
+			digest = new Blake2bDigest(digestLength * 8);
+		}
 		digest.update(data, 0, data.length);
 
 		final byte[] result = new byte[digestLength];

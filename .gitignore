@@ -1,3 +1,9 @@
-```java
-
+```
+# Compiled and build artifacts
+*.class
+build/
+# Dependencies
+.gradle/
+# Logs and temp files
+*.log
 ```

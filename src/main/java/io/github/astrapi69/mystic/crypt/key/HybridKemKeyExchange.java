@@ -136,7 +136,7 @@ public final class HybridKemKeyExchange
 	 */
 	public static HybridEncapsulation hybridEncapsulate(final PublicKey x25519PublicKey,
 		final PublicKey mlKemPublicKey, final KeyPairGeneratorAlgorithm mlKemAlgorithm,
-		final int keyLengthBytes) throws InvalidKeyException, NoSuchAlgorithmException
+		final int keyLengthBytes) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchProviderException
 	{
 		Objects.requireNonNull(x25519PublicKey, "x25519PublicKey cannot be null");
 		Objects.requireNonNull(mlKemPublicKey, "mlKemPublicKey cannot be null");
@@ -178,7 +178,6 @@ public final class HybridKemKeyExchange
 			// Secure wipe of intermediate secrets
 			Arrays.fill(x25519SharedSecret, (byte) 0);
 			Arrays.fill(mlKemSharedSecret, (byte) 0);
-			Arrays.fill(combinedSecret, (byte) 0);
 		}
 	}
 
@@ -213,7 +212,7 @@ public final class HybridKemKeyExchange
 		final PrivateKey mlKemPrivateKey, final PublicKey senderX25519PublicKey,
 		final byte[] mlKemCiphertext, final KeyPairGeneratorAlgorithm mlKemAlgorithm,
 		final int keyLengthBytes)
-		throws InvalidKeyException, NoSuchAlgorithmException,
+		throws InvalidKeyException, NoSuchAlgorithmException, NoSuchProviderException,
 		javax.crypto.DecapsulateException
 	{
 		Objects.requireNonNull(x25519PrivateKey, "x25519PrivateKey cannot be null");
@@ -253,7 +252,6 @@ public final class HybridKemKeyExchange
 			// Secure wipe of intermediate secrets
 			Arrays.fill(x25519SharedSecret, (byte) 0);
 			Arrays.fill(mlKemSecretBytes, (byte) 0);
-			Arrays.fill(combinedSecret, (byte) 0);
 		}
 	}
 
