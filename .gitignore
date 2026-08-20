@@ -1,9 +1,11 @@
 ```
-# Compiled and build artifacts
-*.class
-build/
-# Dependencies
+# Gradle
 .gradle/
-# Logs and temp files
-*.log
+build/
+
+# Java class files
+*.class
+
+# Reports
+**/reports/
 ```
