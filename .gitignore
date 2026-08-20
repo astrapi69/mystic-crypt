@@ -1,92 +1,54 @@
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
-##################
-# Compiled files #
-##################
+```
+# Compiled and build artifacts
 *.class
+*.o
+*.obj
+*.out
+build/
+target/
 
-##################
-# intellij files #
-##################
-*.iml
-*.iws
-*.ipr
-!.idea/runConfigurations
-.idea/inspectionProfiles
-.idea/copyright
-.idea/libraries
-.idea/codeStyles
-.idea/shelf
-.idea/*.*
-/.idea/$PRODUCT_WORKSPACE_FILE$
+# Dependencies
+lib/
+vendor/
+node_modules/
+.gradle/
 
-#################
-# eclipse files #
-#################
-/.project
-/.classpath
-/.settings
-/.tern-project
-
-#########################
-# maven generated files #
-#########################
-/target
-
-#############
-# Zip files #
-#############
-*.tar
-*.zip
-*.7z
-*.dmg
-*.gz
-*.iso
-*.jar
-*.rar
-
-##############
-# Logs files #
-##############
+# Logs and temp files
 *.log
+*.tmp
+*.swp
 
-#################
-# test-ng files #
-#################
-/test-output
+# Environment
+.env
+.env.local
+*.env.*
 
-############################
-# Binaries generated files #
-############################
-/bin
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
 
-################
-# gradle files #
-################
-/build
-/.gradle
-/gradle
-/out
-# Ignore Gradle GUI config
-gradle-app.setting
-# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
-!/gradle/wrapper/gradle-wrapper.jar
-!/gradle/wrapper/gradle-wrapper.properties
-# Cache of project
-.gradletasknamecache
-# # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
-# gradle/wrapper/gradle-wrapper.properties
+# Python specific
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
 
-##############################################################
-# virtual machine crash logs                                 #
-# see http://www.java.com/en/download/help/error_hotspot.xml #
-##############################################################
+# Java specific
+*.jar
+*.war
+*.ear
 hs_err_pid*
-/.attach_pid*
+
+# Coverage reports
+coverage/
+htmlcov/
+.coverage
+
+# OS generated files
+.DS_Store
+Thumbs.db
+```
