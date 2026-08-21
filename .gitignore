@@ -1,22 +1,20 @@
 ```
-# Compiled and build artifacts
-*.class
-*.o
-*.obj
-*.out
+# Dependencies
+.gradle/
 build/
 target/
 
-# Dependencies
-lib/
-vendor/
-node_modules/
-.gradle/
+# Compiled files
+*.class
+*.jar
+*.war
+*.ear
+*.so
+*.dll
+*.dylib
 
-# Logs and temp files
+# Logs
 *.log
-*.tmp
-*.swp
 
 # Environment
 .env
@@ -29,26 +27,44 @@ node_modules/
 *.swp
 *.swo
 
-# Python specific
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-*.so
+# OS
+.DS_Store
+Thumbs.db
 
-# Java specific
-*.jar
-*.war
-*.ear
-hs_err_pid*
-
-# Coverage reports
+# Coverage
 coverage/
 htmlcov/
 .coverage
 
-# OS generated files
-.DS_Store
-Thumbs.db
+# Python (if applicable)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.mypy_cache/
+.pytest_cache/
+
+# Archives
+*.zip
+*.gz
+*.tar
+*.tgz
+*.bz2
+*.xz
+*.7z
+*.rar
+*.zst
+*.lz4
+*.lzh
+*.cab
+*.arj
+*.rpm
+*.deb
+*.Z
+*.lz
+*.lzo
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.tar.zst
 ```
