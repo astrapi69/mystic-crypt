@@ -1,3 +1,0 @@
-input,prefix,suffix,expected
-Hello,<<,>>,<<Hello>>
-World,[[,]],[[World]]
