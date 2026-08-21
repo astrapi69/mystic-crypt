@@ -17,11 +17,11 @@ Status key:
   infrastructure-level, or hardware-level concerns; a data/key-encryption utility library is
   the wrong layer to implement them in. Reasoning given per item.
 
-Last verified: 2026-08-19, against `mystic-crypt` 10.1-SNAPSHOT, `crypt-data` 10.3-SNAPSHOT
-(10.2 released), `crypt-api` 9.7-SNAPSHOT (9.6 released). The capability tables below are current
-as of this date; the mutation-coverage numbers in the section further down predate this round's
-PQC/J-PAKE/PKCS#11 additions and will read a little low until the next `./gradlew pitest` run
-picks up their tests.
+Last verified: 2026-08-21, against `mystic-crypt` 10.2-SNAPSHOT (10.1 released), `crypt-data`
+10.3-SNAPSHOT (10.2 released), `crypt-api` 9.7-SNAPSHOT (9.6 released). The capability tables
+below are current as of this date; the mutation-coverage numbers in the section further down
+predate this round's BLAKE2/Feldman-VSS/key-committing-AEAD fixes and Hybrid KEM test coverage
+and will read a little low until the next `./gradlew pitest` run picks up their tests.
 
 ---
 
@@ -53,7 +53,7 @@ picks up their tests.
 | SHA-256 / SHA-512 | ✅ | `Hasher` (`mystic-crypt`), `HashExtensions` (`crypt-data`), `HashAlgorithm.SHA_256`/`.SHA_512` (`crypt-api`). |
 | SHA-3 / Keccak | ⚠️ | `MessageDigestAlgorithm.SHA3_224/256/384/512` (`crypt-api`) defined; no call site outside that enum's own tests. |
 | MD5 / SHA-1 | ✅ (present, legacy) | Still defined and reachable (e.g. for checksums, not security use) — not a gap, these are correctly *not* used for anything security-sensitive. |
-| BLAKE2 / BLAKE3 | ❌ | Not present anywhere. |
+| BLAKE2 / BLAKE3 | ✅ (BLAKE2 only) | `Blake2bHasher`/`Blake2sHasher` (`mystic-crypt`) — Bouncy Castle-backed, both BLAKE2b (64-bit optimized) and BLAKE2s (32-bit/embedded optimized) with configurable digest length. Also the commitment-tag primitive under `KeyCommittingAeadEncryptor` (see Key-committing AEAD, Part 2). BLAKE3 remains absent — no BLAKE3 implementation ships in Bouncy Castle or the JDK, only third-party libraries this project doesn't depend on. |
 | Constant-time comparison | ✅ | `MessageDigest.isEqual(...)` used in `PasswordEncryptor` and `Argon2Support` (`mystic-crypt`). Not used in `crypt-data`/`crypt-api` (no password/MAC comparison logic lives there). |
 
 ### Password hashing
@@ -77,6 +77,7 @@ picks up their tests.
 | Topic | Status | Where |
 |---|---|---|
 | ML-KEM / Kyber (FIPS 203) | ✅ | `MlKemKeyExchange` (`mystic-crypt`) wraps `KemFactory` (`crypt-data`, generic `javax.crypto.KEM` wrapper) — Bouncy Castle-backed (`ML-KEM-512/768/1024`), requires BC registered as a security provider. Verified end-to-end (encapsulate/decapsulate, shared secrets match) before wiring. |
+| Hybrid classical+PQC KEM (X25519 + ML-KEM) | ✅ | `HybridKemKeyExchange` (`mystic-crypt`) — the NIST-recommended transitional combiner: concatenates the classical X25519 ECDH shared secret (32 bytes) with the ML-KEM shared secret, then HKDF-derives the final key, so security holds as long as *either* component algorithm remains unbroken. Sender generates a fresh ephemeral X25519 keypair per encapsulation. `HybridKemKeyExchangeTest` covers round-trip encapsulate/decapsulate, non-determinism across calls, and rejection of non-ML-KEM algorithms. |
 | ML-DSA / Dilithium (FIPS 204) | ✅ | `MlDsaSigner`/`MlDsaVerifier` (`mystic-crypt`) — Bouncy Castle-backed (`ML-DSA-44/65/87`), same `SignatureFactory` primitive as Ed25519. |
 | SLH-DSA / SPHINCS+ (FIPS 205) | ✅ | `SlhDsaSigner`/`SlhDsaVerifier` (`mystic-crypt`) — Bouncy Castle-backed, covers all 12 pure parameter sets (SHA2/SHAKE × 128/192/256 × S/F). Conservative hash-based signatures; large (tens of KB) and, for "S" sets, slow to sign — offered as a fallback if ML-DSA's lattice-based security assumption is ever broken. |
 
@@ -96,7 +97,7 @@ picks up their tests.
 | AES Key Wrap (RFC 3394) | ✅ | `KeyWrapFactory` (`crypt-data`) — JDK-native `"AESWrap"` transformation (SunJCE), no Bouncy Castle needed. Implicit integrity check: tampered wrapped bytes throw `InvalidKeyException` on unwrap. |
 | Key hierarchy (Master/KEK/DEK) | ⚠️ | The *primitive* (`KeyWrapFactory`) needed to build a KEK→DEK hierarchy exists; the hierarchy itself (master key never leaving an HSM, rotation policy, etc.) is an application/infrastructure design, not a library API. |
 | Shamir's Secret Sharing | ✅ | `ShamirSecretSharingFactory` (`crypt-data`) — wraps Bouncy Castle's `org.bouncycastle.crypto.threshold.ShamirSecretSplitter` (GF(256) polynomial interpolation). `split()`/`combine()`, own `Share(index, value)` type since BC's own share type doesn't expose the share index. Two documented constraints inherited from BC's implementation: total share count must not exceed the secret length in bytes, and combining fewer than the original threshold silently yields a wrong secret (no built-in integrity check — Shamir's scheme has none). |
-| Verifiable Secret Sharing (Feldman/Pedersen VSS) | ❌ | Not present. Would close the "wrong result on too few shares" gap above if ever needed. |
+| Verifiable Secret Sharing (Feldman/Pedersen VSS) | ✅ (Feldman only) | `FeldmanVSS` (`mystic-crypt`) — extends Shamir SSS with public commitments (`g^{a_i} mod p`) so shares can be verified against the commitments before reconstruction, closing the "wrong result on too few/wrong shares" silent-failure gap above. Operates in a prime-order subgroup of `Z_p*`; the secret is reduced into `Z_q` (`secret.mod(q)`) since reconstruction can only ever recover a value mod q. Pedersen VSS (which additionally hides the secret from the dealer via a second generator) is not implemented — no current consumer need for dealer-blindness specifically. |
 | Key transparency (append-only key-change log) | 🚫 | The mechanism (a Merkle tree of key-change entries with periodic signed tree-head checkpoints) is server-hosted, publicly-queryable infrastructure that has to run continuously and be independently monitored by third-party auditors for consistency and non-equivocation — it's not something a client library instantiates on demand. What this library *could* reasonably provide is a client-side inclusion-proof verifier (given a leaf, a Merkle path, and a signed tree head, confirm the leaf is really in the tree) — genuinely closer to a "primitive," but there's no concrete consumer need for it today, and building it speculatively without a real transparency-log server to verify against would violate this session's standing discipline of confirming an implementation against something real before shipping it. |
 | Pre-Shared Keys (PSK) | ✅ (trivially) | Any `byte[]`/`SecretKey` works as a PSK with the existing `BaseByteArrayEncryptor`/`Decryptor` — no dedicated PSK class needed, since "PSK" just means "a symmetric key from an out-of-band channel" from the library's point of view. |
 
@@ -117,7 +118,7 @@ picks up their tests.
 | Quantum Key Distribution (QKD) | 🚫 | Not a software gap in any sense — BB84 and its variants work by transmitting individual polarized photons over dedicated fiber (or free-space/satellite links) and measuring quantum-mechanical disturbance from eavesdropping; there is no way to "implement" the physical transmission layer in code, only to consume key material a QKD hardware link has already produced (at which point it's just a `byte[]` PSK, already trivially supported — see the PSK row above). |
 | Identity-Based Key Exchange (IBKE) | ❌ | Not present. The one thing worth naming: IBKE architecturally requires a trusted Key Generation Center that computes every participant's private key from their identity string plus a master secret, meaning the KGC can derive (or has derived) every user's private key by construction — a form of mandatory key escrow that real deployments generally consider a feature only in specific closed/regulated contexts (e.g. enterprise email escrow), not a general-purpose property most users of a crypto library would want. Niche/academic beyond that; no current consumer need identified. |
 | Deniability (deniable AKE, ring signatures) | 🚫 | Deniability is a *proof-theoretic property of a protocol run*, not something a single signature call can provide: "deniable" means a third party, given the full transcript, *cannot* mathematically prove which party said what (e.g. because a MAC key both parties know equally could have produced the authentication tag) — which is a property of how an AKE's transcript is constructed end-to-end, not a flag you set. Ring signatures are more primitive-shaped (sign such that a verifier learns "someone in this ring signed" but not who) and could plausibly live in `SignatureFactory`-adjacent code someday, but nothing in this library's current consumer base has asked for the anonymity-set bookkeeping that comes with them. |
-| Key-committing AEAD | ❌ | Current AES-GCM usage does not add explicit key-commitment. Real, narrow gap *if* this library is ever used in a context vulnerable to the "invisible salamanders" class of attack: a malicious sender crafts one ciphertext that decrypts to *different* valid plaintexts under different keys, which only matters when a single ciphertext might later be opened by more than one keyholder (multi-recipient encryption, or an abuse-reporting flow where a platform re-decrypts a user-reported message with a different key than the original recipient used) — not a concern for this library's current point-to-point, single-keyholder encryption use cases. Closing it concretely would mean adding a keyed hash of the derived key into the AEAD's associated data (the standard "commit the key" construction) as an opt-in variant, not changing the existing default. |
+| Key-committing AEAD | ✅ | `KeyCommittingAeadEncryptor` (`mystic-crypt`) — closes the "invisible salamanders" gap (a malicious sender crafting one ciphertext that decrypts to *different* valid plaintexts under different keys, relevant to multi-recipient encryption or abuse-reporting re-decryption flows). Adds a BLAKE2b(key‖iv‖associatedData) commitment tag folded into the AAD; wire format is `IV(12) ‖ Ciphertext ‖ CommitmentTag(32)`. Offered as an explicit opt-in class alongside the existing default AES-GCM path (`BaseByteArrayEncryptor`), not a replacement for it. |
 | Channel binding (`tls-exporter`/`tls-unique`) | 🚫 | Channel binding only has meaning bound to a *specific, live* TLS connection: `tls-exporter` (RFC 9266) needs the negotiated master secret from an active `SSLSession` to derive its binding value, and `tls-unique` needs the handshake's Finished-message bytes — both require owning the socket that's mid-handshake. `KeyTrustExtensions` deliberately stops at building `KeyManager`/`TrustManager`s for the caller to hand to their own `SSLContext`; it never takes ownership of the resulting `SSLSocket`/`SSLEngine`, so there's no connection object here to extract a binding value from. A consumer doing channel binding would call `sslSession.exportKeyingMaterial(...)`/inspect the Finished message on their own live socket, not through this library. |
 | Threshold signatures / MPC (FROST etc.) | ❌ | Not present. Distinct from Shamir's Secret Sharing above in a way worth being precise about: Shamir SSS *reconstructs* the private key at combine-time (briefly, in memory) — exactly what `ShamirSecretSharingFactory.combine()` does — whereas threshold signing (FROST and friends) produces a valid signature via an interactive multi-round protocol among signers that never assembles the full private key anywhere, not even transiently. That's a strictly stronger security property, but it needs the same kind of multi-round message-exchange support this doc already flags as out of scope for AKE/PAKE above (nonce commitment round, signature-share round, aggregation round) — a real gap only if a multi-party signing use case (e.g. custody/co-signing) ever emerges here. |
 | Downgrade attacks (FREAK/Logjam/POODLE/ROBOT) | 🚫 | Every one of these exploited a *cipher-suite negotiation* step: a TLS client and server agree on parameters from a list, and each attack found a way to force that negotiation toward a deliberately weak choice (export-grade RSA for FREAK, weak DH groups for Logjam, SSLv3 fallback for POODLE, PKCS#1 v1.5 padding oracles for ROBOT). This library never negotiates a transformation with a peer — the caller picks `MysticSymmetricAlgorithm.AES_GCM_NO_PADDING` (or any other transformation) directly in code, so there is no negotiation step for an attacker to downgrade. The entire attack class requires a negotiation surface this library structurally doesn't have. |
@@ -128,20 +129,22 @@ picks up their tests.
 ## Summary: real gaps vs. correctly out of scope
 
 **Every gap identified in the original pass through this document is now closed:** PBKDF2 wiring,
-ChaCha20-Poly1305 wiring, the full NIST post-quantum suite (ML-KEM, ML-DSA, SLH-DSA), key zeroing
-for password/shared-secret material, PAKE (J-PAKE), and PKCS#11/HSM provider configuration are all
-✅ — see the tables above for the classes involved, and each item's commit message for how it was
-verified before being wired in (this library's standing discipline: confirm an algorithm/API
-actually behaves as expected via a throwaway empirical test *before* writing the real
-implementation against it, not after).
+ChaCha20-Poly1305 wiring, the full NIST post-quantum suite (ML-KEM, ML-DSA, SLH-DSA) plus the
+X25519+ML-KEM hybrid combiner, key zeroing for password/shared-secret material, PAKE (J-PAKE),
+PKCS#11/HSM provider configuration, BLAKE2, Feldman VSS, and key-committing AEAD are all ✅ — see
+the tables above for the classes involved, and each item's commit message for how it was verified
+before being wired in (this library's standing discipline: confirm an algorithm/API actually
+behaves as expected via a throwaway empirical test *before* writing the real implementation
+against it, not after).
 
 **Residual, narrower items not pursued further** (each is a real but genuinely marginal
 improvement, not a category-level gap):
 
-- **Verifiable Secret Sharing (Feldman/Pedersen VSS)** — would close Shamir SSS's "too-few-shares
-  silently gives a wrong result" limitation, at the cost of a second, more complex primitive.
-- **Key-committing AEAD** — only matters for multi-recipient encryption / abuse-reporting use
-  cases this library doesn't currently target.
+- **BLAKE3** — no BLAKE3 implementation ships in Bouncy Castle or the JDK; BLAKE2 already covers
+  the "modern, fast, non-SHA hash" use case.
+- **Pedersen VSS specifically** (as opposed to Feldman, which is what's actually implemented) —
+  would additionally hide the secret from the dealer via a second generator; no current consumer
+  need for dealer-blindness specifically.
 - **SRP/OPAQUE specifically** (as opposed to J-PAKE, which is what's actually implemented) — would
   require either hand-rolling the protocol math (SRP) or a dependency neither the JDK nor Bouncy
   Castle currently ships (OPAQUE).
