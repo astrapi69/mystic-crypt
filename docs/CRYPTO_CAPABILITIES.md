@@ -62,7 +62,7 @@ and will read a little low until the next `./gradlew pitest` run picks up their 
 |---|---|---|
 | Argon2id | ✅ | `Argon2Support` (package-private) + `PasswordEncryptor.hashPasswordArgon2id()`/`.matchArgon2id()` (`mystic-crypt`). Bouncy Castle `Argon2BytesGenerator`, PHC string format (`$argon2id$v=19$m=...,t=...,p=...$salt$hash`) so parameters travel with the hash. |
 | PBKDF2 | ✅ | `Pbkdf2Support` (package-private) + `PasswordEncryptor.hashPasswordPbkdf2()`/`.matchPbkdf2()` (`mystic-crypt`). Pure JDK (`SecretKeyFactory`), PBKDF2-HMAC-SHA256, 600k iterations by default (OWASP 2023 guidance). Argon2id remains the recommended default; this is for interop with systems that specifically require PBKDF2. |
-| bcrypt / scrypt | ❌ | Not present anywhere. |
+| bcrypt / scrypt | ✅ (unmerged) | `BcryptHasher` (Bouncy Castle `OpenBSDBCrypt`), `ScryptHasher` (Bouncy Castle `SCrypt.generate`) - on branch `check-missing-implementations-c896e`, not yet merged to `develop`. The initial implementation (authored by an automated `qwen.ai[bot]` commit, not this session) called BCrypt methods that don't exist on Bouncy Castle's API and could not compile; fixed to use the real `OpenBSDBCrypt.generate`/`.checkPassword` API, and `ScryptHasher`'s convenience `hash()` overloads (which silently discarded their randomly-generated salt, making the result unverifiable) now return `salt‖derivedKey`. Argon2id remains the recommended default for new code - these exist for interop with systems that specifically require bcrypt or scrypt. |
 
 ### Certificates / PKI
 
@@ -92,7 +92,7 @@ and will read a little low until the next `./gradlew pitest` run picks up their 
 | HKDF (RFC 5869) | ✅ | `HkdfExtensions` (`crypt-data`) — Bouncy Castle `HKDFBytesGenerator`/SHA-256. Used by `X25519KeyExchange` to derive the final AES key from the raw ECDH secret instead of truncating it. |
 | KEM (Key Encapsulation) | ✅ | `KemFactory` (`crypt-data`) wraps the JDK-standard `javax.crypto.KEM` API (JDK 21+), algorithm-agnostic. Used by `MlKemKeyExchange` (`mystic-crypt`) for ML-KEM. |
 | Signal Protocol (X3DH, Double Ratchet) | 🚫 | This isn't one primitive, it's a persistent per-conversation *state machine*: X3DH alone needs four key types per user (identity, signed prekey, one-time prekeys, ephemeral) and a server to publish/consume prekey bundles; the Double Ratchet then advances a DH ratchet on every message direction change plus a symmetric KDF chain on every single message, and that ratchet state has to be durably persisted between app runs or messages become undecryptable. Every primitive it's built from already exists here (`X25519KeyExchange` for the DH steps, `HkdfExtensions` for each KDF step, `BaseByteArrayEncryptor` for the AEAD step) — what's genuinely missing is the *state machine and its storage contract*, which belongs to whatever application owns message persistence, not a stateless encrypt-this-blob library. |
-| PAKE (J-PAKE, SRP, OPAQUE, SPAKE2/CPace) | ✅ (J-PAKE) | `JpakeKeyExchange` (`mystic-crypt`) wraps Bouncy Castle's `JPAKEParticipant` (Password-Authenticated Key Exchange by Juggling) - the only PAKE BC actually ships (no SPAKE2/CPace/SRP). A genuine 3-round interactive protocol, unlike this package's other key-exchange classes: the wrapper only adds sane-default participant creation and HKDF-based `SecretKey` derivation from the raw keying material; the round1/2/3 payload exchange is direct `JPAKEParticipant` API (documented with a full example in the class Javadoc). Verified end-to-end: matching passwords derive identical keys and pass round-3 confirmation, mismatched passwords derive different keys and round-3 confirmation throws. |
+| PAKE (J-PAKE, SRP, OPAQUE, SPAKE2/CPace) | ✅ (J-PAKE, SRP-6a) | `JpakeKeyExchange` (`mystic-crypt`) wraps Bouncy Castle's `JPAKEParticipant`. A genuine 3-round interactive protocol, unlike this package's other key-exchange classes: the wrapper only adds sane-default participant creation and HKDF-based `SecretKey` derivation from the raw keying material; the round1/2/3 payload exchange is direct `JPAKEParticipant` API (documented with a full example in the class Javadoc). Verified end-to-end: matching passwords derive identical keys and pass round-3 confirmation, mismatched passwords derive different keys and round-3 confirmation throws. `SRP6aClient`/`SRP6aServer`/`SRP6aVerifierGenerator` (branch `check-missing-implementations-c896e`, unmerged) wrap Bouncy Castle's real `org.bouncycastle.crypto.agreement.srp.*` classes - BC does ship an audited SRP-6a implementation, contrary to what this row previously said. The initial hand-rolled (non-BC) implementation had a critical vulnerability: neither side checked the peer's public value against zero mod N (the classic SRP zero-key attack, RFC 5054 section 2.5.4), letting a malicious client or compromised server force a session key with no dependence on the password, bypassing authentication entirely; every hash step also used signed, inconsistently-padded `BigInteger.toByteArray()` instead of RFC 5054's fixed-width unsigned encoding. Rewritten to delegate every computation to BC's `SRP6Util` (which includes the zero-check via `validatePublicValue`), keeping the original public API shape. SPAKE2/CPace/OPAQUE remain unimplemented - BC ships none of them. |
 | Group key agreement / MLS / TreeKEM | 🚫 | TreeKEM's entire reason to exist is maintaining a balanced binary tree of node keys across a *dynamic membership set* — every add/remove/update triggers a specific tree-path re-key sequence, and correctness depends on every group member applying commits in the same order (a distributed-consensus-adjacent problem, not a crypto-math one). This needs its own persisted tree state per group and a defined transport for `Commit`/`Welcome`/`Proposal` messages (RFC 9420 specifies these precisely) — same category of "genuinely missing piece is the state machine and its storage/ordering contract" as Signal Protocol above, at even more implementation complexity since it's multi-party rather than pairwise. |
 | AES Key Wrap (RFC 3394) | ✅ | `KeyWrapFactory` (`crypt-data`) — JDK-native `"AESWrap"` transformation (SunJCE), no Bouncy Castle needed. Implicit integrity check: tampered wrapped bytes throw `InvalidKeyException` on unwrap. |
 | Key hierarchy (Master/KEK/DEK) | ⚠️ | The *primitive* (`KeyWrapFactory`) needed to build a KEK→DEK hierarchy exists; the hierarchy itself (master key never leaving an HSM, rotation policy, etc.) is an application/infrastructure design, not a library API. |
@@ -130,12 +130,13 @@ and will read a little low until the next `./gradlew pitest` run picks up their 
 
 **Every gap identified in the original pass through this document is now closed:** PBKDF2 wiring,
 ChaCha20-Poly1305 wiring, the full NIST post-quantum suite (ML-KEM, ML-DSA, SLH-DSA) plus the
-X25519+ML-KEM hybrid combiner, key zeroing for password/shared-secret material, PAKE (J-PAKE),
-PKCS#11/HSM provider configuration, BLAKE2, Feldman VSS, and key-committing AEAD are all ✅ — see
-the tables above for the classes involved, and each item's commit message for how it was verified
-before being wired in (this library's standing discipline: confirm an algorithm/API actually
-behaves as expected via a throwaway empirical test *before* writing the real implementation
-against it, not after).
+X25519+ML-KEM hybrid combiner, key zeroing for password/shared-secret material, PAKE (J-PAKE and
+SRP-6a), PKCS#11/HSM provider configuration, BLAKE2, Feldman VSS, key-committing AEAD, and
+bcrypt/scrypt are all ✅ — see the tables above for the classes involved (bcrypt/scrypt/SRP-6a
+currently live on the unmerged `check-missing-implementations-c896e` branch), and each item's
+commit message for how it was verified before being wired in (this library's standing discipline:
+confirm an algorithm/API actually behaves as expected via a throwaway empirical test *before*
+writing the real implementation against it, not after).
 
 **Residual, narrower items not pursued further** (each is a real but genuinely marginal
 improvement, not a category-level gap):
@@ -145,9 +146,11 @@ improvement, not a category-level gap):
 - **Pedersen VSS specifically** (as opposed to Feldman, which is what's actually implemented) —
   would additionally hide the secret from the dealer via a second generator; no current consumer
   need for dealer-blindness specifically.
-- **SRP/OPAQUE specifically** (as opposed to J-PAKE, which is what's actually implemented) — would
-  require either hand-rolling the protocol math (SRP) or a dependency neither the JDK nor Bouncy
-  Castle currently ships (OPAQUE).
+- **SPAKE2/CPace/OPAQUE specifically** (as opposed to J-PAKE and SRP-6a, which are what's actually
+  implemented) — Bouncy Castle ships none of the three, so closing this would mean hand-rolling
+  the protocol math with no audited reference implementation to delegate to, a materially higher
+  risk undertaking than wrapping an existing BC primitive (see the SRP-6a entry above for what can
+  go wrong hand-rolling this class of protocol).
 
 **Everything marked 🚫 is correctly out of scope**, not missing: session/messaging protocols (Signal, MLS, STS, Noise), hardware/platform integrations this library can't portably reach (TPM, secure enclaves, QKD, FIDO2), and infrastructure/policy concerns (key rotation scheduling, certificate pinning policy, key transparency logs). Adding any of those would mean turning a key/data-encryption utility library into a protocol or infrastructure framework — a different, much larger project.
 
