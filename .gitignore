@@ -1,54 +1,92 @@
-```
-# Compiled and build artifacts
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+##################
+# Compiled files #
+##################
 *.class
-*.o
-*.obj
-*.out
-build/
-target/
 
-# Dependencies
-lib/
-vendor/
-node_modules/
-.gradle/
+##################
+# intellij files #
+##################
+*.iml
+*.iws
+*.ipr
+!.idea/runConfigurations
+.idea/inspectionProfiles
+.idea/copyright
+.idea/libraries
+.idea/codeStyles
+.idea/shelf
+.idea/*.*
+/.idea/$PRODUCT_WORKSPACE_FILE$
 
-# Logs and temp files
-*.log
-*.tmp
-*.swp
+#################
+# eclipse files #
+#################
+/.project
+/.classpath
+/.settings
+/.tern-project
 
-# Environment
-.env
-.env.local
-*.env.*
+#########################
+# maven generated files #
+#########################
+/target
 
-# Editors
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Python specific
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-*.so
-
-# Java specific
+#############
+# Zip files #
+#############
+*.tar
+*.zip
+*.7z
+*.dmg
+*.gz
+*.iso
 *.jar
-*.war
-*.ear
+*.rar
+
+##############
+# Logs files #
+##############
+*.log
+
+#################
+# test-ng files #
+#################
+/test-output
+
+############################
+# Binaries generated files #
+############################
+/bin
+
+################
+# gradle files #
+################
+/build
+/.gradle
+/gradle
+/out
+# Ignore Gradle GUI config
+gradle-app.setting
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!/gradle/wrapper/gradle-wrapper.jar
+!/gradle/wrapper/gradle-wrapper.properties
+# Cache of project
+.gradletasknamecache
+# # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
+# gradle/wrapper/gradle-wrapper.properties
+
+##############################################################
+# virtual machine crash logs                                 #
+# see http://www.java.com/en/download/help/error_hotspot.xml #
+##############################################################
 hs_err_pid*
-
-# Coverage reports
-coverage/
-htmlcov/
-.coverage
-
-# OS generated files
-.DS_Store
-Thumbs.db
-```
+/.attach_pid*
