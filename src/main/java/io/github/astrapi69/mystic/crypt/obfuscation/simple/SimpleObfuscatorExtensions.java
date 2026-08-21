@@ -71,7 +71,12 @@ public final class SimpleObfuscatorExtensions
 				ObfuscationRule<Character, Character> obfuscationRule = entry.getValue();
 				Character replaceWith = obfuscationRule.getReplaceWith();
 				Character character = obfuscationRule.getCharacter();
-				if (currentCharacter.equals(replaceWith) && rules.containsKey(replaceWith))
+				// a character in the obfuscated text is reversed whenever it matches a rule's
+				// replaceWith. The former extra condition && rules.containsKey(replaceWith)
+				// required the replacement character to itself be an original character, so a
+				// normal substitution like a->x (x not itself remapped) was never disentangled and
+				// the text came back unchanged
+				if (currentCharacter.equals(replaceWith))
 				{
 					sb.append(character);
 					processed = true;

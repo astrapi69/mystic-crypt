@@ -4,6 +4,14 @@
 Version 10.2-SNAPSHOT
 -------------
 
+FIXED:
+
+- SimpleObfuscatorExtensions#disentangle(BiMap, String) now reverses a replacement whenever the
+  obfuscated character matches a rule's replaceWith. Previously it also required the replacement
+  character to itself be an original character (rules.containsKey(replaceWith)), so a normal
+  substitution like a->x (x not itself remapped) was never disentangled and the text came back
+  unchanged. Shift ciphers happened to work because their replacements are original characters too.
+
 Version 10.1
 -------------
 

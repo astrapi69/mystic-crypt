@@ -33,6 +33,7 @@ import org.junit.jupiter.api.Test;
 import org.meanbean.test.BeanTester;
 
 import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
 import io.github.astrapi69.crypt.data.obfuscation.rule.ObfuscationRule;
 import io.github.astrapi69.mystic.crypt.obfuscation.ObfuscationBiMapTestData;
@@ -106,6 +107,33 @@ public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, Str
 
 		actual = SimpleObfuscatorExtensions.disentangle(rules, stringToDisentangle);
 		expected = "abacd";
+		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Regression test for {@link SimpleObfuscatorExtensions#disentangle(BiMap, String)} with
+	 * replacement characters that are NOT themselves original characters (a normal substitution
+	 * cipher, e.g. a-&gt;x). The former implementation only reversed a replacement when the
+	 * replacement character was also an original key, so such a substitution came back unchanged.
+	 * The other {@code testDisentangle} cases all use a shift cipher whose replacements happen to
+	 * be original characters too, which masked this bug
+	 */
+	@Test
+	public void testDisentangleWithReplacementsThatAreNotOriginalCharacters()
+	{
+		BiMap<Character, ObfuscationRule<Character, Character>> substitution = HashBiMap.create();
+		substitution.put('a', ObfuscationRule.<Character, Character> builder().character('a')
+			.replaceWith('x').build());
+		substitution.put('b', ObfuscationRule.<Character, Character> builder().character('b')
+			.replaceWith('y').build());
+		substitution.put('c', ObfuscationRule.<Character, Character> builder().character('c')
+			.replaceWith('z').build());
+
+		String obfuscated = SimpleObfuscatorExtensions.obfuscateWith(substitution, "cabbage");
+		assertEquals("zxyyxge", obfuscated);
+
+		actual = SimpleObfuscatorExtensions.disentangle(substitution, obfuscated);
+		expected = "cabbage";
 		assertEquals(expected, actual);
 	}
 
