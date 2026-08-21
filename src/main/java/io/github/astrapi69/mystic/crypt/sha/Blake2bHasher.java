@@ -216,7 +216,11 @@ public final class Blake2bHasher
 		final Blake2bDigest digest;
 		if (key != null)
 		{
-			digest = new Blake2bDigest(key);
+			// Blake2bDigest(byte[]) hardcodes a 64-byte output regardless of the
+			// requested digestLength, which throws OutputLengthException from doFinal
+			// below whenever digestLength < 64; the keyed+digestLength constructor
+			// respects the requested length instead.
+			digest = new Blake2bDigest(key, digestLength, null, null);
 		}
 		else
 		{
