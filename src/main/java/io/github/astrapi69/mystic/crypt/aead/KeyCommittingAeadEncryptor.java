@@ -30,13 +30,11 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
-import java.util.Objects;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
-import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -56,9 +54,9 @@ import io.github.astrapi69.random.number.RandomByteFactory;
  * multi-recipient scenarios where a ciphertext might be decrypted by multiple parties.
  * </p>
  * <p>
- * This implementation adds a commitment tag computed as Blake2b(key || iv || associatedData)
- * and includes it in the associated data during encryption. During decryption, the commitment
- * is recomputed and verified, ensuring that the ciphertext is bound to the specific key used.
+ * This implementation adds a commitment tag computed as Blake2b(key || iv || associatedData) and
+ * includes it in the associated data during encryption. During decryption, the commitment is
+ * recomputed and verified, ensuring that the ciphertext is bound to the specific key used.
  * </p>
  * <p>
  * Format: IV (12 bytes) || Ciphertext || CommitmentTag (32 bytes)
@@ -258,8 +256,8 @@ public class KeyCommittingAeadEncryptor extends AbstractByteArrayEncryptor
 
 		// Extract IV, ciphertext, and commitment tag
 		byte[] iv = Arrays.copyOfRange(encrypted, 0, NONCE_LENGTH);
-		byte[] commitmentTag = Arrays.copyOfRange(encrypted, encrypted.length - COMMITMENT_TAG_LENGTH,
-			encrypted.length);
+		byte[] commitmentTag = Arrays.copyOfRange(encrypted,
+			encrypted.length - COMMITMENT_TAG_LENGTH, encrypted.length);
 		byte[] ciphertext = Arrays.copyOfRange(encrypted, NONCE_LENGTH,
 			encrypted.length - COMMITMENT_TAG_LENGTH);
 
@@ -288,6 +286,23 @@ public class KeyCommittingAeadEncryptor extends AbstractByteArrayEncryptor
 		}
 
 		return cipher.doFinal(ciphertext);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Always returns AES/GCM/NoPadding, regardless of what (if anything) is set on the
+	 * {@link CryptModel}: this class hardcodes AES-GCM in {@link #encrypt(byte[], byte[])}/
+	 * {@link #decrypt(byte[], byte[])}, so the eagerly-built construction-time cipher (see
+	 * {@link io.github.astrapi69.mystic.crypt.core.AbstractCryptor#onInitialize()}) has to agree,
+	 * or {@link #newCipher(SecretKey, String, byte[], int, int)} below ends up trying to initialize
+	 * a cipher for the default PBE algorithm with a {@link GCMParameterSpec}, which fails with
+	 * {@link InvalidKeyException} before this class's own commitment logic ever runs.
+	 */
+	@Override
+	protected String newAlgorithm()
+	{
+		return MysticSymmetricAlgorithm.AES_GCM_NO_PADDING.getAlgorithm();
 	}
 
 	/**

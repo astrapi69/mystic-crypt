@@ -31,24 +31,23 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import org.bouncycastle.crypto.digests.SHA256Digest;
-import org.bouncycastle.crypto.prng.DigestRandomGenerator;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 /**
  * The class {@link FeldmanVSS} implements Feldman's Verifiable Secret Sharing scheme.
  * <p>
- * Feldman VSS extends Shamir's Secret Sharing by adding commitments that allow participants
- * to verify their shares before reconstruction. This prevents malicious dealers from distributing
+ * Feldman VSS extends Shamir's Secret Sharing by adding commitments that allow participants to
+ * verify their shares before reconstruction. This prevents malicious dealers from distributing
  * invalid shares and detects reconstruction attempts with insufficient shares.
  * </p>
  * <p>
  * The scheme works in a prime order subgroup of Z_p* where p is a large prime and q divides p-1.
  * Commitments are computed as g^a_i mod p for each coefficient a_i of the sharing polynomial.
  * Participants can verify their share (i, s_i) by checking:
+ * 
  * <pre>
  *   g^{s_i} ≡ ∏_{j=0}^{t-1} (C_j)^{i^j} mod p
  * </pre>
+ * 
  * where C_j are the commitments.
  * </p>
  *
@@ -108,7 +107,7 @@ public final class FeldmanVSS
 				return true;
 			if (!(o instanceof Share))
 				return false;
-			Share share = (Share) o;
+			Share share = (Share)o;
 			return index == share.index && Objects.equals(value, share.value);
 		}
 
@@ -207,7 +206,8 @@ public final class FeldmanVSS
 		{
 			q = new BigInteger(Q_BIT_LENGTH, 1, random);
 			p = q.multiply(BigInteger.valueOf(2)).add(BigInteger.ONE);
-		} while (!p.isProbablePrime(100));
+		}
+		while (!p.isProbablePrime(100));
 
 		return new BigInteger[] { p, q };
 	}
@@ -215,8 +215,10 @@ public final class FeldmanVSS
 	/**
 	 * Finds a generator for the subgroup of order q in Z_p*.
 	 *
-	 * @param p the large prime
-	 * @param q the subgroup order (q divides p-1)
+	 * @param p
+	 *            the large prime
+	 * @param q
+	 *            the subgroup order (q divides p-1)
 	 * @return a generator g
 	 */
 	private static BigInteger findGenerator(BigInteger p, BigInteger q)
@@ -228,7 +230,8 @@ public final class FeldmanVSS
 		{
 			h = new BigInteger(p.bitLength(), random).mod(p.subtract(BigInteger.ONE))
 				.add(BigInteger.ONE);
-		} while (h.modPow(p.subtract(BigInteger.ONE).divide(q), p).equals(BigInteger.ONE));
+		}
+		while (h.modPow(p.subtract(BigInteger.ONE).divide(q), p).equals(BigInteger.ONE));
 
 		return h.modPow(BigInteger.valueOf(2), p);
 	}
@@ -266,10 +269,22 @@ public final class FeldmanVSS
 		BigInteger q = primes[1];
 		BigInteger g = findGenerator(p, q);
 
-		// Ensure secret is in range [1, q-1]
-		secret = secret.mod(q.subtract(BigInteger.ONE)).add(BigInteger.ONE);
+		// Reduce the secret into the field Z_q. Whenever secret < q (guaranteed for any
+		// realistic secret - e.g. an AES key or password - against the 256-bit q generated
+		// above), this is a no-op that preserves the exact value; reconstruction can only ever
+		// recover the value mod q, so a secret >= q would be truncated regardless of how this
+		// reduction is written.
+		//
+		// The previous `secret.mod(q.subtract(ONE)).add(ONE)` unconditionally added 1 to any
+		// secret smaller than q-1 (mod of a smaller dividend by a larger modulus returns the
+		// dividend unchanged), silently splitting secret+1 instead of secret on every call -
+		// caught by testRoundTripWithDifferentThresholds comparing against the original input
+		// bytes, but missed by testReconstructSecretBytes, which only compared the
+		// already-mutated result.getSecret() against itself.
+		secret = secret.mod(q);
 
-		// Generate random coefficients for the polynomial f(x) = a_0 + a_1*x + ... + a_{t-1}*x^{t-1}
+		// Generate random coefficients for the polynomial f(x) = a_0 + a_1*x + ... +
+		// a_{t-1}*x^{t-1}
 		SecureRandom random = new SecureRandom();
 		BigInteger[] coefficients = new BigInteger[threshold];
 		coefficients[0] = secret; // a_0 = secret
@@ -418,8 +433,8 @@ public final class FeldmanVSS
 		int t = commitments.getValues().size();
 		if (shares.size() < t)
 		{
-			throw new IllegalArgumentException(String.format(
-				"Insufficient shares: need at least %d, got %d", t, shares.size()));
+			throw new IllegalArgumentException(
+				String.format("Insufficient shares: need at least %d, got %d", t, shares.size()));
 		}
 
 		// Use first t shares for reconstruction
