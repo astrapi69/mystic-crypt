@@ -53,14 +53,14 @@ import io.github.astrapi69.crypt.data.factory.KeyPairFactory;
  * quantum adversaries.
  * <p>
  * This hybrid approach follows NIST recommendations for transitioning to post-quantum cryptography:
- * rather than replacing classical algorithms entirely, combine them with PQ algorithms so that
- * the system remains secure even if one of the algorithms is broken.
+ * rather than replacing classical algorithms entirely, combine them with PQ algorithms so that the
+ * system remains secure even if one of the algorithms is broken.
  * </p>
  * <p>
  * The shared secret is derived by concatenating the X25519 shared secret (32 bytes) and the ML-KEM
- * shared secret (32 bytes for ML-KEM-768), then applying HKDF to produce a uniformly random key
- * of the desired length. This ensures that breaking either algorithm alone does not compromise
- * the shared secret.
+ * shared secret (32 bytes for ML-KEM-768), then applying HKDF to produce a uniformly random key of
+ * the desired length. This ensures that breaking either algorithm alone does not compromise the
+ * shared secret.
  * </p>
  * 
  * @author Asterios Raptis
@@ -136,7 +136,8 @@ public final class HybridKemKeyExchange
 	 */
 	public static HybridEncapsulation hybridEncapsulate(final PublicKey x25519PublicKey,
 		final PublicKey mlKemPublicKey, final KeyPairGeneratorAlgorithm mlKemAlgorithm,
-		final int keyLengthBytes) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchProviderException
+		final int keyLengthBytes)
+		throws InvalidKeyException, NoSuchAlgorithmException, NoSuchProviderException
 	{
 		Objects.requireNonNull(x25519PublicKey, "x25519PublicKey cannot be null");
 		Objects.requireNonNull(mlKemPublicKey, "mlKemPublicKey cannot be null");
@@ -161,31 +162,31 @@ public final class HybridKemKeyExchange
 			// Step 3: Concatenate both secrets
 			final byte[] combinedSecret = new byte[x25519SharedSecret.length
 				+ mlKemSharedSecret.length];
-			System.arraycopy(x25519SharedSecret, 0, combinedSecret, 0,
-				x25519SharedSecret.length);
-			System.arraycopy(mlKemSharedSecret, 0, combinedSecret,
-				x25519SharedSecret.length, mlKemSharedSecret.length);
+			System.arraycopy(x25519SharedSecret, 0, combinedSecret, 0, x25519SharedSecret.length);
+			System.arraycopy(mlKemSharedSecret, 0, combinedSecret, x25519SharedSecret.length,
+				mlKemSharedSecret.length);
 
 			// Step 4: Apply HKDF to derive the final key
 			final byte[] derivedKey = HkdfExtensions.deriveKey(combinedSecret, null, null,
 				keyLengthBytes);
 
-			return new HybridEncapsulation(new SecretKeySpec(derivedKey, AesAlgorithm.AES.getAlgorithm()),
+			return new HybridEncapsulation(
+				new SecretKeySpec(derivedKey, AesAlgorithm.AES.getAlgorithm()),
 				encapsulated.encapsulation(), tempX25519KeyPair.getPublic());
 		}
 		finally
 		{
 			// Secure wipe of intermediate secrets
-			Arrays.fill(x25519SharedSecret, (byte) 0);
-			Arrays.fill(mlKemSharedSecret, (byte) 0);
+			Arrays.fill(x25519SharedSecret, (byte)0);
+			Arrays.fill(mlKemSharedSecret, (byte)0);
 		}
 	}
 
 	/**
 	 * Decapsulates the hybrid shared secret using both X25519 and ML-KEM private keys.
 	 * <p>
-	 * The recipient uses their private keys to recover the same shared secret that was
-	 * created by {@link #hybridEncapsulate(PublicKey, PublicKey, KeyPairGeneratorAlgorithm, int)}.
+	 * The recipient uses their private keys to recover the same shared secret that was created by
+	 * {@link #hybridEncapsulate(PublicKey, PublicKey, KeyPairGeneratorAlgorithm, int)}.
 	 * </p>
 	 *
 	 * @param x25519PrivateKey
@@ -211,9 +212,8 @@ public final class HybridKemKeyExchange
 	public static SecretKey hybridDecapsulate(final PrivateKey x25519PrivateKey,
 		final PrivateKey mlKemPrivateKey, final PublicKey senderX25519PublicKey,
 		final byte[] mlKemCiphertext, final KeyPairGeneratorAlgorithm mlKemAlgorithm,
-		final int keyLengthBytes)
-		throws InvalidKeyException, NoSuchAlgorithmException, NoSuchProviderException,
-		javax.crypto.DecapsulateException
+		final int keyLengthBytes) throws InvalidKeyException, NoSuchAlgorithmException,
+		NoSuchProviderException, javax.crypto.DecapsulateException
 	{
 		Objects.requireNonNull(x25519PrivateKey, "x25519PrivateKey cannot be null");
 		Objects.requireNonNull(mlKemPrivateKey, "mlKemPrivateKey cannot be null");
@@ -222,13 +222,12 @@ public final class HybridKemKeyExchange
 		requireMlKem(mlKemAlgorithm);
 
 		// Step 1: X25519 key agreement with sender's public key
-		final byte[] x25519SharedSecret = KeyAgreementFactory.newSharedSecret(
-			x25519PrivateKey, senderX25519PublicKey,
-			KeyAgreementAlgorithm.X25519.getAlgorithm(), null, true);
+		final byte[] x25519SharedSecret = KeyAgreementFactory.newSharedSecret(x25519PrivateKey,
+			senderX25519PublicKey, KeyAgreementAlgorithm.X25519.getAlgorithm(), null, true);
 
 		// Step 2: ML-KEM decapsulation
-		final SecretKey mlKemSharedSecret = KemFactory.decapsulate(mlKemPrivateKey,
-			mlKemCiphertext, mlKemAlgorithm.getAlgorithm());
+		final SecretKey mlKemSharedSecret = KemFactory.decapsulate(mlKemPrivateKey, mlKemCiphertext,
+			mlKemAlgorithm.getAlgorithm());
 		final byte[] mlKemSecretBytes = mlKemSharedSecret.getEncoded();
 
 		try
@@ -236,10 +235,9 @@ public final class HybridKemKeyExchange
 			// Step 3: Concatenate both secrets
 			final byte[] combinedSecret = new byte[x25519SharedSecret.length
 				+ mlKemSecretBytes.length];
-			System.arraycopy(x25519SharedSecret, 0, combinedSecret, 0,
-				x25519SharedSecret.length);
-			System.arraycopy(mlKemSecretBytes, 0, combinedSecret,
-				x25519SharedSecret.length, mlKemSecretBytes.length);
+			System.arraycopy(x25519SharedSecret, 0, combinedSecret, 0, x25519SharedSecret.length);
+			System.arraycopy(mlKemSecretBytes, 0, combinedSecret, x25519SharedSecret.length,
+				mlKemSecretBytes.length);
 
 			// Step 4: Apply HKDF to derive the final key
 			final byte[] derivedKey = HkdfExtensions.deriveKey(combinedSecret, null, null,
@@ -250,8 +248,8 @@ public final class HybridKemKeyExchange
 		finally
 		{
 			// Secure wipe of intermediate secrets
-			Arrays.fill(x25519SharedSecret, (byte) 0);
-			Arrays.fill(mlKemSecretBytes, (byte) 0);
+			Arrays.fill(x25519SharedSecret, (byte)0);
+			Arrays.fill(mlKemSecretBytes, (byte)0);
 		}
 	}
 
@@ -364,8 +362,8 @@ public final class HybridKemKeyExchange
 		 * @param mlKemAlgorithm
 		 *            the ML-KEM algorithm
 		 */
-		public HybridPublicKey(final PublicKey x25519PublicKey,
-			final PublicKey mlKemPublicKey, final KeyPairGeneratorAlgorithm mlKemAlgorithm)
+		public HybridPublicKey(final PublicKey x25519PublicKey, final PublicKey mlKemPublicKey,
+			final KeyPairGeneratorAlgorithm mlKemAlgorithm)
 		{
 			this.x25519PublicKey = Objects.requireNonNull(x25519PublicKey);
 			this.mlKemPublicKey = Objects.requireNonNull(mlKemPublicKey);
@@ -419,8 +417,7 @@ public final class HybridKemKeyExchange
 		 * @param mlKemPrivateKey
 		 *            the ML-KEM private key
 		 */
-		public HybridPrivateKey(final PrivateKey x25519PrivateKey,
-			final PrivateKey mlKemPrivateKey)
+		public HybridPrivateKey(final PrivateKey x25519PrivateKey, final PrivateKey mlKemPrivateKey)
 		{
 			this.x25519PrivateKey = Objects.requireNonNull(x25519PrivateKey);
 			this.mlKemPrivateKey = Objects.requireNonNull(mlKemPrivateKey);
@@ -448,8 +445,9 @@ public final class HybridKemKeyExchange
 	}
 
 	/**
-	 * The result of a {@link #hybridEncapsulate(PublicKey, PublicKey, KeyPairGeneratorAlgorithm, int)}
-	 * call: the derived shared secret, the ML-KEM ciphertext, and the sender's X25519 public key.
+	 * The result of a
+	 * {@link #hybridEncapsulate(PublicKey, PublicKey, KeyPairGeneratorAlgorithm, int)} call: the
+	 * derived shared secret, the ML-KEM ciphertext, and the sender's X25519 public key.
 	 */
 	public static final class HybridEncapsulation
 	{

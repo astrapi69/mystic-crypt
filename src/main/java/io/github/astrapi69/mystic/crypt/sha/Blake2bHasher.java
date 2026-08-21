@@ -36,7 +36,9 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
  * BLAKE2b is optimized for 64-bit platforms and provides excellent performance while maintaining
  * strong security properties. It can be faster than SHA-2 while offering comparable security.
  * 
- * <p>BLAKE2b supports variable output lengths from 1 to 64 bytes (512 bits). The default is 64 bytes.</p>
+ * <p>
+ * BLAKE2b supports variable output lengths from 1 to 64 bytes (512 bits). The default is 64 bytes.
+ * </p>
  * 
  * @author Asterios Raptis
  */
@@ -68,9 +70,11 @@ public final class Blake2bHasher
 	/**
 	 * Computes the BLAKE2b hash of the given data with default digest length (64 bytes).
 	 *
-	 * @param data the data to hash
+	 * @param data
+	 *            the data to hash
 	 * @return the hash as a byte array (64 bytes)
-	 * @throws IllegalArgumentException if data is null
+	 * @throws IllegalArgumentException
+	 *             if data is null
 	 */
 	public static byte[] hash(final byte[] data)
 	{
@@ -80,10 +84,13 @@ public final class Blake2bHasher
 	/**
 	 * Computes the BLAKE2b hash of the given data with specified digest length.
 	 *
-	 * @param data the data to hash
-	 * @param digestLength the desired digest length in bytes (1-64)
+	 * @param data
+	 *            the data to hash
+	 * @param digestLength
+	 *            the desired digest length in bytes (1-64)
 	 * @return the hash as a byte array
-	 * @throws IllegalArgumentException if data is null or digestLength is out of range
+	 * @throws IllegalArgumentException
+	 *             if data is null or digestLength is out of range
 	 */
 	public static byte[] hash(final byte[] data, final int digestLength)
 	{
@@ -109,10 +116,13 @@ public final class Blake2bHasher
 	/**
 	 * Computes the BLAKE2b hash of the given string with default digest length.
 	 *
-	 * @param data the string to hash
-	 * @param charset the charset to use for encoding
+	 * @param data
+	 *            the string to hash
+	 * @param charset
+	 *            the charset to use for encoding
 	 * @return the hash as a byte array (64 bytes)
-	 * @throws IllegalArgumentException if data or charset is null
+	 * @throws IllegalArgumentException
+	 *             if data or charset is null
 	 */
 	public static byte[] hash(final String data, final Charset charset)
 	{
@@ -122,11 +132,15 @@ public final class Blake2bHasher
 	/**
 	 * Computes the BLAKE2b hash of the given string with specified digest length.
 	 *
-	 * @param data the string to hash
-	 * @param charset the charset to use for encoding
-	 * @param digestLength the desired digest length in bytes (1-64)
+	 * @param data
+	 *            the string to hash
+	 * @param charset
+	 *            the charset to use for encoding
+	 * @param digestLength
+	 *            the desired digest length in bytes (1-64)
 	 * @return the hash as a byte array
-	 * @throws IllegalArgumentException if data, charset is null or digestLength is out of range
+	 * @throws IllegalArgumentException
+	 *             if data, charset is null or digestLength is out of range
 	 */
 	public static byte[] hash(final String data, final Charset charset, final int digestLength)
 	{
@@ -145,7 +159,8 @@ public final class Blake2bHasher
 	/**
 	 * Computes the BLAKE2b hash of the given string with UTF-8 encoding.
 	 *
-	 * @param data the string to hash
+	 * @param data
+	 *            the string to hash
 	 * @return the hash as a byte array (64 bytes)
 	 */
 	public static byte[] hashUtf8(final String data)
@@ -154,10 +169,13 @@ public final class Blake2bHasher
 	}
 
 	/**
-	 * Computes the BLAKE2b hash of the given string with UTF-8 encoding and specified digest length.
+	 * Computes the BLAKE2b hash of the given string with UTF-8 encoding and specified digest
+	 * length.
 	 *
-	 * @param data the string to hash
-	 * @param digestLength the desired digest length in bytes (1-64)
+	 * @param data
+	 *            the string to hash
+	 * @param digestLength
+	 *            the desired digest length in bytes (1-64)
 	 * @return the hash as a byte array
 	 */
 	public static byte[] hashUtf8(final String data, final int digestLength)
@@ -166,14 +184,18 @@ public final class Blake2bHasher
 	}
 
 	/**
-	 * Computes the BLAKE2b hash of the given data with an optional key (keyed hashing mode).
-	 * Keyed BLAKE2b can be used as a MAC (Message Authentication Code).
+	 * Computes the BLAKE2b hash of the given data with an optional key (keyed hashing mode). Keyed
+	 * BLAKE2b can be used as a MAC (Message Authentication Code).
 	 *
-	 * @param data the data to hash
-	 * @param key the key for keyed hashing (max 64 bytes), or null for unkeyed hashing
-	 * @param digestLength the desired digest length in bytes (1-64)
+	 * @param data
+	 *            the data to hash
+	 * @param key
+	 *            the key for keyed hashing (max 64 bytes), or null for unkeyed hashing
+	 * @param digestLength
+	 *            the desired digest length in bytes (1-64)
 	 * @return the hash as a byte array
-	 * @throws IllegalArgumentException if key is too long or digestLength is out of range
+	 * @throws IllegalArgumentException
+	 *             if key is too long or digestLength is out of range
 	 */
 	public static byte[] hashWithKey(final byte[] data, final byte[] key, final int digestLength)
 	{
@@ -211,12 +233,16 @@ public final class Blake2bHasher
 	/**
 	 * Computes the BLAKE2b hash with key for string data with UTF-8 encoding.
 	 *
-	 * @param data the string to hash
-	 * @param key the key for keyed hashing (max 64 bytes)
-	 * @param digestLength the desired digest length in bytes (1-64)
+	 * @param data
+	 *            the string to hash
+	 * @param key
+	 *            the key for keyed hashing (max 64 bytes)
+	 * @param digestLength
+	 *            the desired digest length in bytes (1-64)
 	 * @return the hash as a byte array
 	 */
-	public static byte[] hashUtf8WithKey(final String data, final byte[] key, final int digestLength)
+	public static byte[] hashUtf8WithKey(final String data, final byte[] key,
+		final int digestLength)
 	{
 		return hashWithKey(data.getBytes(StandardCharsets.UTF_8), key, digestLength);
 	}

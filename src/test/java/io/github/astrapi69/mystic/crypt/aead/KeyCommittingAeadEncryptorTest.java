@@ -27,7 +27,6 @@ package io.github.astrapi69.mystic.crypt.aead;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -42,7 +41,6 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -253,8 +251,7 @@ class KeyCommittingAeadEncryptorTest
 				differentKey);
 
 			// All should fail due to commitment verification
-			assertThrows(SecurityException.class,
-				() -> differentEncryptor.decrypt(encrypted),
+			assertThrows(SecurityException.class, () -> differentEncryptor.decrypt(encrypted),
 				"Decryption should fail with key " + i);
 		}
 	}
@@ -276,7 +273,7 @@ class KeyCommittingAeadEncryptorTest
 	void testLargeDataEncryption() throws Exception
 	{
 		byte[] largePlaintext = new byte[1024 * 1024]; // 1 MB
-		Arrays.fill(largePlaintext, (byte) 0x42);
+		Arrays.fill(largePlaintext, (byte)0x42);
 
 		byte[] encrypted = encryptor.encrypt(largePlaintext);
 		byte[] decrypted = encryptor.decrypt(encrypted);
@@ -287,8 +284,8 @@ class KeyCommittingAeadEncryptorTest
 	@Test
 	void testConstructorWithCryptModel() throws Exception
 	{
-		CryptModel<Cipher, SecretKey, String> model = CryptModel.<Cipher, SecretKey, String>builder()
-			.key(testKey).build();
+		CryptModel<Cipher, SecretKey, String> model = CryptModel
+			.<Cipher, SecretKey, String> builder().key(testKey).build();
 		KeyCommittingAeadEncryptor modelEncryptor = new KeyCommittingAeadEncryptor(model);
 
 		byte[] plaintext = "Model test".getBytes();

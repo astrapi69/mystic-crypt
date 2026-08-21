@@ -26,7 +26,6 @@ package io.github.astrapi69.mystic.crypt.secret;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -36,7 +35,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import io.github.astrapi69.mystic.crypt.secret.FeldmanVSS.Commitments;
 import io.github.astrapi69.mystic.crypt.secret.FeldmanVSS.Share;
 import io.github.astrapi69.mystic.crypt.secret.FeldmanVSS.ShareGenerationResult;
 
@@ -117,8 +115,8 @@ class FeldmanVSSTest
 		// Use exactly threshold number of shares
 		List<Share> subset = result.getShares().subList(0, 3);
 
-		BigInteger reconstructed = FeldmanVSS.reconstructSecret(subset,
-			result.getCommitments(), result.getCommitments().getQ());
+		BigInteger reconstructed = FeldmanVSS.reconstructSecret(subset, result.getCommitments(),
+			result.getCommitments().getQ());
 
 		assertEquals(result.getSecret(), reconstructed,
 			"Reconstructed secret should match original");
@@ -149,11 +147,10 @@ class FeldmanVSSTest
 
 		List<Share> subset = result.getShares().subList(0, 3);
 
-		BigInteger reconstructed = FeldmanVSS.reconstructSecret(subset,
-			result.getCommitments(), result.getCommitments().getQ());
+		BigInteger reconstructed = FeldmanVSS.reconstructSecret(subset, result.getCommitments(),
+			result.getCommitments().getQ());
 
-		assertEquals(result.getSecret(), reconstructed,
-			"Reconstructed BigInteger should match");
+		assertEquals(result.getSecret(), reconstructed, "Reconstructed BigInteger should match");
 	}
 
 	@Test
@@ -166,8 +163,8 @@ class FeldmanVSSTest
 		// Try to reconstruct with only 2 shares (threshold is 4)
 		List<Share> insufficientSubset = result.getShares().subList(0, 2);
 
-		IllegalArgumentException exception = org.junit.jupiter.api.Assertions.assertThrows(
-			IllegalArgumentException.class, () -> {
+		IllegalArgumentException exception = org.junit.jupiter.api.Assertions
+			.assertThrows(IllegalArgumentException.class, () -> {
 				FeldmanVSS.reconstructSecret(insufficientSubset, result.getCommitments(),
 					result.getCommitments().getQ());
 			});
@@ -190,8 +187,8 @@ class FeldmanVSSTest
 		List<Share> tamperedShares = Arrays.asList(tamperedShare, shares.get(1), shares.get(2));
 
 		// Verification should detect the tampered share
-		IllegalStateException exception = org.junit.jupiter.api.Assertions.assertThrows(
-			IllegalStateException.class, () -> {
+		IllegalStateException exception = org.junit.jupiter.api.Assertions
+			.assertThrows(IllegalStateException.class, () -> {
 				FeldmanVSS.reconstructSecret(tamperedShares, result.getCommitments(),
 					result.getCommitments().getQ());
 			});
@@ -223,8 +220,7 @@ class FeldmanVSSTest
 			List<Share> subset = result.getShares().subList(0, t);
 
 			byte[] reconstructed = FeldmanVSS.reconstructSecretBytes(subset,
-				result.getCommitments(), result.getCommitments().getQ(),
-				originalSecret.length);
+				result.getCommitments(), result.getCommitments().getQ(), originalSecret.length);
 
 			assertArrayEquals(originalSecret, reconstructed,
 				"Round-trip should work for threshold=" + t);
@@ -237,8 +233,8 @@ class FeldmanVSSTest
 		byte[] secret = "EmptySharesTest".getBytes();
 		ShareGenerationResult result = FeldmanVSS.splitSecret(secret, 3, 5);
 
-		IllegalArgumentException exception = org.junit.jupiter.api.Assertions.assertThrows(
-			IllegalArgumentException.class, () -> {
+		IllegalArgumentException exception = org.junit.jupiter.api.Assertions
+			.assertThrows(IllegalArgumentException.class, () -> {
 				FeldmanVSS.reconstructSecret(Arrays.asList(), result.getCommitments(),
 					result.getCommitments().getQ());
 			});
