@@ -17,11 +17,14 @@ Status key:
   infrastructure-level, or hardware-level concerns; a data/key-encryption utility library is
   the wrong layer to implement them in. Reasoning given per item.
 
-Last verified: 2026-08-21, against `mystic-crypt` 10.2-SNAPSHOT (10.1 released), `crypt-data`
-10.3-SNAPSHOT (10.2 released), `crypt-api` 9.7-SNAPSHOT (9.6 released). The capability tables
-below are current as of this date; the mutation-coverage numbers in the section further down
-predate this round's BLAKE2/Feldman-VSS/key-committing-AEAD fixes and Hybrid KEM test coverage
-and will read a little low until the next `./gradlew pitest` run picks up their tests.
+Last verified: 2026-08-21, against `mystic-crypt` 10.5-SNAPSHOT, `crypt-data` 10.3-SNAPSHOT
+(10.2 released), `crypt-api` 9.7-SNAPSHOT (9.6 released). The capability tables below are current
+as of this date; the mutation-coverage numbers in the section further down predate this round's
+BLAKE2/Feldman-VSS/key-committing-AEAD fixes and Hybrid KEM test coverage and will read a little
+low until the next `./gradlew pitest` run picks up their tests. `mystic-crypt` now requires JDK 25
+(raised from 21, see [README.md](../README.md#requirements)) - `crypt-data`/`crypt-api` remain
+built for JDK 21, which is compatible (a consumer's target only ever needs to be >= a dependency's
+target, never equal).
 
 ---
 

@@ -1,6 +1,16 @@
 ## Change log
 ----------------------
 
+Version 10.5-SNAPSHOT
+-------------
+
+CHANGED:
+
+- Minimum required JDK raised from 21 to 25 (LTS). build.gradle's toolchain already resolves off
+  gradle.properties#projectSourceCompatibility, so this is a one-line change; CI's setup-java step
+  updated to match. Published bytecode now targets JDK 25, so this is a breaking change for
+  consumers still on JDK 21-24.
+
 Version 10.2-SNAPSHOT
 -------------
 

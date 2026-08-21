@@ -10,10 +10,19 @@
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT)
 [![Javadoc](http://www.javadoc.io/badge/io.github.astrapi69/mystic-crypt.svg)](http://www.javadoc.io/doc/io.github.astrapi69/mystic-crypt)
 [![Hits-of-Code](https://hitsofcode.com/github/astrapi69/mystic-crypt)](https://hitsofcode.com/github/astrapi69/mystic-crypt/view)
+[![Java](https://img.shields.io/badge/Java-25-orange)](https://openjdk.org/projects/jdk/25/)
 
 </div>
 
 The target of this parent project is to make encryption and decryption as simple as possible
+
+## Requirements
+
+Requires **JDK 25** or newer at both build and runtime - the published jar's bytecode targets JDK
+25, so it will not load on an older JVM. This keeps the library current with recent JDK-native
+cryptography (Ed25519/X25519 since JDK 15/11, the `javax.crypto.KEM` API used by the post-quantum
+KEM classes since JDK 21) without carrying Bouncy Castle-only fallbacks for algorithms the JDK now
+provides natively.
 
 # Support this project
 
