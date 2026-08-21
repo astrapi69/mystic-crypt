@@ -59,6 +59,7 @@ module io.github.astrapisixtynine.mystic.crypt
 	exports io.github.astrapi69.mystic.crypt.secret;
 	exports io.github.astrapi69.mystic.crypt.sha;
 	exports io.github.astrapi69.mystic.crypt.simple;
+	exports io.github.astrapi69.mystic.crypt.srp;
 	exports io.github.astrapi69.mystic.crypt.ssl;
 
 }
