@@ -25,10 +25,11 @@
 package io.github.astrapi69.mystic.crypt.srp;
 
 import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Arrays;
+
+import org.bouncycastle.crypto.CryptoException;
+import org.bouncycastle.crypto.Digest;
+import org.bouncycastle.crypto.agreement.srp.SRP6Util;
 
 /**
  * The class {@link SRP6aServer} implements the server side of the SRP-6a protocol.
@@ -60,10 +61,12 @@ public final class SRP6aServer
 	private final BigInteger g;
 	private final String hashAlgorithm;
 	private final SecureRandom random;
+	private final Digest digest;
 	private BigInteger b;
 	private BigInteger B;
 	private BigInteger verifier;
 	private BigInteger clientPublicKey;
+	private BigInteger S;
 
 	/**
 	 * Constructs a new SRP-6a server with default parameters.
@@ -94,6 +97,7 @@ public final class SRP6aServer
 		this.g = g;
 		this.hashAlgorithm = hashAlgorithm;
 		this.random = new SecureRandom();
+		this.digest = SrpDigests.newDigest(hashAlgorithm);
 	}
 
 	/**
@@ -128,11 +132,10 @@ public final class SRP6aServer
 		}
 
 		// Generate random private value b
-		this.b = new BigInteger(n.bitLength(), random).mod(n.subtract(BigInteger.ONE))
-			.add(BigInteger.ONE);
+		this.b = SRP6Util.generatePrivateValue(digest, n, g, random);
 
 		// Compute k = H(N | g)
-		final BigInteger k = computeK();
+		final BigInteger k = SRP6Util.calculateK(digest, n, g);
 
 		// Compute B = k*v + g^b mod N
 		final BigInteger kv = k.multiply(verifier).mod(n);
@@ -149,6 +152,10 @@ public final class SRP6aServer
 	 *            the client's public value A
 	 * @throws IllegalArgumentException
 	 *             if clientPublicKey is null
+	 * @throws SecurityException
+	 *             if clientPublicKey mod N is zero - the classic SRP zero-key attack, where a
+	 *             malicious client tries to force a session key that does not depend on the
+	 *             password, bypassing authentication entirely (see RFC 5054 section 2.5.4)
 	 */
 	public void setClientPublicKey(final BigInteger clientPublicKey)
 	{
@@ -156,7 +163,14 @@ public final class SRP6aServer
 		{
 			throw new IllegalArgumentException("Client public key cannot be null");
 		}
-		this.clientPublicKey = clientPublicKey;
+		try
+		{
+			this.clientPublicKey = SRP6Util.validatePublicValue(n, clientPublicKey);
+		}
+		catch (final CryptoException e)
+		{
+			throw new SecurityException("Invalid client public value", e);
+		}
 	}
 
 	/**
@@ -178,15 +192,15 @@ public final class SRP6aServer
 		}
 
 		// Compute u = H(A | B)
-		final BigInteger u = computeU(clientPublicKey, B);
+		final BigInteger u = SRP6Util.calculateU(digest, n, clientPublicKey, B);
 
-		// Compute S = (A * v^u)^b mod N
+		// Compute S = (A * v^u)^b mod N - same formula BC's own SRP6Server.calculateS() uses
 		final BigInteger vu = verifier.modPow(u, n);
 		final BigInteger Avu = clientPublicKey.multiply(vu).mod(n);
-		final BigInteger S = Avu.modPow(b, n);
+		this.S = Avu.modPow(b, n);
 
 		// Compute K = H(S)
-		return computeKey(S);
+		return SRP6Util.calculateKey(digest, n, S);
 	}
 
 	/**
@@ -214,19 +228,12 @@ public final class SRP6aServer
 		{
 			throw new IllegalArgumentException("Client public key not set");
 		}
+		if (S == null)
+		{
+			throw new IllegalArgumentException("Session not established");
+		}
 
-		try
-		{
-			final MessageDigest md = MessageDigest.getInstance(hashAlgorithm);
-			md.update(clientPublicKey.toByteArray());
-			md.update(clientProof.toByteArray());
-			md.update(sessionKey.toByteArray());
-			return new BigInteger(1, md.digest());
-		}
-		catch (final NoSuchAlgorithmException e)
-		{
-			throw new RuntimeException("Hash algorithm not available: " + hashAlgorithm, e);
-		}
+		return SRP6Util.calculateM2(digest, n, clientPublicKey, clientProof, S);
 	}
 
 	/**
@@ -249,109 +256,14 @@ public final class SRP6aServer
 			return false;
 		}
 
-		try
-		{
-			// Expected M1 = H(A | B | K)
-			final BigInteger expectedM1 = computeExpectedClientProof(clientPublicKey, B,
-				sessionKey);
-			return expectedM1.equals(clientProof);
-		}
-		catch (final Exception e)
+		if (S == null)
 		{
 			return false;
 		}
-	}
 
-	/**
-	 * Computes k = H(N | g).
-	 *
-	 * @return the value k
-	 */
-	private BigInteger computeK()
-	{
-		try
-		{
-			final MessageDigest md = MessageDigest.getInstance(hashAlgorithm);
-			md.update(n.toByteArray());
-			md.update(g.toByteArray());
-			return new BigInteger(1, md.digest());
-		}
-		catch (final NoSuchAlgorithmException e)
-		{
-			throw new RuntimeException("Hash algorithm not available: " + hashAlgorithm, e);
-		}
-	}
-
-	/**
-	 * Computes u = H(A | B).
-	 *
-	 * @param clientPublicKey
-	 *            the client's public value A
-	 * @param serverPublicKey
-	 *            the server's public value B
-	 * @return the value u
-	 */
-	private BigInteger computeU(final BigInteger clientPublicKey, final BigInteger serverPublicKey)
-	{
-		try
-		{
-			final MessageDigest md = MessageDigest.getInstance(hashAlgorithm);
-			md.update(clientPublicKey.toByteArray());
-			md.update(serverPublicKey.toByteArray());
-			return new BigInteger(1, md.digest());
-		}
-		catch (final NoSuchAlgorithmException e)
-		{
-			throw new RuntimeException("Hash algorithm not available: " + hashAlgorithm, e);
-		}
-	}
-
-	/**
-	 * Computes K = H(S).
-	 *
-	 * @param sharedSecret
-	 *            the shared secret S
-	 * @return the session key K
-	 */
-	private BigInteger computeKey(final BigInteger sharedSecret)
-	{
-		try
-		{
-			final MessageDigest md = MessageDigest.getInstance(hashAlgorithm);
-			return new BigInteger(1, md.digest(sharedSecret.toByteArray()));
-		}
-		catch (final NoSuchAlgorithmException e)
-		{
-			throw new RuntimeException("Hash algorithm not available: " + hashAlgorithm, e);
-		}
-	}
-
-	/**
-	 * Computes the expected client proof M1 = H(A | B | K).
-	 *
-	 * @param clientPublicKey
-	 *            the client's public value A
-	 * @param serverPublicKey
-	 *            the server's public value B
-	 * @param sessionKey
-	 *            the session key K
-	 * @return the expected client proof M1
-	 */
-	private BigInteger computeExpectedClientProof(final BigInteger clientPublicKey,
-		final BigInteger serverPublicKey, final BigInteger sessionKey)
-	{
-		try
-		{
-			final MessageDigest md = MessageDigest.getInstance(hashAlgorithm);
-			md.update(clientPublicKey.toByteArray());
-			md.update(serverPublicKey.toByteArray());
-			md.update(sessionKey.toByteArray());
-			return new BigInteger(1, md.digest());
-		}
-		catch (final NoSuchAlgorithmException e)
-		{
-			throw new RuntimeException("Hash algorithm not available: " + hashAlgorithm, e);
-		}
+		// Expected M1 = H(A | B | S)
+		final BigInteger expectedM1 = SRP6Util.calculateM1(digest, n, clientPublicKey, B, S);
+		return expectedM1.equals(clientProof);
 	}
 
 	/**

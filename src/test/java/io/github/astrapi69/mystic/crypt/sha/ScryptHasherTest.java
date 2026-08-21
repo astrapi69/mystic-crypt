@@ -31,8 +31,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.nio.charset.StandardCharsets;
-
 import org.junit.jupiter.api.Test;
 
 /**
@@ -48,7 +46,7 @@ class ScryptHasherTest
 		final byte[] hash = ScryptHasher.hash(password);
 
 		assertNotNull(hash);
-		assertEquals(ScryptHasher.HASH_LENGTH, hash.length);
+		assertEquals(ScryptHasher.SALT_LENGTH + ScryptHasher.HASH_LENGTH, hash.length);
 	}
 
 	@Test
@@ -58,7 +56,26 @@ class ScryptHasherTest
 		final byte[] hash = ScryptHasher.hash(password, 1024, 8, 1);
 
 		assertNotNull(hash);
-		assertEquals(ScryptHasher.HASH_LENGTH, hash.length);
+		assertEquals(ScryptHasher.SALT_LENGTH + ScryptHasher.HASH_LENGTH, hash.length);
+	}
+
+	@Test
+	void testHashConvenienceRoundTripsWithVerify()
+	{
+		final char[] password = "testPassword123".toCharArray();
+		final byte[] saltAndHash = ScryptHasher.hash(password.clone(), 1024, 8, 1);
+
+		assertTrue(ScryptHasher.verify(password, saltAndHash, 1024, 8, 1));
+	}
+
+	@Test
+	void testHashConvenienceRoundTripFailsForWrongPassword()
+	{
+		final char[] password = "testPassword123".toCharArray();
+		final byte[] saltAndHash = ScryptHasher.hash(password.clone(), 1024, 8, 1);
+
+		final char[] wrongPassword = "wrongPassword".toCharArray();
+		assertFalse(ScryptHasher.verify(wrongPassword, saltAndHash, 1024, 8, 1));
 	}
 
 	@Test

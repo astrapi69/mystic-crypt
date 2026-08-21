@@ -25,6 +25,7 @@
 package io.github.astrapi69.mystic.crypt.sha;
 
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.security.Security;
 import java.util.Arrays;
 
@@ -32,11 +33,10 @@ import org.bouncycastle.crypto.generators.SCrypt;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 /**
- * The class {@link ScryptHasher} provides scrypt hashing functionality using Bouncy Castle.
- * Scrypt is a password-based key derivation function designed to be computationally expensive
- * and memory-hard, making it resistant to hardware brute-force attacks. It requires significant
- * amounts of memory to compute, which makes large-scale custom hardware attacks economically
- * infeasible.
+ * The class {@link ScryptHasher} provides scrypt hashing functionality using Bouncy Castle. Scrypt
+ * is a password-based key derivation function designed to be computationally expensive and
+ * memory-hard, making it resistant to hardware brute-force attacks. It requires significant amounts
+ * of memory to compute, which makes large-scale custom hardware attacks economically infeasible.
  * 
  * <p>
  * Scrypt parameters:
@@ -90,11 +90,15 @@ public final class ScryptHasher
 	}
 
 	/**
-	 * Hashes the given password with scrypt using default parameters.
+	 * Hashes the given password with scrypt using default parameters and a freshly generated random
+	 * salt.
 	 *
 	 * @param password
 	 *            the password to hash
-	 * @return the hash as a byte array
+	 * @return the salt followed by the derived key, as a single byte array (first
+	 *         {@value #SALT_LENGTH} bytes are the salt, the remaining {@value #HASH_LENGTH} bytes
+	 *         are the derived key) - pass the whole array to
+	 *         {@link #verify(char[], byte[], int, int, int)} to check a password against it later
 	 * @throws IllegalArgumentException
 	 *             if password is null
 	 */
@@ -104,7 +108,8 @@ public final class ScryptHasher
 	}
 
 	/**
-	 * Hashes the given password with scrypt using specified parameters.
+	 * Hashes the given password with scrypt using specified parameters and a freshly generated
+	 * random salt.
 	 *
 	 * @param password
 	 *            the password to hash
@@ -114,7 +119,10 @@ public final class ScryptHasher
 	 *            block size parameter (minimum 1)
 	 * @param p
 	 *            parallelization parameter (minimum 1)
-	 * @return the hash as a byte array
+	 * @return the salt followed by the derived key, as a single byte array (first
+	 *         {@value #SALT_LENGTH} bytes are the salt, the remaining {@value #HASH_LENGTH} bytes
+	 *         are the derived key) - pass the whole array to
+	 *         {@link #verify(char[], byte[], int, int, int)} to check a password against it later
 	 * @throws IllegalArgumentException
 	 *             if password is null or parameters are invalid
 	 */
@@ -130,7 +138,11 @@ public final class ScryptHasher
 		{
 			final byte[] passwordBytes = toBytes(password);
 			final byte[] salt = generateSalt();
-			return SCrypt.generate(passwordBytes, salt, n, r, p, HASH_LENGTH);
+			final byte[] derived = SCrypt.generate(passwordBytes, salt, n, r, p, HASH_LENGTH);
+			final byte[] saltAndHash = new byte[SALT_LENGTH + HASH_LENGTH];
+			System.arraycopy(salt, 0, saltAndHash, 0, SALT_LENGTH);
+			System.arraycopy(derived, 0, saltAndHash, SALT_LENGTH, HASH_LENGTH);
+			return saltAndHash;
 		}
 		finally
 		{
@@ -200,8 +212,8 @@ public final class ScryptHasher
 	 * @throws IllegalArgumentException
 	 *             if any parameter is null
 	 */
-	public static boolean verify(final char[] password, final byte[] salt, final byte[] expectedHash,
-		final int n, final int r, final int p)
+	public static boolean verify(final char[] password, final byte[] salt,
+		final byte[] expectedHash, final int n, final int r, final int p)
 	{
 		if (password == null)
 		{
@@ -222,12 +234,50 @@ public final class ScryptHasher
 			final byte[] passwordBytes = toBytes(password);
 			final byte[] actualHash = SCrypt.generate(passwordBytes, salt, n, r, p,
 				expectedHash.length);
-			return Arrays.equals(expectedHash, actualHash);
+			return MessageDigest.isEqual(expectedHash, actualHash);
 		}
 		finally
 		{
 			Arrays.fill(password, '\0');
 		}
+	}
+
+	/**
+	 * Verifies that the given password matches a salt+hash blob previously produced by
+	 * {@link #hash(char[])} or {@link #hash(char[], int, int, int)}.
+	 *
+	 * @param password
+	 *            the password to verify
+	 * @param saltAndHash
+	 *            the salt followed by the derived key, as produced by {@link #hash(char[])} /
+	 *            {@link #hash(char[], int, int, int)} (first {@value #SALT_LENGTH} bytes are the
+	 *            salt)
+	 * @param n
+	 *            CPU/memory cost parameter used when hashing
+	 * @param r
+	 *            block size parameter used when hashing
+	 * @param p
+	 *            parallelization parameter used when hashing
+	 * @return true if the password matches, false otherwise
+	 * @throws IllegalArgumentException
+	 *             if password or saltAndHash is null, or saltAndHash is too short
+	 */
+	public static boolean verify(final char[] password, final byte[] saltAndHash, final int n,
+		final int r, final int p)
+	{
+		if (saltAndHash == null)
+		{
+			throw new IllegalArgumentException("saltAndHash cannot be null");
+		}
+		if (saltAndHash.length <= SALT_LENGTH)
+		{
+			throw new IllegalArgumentException("saltAndHash is too short");
+		}
+
+		final byte[] salt = Arrays.copyOfRange(saltAndHash, 0, SALT_LENGTH);
+		final byte[] expectedHash = Arrays.copyOfRange(saltAndHash, SALT_LENGTH,
+			saltAndHash.length);
+		return verify(password, salt, expectedHash, n, r, p);
 	}
 
 	/**
@@ -246,8 +296,7 @@ public final class ScryptHasher
 	{
 		if (n < MIN_N || !isPowerOfTwo(n))
 		{
-			throw new IllegalArgumentException(
-				"N must be a power of 2 and at least " + MIN_N);
+			throw new IllegalArgumentException("N must be a power of 2 and at least " + MIN_N);
 		}
 		if (r < MIN_R)
 		{

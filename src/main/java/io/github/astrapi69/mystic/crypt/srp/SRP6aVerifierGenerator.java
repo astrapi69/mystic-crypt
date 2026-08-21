@@ -25,10 +25,12 @@
 package io.github.astrapi69.mystic.crypt.srp;
 
 import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Arrays;
+
+import org.bouncycastle.crypto.agreement.srp.SRP6StandardGroups;
+import org.bouncycastle.crypto.agreement.srp.SRP6VerifierGenerator;
 
 /**
  * The class {@link SRP6aVerifierGenerator} generates SRP-6a password verifiers.
@@ -48,12 +50,11 @@ import java.util.Arrays;
 public final class SRP6aVerifierGenerator
 {
 
-	/** Default prime N (RFC 5054 1024-bit group) */
-	public static final BigInteger DEFAULT_N = new BigInteger(
-		"EEAF0AB9ADB38DD69C33F80AFA8FC5E86072618775FF3C0B9EA2314C9C256576D674DF7496EA81D3383B4813D692C6E0E0D5D8E250B98BE48E495C1D6089DAD15DC7D7B46154D6B6CE8EF4AD69B15D4982559B297BCF1885C529F566660E57EC68EDBC3C05726CC02FD4CBF4976EAA9AFD5138FE8376435B9FC61D2FC0EB06E3");
+	/** Default prime N (RFC 5054 1024-bit group), reusing Bouncy Castle's own verified constant */
+	public static final BigInteger DEFAULT_N = SRP6StandardGroups.rfc5054_1024.getN();
 
 	/** Default generator g */
-	public static final BigInteger DEFAULT_G = BigInteger.valueOf(2);
+	public static final BigInteger DEFAULT_G = SRP6StandardGroups.rfc5054_1024.getG();
 
 	/** Default hash algorithm */
 	public static final String DEFAULT_HASH_ALGORITHM = "SHA-256";
@@ -62,6 +63,7 @@ public final class SRP6aVerifierGenerator
 	private final BigInteger g;
 	private final String hashAlgorithm;
 	private final SecureRandom random;
+	private final SRP6VerifierGenerator bcGenerator;
 
 	/**
 	 * Constructs a new verifier generator with default parameters.
@@ -92,6 +94,8 @@ public final class SRP6aVerifierGenerator
 		this.g = g;
 		this.hashAlgorithm = hashAlgorithm;
 		this.random = new SecureRandom();
+		this.bcGenerator = new SRP6VerifierGenerator();
+		this.bcGenerator.init(n, g, SrpDigests.newDigest(hashAlgorithm));
 	}
 
 	/**
@@ -135,49 +139,18 @@ public final class SRP6aVerifierGenerator
 			throw new IllegalArgumentException("Salt cannot be null");
 		}
 
+		final byte[] passwordBytes = new String(password).getBytes(StandardCharsets.UTF_8);
 		try
 		{
-			// x = H(s | H(I | ":" | P))
-			final byte[] x = computeX(identity, password, salt);
-			final BigInteger bigX = new BigInteger(1, x);
-
-			// v = g^x mod N
-			return g.modPow(bigX, n);
+			// v = g^x mod N, x = H(s | H(I | ":" | P)) - both computed by SRP6VerifierGenerator
+			// via SRP6Util.calculateX, which pads correctly per RFC 5054
+			return bcGenerator.generateVerifier(salt, identity.getBytes(StandardCharsets.UTF_8),
+				passwordBytes);
 		}
 		finally
 		{
 			Arrays.fill(password, '\0');
-		}
-	}
-
-	/**
-	 * Computes x = H(s | H(I | ":" | P)).
-	 *
-	 * @param identity
-	 *            the user identity
-	 * @param password
-	 *            the password
-	 * @param salt
-	 *            the salt
-	 * @return the x value as a byte array
-	 */
-	private byte[] computeX(final String identity, final char[] password, final byte[] salt)
-	{
-		try
-		{
-			final MessageDigest md = MessageDigest.getInstance(hashAlgorithm);
-
-			// Compute H(I | ":" | P)
-			final String identityColonPassword = identity + ":" + new String(password);
-			byte[] innerHash = md.digest(identityColonPassword.getBytes());
-
-			// Compute H(s | H(I | ":" | P))
-			md.update(salt);
-			return md.digest(innerHash);
-		}
-		catch (final NoSuchAlgorithmException e)
-		{
-			throw new RuntimeException("Hash algorithm not available: " + hashAlgorithm, e);
+			Arrays.fill(passwordBytes, (byte)0);
 		}
 	}
 

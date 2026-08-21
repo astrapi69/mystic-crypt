@@ -29,7 +29,9 @@ apply from: "gradle/apply-gradle-files.gradle"
 
 java {
     sourceCompatibility = "$projectSourceCompatibility" as Object
-    targetCompatibility = "$projectSourceCompatibility" as Object
+    toolchain {
+        languageVersion = JavaLanguageVersion.of("$projectSourceCompatibility")
+    }
 }
 
 tasks.named("test") {

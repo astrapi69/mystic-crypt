@@ -24,15 +24,12 @@
  */
 package io.github.astrapi69.mystic.crypt.sha;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.Test;
 
@@ -60,7 +57,7 @@ class BcryptHasherTest
 		final String hash = BcryptHasher.hash(password, 12);
 
 		assertNotNull(hash);
-		assertTrue(hash.startsWith("$2a$12$"));
+		assertTrue(hash.startsWith("$2y$12$"));
 	}
 
 	@Test
@@ -142,8 +139,8 @@ class BcryptHasherTest
 		final String hash2 = BcryptHasher.hash(password.clone(), 10);
 
 		assertNotSame(hash1, hash2);
-		assertTrue(BcryptHasher.verify(password, hash1));
-		assertTrue(BcryptHasher.verify(password, hash2));
+		assertTrue(BcryptHasher.verify(password.clone(), hash1));
+		assertTrue(BcryptHasher.verify(password.clone(), hash2));
 	}
 
 	@Test
@@ -167,7 +164,7 @@ class BcryptHasherTest
 		final String hash = BcryptHasher.hashWithSalt(password.clone(), salt, 10);
 
 		assertNotNull(hash);
-		assertTrue(hash.startsWith("$2a$10$"));
+		assertTrue(hash.startsWith("$2y$10$"));
 		assertTrue(BcryptHasher.verify(password, hash));
 	}
 

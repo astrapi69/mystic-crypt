@@ -112,13 +112,16 @@ class SRP6aProtocolTest
 	{
 		final SRP6aClient client = new SRP6aClient();
 
+		assertNotNull(client);
+		client.generatePublicValue();
 		assertNotNull(client.getPublicValue());
 	}
 
 	@Test
 	void testClientConstructorWithCustomParameters()
 	{
-		final BigInteger customN = new BigInteger("1000000000000000000000000000000000000000000000000000000000000000");
+		final BigInteger customN = new BigInteger(
+			"1000000000000000000000000000000000000000000000000000000000000000");
 		final BigInteger customG = BigInteger.valueOf(3);
 
 		final SRP6aClient client = new SRP6aClient(customN, customG, "SHA-512");
@@ -191,8 +194,8 @@ class SRP6aProtocolTest
 	{
 		final SRP6aVerifierGenerator generator = new SRP6aVerifierGenerator();
 		final byte[] salt = generator.generateSalt();
-		final BigInteger verifier = generator.generateVerifier("user",
-			"password".toCharArray(), salt);
+		final BigInteger verifier = generator.generateVerifier("user", "password".toCharArray(),
+			salt);
 
 		final SRP6aServer server = new SRP6aServer();
 		server.setVerifier(verifier);
@@ -217,6 +220,39 @@ class SRP6aProtocolTest
 		final SRP6aClient client = new SRP6aClient();
 
 		assertFalse(client.verifyServerProof(null, BigInteger.TEN));
+	}
+
+	@Test
+	void testServerRejectsZeroClientPublicKey()
+	{
+		final SRP6aVerifierGenerator generator = new SRP6aVerifierGenerator();
+		final byte[] salt = generator.generateSalt();
+		final BigInteger verifier = generator.generateVerifier("testuser",
+			"testPassword123".toCharArray(), salt);
+
+		final SRP6aServer server = new SRP6aServer();
+		server.setVerifier(verifier);
+		server.generatePublicValue();
+
+		// The classic SRP zero-key attack: a malicious client sends A = 0 (or any multiple of N)
+		// to try to force a session key that does not depend on the verifier/password at all.
+		assertThrows(SecurityException.class, () -> server.setClientPublicKey(BigInteger.ZERO));
+		assertThrows(SecurityException.class,
+			() -> server.setClientPublicKey(SRP6aVerifierGenerator.DEFAULT_N));
+	}
+
+	@Test
+	void testClientRejectsZeroServerPublicKey()
+	{
+		final SRP6aClient client = new SRP6aClient();
+		client.generatePublicValue();
+		final byte[] salt = new byte[16];
+
+		// Same attack, mirrored: a malicious/compromised server sends B = 0
+		assertThrows(SecurityException.class,
+			() -> client.setServerCredentials(salt, BigInteger.ZERO));
+		assertThrows(SecurityException.class,
+			() -> client.setServerCredentials(salt, SRP6aVerifierGenerator.DEFAULT_N));
 	}
 
 	@Test
@@ -253,8 +289,7 @@ class SRP6aProtocolTest
 			assertTrue(server.verifyClientProof(clientProof, serverSessionKey),
 				"Round " + i + ": Client proof should be valid");
 
-			final BigInteger serverProof = server.computeServerProof(clientProof,
-				serverSessionKey);
+			final BigInteger serverProof = server.computeServerProof(clientProof, serverSessionKey);
 			assertTrue(client.verifyServerProof(serverProof, clientSessionKey),
 				"Round " + i + ": Server proof should be valid");
 		}

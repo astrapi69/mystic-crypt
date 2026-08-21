@@ -26,7 +26,7 @@ module io.github.astrapisixtynine.mystic.crypt
 	requires com.google.common;
 	requires io.github.astrapisixtynine.file.worker;
 	requires io.github.astrapi69.crypt.api;
-	requires io.github.astrapi69.crypt.data;
+	requires io.github.astrapisixtynine.crypt.data;
 	requires io.github.astrapisixtynine.throwable;
 	requires jobj.cloner.main;
 	requires io.github.astrapisixtynine.jobj.core;
@@ -40,6 +40,7 @@ module io.github.astrapisixtynine.mystic.crypt
 	requires org.bouncycastle.pkix;
 
 
+	exports io.github.astrapi69.mystic.crypt.aead;
 	exports io.github.astrapi69.mystic.crypt.algorithm;
 	exports io.github.astrapi69.mystic.crypt.base;
 	exports io.github.astrapi69.mystic.crypt.chainable;
@@ -55,8 +56,10 @@ module io.github.astrapisixtynine.mystic.crypt
 	exports io.github.astrapi69.mystic.crypt.processor.bruteforce;
 	exports io.github.astrapi69.mystic.crypt.processor.wordlist;
 	exports io.github.astrapi69.mystic.crypt.pw;
+	exports io.github.astrapi69.mystic.crypt.secret;
 	exports io.github.astrapi69.mystic.crypt.sha;
 	exports io.github.astrapi69.mystic.crypt.simple;
+	exports io.github.astrapi69.mystic.crypt.srp;
 	exports io.github.astrapi69.mystic.crypt.ssl;
 
 }

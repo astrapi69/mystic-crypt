@@ -24,19 +24,19 @@
  */
 package io.github.astrapi69.mystic.crypt.sha;
 
-import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
 import java.security.Security;
 import java.util.Arrays;
 
-import org.bouncycastle.crypto.generators.BCrypt;
+import org.bouncycastle.crypto.generators.OpenBSDBCrypt;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 /**
- * The class {@link BcryptHasher} provides BCrypt hashing functionality using Bouncy Castle.
- * BCrypt is an adaptive cryptographic hash function designed for password hashing. It incorporates
- * a salt to protect against rainbow table attacks and is computationally expensive to resist
- * brute-force attacks. The cost factor can be adjusted to increase computational requirements
- * over time as hardware becomes faster.
+ * The class {@link BcryptHasher} provides BCrypt hashing functionality using Bouncy Castle. BCrypt
+ * is an adaptive cryptographic hash function designed for password hashing. It incorporates a salt
+ * to protect against rainbow table attacks and is computationally expensive to resist brute-force
+ * attacks. The cost factor can be adjusted to increase computational requirements over time as
+ * hardware becomes faster.
  * 
  * <p>
  * BCrypt produces hashes in the standard format: {@code $2a$<cost>$<salt><hash>} or
@@ -110,10 +110,9 @@ public final class BcryptHasher
 
 		try
 		{
-			final byte[] passwordBytes = toBytes(password);
-			final byte[] salt = BCrypt.gensalt(logRounds);
-			final String hash = BCrypt.hashpw(passwordBytes, salt);
-			return hash;
+			final byte[] salt = new byte[16];
+			new SecureRandom().nextBytes(salt);
+			return OpenBSDBCrypt.generate(password, salt, logRounds);
 		}
 		finally
 		{
@@ -144,9 +143,9 @@ public final class BcryptHasher
 		{
 			throw new IllegalArgumentException("Salt cannot be null");
 		}
-		if (salt.length < 16)
+		if (salt.length != 16)
 		{
-			throw new IllegalArgumentException("Salt must be at least 16 bytes");
+			throw new IllegalArgumentException("Salt must be exactly 16 bytes");
 		}
 		if (logRounds < MIN_LOG_ROUNDS || logRounds > MAX_LOG_ROUNDS)
 		{
@@ -156,9 +155,7 @@ public final class BcryptHasher
 
 		try
 		{
-			final byte[] passwordBytes = toBytes(password);
-			final String hash = BCrypt.hashpw(passwordBytes, salt);
-			return hash;
+			return OpenBSDBCrypt.generate(password, salt, logRounds);
 		}
 		finally
 		{
@@ -190,8 +187,7 @@ public final class BcryptHasher
 
 		try
 		{
-			final byte[] passwordBytes = toBytes(password);
-			return BCrypt.checkpw(passwordBytes, hash);
+			return OpenBSDBCrypt.checkPassword(hash, password);
 		}
 		finally
 		{
@@ -215,101 +211,22 @@ public final class BcryptHasher
 			throw new IllegalArgumentException("Hash cannot be null");
 		}
 
-		// BCrypt format: $2a$XX$... where XX is the log rounds
-		if (!hash.startsWith("$2"))
+		// BCrypt format: $<version>$<cost>$<salt+hash> where version is 1-2 chars (2, 2a, 2b, 2x,
+		// 2y)
+		final String[] parts = hash.split("\\$");
+		if (parts.length < 4 || !parts[1].startsWith("2"))
 		{
 			throw new IllegalArgumentException("Invalid BCrypt hash format");
 		}
 
 		try
 		{
-			final int endIndex = hash.indexOf('$', 4);
-			if (endIndex == -1)
-			{
-				throw new IllegalArgumentException("Invalid BCrypt hash format");
-			}
-			return Integer.parseInt(hash.substring(4, endIndex));
+			return Integer.parseInt(parts[2]);
 		}
 		catch (final NumberFormatException e)
 		{
 			throw new IllegalArgumentException("Invalid BCrypt hash format", e);
 		}
-	}
-
-	/**
-	 * Converts a char array to UTF-8 byte array.
-	 *
-	 * @param chars
-	 *            the char array
-	 * @return the byte array
-	 */
-	private static byte[] toBytes(final char[] chars)
-	{
-		return new String(chars).getBytes(StandardCharsets.UTF_8);
-	}
-
-	/**
-	 * Encodes salt bytes to BCrypt salt string format.
-	 *
-	 * @param salt
-	 *            the salt bytes (at least 16 bytes)
-	 * @param logRounds
-	 *            the log rounds
-	 * @return the BCrypt salt string
-	 */
-	private static String encodeSalt(final byte[] salt, final int logRounds)
-	{
-		final StringBuilder sb = new StringBuilder();
-		sb.append("$2a$");
-		if (logRounds < 10)
-		{
-			sb.append('0');
-		}
-		sb.append(logRounds).append('$');
-		sb.append(encodeBase64(salt, 16));
-		return sb.toString();
-	}
-
-	/**
-	 * Simple Base64 encoding for BCrypt salt (using BCrypt's custom alphabet).
-	 *
-	 * @param data
-	 *            the data to encode
-	 * @param length
-	 *            the number of bytes to encode
-	 * @return the encoded string
-	 */
-	private static String encodeBase64(final byte[] data, final int length)
-	{
-		final char[] base64 = "./ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-			.toCharArray();
-		final StringBuilder sb = new StringBuilder();
-		int i = 0;
-		while (i < length)
-		{
-			int b1 = data[i++] & 0xff;
-			sb.append(base64[b1 >> 2]);
-			b1 = (b1 & 0x03) << 4;
-			if (i >= length)
-			{
-				sb.append(base64[b1]);
-				break;
-			}
-			int b2 = data[i++] & 0xff;
-			b1 |= (b2 >> 4) & 0x0f;
-			sb.append(base64[b1]);
-			b1 = (b2 & 0x0f) << 2;
-			if (i >= length)
-			{
-				sb.append(base64[b1]);
-				break;
-			}
-			b2 = data[i++] & 0xff;
-			b1 |= (b2 >> 6) & 0x03;
-			sb.append(base64[b1]);
-			sb.append(base64[b2 & 0x3f]);
-		}
-		return sb.toString();
 	}
 
 }

@@ -52,7 +52,8 @@ class SRP6aVerifierGeneratorTest
 	@Test
 	void testConstructorWithCustomParameters()
 	{
-		final BigInteger customN = new BigInteger("1000000000000000000000000000000000000000000000000000000000000000");
+		final BigInteger customN = new BigInteger(
+			"1000000000000000000000000000000000000000000000000000000000000000");
 		final BigInteger customG = BigInteger.valueOf(3);
 
 		final SRP6aVerifierGenerator generator = new SRP6aVerifierGenerator(customN, customG,

@@ -1,47 +1,92 @@
-```
-# Gradle
-.gradle/
-build/
-target/
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
 
-# Dependencies
-lib/
+##################
+# Compiled files #
+##################
+*.class
 
-# Logs
+##################
+# intellij files #
+##################
+*.iml
+*.iws
+*.ipr
+!.idea/runConfigurations
+.idea/inspectionProfiles
+.idea/copyright
+.idea/libraries
+.idea/codeStyles
+.idea/shelf
+.idea/*.*
+/.idea/$PRODUCT_WORKSPACE_FILE$
+
+#################
+# eclipse files #
+#################
+/.project
+/.classpath
+/.settings
+/.tern-project
+
+#########################
+# maven generated files #
+#########################
+/target
+
+#############
+# Zip files #
+#############
+*.tar
+*.zip
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+
+##############
+# Logs files #
+##############
 *.log
 
-# Environment
-.env
-.env.local
-*.env.*
+#################
+# test-ng files #
+#################
+/test-output
 
-# Editor/IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*.tmp
+############################
+# Binaries generated files #
+############################
+/bin
 
-# OS
-.DS_Store
-Thumbs.db
+################
+# gradle files #
+################
+/build
+/.gradle
+/gradle
+/out
+# Ignore Gradle GUI config
+gradle-app.setting
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!/gradle/wrapper/gradle-wrapper.jar
+!/gradle/wrapper/gradle-wrapper.properties
+# Cache of project
+.gradletasknamecache
+# # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
+# gradle/wrapper/gradle-wrapper.properties
 
-# Coverage
-coverage/
-htmlcov/
-.coverage
-
-# Python (if applicable)
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-*.so
-.mypy_cache/
-.pytest_cache/
-.tox/
-.eggs/
-*.egg-info/
-dist/
-```
+##############################################################
+# virtual machine crash logs                                 #
+# see http://www.java.com/en/download/help/error_hotspot.xml #
+##############################################################
+hs_err_pid*
+/.attach_pid*
