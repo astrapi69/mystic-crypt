@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest" tests="19" skipped="0" failures="19" errors="0" timestamp="2026-08-21T08:07:14.947Z" hostname="c-6a87ff06-0167ce52-8ac22680783c" time="2.011">
+  <properties/>
+  <testcase name="testTamperedIVFailsDecryption()" classname="io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest" time="1.768">
+    <failure message="java.security.InvalidKeyException: Algorithm requires a PBE key" type="java.security.InvalidKeyException">java.security.InvalidKeyException: Algorithm requires a PBE key
+	at org.bouncycastle.jcajce.provider.symmetric.util.BaseBlockCipher.engineInit(Unknown Source)
+	at java.base/javax.crypto.Cipher.implInit(Cipher.java:876)
+	at java.base/javax.crypto.Cipher.chooseProvider(Cipher.java:934)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1466)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1393)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newSymmetricCipher(KeyCommittingAeadEncryptor.java:324)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:303)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:70)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.newCipher(AbstractCryptor.java:226)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.onInitialize(AbstractCryptor.java:333)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:128)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:155)
+	at io.github.astrapi69.mystic.crypt.core.AbstractEncryptor.&lt;init&gt;(AbstractEncryptor.java:103)
+	at io.github.astrapi69.mystic.crypt.core.AbstractByteArrayEncryptor.&lt;init&gt;(AbstractByteArrayEncryptor.java:108)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.&lt;init&gt;(KeyCommittingAeadEncryptor.java:134)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest.setUp(KeyCommittingAeadEncryptorTest.java:72)
+</failure>
+  </testcase>
+  <testcase name="testEncryptedDataTooShort()" classname="io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest" time="0.007">
+    <failure message="java.security.InvalidKeyException: Algorithm requires a PBE key" type="java.security.InvalidKeyException">java.security.InvalidKeyException: Algorithm requires a PBE key
+	at org.bouncycastle.jcajce.provider.symmetric.util.BaseBlockCipher.engineInit(Unknown Source)
+	at java.base/javax.crypto.Cipher.implInit(Cipher.java:876)
+	at java.base/javax.crypto.Cipher.chooseProvider(Cipher.java:934)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1466)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1393)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newSymmetricCipher(KeyCommittingAeadEncryptor.java:324)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:303)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:70)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.newCipher(AbstractCryptor.java:226)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.onInitialize(AbstractCryptor.java:333)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:128)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:155)
+	at io.github.astrapi69.mystic.crypt.core.AbstractEncryptor.&lt;init&gt;(AbstractEncryptor.java:103)
+	at io.github.astrapi69.mystic.crypt.core.AbstractByteArrayEncryptor.&lt;init&gt;(AbstractByteArrayEncryptor.java:108)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.&lt;init&gt;(KeyCommittingAeadEncryptor.java:134)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest.setUp(KeyCommittingAeadEncryptorTest.java:72)
+</failure>
+  </testcase>
+  <testcase name="testMultipleEncryptDecryptCycles()" classname="io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest" time="0.002">
+    <failure message="java.security.InvalidKeyException: Algorithm requires a PBE key" type="java.security.InvalidKeyException">java.security.InvalidKeyException: Algorithm requires a PBE key
+	at org.bouncycastle.jcajce.provider.symmetric.util.BaseBlockCipher.engineInit(Unknown Source)
+	at java.base/javax.crypto.Cipher.implInit(Cipher.java:876)
+	at java.base/javax.crypto.Cipher.chooseProvider(Cipher.java:934)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1466)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1393)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newSymmetricCipher(KeyCommittingAeadEncryptor.java:324)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:303)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:70)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.newCipher(AbstractCryptor.java:226)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.onInitialize(AbstractCryptor.java:333)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:128)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:155)
+	at io.github.astrapi69.mystic.crypt.core.AbstractEncryptor.&lt;init&gt;(AbstractEncryptor.java:103)
+	at io.github.astrapi69.mystic.crypt.core.AbstractByteArrayEncryptor.&lt;init&gt;(AbstractByteArrayEncryptor.java:108)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.&lt;init&gt;(KeyCommittingAeadEncryptor.java:134)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest.setUp(KeyCommittingAeadEncryptorTest.java:72)
+</failure>
+  </testcase>
+  <testcase name="testTamperedCiphertextFailsDecryption()" classname="io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest" time="0.005">
+    <failure message="java.security.InvalidKeyException: Algorithm requires a PBE key" type="java.security.InvalidKeyException">java.security.InvalidKeyException: Algorithm requires a PBE key
+	at org.bouncycastle.jcajce.provider.symmetric.util.BaseBlockCipher.engineInit(Unknown Source)
+	at java.base/javax.crypto.Cipher.implInit(Cipher.java:876)
+	at java.base/javax.crypto.Cipher.chooseProvider(Cipher.java:934)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1466)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1393)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newSymmetricCipher(KeyCommittingAeadEncryptor.java:324)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:303)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:70)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.newCipher(AbstractCryptor.java:226)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.onInitialize(AbstractCryptor.java:333)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:128)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:155)
+	at io.github.astrapi69.mystic.crypt.core.AbstractEncryptor.&lt;init&gt;(AbstractEncryptor.java:103)
+	at io.github.astrapi69.mystic.crypt.core.AbstractByteArrayEncryptor.&lt;init&gt;(AbstractByteArrayEncryptor.java:108)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.&lt;init&gt;(KeyCommittingAeadEncryptor.java:134)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest.setUp(KeyCommittingAeadEncryptorTest.java:72)
+</failure>
+  </testcase>
+  <testcase name="testEncryptDecrypt()" classname="io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest" time="0.002">
+    <failure message="java.security.InvalidKeyException: Algorithm requires a PBE key" type="java.security.InvalidKeyException">java.security.InvalidKeyException: Algorithm requires a PBE key
+	at org.bouncycastle.jcajce.provider.symmetric.util.BaseBlockCipher.engineInit(Unknown Source)
+	at java.base/javax.crypto.Cipher.implInit(Cipher.java:876)
+	at java.base/javax.crypto.Cipher.chooseProvider(Cipher.java:934)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1466)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1393)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newSymmetricCipher(KeyCommittingAeadEncryptor.java:324)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:303)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:70)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.newCipher(AbstractCryptor.java:226)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.onInitialize(AbstractCryptor.java:333)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:128)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:155)
+	at io.github.astrapi69.mystic.crypt.core.AbstractEncryptor.&lt;init&gt;(AbstractEncryptor.java:103)
+	at io.github.astrapi69.mystic.crypt.core.AbstractByteArrayEncryptor.&lt;init&gt;(AbstractByteArrayEncryptor.java:108)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.&lt;init&gt;(KeyCommittingAeadEncryptor.java:134)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest.setUp(KeyCommittingAeadEncryptorTest.java:72)
+</failure>
+  </testcase>
+  <testcase name="testDifferentPlaintextsProduceDifferentCiphertexts()" classname="io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest" time="0.002">
+    <failure message="java.security.InvalidKeyException: Algorithm requires a PBE key" type="java.security.InvalidKeyException">java.security.InvalidKeyException: Algorithm requires a PBE key
+	at org.bouncycastle.jcajce.provider.symmetric.util.BaseBlockCipher.engineInit(Unknown Source)
+	at java.base/javax.crypto.Cipher.implInit(Cipher.java:876)
+	at java.base/javax.crypto.Cipher.chooseProvider(Cipher.java:934)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1466)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1393)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newSymmetricCipher(KeyCommittingAeadEncryptor.java:324)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:303)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:70)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.newCipher(AbstractCryptor.java:226)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.onInitialize(AbstractCryptor.java:333)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:128)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:155)
+	at io.github.astrapi69.mystic.crypt.core.AbstractEncryptor.&lt;init&gt;(AbstractEncryptor.java:103)
+	at io.github.astrapi69.mystic.crypt.core.AbstractByteArrayEncryptor.&lt;init&gt;(AbstractByteArrayEncryptor.java:108)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.&lt;init&gt;(KeyCommittingAeadEncryptor.java:134)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest.setUp(KeyCommittingAeadEncryptorTest.java:72)
+</failure>
+  </testcase>
+  <testcase name="testTamperedCommitmentTagFailsDecryption()" classname="io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest" time="0.003">
+    <failure message="java.security.InvalidKeyException: Algorithm requires a PBE key" type="java.security.InvalidKeyException">java.security.InvalidKeyException: Algorithm requires a PBE key
+	at org.bouncycastle.jcajce.provider.symmetric.util.BaseBlockCipher.engineInit(Unknown Source)
+	at java.base/javax.crypto.Cipher.implInit(Cipher.java:876)
+	at java.base/javax.crypto.Cipher.chooseProvider(Cipher.java:934)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1466)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1393)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newSymmetricCipher(KeyCommittingAeadEncryptor.java:324)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:303)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:70)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.newCipher(AbstractCryptor.java:226)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.onInitialize(AbstractCryptor.java:333)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:128)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:155)
+	at io.github.astrapi69.mystic.crypt.core.AbstractEncryptor.&lt;init&gt;(AbstractEncryptor.java:103)
+	at io.github.astrapi69.mystic.crypt.core.AbstractByteArrayEncryptor.&lt;init&gt;(AbstractByteArrayEncryptor.java:108)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.&lt;init&gt;(KeyCommittingAeadEncryptor.java:134)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest.setUp(KeyCommittingAeadEncryptorTest.java:72)
+</failure>
+  </testcase>
+  <testcase name="testEncryptDecryptWithAssociatedData()" classname="io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest" time="0.061">
+    <failure message="java.security.InvalidKeyException: Algorithm requires a PBE key" type="java.security.InvalidKeyException">java.security.InvalidKeyException: Algorithm requires a PBE key
+	at org.bouncycastle.jcajce.provider.symmetric.util.BaseBlockCipher.engineInit(Unknown Source)
+	at java.base/javax.crypto.Cipher.implInit(Cipher.java:876)
+	at java.base/javax.crypto.Cipher.chooseProvider(Cipher.java:934)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1466)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1393)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newSymmetricCipher(KeyCommittingAeadEncryptor.java:324)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:303)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:70)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.newCipher(AbstractCryptor.java:226)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.onInitialize(AbstractCryptor.java:333)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:128)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:155)
+	at io.github.astrapi69.mystic.crypt.core.AbstractEncryptor.&lt;init&gt;(AbstractEncryptor.java:103)
+	at io.github.astrapi69.mystic.crypt.core.AbstractByteArrayEncryptor.&lt;init&gt;(AbstractByteArrayEncryptor.java:108)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.&lt;init&gt;(KeyCommittingAeadEncryptor.java:134)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest.setUp(KeyCommittingAeadEncryptorTest.java:72)
+</failure>
+  </testcase>
+  <testcase name="testZeroLengthPlaintext()" classname="io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest" time="0.002">
+    <failure message="java.security.InvalidKeyException: Algorithm requires a PBE key" type="java.security.InvalidKeyException">java.security.InvalidKeyException: Algorithm requires a PBE key
+	at org.bouncycastle.jcajce.provider.symmetric.util.BaseBlockCipher.engineInit(Unknown Source)
+	at java.base/javax.crypto.Cipher.implInit(Cipher.java:876)
+	at java.base/javax.crypto.Cipher.chooseProvider(Cipher.java:934)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1466)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1393)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newSymmetricCipher(KeyCommittingAeadEncryptor.java:324)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:303)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:70)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.newCipher(AbstractCryptor.java:226)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.onInitialize(AbstractCryptor.java:333)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:128)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:155)
+	at io.github.astrapi69.mystic.crypt.core.AbstractEncryptor.&lt;init&gt;(AbstractEncryptor.java:103)
+	at io.github.astrapi69.mystic.crypt.core.AbstractByteArrayEncryptor.&lt;init&gt;(AbstractByteArrayEncryptor.java:108)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.&lt;init&gt;(KeyCommittingAeadEncryptor.java:134)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest.setUp(KeyCommittingAeadEncryptorTest.java:72)
+</failure>
+  </testcase>
+  <testcase name="testMissingAssociatedDataFailsDecryption()" classname="io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest" time="0.007">
+    <failure message="java.security.InvalidKeyException: Algorithm requires a PBE key" type="java.security.InvalidKeyException">java.security.InvalidKeyException: Algorithm requires a PBE key
+	at org.bouncycastle.jcajce.provider.symmetric.util.BaseBlockCipher.engineInit(Unknown Source)
+	at java.base/javax.crypto.Cipher.implInit(Cipher.java:876)
+	at java.base/javax.crypto.Cipher.chooseProvider(Cipher.java:934)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1466)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1393)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newSymmetricCipher(KeyCommittingAeadEncryptor.java:324)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:303)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:70)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.newCipher(AbstractCryptor.java:226)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.onInitialize(AbstractCryptor.java:333)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:128)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:155)
+	at io.github.astrapi69.mystic.crypt.core.AbstractEncryptor.&lt;init&gt;(AbstractEncryptor.java:103)
+	at io.github.astrapi69.mystic.crypt.core.AbstractByteArrayEncryptor.&lt;init&gt;(AbstractByteArrayEncryptor.java:108)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.&lt;init&gt;(KeyCommittingAeadEncryptor.java:134)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest.setUp(KeyCommittingAeadEncryptorTest.java:72)
+</failure>
+  </testcase>
+  <testcase name="testEncryptDecryptNullAssociatedData()" classname="io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest" time="0.002">
+    <failure message="java.security.InvalidKeyException: Algorithm requires a PBE key" type="java.security.InvalidKeyException">java.security.InvalidKeyException: Algorithm requires a PBE key
+	at org.bouncycastle.jcajce.provider.symmetric.util.BaseBlockCipher.engineInit(Unknown Source)
+	at java.base/javax.crypto.Cipher.implInit(Cipher.java:876)
+	at java.base/javax.crypto.Cipher.chooseProvider(Cipher.java:934)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1466)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1393)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newSymmetricCipher(KeyCommittingAeadEncryptor.java:324)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:303)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:70)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.newCipher(AbstractCryptor.java:226)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.onInitialize(AbstractCryptor.java:333)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:128)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:155)
+	at io.github.astrapi69.mystic.crypt.core.AbstractEncryptor.&lt;init&gt;(AbstractEncryptor.java:103)
+	at io.github.astrapi69.mystic.crypt.core.AbstractByteArrayEncryptor.&lt;init&gt;(AbstractByteArrayEncryptor.java:108)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.&lt;init&gt;(KeyCommittingAeadEncryptor.java:134)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest.setUp(KeyCommittingAeadEncryptorTest.java:72)
+</failure>
+  </testcase>
+  <testcase name="testEncryptedDataFormat()" classname="io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest" time="0.01">
+    <failure message="java.security.InvalidKeyException: Algorithm requires a PBE key" type="java.security.InvalidKeyException">java.security.InvalidKeyException: Algorithm requires a PBE key
+	at org.bouncycastle.jcajce.provider.symmetric.util.BaseBlockCipher.engineInit(Unknown Source)
+	at java.base/javax.crypto.Cipher.implInit(Cipher.java:876)
+	at java.base/javax.crypto.Cipher.chooseProvider(Cipher.java:934)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1466)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1393)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newSymmetricCipher(KeyCommittingAeadEncryptor.java:324)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:303)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:70)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.newCipher(AbstractCryptor.java:226)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.onInitialize(AbstractCryptor.java:333)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:128)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:155)
+	at io.github.astrapi69.mystic.crypt.core.AbstractEncryptor.&lt;init&gt;(AbstractEncryptor.java:103)
+	at io.github.astrapi69.mystic.crypt.core.AbstractByteArrayEncryptor.&lt;init&gt;(AbstractByteArrayEncryptor.java:108)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.&lt;init&gt;(KeyCommittingAeadEncryptor.java:134)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest.setUp(KeyCommittingAeadEncryptorTest.java:72)
+</failure>
+  </testcase>
+  <testcase name="testWrongAssociatedDataFailsDecryption()" classname="io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest" time="0.003">
+    <failure message="java.security.InvalidKeyException: Algorithm requires a PBE key" type="java.security.InvalidKeyException">java.security.InvalidKeyException: Algorithm requires a PBE key
+	at org.bouncycastle.jcajce.provider.symmetric.util.BaseBlockCipher.engineInit(Unknown Source)
+	at java.base/javax.crypto.Cipher.implInit(Cipher.java:876)
+	at java.base/javax.crypto.Cipher.chooseProvider(Cipher.java:934)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1466)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1393)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newSymmetricCipher(KeyCommittingAeadEncryptor.java:324)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:303)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:70)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.newCipher(AbstractCryptor.java:226)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.onInitialize(AbstractCryptor.java:333)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:128)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:155)
+	at io.github.astrapi69.mystic.crypt.core.AbstractEncryptor.&lt;init&gt;(AbstractEncryptor.java:103)
+	at io.github.astrapi69.mystic.crypt.core.AbstractByteArrayEncryptor.&lt;init&gt;(AbstractByteArrayEncryptor.java:108)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.&lt;init&gt;(KeyCommittingAeadEncryptor.java:134)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest.setUp(KeyCommittingAeadEncryptorTest.java:72)
+</failure>
+  </testcase>
+  <testcase name="testWrongKeyFailsDecryption()" classname="io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest" time="0.004">
+    <failure message="java.security.InvalidKeyException: Algorithm requires a PBE key" type="java.security.InvalidKeyException">java.security.InvalidKeyException: Algorithm requires a PBE key
+	at org.bouncycastle.jcajce.provider.symmetric.util.BaseBlockCipher.engineInit(Unknown Source)
+	at java.base/javax.crypto.Cipher.implInit(Cipher.java:876)
+	at java.base/javax.crypto.Cipher.chooseProvider(Cipher.java:934)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1466)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1393)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newSymmetricCipher(KeyCommittingAeadEncryptor.java:324)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:303)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:70)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.newCipher(AbstractCryptor.java:226)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.onInitialize(AbstractCryptor.java:333)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:128)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:155)
+	at io.github.astrapi69.mystic.crypt.core.AbstractEncryptor.&lt;init&gt;(AbstractEncryptor.java:103)
+	at io.github.astrapi69.mystic.crypt.core.AbstractByteArrayEncryptor.&lt;init&gt;(AbstractByteArrayEncryptor.java:108)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.&lt;init&gt;(KeyCommittingAeadEncryptor.java:134)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest.setUp(KeyCommittingAeadEncryptorTest.java:72)
+</failure>
+  </testcase>
+  <testcase name="testConstructorWithCryptModel()" classname="io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest" time="0.056">
+    <failure message="java.security.InvalidKeyException: Algorithm requires a PBE key" type="java.security.InvalidKeyException">java.security.InvalidKeyException: Algorithm requires a PBE key
+	at org.bouncycastle.jcajce.provider.symmetric.util.BaseBlockCipher.engineInit(Unknown Source)
+	at java.base/javax.crypto.Cipher.implInit(Cipher.java:876)
+	at java.base/javax.crypto.Cipher.chooseProvider(Cipher.java:934)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1466)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1393)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newSymmetricCipher(KeyCommittingAeadEncryptor.java:324)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:303)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:70)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.newCipher(AbstractCryptor.java:226)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.onInitialize(AbstractCryptor.java:333)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:128)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:155)
+	at io.github.astrapi69.mystic.crypt.core.AbstractEncryptor.&lt;init&gt;(AbstractEncryptor.java:103)
+	at io.github.astrapi69.mystic.crypt.core.AbstractByteArrayEncryptor.&lt;init&gt;(AbstractByteArrayEncryptor.java:108)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.&lt;init&gt;(KeyCommittingAeadEncryptor.java:134)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest.setUp(KeyCommittingAeadEncryptorTest.java:72)
+</failure>
+  </testcase>
+  <testcase name="testKeyCommitmentProperty()" classname="io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest" time="0.002">
+    <failure message="java.security.InvalidKeyException: Algorithm requires a PBE key" type="java.security.InvalidKeyException">java.security.InvalidKeyException: Algorithm requires a PBE key
+	at org.bouncycastle.jcajce.provider.symmetric.util.BaseBlockCipher.engineInit(Unknown Source)
+	at java.base/javax.crypto.Cipher.implInit(Cipher.java:876)
+	at java.base/javax.crypto.Cipher.chooseProvider(Cipher.java:934)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1466)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1393)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newSymmetricCipher(KeyCommittingAeadEncryptor.java:324)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:303)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:70)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.newCipher(AbstractCryptor.java:226)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.onInitialize(AbstractCryptor.java:333)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:128)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:155)
+	at io.github.astrapi69.mystic.crypt.core.AbstractEncryptor.&lt;init&gt;(AbstractEncryptor.java:103)
+	at io.github.astrapi69.mystic.crypt.core.AbstractByteArrayEncryptor.&lt;init&gt;(AbstractByteArrayEncryptor.java:108)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.&lt;init&gt;(KeyCommittingAeadEncryptor.java:134)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest.setUp(KeyCommittingAeadEncryptorTest.java:72)
+</failure>
+  </testcase>
+  <testcase name="testSamePlaintextProducesDifferentCiphertexts()" classname="io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest" time="0.002">
+    <failure message="java.security.InvalidKeyException: Algorithm requires a PBE key" type="java.security.InvalidKeyException">java.security.InvalidKeyException: Algorithm requires a PBE key
+	at org.bouncycastle.jcajce.provider.symmetric.util.BaseBlockCipher.engineInit(Unknown Source)
+	at java.base/javax.crypto.Cipher.implInit(Cipher.java:876)
+	at java.base/javax.crypto.Cipher.chooseProvider(Cipher.java:934)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1466)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1393)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newSymmetricCipher(KeyCommittingAeadEncryptor.java:324)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:303)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:70)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.newCipher(AbstractCryptor.java:226)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.onInitialize(AbstractCryptor.java:333)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:128)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:155)
+	at io.github.astrapi69.mystic.crypt.core.AbstractEncryptor.&lt;init&gt;(AbstractEncryptor.java:103)
+	at io.github.astrapi69.mystic.crypt.core.AbstractByteArrayEncryptor.&lt;init&gt;(AbstractByteArrayEncryptor.java:108)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.&lt;init&gt;(KeyCommittingAeadEncryptor.java:134)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest.setUp(KeyCommittingAeadEncryptorTest.java:72)
+</failure>
+  </testcase>
+  <testcase name="testLargeDataEncryption()" classname="io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest" time="0.004">
+    <failure message="java.security.InvalidKeyException: Algorithm requires a PBE key" type="java.security.InvalidKeyException">java.security.InvalidKeyException: Algorithm requires a PBE key
+	at org.bouncycastle.jcajce.provider.symmetric.util.BaseBlockCipher.engineInit(Unknown Source)
+	at java.base/javax.crypto.Cipher.implInit(Cipher.java:876)
+	at java.base/javax.crypto.Cipher.chooseProvider(Cipher.java:934)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1466)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1393)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newSymmetricCipher(KeyCommittingAeadEncryptor.java:324)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:303)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:70)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.newCipher(AbstractCryptor.java:226)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.onInitialize(AbstractCryptor.java:333)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:128)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:155)
+	at io.github.astrapi69.mystic.crypt.core.AbstractEncryptor.&lt;init&gt;(AbstractEncryptor.java:103)
+	at io.github.astrapi69.mystic.crypt.core.AbstractByteArrayEncryptor.&lt;init&gt;(AbstractByteArrayEncryptor.java:108)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.&lt;init&gt;(KeyCommittingAeadEncryptor.java:134)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest.setUp(KeyCommittingAeadEncryptorTest.java:72)
+</failure>
+  </testcase>
+  <testcase name="testEncryptDecryptEmptyAssociatedData()" classname="io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest" time="0.005">
+    <failure message="java.security.InvalidKeyException: Algorithm requires a PBE key" type="java.security.InvalidKeyException">java.security.InvalidKeyException: Algorithm requires a PBE key
+	at org.bouncycastle.jcajce.provider.symmetric.util.BaseBlockCipher.engineInit(Unknown Source)
+	at java.base/javax.crypto.Cipher.implInit(Cipher.java:876)
+	at java.base/javax.crypto.Cipher.chooseProvider(Cipher.java:934)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1466)
+	at java.base/javax.crypto.Cipher.init(Cipher.java:1393)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newSymmetricCipher(KeyCommittingAeadEncryptor.java:324)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:303)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.newCipher(KeyCommittingAeadEncryptor.java:70)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.newCipher(AbstractCryptor.java:226)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.onInitialize(AbstractCryptor.java:333)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:128)
+	at io.github.astrapi69.mystic.crypt.core.AbstractCryptor.&lt;init&gt;(AbstractCryptor.java:155)
+	at io.github.astrapi69.mystic.crypt.core.AbstractEncryptor.&lt;init&gt;(AbstractEncryptor.java:103)
+	at io.github.astrapi69.mystic.crypt.core.AbstractByteArrayEncryptor.&lt;init&gt;(AbstractByteArrayEncryptor.java:108)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor.&lt;init&gt;(KeyCommittingAeadEncryptor.java:134)
+	at io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptorTest.setUp(KeyCommittingAeadEncryptorTest.java:72)
+</failure>
+  </testcase>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
