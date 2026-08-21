@@ -111,7 +111,8 @@ public final class BcryptHasher
 		try
 		{
 			final byte[] passwordBytes = toBytes(password);
-			final String hash = BCrypt.hashpw(passwordBytes, BCrypt.gensalt(logRounds));
+			final byte[] salt = BCrypt.gensalt(logRounds);
+			final String hash = BCrypt.hashpw(passwordBytes, salt);
 			return hash;
 		}
 		finally
@@ -156,8 +157,7 @@ public final class BcryptHasher
 		try
 		{
 			final byte[] passwordBytes = toBytes(password);
-			final String saltString = encodeSalt(salt, logRounds);
-			final String hash = BCrypt.hashpw(passwordBytes, saltString);
+			final String hash = BCrypt.hashpw(passwordBytes, salt);
 			return hash;
 		}
 		finally
