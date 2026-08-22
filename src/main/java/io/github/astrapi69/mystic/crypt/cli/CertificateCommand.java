@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License
  *
  * Copyright (C) 2015 Asterios Raptis
@@ -46,6 +46,17 @@ import picocli.CommandLine.Option;
 	description = "Create a self-signed X.509 certificate and write it as PEM.")
 public class CertificateCommand implements Callable<Integer>
 {
+
+	/**
+	 * Instantiates a new {@link CertificateCommand}.
+	 * <p>
+	 * Declared explicitly, and public, because picocli builds this subcommand reflectively through
+	 * its default factory when {@link MysticCryptCli} dispatches to it; the class must therefore
+	 * keep an accessible no-argument constructor.
+	 */
+	public CertificateCommand()
+	{
+	}
 
 	@Option(names = "--subject", defaultValue = "CN=mystic-crypt", //
 		description = "The distinguished name for issuer and subject (default: CN=mystic-crypt).")

@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License
  *
  * Copyright (C) 2015 Asterios Raptis
@@ -47,6 +47,17 @@ import picocli.CommandLine.Parameters;
 	description = "Compute the checksum (message digest) of a file.")
 public class ChecksumCommand implements Callable<Integer>
 {
+
+	/**
+	 * Instantiates a new {@link ChecksumCommand}.
+	 * <p>
+	 * Declared explicitly, and public, because picocli builds this subcommand reflectively through
+	 * its default factory when {@link MysticCryptCli} dispatches to it; the class must therefore
+	 * keep an accessible no-argument constructor.
+	 */
+	public ChecksumCommand()
+	{
+	}
 
 	@Option(names = { "-a", "--algorithm" }, defaultValue = "SHA-256", //
 		description = "Digest algorithm (a JDK name), e.g. MD5, SHA-1, SHA-256, SHA-512 "

@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License
  *
  * Copyright (C) 2015 Asterios Raptis
@@ -64,7 +64,17 @@ public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey, b
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	/** The symmetric transformation used to decrypt the payload. */
+	/**
+	 * The symmetric transformation used to decrypt the payload.
+	 */
+	// The declared type Algorithm is a plain interface that does not extend Serializable, hence the
+	// [serial] warning. It is not a real problem here and must not be fixed with transient: the
+	// field is required by decrypt(byte[]), so a transient field would deserialize to null and
+	// throw a NullPointerException. Every value ever assigned is an enum constant
+	// (MysticSymmetricAlgorithm, AesAlgorithm), and enums are serializable. Beyond that, instances
+	// of this class are not serializable in practice anyway - the inherited CryptModel holds a
+	// javax.crypto.Cipher and a PrivateKey, neither of which is guaranteed to be serializable.
+	@SuppressWarnings("serial")
 	private final Algorithm symmetricAlgorithm;
 
 	/**

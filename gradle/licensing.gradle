@@ -2,7 +2,11 @@ license {
     ext.year = "$projectInceptionYear"
     ext.owner = "$projectLeaderName"
     ignoreFailures = true
-    header rootProject.file("src/main/resources/LICENSE.txt")
+    // Emit the header as a plain block comment, not a javadoc comment. A /** */ comment placed
+    // before the package declaration documents nothing, which javac reports for every single file
+    // as [dangling-doc-comments] (213 warnings before this was set).
+    mapping("java", "SLASHSTAR_STYLE")
+    header = rootProject.file("src/main/resources/LICENSE.txt")
     excludes(["**/README",
               "**/README.md",
               "**/LICENSE",

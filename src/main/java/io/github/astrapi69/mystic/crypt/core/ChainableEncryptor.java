@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License
  *
  * Copyright (C) 2015 Asterios Raptis
@@ -29,6 +29,11 @@ import io.github.astrapi69.crypt.api.Encryptor;
 /**
  * The class {@link ChainableEncryptor} can take many {@code Encryptor} objects and encrypts the
  * given string with all the given {@code Encryptor} objects.
+ *
+ * @param <T>
+ *            the generic type of the value that is encrypted. Because every {@code Encryptor} in
+ *            the chain consumes the output of its predecessor, the encrypted and the decrypted type
+ *            have to be the same
  */
 public abstract class ChainableEncryptor<T> implements Encryptor<T, T>
 {
@@ -42,7 +47,15 @@ public abstract class ChainableEncryptor<T> implements Encryptor<T, T>
 	 * @param encryptors
 	 *            the {@code Encryptor} objects.
 	 */
+	// [varargs] javac warns because the varargs array reference itself (not just its elements) is
+	// used here. The assertion behind @SafeVarargs holds for this class: it never writes into the
+	// array, never widens its element type and only ever reads elements as Encryptor<T, T>, so it
+	// cannot pollute the heap on its own. The array does stay reachable through getEncryptors() -
+	// the same trade-off the JDK accepts for Arrays.asList(T...) - so a caller that already did an
+	// unchecked generic array creation can still alias it; handing back a defensive copy would be
+	// an observable API change and is deliberately not done in this release.
 	@SafeVarargs
+	@SuppressWarnings("varargs")
 	public ChainableEncryptor(final Encryptor<T, T>... encryptors)
 	{
 		this.encryptors = encryptors;

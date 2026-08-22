@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License
  *
  * Copyright (C) 2015 Asterios Raptis
@@ -27,6 +27,7 @@ package io.github.astrapi69.mystic.crypt.gm;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.net.URI;
 import java.net.URL;
 
 import org.junit.jupiter.api.Test;
@@ -79,7 +80,8 @@ public class GoogleMapsUrlSignerTest
 		URL url;
 		String signRequest;
 
-		url = new URL("https://maps.googleapis.com/maps/api/geocode/json?address=NewYork");
+		url = URI.create("https://maps.googleapis.com/maps/api/geocode/json?address=NewYork")
+			.toURL();
 
 		signRequest = GoogleMapsUrlSigner.signRequest(url, "YOUR_PRIVATE_KEY");
 		assertNotNull(signRequest);
@@ -97,7 +99,7 @@ public class GoogleMapsUrlSignerTest
 	@Test
 	public void testSignRequestURLStringRandom() throws Exception
 	{
-		URL url = new URL(RandomWebObjectFactory.randomWebsite());
+		URL url = URI.create(RandomWebObjectFactory.randomWebsite()).toURL();
 		String signRequest = GoogleMapsUrlSigner.signRequest(url, "YOUR_PRIVATE_KEY");
 		assertNotNull(signRequest);
 		// whatever host was generated, the result must be that url with a signature appended

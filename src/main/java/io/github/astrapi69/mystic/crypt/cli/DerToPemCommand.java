@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License
  *
  * Copyright (C) 2015 Asterios Raptis
@@ -39,6 +39,17 @@ import picocli.CommandLine.Option;
 	description = "Convert a DER-encoded private key to PEM.")
 public class DerToPemCommand implements Callable<Integer>
 {
+
+	/**
+	 * Instantiates a new {@link DerToPemCommand}.
+	 * <p>
+	 * Declared explicitly, and public, because picocli builds this subcommand reflectively through
+	 * its default factory when {@link MysticCryptCli} dispatches to it; the class must therefore
+	 * keep an accessible no-argument constructor.
+	 */
+	public DerToPemCommand()
+	{
+	}
 
 	@Option(names = "--in", required = true, description = "The DER-encoded private key file to read.")
 	File in;

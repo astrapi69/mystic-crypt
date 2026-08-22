@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License
  *
  * Copyright (C) 2015 Asterios Raptis
@@ -39,6 +39,17 @@ import picocli.CommandLine.Option;
 		+ "Exit code 0 = matches, 1 = does not match.")
 public class VerifyCommand implements Callable<Integer>
 {
+
+	/**
+	 * Instantiates a new {@link VerifyCommand}.
+	 * <p>
+	 * Declared explicitly, and public, because picocli builds this subcommand reflectively through
+	 * its default factory when {@link MysticCryptCli} dispatches to it; the class must therefore
+	 * keep an accessible no-argument constructor.
+	 */
+	public VerifyCommand()
+	{
+	}
 
 	@Option(names = { "-a",
 			"--algorithm" }, defaultValue = "argon2id", description = "Hashing algorithm: ${COMPLETION-CANDIDATES} (default: argon2id).")

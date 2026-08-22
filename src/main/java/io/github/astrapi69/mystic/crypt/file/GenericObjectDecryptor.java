@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License
  *
  * Copyright (C) 2015 Asterios Raptis
@@ -138,7 +138,6 @@ public class GenericObjectDecryptor<R, D> extends AbstractObjectDecryptor<R, D>
 			ObjectInputStream inputStream = new ObjectInputStream(cipherInputStream);)
 		{
 			genericObject = (R)inputStream.readObject();
-			inputStream.close();
 		}
 		return genericObject;
 	}

@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License
  *
  * Copyright (C) 2015 Asterios Raptis
@@ -41,6 +41,17 @@ import picocli.CommandLine.Option;
 	description = "Recover text obfuscated by 'obfuscate', using the same --rule a=x map.")
 public class DisentangleCommand implements Callable<Integer>
 {
+
+	/**
+	 * Instantiates a new {@link DisentangleCommand}.
+	 * <p>
+	 * Declared explicitly, and public, because picocli builds this subcommand reflectively through
+	 * its default factory when {@link MysticCryptCli} dispatches to it; the class must therefore
+	 * keep an accessible no-argument constructor.
+	 */
+	public DisentangleCommand()
+	{
+	}
 
 	@Option(names = "--rule", required = true, description = "A character substitution a=x (repeatable).")
 	Map<Character, Character> rules;

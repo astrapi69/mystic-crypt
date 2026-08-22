@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License
  *
  * Copyright (C) 2015 Asterios Raptis
@@ -23,19 +23,27 @@
  */
 module io.github.astrapisixtynine.mystic.crypt
 {
-	requires com.google.common;
+	// The following five modules contribute types to the public API of this module (return types,
+	// parameter types, type arguments and supertypes of exported classes), so they have to be
+	// readable by every consumer of this module as well - hence "requires transitive":
+	// com.google.common ........ BiMap in ObfuscatorExtensions / CharacterObfuscator
+	// io.github.astrapi69.crypt.api .......... StringEncryptor and the other Cryptor interfaces
+	// io.github.astrapisixtynine.crypt.data .. CryptModel, ObfuscationOperationRule
+	// io.github.astrapisixtynine.silly.bean .. KeyValuePair in ObfuscatorExtensions
+	// org.bouncycastle.provider .............. JPAKEParticipant in JpakeKeyExchange
+	requires transitive com.google.common;
 	requires io.github.astrapisixtynine.file.worker;
-	requires io.github.astrapi69.crypt.api;
-	requires io.github.astrapisixtynine.crypt.data;
+	requires transitive io.github.astrapi69.crypt.api;
+	requires transitive io.github.astrapisixtynine.crypt.data;
 	requires io.github.astrapisixtynine.throwable;
 	requires jobj.cloner.main;
 	requires io.github.astrapisixtynine.jobj.core;
 	requires org.apache.commons.codec;
 	requires org.apache.commons.io;
 	requires org.apache.commons.lang3;
-	requires org.bouncycastle.provider;
+	requires transitive org.bouncycastle.provider;
 	requires randomizer.main;
-	requires io.github.astrapisixtynine.silly.bean;
+	requires transitive io.github.astrapisixtynine.silly.bean;
 	requires io.github.astrapisixtynine.silly.collection;
 	requires org.bouncycastle.pkix;
 	// command-line interface

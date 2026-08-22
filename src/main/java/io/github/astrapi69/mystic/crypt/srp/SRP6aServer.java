@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License
  *
  * Copyright (C) 2015 Asterios Raptis
@@ -38,8 +38,7 @@ import org.bouncycastle.crypto.agreement.srp.SRP6Util;
  * SRP-6a (Secure Remote Password protocol version 6a) allows a client to authenticate to a server
  * using a password without transmitting the password itself. This class handles the server's role
  * in the key exchange and authentication process.
- * </p>
- * 
+ *
  * <p>
  * Protocol flow:
  * <ol>
@@ -50,8 +49,7 @@ import org.bouncycastle.crypto.agreement.srp.SRP6Util;
  * <li>Client sends proof M1 = H(A | B | K)</li>
  * <li>Server verifies M1 and responds with M2 = H(A | M1 | K)</li>
  * </ol>
- * </p>
- * 
+ *
  * @author Asterios Raptis
  */
 public final class SRP6aServer

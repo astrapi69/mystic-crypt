@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License
  *
  * Copyright (C) 2015 Asterios Raptis
@@ -63,8 +63,12 @@ public class PasswordEncryptor implements Serializable
 	private static final long serialVersionUID = -4667877106378932018L;
 	/** The default algorithm. */
 	private final HashAlgorithm DEFAULT_ALGORITHM = HashAlgorithm.SHA_512;
-	/** The default charset. */
-	private final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
+	/**
+	 * The default charset. Declared static because it is a constant, not per-instance state:
+	 * {@link Charset} is not serializable, so as an instance field it would have made every attempt
+	 * to serialize this class fail with a {@link java.io.NotSerializableException}.
+	 */
+	private static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
 
 	/**
 	 * Private constructor. Instantiates a new {@link PasswordEncryptor} object.

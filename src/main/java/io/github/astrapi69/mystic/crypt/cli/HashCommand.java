@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License
  *
  * Copyright (C) 2015 Asterios Raptis
@@ -37,6 +37,17 @@ import picocli.CommandLine.Option;
 	description = "Hash a password with Argon2id or PBKDF2 and print the encoded hash.")
 public class HashCommand implements Callable<Integer>
 {
+
+	/**
+	 * Instantiates a new {@link HashCommand}.
+	 * <p>
+	 * Declared explicitly, and public, because picocli builds this subcommand reflectively through
+	 * its default factory when {@link MysticCryptCli} dispatches to it; the class must therefore
+	 * keep an accessible no-argument constructor.
+	 */
+	public HashCommand()
+	{
+	}
 
 	@Option(names = { "-a",
 			"--algorithm" }, defaultValue = "argon2id", description = "Hashing algorithm: ${COMPLETION-CANDIDATES} (default: argon2id).")

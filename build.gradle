@@ -1,7 +1,7 @@
 buildscript {
     repositories {
         maven {
-            url projectRepositoriesMavenUrl
+            url = projectRepositoriesMavenUrl
         }
     }
 }
@@ -41,8 +41,10 @@ tasks.named("test") {
 
 tasks.withType(JavaCompile).configureEach { javaCompiler ->
     options.encoding = "UTF-8"
-    // uncomment the next line for build with compiler argument -Xlint:deprecation
-    // options.compilerArgs << "-Xlint:deprecation"
-    // uncomment the next line for build with compiler argument -Xlint:unchecked
-    // options.compilerArgs << "-Xlint:unchecked"
+    // Keep every javac lint category visible in every build (deprecation, unchecked, rawtypes,
+    // this-escape, ...). Deliberately WITHOUT -Werror: a dependency or JDK update that introduces
+    // a new warning must never break the build, it must only be visible.
+    options.compilerArgs << "-Xlint:all"
+    // javac stops reporting warnings after 100 by default, which silently truncates the list
+    options.compilerArgs << "-Xmaxwarns" << "10000"
 }

@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License
  *
  * Copyright (C) 2015 Asterios Raptis
@@ -99,6 +99,8 @@ public class KeyCommittingAeadEncryptor extends AbstractByteArrayEncryptor
 	 *             if instantiation of the SecretKeyFactory object fails
 	 * @throws InvalidKeyException
 	 *             if initialization of the cipher object fails
+	 * @throws UnsupportedEncodingException
+	 *             if the named charset is not supported
 	 */
 	public KeyCommittingAeadEncryptor(final CryptModel<Cipher, SecretKey, String> model)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
@@ -124,6 +126,8 @@ public class KeyCommittingAeadEncryptor extends AbstractByteArrayEncryptor
 	 *             if instantiation of the SecretKeyFactory object fails
 	 * @throws InvalidKeyException
 	 *             if initialization of the cipher object fails
+	 * @throws UnsupportedEncodingException
+	 *             if the named charset is not supported
 	 */
 	public KeyCommittingAeadEncryptor(final SecretKey symmetricKey)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,

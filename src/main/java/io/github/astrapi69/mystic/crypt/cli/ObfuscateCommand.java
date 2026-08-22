@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License
  *
  * Copyright (C) 2015 Asterios Raptis
@@ -41,6 +41,17 @@ import picocli.CommandLine.Option;
 	description = "Obfuscate text with a character-substitution map (--rule a=x, repeatable).")
 public class ObfuscateCommand implements Callable<Integer>
 {
+
+	/**
+	 * Instantiates a new {@link ObfuscateCommand}.
+	 * <p>
+	 * Declared explicitly, and public, because picocli builds this subcommand reflectively through
+	 * its default factory when {@link MysticCryptCli} dispatches to it; the class must therefore
+	 * keep an accessible no-argument constructor.
+	 */
+	public ObfuscateCommand()
+	{
+	}
 
 	@Option(names = "--rule", required = true, description = "A character substitution a=x (repeatable).")
 	Map<Character, Character> rules;

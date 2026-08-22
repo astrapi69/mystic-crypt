@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License
  *
  * Copyright (C) 2015 Asterios Raptis
@@ -37,6 +37,19 @@ import java.security.cert.CertificateException;
  */
 public class KeystoreVerifier
 {
+
+	/**
+	 * Instantiates a new {@link KeystoreVerifier}.
+	 * <p>
+	 * The whole API of this class is static, so an instance carries no state and adds nothing over
+	 * calling the static methods directly. The constructor is nevertheless declared public rather
+	 * than private, because it has always been part of the exported API of this class and
+	 * {@code KeystoreVerifierTest#testDefaultConstructor} relies on it; making it explicit only
+	 * documents what the implicit default constructor already provided.
+	 */
+	public KeystoreVerifier()
+	{
+	}
 
 	/**
 	 * Checks if the specified file path corresponds to a valid keystore.

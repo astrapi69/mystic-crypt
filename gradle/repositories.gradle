@@ -6,8 +6,8 @@ repositories {
      * on the specified url for snapshots
      **/
     maven {
-        name "$projectRepositoriesSnapshotsName"
-        url "$projectRepositoriesSnapshotsRepoUrl"
+        name = "$projectRepositoriesSnapshotsName"
+        url = "$projectRepositoriesSnapshotsRepoUrl"
         mavenContent {
             snapshotsOnly()
         }

@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License
  *
  * Copyright (C) 2015 Asterios Raptis
@@ -56,6 +56,17 @@ import io.github.astrapi69.random.number.RandomByteFactory;
  * The class {@link HexableDecryptor} is the pendant class of {@link HexableEncryptor} and decrypts
  * given String objects that was encrypted with {@link HexableEncryptor}. For an example see the
  * unit test.
+ * <p>
+ * <strong>Contract for subclass implementors:</strong> the constructors of this class call
+ * overridable methods before the object is fully constructed - {@code getModel()} directly, and,
+ * through {@code super(...)}, the factory hooks of
+ * {@link io.github.astrapi69.mystic.crypt.core.AbstractCryptor}. Note in particular that the
+ * algorithm is applied to the model only <em>after</em> {@code super(privateKey)} has already run
+ * that initialisation. A subclass must therefore not rely on its own fields being initialised
+ * inside any overridden hook or accessor, and must not assume the algorithm is already set when
+ * such a hook runs. See the class javadoc of
+ * {@link io.github.astrapi69.mystic.crypt.core.AbstractCryptor} for the full contract.
+ * </p>
  */
 public class HexableDecryptor extends AbstractStringDecryptor
 {
@@ -133,6 +144,14 @@ public class HexableDecryptor extends AbstractStringDecryptor
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
+	// [this-escape] Deliberate: super(privateKey) runs AbstractCryptor's initialisation, which
+	// calls the overridable onInitialize()/newCipher(...) hooks, and getModel() below is itself an
+	// overridable accessor invoked while this object is not yet fully constructed. Fixing this
+	// properly means reordering the initialisation so the algorithm is known before the cipher is
+	// built - a behavioural change that is too risky for this release. The contract is documented
+	// on the class javadoc instead: subclasses must not rely on their own fields being initialised
+	// inside those hooks. See the class javadoc of HexableDecryptor and of AbstractCryptor.
+	@SuppressWarnings("this-escape")
 	public HexableDecryptor(final String privateKey, final Algorithm algorithm)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException

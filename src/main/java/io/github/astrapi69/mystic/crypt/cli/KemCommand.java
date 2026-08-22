@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License
  *
  * Copyright (C) 2015 Asterios Raptis
@@ -49,6 +49,17 @@ import picocli.CommandLine.Option;
 		+ "both sides derive the same shared secret.")
 public class KemCommand implements Callable<Integer>
 {
+
+	/**
+	 * Instantiates a new {@link KemCommand}.
+	 * <p>
+	 * Declared explicitly, and public, because picocli builds this subcommand reflectively through
+	 * its default factory when {@link MysticCryptCli} dispatches to it; the class must therefore
+	 * keep an accessible no-argument constructor.
+	 */
+	public KemCommand()
+	{
+	}
 
 	/** the hybrid derived key length in bytes (256-bit shared key) */
 	private static final int HYBRID_SHARED_SECRET_BYTES = 32;

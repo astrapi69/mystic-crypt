@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License
  *
  * Copyright (C) 2015 Asterios Raptis
@@ -42,6 +42,17 @@ import picocli.CommandLine.Option;
 	description = "Generate a key pair and print (or write) its keys as PEM.")
 public class KeygenCommand implements Callable<Integer>
 {
+
+	/**
+	 * Instantiates a new {@link KeygenCommand}.
+	 * <p>
+	 * Declared explicitly, and public, because picocli builds this subcommand reflectively through
+	 * its default factory when {@link MysticCryptCli} dispatches to it; the class must therefore
+	 * keep an accessible no-argument constructor.
+	 */
+	public KeygenCommand()
+	{
+	}
 
 	@Option(names = { "-a", "--algorithm" }, defaultValue = "RSA", //
 		description = "Key algorithm, e.g. RSA, X25519, X448, ML-KEM-768, ML-DSA-65 "
