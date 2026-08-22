@@ -32,7 +32,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -230,8 +229,13 @@ public class PBEFileEncryptor extends AbstractFileEncryptor
 			// them in reverse order. The source file itself is never modified.
 			// (Previously the decorated string returned by decorateFile was discarded and the raw
 			// file encrypted, so decorators silently had no effect on file encryption at all.)
-			String content = new String(Files.readAllBytes(toEncrypt.toPath()),
-				StandardCharsets.UTF_8);
+			// read through FileInputStream so a missing file or a directory still surfaces as
+			// FileNotFoundException, exactly as on the undecorated path
+			String content;
+			try (InputStream in = new FileInputStream(toEncrypt))
+			{
+				content = new String(in.readAllBytes(), StandardCharsets.UTF_8);
+			}
 			for (CryptObjectDecorator<String> decorator : decorators)
 			{
 				content = CryptObjectDecoratorExtensions.decorateWithStringDecorator(content,

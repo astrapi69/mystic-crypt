@@ -21,7 +21,7 @@ CHANGED:
 
 FIXED:
 
-- PBEFileEncryptor/PBEFileDecryptor decorators: the encryptor computed the decorated file
+- PBEFileEncryptor/PBEFileDecryptor and FileEncryptor/FileDecryptor decorators: the encryptor computed the decorated file
   content via CryptObjectDecoratorExtensions#decorateFile and then discarded it, encrypting the raw
   file - CryptObjectDecorators configured on the CryptModel had no effect on file encryption at all.
   The decryptor re-read the file on every loop iteration instead of chaining on the string, so with
@@ -29,7 +29,10 @@ FIXED:
   encrypt-then-decrypt round trip passes either way ("never added" and "never removed" agree);
   found by a surviving PIT mutant on the decorator loop. The encryptor now decorates in memory
   (the source file is never modified) and encrypts the decorated content, the decryptor strips all
-  decorators outermost-first.
+  decorators outermost-first. FileEncryptor/FileDecryptor had the identical defect and got the
+  identical fix (the tests that had enshrined the old behaviour in PBEFileEncryptorTest and
+  FileEncryptDecryptorTest were corrected, and both families now have a decorator round-trip
+  regression test that decrypts with and without the decorators).
 
 Version 10.2-SNAPSHOT
 -------------

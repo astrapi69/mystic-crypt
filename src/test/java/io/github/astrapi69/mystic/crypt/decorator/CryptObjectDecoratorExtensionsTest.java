@@ -524,4 +524,33 @@ public class CryptObjectDecoratorExtensionsTest
 		String result = CryptObjectDecoratorExtensions.decorateFile(file, decorator);
 		assertEquals("<<payload>>", result);
 	}
+
+	/**
+	 * Test method for
+	 * {@link CryptObjectDecoratorExtensions#undecorateFile(java.io.File, CryptObjectDecorator)}:
+	 * the decorator's prefix and suffix must be stripped from the file content, and content without
+	 * them must be returned unchanged. Since the file encryptors now decorate in memory, this
+	 * helper has no production caller left and is only pinned by this test.
+	 *
+	 * @throws java.io.IOException
+	 *             if an I/O error occurs
+	 */
+	@Test
+	void undecorateFile_stripsThePrefixAndSuffixFromTheFileContent() throws java.io.IOException
+	{
+		CryptObjectDecorator<String> decorator = CryptObjectDecorator.<String> builder()
+			.prefix("<<").suffix(">>").build();
+
+		java.io.File decorated = java.io.File.createTempFile("undecorate-file-test", ".txt");
+		decorated.deleteOnExit();
+		java.nio.file.Files.write(decorated.toPath(),
+			"<<payload>>".getBytes(StandardCharsets.UTF_8));
+		assertEquals("payload",
+			CryptObjectDecoratorExtensions.undecorateFile(decorated, decorator));
+
+		java.io.File plain = java.io.File.createTempFile("undecorate-file-test-plain", ".txt");
+		plain.deleteOnExit();
+		java.nio.file.Files.write(plain.toPath(), "payload".getBytes(StandardCharsets.UTF_8));
+		assertEquals("payload", CryptObjectDecoratorExtensions.undecorateFile(plain, decorator));
+	}
 }
