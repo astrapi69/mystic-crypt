@@ -1,4 +1,8 @@
-# Overview
+# mystic-crypt
+
+**A modern Java cryptography library: symmetric and public-key encryption, password hashing,
+digital signatures, key agreement and post-quantum cryptography — with an API you can use
+correctly without being a cryptographer.**
 
 <div style="text-align: center">
 
@@ -9,265 +13,285 @@
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.astrapi69/mystic-crypt.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/io.github.astrapi69/mystic-crypt)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT)
 [![Javadoc](http://www.javadoc.io/badge/io.github.astrapi69/mystic-crypt.svg)](http://www.javadoc.io/doc/io.github.astrapi69/mystic-crypt)
-[![Hits-of-Code](https://hitsofcode.com/github/astrapi69/mystic-crypt)](https://hitsofcode.com/github/astrapi69/mystic-crypt/view)
 [![Java](https://img.shields.io/badge/Java-25-orange)](https://openjdk.org/projects/jdk/25/)
 
 </div>
 
-The target of this parent project is to make encryption and decryption as simple as possible
+mystic-crypt wraps the JDK's and Bouncy Castle's cryptographic primitives in small, focused classes
+with safe defaults: authenticated encryption (AES-GCM, ChaCha20-Poly1305) with a fresh nonce per
+call, memory-hard password hashing (Argon2id), modern elliptic-curve signatures and key agreement
+(Ed25519, X25519), and the NIST post-quantum algorithms (ML-KEM, ML-DSA, SLH-DSA). You pick the
+operation; the library picks parameters that are not a footgun.
+
+- 📖 [Capability matrix](docs/CRYPTO_CAPABILITIES.md) — every algorithm, where it lives, and what is deliberately out of scope
+- 🧪 [Testing strategy](docs/TESTING.md) — how it is tested, the coverage and mutation numbers, and the bugs that process found
+- 🎓 [Key agreement, explained](docs/KEY_AGREEMENT_EVOLUTION.md) — from book ciphers to the Double Ratchet
+- 🖥️ [Desktop GUI](https://github.com/astrapi69/mystic-crypt-ui) — the same library behind a Swing front end
+
+## Table of contents
+
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Quick start](#quick-start)
+- [Features](#features)
+- [Command-line interface](#command-line-interface)
+- [Documentation](#documentation)
+- [Contributing](#contributing)
+- [Similar projects](#similar-projects)
 
 ## Requirements
 
-Requires **JDK 25** or newer at both build and runtime - the published jar's bytecode targets JDK
-25, so it will not load on an older JVM. This keeps the library current with recent JDK-native
-cryptography (Ed25519/X25519 since JDK 15/11, the `javax.crypto.KEM` API used by the post-quantum
-KEM classes since JDK 21) without carrying Bouncy Castle-only fallbacks for algorithms the JDK now
-provides natively.
+**JDK 25 or newer**, at build and at runtime — the published jar targets JDK 25 bytecode and will
+not load on an older JVM. That baseline lets the library use JDK-native cryptography (Ed25519 since
+JDK 15, X25519 since JDK 11, the `javax.crypto.KEM` API behind the post-quantum classes since
+JDK 21) instead of carrying Bouncy Castle fallbacks for what the JDK already provides.
 
-# Support this project
+## Installation
 
-> Please support this project by simply putting a Github <!-- Place this tag where you want the button to render. -->
-<a class="github-button" href="https://github.com/astrapi69/mystic-crypt" data-icon="octicon-star" aria-label="Star astrapi69/mystic-crypt on GitHub">Star ⭐</a>
->
-> Share this library with friends on Twitter and everywhere else you can
->
-> If you love this project [![donation](https://img.shields.io/badge/donate-❤-ff2244.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GVBTWLRAZ7HB8)
->
-> or for more donation options go the [donations section](#Donations)
+Replace `${latestVersion}` with the current release:
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.astrapi69/mystic-crypt.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/io.github.astrapi69/mystic-crypt)
 
-## License
+**Gradle** (version catalog, `gradle/libs.versions.toml`):
 
-The source code comes under the liberal MIT License, making mystic-crypt great for all types of applications.
-
-## gradle dependency
-
-Replace the variable ${latestVersion} with the current latest
-version: [![Maven Central](https://img.shields.io/maven-central/v/io.github.astrapi69/mystic-crypt.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/io.github.astrapi69/mystic-crypt)
-
-You can first define the version in the ext section and add than the following gradle dependency to
-your project `build.gradle` if you want to import the core functionality of mystic-crypt:
-
-define version in file gradle.properties
-
-```
-mysticCryptVersion=${latestVersion}
-```
-
-or in build.gradle ext area
-
-```
-    mysticCryptVersion = "${latestVersion}"
-```
-
-and then add the dependency to the dependencies area
-
-```
-    implementation("io.github.astrapi69:mystic-crypt:$mysticCryptVersion")
-```
-
-# with new libs.versions.toml file
-
-If you use the new libs.versions.toml file for new automatic catalog versions update
-
-```
+```toml
 [versions]
-mystic-crypt-version=${latestVersion}
+mystic-crypt-version = "${latestVersion}"
 
 [libraries]
 mystic-crypt = { module = "io.github.astrapi69:mystic-crypt", version.ref = "mystic-crypt-version" }
 ```
-then add the dependency to the dependencies area
 
-```
+```groovy
+dependencies {
     implementation libs.mystic.crypt
+}
 ```
 
+**Gradle** (plain):
 
-## Maven dependency
+```groovy
+dependencies {
+    implementation "io.github.astrapi69:mystic-crypt:${latestVersion}"
+}
+```
 
-Maven dependency is available on Maven Central.
-Check out the [Maven Central page](https://central.sonatype.com/artifact/io.github.astrapi69/mystic-crypt) for the latest releases.
+**Maven**:
 
-You can first define the version properties and add than the following maven dependency to your project `pom.xml` if you want to import the core functionality of mystic-crypt:
+```xml
+<dependency>
+    <groupId>io.github.astrapi69</groupId>
+    <artifactId>mystic-crypt</artifactId>
+    <version>${latestVersion}</version>
+</dependency>
+```
 
-    <properties>
-            ...
-        <!-- MYSTIC-CRYPT version -->
-        <mystic-crypt.version>${latestVersion}</mystic-crypt.version>
-            ...
-    </properties>
-            ...
-        <dependencies>
-            ...
-            <!-- MYSTIC-CRYPT DEPENDENCY -->
-            <dependency>
-                <groupId>io.github.astrapi69</groupId>
-                <artifactId>mystic-crypt</artifactId>
-                <version>${mystic-crypt.version}</version>
-            </dependency>
-            ...
-        </dependencies>
+## Quick start
 
-## Note
+Every snippet below is compiled and executed by
+[`ReadmeExamplesTest`](src/test/java/io/github/astrapi69/mystic/crypt/ReadmeExamplesTest.java) —
+if it is in this README, it runs.
 
-No animals were harmed in the making of this library
+### Encrypt and decrypt data
 
-# Donations
+AES-256-GCM with a fresh random nonce per call, prepended to the ciphertext:
 
-This project is kept as an open source product and relies on contributions to remain being
-developed. If you like this library, please consider a donation
+```java
+SecretKey key = SecretKeyFactoryExtensions.newSecretKey(AesAlgorithm.AES.getAlgorithm(), 256);
 
-over paypal: <br><br>
-<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MJ7V43GU2H386" target="_blank">
-<img src="https://www.paypalobjects.com/en_US/GB/i/btn/btn_donateCC_LG.gif" alt="PayPal this" title="PayPal – The safer, easier way to pay online!" style="border: none" />
+byte[] encrypted = new BaseByteArrayEncryptor(key)
+    .encrypt("attack at dawn".getBytes(StandardCharsets.UTF_8));
+byte[] decrypted = new BaseByteArrayDecryptor(key).decrypt(encrypted);
+```
+
+### Store a password
+
+Argon2id with a random salt; the salt and all parameters travel inside the returned string, so
+there is no second column to manage:
+
+```java
+PasswordEncryptor passwordEncryptor = PasswordEncryptor.getInstance();
+
+String stored = passwordEncryptor.hashPasswordArgon2id("correct horse battery staple");
+
+boolean ok = passwordEncryptor.matchArgon2id("correct horse battery staple", stored);
+```
+
+### Sign and verify
+
+```java
+KeyPair keyPair = Ed25519Signer.newKeyPair();
+byte[] document = "release 11.0.0".getBytes(StandardCharsets.UTF_8);
+
+byte[] signature = new Ed25519Signer(keyPair.getPrivate()).sign(document);
+
+boolean valid = new Ed25519Verifier(keyPair.getPublic()).verify(document, signature);
+```
+
+### Agree on a shared key
+
+X25519 Diffie-Hellman, with the raw shared secret run through HKDF rather than used directly:
+
+```java
+KeyPair alice = X25519KeyExchange.newKeyPair();
+KeyPair bob = X25519KeyExchange.newKeyPair();
+
+SecretKey aliceSecret = X25519KeyExchange.deriveSharedSecret(alice.getPrivate(), bob.getPublic(), 32);
+SecretKey bobSecret = X25519KeyExchange.deriveSharedSecret(bob.getPrivate(), alice.getPublic(), 32);
+// aliceSecret and bobSecret are equal
+```
+
+### Post-quantum key encapsulation
+
+ML-KEM (FIPS 203). See also `HybridKemKeyExchange` for the X25519+ML-KEM combiner, which stays
+secure as long as *either* half is unbroken:
+
+```java
+KeyPair recipient = MlKemKeyExchange.newKeyPair(KeyPairGeneratorAlgorithm.ML_KEM_768);
+
+MlKemKeyExchange.Encapsulation sent =
+    MlKemKeyExchange.encapsulate(recipient.getPublic(), KeyPairGeneratorAlgorithm.ML_KEM_768);
+SecretKey received = MlKemKeyExchange.decapsulate(recipient.getPrivate(),
+    sent.getCiphertext(), KeyPairGeneratorAlgorithm.ML_KEM_768);
+// sent.getSharedSecret() and received are equal
+```
+
+### Hash
+
+```java
+byte[] digest = Sha3Hasher.hashUtf8("hello", MessageDigestAlgorithm.SHA3_256);
+```
+
+## Features
+
+**Symmetric encryption** — AES-GCM and ChaCha20-Poly1305 authenticated encryption with a fresh
+nonce per call, for byte arrays, strings, files, streams and serializable objects; chainable
+encryptors; hex-encoded variants; key-committing AEAD against the "invisible salamanders" attack.
+
+**Password hashing** — Argon2id (recommended), PBKDF2-HMAC-SHA256, bcrypt and scrypt for interop.
+Salt and parameters are encoded with the hash; comparisons are constant-time.
+
+**Public-key cryptography** — RSA hybrid encryption (RSA wraps an AES key rather than the data),
+Ed25519 signatures, X25519 key agreement with HKDF derivation, reading and writing PEM/DER/PKCS#8
+keys generated by OpenSSL or Java, X.509 certificate generation, keystore handling.
+
+**Post-quantum** — ML-KEM (FIPS 203), ML-DSA (FIPS 204), SLH-DSA (FIPS 205), and a hybrid
+X25519+ML-KEM combiner for the transition period.
+
+**Hashing** — SHA-2, SHA-3, BLAKE2b/BLAKE2s including keyed (MAC) mode, file and object checksums.
+
+**Secret sharing and PAKE** — Shamir's Secret Sharing, Feldman verifiable secret sharing, J-PAKE
+and SRP-6a password-authenticated key exchange, AES key wrap, PKCS#11/HSM provider configuration.
+
+**Utilities** — text obfuscation with rule maps, brute-force and wordlist processors for password
+recovery, Google Maps URL signing.
+
+The [capability matrix](docs/CRYPTO_CAPABILITIES.md) lists every one of these with the classes
+involved — and, just as importantly, what is deliberately *not* implemented and why.
+
+## Command-line interface
+
+The published `-all` artifact is a runnable uber-jar:
+
+```shell
+java -jar mystic-crypt-${latestVersion}-all.jar --help
+```
+
+| Command | Description |
+|---|---|
+| `hash` | Hash a password with Argon2id or PBKDF2 and print the encoded hash |
+| `verify` | Verify a password against an encoded hash (exit code 0 = match) |
+| `keygen` | Generate a key pair and print or write it as PEM |
+| `kem` | Run an ML-KEM or hybrid X25519+ML-KEM encapsulation between two parties |
+| `checksum` | Compute the checksum of a file |
+| `der2pem` | Convert a DER-encoded private key to PEM |
+| `cert` | Create a self-signed X.509 certificate |
+| `obfuscate` / `disentangle` | Obfuscate text with a substitution map, and recover it |
+
+```shell
+java -jar mystic-crypt-${latestVersion}-all.jar hash --password "correct horse battery staple"
+java -jar mystic-crypt-${latestVersion}-all.jar checksum --file build.gradle --algorithm SHA-256
+```
+
+## Documentation
+
+| Document | What it covers |
+|---|---|
+| [docs/CRYPTO_CAPABILITIES.md](docs/CRYPTO_CAPABILITIES.md) | Capability matrix: every algorithm, its class, and what is out of scope with reasons |
+| [docs/TESTING.md](docs/TESTING.md) | Testing strategy, coverage and mutation numbers, and the defects the process caught |
+| [docs/COVERAGE_EXCEPTIONS.md](docs/COVERAGE_EXCEPTIONS.md) | Every uncovered line and surviving mutant, with its reason |
+| [docs/KEY_AGREEMENT_EVOLUTION.md](docs/KEY_AGREEMENT_EVOLUTION.md) | How key agreement got from book ciphers to the Double Ratchet |
+| [Wiki](https://github.com/astrapi69/mystic-crypt/wiki) | Task-oriented guides |
+| [Javadoc](http://www.javadoc.io/doc/io.github.astrapi69/mystic-crypt) | API reference |
+
+This library is the top of a three-repository stack:
+[crypt-api](https://github.com/astrapi69/crypt-api) (algorithm constants and interfaces) →
+[crypt-data](https://github.com/astrapi69/crypt-data) (factories, readers/writers, models) →
+**mystic-crypt** (the ready-to-use encryptors).
+
+## Contributing
+
+Pull requests are welcome — fork [astrapi69/mystic-crypt](https://github.com/astrapi69/mystic-crypt/fork)
+and [open a PR](https://github.com/astrapi69/mystic-crypt/pull/new/develop) against `develop`.
+
+Please add tests for your change. This library sits at 99% line and 98% branch coverage with a 96%
+PIT mutation score; the [conventions for contributors](docs/TESTING.md#conventions-for-contributors)
+describe what a good test looks like here — parameterized with records, a property assertion plus
+the matching negative case, and never lowering those numbers.
+
+```shell
+./gradlew build            # tests + coverage + formatting check
+./gradlew spotlessApply    # fix formatting
+./gradlew pitest           # mutation testing (opt-in, minutes)
+```
+
+Versions follow [Semantic Versioning](https://semver.org): `<major>.<minor>.<patch>`.
+
+Questions, bug reports and feature requests belong on the
+[issues page](https://github.com/astrapi69/mystic-crypt/issues).
+
+## Similar projects
+
+- [Tink](https://github.com/tink-crypto/tink) — Google's misuse-resistant cryptography library
+- [cryptacular](https://github.com/vt-middleware/cryptacular) — a friendly complement to the Bouncy Castle API
+- [jasypt](http://www.jasypt.org/) — Java simplified encryption
+- [Encryptor4j](https://github.com/martinwithaar/Encryptor4j) — strong encryption for Java, simplified
+- [CogniCrypt](https://github.com/eclipse-cognicrypt/CogniCrypt) — Eclipse plugin that helps developers use Java crypto APIs correctly
+- [curve25519](https://github.com/signalapp/curve25519-java) — Signal's Curve25519 implementation
+- [Apache Shiro](https://github.com/apache/shiro) — security framework with authentication, authorization and cryptography
+- [vault](https://github.com/hashicorp/vault) — secrets management and encryption as a service
+
+## License
+
+MIT — see [LICENSE](LICENSE).
+
+## Support this project
+
+If mystic-crypt is useful to you, a ⭐ on
+[GitHub](https://github.com/astrapi69/mystic-crypt) helps others find it. Sharing it or reporting a
+bug helps just as much.
+
+If you would like to contribute financially:
+
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GVBTWLRAZ7HB8" target="_blank">
+<img src="https://www.paypalobjects.com/en_US/GB/i/btn/btn_donateCC_LG.gif" alt="Donate via PayPal" title="PayPal - The safer, easier way to pay online!" style="border: none" />
 </a>
-<br><br>
-or over bitcoin(BTC) with this address:
 
-bc1ql2y99q7e8psndhcc3gferk03esw3qqf677rhjy
+or Monero (XMR):
 
-<img src="https://github.com/astrapi69/jgeohash/blob/master/src/main/resources/img/bc1ql2y99q7e8psndhcc3gferk03esw3qqf677rhjy.png"
-alt="Donation Bitcoin Wallet" width="250"/>
-
-or over FIO with this address:
-
-FIO7tFMUVAA9cHiPPqKMfMXiSxHrbpiFyRYqTketNuM67aULuwjop
-
-<img src="https://github.com/astrapi69/jgeohash/blob/master/src/main/resources/img/FIO7tFMUVAA9cHiPPqKMfMXiSxHrbpiFyRYqTketNuM67aULuwjop.png"
-alt="Donation FIO Wallet" width="250"/>
-
-or over Ethereum(ETH) with:
-
-0xc057D159D3C8f3311E73568b334FF6fE82EB2b7D
-
-<img src="https://github.com/astrapi69/jgeohash/blob/master/src/main/resources/img/0xc057D159D3C8f3311E73568b334FF6fE82EB2b7D.png"
-alt="Donation Ethereum Wallet" width="250"/>
-
-or over Ethereum Classic(ETC) with:
-
-0xF708cA86D86C246B69c3F4BAe431eBbe0c2bfddD
-
-<img src="https://github.com/astrapi69/jgeohash/blob/master/src/main/resources/img/0xF708cA86D86C246B69c3F4BAe431eBbe0c2bfddD.png"
-alt="Donation Ethereum Classic Wallet" width="250"/>
-
-or over Dogecoin(DOGE) with:
-
-D5yi4Um8cpakd6yPRm2hGWuQ5nrVzhSSW1
-
-<img src="https://github.com/astrapi69/jgeohash/blob/master/src/main/resources/img/D5yi4Um8cpakd6yPRm2hGWuQ5nrVzhSSW1.png"
-alt="Donation Dogecoin Wallet" width="250"/>
-
-or over Monero(XMR) with:
-
+```
 49bqeRQ7Bf49oJFVC72pqpe5hFbb62pfXDYPdLsadGGF81KZW2ZfrPZ8PbAVu5X2v1TYAspeczMya3cYQysNS4usRRPQHVw
+```
 
-<img src="https://github.com/astrapi69/jgeohash/blob/master/src/main/resources/img/49bqeRQ7Bf49oJFVC72pqpe5hFbb62pfXDYPdLsadGGF81KZW2ZfrPZ8PbAVu5X2v1TYAspeczMya3cYQysNS4usRRPQHVw.png"
-alt="Donation Monero Wallet" width="250"/>
-
-or over flattr:
-
-<a href="https://flattr.com/submit/auto?fid=r7vp62&url=https%3A%2F%2Fgithub.com%2Fastrapi69%2Fmystic-crypt" target="_blank">
-<img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" style="border: none" />
-</a>
-
-## Key features:
-
- * checksums from files
- * checksums from serializable objects
- * chain multiply encryptors for securely encrypting your data
- * encryption and decryption strings with character set
- * encryption and decryption of single files
- * sign requests for your google maps urls
- * hex encryption and decryption, backed by AES/GCM with a fresh nonce per call
- * encryption with PublicKey and decryption with PrivateKey objects that was generated with openssl or java
- * encryption and decryption from .pem, .der files that was generated with openssl
- * obfuscate text with specified map
- * decorate crypt objects with decorators
- * brute-force processing for crack passwords
- * wordlist processing for crack passwords
- * hash byte arrays, strings such as passwords
- * Argon2id password hashing (memory-hard, suitable for password storage) via `PasswordEncryptor`
- * Ed25519 digital signatures (`Ed25519Signer`/`Ed25519Verifier`), natively via the JDK
- * X25519 key agreement with HKDF key derivation (`X25519KeyExchange`), natively via the JDK
- * simple encode and decode of string objects with relocation
- * resolve the TrustManagers and KeyManagers from keystore files
-
-See [docs/CRYPTO_CAPABILITIES.md](docs/CRYPTO_CAPABILITIES.md) for a full capability matrix of
-what's implemented across this library family (and what's deliberately out of scope, and why).
-
-For background on *why* modern key agreement works the way it does, see
-[docs/KEY_AGREEMENT_EVOLUTION.md](docs/KEY_AGREEMENT_EVOLUTION.md) — an introduction that traces
-the path from book ciphers over Diffie-Hellman and Perfect Forward Secrecy to the Double Ratchet
-protocol, and maps those concepts to the building blocks in this library.
-
-Encryption and decryption processes are always executed in the backround so it is a black box for the user. If you want to
-see this library in action you can download this [gui client](https://github.com/astrapi69/mystic-crypt-ui) and see some features
-described above.
-
-## Semantic Versioning
-
-The versions of mystic-crypt are maintained with the Semantic Versioning guidelines.
-
-Release version numbers will be incremented in the following format:
-
-`<major>.<minor>.<patch>`
-
-For detailed information on versioning you can visit the [wiki page](https://github.com/lightblueseas/mvn-parent-projects/wiki/Semantic-Versioning).
-
-## Want to Help and improve it? ###
-
-The source code for mystic-crypt are on GitHub. Please feel free to fork and send pull requests!
-
-Create your own fork of [astrapi69/mystic-crypt/fork](https://github.com/astrapi69/mystic-crypt/fork)
-
-To share your changes, [submit a pull request](https://github.com/astrapi69/mystic-crypt/pull/new/develop).
-
-Don't forget to add new units tests on your changes.
-
-## Contacting the Developer
-
-Do not hesitate to contact the mystic-crypt developers with your questions, concerns, comments, bug reports, or feature requests.
-- Feature requests, questions and bug reports can be reported at the [issues page](https://github.com/astrapi69/mystic-crypt/issues).
-
-# Similar projects
-
-Here is a list of awesome projects for cryptography:
-
- * [cryptacular](https://github.com/vt-middleware/cryptacular) The friendly complement to the BouncyCastle crypto API for Java.
- * [JSch](http://www.jcraft.com/jsch/) JSch is a pure Java implementation of SSH2.
- * [Apache Shiro](https://github.com/apache/shiro) Apache Shiro is a powerful and easy-to-use Java security framework that performs authentication, authorization, cryptography, and session management.
- * [commons-ssl](http://juliusdavies.ca/commons-ssl/) Not-Yet-Commons-SSL
- * [lockbox-java](https://github.com/eloquent/lockbox-java) Simple, strong encryption.
- * [jsql-injection](https://github.com/ron190/jsql-injection) jSQL Injection is a Java application for automatic SQL database injection.
- * [curve25519](https://github.com/signalapp/curve25519-java) Pure Java and JNI backed Curve25519 implementation
- * [vault](https://github.com/hashicorp/vault) A tool for secrets management, encryption as a service, and privileged access management
- * [jasypt](http://www.jasypt.org/) Java Simplified Encryption
- * [CogniCrypt](https://github.com/eclipse-cognicrypt/CogniCrypt) CogniCrypt is an Eclipse plugin that supports Java developers in using Java Cryptographic APIs
- * [Encryptor4j](https://github.com/martinwithaar/Encryptor4j) Strong encryption for Java simplified
+<img src="https://raw.githubusercontent.com/astrapi69/jgeohash/master/src/main/resources/img/49bqeRQ7Bf49oJFVC72pqpe5hFbb62pfXDYPdLsadGGF81KZW2ZfrPZ8PbAVu5X2v1TYAspeczMya3cYQysNS4usRRPQHVw.png"
+alt="Monero donation wallet QR code" width="250"/>
 
 ## Credits
 
-|**Travis CI**|
-|     :---:      |
-|[![Travis CI](https://travis-ci.com/images/logos/TravisCI-Full-Color.png)]|
-|[![Build Status](https://api.travis-ci.com/astrapi69/mystic-crypt.svg?branch=master)](https://travis-ci.com/github/astrapi69/mystic-crypt)|
-|Special thanks to [Travis CI](https://travis-ci.com) for providing a free continuous integration service for open source projects|
-|     <img width=1000/>     |
+| | |
+|---|---|
+| [Maven Central](https://central.sonatype.com/artifact/io.github.astrapi69/mystic-crypt) | for hosting the artifacts of this open source project |
+| [codecov.io](https://codecov.io) | for free code coverage reporting |
+| [javadoc.io](http://www.javadoc.io) | for free javadoc hosting |
+| [PIT](https://pitest.org/) | for mutation testing |
 
-|**Maven Central**|
-|     :---:      |
-|[![Maven Central](https://img.shields.io/maven-central/v/io.github.astrapi69/mystic-crypt.svg?style=for-the-badge&label=Maven%20Central)](https://central.sonatype.com/artifact/io.github.astrapi69/mystic-crypt) mystic-crypt|
-|Special thanks to [Sonatype](https://www.sonatype.com) for providing the Maven Central Portal free for open source projects|
-|     <img width=1000/>     |
-
-|**codecov.io**|
-|     :---:      |
-|[![Coverage Status](https://codecov.io/gh/astrapi69/mystic-crypt/branch/develop/graph/badge.svg)](https://codecov.io/gh/astrapi69/mystic-crypt)|
-|Special thanks to [codecov.io](https://codecov.io) for providing a free code coverage for open source projects|
-|     <img width=1000/>     |
-
-|**javadoc.io**|
-|     :---:      |
-|[![Javadoc](http://www.javadoc.io/badge/io.github.astrapi69/mystic-crypt.svg)](http://www.javadoc.io/doc/io.github.astrapi69/mystic-crypt) mystic-crypt|
-|Special thanks to [javadoc.io](http://www.javadoc.io) for providing a free javadoc documentation for open source projects|
-|     <img width=1000/>     |
+No animals were harmed in the making of this library.
