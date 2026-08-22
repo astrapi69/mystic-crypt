@@ -1,4 +1,4 @@
-/**
+/*
  * The MIT License
  *
  * Copyright (C) 2015 Asterios Raptis
@@ -92,6 +92,14 @@ public class MysticCryptCli implements Runnable
 		return new CommandLine(new MysticCryptCli()).execute(args);
 	}
 
+	/**
+	 * Entry point of the command-line interface. Delegates to {@link #execute(String...)} and turns
+	 * its return value into the process exit code, so that shells and scripts can branch on the
+	 * result of a subcommand.
+	 *
+	 * @param args
+	 *            the command-line arguments
+	 */
 	public static void main(String[] args)
 	{
 		System.exit(execute(args));
