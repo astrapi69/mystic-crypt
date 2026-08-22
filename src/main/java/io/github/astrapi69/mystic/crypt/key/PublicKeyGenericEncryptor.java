@@ -37,6 +37,10 @@ import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 
 /**
  * The class {@link PublicKeyGenericEncryptor} can encrypt objects with his public key
+ *
+ * @param <T>
+ *            the generic type of the object to encrypt. It has to be {@link Serializable}, because
+ *            the object is serialized before it is encrypted
  */
 public class PublicKeyGenericEncryptor<T extends Serializable>
 {

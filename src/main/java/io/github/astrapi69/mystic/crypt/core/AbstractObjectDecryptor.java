@@ -41,6 +41,8 @@ import io.github.astrapi69.crypt.data.model.CryptModel;
  * The abstract class {@link AbstractObjectDecryptor} provides a base implementation for decrypting
  * {@link File} objects.
  *
+ * @param <R>
+ *            the generic type of the result object that the decryption returns
  * @param <D>
  *            the generic type of the decorator objects
  *

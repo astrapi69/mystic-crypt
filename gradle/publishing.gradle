@@ -8,11 +8,14 @@ task sourcesJar(type: Jar) {
 task javadocJar(type: Jar) {
     from javadoc
     archiveClassifier.set("javadoc")
-    javadoc.properties.failOnError = true
 }
 
 javadoc {
-    failOnError = false
+    // A javadoc error must break the build instead of being silently packaged into the
+    // published -javadoc.jar. Note this used to be written as `javadoc.properties.failOnError`
+    // inside the javadocJar task, which only put an entry named "failOnError" into the task's
+    // extra-properties map and left the real Javadoc.failOnError flag at the false set below.
+    failOnError = true
     if (JavaVersion.current().isJava9Compatible()) {
         options.addBooleanOption("html5", true)
     }
