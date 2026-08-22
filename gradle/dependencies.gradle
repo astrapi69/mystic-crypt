@@ -17,6 +17,8 @@ dependencies {
     implementation libs.bcprov.ext.jdk18on
     implementation libs.bcpkix.jdk18on
     implementation libs.xml.base
+    // command-line interface (io.github.astrapi69.mystic.crypt.cli)
+    implementation libs.picocli
 
     testImplementation libs.silly.strings
     testImplementation libs.json.extensions

@@ -38,6 +38,8 @@ module io.github.astrapisixtynine.mystic.crypt
 	requires io.github.astrapisixtynine.silly.bean;
 	requires io.github.astrapisixtynine.silly.collection;
 	requires org.bouncycastle.pkix;
+	// command-line interface
+	requires info.picocli;
 
 
 	exports io.github.astrapi69.mystic.crypt.aead;
@@ -61,5 +63,9 @@ module io.github.astrapisixtynine.mystic.crypt
 	exports io.github.astrapi69.mystic.crypt.simple;
 	exports io.github.astrapi69.mystic.crypt.srp;
 	exports io.github.astrapi69.mystic.crypt.ssl;
+	exports io.github.astrapi69.mystic.crypt.cli;
+
+	// picocli reflectively reads the @Command/@Option annotated fields of the CLI classes
+	opens io.github.astrapi69.mystic.crypt.cli to info.picocli;
 
 }
