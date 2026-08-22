@@ -60,6 +60,19 @@ public class MysticCryptCli implements Runnable
 		}
 	}
 
+	/**
+	 * Instantiates a new {@link MysticCryptCli}.
+	 * <p>
+	 * Private on purpose: this class is only the CLI entry point. The single instance the command
+	 * line needs is created inside {@link #execute(String...)}; picocli never builds the root
+	 * command reflectively, it only builds the subcommands listed in the {@code @Command}
+	 * annotation. Clients drive the CLI through {@link #execute(String...)} or
+	 * {@link #main(String[])}.
+	 */
+	private MysticCryptCli()
+	{
+	}
+
 	@Override
 	public void run()
 	{

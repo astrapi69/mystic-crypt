@@ -42,6 +42,17 @@ import picocli.CommandLine.Option;
 public class DisentangleCommand implements Callable<Integer>
 {
 
+	/**
+	 * Instantiates a new {@link DisentangleCommand}.
+	 * <p>
+	 * Declared explicitly, and public, because picocli builds this subcommand reflectively through
+	 * its default factory when {@link MysticCryptCli} dispatches to it; the class must therefore
+	 * keep an accessible no-argument constructor.
+	 */
+	public DisentangleCommand()
+	{
+	}
+
 	@Option(names = "--rule", required = true, description = "A character substitution a=x (repeatable).")
 	Map<Character, Character> rules;
 

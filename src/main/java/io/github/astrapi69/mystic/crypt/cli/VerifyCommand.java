@@ -40,6 +40,17 @@ import picocli.CommandLine.Option;
 public class VerifyCommand implements Callable<Integer>
 {
 
+	/**
+	 * Instantiates a new {@link VerifyCommand}.
+	 * <p>
+	 * Declared explicitly, and public, because picocli builds this subcommand reflectively through
+	 * its default factory when {@link MysticCryptCli} dispatches to it; the class must therefore
+	 * keep an accessible no-argument constructor.
+	 */
+	public VerifyCommand()
+	{
+	}
+
 	@Option(names = { "-a",
 			"--algorithm" }, defaultValue = "argon2id", description = "Hashing algorithm: ${COMPLETION-CANDIDATES} (default: argon2id).")
 	PasswordAlgorithm algorithm;

@@ -47,6 +47,17 @@ import picocli.CommandLine.Option;
 public class CertificateCommand implements Callable<Integer>
 {
 
+	/**
+	 * Instantiates a new {@link CertificateCommand}.
+	 * <p>
+	 * Declared explicitly, and public, because picocli builds this subcommand reflectively through
+	 * its default factory when {@link MysticCryptCli} dispatches to it; the class must therefore
+	 * keep an accessible no-argument constructor.
+	 */
+	public CertificateCommand()
+	{
+	}
+
 	@Option(names = "--subject", defaultValue = "CN=mystic-crypt", //
 		description = "The distinguished name for issuer and subject (default: CN=mystic-crypt).")
 	String subject;
