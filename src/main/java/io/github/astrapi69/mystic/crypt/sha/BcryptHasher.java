@@ -25,11 +25,11 @@
 package io.github.astrapi69.mystic.crypt.sha;
 
 import java.security.SecureRandom;
-import java.security.Security;
 import java.util.Arrays;
 
 import org.bouncycastle.crypto.generators.OpenBSDBCrypt;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
+
+import io.github.astrapi69.mystic.crypt.provider.SecurityProviderSupport;
 
 /**
  * The class {@link BcryptHasher} provides BCrypt hashing functionality using Bouncy Castle. BCrypt
@@ -51,10 +51,7 @@ public final class BcryptHasher
 	static
 	{
 		// Register Bouncy Castle provider if not already registered
-		if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null)
-		{
-			Security.addProvider(new BouncyCastleProvider());
-		}
+		SecurityProviderSupport.ensureBouncyCastle();
 	}
 
 	/** Default log rounds (cost factor): 2^10 = 1024 iterations */

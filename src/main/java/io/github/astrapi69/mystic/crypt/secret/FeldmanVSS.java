@@ -325,7 +325,25 @@ public final class FeldmanVSS
 	 */
 	private static BigInteger findGenerator(BigInteger p, BigInteger q)
 	{
-		SecureRandom random = new SecureRandom();
+		return findGenerator(p, q, new SecureRandom());
+	}
+
+	/**
+	 * Finds a generator for the subgroup of order q in Z_p* using the given source of randomness.
+	 * This package-private overload exists so that a test can supply a deterministic
+	 * {@link SecureRandom} and force the (otherwise vanishingly rare) retry when a drawn candidate
+	 * is not a valid generator.
+	 *
+	 * @param p
+	 *            the large prime
+	 * @param q
+	 *            the subgroup order (q divides p-1)
+	 * @param random
+	 *            the source of randomness
+	 * @return a generator g
+	 */
+	static BigInteger findGenerator(BigInteger p, BigInteger q, SecureRandom random)
+	{
 		BigInteger h;
 
 		do

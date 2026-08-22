@@ -27,16 +27,14 @@ package io.github.astrapi69.mystic.crypt.pw;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.security.Security;
 import java.security.spec.InvalidKeySpecException;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-
 import io.github.astrapi69.crypt.api.algorithm.compound.CompoundAlgorithm;
 import io.github.astrapi69.crypt.data.factory.CipherFactory;
+import io.github.astrapi69.mystic.crypt.provider.SecurityProviderSupport;
 import io.github.astrapi69.random.number.RandomByteFactory;
 
 /**
@@ -63,10 +61,7 @@ final class PbeCipherSupport
 
 	static
 	{
-		if (Security.getProvider("BC") == null)
-		{
-			Security.addProvider(new BouncyCastleProvider());
-		}
+		SecurityProviderSupport.ensureBouncyCastle();
 	}
 
 	private PbeCipherSupport()

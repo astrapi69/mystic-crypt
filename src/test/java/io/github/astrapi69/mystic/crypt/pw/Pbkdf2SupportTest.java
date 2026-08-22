@@ -25,10 +25,12 @@
 package io.github.astrapi69.mystic.crypt.pw;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
@@ -197,5 +199,22 @@ public class Pbkdf2SupportTest
 		assertThrows(NullPointerException.class, () -> Pbkdf2Support.verify(null, encoded));
 		assertThrows(NullPointerException.class,
 			() -> Pbkdf2Support.verify(PASSWORD.toCharArray(), null));
+	}
+
+	/**
+	 * The checked {@link NoSuchAlgorithmException} that
+	 * {@link javax.crypto.SecretKeyFactory#getInstance(String)} declares can not be triggered
+	 * through the fixed {@code PBKDF2WithHmacSHA256} algorithm, but it must still be handled. The
+	 * extracted overload {@link Pbkdf2Support#rawHash(char[], byte[], int, String)} lets a test
+	 * drive it with an unknown algorithm name, which must be rethrown as an
+	 * {@link IllegalStateException} keeping the original cause.
+	 */
+	@Test
+	public void rawHash_rethrowsAnUnknownAlgorithmAsIllegalState()
+	{
+		IllegalStateException exception = assertThrows(IllegalStateException.class,
+			() -> Pbkdf2Support.rawHash(PASSWORD.toCharArray(), new byte[16], 1000,
+				"PBKDF2WithHmacTHIS_IS_NOT_REAL"));
+		assertInstanceOf(NoSuchAlgorithmException.class, exception.getCause());
 	}
 }

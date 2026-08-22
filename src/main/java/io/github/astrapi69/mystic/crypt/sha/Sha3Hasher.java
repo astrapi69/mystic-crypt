@@ -176,16 +176,32 @@ public final class Sha3Hasher
 		{
 			throw new IllegalArgumentException("Not a SHA-3 algorithm: " + algorithm);
 		}
+		return newMessageDigest(algorithm.getAlgorithm());
+	}
+
+	/**
+	 * Creates a {@link MessageDigest} for the given standard algorithm name. This is extracted from
+	 * {@link #newDigest(MessageDigestAlgorithm)} so that the compiler-mandated handling of the
+	 * checked {@link NoSuchAlgorithmException} - which no {@link MessageDigestAlgorithm} SHA-3
+	 * variant can trigger on a JDK 9+, all four ship in the SUN provider - stays reachable and
+	 * testable via a bogus algorithm name.
+	 *
+	 * @param algorithmName
+	 *            the standard algorithm name
+	 * @return the message digest for the given algorithm name
+	 * @throws IllegalStateException
+	 *             if the JDK does not provide the given algorithm
+	 */
+	static MessageDigest newMessageDigest(final String algorithmName)
+	{
 		try
 		{
-			return MessageDigest.getInstance(algorithm.getAlgorithm());
+			return MessageDigest.getInstance(algorithmName);
 		}
 		catch (final NoSuchAlgorithmException e)
 		{
-			// unreachable on any OpenJDK >= 9: all four SHA-3 variants ship in the SUN provider,
-			// and this library requires JDK 25
-			throw new IllegalStateException(
-				"SHA-3 not available from the JDK: " + algorithm.getAlgorithm(), e);
+			throw new IllegalStateException("SHA-3 not available from the JDK: " + algorithmName,
+				e);
 		}
 	}
 

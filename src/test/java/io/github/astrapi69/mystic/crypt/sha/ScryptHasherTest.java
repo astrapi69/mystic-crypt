@@ -90,6 +90,12 @@ class ScryptHasherTest
 		assertThrows(IllegalArgumentException.class, () -> {
 			ScryptHasher.hash(password, 0, 8, 1);
 		});
+
+		// N = 1 is a power of two but below MIN_N, exercising the lower-bound arm of the guard that
+		// the power-of-two check alone would let through
+		assertThrows(IllegalArgumentException.class, () -> {
+			ScryptHasher.hash(password, 1, 8, 1);
+		});
 	}
 
 	@Test

@@ -133,16 +133,39 @@ final class Pbkdf2Support
 
 	private static byte[] rawHash(final char[] password, final byte[] salt, final int iterations)
 	{
+		return rawHash(password, salt, iterations, ALGORITHM);
+	}
+
+	/**
+	 * Derives the raw PBKDF2 hash with the given algorithm. This is extracted from
+	 * {@link #rawHash(char[], byte[], int)} so that the compiler-mandated handling of the checked
+	 * {@link NoSuchAlgorithmException} / {@link InvalidKeySpecException} - which the fixed
+	 * {@code PBKDF2WithHmacSHA256} algorithm and the always well-formed key spec can never actually
+	 * trigger - stays reachable and testable via a bogus algorithm name.
+	 *
+	 * @param password
+	 *            the password
+	 * @param salt
+	 *            the salt
+	 * @param iterations
+	 *            the iteration count
+	 * @param algorithm
+	 *            the {@link SecretKeyFactory} algorithm name
+	 * @return the derived hash
+	 * @throws IllegalStateException
+	 *             if the algorithm is unavailable or the key spec is rejected
+	 */
+	static byte[] rawHash(final char[] password, final byte[] salt, final int iterations,
+		final String algorithm)
+	{
 		try
 		{
 			final PBEKeySpec spec = new PBEKeySpec(password, salt, iterations, HASH_LENGTH_BITS);
-			final SecretKeyFactory factory = SecretKeyFactory.getInstance(ALGORITHM);
+			final SecretKeyFactory factory = SecretKeyFactory.getInstance(algorithm);
 			return factory.generateSecret(spec).getEncoded();
 		}
 		catch (final NoSuchAlgorithmException | InvalidKeySpecException impossible)
 		{
-			// PBKDF2WithHmacSHA256 is a standard JDK algorithm and the key spec above is always
-			// well-formed, so this can never actually happen.
 			throw new IllegalStateException(impossible);
 		}
 	}

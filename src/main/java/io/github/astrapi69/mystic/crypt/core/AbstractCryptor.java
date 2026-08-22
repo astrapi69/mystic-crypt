@@ -29,7 +29,6 @@ import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.security.Security;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
@@ -41,7 +40,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import io.github.astrapi69.check.Check;
 import io.github.astrapi69.crypt.api.Cryptor;
@@ -51,6 +49,7 @@ import io.github.astrapi69.crypt.data.factory.CipherFactory;
 import io.github.astrapi69.crypt.data.factory.KeySpecFactory;
 import io.github.astrapi69.crypt.data.factory.SecretKeyFactoryExtensions;
 import io.github.astrapi69.crypt.data.model.CryptModel;
+import io.github.astrapi69.mystic.crypt.provider.SecurityProviderSupport;
 import io.github.astrapi69.random.number.RandomByteFactory;
 
 /**
@@ -100,10 +99,7 @@ public abstract class AbstractCryptor<C, K, T> implements Serializable, Cryptor
 
 	static
 	{
-		if (Security.getProvider("BC") == null)
-		{
-			Security.addProvider(new BouncyCastleProvider());
-		}
+		SecurityProviderSupport.ensureBouncyCastle();
 	}
 
 	/** The crypto model. */

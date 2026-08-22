@@ -210,10 +210,9 @@ public class KeyCommittingAeadEncryptor extends AbstractByteArrayEncryptor
 		cipher.init(Cipher.ENCRYPT_MODE, model.getKey(),
 			new GCMParameterSpec(GCM_TAG_LENGTH_BITS, iv));
 
-		if (finalAssociatedData != null)
-		{
-			cipher.updateAAD(finalAssociatedData);
-		}
+		// finalAssociatedData starts as the always non-null commitment tag and is only ever
+		// reassigned to another non-null array, so it can be fed to the cipher unconditionally
+		cipher.updateAAD(finalAssociatedData);
 
 		byte[] ciphertext = cipher.doFinal(toEncrypt);
 
@@ -284,10 +283,9 @@ public class KeyCommittingAeadEncryptor extends AbstractByteArrayEncryptor
 		cipher.init(Cipher.DECRYPT_MODE, model.getKey(),
 			new GCMParameterSpec(GCM_TAG_LENGTH_BITS, iv));
 
-		if (finalAssociatedData != null)
-		{
-			cipher.updateAAD(finalAssociatedData);
-		}
+		// finalAssociatedData starts as the always non-null commitment tag and is only ever
+		// reassigned to another non-null array, so it can be fed to the cipher unconditionally
+		cipher.updateAAD(finalAssociatedData);
 
 		return cipher.doFinal(ciphertext);
 	}
