@@ -195,6 +195,11 @@ or over flattr:
 See [docs/CRYPTO_CAPABILITIES.md](docs/CRYPTO_CAPABILITIES.md) for a full capability matrix of
 what's implemented across this library family (and what's deliberately out of scope, and why).
 
+For background on *why* modern key agreement works the way it does, see
+[docs/KEY_AGREEMENT_EVOLUTION.md](docs/KEY_AGREEMENT_EVOLUTION.md) — an introduction that traces
+the path from book ciphers over Diffie-Hellman and Perfect Forward Secrecy to the Double Ratchet
+protocol, and maps those concepts to the building blocks in this library.
+
 Encryption and decryption processes are always executed in the backround so it is a black box for the user. If you want to
 see this library in action you can download this [gui client](https://github.com/astrapi69/mystic-crypt-ui) and see some features
 described above.
