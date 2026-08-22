@@ -31,11 +31,20 @@ import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.security.KeyPairGenerator;
+import java.security.PrivateKey;
 import java.time.Duration;
+import java.util.Base64;
 import java.util.Optional;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -52,14 +61,39 @@ public class PrivateKeyBruteForceProcessorTest
 	private static final char[] ALPHABET = { 'a', 'b', 'c' };
 
 	/**
+	 * An unencrypted PKCS#8 private key file, generated fresh for every run rather than committed.
+	 * A checked-in private key - even a throwaway one that guards nothing - is indistinguishable
+	 * from a leaked one to a secret scanner, and this file exists purely to be rejected by the
+	 * reader, so its contents never need to be stable.
+	 */
+	@TempDir
+	static Path temporaryDirectory;
+
+	private static File unencryptedPkcs8KeyFile;
+
+	@BeforeAll
+	static void writeAnUnencryptedPkcs8Key() throws Exception
+	{
+		PrivateKey privateKey = KeyPairGenerator.getInstance("RSA").generateKeyPair().getPrivate();
+		String base64 = Base64
+			.getMimeEncoder(64, System.lineSeparator().getBytes(StandardCharsets.US_ASCII))
+			.encodeToString(privateKey.getEncoded());
+		Path keyFile = temporaryDirectory.resolve("pkcs8-unencrypted.pem");
+		Files.writeString(keyFile, "-----BEGIN PRIVATE KEY-----" + System.lineSeparator() + base64
+			+ System.lineSeparator() + "-----END PRIVATE KEY-----" + System.lineSeparator());
+		unencryptedPkcs8KeyFile = keyFile.toFile();
+	}
+
+	/**
 	 * A scenario for a private key file that can not be resolved
 	 *
 	 * @param description
 	 *            the human readable description of the scenario
-	 * @param privateKeyFileName
-	 *            the relative name of the private key file below the test resources
+	 * @param privateKeyFile
+	 *            supplies the private key file, resolved per test rather than up front so that a
+	 *            case may point at a file that is only written once the test class starts
 	 */
-	record UnresolvableCase(String description, String privateKeyFileName) {
+	record UnresolvableCase(String description, Supplier<File> privateKeyFile) {
 		@Override
 		public String toString()
 		{
@@ -74,11 +108,13 @@ public class PrivateKeyBruteForceProcessorTest
 
 	static Stream<UnresolvableCase> unresolvableCases()
 	{
-		return Stream.of(new UnresolvableCase("password protected private key", "pem/test.key.pem"),
+		return Stream.of(
+			new UnresolvableCase("password protected private key",
+				() -> testResource("pem/test.key.pem")),
 			new UnresolvableCase("private key file that does not exist",
-				"pem/this-file-does-not-exist.pem"),
+				() -> testResource("pem/this-file-does-not-exist.pem")),
 			new UnresolvableCase("unencrypted PKCS#8 key the reader can not turn into a key pair",
-				"pem/pkcs8-unencrypted.pem"));
+				() -> unencryptedPkcs8KeyFile));
 	}
 
 	/**
@@ -93,8 +129,8 @@ public class PrivateKeyBruteForceProcessorTest
 	@MethodSource("unresolvableCases")
 	public void resolvePassword_answersAnEmptyOptional(final UnresolvableCase testCase)
 	{
-		Optional<String> resolved = PrivateKeyBruteForceProcessor.resolvePassword(
-			testResource(testCase.privateKeyFileName()), new BruteForceProcessor(ALPHABET, 1));
+		Optional<String> resolved = PrivateKeyBruteForceProcessor
+			.resolvePassword(testCase.privateKeyFile().get(), new BruteForceProcessor(ALPHABET, 1));
 
 		assertFalse(resolved.isPresent());
 	}
@@ -151,10 +187,8 @@ public class PrivateKeyBruteForceProcessorTest
 	@Test
 	public void resolvePassword_terminatesForAnUnencryptedPkcs8KeyInsteadOfHanging()
 	{
-		File privateKeyFile = testResource("pem/pkcs8-unencrypted.pem");
-
 		Optional<String> resolved = assertTimeoutPreemptively(Duration.ofSeconds(10),
-			() -> PrivateKeyBruteForceProcessor.resolvePassword(privateKeyFile,
+			() -> PrivateKeyBruteForceProcessor.resolvePassword(unencryptedPkcs8KeyFile,
 				new BruteForceProcessor(ALPHABET, 1)));
 
 		assertFalse(resolved.isPresent());
