@@ -30,7 +30,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -48,7 +49,6 @@ import io.github.astrapi69.crypt.data.factory.CipherFactory;
 import io.github.astrapi69.crypt.data.model.CryptModel;
 import io.github.astrapi69.crypt.data.model.CryptObjectDecorator;
 import io.github.astrapi69.file.delete.DeleteFileExtensions;
-import io.github.astrapi69.file.read.ReadFileExtensions;
 import io.github.astrapi69.file.write.StoreFileExtensions;
 import io.github.astrapi69.mystic.crypt.core.AbstractFileDecryptor;
 import io.github.astrapi69.mystic.crypt.decorator.CryptObjectDecoratorExtensions;
@@ -246,14 +246,18 @@ public class PBEFileDecryptor extends AbstractFileDecryptor
 		List<CryptObjectDecorator<String>> decorators = getModel().getDecorators();
 		if (decorators != null && !decorators.isEmpty())
 		{
-			String decryptedFileString = ReadFileExtensions.fromFile(decryptedFile);
+			// Strip the decorators outermost-first, chaining on the string. (Previously each
+			// iteration re-read the file via undecorateFile, so with more than one decorator only
+			// the innermost one was ever removed and the outer markers survived.)
+			String decryptedFileString = new String(Files.readAllBytes(decryptedFile.toPath()),
+				StandardCharsets.UTF_8);
 			for (int i = decorators.size() - 1; 0 <= i; i--)
 			{
-				decryptedFileString = CryptObjectDecoratorExtensions.undecorateFile(decryptedFile,
-					decorators.get(i));
+				decryptedFileString = CryptObjectDecoratorExtensions
+					.undecorateWithStringDecorator(decryptedFileString, decorators.get(i));
 			}
 			StoreFileExtensions.toFile(decryptedFile, decryptedFileString,
-				Charset.forName("UTF-8").name());
+				StandardCharsets.UTF_8.name());
 		}
 		if (this.deleteEncryptedFileAfterDecryption)
 		{

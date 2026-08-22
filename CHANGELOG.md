@@ -19,6 +19,18 @@ CHANGED:
   updated to match. Published bytecode now targets JDK 25, so this is a breaking change for
   consumers still on JDK 21-24.
 
+FIXED:
+
+- PBEFileEncryptor/PBEFileDecryptor decorators: the encryptor computed the decorated file
+  content via CryptObjectDecoratorExtensions#decorateFile and then discarded it, encrypting the raw
+  file - CryptObjectDecorators configured on the CryptModel had no effect on file encryption at all.
+  The decryptor re-read the file on every loop iteration instead of chaining on the string, so with
+  more than one decorator only the innermost was ever stripped. Both went unnoticed because an
+  encrypt-then-decrypt round trip passes either way ("never added" and "never removed" agree);
+  found by a surviving PIT mutant on the decorator loop. The encryptor now decorates in memory
+  (the source file is never modified) and encrypts the decorated content, the decryptor strips all
+  decorators outermost-first.
+
 Version 10.2-SNAPSHOT
 -------------
 
