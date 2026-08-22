@@ -9,6 +9,5 @@
  * <li>{@link io.github.astrapi69.mystic.crypt.srp.SRP6aVerifierGenerator} - Verifier generation
  * utility</li>
  * </ul>
- * </p>
  */
 package io.github.astrapi69.mystic.crypt.srp;

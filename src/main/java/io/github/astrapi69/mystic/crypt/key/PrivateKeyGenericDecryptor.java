@@ -38,6 +38,10 @@ import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 /**
  * The class {@link PrivateKeyGenericDecryptor} decrypts encrypted objects the was encrypted with
  * the public key of the pendant private key of this class.
+ *
+ * @param <T>
+ *            the generic type of the decrypted object. It has to be {@link Serializable}, because
+ *            the decrypted bytes are deserialized back into an object of this type
  */
 public class PrivateKeyGenericDecryptor<T extends Serializable>
 {

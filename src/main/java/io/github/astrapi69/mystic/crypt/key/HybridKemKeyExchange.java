@@ -133,6 +133,9 @@ public final class HybridKemKeyExchange
 	 *             if either public key is invalid
 	 * @throws NoSuchAlgorithmException
 	 *             if the required algorithms are not available
+	 * @throws NoSuchProviderException
+	 *             if the security provider that supplies the ML-KEM implementation is not
+	 *             registered
 	 */
 	public static HybridEncapsulation hybridEncapsulate(final PublicKey x25519PublicKey,
 		final PublicKey mlKemPublicKey, final KeyPairGeneratorAlgorithm mlKemAlgorithm,
@@ -206,6 +209,9 @@ public final class HybridKemKeyExchange
 	 *             if any of the keys is invalid
 	 * @throws NoSuchAlgorithmException
 	 *             if the required algorithms are not available
+	 * @throws NoSuchProviderException
+	 *             if the security provider that supplies the ML-KEM implementation is not
+	 *             registered
 	 * @throws javax.crypto.DecapsulateException
 	 *             if the ML-KEM ciphertext is malformed or does not match the private key
 	 */

@@ -29,6 +29,11 @@ import io.github.astrapi69.crypt.api.Encryptor;
 /**
  * The class {@link ChainableEncryptor} can take many {@code Encryptor} objects and encrypts the
  * given string with all the given {@code Encryptor} objects.
+ *
+ * @param <T>
+ *            the generic type of the value that is encrypted. Because every {@code Encryptor} in
+ *            the chain consumes the output of its predecessor, the encrypted and the decrypted type
+ *            have to be the same
  */
 public abstract class ChainableEncryptor<T> implements Encryptor<T, T>
 {

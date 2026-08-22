@@ -37,7 +37,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
  * is a password-based key derivation function designed to be computationally expensive and
  * memory-hard, making it resistant to hardware brute-force attacks. It requires significant amounts
  * of memory to compute, which makes large-scale custom hardware attacks economically infeasible.
- * 
+ *
  * <p>
  * Scrypt parameters:
  * <ul>
@@ -45,8 +45,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
  * <li>r: block size parameter</li>
  * <li>p: parallelization parameter</li>
  * </ul>
- * </p>
- * 
+ *
  * @author Asterios Raptis
  */
 public final class ScryptHasher
