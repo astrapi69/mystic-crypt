@@ -1,9 +1,13 @@
-task tagRelease {
-    description = "Tags the current head with the project\'s version."
+// The version is resolved at configuration time on purpose: reading project.version from inside
+// doLast is "Invocation of Task.project at execution time", which Gradle 10 removes.
+def releaseVersion = "$version"
+
+tasks.register("tagRelease") {
+    description = "Tags the current head with the project's version."
     doLast {
         grgit.tag.add {
-            name = "RELEASE-${project.version.toString()}"
-            message = "New release in version ${version}"
+            name = "RELEASE-${releaseVersion}"
+            message = "New release in version ${releaseVersion}"
         }
     }
 }

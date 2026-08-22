@@ -13,8 +13,8 @@ plugins {
     id 'signing'
     id 'jacoco'
     alias(libs.plugins.gradle.versions.plugin)
-    alias(libs.plugins.license.gradle.plugin)
     alias(libs.plugins.grgit.gradle)
+    alias(libs.plugins.nmcp.gradle.plugin)
     alias(libs.plugins.pitest.gradle.plugin)
     alias(libs.plugins.shadow.gradle)
     alias(libs.plugins.spotless.plugin.gradle)
