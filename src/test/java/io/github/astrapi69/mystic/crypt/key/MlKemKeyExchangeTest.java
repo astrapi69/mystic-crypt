@@ -84,4 +84,33 @@ public class MlKemKeyExchangeTest
 			() -> MlKemKeyExchange.newKeyPair(KeyPairGeneratorAlgorithm.Ed25519));
 	}
 
+	/**
+	 * Test method for
+	 * {@link MlKemKeyExchange#encapsulate(java.security.PublicKey, KeyPairGeneratorAlgorithm)} with
+	 * a non-ML-KEM algorithm: the requireMlKem guard must reject it before any KEM operation.
+	 */
+	@Test
+	public void testEncapsulateRejectsNonMlKemAlgorithm() throws Exception
+	{
+		final KeyPair recipientKeyPair = MlKemKeyExchange
+			.newKeyPair(KeyPairGeneratorAlgorithm.ML_KEM_768);
+		assertThrows(IllegalArgumentException.class, () -> MlKemKeyExchange
+			.encapsulate(recipientKeyPair.getPublic(), KeyPairGeneratorAlgorithm.Ed25519));
+	}
+
+	/**
+	 * Test method for
+	 * {@link MlKemKeyExchange#decapsulate(java.security.PrivateKey, byte[], KeyPairGeneratorAlgorithm)}
+	 * with a non-ML-KEM algorithm: the requireMlKem guard must reject it before any KEM operation.
+	 */
+	@Test
+	public void testDecapsulateRejectsNonMlKemAlgorithm() throws Exception
+	{
+		final KeyPair recipientKeyPair = MlKemKeyExchange
+			.newKeyPair(KeyPairGeneratorAlgorithm.ML_KEM_768);
+		assertThrows(IllegalArgumentException.class,
+			() -> MlKemKeyExchange.decapsulate(recipientKeyPair.getPrivate(), new byte[16],
+				KeyPairGeneratorAlgorithm.Ed25519));
+	}
+
 }

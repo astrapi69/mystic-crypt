@@ -24,6 +24,8 @@
  */
 package io.github.astrapi69.mystic.crypt.hex;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javax.crypto.Cipher;
@@ -32,6 +34,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.crypt.api.algorithm.AesAlgorithm;
+import io.github.astrapi69.crypt.api.algorithm.Algorithm;
 import io.github.astrapi69.crypt.data.model.CryptModel;
 
 /**
@@ -110,4 +113,51 @@ public class HexableDecryptorTest
 			"String before encryption is not equal after decryption.");
 	}
 
+	/**
+	 * Test method for {@link HexableDecryptor#decrypt(String)}, encrypted data that is shorter than
+	 * the nonce has to be rejected
+	 *
+	 * @throws Exception
+	 *             is thrown if an error occurs
+	 */
+	@Test
+	public void testDecryptWithDataShorterThanTheNonce() throws Exception
+	{
+		HexableDecryptor decryptor = new HexableDecryptor("1234567890123456");
+
+		assertThrows(IllegalArgumentException.class, () -> decryptor.decrypt("00112233"));
+	}
+
+	/**
+	 * Test method for {@link HexableDecryptor#decrypt(String)}, data of exactly the nonce length
+	 * (12 bytes = 24 hex characters) is <em>not</em> rejected by the length guard (it fails later
+	 * during GCM decryption). This pins the boundary of the {@code length < NONCE_LENGTH} check so
+	 * a {@code <=} mutant is caught.
+	 *
+	 * @throws Exception
+	 *             is thrown if an error occurs
+	 */
+	@Test
+	public void testDecryptWithDataOfExactlyTheNonceLengthIsNotRejectedByTheLengthGuard()
+		throws Exception
+	{
+		HexableDecryptor decryptor = new HexableDecryptor("1234567890123456");
+
+		// 12 bytes worth of hex - exactly the nonce length, leaving an empty ciphertext
+		Exception exception = assertThrows(Exception.class,
+			() -> decryptor.decrypt("000000000000000000000000"));
+		assertFalse(exception instanceof IllegalArgumentException,
+			"data of exactly the nonce length must pass the length guard, not be rejected by it");
+	}
+
+	/**
+	 * Test method for {@link HexableDecryptor#HexableDecryptor(String, Algorithm)}, the algorithm
+	 * is mandatory
+	 */
+	@Test
+	public void testConstructorWithoutAlgorithm()
+	{
+		assertThrows(IllegalArgumentException.class,
+			() -> new HexableDecryptor("1234567890123456", null));
+	}
 }

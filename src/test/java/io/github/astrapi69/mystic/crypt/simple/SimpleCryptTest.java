@@ -59,6 +59,42 @@ public class SimpleCryptTest
 	}
 
 	/**
+	 * Test method for {@link SimpleCrypt#oneTimePadCrypt(byte[], byte[])} where the message is
+	 * longer than the key. In that case the key index wraps around via
+	 * {@code message.length % (simpleKey.length - 1)}; asserting the exact encoded bytes pins that
+	 * arithmetic so a mutant that turns the subtraction into an addition is caught (a plain
+	 * round-trip cannot catch it because the XOR is symmetric).
+	 */
+	@Test
+	public void testOneTimePadWithMessageLongerThanKey()
+	{
+		byte[] key = { 10, 20, 30, 40 };
+		byte[] message = { 1, 2, 3, 4, 5, 6 };
+
+		byte[] encoded = SimpleCrypt.oneTimePadCrypt(key, message);
+
+		// independently compute the expected output with the documented key-index formula
+		byte[] expected = new byte[message.length];
+		for (int index = 0; index < message.length; index++)
+		{
+			int keyIndex = index;
+			if (index >= key.length)
+			{
+				keyIndex = message.length % (key.length - 1);
+			}
+			expected[index] = (byte)(message[index] ^ key[keyIndex]);
+		}
+		assertEquals(Arrays.toString(expected), Arrays.toString(encoded));
+		// index 4 and 5 use keyIndex = 6 % 3 = 0 (key[0] == 10); an addition mutant would use
+		// 6 % 5 = 1 (key[1] == 20), producing a different byte
+		assertEquals((byte)(message[4] ^ key[0]), encoded[4]);
+		assertEquals((byte)(message[5] ^ key[0]), encoded[5]);
+
+		// round-trip must still recover the message
+		assertTrue(Arrays.equals(message, SimpleCrypt.oneTimePadCrypt(key, encoded)));
+	}
+
+	/**
 	 * Test method for test the method {@link SimpleCrypt#encode(String)} and
 	 * {@link SimpleCrypt#decode(String)}
 	 */

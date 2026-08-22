@@ -25,16 +25,22 @@
 package io.github.astrapi69.mystic.crypt.pw;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
 
+import javax.crypto.Cipher;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import io.github.astrapi69.checksum.FileChecksumExtensions;
 import io.github.astrapi69.crypt.api.algorithm.MdAlgorithm;
 import io.github.astrapi69.file.delete.DeleteFileExtensions;
+import io.github.astrapi69.file.read.ReadFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;
+import io.github.astrapi69.file.write.StoreFileExtensions;
 import io.github.astrapi69.test.base.AbstractTestCase;
 
 /**
@@ -100,4 +106,95 @@ public class PasswordFileDecryptorTest extends AbstractTestCase<String, String>
 		DeleteFileExtensions.delete(decrypted);
 	}
 
+	/**
+	 * Test method for {@link PasswordFileDecryptor#decrypt(File)}, without an explicit decrypted
+	 * file the base name of the encrypted file with the extension '.decrypted' is used
+	 *
+	 * @param temporaryDirectory
+	 *            the temporary directory of this test
+	 * @throws Exception
+	 *             is thrown if an error occurs
+	 */
+	@Test
+	public void decrypt_withoutAnExplicitDecryptedFile_derivesTheFileNameFromTheEncryptedFile(
+		@TempDir File temporaryDirectory) throws Exception
+	{
+		File source = new File(temporaryDirectory, "secret-message.txt");
+		StoreFileExtensions.toFile(source, "the quick brown fox jumps over the lazy dog");
+		File encryptedFile = new PasswordFileEncryptor(password,
+			new File(temporaryDirectory, "secret-message.enc")).encrypt(source);
+
+		File decryptedFile = new PasswordFileDecryptor(password, null).decrypt(encryptedFile);
+
+		assertEquals("secret-message.decrypted", decryptedFile.getName());
+		assertEquals("the quick brown fox jumps over the lazy dog",
+			ReadFileExtensions.fromFile(decryptedFile));
+	}
+
+	/**
+	 * Test method for {@link PasswordFileDecryptor#decrypt(File)}, an encrypted file that is
+	 * shorter than the salt prefix has to be rejected
+	 *
+	 * @param temporaryDirectory
+	 *            the temporary directory of this test
+	 * @throws Exception
+	 *             is thrown if an error occurs
+	 */
+	@Test
+	public void decrypt_withAFileShorterThanTheSaltPrefix_throwsAnIllegalArgumentException(
+		@TempDir File temporaryDirectory) throws Exception
+	{
+		File tooShort = new File(temporaryDirectory, "too-short.enc");
+		StoreFileExtensions.toFile(tooShort, "abc");
+		PasswordFileDecryptor fileDecryptor = new PasswordFileDecryptor(password,
+			new File(temporaryDirectory, "decrypted.txt"));
+
+		assertThrows(IllegalArgumentException.class, () -> fileDecryptor.decrypt(tooShort));
+	}
+
+	/**
+	 * Test method for {@link PasswordFileDecryptor#resetPassword()}, after the password is reset
+	 * nothing can be decrypted anymore
+	 *
+	 * @param temporaryDirectory
+	 *            the temporary directory of this test
+	 * @throws Exception
+	 *             is thrown if an error occurs
+	 */
+	@Test
+	public void resetPassword_clearsThePasswordSoNothingCanBeDecryptedAnymore(
+		@TempDir File temporaryDirectory) throws Exception
+	{
+		File source = new File(temporaryDirectory, "secret-message.txt");
+		StoreFileExtensions.toFile(source, "the quick brown fox");
+		File encryptedFile = new PasswordFileEncryptor(password,
+			new File(temporaryDirectory, "secret-message.enc")).encrypt(source);
+		PasswordFileDecryptor fileDecryptor = new PasswordFileDecryptor(password,
+			new File(temporaryDirectory, "decrypted.txt"));
+
+		fileDecryptor.resetPassword();
+
+		assertThrows(NullPointerException.class, () -> fileDecryptor.decrypt(encryptedFile));
+	}
+
+	/**
+	 * Test method for {@link PasswordFileDecryptor#decrypt(File)}, the encrypted file is mandatory
+	 */
+	@Test
+	public void decrypt_withoutAFile_throwsANullPointerException()
+	{
+		PasswordFileDecryptor fileDecryptor = new PasswordFileDecryptor(password, null);
+
+		assertThrows(NullPointerException.class, () -> fileDecryptor.decrypt(null));
+	}
+
+	/**
+	 * Test method for {@link PasswordFileDecryptor#newOperationMode()}
+	 */
+	@Test
+	public void newOperationMode_isTheDecryptMode()
+	{
+		assertEquals(Cipher.DECRYPT_MODE,
+			new PasswordFileDecryptor(password, null).newOperationMode());
+	}
 }

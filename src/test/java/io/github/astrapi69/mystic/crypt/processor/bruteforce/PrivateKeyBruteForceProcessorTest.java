@@ -25,119 +25,141 @@
 package io.github.astrapi69.mystic.crypt.processor.bruteforce;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
-import java.io.IOException;
-import java.security.Security;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.logging.Logger;
+import java.util.stream.Stream;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.pkcs.PKCSException;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import io.github.astrapi69.crypt.data.key.reader.EncryptedPrivateKeyReader;
 import io.github.astrapi69.crypt.data.key.reader.PrivateKeyReader;
 import io.github.astrapi69.file.search.PathFinder;
 
 /**
- * The unit test class for the class {@link BruteForceProcessor}
+ * The unit test class for the class {@link PrivateKeyBruteForceProcessor}
  */
 public class PrivateKeyBruteForceProcessorTest
 {
 
-	private static final Logger log = Logger
-		.getLogger(PrivateKeyBruteForceProcessorTest.class.getName());
+	/** A tiny alphabet keeps the runtime of every test in this class in the millisecond range */
+	private static final char[] ALPHABET = { 'a', 'b', 'c' };
 
 	/**
-	 * Resolve the password from the given private key file. If no password is set an empty Optional
-	 * will be returned.
+	 * A scenario for a private key file that can not be resolved
 	 *
-	 * @param privateKeyFile
-	 *            the private key file
-	 * @param processor
-	 *            the processor
-	 * @return the optional
+	 * @param description
+	 *            the human readable description of the scenario
+	 * @param privateKeyFileName
+	 *            the relative name of the private key file below the test resources
 	 */
-	public static Optional<String> resolvePassword(File privateKeyFile,
-		BruteForceProcessor processor)
-	{
-		Objects.requireNonNull(processor);
-		Optional<String> optionalPassword = Optional.empty();
-		try
+	record UnresolvableCase(String description, String privateKeyFileName) {
+		@Override
+		public String toString()
 		{
-			Security.addProvider(new BouncyCastleProvider());
-			boolean isPasswordProtected = PrivateKeyReader
-				.isPrivateKeyPasswordProtected(privateKeyFile);
+			return description;
+		}
+	}
 
-			if (isPasswordProtected)
-			{
-				String attempt;
-				attempt = processor.getCurrentAttempt();
-				while (true)
-				{
-					try
-					{
-						EncryptedPrivateKeyReader.getKeyPair(privateKeyFile, attempt);
-						optionalPassword = Optional.of(attempt);
-						break;
-					}
-					catch (IOException e)
-					{
-						attempt = processor.getCurrentAttempt();
-						processor.increment();
-					}
-					catch (PKCSException e)
-					{
-						attempt = processor.getCurrentAttempt();
-						processor.increment();
-					}
-				}
-			}
-		}
-		catch (IOException ex)
-		{
-			return optionalPassword;
-		}
-		return optionalPassword;
+	private static File testResource(final String relativeFileName)
+	{
+		return new File(PathFinder.getSrcTestResourcesDir(), relativeFileName);
+	}
+
+	static Stream<UnresolvableCase> unresolvableCases()
+	{
+		return Stream.of(new UnresolvableCase("password protected private key", "pem/test.key.pem"),
+			new UnresolvableCase("private key file that does not exist",
+				"pem/this-file-does-not-exist.pem"));
 	}
 
 	/**
-	 * Test method for test the class {@link BruteForceProcessor}
+	 * Test method for
+	 * {@link PrivateKeyBruteForceProcessor#resolvePassword(File, BruteForceProcessor)}, an empty
+	 * optional is answered for a private key file whose password can not be resolved
+	 *
+	 * @param testCase
+	 *            the test case
+	 */
+	@ParameterizedTest
+	@MethodSource("unresolvableCases")
+	public void resolvePassword_answersAnEmptyOptional(final UnresolvableCase testCase)
+	{
+		Optional<String> resolved = PrivateKeyBruteForceProcessor.resolvePassword(
+			testResource(testCase.privateKeyFileName()), new BruteForceProcessor(ALPHABET, 1));
+
+		assertFalse(resolved.isPresent());
+	}
+
+	/**
+	 * Test method for
+	 * {@link PrivateKeyBruteForceProcessor#resolvePassword(File, BruteForceProcessor)}, the
+	 * password protected test key really is recognized as password protected, which is the reason
+	 * why the method above answers an empty optional
+	 *
+	 * @throws Exception
+	 *             is thrown if an error occurs
 	 */
 	@Test
-	@Disabled
-	public void testPrivateKeyWithPassword()
+	public void resolvePassword_acceptsTheFirstAttemptForAKeyThatIsNotPasswordProtected()
+		throws Exception
 	{
-		File pemDir;
-		File encryptedPrivateKeyFile;
-		char[] possibleCharacters;
-		BruteForceProcessor processor;
-		long start;
-		long end;
-		long elapsedMilliSeconds;
+		File privateKeyFile = testResource("pem/private.pem");
+		BruteForceProcessor processor = new BruteForceProcessor(ALPHABET, 2);
+		assertFalse(PrivateKeyReader.isPrivateKeyPasswordProtected(privateKeyFile));
 
-		pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		encryptedPrivateKeyFile = new File(pemDir, "test.key.pem");
+		Optional<String> resolved = PrivateKeyBruteForceProcessor.resolvePassword(privateKeyFile,
+			processor);
 
-		possibleCharacters = new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
-				'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
-
-		processor = new BruteForceProcessor(possibleCharacters, 1);
-		start = System.currentTimeMillis();
-		Optional<String> resolvePassword = resolvePassword(encryptedPrivateKeyFile, processor);
-		end = System.currentTimeMillis();
-
-		elapsedMilliSeconds = end - start;
-		assertTrue(resolvePassword.isPresent());
-		String expected = "bosco";
-		String actual = resolvePassword.get();
-		assertEquals(expected, actual);
-		log.info("Needed milliseconds for crack the password with brute force attack: "
-			+ elapsedMilliSeconds);
+		assertTrue(resolved.isPresent());
+		assertEquals("aa", resolved.get());
+		assertEquals("aa", processor.getCurrentAttempt(), "no further attempt is needed");
 	}
 
+	/**
+	 * Test method for
+	 * {@link PrivateKeyBruteForceProcessor#resolvePassword(File, BruteForceProcessor)}
+	 *
+	 * @throws Exception
+	 *             is thrown if an error occurs
+	 */
+	@Test
+	public void resolvePassword_theTestKeyIsRecognizedAsPasswordProtected() throws Exception
+	{
+		assertTrue(
+			PrivateKeyReader.isPrivateKeyPasswordProtected(testResource("pem/test.key.pem")));
+	}
+
+	/**
+	 * Test method for
+	 * {@link PrivateKeyBruteForceProcessor#resolvePassword(File, BruteForceProcessor)}, the
+	 * processor is mandatory
+	 */
+	@Test
+	public void resolvePassword_withoutAProcessor_throwsANullPointerException()
+	{
+		File privateKeyFile = testResource("pem/test.key.pem");
+
+		assertThrows(NullPointerException.class,
+			() -> PrivateKeyBruteForceProcessor.resolvePassword(privateKeyFile, null));
+	}
+
+	/**
+	 * Test method for
+	 * {@link PrivateKeyBruteForceProcessor#resolvePassword(File, BruteForceProcessor)}, the given
+	 * processor is not consumed when the private key file is password protected
+	 */
+	@Test
+	public void resolvePassword_leavesTheProcessorUntouchedForAProtectedPrivateKey()
+	{
+		BruteForceProcessor processor = new BruteForceProcessor(ALPHABET, 1);
+
+		PrivateKeyBruteForceProcessor.resolvePassword(testResource("pem/test.key.pem"), processor);
+
+		assertEquals("a", processor.getCurrentAttempt());
+	}
 }

@@ -26,17 +26,22 @@ package io.github.astrapi69.mystic.crypt.base;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
 import java.util.Arrays;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.crypt.api.algorithm.AesAlgorithm;
+import io.github.astrapi69.crypt.api.algorithm.compound.CompoundAlgorithm;
 import io.github.astrapi69.crypt.data.factory.SecretKeyFactoryExtensions;
 import io.github.astrapi69.crypt.data.model.CryptModel;
 import io.github.astrapi69.mystic.crypt.algorithm.MysticSymmetricAlgorithm;
@@ -154,4 +159,78 @@ public class BaseByteArrayEnDecryptorTest
 			new String(decryptor.decrypt(secondEncrypted), StandardCharsets.UTF_8));
 	}
 
+	/**
+	 * Test method for {@link BaseByteArrayDecryptor#decrypt(byte[])}, encrypted data that is
+	 * shorter than the nonce has to be rejected
+	 *
+	 * @throws Exception
+	 *             is thrown if an error occurs
+	 */
+	@Test
+	public void testDecryptWithDataShorterThanTheNonce() throws Exception
+	{
+		SecretKey gcmKey = SecretKeyFactoryExtensions.newSecretKey(AesAlgorithm.AES.name(), 128);
+		CryptModel<Cipher, SecretKey, String> gcmModel = CryptModel
+			.<Cipher, SecretKey, String> builder().key(gcmKey)
+			.algorithm(MysticSymmetricAlgorithm.AES_GCM_NO_PADDING).build();
+		BaseByteArrayDecryptor decryptor = new BaseByteArrayDecryptor(gcmModel);
+
+		assertThrows(IllegalArgumentException.class, () -> decryptor.decrypt(new byte[11]));
+	}
+
+	/**
+	 * Test method for {@link BaseByteArrayDecryptor#decrypt(byte[])}, data of exactly the nonce
+	 * length is <em>not</em> rejected by the length guard (it fails later during GCM decryption).
+	 * This pins the boundary of the {@code length < NONCE_LENGTH} check so a {@code <=} mutant is
+	 * caught.
+	 *
+	 * @throws Exception
+	 *             is thrown if an error occurs
+	 */
+	@Test
+	public void testDecryptWithDataOfExactlyTheNonceLengthIsNotRejectedByTheLengthGuard()
+		throws Exception
+	{
+		SecretKey gcmKey = SecretKeyFactoryExtensions.newSecretKey(AesAlgorithm.AES.name(), 128);
+		CryptModel<Cipher, SecretKey, String> gcmModel = CryptModel
+			.<Cipher, SecretKey, String> builder().key(gcmKey)
+			.algorithm(MysticSymmetricAlgorithm.AES_GCM_NO_PADDING).build();
+		BaseByteArrayDecryptor decryptor = new BaseByteArrayDecryptor(gcmModel);
+
+		Exception exception = assertThrows(Exception.class, () -> decryptor.decrypt(new byte[12]));
+		assertFalse(exception instanceof IllegalArgumentException,
+			"data of exactly the nonce length must pass the length guard, not be rejected by it");
+	}
+
+	/**
+	 * Test method for {@link BaseByteArrayEncryptor#BaseByteArrayEncryptor(SecretKey)} and
+	 * {@link BaseByteArrayDecryptor#BaseByteArrayDecryptor(SecretKey)}, the constructors with the
+	 * symmetric key only have to result in a working encryptor and decryptor pair
+	 *
+	 * @throws Exception
+	 *             is thrown if an error occurs
+	 */
+	@Test
+	public void testEncryptDecryptWithSymmetricKeyOnlyConstructors() throws Exception
+	{
+		// the key-only constructors fall back to the default PBE algorithm, which rejects a plain
+		// AES key, so both constructors must fail fast with an InvalidKeyException
+		assertThrows(InvalidKeyException.class, () -> new BaseByteArrayEncryptor(secretKey));
+		assertThrows(InvalidKeyException.class, () -> new BaseByteArrayDecryptor(secretKey));
+
+		// a PBE key that carries its own salt and iteration count is accepted and round trips
+		String algorithm = CompoundAlgorithm.PBE_WITH_SHA1_AND_128BIT_AES_CBC_BC.getAlgorithm();
+		SecretKey pbeKey = SecretKeyFactory.getInstance(algorithm, "BC")
+			.generateSecret(new PBEKeySpec("top secret".toCharArray(),
+				new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 }, 1000));
+		BaseByteArrayEncryptor encryptor = new BaseByteArrayEncryptor(pbeKey);
+		BaseByteArrayDecryptor decryptor = new BaseByteArrayDecryptor(pbeKey);
+		byte[] plainMessageBytes = "the quick brown fox".getBytes(StandardCharsets.UTF_8);
+
+		byte[] encrypted = encryptor.encrypt(plainMessageBytes);
+
+		assertFalse(Arrays.equals(plainMessageBytes, encrypted));
+		assertEquals("the quick brown fox",
+			new String(decryptor.decrypt(encrypted), StandardCharsets.UTF_8));
+	}
 }

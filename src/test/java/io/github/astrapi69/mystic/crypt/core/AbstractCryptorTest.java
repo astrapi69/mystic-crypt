@@ -27,18 +27,25 @@ package io.github.astrapi69.mystic.crypt.core;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Security;
+import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 import java.util.Arrays;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.PBEParameterSpec;
 
 import org.junit.jupiter.api.Test;
 
@@ -156,6 +163,73 @@ public class AbstractCryptorTest
 			CryptModel.<Cipher, String, String> builder().key("test-password").build());
 	}
 
+	@Test
+	public void keyOnlyConstructor_buildsAModelWithThatKeyAndInitializesIt() throws Exception
+	{
+		TestPbeCryptor cryptor = new TestPbeCryptor("test-password");
+
+		assertEquals("test-password", cryptor.getModel().getKey());
+		assertNotNull(cryptor.getModel().getCipher());
+		assertNotNull(cryptor.getModel().getSalt());
+	}
+
+	@Test
+	public void newAlgorithmParameterSpec_answersThePbeParameterSpecWithSaltAndIterationCount()
+		throws Exception
+	{
+		byte[] salt = { 1, 2, 3, 4, 5, 6, 7, 8 };
+		TestPbeCryptor cryptor = new TestPbeCryptor(
+			CryptModel.<Cipher, String, String> builder().key("test-password").build());
+
+		AlgorithmParameterSpec parameterSpec = cryptor.newAlgorithmParameterSpec(salt, 4711);
+
+		assertInstanceOf(PBEParameterSpec.class, parameterSpec);
+		assertArrayEquals(salt, ((PBEParameterSpec)parameterSpec).getSalt());
+		assertEquals(4711, ((PBEParameterSpec)parameterSpec).getIterationCount());
+	}
+
+	@Test
+	public void newKeySpec_answersThePbeKeySpecWithPasswordSaltAndIterationCount() throws Exception
+	{
+		byte[] salt = { 1, 2, 3, 4, 5, 6, 7, 8 };
+		TestPbeCryptor cryptor = new TestPbeCryptor(
+			CryptModel.<Cipher, String, String> builder().key("test-password").build());
+
+		KeySpec keySpec = cryptor.newKeySpec("test-password", salt, 4711);
+
+		assertInstanceOf(PBEKeySpec.class, keySpec);
+		assertArrayEquals("test-password".toCharArray(), ((PBEKeySpec)keySpec).getPassword());
+		assertArrayEquals(salt, ((PBEKeySpec)keySpec).getSalt());
+		assertEquals(4711, ((PBEKeySpec)keySpec).getIterationCount());
+	}
+
+	@Test
+	public void newCipher_withSecretKeyAndParameterSpec_producesAWorkingCipherPair()
+		throws Exception
+	{
+		byte[] salt = { 1, 2, 3, 4, 5, 6, 7, 8 };
+		int iterationCount = 1024;
+		String algorithm = CompoundAlgorithm.PBE_WITH_SHA1_AND_128BIT_AES_CBC_BC.getAlgorithm();
+		TestPbeCryptor cryptor = new TestPbeCryptor(
+			CryptModel.<Cipher, String, String> builder().key("test-password").build());
+
+		SecretKey secretKey = cryptor.newSecretKeyFactory(algorithm)
+			.generateSecret(cryptor.newKeySpec("test-password", salt, iterationCount));
+		AlgorithmParameterSpec parameterSpec = cryptor.newAlgorithmParameterSpec(salt,
+			iterationCount);
+
+		Cipher encryptCipher = cryptor.newCipher(Cipher.ENCRYPT_MODE, secretKey, parameterSpec,
+			algorithm);
+		Cipher decryptCipher = cryptor.newCipher(Cipher.DECRYPT_MODE, secretKey, parameterSpec,
+			algorithm);
+
+		assertEquals(algorithm, encryptCipher.getAlgorithm());
+		byte[] plain = "the quick brown fox".getBytes(StandardCharsets.UTF_8);
+		byte[] encrypted = encryptCipher.doFinal(plain);
+		assertFalse(Arrays.equals(plain, encrypted));
+		assertArrayEquals(plain, decryptCipher.doFinal(encrypted));
+	}
+
 	/**
 	 * Minimal concrete {@link AbstractCryptor} subclass used only to exercise the protected
 	 * factory-method defaults under test. Builds a real PBE {@link Cipher} so construction also
@@ -168,6 +242,11 @@ public class AbstractCryptorTest
 		TestPbeCryptor(final CryptModel<Cipher, String, String> model) throws Exception
 		{
 			super(model);
+		}
+
+		TestPbeCryptor(final String key) throws Exception
+		{
+			super(key);
 		}
 
 		@Override

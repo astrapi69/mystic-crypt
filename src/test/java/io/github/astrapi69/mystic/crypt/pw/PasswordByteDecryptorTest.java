@@ -27,6 +27,7 @@ package io.github.astrapi69.mystic.crypt.pw;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -71,4 +72,65 @@ public class PasswordByteDecryptorTest
 		assertArrayEquals(textBytes, decryptor.decrypt(secondEncrypted));
 	}
 
+	/**
+	 * Test method for {@link PasswordByteDecryptor#decrypt(byte[])}, encrypted data that is shorter
+	 * than the salt prefix has to be rejected
+	 */
+	@Test
+	public void decrypt_withDataShorterThanTheSaltPrefix_throwsAnIllegalArgumentException()
+	{
+		PasswordByteDecryptor decryptor = new PasswordByteDecryptor("foo");
+
+		assertThrows(IllegalArgumentException.class,
+			() -> decryptor.decrypt(new byte[PbeCipherSupport.SALT_LENGTH - 1]));
+	}
+
+	/**
+	 * Test method for {@link PasswordByteDecryptor#decrypt(byte[])}, data of exactly the salt
+	 * prefix length is <em>not</em> rejected by the length guard (it fails later during
+	 * decryption). This pins the boundary of the {@code length < SALT_LENGTH} check so a {@code <=}
+	 * mutant is caught.
+	 */
+	@Test
+	public void decrypt_withDataOfExactlyTheSaltPrefixLength_isNotRejectedByTheLengthGuard()
+	{
+		PasswordByteDecryptor decryptor = new PasswordByteDecryptor("foo");
+
+		Exception exception = assertThrows(Exception.class,
+			() -> decryptor.decrypt(new byte[PbeCipherSupport.SALT_LENGTH]));
+		assertFalse(exception instanceof IllegalArgumentException,
+			"data of exactly the salt length must pass the length guard, not be rejected by it");
+	}
+
+	/**
+	 * Test method for {@link PasswordByteDecryptor#decrypt(byte[])}, the encrypted data is
+	 * mandatory
+	 */
+	@Test
+	public void decrypt_withoutData_throwsANullPointerException()
+	{
+		PasswordByteDecryptor decryptor = new PasswordByteDecryptor("foo");
+
+		assertThrows(NullPointerException.class, () -> decryptor.decrypt(null));
+	}
+
+	/**
+	 * Test method for {@link PasswordByteDecryptor#resetPassword()}, after the password is reset
+	 * nothing can be decrypted anymore
+	 *
+	 * @throws Exception
+	 *             is thrown if an error occurs
+	 */
+	@Test
+	public void resetPassword_clearsThePasswordSoNothingCanBeDecryptedAnymore() throws Exception
+	{
+		byte[] textBytes = "bar".getBytes(StandardCharsets.UTF_8);
+		byte[] encrypted = new PasswordByteEncryptor("foo").encrypt(textBytes);
+		PasswordByteDecryptor decryptor = new PasswordByteDecryptor("foo");
+		assertArrayEquals(textBytes, decryptor.decrypt(encrypted));
+
+		decryptor.resetPassword();
+
+		assertThrows(NullPointerException.class, () -> decryptor.decrypt(encrypted));
+	}
 }
