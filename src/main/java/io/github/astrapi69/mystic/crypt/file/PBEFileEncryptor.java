@@ -24,11 +24,15 @@
  */
 package io.github.astrapi69.mystic.crypt.file;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -218,16 +222,30 @@ public class PBEFileEncryptor extends AbstractFileEncryptor
 				filename + encryptedFileExtension);
 		}
 		List<CryptObjectDecorator<String>> decorators = getModel().getDecorators();
+		InputStream source;
 		if (decorators != null && !decorators.isEmpty())
 		{
-			for (int i = 0; i < decorators.size(); i++)
+			// Decorate in memory and encrypt the decorated content. The decorators are applied in
+			// list order, so the last one ends up outermost; PBEFileDecryptor#onAfterDecrypt strips
+			// them in reverse order. The source file itself is never modified.
+			// (Previously the decorated string returned by decorateFile was discarded and the raw
+			// file encrypted, so decorators silently had no effect on file encryption at all.)
+			String content = new String(Files.readAllBytes(toEncrypt.toPath()),
+				StandardCharsets.UTF_8);
+			for (CryptObjectDecorator<String> decorator : decorators)
 			{
-				CryptObjectDecoratorExtensions.decorateFile(toEncrypt, decorators.get(i));
+				content = CryptObjectDecoratorExtensions.decorateWithStringDecorator(content,
+					decorator);
 			}
+			source = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
+		}
+		else
+		{
+			source = new FileInputStream(toEncrypt);
 		}
 		try (
-			CryptoCipherInputStream cis = new CryptoCipherInputStream(
-				new FileInputStream(toEncrypt), getModel().getCipher());
+			CryptoCipherInputStream cis = new CryptoCipherInputStream(source,
+				getModel().getCipher());
 			OutputStream out = new FileOutputStream(encryptedFile))
 		{
 			int c;
