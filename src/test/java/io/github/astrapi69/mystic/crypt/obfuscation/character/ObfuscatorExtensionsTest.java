@@ -584,18 +584,17 @@ public class ObfuscatorExtensionsTest
 	}
 
 	/**
-	 * Test method for {@link ObfuscatorExtensions#inverse(BiMap)},
-	 * {@link ObfuscatorExtensions#inverseToMap(BiMap)} and
+	 * Test method for {@link ObfuscatorExtensions#inverse(BiMap)} and
 	 * {@link ObfuscatorExtensions#disentangleImproved(BiMap, String)} with a plain
 	 * {@link HashBiMap}
 	 * <p>
-	 * Note: this test documents a known defect. All three methods clone their arguments over
-	 * {@link ObfuscatorExtensions#tryToClone(Object)} which wraps the result of the clone helper in
-	 * {@link Optional#of(Object)}. The clone helper answers null for a {@link HashBiMap} and for a
-	 * {@link Character}, so the methods fail with a {@link NullPointerException} for exactly the
-	 * types that the signatures ask for. Once {@code tryToClone} uses
-	 * {@link Optional#ofNullable(Object)} this test has to be replaced by real round trip
-	 * assertions.
+	 * Note: this test documents a known defect that is out of scope here. Both methods clone the
+	 * whole {@link BiMap} argument over {@link ObfuscatorExtensions#tryToClone(Object)} which wraps
+	 * the result of the clone helper in {@link Optional#of(Object)}. The clone helper answers null
+	 * for a {@link HashBiMap}, so the methods fail with a {@link NullPointerException} for a plain
+	 * {@link HashBiMap}. ({@link ObfuscatorExtensions#inverseToMap(BiMap)} used to be listed here
+	 * too, but its own defect - cloning the immutable {@link Character} key - has been fixed, see
+	 * {@link #inverseToMap_withACloneableBiMap_mapsEveryRuleToItsCharacter()}.)
 	 */
 	@Test
 	public void inverseAndDisentangleImproved_currentlyFailForPlainHashBiMaps()
@@ -603,12 +602,27 @@ public class ObfuscatorExtensionsTest
 		assertThrows(NullPointerException.class,
 			() -> ObfuscatorExtensions.inverse(newSmallChainRules()));
 		assertThrows(NullPointerException.class,
-			() -> ObfuscatorExtensions.inverseToMap(newSmallChainRules()));
-		assertThrows(NullPointerException.class,
 			() -> ObfuscatorExtensions.disentangleImproved(newSmallChainRules(), "AcAC"));
-		// the Character keys can never be cloned, so inverseToMap fails for a cloneable map too
-		assertThrows(NullPointerException.class,
-			() -> ObfuscatorExtensions.inverseToMap(new CloneableBiMap(newIndependentRules())));
+	}
+
+	/**
+	 * Test method for {@link ObfuscatorExtensions#inverseToMap(BiMap)}, every rule of the given
+	 * {@link BiMap} has to end up as a key of the answered map, mapped to the character it belongs
+	 * to. This used to throw a {@link NullPointerException} because the method cloned the immutable
+	 * {@link Character} key, whose clone answers null; the key is now used directly.
+	 */
+	@Test
+	public void inverseToMap_withACloneableBiMap_mapsEveryRuleToItsCharacter()
+	{
+		BiMap<Character, ObfuscationOperationRule<Character, Character>> rules = new CloneableBiMap(
+			newIndependentRules());
+
+		Map<ObfuscationOperationRule<Character, Character>, Character> inverted = ObfuscatorExtensions
+			.inverseToMap(rules);
+
+		assertEquals(rules.size(), inverted.size());
+		assertEquals(Set.of('a', 'b', 'c'), Set.copyOf(inverted.values()));
+		inverted.forEach((rule, character) -> assertEquals(rule.getCharacter(), character));
 	}
 
 	/**

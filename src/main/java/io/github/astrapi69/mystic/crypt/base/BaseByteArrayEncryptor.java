@@ -129,9 +129,9 @@ public class BaseByteArrayEncryptor extends AbstractByteArrayEncryptor
 	private static CryptModel<Cipher, SecretKey, String> newModel(final SecretKey symmetricKey)
 	{
 		final var builder = CryptModel.<Cipher, SecretKey, String> builder().key(symmetricKey);
+		// SecretKey.getAlgorithm() is contractually non-null, so only the PBE prefix must be tested
 		final String keyAlgorithm = symmetricKey.getAlgorithm();
-		if (keyAlgorithm != null
-			&& !keyAlgorithm.toUpperCase(Locale.ROOT).startsWith(PBE_KEY_ALGORITHM_PREFIX))
+		if (!keyAlgorithm.toUpperCase(Locale.ROOT).startsWith(PBE_KEY_ALGORITHM_PREFIX))
 		{
 			builder.algorithm(CHACHA20_KEY_ALGORITHM.equalsIgnoreCase(keyAlgorithm)
 				? MysticSymmetricAlgorithm.CHACHA20_POLY1305

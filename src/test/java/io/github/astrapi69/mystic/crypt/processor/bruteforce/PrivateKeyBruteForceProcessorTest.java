@@ -27,9 +27,11 @@ package io.github.astrapi69.mystic.crypt.processor.bruteforce;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
+import java.time.Duration;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -74,7 +76,9 @@ public class PrivateKeyBruteForceProcessorTest
 	{
 		return Stream.of(new UnresolvableCase("password protected private key", "pem/test.key.pem"),
 			new UnresolvableCase("private key file that does not exist",
-				"pem/this-file-does-not-exist.pem"));
+				"pem/this-file-does-not-exist.pem"),
+			new UnresolvableCase("unencrypted PKCS#8 key the reader can not turn into a key pair",
+				"pem/pkcs8-unencrypted.pem"));
 	}
 
 	/**
@@ -132,6 +136,28 @@ public class PrivateKeyBruteForceProcessorTest
 	{
 		assertTrue(
 			PrivateKeyReader.isPrivateKeyPasswordProtected(testResource("pem/test.key.pem")));
+	}
+
+	/**
+	 * Test method for
+	 * {@link PrivateKeyBruteForceProcessor#resolvePassword(File, BruteForceProcessor)}, an
+	 * unencrypted PKCS#8 key (header {@code BEGIN PRIVATE KEY}) is not password protected, so the
+	 * method enters its resolution path, yet the reader rejects it with a {@code PEMException} on
+	 * every attempt. The previous implementation treated that as a wrong-password signal and looped
+	 * forever over an ever growing attempt space; this test hangs against the old code (hence the
+	 * preemptive timeout) and passes against the fix, which treats the unparseable key as a
+	 * terminal error and answers an empty optional.
+	 */
+	@Test
+	public void resolvePassword_terminatesForAnUnencryptedPkcs8KeyInsteadOfHanging()
+	{
+		File privateKeyFile = testResource("pem/pkcs8-unencrypted.pem");
+
+		Optional<String> resolved = assertTimeoutPreemptively(Duration.ofSeconds(10),
+			() -> PrivateKeyBruteForceProcessor.resolvePassword(privateKeyFile,
+				new BruteForceProcessor(ALPHABET, 1)));
+
+		assertFalse(resolved.isPresent());
 	}
 
 	/**

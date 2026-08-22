@@ -26,10 +26,12 @@ package io.github.astrapi69.mystic.crypt.secret;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.List;
 
@@ -46,6 +48,48 @@ import io.github.astrapi69.mystic.crypt.secret.FeldmanVSS.ShareGenerationResult;
  */
 class FeldmanVSSTest
 {
+
+	/**
+	 * Test method for {@link FeldmanVSS#findGenerator(BigInteger, BigInteger, SecureRandom)}, a
+	 * drawn candidate whose value collapses to 1 (its (p-1)/q-th power is 1) must be rejected and
+	 * the search must retry with the next candidate. The first {@code nextBytes} call is forced to
+	 * all zeros so that the candidate becomes 1 and the retry branch of the do/while loop is taken
+	 * exactly once; the second call falls back to real randomness and yields a valid generator of
+	 * the subgroup of order q.
+	 */
+	@Test
+	void findGenerator_retriesWhenTheDrawnCandidateIsNotAGenerator()
+	{
+		// 23 is a safe prime: 23 = 2 * 11 + 1 with q = 11 prime, so the subgroup has order 11
+		final BigInteger p = BigInteger.valueOf(23);
+		final BigInteger q = BigInteger.valueOf(11);
+		final SecureRandom forcingOneRetry = new SecureRandom()
+		{
+			private static final long serialVersionUID = 1L;
+			private int calls = 0;
+
+			@Override
+			public void nextBytes(final byte[] bytes)
+			{
+				if (calls++ == 0)
+				{
+					// all zeros -> candidate BigInteger 0 -> h = 1 -> 1^((p-1)/q) == 1 -> retry
+					Arrays.fill(bytes, (byte)0);
+				}
+				else
+				{
+					super.nextBytes(bytes);
+				}
+			}
+		};
+
+		final BigInteger generator = FeldmanVSS.findGenerator(p, q, forcingOneRetry);
+
+		assertNotNull(generator);
+		assertNotEquals(BigInteger.ONE, generator, "1 is not a valid generator");
+		assertEquals(BigInteger.ONE, generator.modPow(q, p),
+			"the generator must have order dividing q");
+	}
 
 	@Test
 	void testSplitSecretWithDefaults()

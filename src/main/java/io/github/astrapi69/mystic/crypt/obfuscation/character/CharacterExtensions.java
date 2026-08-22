@@ -49,7 +49,10 @@ public final class CharacterExtensions
 		{
 			return true;
 		}
-		if (character == null && another != null || character != null && another == null)
+		// The both-null case already returned above, so reaching here means at most one operand is
+		// null; testing either for null is enough and avoids two structurally unreachable
+		// sub-conditions of the former compound expression.
+		if (character == null || another == null)
 		{
 			return false;
 		}

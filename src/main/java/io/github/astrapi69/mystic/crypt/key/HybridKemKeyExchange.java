@@ -30,14 +30,11 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.Security;
 import java.util.Arrays;
 import java.util.Objects;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import io.github.astrapi69.crypt.api.algorithm.AesAlgorithm;
 import io.github.astrapi69.crypt.api.algorithm.key.KeyAgreementAlgorithm;
@@ -46,6 +43,7 @@ import io.github.astrapi69.crypt.data.factory.HkdfExtensions;
 import io.github.astrapi69.crypt.data.factory.KemFactory;
 import io.github.astrapi69.crypt.data.factory.KeyAgreementFactory;
 import io.github.astrapi69.crypt.data.factory.KeyPairFactory;
+import io.github.astrapi69.mystic.crypt.provider.SecurityProviderSupport;
 
 /**
  * The class {@link HybridKemKeyExchange} combines classical X25519 with post-quantum ML-KEM to
@@ -72,10 +70,7 @@ public final class HybridKemKeyExchange
 	static
 	{
 		// Register Bouncy Castle provider if not already registered (needed for ML-KEM)
-		if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null)
-		{
-			Security.addProvider(new BouncyCastleProvider());
-		}
+		SecurityProviderSupport.ensureBouncyCastle();
 	}
 
 	private HybridKemKeyExchange()

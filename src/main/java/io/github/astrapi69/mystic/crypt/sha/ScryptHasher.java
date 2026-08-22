@@ -26,11 +26,11 @@ package io.github.astrapi69.mystic.crypt.sha;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.security.Security;
 import java.util.Arrays;
 
 import org.bouncycastle.crypto.generators.SCrypt;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
+
+import io.github.astrapi69.mystic.crypt.provider.SecurityProviderSupport;
 
 /**
  * The class {@link ScryptHasher} provides scrypt hashing functionality using Bouncy Castle. Scrypt
@@ -54,10 +54,7 @@ public final class ScryptHasher
 	static
 	{
 		// Register Bouncy Castle provider if not already registered
-		if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null)
-		{
-			Security.addProvider(new BouncyCastleProvider());
-		}
+		SecurityProviderSupport.ensureBouncyCastle();
 	}
 
 	/** Default N parameter (CPU/memory cost): 2^14 = 16384 */
@@ -293,7 +290,9 @@ public final class ScryptHasher
 	 */
 	private static void validateParameters(final int n, final int r, final int p)
 	{
-		if (n < MIN_N || !isPowerOfTwo(n))
+		// isPowerOfTwo is evaluated first (it has no side effects) so that it is exercised for
+		// every n, including n <= 0, which keeps its guard against non-positive values reachable
+		if (!isPowerOfTwo(n) || n < MIN_N)
 		{
 			throw new IllegalArgumentException("N must be a power of 2 and at least " + MIN_N);
 		}

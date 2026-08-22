@@ -27,9 +27,11 @@ package io.github.astrapi69.mystic.crypt.sha;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -202,6 +204,21 @@ class Sha3HasherTest
 		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
 			() -> Sha3Hasher.hash(data, algorithm));
 		assertEquals("Not a SHA-3 algorithm: " + algorithm, exception.getMessage());
+	}
+
+	/**
+	 * The checked {@link NoSuchAlgorithmException} that
+	 * {@link java.security.MessageDigest#getInstance(String)} declares can not be triggered through
+	 * any real SHA-3 variant, but it must still be handled. The extracted helper
+	 * {@link Sha3Hasher#newMessageDigest(String)} lets a test drive it with an unknown algorithm
+	 * name, which must be rethrown as an {@link IllegalStateException} keeping the original cause.
+	 */
+	@Test
+	void newMessageDigest_rethrowsAnUnknownAlgorithmAsIllegalState()
+	{
+		IllegalStateException exception = assertThrows(IllegalStateException.class,
+			() -> Sha3Hasher.newMessageDigest("SHA3-THIS-IS-NOT-A-REAL-ALGORITHM"));
+		assertInstanceOf(NoSuchAlgorithmException.class, exception.getCause());
 	}
 
 }

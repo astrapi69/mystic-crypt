@@ -203,7 +203,10 @@ public final class ObfuscatorExtensions
 			{
 				currentOperationRule = swapped.get(currentCharacter);
 				Set<Integer> indexes = currentOperationRule.getIndexes();
-				if (!indexes.isEmpty() && indexes.contains(i))
+				// A character only reaches this branch as an operated character, whose rule
+				// always carries a non-empty index set, and contains() already answers false for
+				// an empty set, so an extra isEmpty() guard would be redundant dead code.
+				if (indexes.contains(i))
 				{
 					sb.append(currentOperationRule.getCharacter());
 				}
@@ -276,8 +279,11 @@ public final class ObfuscatorExtensions
 	{
 		Objects.requireNonNull(rules);
 		Map<ObfuscationOperationRule<Character, Character>, Character> invertedMap = new HashMap<>();
-		rules.entrySet().forEach(entry -> {
-			invertedMap.put(tryToClone(entry.getValue()).get(), tryToClone(entry.getKey()).get());
+		rules.forEach((character, rule) -> {
+			// The key is a Character, which is immutable, so it is used directly. Only the mutable
+			// rule value is cloned; cloning the Character key answered null and made this method
+			// throw a NullPointerException for exactly the types its signature accepts.
+			invertedMap.put(tryToClone(rule).orElse(rule), character);
 		});
 		return invertedMap;
 	}

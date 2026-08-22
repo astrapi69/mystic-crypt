@@ -26,10 +26,10 @@ package io.github.astrapi69.mystic.crypt.sha;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.security.Security;
 
 import org.bouncycastle.crypto.digests.Blake2bDigest;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
+
+import io.github.astrapi69.mystic.crypt.provider.SecurityProviderSupport;
 
 /**
  * The class {@link Blake2bHasher} provides BLAKE2b hashing functionality using Bouncy Castle.
@@ -48,10 +48,7 @@ public final class Blake2bHasher
 	static
 	{
 		// Register Bouncy Castle provider if not already registered
-		if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null)
-		{
-			Security.addProvider(new BouncyCastleProvider());
-		}
+		SecurityProviderSupport.ensureBouncyCastle();
 	}
 
 	/** Default digest length in bytes (64 bytes = 512 bits) */

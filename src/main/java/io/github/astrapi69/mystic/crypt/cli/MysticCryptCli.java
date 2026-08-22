@@ -24,9 +24,8 @@
  */
 package io.github.astrapi69.mystic.crypt.cli;
 
-import java.security.Security;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import io.github.astrapi69.mystic.crypt.provider.SecurityProviderSupport;
 
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -54,10 +53,7 @@ public class MysticCryptCli implements Runnable
 		// signing) resolve through Bouncy Castle; register it once for the whole CLI, including
 		// when
 		// subcommands are invoked programmatically through the root command in tests
-		if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null)
-		{
-			Security.addProvider(new BouncyCastleProvider());
-		}
+		SecurityProviderSupport.ensureBouncyCastle();
 	}
 
 	/**

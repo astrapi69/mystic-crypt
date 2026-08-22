@@ -60,44 +60,34 @@ public final class PrivateKeyBruteForceProcessor
 		BruteForceProcessor processor)
 	{
 		Objects.requireNonNull(processor);
-		Optional<String> optionalPassword = Optional.empty();
 		try
 		{
 			boolean isPasswordProtected = PrivateKeyReader
 				.isPrivateKeyPasswordProtected(privateKeyFile);
 
-			if (!isPasswordProtected)
+			if (isPasswordProtected)
 			{
-
-				String attempt;
-				attempt = processor.getCurrentAttempt();
-				Security.addProvider(new BouncyCastleProvider());
-				while (true)
-				{
-					try
-					{
-						EncryptedPrivateKeyReader.getKeyPair(privateKeyFile, attempt);
-						optionalPassword = Optional.of(attempt);
-						break;
-					}
-					catch (IOException e)
-					{
-						attempt = processor.getCurrentAttempt();
-						processor.increment();
-					}
-					catch (PKCSException e)
-					{
-						attempt = processor.getCurrentAttempt();
-						processor.increment();
-					}
-				}
+				// A password protected key is not resolved by this processor: there is nothing
+				// to try against the readers used here, so answer an empty optional
+				return Optional.empty();
 			}
+
+			// The key is not password protected, so a single read decides the outcome. Retrying
+			// with further passwords can never change the result for an unprotected key (the
+			// password is ignored while parsing it), therefore there is deliberately no brute
+			// force loop here. An unparseable or unsupported key (for example an unencrypted
+			// PKCS#8 key, which the reader rejects with a PEMException on every attempt) is a
+			// terminal error and answers an empty optional, rather than looping forever over an
+			// ever growing attempt space, which was the previous behaviour and hung the caller.
+			String attempt = processor.getCurrentAttempt();
+			Security.addProvider(new BouncyCastleProvider());
+			EncryptedPrivateKeyReader.getKeyPair(privateKeyFile, attempt);
+			return Optional.of(attempt);
 		}
-		catch (IOException ex)
+		catch (IOException | PKCSException e)
 		{
-			return optionalPassword;
+			return Optional.empty();
 		}
-		return optionalPassword;
 	}
 
 }
