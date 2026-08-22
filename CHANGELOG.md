@@ -21,6 +21,13 @@ CHANGED:
 
 FIXED:
 
+- Argon2id verify(): a zero m/t/p parameter in an encoded hash is now rejected as malformed
+  (returns false) instead of reaching Bouncy Castle, which threw IllegalArgumentException; the
+  decode guard is now <= 0 rather than < 0.
+- restored projectSourceCompatibility to 25 and the curated .gitignore, both of which an
+  automated commit had reverted (to JDK 21 and a generic template) after the JDK 25 upgrade.
+- README: replaced the dead oss.sonatype.org (OSSRH, sunset 2025) links and badge with the
+  Maven Central Portal.
 - PBEFileEncryptor/PBEFileDecryptor and FileEncryptor/FileDecryptor decorators: the encryptor computed the decorated file
   content via CryptObjectDecoratorExtensions#decorateFile and then discarded it, encrypting the raw
   file - CryptObjectDecorators configured on the CryptModel had no effect on file encryption at all.

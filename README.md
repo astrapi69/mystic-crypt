@@ -85,8 +85,8 @@ then add the dependency to the dependencies area
 
 ## Maven dependency
 
-Maven dependency is now available on sonatype.
-Check out [sonatype repository](https://oss.sonatype.org/index.html#nexus-search;quick~mystic-crypt) for latest snapshots and releases.
+Maven dependency is available on Maven Central.
+Check out the [Maven Central page](https://central.sonatype.com/artifact/io.github.astrapi69/mystic-crypt) for the latest releases.
 
 You can first define the version properties and add than the following maven dependency to your project `pom.xml` if you want to import the core functionality of mystic-crypt:
 
@@ -254,10 +254,10 @@ Here is a list of awesome projects for cryptography:
 |Special thanks to [Travis CI](https://travis-ci.com) for providing a free continuous integration service for open source projects|
 |     <img width=1000/>     |
 
-|**Nexus Sonatype repositories**|
+|**Maven Central**|
 |     :---:      |
-|[![sonatype repository](https://img.shields.io/nexus/r/https/oss.sonatype.org/io.github.astrapi69/mystic-crypt.svg?style=for-the-badge)](https://oss.sonatype.org/index.html#nexus-search;gav~io.github.astrapi69~mystic-crypt~~~) mystic-crypt|
-|Special thanks to [sonatype repository](https://www.sonatype.com) for providing a free maven repository service for open source projects|
+|[![Maven Central](https://img.shields.io/maven-central/v/io.github.astrapi69/mystic-crypt.svg?style=for-the-badge&label=Maven%20Central)](https://central.sonatype.com/artifact/io.github.astrapi69/mystic-crypt) mystic-crypt|
+|Special thanks to [Sonatype](https://www.sonatype.com) for providing the Maven Central Portal free for open source projects|
 |     <img width=1000/>     |
 
 |**codecov.io**|
