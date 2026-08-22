@@ -183,7 +183,10 @@ final class Argon2Support
 					throw new IllegalArgumentException("not a valid argon2id PHC-encoded hash");
 			}
 		}
-		if (memoryKB < 0 || iterations < 0 || parallelism < 0)
+		// Argon2 requires m >= 8 KB, t >= 1 and p >= 1; a zero (or negative) value is not a valid
+		// encoding, and letting it through would make Bouncy Castle throw from rawHash instead of
+		// verify() returning false for a malformed hash
+		if (memoryKB <= 0 || iterations <= 0 || parallelism <= 0)
 		{
 			throw new IllegalArgumentException("not a valid argon2id PHC-encoded hash");
 		}

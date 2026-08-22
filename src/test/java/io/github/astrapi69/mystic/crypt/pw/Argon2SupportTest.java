@@ -75,6 +75,14 @@ public class Argon2SupportTest
 				"$argon2id$v=19$m=8,t=-1,p=1$c2FsdHNhbHRzYWx0c2E$aGFzaA"),
 			new MalformedHashCase("negative parallelism parameter",
 				"$argon2id$v=19$m=8,t=1,p=-1$c2FsdHNhbHRzYWx0c2E$aGFzaA"),
+			// zero is not a valid Argon2 parameter either; without the <= 0 guard it would slip
+			// through decode() and make Bouncy Castle throw from the hash itself
+			new MalformedHashCase("zero memory parameter",
+				"$argon2id$v=19$m=0,t=1,p=1$c2FsdHNhbHRzYWx0c2E$aGFzaA"),
+			new MalformedHashCase("zero iterations parameter",
+				"$argon2id$v=19$m=8,t=0,p=1$c2FsdHNhbHRzYWx0c2E$aGFzaA"),
+			new MalformedHashCase("zero parallelism parameter",
+				"$argon2id$v=19$m=8,t=1,p=0$c2FsdHNhbHRzYWx0c2E$aGFzaA"),
 			new MalformedHashCase("too few parts", "$argon2id$v=19$m=8,t=1,p=1$c2FsdA"));
 	}
 
