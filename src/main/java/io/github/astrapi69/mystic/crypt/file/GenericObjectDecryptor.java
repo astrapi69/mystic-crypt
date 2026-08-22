@@ -138,7 +138,6 @@ public class GenericObjectDecryptor<R, D> extends AbstractObjectDecryptor<R, D>
 			ObjectInputStream inputStream = new ObjectInputStream(cipherInputStream);)
 		{
 			genericObject = (R)inputStream.readObject();
-			inputStream.close();
 		}
 		return genericObject;
 	}
