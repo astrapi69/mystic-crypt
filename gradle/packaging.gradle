@@ -1,5 +1,20 @@
 import java.text.SimpleDateFormat
 
+// Runnable uber-jar for the command-line interface: mystic-crypt-<version>-all.jar bundles every
+// runtime dependency plus a Main-Class, so it runs with `java -jar mystic-crypt-<version>-all.jar
+// <subcommand>`. It is an additional artifact and does NOT change the primary library jar. Run on
+// the classpath, so the bundled module-info descriptors are dropped to avoid an invalid multi-module
+// jar; shadow strips the dependencies' JAR signatures itself.
+shadowJar {
+    archiveClassifier = 'all'
+    manifest {
+        attributes('Main-Class': 'io.github.astrapi69.mystic.crypt.cli.MysticCryptCli')
+    }
+    exclude 'module-info.class'
+    exclude 'META-INF/versions/*/module-info.class'
+    mergeServiceFiles()
+}
+
 jar {
     manifest {
         attributes(

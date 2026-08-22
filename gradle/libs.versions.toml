@@ -12,6 +12,7 @@ file-worker-version = "19.0"
 gradle-plugin-grgit-version = "5.3.3"
 gradle-plugin-license-version = "0.16.1"
 gradle-plugin-pitest-version = "1.19.0"
+gradle-plugin-shadow-version = "9.0.0"
 gradle-plugin-spotless-version = "8.10.0"
 gradle-plugin-version-catalog-update-version = "1.1.1"
 gradle-plugin-versions-version = "0.61.0"
@@ -23,6 +24,7 @@ junit-jupiter-params-version = "6.1.3"
 junit-jupiter-version = "6.1.3"
 junit-platform-launcher-version = "6.1.3"
 meanbean-version = "3.0.0-M9"
+picocli-version = "4.7.6"
 pitest-junit5-plugin-version = "1.2.3"
 pitest-version = "1.25.9"
 random-beans-version = "3.9.0"
@@ -54,6 +56,7 @@ junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "jun
 junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit-jupiter-params-version" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-platform-launcher-version" }
 meanbean = { module = "com.github.meanbeanlib:meanbean", version.ref = "meanbean-version" }
+picocli = { module = "info.picocli:picocli", version.ref = "picocli-version" }
 random-beans = { module = "io.github.benas:random-beans", version.ref = "random-beans-version" }
 randomizer = { module = "io.github.astrapi69:randomizer", version.ref = "randomizer-version" }
 silly-bean = { module = "io.github.astrapi69:silly-bean", version.ref = "silly-bean-version" }
@@ -77,5 +80,6 @@ gradle-versions-plugin = { id = "com.github.ben-manes.versions", version.ref = "
 grgit-gradle = { id = "org.ajoberstar.grgit", version.ref = "gradle-plugin-grgit-version" }
 license-gradle-plugin = { id = "com.github.hierynomus.license", version.ref = "gradle-plugin-license-version" }
 pitest-gradle-plugin = { id = "info.solidsoft.pitest", version.ref = "gradle-plugin-pitest-version" }
+shadow-gradle = { id = "com.gradleup.shadow", version.ref = "gradle-plugin-shadow-version" }
 spotless-plugin-gradle = { id = "com.diffplug.spotless", version.ref = "gradle-plugin-spotless-version" }
 version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "gradle-plugin-version-catalog-update-version" }
