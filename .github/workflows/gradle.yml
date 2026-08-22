@@ -40,9 +40,9 @@ jobs:
         if: github.event_name == 'push'
         run: |
           if grep -q -- '-SNAPSHOT' gradle.properties; then
-            ./gradlew publishAggregationToCentralSnapshots
+            ./gradlew publishAllPublicationsToCentralSnapshots
           else
-            ./gradlew publishAggregationToCentralPortal
+            ./gradlew publishAllPublicationsToCentralPortal
           fi
         env:
           CENTRAL_PORTAL_TOKEN_USERNAME: ${{ secrets.CENTRAL_PORTAL_TOKEN_USERNAME }}

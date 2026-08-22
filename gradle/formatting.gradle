@@ -17,5 +17,11 @@ spotless {
         removeUnusedImports()
         // import order file as exported from eclipse
         eclipse("4.21").configFile("src/test/resources/spotless/alpharo-formatter.xml")
+        // Enforces the MIT header. This replaces the com.github.hierynomus.license plugin, whose
+        // License task reads Task.project at execution time and so fails under Gradle 10.
+        // The header is a plain block comment, not a javadoc comment: a /** */ comment placed
+        // before the package declaration documents nothing, which javac reports for every file as
+        // [dangling-doc-comments].
+        licenseHeaderFile(rootProject.file("src/main/resources/license-header.txt"))
     }
 }

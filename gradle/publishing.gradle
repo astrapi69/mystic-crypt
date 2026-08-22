@@ -63,6 +63,21 @@ publishing {
     }
 }
 
+// Central Portal publishing. This uses the per-project "com.gradleup.nmcp" plugin rather than the
+// "com.gradleup.nmcp.settings" one: mystic-crypt is a single-project build, so there is nothing to
+// aggregate, and the settings plugin's aggregation wiring passes a Project as a dependency notation
+// (DefaultNmcpSettings.kt:37), which Gradle 10 removes.
+nmcp {
+    publishAllPublicationsToCentralPortal {
+        // Generate a user token at https://central.sonatype.com/ (Account -> Generate User Token).
+        // This is NOT the legacy OSSRH username/password - the Portal Publisher API requires a
+        // dedicated token pair.
+        username = System.getenv("CENTRAL_PORTAL_TOKEN_USERNAME") ?: ""
+        password = System.getenv("CENTRAL_PORTAL_TOKEN_PASSWORD") ?: ""
+        publishingType = "AUTOMATIC"
+    }
+}
+
 signing {
     if (releaseVersion) {
         def signingKey = System.getenv("GPG_PRIVATE_KEY")
