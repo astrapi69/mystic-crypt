@@ -40,6 +40,17 @@ import picocli.CommandLine.Option;
 public class DerToPemCommand implements Callable<Integer>
 {
 
+	/**
+	 * Instantiates a new {@link DerToPemCommand}.
+	 * <p>
+	 * Declared explicitly, and public, because picocli builds this subcommand reflectively through
+	 * its default factory when {@link MysticCryptCli} dispatches to it; the class must therefore
+	 * keep an accessible no-argument constructor.
+	 */
+	public DerToPemCommand()
+	{
+	}
+
 	@Option(names = "--in", required = true, description = "The DER-encoded private key file to read.")
 	File in;
 

@@ -38,6 +38,17 @@ import picocli.CommandLine.Option;
 public class HashCommand implements Callable<Integer>
 {
 
+	/**
+	 * Instantiates a new {@link HashCommand}.
+	 * <p>
+	 * Declared explicitly, and public, because picocli builds this subcommand reflectively through
+	 * its default factory when {@link MysticCryptCli} dispatches to it; the class must therefore
+	 * keep an accessible no-argument constructor.
+	 */
+	public HashCommand()
+	{
+	}
+
 	@Option(names = { "-a",
 			"--algorithm" }, defaultValue = "argon2id", description = "Hashing algorithm: ${COMPLETION-CANDIDATES} (default: argon2id).")
 	PasswordAlgorithm algorithm;
