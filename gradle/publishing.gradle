@@ -74,7 +74,12 @@ nmcp {
         // dedicated token pair.
         username = System.getenv("CENTRAL_PORTAL_TOKEN_USERNAME") ?: ""
         password = System.getenv("CENTRAL_PORTAL_TOKEN_PASSWORD") ?: ""
-        publishingType = "AUTOMATIC"
+        // USER_MANAGED, matching crypt-api and crypt-data: CI uploads the bundle and the Portal
+        // validates it, but the version stays unpublished until it is released by hand at
+        // https://central.sonatype.com. AUTOMATIC would release it the moment validation passes,
+        // and a released Maven Central version can never be changed or withdrawn - only
+        // superseded by a new one.
+        publishingType = "USER_MANAGED"
     }
 }
 
