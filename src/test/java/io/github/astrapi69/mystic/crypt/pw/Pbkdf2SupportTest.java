@@ -26,9 +26,14 @@ package io.github.astrapi69.mystic.crypt.pw;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * The unit test class for the class {@link Pbkdf2Support}
@@ -83,9 +88,14 @@ public class Pbkdf2SupportTest
 	public void testVerifyFailsForTamperedHash()
 	{
 		final String encoded = Pbkdf2Support.hash(PASSWORD.toCharArray());
-		final String tampered = encoded.substring(0, encoded.length() - 1)
-			+ (encoded.charAt(encoded.length() - 1) == 'A' ? 'B' : 'A');
+		// flip the first character of the hash part: the trailing character of an unpadded base64
+		// string carries bits the decoder ignores, so it is not guaranteed to change the hash
+		final int hashStart = encoded.lastIndexOf('$') + 1;
+		final char original = encoded.charAt(hashStart);
+		final String tampered = encoded.substring(0, hashStart) + (original == 'A' ? 'B' : 'A')
+			+ encoded.substring(hashStart + 1);
 
+		assertNotEquals(encoded, tampered);
 		assertFalse(Pbkdf2Support.verify(PASSWORD.toCharArray(), tampered));
 	}
 
@@ -133,4 +143,59 @@ public class Pbkdf2SupportTest
 		}
 	}
 
+	/**
+	 * A scenario with an encoded hash that can not be verified
+	 *
+	 * @param description
+	 *            the human readable description of the scenario
+	 * @param encoded
+	 *            the malformed encoded hash
+	 */
+	record MalformedHashCase(String description, String encoded) {
+		@Override
+		public String toString()
+		{
+			return description;
+		}
+	}
+
+	static Stream<MalformedHashCase> malformedHashCases()
+	{
+		return Stream.of(new MalformedHashCase("too few parts", "$pbkdf2-sha256$i=1000$c2FsdA"),
+			new MalformedHashCase("wrong algorithm identifier",
+				"$argon2id$i=1000$c2FsdHNhbHRzYWx0c2E$aGFzaA"),
+			new MalformedHashCase("iteration parameter without the i= prefix",
+				"$pbkdf2-sha256$x=1000$c2FsdHNhbHRzYWx0c2E$aGFzaA"),
+			new MalformedHashCase("iteration count is not a number",
+				"$pbkdf2-sha256$i=not-a-number$c2FsdHNhbHRzYWx0c2E$aGFzaA"));
+	}
+
+	/**
+	 * Test method for {@link Pbkdf2Support#verify(char[], String)}, a malformed encoded hash never
+	 * verifies but also never propagates an exception
+	 *
+	 * @param testCase
+	 *            the test case
+	 */
+	@ParameterizedTest
+	@MethodSource("malformedHashCases")
+	public void testVerifyFailsForEveryMalformedEncoding(final MalformedHashCase testCase)
+	{
+		assertFalse(Pbkdf2Support.verify(PASSWORD.toCharArray(), testCase.encoded()));
+	}
+
+	/**
+	 * Test method for {@link Pbkdf2Support#hash(char[])} and
+	 * {@link Pbkdf2Support#verify(char[], String)}, both arguments are mandatory
+	 */
+	@Test
+	public void testHashAndVerifyRejectNullArguments()
+	{
+		final String encoded = Pbkdf2Support.hash(PASSWORD.toCharArray());
+
+		assertThrows(NullPointerException.class, () -> Pbkdf2Support.hash(null));
+		assertThrows(NullPointerException.class, () -> Pbkdf2Support.verify(null, encoded));
+		assertThrows(NullPointerException.class,
+			() -> Pbkdf2Support.verify(PASSWORD.toCharArray(), null));
+	}
 }

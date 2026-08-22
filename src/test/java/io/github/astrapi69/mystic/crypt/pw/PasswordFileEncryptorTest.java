@@ -26,19 +26,24 @@ package io.github.astrapi69.mystic.crypt.pw;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
 import java.util.Arrays;
 
+import javax.crypto.Cipher;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import com.google.common.io.Files;
 
 import io.github.astrapi69.checksum.FileChecksumExtensions;
 import io.github.astrapi69.crypt.api.algorithm.MdAlgorithm;
 import io.github.astrapi69.file.delete.DeleteFileExtensions;
+import io.github.astrapi69.file.read.ReadFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;
 import io.github.astrapi69.file.write.StoreFileExtensions;
 import io.github.astrapi69.random.object.RandomStringFactory;
@@ -128,5 +133,76 @@ public class PasswordFileEncryptorTest
 		// // clean up...
 		DeleteFileExtensions.delete(encrypted);
 		DeleteFileExtensions.delete(encryptedCnstr);
+	}
+
+	/**
+	 * Test method for {@link PasswordFileEncryptor#encrypt(File)}, without an explicit encrypted
+	 * file the base name of the source file with the extension '.enc' is used
+	 *
+	 * @param temporaryDirectory
+	 *            the temporary directory of this test
+	 * @throws Exception
+	 *             is thrown if an error occurs
+	 */
+	@Test
+	public void encrypt_withoutAnExplicitEncryptedFile_derivesTheFileNameFromTheSourceFile(
+		@TempDir File temporaryDirectory) throws Exception
+	{
+		File source = new File(temporaryDirectory, "secret-message.txt");
+		StoreFileExtensions.toFile(source, "the quick brown fox jumps over the lazy dog");
+
+		File encryptedFile = new PasswordFileEncryptor(password).encrypt(source);
+
+		assertEquals("secret-message.enc", encryptedFile.getName());
+		assertEquals(temporaryDirectory.getAbsolutePath(),
+			encryptedFile.getParentFile().getAbsolutePath());
+
+		File decryptedFile = new PasswordFileDecryptor(password,
+			new File(temporaryDirectory, "decrypted.txt")).decrypt(encryptedFile);
+		assertEquals("the quick brown fox jumps over the lazy dog",
+			ReadFileExtensions.fromFile(decryptedFile));
+	}
+
+	/**
+	 * Test method for {@link PasswordFileEncryptor#resetPassword()}, after the password is reset
+	 * nothing can be encrypted anymore
+	 *
+	 * @param temporaryDirectory
+	 *            the temporary directory of this test
+	 * @throws Exception
+	 *             is thrown if an error occurs
+	 */
+	@Test
+	public void resetPassword_clearsThePasswordSoNothingCanBeEncryptedAnymore(
+		@TempDir File temporaryDirectory) throws Exception
+	{
+		File source = new File(temporaryDirectory, "secret-message.txt");
+		StoreFileExtensions.toFile(source, "the quick brown fox");
+		PasswordFileEncryptor encryptor = new PasswordFileEncryptor(password,
+			new File(temporaryDirectory, "encrypted.enc"));
+
+		encryptor.resetPassword();
+
+		assertThrows(NullPointerException.class, () -> encryptor.encrypt(source));
+	}
+
+	/**
+	 * Test method for {@link PasswordFileEncryptor#encrypt(File)}, the file to encrypt is mandatory
+	 */
+	@Test
+	public void encrypt_withoutAFile_throwsANullPointerException()
+	{
+		PasswordFileEncryptor encryptor = new PasswordFileEncryptor(password);
+
+		assertThrows(NullPointerException.class, () -> encryptor.encrypt(null));
+	}
+
+	/**
+	 * Test method for {@link PasswordFileEncryptor#newOperationMode()}
+	 */
+	@Test
+	public void newOperationMode_isTheEncryptMode()
+	{
+		assertEquals(Cipher.ENCRYPT_MODE, new PasswordFileEncryptor(password).newOperationMode());
 	}
 }

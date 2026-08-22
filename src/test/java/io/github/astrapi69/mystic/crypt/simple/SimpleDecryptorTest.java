@@ -24,9 +24,16 @@
  */
 package io.github.astrapi69.mystic.crypt.simple;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import javax.crypto.Cipher;
+
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.meanbean.test.BeanTester;
+
+import io.github.astrapi69.crypt.api.algorithm.compound.CompoundAlgorithm;
 
 /**
  * The unit test class for the class {@link SimpleDecryptor}
@@ -45,4 +52,34 @@ public class SimpleDecryptorTest
 		beanTester.testBean(SimpleDecryptor.class);
 	}
 
+	/**
+	 * Test method for {@link SimpleDecryptor#getPrivateKey()}, the private key given to the
+	 * constructor is answered
+	 */
+	@Test
+	public void getPrivateKey_answersThePrivateKeyOfTheConstructor()
+	{
+		assertEquals(CompoundAlgorithm.PASSWORD,
+			new SimpleDecryptor(CompoundAlgorithm.PASSWORD).getPrivateKey());
+	}
+
+	/**
+	 * Test method for {@link SimpleDecryptor#newOperationMode()}, a decryptor always works in the
+	 * decrypt mode
+	 */
+	@Test
+	public void newOperationMode_isTheDecryptMode()
+	{
+		assertEquals(Cipher.DECRYPT_MODE,
+			new SimpleDecryptor(CompoundAlgorithm.PASSWORD).newOperationMode());
+	}
+
+	/**
+	 * Test method for {@link SimpleDecryptor#SimpleDecryptor(String)}, the private key is mandatory
+	 */
+	@Test
+	public void constructor_withoutPrivateKey_throwsANullPointerException()
+	{
+		assertThrows(NullPointerException.class, () -> new SimpleDecryptor(null));
+	}
 }

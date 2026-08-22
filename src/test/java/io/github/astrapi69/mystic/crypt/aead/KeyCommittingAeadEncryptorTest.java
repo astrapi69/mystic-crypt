@@ -209,6 +209,27 @@ class KeyCommittingAeadEncryptorTest
 	}
 
 	@Test
+	void testDecryptRejectsDataShorterThanTheMinimumLength()
+	{
+		// NONCE_LENGTH (12) + COMMITMENT_TAG_LENGTH (32) + 1 = 45 is the minimum length; one byte
+		// less must be rejected by the length guard
+		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+			() -> encryptor.decrypt(new byte[44]));
+		assertTrue(exception.getMessage().contains("too short"));
+	}
+
+	@Test
+	void testDecryptWithDataOfExactlyTheMinimumLengthIsNotRejectedByTheLengthGuard()
+	{
+		// data of exactly the minimum length (45 bytes) must pass the length guard and fail later
+		// during commitment verification, not be rejected by the "too short" guard. This pins the
+		// boundary so a <= mutant is caught.
+		Exception exception = assertThrows(Exception.class, () -> encryptor.decrypt(new byte[45]));
+		assertFalse(exception instanceof IllegalArgumentException,
+			"data of exactly the minimum length must pass the length guard, not be rejected by it");
+	}
+
+	@Test
 	void testWrongAssociatedDataFailsDecryption() throws Exception
 	{
 		byte[] plaintext = "Message with AD".getBytes();

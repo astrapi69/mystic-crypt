@@ -25,6 +25,7 @@
 package io.github.astrapi69.mystic.crypt.gm;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URL;
 
@@ -61,6 +62,12 @@ public class GoogleMapsUrlSignerTest
 
 		signRequest = GoogleMapsUrlSigner.signRequest("YOUR_PRIVATE_KEY", "/alpha/beta", "quest");
 		assertNotNull(signRequest);
+		// the returned value must be the signed resource, i.e. path?query with the signature
+		// appended - guards against a mutant that returns an empty string
+		assertTrue(signRequest.startsWith("/alpha/beta?quest&signature="),
+			"expected the signed resource but was: " + signRequest);
+		assertTrue(signRequest.length() > "/alpha/beta?quest&signature=".length(),
+			"expected a non-empty signature to be appended");
 	}
 
 	/**
@@ -72,10 +79,34 @@ public class GoogleMapsUrlSignerTest
 		URL url;
 		String signRequest;
 
-		url = new URL(RandomWebObjectFactory.randomWebsite());
+		url = new URL("https://maps.googleapis.com/maps/api/geocode/json?address=NewYork");
 
 		signRequest = GoogleMapsUrlSigner.signRequest(url, "YOUR_PRIVATE_KEY");
 		assertNotNull(signRequest);
+		// the returned value must be the full url (protocol://host + signed path) - guards against
+		// a mutant that returns an empty string
+		assertTrue(signRequest.startsWith("https://maps.googleapis.com"),
+			"expected the full signed url but was: " + signRequest);
+		assertTrue(signRequest.contains("&signature="),
+			"expected the signature parameter to be appended");
+	}
+
+	/**
+	 * Test method for {@link GoogleMapsUrlSigner#signRequest(URL, String)} using a random website
+	 */
+	@Test
+	public void testSignRequestURLStringRandom() throws Exception
+	{
+		URL url = new URL(RandomWebObjectFactory.randomWebsite());
+		String signRequest = GoogleMapsUrlSigner.signRequest(url, "YOUR_PRIVATE_KEY");
+		assertNotNull(signRequest);
+		// whatever host was generated, the result must be that url with a signature appended
+		assertTrue(signRequest.startsWith(url.getProtocol() + "://" + url.getHost()),
+			"expected the signed url to keep protocol and host but was: " + signRequest);
+		assertTrue(signRequest.contains("signature="),
+			"expected the signature parameter to be appended");
+		assertTrue(signRequest.length() > url.toString().length(),
+			"expected a non-empty signature to be appended");
 	}
 
 	/**

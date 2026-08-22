@@ -109,10 +109,69 @@ public class HybridKemKeyExchangeTest
 	 * a non-ML-KEM algorithm
 	 */
 	@Test
+	public void testHybridKeyPairExposesItsParts() throws Exception
+	{
+		final HybridKeyPair keyPair = HybridKemKeyExchange
+			.newHybridKeyPair(KeyPairGeneratorAlgorithm.ML_KEM_512);
+
+		assertEquals(KeyPairGeneratorAlgorithm.ML_KEM_512, keyPair.getMlKemAlgorithm());
+		assertEquals(KeyPairGeneratorAlgorithm.ML_KEM_512,
+			keyPair.getHybridPublicKey().getMlKemAlgorithm());
+		assertEquals(keyPair.getX25519KeyPair().getPublic(),
+			keyPair.getHybridPublicKey().getX25519PublicKey());
+		assertEquals(keyPair.getMlKemKeyPair().getPublic(),
+			keyPair.getHybridPublicKey().getMlKemPublicKey());
+		assertEquals(keyPair.getX25519KeyPair().getPrivate(),
+			keyPair.getHybridPrivateKey().getX25519PrivateKey());
+		assertEquals(keyPair.getMlKemKeyPair().getPrivate(),
+			keyPair.getHybridPrivateKey().getMlKemPrivateKey());
+	}
+
+	/**
+	 * Test method for {@link HybridKemKeyExchange#newHybridKeyPair(KeyPairGeneratorAlgorithm)}
+	 */
+	@Test
 	public void testNewHybridKeyPairRejectsNonMlKemAlgorithm()
 	{
 		assertThrows(IllegalArgumentException.class,
 			() -> HybridKemKeyExchange.newHybridKeyPair(KeyPairGeneratorAlgorithm.Ed25519));
+	}
+
+	/**
+	 * Test method for
+	 * {@link HybridKemKeyExchange#hybridEncapsulate(java.security.PublicKey, java.security.PublicKey, KeyPairGeneratorAlgorithm, int)}
+	 * with a non-ML-KEM algorithm: the requireMlKem guard must reject it.
+	 */
+	@Test
+	public void testHybridEncapsulateRejectsNonMlKemAlgorithm() throws Exception
+	{
+		final HybridKeyPair recipientKeyPair = HybridKemKeyExchange
+			.newHybridKeyPair(KeyPairGeneratorAlgorithm.ML_KEM_768);
+		final HybridPublicKey recipientPublicKey = recipientKeyPair.getHybridPublicKey();
+		assertThrows(IllegalArgumentException.class,
+			() -> HybridKemKeyExchange.hybridEncapsulate(recipientPublicKey.getX25519PublicKey(),
+				recipientPublicKey.getMlKemPublicKey(), KeyPairGeneratorAlgorithm.Ed25519, 32));
+	}
+
+	/**
+	 * Test method for
+	 * {@link HybridKemKeyExchange#hybridDecapsulate(java.security.PrivateKey, java.security.PrivateKey, java.security.PublicKey, byte[], KeyPairGeneratorAlgorithm, int)}
+	 * with a non-ML-KEM algorithm: the requireMlKem guard must reject it.
+	 */
+	@Test
+	public void testHybridDecapsulateRejectsNonMlKemAlgorithm() throws Exception
+	{
+		final HybridKeyPair recipientKeyPair = HybridKemKeyExchange
+			.newHybridKeyPair(KeyPairGeneratorAlgorithm.ML_KEM_768);
+		final HybridPublicKey recipientPublicKey = recipientKeyPair.getHybridPublicKey();
+		final HybridPrivateKey recipientPrivateKey = recipientKeyPair.getHybridPrivateKey();
+		final HybridEncapsulation encapsulation = HybridKemKeyExchange.hybridEncapsulate(
+			recipientPublicKey.getX25519PublicKey(), recipientPublicKey.getMlKemPublicKey(),
+			KeyPairGeneratorAlgorithm.ML_KEM_768, 32);
+		assertThrows(IllegalArgumentException.class,
+			() -> HybridKemKeyExchange.hybridDecapsulate(recipientPrivateKey.getX25519PrivateKey(),
+				recipientPrivateKey.getMlKemPrivateKey(), encapsulation.getSenderX25519PublicKey(),
+				encapsulation.getMlKemCiphertext(), KeyPairGeneratorAlgorithm.Ed25519, 32));
 	}
 
 }

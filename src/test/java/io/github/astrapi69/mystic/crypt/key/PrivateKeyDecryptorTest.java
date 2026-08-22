@@ -25,7 +25,9 @@
 package io.github.astrapi69.mystic.crypt.key;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
 import java.security.PrivateKey;
@@ -158,6 +160,41 @@ public class PrivateKeyDecryptorTest
 		assertNotNull(decrypted);
 		expected = new String(decrypted, "UTF-8");
 		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Test method for {@link PrivateKeyDecryptor#decrypt(byte[])}: a symmetric blob of exactly the
+	 * nonce length is <em>not</em> rejected by the length guard (it fails later during GCM
+	 * decryption). This pins the boundary of the {@code symmetricBlob.length < NONCE_LENGTH} check
+	 * so a {@code <=} mutant is caught.
+	 *
+	 * @throws Exception
+	 *             is thrown if an error occurs
+	 */
+	@Test
+	public void decrypt_withASymmetricBlobOfExactlyTheNonceLength_isNotRejectedByTheLengthGuard()
+		throws Exception
+	{
+		File derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		File privatekeyDerFile = new File(derDir, "private.der");
+		PrivateKey privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
+		PublicKey publicKey = PrivateKeyExtensions.generatePublicKey(privateKey);
+
+		PublicKeyEncryptor encryptor = new PublicKeyEncryptor(publicKey);
+		byte[] encrypted = encryptor.encrypt("payload".getBytes("UTF-8"));
+
+		// keep the valid RSA-encrypted symmetric key but shrink the symmetric blob to exactly the
+		// nonce length (12 bytes), leaving an empty ciphertext region
+		io.github.astrapi69.crypt.data.model.AesRsaCryptModel model = org.apache.commons.lang3.SerializationUtils
+			.deserialize(encrypted);
+		io.github.astrapi69.crypt.data.model.AesRsaCryptModel tampered = new io.github.astrapi69.crypt.data.model.AesRsaCryptModel(
+			model.getEncryptedKey(), new byte[12]);
+		byte[] tamperedBytes = org.apache.commons.lang3.SerializationUtils.serialize(tampered);
+
+		PrivateKeyDecryptor decryptor = new PrivateKeyDecryptor(privateKey);
+		Exception exception = assertThrows(Exception.class, () -> decryptor.decrypt(tamperedBytes));
+		assertFalse(exception instanceof IllegalArgumentException,
+			"a blob of exactly the nonce length must pass the length guard, not be rejected by it");
 	}
 
 }

@@ -25,14 +25,19 @@
 package io.github.astrapi69.mystic.crypt.obfuscation.character;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
+import io.github.astrapi69.collection.set.SetFactory;
 import io.github.astrapi69.crypt.api.obfuscation.Obfuscatable;
+import io.github.astrapi69.crypt.api.obfuscation.rule.Operation;
 import io.github.astrapi69.crypt.data.obfuscation.rule.ObfuscationOperationRule;
 import io.github.astrapi69.test.base.AbstractTestCase;
 
@@ -75,6 +80,33 @@ public class CharacterObfuscatorTest extends AbstractTestCase<String, String>
 		obfuscator = null;
 		stringToObfuscate = null;
 		rules = null;
+	}
+
+	/**
+	 * Test method for {@link CharacterObfuscator#disentangle()}
+	 */
+	@Test
+	public void testValidatingConstructor()
+	{
+		CharacterObfuscator validated = new CharacterObfuscator(rules, "abac", true);
+		assertTrue(validated.isDisentanglable());
+		assertEquals("abac", validated.disentangle());
+
+		CharacterObfuscator notValidated = new CharacterObfuscator(rules, "abac", false);
+		assertFalse(notValidated.isDisentanglable(), "without validation the flag stays false");
+
+		BiMap<Character, ObfuscationOperationRule<Character, Character>> notDisentanglable = HashBiMap
+			.create();
+		notDisentanglable.put('a',
+			ObfuscationOperationRule.<Character, Character> builder().character('a')
+				.replaceWith('b').operation(Operation.UPPERCASE).indexes(SetFactory.newHashSet(0))
+				.build());
+		notDisentanglable.put('A',
+			ObfuscationOperationRule.<Character, Character> builder().character('A')
+				.replaceWith('c').operation(Operation.LOWERCASE).indexes(SetFactory.newHashSet(1))
+				.build());
+		CharacterObfuscator invalid = new CharacterObfuscator(notDisentanglable, "aA", true);
+		assertFalse(invalid.isDisentanglable());
 	}
 
 	/**

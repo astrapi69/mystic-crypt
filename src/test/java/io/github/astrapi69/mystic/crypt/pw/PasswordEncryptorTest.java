@@ -190,6 +190,14 @@ public class PasswordEncryptorTest
 		charset = StandardCharsets.UTF_8;
 		actual = instance.hashPassword(password, salt, hashAlgorithm, charset);
 		assertNotNull(actual);
+		// guard against a mutant that returns an empty string: the hash must be the SHA-1 digest
+		// of the salted password, deterministic for the same inputs and matchable
+		String expected = io.github.astrapi69.crypt.data.hash.HashExtensions.hash(password, salt,
+			hashAlgorithm, charset);
+		assertEquals(expected, actual);
+		assertTrue(actual.length() > 0);
+		assertTrue(
+			instance.match(actual, instance.hashPassword(password, salt, hashAlgorithm, charset)));
 	}
 
 	/**
@@ -255,4 +263,32 @@ public class PasswordEncryptorTest
 		assertFalse(instance.match("hash-value", "other-value"));
 	}
 
+	/**
+	 * Test method for {@link PasswordEncryptor#hashPasswordPbkdf2(String)} and
+	 * {@link PasswordEncryptor#matchPbkdf2(String, String)}
+	 */
+	@Test
+	public void hashPasswordPbkdf2_createsAHashThatOnlyMatchesTheSamePassword()
+	{
+		String encodedHash = instance.hashPasswordPbkdf2("secret-password");
+
+		assertNotNull(encodedHash);
+		assertTrue(instance.matchPbkdf2("secret-password", encodedHash));
+		assertFalse(instance.matchPbkdf2("another-password", encodedHash));
+	}
+
+	/**
+	 * Test method for {@link PasswordEncryptor#hashPasswordPbkdf2(String)}, every hash of the same
+	 * password is salted individually
+	 */
+	@Test
+	public void hashPasswordPbkdf2_isSaltedAndThereforeNotDeterministic()
+	{
+		String firstHash = instance.hashPasswordPbkdf2("secret-password");
+		String secondHash = instance.hashPasswordPbkdf2("secret-password");
+
+		assertNotEquals(firstHash, secondHash);
+		assertTrue(instance.matchPbkdf2("secret-password", firstHash));
+		assertTrue(instance.matchPbkdf2("secret-password", secondHash));
+	}
 }

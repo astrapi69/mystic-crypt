@@ -128,4 +128,40 @@ public class PBEFileEncryptorTest extends AbstractTestCase<String, String>
 		DeleteFileExtensions.delete(firstEncrypted);
 		DeleteFileExtensions.delete(secondEncrypted);
 	}
+
+	/**
+	 * Test method for {@link PBEFileDecryptor#decrypt(File)} that pins the observable effect of the
+	 * {@code onAfterDecrypt} post-processing step: when the {@link CryptModel} carries a string
+	 * decorator, decryption undecorates the recovered content, removing the decorator's prefix and
+	 * suffix from the decrypted file. Without the {@code onAfterDecrypt} decorator loop the markers
+	 * would survive into the decrypted file.
+	 *
+	 * @throws Exception
+	 *             is thrown if any error occurs on the execution
+	 */
+	@Test
+	public void decrypt_appliesTheDecoratorUndecorationInOnAfterDecrypt() throws Exception
+	{
+		File markerPlain = new File(cryptDir, "pbe-marker-plain.txt");
+		// the "$" prefix and "?" suffix match the decorator configured in setUp
+		Files.write(markerPlain.toPath(),
+			"$hello?".getBytes(java.nio.charset.StandardCharsets.UTF_8));
+		File markerEncrypted = new File(cryptDir, "pbe-marker.enc");
+		File markerDecrypted = new File(cryptDir, "pbe-marker.decrypted");
+
+		encryptor = new PBEFileEncryptor(cryptModel, markerEncrypted);
+		encrypted = encryptor.encrypt(markerPlain);
+
+		decryptor = new PBEFileDecryptor(cryptModel, markerDecrypted);
+		decrypted = decryptor.decrypt(encrypted);
+
+		String content = new String(Files.readAllBytes(decrypted.toPath()),
+			java.nio.charset.StandardCharsets.UTF_8);
+		assertEquals("hello", content);
+
+		// clean up...
+		DeleteFileExtensions.delete(markerPlain);
+		DeleteFileExtensions.delete(encrypted);
+		DeleteFileExtensions.delete(decrypted);
+	}
 }

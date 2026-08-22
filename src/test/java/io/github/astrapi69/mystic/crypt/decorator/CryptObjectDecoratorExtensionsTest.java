@@ -25,13 +25,16 @@
 package io.github.astrapi69.mystic.crypt.decorator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import io.github.astrapi69.crypt.data.model.CryptObjectDecorator;
 
@@ -365,4 +368,160 @@ public class CryptObjectDecoratorExtensionsTest
 		assertEquals(actual, expected);
 	}
 
+
+	/**
+	 * A scenario for undecorating with a character decorator
+	 *
+	 * @param description
+	 *            the human readable description of the scenario
+	 * @param input
+	 *            the decorated input
+	 * @param prefix
+	 *            the prefix character
+	 * @param suffix
+	 *            the suffix character
+	 * @param expected
+	 *            the expected undecorated result
+	 */
+	record CharacterUndecorateCase(String description, String input, char prefix, char suffix,
+		String expected) {
+		@Override
+		public String toString()
+		{
+			return description;
+		}
+	}
+
+	static Stream<CharacterUndecorateCase> characterUndecorateCases()
+	{
+		return Stream.of(new CharacterUndecorateCase("prefix and suffix", "[abc]", '[', ']', "abc"),
+			new CharacterUndecorateCase("only the prefix", "[abc", '[', ']', "abc"),
+			new CharacterUndecorateCase("only the suffix", "abc]", '[', ']', "abc"),
+			new CharacterUndecorateCase("neither prefix nor suffix", "abc", '[', ']', "abc"),
+			new CharacterUndecorateCase("same character as prefix and suffix", "sabcs", 's', 's',
+				"abc"));
+	}
+
+	/**
+	 * Test method for
+	 * {@link CryptObjectDecoratorExtensions#undecorateWithCharacterDecorator(String, CryptObjectDecorator)}
+	 *
+	 * @param testCase
+	 *            the test case
+	 */
+	@ParameterizedTest
+	@MethodSource("characterUndecorateCases")
+	void undecorateWithCharacterDecorator_removesOnlyThePresentDecorations(
+		final CharacterUndecorateCase testCase)
+	{
+		CryptObjectDecorator<Character> characterDecorator = CryptObjectDecorator
+			.<Character> builder().prefix(testCase.prefix()).suffix(testCase.suffix()).build();
+
+		assertEquals(testCase.expected(), CryptObjectDecoratorExtensions
+			.undecorateWithCharacterDecorator(testCase.input(), characterDecorator));
+	}
+
+	/**
+	 * A scenario for undecorating with a byte array decorator
+	 *
+	 * @param description
+	 *            the human readable description of the scenario
+	 * @param input
+	 *            the decorated input
+	 * @param prefix
+	 *            the prefix
+	 * @param suffix
+	 *            the suffix
+	 * @param expected
+	 *            the expected undecorated result
+	 */
+	record ByteArrayUndecorateCase(String description, String input, String prefix, String suffix,
+		String expected) {
+		@Override
+		public String toString()
+		{
+			return description;
+		}
+	}
+
+	static Stream<ByteArrayUndecorateCase> byteArrayUndecorateCases()
+	{
+		return Stream.of(
+			new ByteArrayUndecorateCase("prefix and suffix", "<<abc>>", "<<", ">>", "abc"),
+			new ByteArrayUndecorateCase("only the suffix", "abc>>", "<<", ">>", "abc"),
+			new ByteArrayUndecorateCase("suffix that only partially matches", "abc=>", "<<", ">>",
+				"abc=>"),
+			new ByteArrayUndecorateCase("suffix longer than the input", "a", "<<", ">>>>", "a"),
+			new ByteArrayUndecorateCase("empty suffix is never removed", "abc", "<<", "", "abc"),
+			new ByteArrayUndecorateCase("neither prefix nor suffix", "abc", "<<", ">>", "abc"),
+			new ByteArrayUndecorateCase(
+				"prefix bytes that appear elsewhere are removed from the input once", "a<b<c", "<<",
+				">>", "abc"),
+			new ByteArrayUndecorateCase("a doubled prefix is removed completely", "<<<<abc", "<<",
+				">>", "abc"),
+			new ByteArrayUndecorateCase("a prefix that only partially matches is kept", "<=abc",
+				"<<", ">>", "=abc"));
+	}
+
+	/**
+	 * Test method for
+	 * {@link CryptObjectDecoratorExtensions#undecorateWithBytearrayDecorator(String, CryptObjectDecorator)}
+	 *
+	 * @param testCase
+	 *            the test case
+	 */
+	@ParameterizedTest
+	@MethodSource("byteArrayUndecorateCases")
+	void undecorateWithBytearrayDecorator_removesOnlyThePresentDecorations(
+		final ByteArrayUndecorateCase testCase)
+	{
+		CryptObjectDecorator<byte[]> byteArrayDecorator = CryptObjectDecorator.<byte[]> builder()
+			.prefix(testCase.prefix().getBytes(StandardCharsets.UTF_8))
+			.suffix(testCase.suffix().getBytes(StandardCharsets.UTF_8)).build();
+
+		assertEquals(testCase.expected(), CryptObjectDecoratorExtensions
+			.undecorateWithBytearrayDecorator(testCase.input(), byteArrayDecorator));
+	}
+
+	/**
+	 * Test method for
+	 * {@link CryptObjectDecoratorExtensions#undecorateWithBytearrayDecorator(String, CryptObjectDecorator)}
+	 * with an input that is shorter than the suffix but matches its tail
+	 * <p>
+	 * Note: this test documents a known defect. The suffix check runs out of input bytes before it
+	 * runs out of suffix bytes and answers true, so the removal of the suffix tries to copy a
+	 * negative number of bytes.
+	 */
+	@Test
+	void undecorateWithBytearrayDecorator_currentlyFailsForAnInputShorterThanAMatchingSuffix()
+	{
+		CryptObjectDecorator<byte[]> byteArrayDecorator = CryptObjectDecorator.<byte[]> builder()
+			.prefix(new byte[0]).suffix(">>".getBytes(StandardCharsets.UTF_8)).build();
+
+		assertThrows(NegativeArraySizeException.class, () -> CryptObjectDecoratorExtensions
+			.undecorateWithBytearrayDecorator(">", byteArrayDecorator));
+	}
+
+	/**
+	 * Test method for
+	 * {@link CryptObjectDecoratorExtensions#decorateFile(java.io.File, CryptObjectDecorator)}: the
+	 * file content must be wrapped with the decorator's prefix and suffix. Guards against a mutant
+	 * that returns an empty string.
+	 *
+	 * @throws java.io.IOException
+	 *             if an I/O error occurs
+	 */
+	@Test
+	void decorateFile_wrapsTheFileContentWithThePrefixAndSuffix() throws java.io.IOException
+	{
+		java.io.File file = java.io.File.createTempFile("decorate-file-test", ".txt");
+		file.deleteOnExit();
+		java.nio.file.Files.write(file.toPath(), "payload".getBytes(StandardCharsets.UTF_8));
+
+		CryptObjectDecorator<String> decorator = CryptObjectDecorator.<String> builder()
+			.prefix("<<").suffix(">>").build();
+
+		String result = CryptObjectDecoratorExtensions.decorateFile(file, decorator);
+		assertEquals("<<payload>>", result);
+	}
 }

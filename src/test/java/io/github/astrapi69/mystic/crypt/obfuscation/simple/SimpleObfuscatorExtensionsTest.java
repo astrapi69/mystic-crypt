@@ -25,10 +25,10 @@
 package io.github.astrapi69.mystic.crypt.obfuscation.simple;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.meanbean.test.BeanTester;
 
@@ -249,17 +249,23 @@ public class SimpleObfuscatorExtensionsTest extends AbstractTestCase<String, Str
 	 * Test method for {@link SimpleObfuscatorExtensions#validate(BiMap)}
 	 */
 	@Test
-	@Disabled
 	public void testValidate()
 	{
-		boolean actual;
-		boolean expected;
-		BiMap<Character, ObfuscationRule<Character, Character>> biMap;
+		BiMap<Character, ObfuscationRule<Character, Character>> biMap = HashBiMap.create();
+		biMap.put('a', ObfuscationRule.<Character, Character> builder().character('a')
+			.replaceWith('x').build());
+		biMap.put('b', ObfuscationRule.<Character, Character> builder().character('b')
+			.replaceWith('y').build());
 
-		biMap = SimpleObfuscationTestData.getFirstBiMapObfuscationRules();
-		actual = SimpleObfuscatorExtensions.validate(biMap);
-		expected = true;
-		assertEquals(expected, actual);
+		assertTrue(SimpleObfuscatorExtensions.validate(biMap),
+			"no replacement is an obfuscated character, so it is disentanglable");
+
+		biMap.put('x', ObfuscationRule.<Character, Character> builder().character('x')
+			.replaceWith('z').build());
+
+		assertFalse(SimpleObfuscatorExtensions.validate(biMap),
+			"'x' is a replacement and an obfuscated character at the same time");
+		assertTrue(SimpleObfuscatorExtensions.validate(HashBiMap.create()));
 	}
 
 	/**

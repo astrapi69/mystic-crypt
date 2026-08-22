@@ -26,13 +26,17 @@ package io.github.astrapi69.mystic.crypt.hex;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import javax.crypto.Cipher;
 
 import org.junit.jupiter.api.Test;
 
+import io.github.astrapi69.collection.list.ListFactory;
 import io.github.astrapi69.crypt.api.algorithm.AesAlgorithm;
 import io.github.astrapi69.crypt.data.model.CryptModel;
+import io.github.astrapi69.crypt.data.model.CryptObjectDecorator;
+import io.github.astrapi69.mystic.crypt.algorithm.MysticSymmetricAlgorithm;
 
 /**
  * The unit test class for the class {@link HexableEncryptor}
@@ -77,5 +81,112 @@ public class HexableEncryptorTest
 		String decrypted = decryptor.decrypt(encrypted);
 
 		assertEquals(plaintext, decrypted);
+	}
+
+	/**
+	 * Test method for {@link HexableEncryptor#encrypt(byte[])}, a hexable encryptor works on
+	 * strings only
+	 *
+	 * @throws Exception
+	 *             is thrown if an error occurs
+	 */
+	@Test
+	public void testEncryptByteArrayIsNotSupported() throws Exception
+	{
+		HexableEncryptor encryptor = new HexableEncryptor("1234567890123456");
+
+		assertThrows(UnsupportedOperationException.class,
+			() -> encryptor.encrypt(new byte[] { 1, 2, 3 }));
+	}
+
+	/**
+	 * Test method for {@link HexableEncryptor#encrypt(String)} with the transformation
+	 * ChaCha20-Poly1305, every encryption uses a fresh nonce and can be decrypted again
+	 *
+	 * @throws Exception
+	 *             is thrown if an error occurs
+	 */
+	@Test
+	public void testEncryptDecryptWithChaCha20Poly1305() throws Exception
+	{
+		String key = "12345678901234567890123456789012";
+		HexableEncryptor encryptor = new HexableEncryptor(key,
+			MysticSymmetricAlgorithm.CHACHA20_POLY1305);
+		HexableDecryptor decryptor = new HexableDecryptor(key,
+			MysticSymmetricAlgorithm.CHACHA20_POLY1305);
+		String plaintext = "the quick brown fox jumps over the lazy dog";
+
+		String first = encryptor.encrypt(plaintext);
+		String second = encryptor.encrypt(plaintext);
+
+		assertNotEquals(first, second);
+		assertEquals(plaintext, decryptor.decrypt(first));
+		assertEquals(plaintext, decryptor.decrypt(second));
+	}
+
+	/**
+	 * Test method for {@link HexableEncryptor#encrypt(String)}, every configured decorator has to
+	 * be applied on the plain text before it is encrypted
+	 *
+	 * @throws Exception
+	 *             is thrown if an error occurs
+	 */
+	@Test
+	public void testEmptyDecoratorListIsTreatedLikeNoDecorators() throws Exception
+	{
+		String key = "1234567890123456";
+		String plaintext = "Lorem ipsum";
+		HexableEncryptor encryptor = new HexableEncryptor(
+			CryptModel.<Cipher, String, String> builder().key(key)
+				.decorators(ListFactory.newArrayList()).build());
+		HexableDecryptor decryptor = new HexableDecryptor(
+			CryptModel.<Cipher, String, String> builder().key(key)
+				.decorators(ListFactory.newArrayList()).build());
+
+		String encrypted = encryptor.encrypt(plaintext);
+
+		assertEquals(plaintext, decryptor.decrypt(encrypted));
+		assertEquals(plaintext, new HexableDecryptor(key).decrypt(encrypted));
+
+		CryptModel<Cipher, String, String> nullDecorators = CryptModel
+			.<Cipher, String, String> builder().key(key).build();
+		nullDecorators.setDecorators(null);
+		HexableEncryptor encryptorWithNull = new HexableEncryptor(nullDecorators);
+		HexableDecryptor decryptorWithNull = new HexableDecryptor(nullDecorators);
+
+		assertEquals(plaintext, decryptorWithNull.decrypt(encryptorWithNull.encrypt(plaintext)));
+	}
+
+	/**
+	 * Test method for {@link HexableEncryptor#encrypt(String)}, every configured decorator has to
+	 * be applied on the plain text before it is encrypted
+	 *
+	 * @throws Exception
+	 *             is thrown if an error occurs
+	 */
+	@Test
+	public void testEncryptAppliesEveryDecoratorBeforeEncryption() throws Exception
+	{
+		String key = "1234567890123456";
+		String plaintext = "Lorem ipsum";
+		HexableEncryptor encryptor = new HexableEncryptor(CryptModel
+			.<Cipher, String, String> builder().key(key)
+			.decorators(ListFactory.newArrayList(
+				CryptObjectDecorator.<String> builder().prefix("<<").suffix(">>").build(),
+				CryptObjectDecorator.<String> builder().prefix("[").suffix("]").build()))
+			.build());
+		// a decryptor without decorators answers the decorated plain text
+		HexableDecryptor decryptorWithoutDecorators = new HexableDecryptor(key);
+		HexableDecryptor decryptorWithDecorators = new HexableDecryptor(CryptModel
+			.<Cipher, String, String> builder().key(key)
+			.decorators(ListFactory.newArrayList(
+				CryptObjectDecorator.<String> builder().prefix("<<").suffix(">>").build(),
+				CryptObjectDecorator.<String> builder().prefix("[").suffix("]").build()))
+			.build());
+
+		String encrypted = encryptor.encrypt(plaintext);
+
+		assertEquals("[<<Lorem ipsum>>]", decryptorWithoutDecorators.decrypt(encrypted));
+		assertEquals(plaintext, decryptorWithDecorators.decrypt(encrypted));
 	}
 }

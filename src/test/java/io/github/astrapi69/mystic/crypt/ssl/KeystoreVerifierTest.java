@@ -25,6 +25,7 @@
 package io.github.astrapi69.mystic.crypt.ssl;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -155,6 +156,11 @@ class KeystoreVerifierTest
 		String validKeystorePath = keystoreFile.getAbsolutePath();
 		String type = "JKS";
 		assertTrue(KeystoreVerifier.isKeystoreFile(validKeystorePath, PASSWORD, type));
+		// the (String, String, String) overload must also answer false for a wrong password /
+		// missing file - guards against a mutant that always returns true
+		assertFalse(KeystoreVerifier.isKeystoreFile(validKeystorePath, "wrongpassword", type));
+		assertFalse(
+			KeystoreVerifier.isKeystoreFile("path/to/invalid/keystore.jks", PASSWORD, type));
 	}
 
 	/**
@@ -186,6 +192,9 @@ class KeystoreVerifierTest
 	public void testKeystoreFileObject() throws IOException
 	{
 		assertTrue(KeystoreVerifier.isKeystoreFile(keystoreFile, PASSWORD));
+		// the (File, String) overload must also answer false for a wrong password - guards against
+		// a mutant that always returns true
+		assertFalse(KeystoreVerifier.isKeystoreFile(keystoreFile, "wrongpassword"));
 	}
 
 	/**
@@ -196,5 +205,68 @@ class KeystoreVerifierTest
 	{
 		String[] types = { "JKS", "PKCS12" };
 		assertTrue(KeystoreVerifier.isKeystoreFile(keystoreFile, PASSWORD, types));
+		// the (File, String, String[]) overload must also answer false for a wrong password -
+		// guards against a mutant that always returns true
+		assertFalse(KeystoreVerifier.isKeystoreFile(keystoreFile, "wrongpassword", types));
+	}
+
+	/**
+	 * Test to verify that the overload with a {@link File} and a password as char array recognizes
+	 * a valid keystore and rejects a wrong password.
+	 */
+	@Test
+	public void testKeystoreFileObjectWithCharArrayPassword()
+	{
+		assertTrue(KeystoreVerifier.isKeystoreFile(keystoreFile, PASSWORD.toCharArray()));
+		assertFalse(KeystoreVerifier.isKeystoreFile(keystoreFile, "wrongpassword".toCharArray()));
+	}
+
+	/**
+	 * Test to verify that the overload with a {@link File}, a password as char array and a type
+	 * recognizes a valid keystore and rejects an unknown keystore type.
+	 */
+	@Test
+	public void testKeystoreFileObjectWithCharArrayPasswordAndType()
+	{
+		assertTrue(KeystoreVerifier.isKeystoreFile(keystoreFile, PASSWORD.toCharArray(), "JKS"));
+		assertFalse(KeystoreVerifier.isKeystoreFile(keystoreFile, PASSWORD.toCharArray(),
+			"no-such-keystore-type"));
+	}
+
+	/**
+	 * Test to verify that the overload with a {@link File}, a password as string and a type
+	 * recognizes a valid keystore and rejects a wrong password.
+	 */
+	@Test
+	public void testKeystoreFileObjectWithStringPasswordAndType()
+	{
+		assertTrue(KeystoreVerifier.isKeystoreFile(keystoreFile, PASSWORD, "JKS"));
+		assertFalse(KeystoreVerifier.isKeystoreFile(keystoreFile, "wrongpassword", "JKS"));
+	}
+
+	/**
+	 * Test to verify that the overload with a {@link File}, a password as char array and several
+	 * types answers true as soon as one of the given types matches and false when none matches.
+	 */
+	@Test
+	public void testKeystoreFileObjectWithCharArrayPasswordAndTypes()
+	{
+		assertTrue(KeystoreVerifier.isKeystoreFile(keystoreFile, PASSWORD.toCharArray(),
+			new String[] { "no-such-keystore-type", "JKS" }));
+		assertFalse(KeystoreVerifier.isKeystoreFile(keystoreFile, PASSWORD.toCharArray(),
+			new String[] { "no-such-keystore-type" }));
+	}
+
+	/**
+	 * Test to verify that the class can be instantiated over its public default constructor.
+	 */
+	@Test
+	public void testDefaultConstructor()
+	{
+		// an instance built over the default constructor must behave like the static api
+		KeystoreVerifier verifier = new KeystoreVerifier();
+		assertNotNull(verifier);
+		assertTrue(KeystoreVerifier.isKeystoreFile(keystoreFile, PASSWORD));
+		assertFalse(KeystoreVerifier.isKeystoreFile(keystoreFile, "wrongpassword"));
 	}
 }

@@ -28,6 +28,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 import javax.crypto.Cipher;
 
@@ -192,6 +194,40 @@ public class FileEncryptDecryptorTest extends AbstractTestCase<String, String>
 		assertEquals(actual, expected);
 
 		// clean up...
+		DeleteFileExtensions.delete(encrypted);
+		DeleteFileExtensions.delete(decrypted);
+	}
+
+	/**
+	 * Test method for {@link FileDecryptor#decrypt(File)} that pins the observable effect of the
+	 * {@code onAfterDecrypt} post-processing step: when the {@link CryptModel} carries a string
+	 * decorator, decryption undecorates the recovered content, removing the decorator's prefix and
+	 * suffix from the decrypted file. This exercises the {@code onAfterDecrypt} call and its
+	 * decorator loop; without them the markers would survive into the decrypted file.
+	 *
+	 * @throws Exception
+	 *             is thrown if any error occurs on the execution
+	 */
+	@Test
+	public void decrypt_appliesTheDecoratorUndecorationInOnAfterDecrypt() throws Exception
+	{
+		File markerPlain = new File(cryptDir, "marker-plain.txt");
+		// the "$" prefix and "?" suffix match the decorator configured in setUp
+		Files.write(markerPlain.toPath(), "$hello?".getBytes(StandardCharsets.UTF_8));
+		File markerEncrypted = new File(cryptDir, "marker.enc");
+		File markerDecrypted = new File(cryptDir, "marker.decrypted");
+
+		encryptor = new FileEncryptor(cryptModel, markerEncrypted);
+		encrypted = encryptor.encrypt(markerPlain);
+
+		decryptor = new FileDecryptor(cryptModel, markerDecrypted);
+		decrypted = decryptor.decrypt(encrypted);
+
+		String content = new String(Files.readAllBytes(decrypted.toPath()), StandardCharsets.UTF_8);
+		assertEquals("hello", content);
+
+		// clean up...
+		DeleteFileExtensions.delete(markerPlain);
 		DeleteFileExtensions.delete(encrypted);
 		DeleteFileExtensions.delete(decrypted);
 	}

@@ -25,6 +25,9 @@
 package io.github.astrapi69.mystic.crypt.processor.wordlist;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -50,6 +53,54 @@ public class WordlistsProcessorTest
 	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
+	 */
+	@Test
+	public void getCurrentAttempt_answersNullAndIncrementStopsAtTheEndOfTheWordList()
+	{
+		WordlistsProcessor processor = new WordlistsProcessor(
+			ListFactory.newArrayList("foo", "bar"), "bar");
+
+		assertEquals("foo", processor.getCurrentAttempt());
+		assertTrue(processor.increment());
+		assertEquals("bar", processor.getCurrentAttempt());
+		assertTrue(processor.increment());
+		assertNull(processor.getCurrentAttempt());
+		assertFalse(processor.increment());
+		assertNull(processor.getCurrentAttempt());
+	}
+
+	/**
+	 * Test method for {@link WordlistsProcessor#process()}, a password that is not in the word list
+	 * can not be found and the search stops at the end of the list
+	 */
+	@Test
+	public void process_answersFalseIfThePasswordIsNotInTheWordList()
+	{
+		WordlistsProcessor processor = new WordlistsProcessor(
+			ListFactory.newArrayList("foo", "bar"), "baz");
+
+		assertFalse(processor.process());
+		assertNull(processor.getCurrentAttempt());
+	}
+
+	/**
+	 * Test method for {@link WordlistsProcessor#WordlistsProcessor(List, String)}, an empty or
+	 * missing password to check against has to be rejected
+	 */
+	@Test
+	public void constructor_rejectsAnEmptyPassword()
+	{
+		List<String> words = ListFactory.newArrayList("foo");
+
+		assertThrows(IllegalArgumentException.class, () -> new WordlistsProcessor(words, ""));
+		assertThrows(IllegalArgumentException.class, () -> new WordlistsProcessor(words, null));
+	}
+
+	/**
+	 * Test method for {@link WordlistsProcessor#process()}
+	 *
+	 * @throws IOException
+	 *             is thrown if an error occurs
 	 */
 	@Test
 	public void test() throws IOException

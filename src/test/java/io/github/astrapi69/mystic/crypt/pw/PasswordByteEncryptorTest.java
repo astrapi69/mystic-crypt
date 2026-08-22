@@ -26,6 +26,7 @@ package io.github.astrapi69.mystic.crypt.pw;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -62,4 +63,34 @@ public class PasswordByteEncryptorTest
 		assertFalse(Arrays.equals(first, second));
 	}
 
+	/**
+	 * Test method for {@link PasswordByteEncryptor#encrypt(byte[])}, the data to encrypt is
+	 * mandatory
+	 */
+	@Test
+	public void encrypt_withoutData_throwsANullPointerException()
+	{
+		PasswordByteEncryptor encryptor = new PasswordByteEncryptor("foo");
+
+		assertThrows(NullPointerException.class, () -> encryptor.encrypt(null));
+	}
+
+	/**
+	 * Test method for {@link PasswordByteEncryptor#resetPassword()}, after the password is reset
+	 * nothing can be encrypted anymore
+	 *
+	 * @throws Exception
+	 *             is thrown if an error occurs
+	 */
+	@Test
+	public void resetPassword_clearsThePasswordSoNothingCanBeEncryptedAnymore() throws Exception
+	{
+		byte[] textBytes = "bar".getBytes(StandardCharsets.UTF_8);
+		PasswordByteEncryptor encryptor = new PasswordByteEncryptor("foo");
+		assertNotNull(encryptor.encrypt(textBytes));
+
+		encryptor.resetPassword();
+
+		assertThrows(NullPointerException.class, () -> encryptor.encrypt(textBytes));
+	}
 }
