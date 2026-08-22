@@ -46,7 +46,15 @@ public abstract class ChainableDecryptor<T> implements Decryptor<T, T>
 	 * @param decryptors
 	 *            the decryptors
 	 */
+	// [varargs] javac warns because the varargs array reference itself (not just its elements) is
+	// used here. The assertion behind @SafeVarargs holds for this class: it never writes into the
+	// array, never widens its element type and only ever reads elements as Decryptor<T, T>, so it
+	// cannot pollute the heap on its own. The array does stay reachable through getDecryptors() -
+	// the same trade-off the JDK accepts for Arrays.asList(T...) - so a caller that already did an
+	// unchecked generic array creation can still alias it; handing back a defensive copy would be
+	// an observable API change and is deliberately not done in this release.
 	@SafeVarargs
+	@SuppressWarnings("varargs")
 	public ChainableDecryptor(final Decryptor<T, T>... decryptors)
 	{
 		this.decryptors = decryptors;

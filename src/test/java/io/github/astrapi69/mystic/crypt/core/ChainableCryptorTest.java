@@ -47,7 +47,11 @@ public class ChainableCryptorTest
 
 	private static class StringChainEncryptor extends ChainableEncryptor<String>
 	{
+		// [varargs] the array reference is only forwarded to the @SafeVarargs constructor of
+		// ChainableEncryptor; this test fixture neither writes into it, nor stores it, nor
+		// returns it
 		@SafeVarargs
+		@SuppressWarnings("varargs")
 		StringChainEncryptor(final Encryptor<String, String>... encryptors)
 		{
 			super(encryptors);
@@ -56,7 +60,11 @@ public class ChainableCryptorTest
 
 	private static class StringChainDecryptor extends ChainableDecryptor<String>
 	{
+		// [varargs] the array reference is only forwarded to the @SafeVarargs constructor of
+		// ChainableDecryptor; this test fixture neither writes into it, nor stores it, nor
+		// returns it
 		@SafeVarargs
+		@SuppressWarnings("varargs")
 		StringChainDecryptor(final Decryptor<String, String>... decryptors)
 		{
 			super(decryptors);
