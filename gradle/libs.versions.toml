@@ -76,7 +76,7 @@ unit-testing = [
 ]
 
 [plugins]
-gradle-versions-plugin = { id = "com.github.ben-manes.versions", version.ref = "gradle-plugin-versions-version" }
+gradle-versions-plugin = { id = "io.github.ben-manes.versions", version.ref = "gradle-plugin-versions-version" }
 grgit-gradle = { id = "org.ajoberstar.grgit", version.ref = "gradle-plugin-grgit-version" }
 license-gradle-plugin = { id = "com.github.hierynomus.license", version.ref = "gradle-plugin-license-version" }
 pitest-gradle-plugin = { id = "info.solidsoft.pitest", version.ref = "gradle-plugin-pitest-version" }
