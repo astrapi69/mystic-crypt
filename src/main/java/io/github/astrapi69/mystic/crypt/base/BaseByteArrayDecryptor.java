@@ -29,6 +29,7 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Locale;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
@@ -48,6 +49,12 @@ import io.github.astrapi69.random.number.RandomByteFactory;
  */
 public class BaseByteArrayDecryptor extends AbstractByteArrayDecryptor
 {
+
+	/** Prefix of the JCA algorithm name of a password-based-encryption key */
+	private static final String PBE_KEY_ALGORITHM_PREFIX = "PBE";
+
+	/** The JCA algorithm name of a ChaCha20 key */
+	private static final String CHACHA20_KEY_ALGORITHM = "ChaCha20";
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -104,7 +111,33 @@ public class BaseByteArrayDecryptor extends AbstractByteArrayDecryptor
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		super(symmetricKey);
+		this(newModel(symmetricKey));
+	}
+
+	/**
+	 * Builds the {@link CryptModel} for the key-only constructor. A PBE key carries its own salt
+	 * and iteration count and needs the legacy PBE transformation, while a raw symmetric key needs
+	 * an authenticated transformation that accepts it directly. Without this distinction the
+	 * inherited {@link io.github.astrapi69.mystic.crypt.core.AbstractCryptor#newAlgorithm()} would
+	 * always pick the PBE transformation and the construction-time cipher would reject every raw
+	 * AES or ChaCha20 key with "InvalidKeyException: Algorithm requires a PBE key".
+	 *
+	 * @param symmetricKey
+	 *            the symmetric key
+	 * @return the model, with an explicit transformation unless the key is a PBE key
+	 */
+	private static CryptModel<Cipher, SecretKey, String> newModel(final SecretKey symmetricKey)
+	{
+		final var builder = CryptModel.<Cipher, SecretKey, String> builder().key(symmetricKey);
+		final String keyAlgorithm = symmetricKey.getAlgorithm();
+		if (keyAlgorithm != null
+			&& !keyAlgorithm.toUpperCase(Locale.ROOT).startsWith(PBE_KEY_ALGORITHM_PREFIX))
+		{
+			builder.algorithm(CHACHA20_KEY_ALGORITHM.equalsIgnoreCase(keyAlgorithm)
+				? MysticSymmetricAlgorithm.CHACHA20_POLY1305
+				: MysticSymmetricAlgorithm.AES_GCM_NO_PADDING);
+		}
+		return builder.build();
 	}
 
 	/**

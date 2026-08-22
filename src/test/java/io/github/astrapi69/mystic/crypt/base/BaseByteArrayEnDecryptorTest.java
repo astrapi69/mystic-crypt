@@ -29,7 +29,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.charset.StandardCharsets;
-import java.security.InvalidKeyException;
 import java.util.Arrays;
 
 import javax.crypto.Cipher;
@@ -213,10 +212,14 @@ public class BaseByteArrayEnDecryptorTest
 	@Test
 	public void testEncryptDecryptWithSymmetricKeyOnlyConstructors() throws Exception
 	{
-		// the key-only constructors fall back to the default PBE algorithm, which rejects a plain
-		// AES key, so both constructors must fail fast with an InvalidKeyException
-		assertThrows(InvalidKeyException.class, () -> new BaseByteArrayEncryptor(secretKey));
-		assertThrows(InvalidKeyException.class, () -> new BaseByteArrayDecryptor(secretKey));
+		// a raw AES key round trips through the key-only constructors, which select an
+		// authenticated transformation for it. (This used to assert that both constructors throw
+		// InvalidKeyException, pinning the defect that they always fell back to the PBE
+		// transformation and could therefore not be used with a raw symmetric key at all.)
+		byte[] aesEncrypted = new BaseByteArrayEncryptor(secretKey)
+			.encrypt("the quick brown fox".getBytes(StandardCharsets.UTF_8));
+		assertEquals("the quick brown fox", new String(
+			new BaseByteArrayDecryptor(secretKey).decrypt(aesEncrypted), StandardCharsets.UTF_8));
 
 		// a PBE key that carries its own salt and iteration count is accepted and round trips
 		String algorithm = CompoundAlgorithm.PBE_WITH_SHA1_AND_128BIT_AES_CBC_BC.getAlgorithm();
@@ -232,5 +235,26 @@ public class BaseByteArrayEnDecryptorTest
 		assertFalse(Arrays.equals(plainMessageBytes, encrypted));
 		assertEquals("the quick brown fox",
 			new String(decryptor.decrypt(encrypted), StandardCharsets.UTF_8));
+	}
+
+	/**
+	 * Test method for the key-only constructors with a ChaCha20 key: the transformation is selected
+	 * from the key's own algorithm, so a ChaCha20 key must round trip through ChaCha20-Poly1305
+	 * rather than through the AES default
+	 *
+	 * @throws Exception
+	 *             is thrown if an error occurs
+	 */
+	@Test
+	public void testEncryptDecryptWithSymmetricKeyOnlyConstructorsAndChaCha20Key() throws Exception
+	{
+		SecretKey chaChaKey = SecretKeyFactoryExtensions.newSecretKey("ChaCha20", 256);
+		byte[] plainMessageBytes = "the quick brown fox".getBytes(StandardCharsets.UTF_8);
+
+		byte[] encrypted = new BaseByteArrayEncryptor(chaChaKey).encrypt(plainMessageBytes);
+
+		assertFalse(Arrays.equals(plainMessageBytes, encrypted));
+		assertEquals("the quick brown fox", new String(
+			new BaseByteArrayDecryptor(chaChaKey).decrypt(encrypted), StandardCharsets.UTF_8));
 	}
 }
