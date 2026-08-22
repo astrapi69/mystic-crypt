@@ -4,6 +4,14 @@
 Version 10.5-SNAPSHOT
 -------------
 
+ADDED:
+
+- SHA-3 hashing: new class Sha3Hasher (package sha) for SHA3-224/256/384/512 (FIPS 202) via the
+  JDK's built-in MessageDigest - no Bouncy Castle involved. API mirrors Blake2bHasher; the variant
+  is chosen via the existing crypt-api MessageDigestAlgorithm.SHA3_* constants, which until now had
+  no call site anywhere, and any non-SHA-3 constant is rejected with IllegalArgumentException.
+  Verified against OpenSSL-generated known-answer vectors for all four variants.
+
 CHANGED:
 
 - Minimum required JDK raised from 21 to 25 (LTS). build.gradle's toolchain already resolves off
