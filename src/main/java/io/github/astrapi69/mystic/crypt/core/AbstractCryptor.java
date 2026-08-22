@@ -56,6 +56,17 @@ import io.github.astrapi69.random.number.RandomByteFactory;
 /**
  * The abstract class {@link AbstractCryptor} provides factory methods that may or must be
  * overwritten dependent of the specific implementor class.
+ * <p>
+ * <strong>Contract for subclass implementors:</strong> the constructors of this class deliberately
+ * call the overridable hook {@link #onInitialize()}, which in turn calls the overridable factory
+ * method {@code newCipher(...)}. Those hooks therefore run while {@code this} is not yet fully
+ * constructed: a subclass constructor body and its field initialisers execute only <em>after</em>
+ * this constructor has returned. A subclass must consequently <em>not</em> read its own fields from
+ * inside {@code onInitialize()}, {@code newCipher(...)}, {@code newAlgorithm()}, {@code newSalt()},
+ * {@code newIterationCount()} or any other hook reached from them - they are still at their default
+ * values at that point. Everything such a hook needs has to be supplied through the
+ * {@link CryptModel} passed to the constructor or through the hook's own parameters.
+ * </p>
  *
  * @param <C>
  *            the generic type of the cipher
@@ -118,6 +129,13 @@ public abstract class AbstractCryptor<C, K, T> implements Serializable, Cryptor
 	 * @throws UnsupportedEncodingException
 	 *             is thrown if the named charset is not supported.
 	 */
+	// [this-escape] Deliberate and load-bearing: the constructor calls the overridable hook
+	// onInitialize(), which calls the overridable factory method newCipher(...), so a subclass can
+	// observe a partly initialised object. Reordering this initialisation would change the
+	// construction sequence of every existing subclass and is too risky for this release, so the
+	// resulting contract is documented on the class javadoc instead - subclasses must not rely on
+	// their own fields being initialised inside those hooks. See the javadoc of AbstractCryptor.
+	@SuppressWarnings("this-escape")
 	public AbstractCryptor(final CryptModel<C, K, T> model)
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException

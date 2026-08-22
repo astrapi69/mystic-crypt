@@ -42,7 +42,15 @@ public abstract class ChainableEncryptor<T> implements Encryptor<T, T>
 	 * @param encryptors
 	 *            the {@code Encryptor} objects.
 	 */
+	// [varargs] javac warns because the varargs array reference itself (not just its elements) is
+	// used here. The assertion behind @SafeVarargs holds for this class: it never writes into the
+	// array, never widens its element type and only ever reads elements as Encryptor<T, T>, so it
+	// cannot pollute the heap on its own. The array does stay reachable through getEncryptors() -
+	// the same trade-off the JDK accepts for Arrays.asList(T...) - so a caller that already did an
+	// unchecked generic array creation can still alias it; handing back a defensive copy would be
+	// an observable API change and is deliberately not done in this release.
 	@SafeVarargs
+	@SuppressWarnings("varargs")
 	public ChainableEncryptor(final Encryptor<T, T>... encryptors)
 	{
 		this.encryptors = encryptors;

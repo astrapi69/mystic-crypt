@@ -42,7 +42,12 @@ public class ChainableStringDecryptor extends ChainableDecryptor<String>
 	 * @param decryptors
 	 *            the decryptors
 	 */
+	// [varargs] javac warns because the varargs array reference is passed on instead of only its
+	// elements being read. It cannot see that the callee is safe. This constructor merely forwards
+	// the array to the @SafeVarargs constructor of ChainableDecryptor; it neither writes into the
+	// array, nor stores it, nor returns it, so it introduces no aliasing of its own.
 	@SafeVarargs
+	@SuppressWarnings("varargs")
 	public ChainableStringDecryptor(final Decryptor<String, String>... decryptors)
 	{
 		super(decryptors);
