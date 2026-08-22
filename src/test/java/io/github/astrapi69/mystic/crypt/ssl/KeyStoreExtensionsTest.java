@@ -58,6 +58,13 @@ import io.github.astrapi69.random.number.RandomBigIntegerFactory;
 /**
  * The unit test class for the class {@link KeyStoreExtensions}
  */
+// KeyStoreExtensions is deprecated in favour of
+// io.github.astrapi69.crypt.data.key.KeyStoreExtensions and will be removed with the next minor
+// version. This test class exists precisely to keep the deprecated API working until that removal,
+// so referencing it is intentional and the deprecation warning is not a defect here. Migrating the
+// test to the replacement class would leave the deprecated class untested while it is still
+// shipped.
+@SuppressWarnings("deprecation")
 class KeyStoreExtensionsTest
 {
 

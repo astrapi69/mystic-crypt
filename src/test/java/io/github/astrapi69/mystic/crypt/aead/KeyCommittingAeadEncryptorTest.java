@@ -175,7 +175,7 @@ class KeyCommittingAeadEncryptorTest
 
 		// Tamper with the ciphertext (middle section)
 		byte[] tampered = encrypted.clone();
-		tampered[15] ^= 0xFF; // Flip bits in the ciphertext portion
+		tampered[15] ^= (byte)0xFF; // Flip bits in the ciphertext portion
 
 		assertThrows(Exception.class, () -> encryptor.decrypt(tampered));
 	}
@@ -188,7 +188,7 @@ class KeyCommittingAeadEncryptorTest
 
 		// Tamper with the IV (first 12 bytes)
 		byte[] tampered = encrypted.clone();
-		tampered[0] ^= 0xFF; // Flip bits in the IV
+		tampered[0] ^= (byte)0xFF; // Flip bits in the IV
 
 		// Should fail because commitment tag won't match
 		assertThrows(SecurityException.class, () -> encryptor.decrypt(tampered));
@@ -203,7 +203,7 @@ class KeyCommittingAeadEncryptorTest
 		// Tamper with the commitment tag (last 32 bytes)
 		byte[] tampered = encrypted.clone();
 		int tagStart = encrypted.length - 32;
-		tampered[tagStart] ^= 0xFF; // Flip bits in the commitment tag
+		tampered[tagStart] ^= (byte)0xFF; // Flip bits in the commitment tag
 
 		assertThrows(SecurityException.class, () -> encryptor.decrypt(tampered));
 	}

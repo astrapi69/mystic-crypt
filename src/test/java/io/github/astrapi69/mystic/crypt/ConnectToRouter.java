@@ -28,6 +28,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -55,7 +56,7 @@ public class ConnectToRouter
 
 		password = URLEncoder.encode("", "US-ASCII");
 
-		url = new URL("http://192.168.178.1/");
+		url = URI.create("http://192.168.178.1/").toURL();
 		connection = url.openConnection();
 		connection.setDoOutput(true);
 		try (PrintWriter out = new PrintWriter(connection.getOutputStream()))
