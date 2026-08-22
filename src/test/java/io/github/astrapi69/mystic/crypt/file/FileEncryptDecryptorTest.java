@@ -200,10 +200,13 @@ public class FileEncryptDecryptorTest extends AbstractTestCase<String, String>
 
 	/**
 	 * Test method for {@link FileDecryptor#decrypt(File)} that pins the observable effect of the
-	 * {@code onAfterDecrypt} post-processing step: when the {@link CryptModel} carries a string
-	 * decorator, decryption undecorates the recovered content, removing the decorator's prefix and
-	 * suffix from the decrypted file. This exercises the {@code onAfterDecrypt} call and its
-	 * decorator loop; without them the markers would survive into the decrypted file.
+	 * {@code onAfterDecrypt} post-processing step: the encryptor wraps the content in the
+	 * {@link CryptModel}'s decorator ("$" prefix, "?" suffix), and decryption with the same model
+	 * strips it again, so the round trip recovers the plain input - while decrypting the same
+	 * ciphertext with a model that has no decorator exposes the markers the encryptor added. (An
+	 * earlier version of this test wrote the markers into the plain file by hand and expected them
+	 * stripped; that only passed because the encryptor used to discard the decorated content, see
+	 * FileDecoratorRoundTripTest.)
 	 *
 	 * @throws Exception
 	 *             is thrown if any error occurs on the execution
@@ -211,25 +214,39 @@ public class FileEncryptDecryptorTest extends AbstractTestCase<String, String>
 	@Test
 	public void decrypt_appliesTheDecoratorUndecorationInOnAfterDecrypt() throws Exception
 	{
-		File markerPlain = new File(cryptDir, "marker-plain.txt");
-		// the "$" prefix and "?" suffix match the decorator configured in setUp
-		Files.write(markerPlain.toPath(), "$hello?".getBytes(StandardCharsets.UTF_8));
-		File markerEncrypted = new File(cryptDir, "marker.enc");
-		File markerDecrypted = new File(cryptDir, "marker.decrypted");
+		java.nio.file.Path tempDir = Files.createTempDirectory("file-marker");
+		File plain = tempDir.resolve("plain.txt").toFile();
+		Files.write(plain.toPath(), "hello".getBytes(StandardCharsets.UTF_8));
+		File markerEncrypted = tempDir.resolve("marker.enc").toFile();
+		File withDecorator = tempDir.resolve("with-decorator.decrypted").toFile();
+		File withoutDecorator = tempDir.resolve("without-decorator.decrypted").toFile();
+		// the model without the decorator must share key and salt with the decorated one,
+		// otherwise it cannot decrypt at all
+		byte[] salt = { 1, 2, 3, 4, 5, 6, 7, 8 };
+		CryptModel<Cipher, String, String> decorated = CryptModel.<Cipher, String, String> builder()
+			.key(firstKey).algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).salt(salt)
+			.decorator(CryptObjectDecorator.<String> builder().prefix("$").suffix("?").build())
+			.build();
+		CryptModel<Cipher, String, String> undecorated = CryptModel
+			.<Cipher, String, String> builder().key(firstKey)
+			.algorithm(SunJCEAlgorithm.PBEWithMD5AndDES).salt(salt).build();
 
-		encryptor = new FileEncryptor(cryptModel, markerEncrypted);
-		encrypted = encryptor.encrypt(markerPlain);
+		encrypted = new FileEncryptor(decorated, markerEncrypted).encrypt(plain);
 
-		decryptor = new FileDecryptor(cryptModel, markerDecrypted);
-		decrypted = decryptor.decrypt(encrypted);
+		String roundTrip = new String(
+			Files.readAllBytes(
+				new FileDecryptor(decorated, withDecorator).decrypt(encrypted).toPath()),
+			StandardCharsets.UTF_8);
+		String exposed = new String(
+			Files.readAllBytes(
+				new FileDecryptor(undecorated, withoutDecorator).decrypt(encrypted).toPath()),
+			StandardCharsets.UTF_8);
 
-		String content = new String(Files.readAllBytes(decrypted.toPath()), StandardCharsets.UTF_8);
-		assertEquals("hello", content);
+		assertEquals("hello", roundTrip);
+		assertEquals("$hello?", exposed);
 
 		// clean up...
-		DeleteFileExtensions.delete(markerPlain);
-		DeleteFileExtensions.delete(encrypted);
-		DeleteFileExtensions.delete(decrypted);
+		DeleteFileExtensions.delete(tempDir.toFile());
 	}
 
 }

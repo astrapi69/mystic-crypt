@@ -24,11 +24,14 @@
  */
 package io.github.astrapi69.mystic.crypt.file;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -142,16 +145,35 @@ public class FileEncryptor extends AbstractFileEncryptor
 			encryptedFile = newEncryptedFile(toEncrypt.getParent(), filename + ".enc");
 		}
 		List<CryptObjectDecorator<String>> decorators = getModel().getDecorators();
+		InputStream source;
 		if (decorators != null && !decorators.isEmpty())
 		{
-			for (int i = 0; i < decorators.size(); i++)
+			// Decorate in memory and encrypt the decorated content, in list order (last decorator
+			// outermost); FileDecryptor#onAfterDecrypt strips them in reverse order. The source
+			// file
+			// itself is never modified. (Previously the decorated string returned by decorateFile
+			// was discarded and the raw file encrypted, so decorators silently had no effect.)
+			// read through FileInputStream so a missing file or a directory still surfaces as
+			// FileNotFoundException, exactly as on the undecorated path
+			String content;
+			try (InputStream in = new FileInputStream(toEncrypt))
 			{
-				CryptObjectDecoratorExtensions.decorateFile(toEncrypt, decorators.get(i));
+				content = new String(in.readAllBytes(), StandardCharsets.UTF_8);
 			}
+			for (CryptObjectDecorator<String> decorator : decorators)
+			{
+				content = CryptObjectDecoratorExtensions.decorateWithStringDecorator(content,
+					decorator);
+			}
+			source = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
+		}
+		else
+		{
+			source = new FileInputStream(toEncrypt);
 		}
 		try (
-			CryptoCipherInputStream cis = new CryptoCipherInputStream(
-				new FileInputStream(toEncrypt), getModel().getCipher());
+			CryptoCipherInputStream cis = new CryptoCipherInputStream(source,
+				getModel().getCipher());
 			OutputStream out = new FileOutputStream(encryptedFile))
 		{
 			int c;
