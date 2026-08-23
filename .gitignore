@@ -90,3 +90,16 @@ gradle-app.setting
 ##############################################################
 hs_err_pid*
 /.attach_pid*
+
+##############################################################
+# Output of file based tests                                  #
+#                                                             #
+# A few file based tests still write next to their fixtures   #
+# under src/test/resources instead of into a @TempDir and     #
+# clean up afterwards. When PIT kills a forked JVM before      #
+# that cleanup runs, the files stay behind - ignoring them     #
+# keeps a stray "git add -A" from committing build output.     #
+# See docs/TESTING.md, "Known issues in the test setup".       #
+##############################################################
+/src/test/resources/crypt/*.enc
+/src/test/resources/der/keystore.jks

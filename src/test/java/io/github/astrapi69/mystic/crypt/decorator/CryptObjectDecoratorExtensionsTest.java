@@ -460,6 +460,11 @@ public class CryptObjectDecoratorExtensionsTest
 			new ByteArrayUndecorateCase("a prefix that only partially matches is kept", "<=abc",
 				"<<", ">>", "<=abc"),
 			new ByteArrayUndecorateCase("input shorter than the prefix", "<", "<<", ">>", "<"),
+			// the boundary of the length guard in startsWith: an input exactly as long as the
+			// prefix and equal to it still starts with it, so the prefix has to go and nothing is
+			// left. Relaxing that guard to "array.length <= prefix.length" would keep the input.
+			new ByteArrayUndecorateCase("input exactly as long as the prefix", "<<", "<<", ">>",
+				""),
 			new ByteArrayUndecorateCase("empty input", "", "<<", ">>", ""));
 	}
 
