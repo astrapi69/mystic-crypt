@@ -17,7 +17,7 @@ Status key:
   infrastructure-level, or hardware-level concerns; a data/key-encryption utility library is
   the wrong layer to implement them in. Reasoning given per item.
 
-Last verified: 2026-08-22, against `mystic-crypt` 10.5-SNAPSHOT (next release 11.0.0),
+Last verified: 2026-08-22, against `mystic-crypt` 11.0.0,
 `crypt-data` 10.4-SNAPSHOT (next release 11.0.0) and `crypt-api` 10.0.0. The capability tables
 below are current as of this date; coverage and mutation-testing numbers live in
 [TESTING.md](TESTING.md). All three libraries now require **JDK 25** (raised from 21, 21 and 17
