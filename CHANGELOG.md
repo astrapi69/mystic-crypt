@@ -1,56 +1,117 @@
 ## Change log
 ----------------------
 
-Version 10.5-SNAPSHOT
+Version 11.0.0
 -------------
+
+A major release: the minimum JDK moves from 21 to 25, which is a breaking change for every
+consumer still on JDK 21-24, and the library is built against the matching majors of its own
+stack, crypt-api 10.0.0 and crypt-data 11.0.0. Everything below that was previously listed under
+10.2-SNAPSHOT and 10.5-SNAPSHOT ships here; neither of those was ever released.
 
 ADDED:
 
+- Command-line interface: `java -jar mystic-crypt-11.0.0-all.jar` (the uber-jar, new) runs a
+  picocli CLI with the subcommands hash, verify, keygen, kem, cert, checksum, der2pem,
+  obfuscate and disentangle. The exit code is the result; stdout is the contract.
 - SHA-3 hashing: new class Sha3Hasher (package sha) for SHA3-224/256/384/512 (FIPS 202) via the
   JDK's built-in MessageDigest - no Bouncy Castle involved. API mirrors Blake2bHasher; the variant
-  is chosen via the existing crypt-api MessageDigestAlgorithm.SHA3_* constants, which until now had
-  no call site anywhere, and any non-SHA-3 constant is rejected with IllegalArgumentException.
-  Verified against OpenSSL-generated known-answer vectors for all four variants.
+  is chosen via the existing crypt-api MessageDigestAlgorithm.SHA3_* constants, and any non-SHA-3
+  constant is rejected with IllegalArgumentException. Verified against OpenSSL-generated
+  known-answer vectors for all four variants.
+- BLAKE2b and BLAKE2s hashing: Blake2bHasher/Blake2sHasher (package sha), with configurable digest
+  length and a keyed (MAC) mode. Bouncy Castle-backed.
+- bcrypt and scrypt password hashing: BcryptHasher (OpenBSD format, cost 4-31) and ScryptHasher
+  (returns salt||derivedKey with a matching verify), both Bouncy Castle-backed, for interop with
+  systems that store those formats. Argon2id remains the recommendation for new password storage.
+- SRP-6a password-authenticated key exchange (RFC 5054): SRP6aClient, SRP6aServer and
+  SRP6aVerifierGenerator (package srp), delegating the group arithmetic to Bouncy Castle's
+  SRP6Util and rejecting a zero public value from either peer (RFC 5054 sections 2.5.3/2.5.4).
+  Both sides wipe the caller's char[] password and the UTF-8 buffer derived from it.
+- Key-committing AEAD: KeyCommittingAeadEncryptor (package aead) binds the ciphertext to exactly
+  one key, so a ciphertext cannot decrypt to two different valid plaintexts under two keys
+  ("invisible salamanders").
+- Feldman verifiable secret sharing: FeldmanVSS (package secret) - Shamir shares plus public
+  commitments, so a dealer handing out a bad share is caught by the receiver.
+- Hybrid post-quantum key exchange: HybridKemKeyExchange combines X25519 with ML-KEM, so the
+  shared secret stays secure as long as either primitive does.
+- SecurityProviderSupport.ensureBouncyCastle(), one idempotent registration used by every class
+  that needs the Bouncy Castle provider.
+- docs/TESTING.md and docs/COVERAGE_EXCEPTIONS.md: the testing strategy, the numbers with the
+  commit each was measured on, every surviving mutant with its argument, and the defects the
+  process caught. docs/KEY_AGREEMENT_EVOLUTION.md: from book ciphers to the Double Ratchet.
 
 CHANGED:
 
-- Minimum required JDK raised from 21 to 25 (LTS). build.gradle's toolchain already resolves off
-  gradle.properties#projectSourceCompatibility, so this is a one-line change; CI's setup-java step
-  updated to match. Published bytecode now targets JDK 25, so this is a breaking change for
-  consumers still on JDK 21-24.
+- Minimum required JDK raised from 21 to 25 (LTS). build.gradle's toolchain resolves off
+  gradle.properties#projectSourceCompatibility; CI's setup-java step matches. Published bytecode
+  targets JDK 25. BREAKING for consumers on JDK 21-24.
+- Built against crypt-api 10.0.0 and crypt-data 11.0.0 (were 9.7 and 10.3).
+- module-info: the five modules whose types appear in this module's public API (crypt-api,
+  crypt-data, Bouncy Castle provider, Guava, silly-bean) are now "requires transitive", so a
+  consumer no longer has to require them itself. New exports: aead, secret, srp, cli.
+- Tests: 752; 100% branch coverage, 99.91% line (the two lines are
+  System.exit in the CLI main), PIT mutation score 98.5% with every survivor argued in
+  docs/COVERAGE_EXCEPTIONS.md. No JaCoCo or PIT exclusions were added to get there.
+- Build: zero javac warnings with -Xlint:all (426 before), zero javadoc errors and warnings, and
+  javadoc errors fail the build again - the previous failOnError setting wrote into an
+  extra-properties map and was never read, so six errors shipped in the published javadoc jar.
+  Zero Gradle 10 deprecations: the com.github.hierynomus.license plugin (last release 0.16.1,
+  reads Task.project at execution time) is replaced by Spotless's licenseHeaderFile, which also
+  turns out to be the first time the header was enforced at all - the old tasks were excluded on
+  every build; the nmcp settings plugin is replaced by the per-project plugin (single-project
+  build, nothing to aggregate); and tagRelease captures the version at configuration time.
+- Publishing: Central Portal publishingType is USER_MANAGED, matching crypt-api and crypt-data - a
+  release push uploads and validates, and the version waits for manual approval instead of going
+  public the moment validation passes.
+- README rewritten: keyword-rich description, six runnable examples (all compiled and executed by
+  ReadmeExamplesTest, so a snippet that stops working fails the build), a CLI table and a
+  documentation table. Dead oss.sonatype.org links replaced by the Central Portal. Every crypto
+  donation address except Monero removed, as was the Flattr button.
 
 FIXED:
 
-- Argon2id verify(): a zero m/t/p parameter in an encoded hash is now rejected as malformed
-  (returns false) instead of reaching Bouncy Castle, which threw IllegalArgumentException; the
-  decode guard is now <= 0 rather than < 0.
-- restored projectSourceCompatibility to 25 and the curated .gitignore, both of which an
-  automated commit had reverted (to JDK 21 and a generic template) after the JDK 25 upgrade.
-- README: replaced the dead oss.sonatype.org (OSSRH, sunset 2025) links and badge with the
-  Maven Central Portal.
-- PBEFileEncryptor/PBEFileDecryptor and FileEncryptor/FileDecryptor decorators: the encryptor computed the decorated file
-  content via CryptObjectDecoratorExtensions#decorateFile and then discarded it, encrypting the raw
-  file - CryptObjectDecorators configured on the CryptModel had no effect on file encryption at all.
-  The decryptor re-read the file on every loop iteration instead of chaining on the string, so with
-  more than one decorator only the innermost was ever stripped. Both went unnoticed because an
-  encrypt-then-decrypt round trip passes either way ("never added" and "never removed" agree);
-  found by a surviving PIT mutant on the decorator loop. The encryptor now decorates in memory
-  (the source file is never modified) and encrypts the decorated content, the decryptor strips all
-  decorators outermost-first. FileEncryptor/FileDecryptor had the identical defect and got the
-  identical fix (the tests that had enshrined the old behaviour in PBEFileEncryptorTest and
-  FileEncryptDecryptorTest were corrected, and both families now have a decorator round-trip
-  regression test that decrypts with and without the decorators).
-
-Version 10.2-SNAPSHOT
--------------
-
-FIXED:
-
-- SimpleObfuscatorExtensions#disentangle(BiMap, String) now reverses a replacement whenever the
+- BaseByteArrayEncryptor(SecretKey)/BaseByteArrayDecryptor(SecretKey) were unusable: the
+  inherited newAlgorithm() defaulted to the legacy PBE transformation, so every raw AES or
+  ChaCha20 key was rejected at construction with "InvalidKeyException: Algorithm requires a PBE
+  key" - and the existing test asserted that exception as expected. The key-only constructor now
+  picks AES/GCM or ChaCha20-Poly1305 from the key's algorithm; PBE keys keep the PBE path.
+- PrivateKeyBruteForceProcessor.resolvePassword never terminated for an unencrypted PKCS#8 key:
+  the reader threw PEMException (an IOException) on every attempt, the loop treated that as a
+  wrong password and grew the attempt space forever. A key that needs no password is now read
+  directly.
+- ObfuscatorExtensions.inverseToMap threw NullPointerException for its own declared Character key
+  type (it tried to clone an immutable Character). An existing test documented this as
+  known-broken instead of failing on it.
+- CryptObjectDecoratorExtensions.undecorateWithBytearrayDecorator silently lost content: it
+  removed the prefix bytes from anywhere in the content, not just the start ("hello" with prefix
+  "he" and suffix "lo" came back as "llo"). Its private startsWith read past the end of an input
+  shorter than the prefix (ArrayIndexOutOfBoundsException) and endsWith reported a match when the
+  array simply ran out first, so removeFromEnd computed a negative length
+  (NegativeArraySizeException) - which the existing test asserted as correct.
+- PBEFileEncryptor/PBEFileDecryptor and FileEncryptor/FileDecryptor: the encryptor computed the
+  decorated file content and discarded it, so CryptObjectDecorators had no effect on file
+  encryption; the decryptor re-read the file per iteration, so only the innermost decorator was
+  ever stripped. Both went unnoticed because an encrypt-then-decrypt round trip passes either way.
+  Found by a surviving PIT mutant. The tests that had enshrined the old behaviour were corrected.
+- SimpleObfuscatorExtensions.disentangle(BiMap, String) now reverses a replacement whenever the
   obfuscated character matches a rule's replaceWith. Previously it also required the replacement
-  character to itself be an original character (rules.containsKey(replaceWith)), so a normal
-  substitution like a->x (x not itself remapped) was never disentangled and the text came back
-  unchanged. Shift ciphers happened to work because their replacements are original characters too.
+  to itself be an original character, so a normal substitution like a->x was never disentangled;
+  shift ciphers happened to work because their replacements are original characters too.
+- KeyCommittingAeadEncryptor threw InvalidKeyException on every instantiation (the superclass
+  built a PBE cipher at construction time); FeldmanVSS.splitSecret silently split secret+1;
+  Blake2bHasher/Blake2sHasher.hashWithKey threw OutputLengthException for any non-default digest
+  length; BcryptHasher used the jBCrypt API shape that does not exist on Bouncy Castle and could
+  not compile; ScryptHasher.hash discarded its own salt, making the result unverifiable. All
+  caught before this release, none ever shipped.
+- Argon2id verify(): a zero m/t/p parameter in an encoded hash is rejected as malformed (returns
+  false) instead of reaching Bouncy Castle, which threw IllegalArgumentException.
+- Restored projectSourceCompatibility to 25 and the curated .gitignore, both of which an automated
+  commit had reverted (to JDK 21 and a generic template) after the JDK 25 upgrade.
+- Test suite: Argon2SupportTest.verify_answersFalseForATamperedHash was flaky by construction -
+  it flipped the last base64 character of the hash, which carries only four significant bits, so
+  one run in sixteen the "tampered" hash decoded to the original. A test fixture that was a real
+  (throwaway) PKCS#8 private key is now generated at runtime instead of committed.
 
 Version 10.1
 -------------
