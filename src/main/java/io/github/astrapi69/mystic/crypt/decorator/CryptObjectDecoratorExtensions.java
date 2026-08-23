@@ -151,7 +151,11 @@ public final class CryptObjectDecoratorExtensions
 				break;
 			}
 		}
-		return true;
+		// The loop above also ends when the array runs out of bytes before the
+		// suffix does. Not every suffix byte was matched then, so the array does
+		// not end with the suffix. Without this check endsWith(">", ">>") answered
+		// true and removeFromEnd afterwards tried to copy -1 bytes
+		return currentIndex == -1;
 	}
 
 	private static byte[] removeFromEnd(final byte[] array, final byte[] suffix)
@@ -172,6 +176,15 @@ public final class CryptObjectDecoratorExtensions
 
 	private static boolean startsWith(final byte[] array, byte[] prefix)
 	{
+		Objects.requireNonNull(array);
+		Objects.requireNonNull(prefix);
+		// An array that holds fewer bytes than the prefix can not start with it.
+		// Without this guard the loop below reads past the end of the array and
+		// throws an ArrayIndexOutOfBoundsException
+		if (array.length < prefix.length)
+		{
+			return false;
+		}
 		for (int i = 0; i < prefix.length; i++)
 		{
 			if (prefix[i] != array[i])
@@ -219,7 +232,13 @@ public final class CryptObjectDecoratorExtensions
 		byte[] prefix = decorator.getPrefix();
 		byte[] suffix = decorator.getSuffix();
 
-		result = ArrayUtils.removeElements(result, prefix);
+		// Strip the prefix only where a prefix can be, at the start, exactly as the
+		// string and the character variant of this method do. Previously an
+		// ArrayUtils.removeElements call deleted the prefix bytes from anywhere in
+		// the content first, so every content that merely shares a byte with the
+		// prefix was silently mangled and the decorate/undecorate round trip lost
+		// content: "hello" wrapped in the prefix "he" and the suffix "lo" came
+		// back as "llo"
 		if (startsWith(result, prefix))
 		{
 			result = removeFromStart(result, prefix);
