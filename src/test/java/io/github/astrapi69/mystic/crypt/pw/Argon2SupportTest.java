@@ -25,6 +25,7 @@
 package io.github.astrapi69.mystic.crypt.pw;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -121,9 +122,16 @@ public class Argon2SupportTest
 	public void verify_answersFalseForATamperedHash()
 	{
 		String encoded = Argon2Support.hash(PASSWORD.toCharArray());
-		String tampered = encoded.substring(0, encoded.length() - 1)
-			+ (encoded.charAt(encoded.length() - 1) == 'A' ? 'B' : 'A');
+		// flip the first character of the hash part: the trailing character of an unpadded base64
+		// string carries bits the decoder ignores - the 32 byte hash needs 43 characters and only
+		// four of the last character's six bits are significant - so tampering with it changes
+		// nothing for one hash in sixteen, namely whenever it is an 'A'
+		final int hashStart = encoded.lastIndexOf('$') + 1;
+		final char original = encoded.charAt(hashStart);
+		final String tampered = encoded.substring(0, hashStart) + (original == 'A' ? 'B' : 'A')
+			+ encoded.substring(hashStart + 1);
 
+		assertNotEquals(encoded, tampered);
 		assertFalse(Argon2Support.verify(PASSWORD.toCharArray(), tampered));
 	}
 
