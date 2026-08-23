@@ -31,6 +31,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.security.KeyPair;
 import java.security.KeyStore;
 import java.security.Security;
@@ -41,6 +43,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import io.github.astrapi69.collection.array.ArrayFactory;
 import io.github.astrapi69.crypt.data.factory.CertFactory;
@@ -255,6 +258,37 @@ class KeystoreVerifierTest
 			new String[] { "no-such-keystore-type", "JKS" }));
 		assertFalse(KeystoreVerifier.isKeystoreFile(keystoreFile, PASSWORD.toCharArray(),
 			new String[] { "no-such-keystore-type" }));
+	}
+
+	/**
+	 * Test to verify that a file that exists and is readable but does not contain a keystore at all
+	 * is rejected by every overload. The other negative tests only cover a missing file
+	 * ({@link java.io.FileNotFoundException}) and a wrong password; a readable file with foreign
+	 * content is a third failure mode of {@link KeyStore#load(java.io.InputStream, char[])} and has
+	 * to answer false as well.
+	 *
+	 * @param temporaryDirectory
+	 *            the temporary directory the file with the foreign content is written into
+	 * @throws IOException
+	 *             is thrown if the file with the foreign content cannot be written
+	 */
+	@Test
+	public void testExistingFileThatIsNotAKeystore(@TempDir File temporaryDirectory)
+		throws IOException
+	{
+		File notAKeystore = new File(temporaryDirectory, "not-a-keystore.jks");
+		Files.write(notAKeystore.toPath(),
+			"this is plain text and by no means a keystore".getBytes(StandardCharsets.UTF_8));
+		assertTrue(notAKeystore.exists());
+
+		assertFalse(KeystoreVerifier.isKeystoreFile(notAKeystore, PASSWORD));
+		assertFalse(KeystoreVerifier.isKeystoreFile(notAKeystore, PASSWORD.toCharArray()));
+		assertFalse(
+			KeystoreVerifier.isKeystoreFile(notAKeystore.getAbsolutePath(), PASSWORD, "JKS"));
+		assertFalse(KeystoreVerifier.isKeystoreFile(notAKeystore, PASSWORD.toCharArray(),
+			new String[] { "JKS", "PKCS12" }));
+		// the matching positive: the real keystore with the same password is still accepted
+		assertTrue(KeystoreVerifier.isKeystoreFile(keystoreFile, PASSWORD));
 	}
 
 	/**

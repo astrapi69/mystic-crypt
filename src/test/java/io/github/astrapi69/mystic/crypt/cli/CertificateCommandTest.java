@@ -25,21 +25,72 @@
 package io.github.astrapi69.mystic.crypt.cli;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * Unit tests for the {@code cert} subcommand.
  */
 class CertificateCommandTest extends AbstractCliTest
 {
+
+	/** the temporary directory the confirmation-line cases write their certificates into */
+	@TempDir
+	File confirmationTempDir;
+
+	/**
+	 * One confirmation-line case: which subject and key algorithm the command is asked for, plus a
+	 * different subject that must never show up in the output of this run.
+	 */
+	record ConfirmationCase(String fileName, String subject, String algorithm,
+		String signatureAlgorithm, String otherSubject) {
+	}
+
+	static Stream<ConfirmationCase> confirmationCases()
+	{
+		return Stream.of(
+			new ConfirmationCase("rsa-confirmation.pem", "CN=rsa-confirmation", "RSA",
+				"SHA256withRSA", "CN=ec-confirmation"),
+			new ConfirmationCase("ec-confirmation.pem", "CN=ec-confirmation", "EC",
+				"SHA256withECDSA", "CN=rsa-confirmation"));
+	}
+
+	/**
+	 * Guards the success message of the {@code cert} command. Writing the PEM is only half of the
+	 * contract: the command must also tell the user on stdout for which subject it signed and where
+	 * the file went, otherwise a successful run is silent and indistinguishable from a no-op. This
+	 * test fails if that {@code System.out.println} is dropped or stops naming the subject or the
+	 * output file.
+	 */
+	@ParameterizedTest
+	@MethodSource("confirmationCases")
+	void printsAConfirmationLineNamingTheSubjectAndTheOutputFile(ConfirmationCase testCase)
+	{
+		File certFile = new File(confirmationTempDir, testCase.fileName());
+		assertEquals(0,
+			run("cert", "--subject", testCase.subject(), "--algorithm", testCase.algorithm(),
+				"--signature-algorithm", testCase.signatureAlgorithm(), "--out",
+				certFile.getAbsolutePath()));
+
+		assertTrue(
+			out.contains("wrote self-signed certificate for '" + testCase.subject() + "' to "
+				+ certFile.getAbsolutePath()),
+			"stdout must confirm subject and target file, but was: '" + out + "'");
+		// the matching negative: the confirmation names this run's subject, never another one
+		assertFalse(out.contains(testCase.otherSubject()),
+			"the confirmation must not name a subject that was not requested");
+	}
 
 	@Test
 	void writesASelfSignedCertificateForTheSubject(@TempDir File tempDir) throws Exception

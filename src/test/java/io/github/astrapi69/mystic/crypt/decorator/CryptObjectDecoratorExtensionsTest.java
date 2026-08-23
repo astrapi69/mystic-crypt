@@ -25,7 +25,6 @@
 package io.github.astrapi69.mystic.crypt.decorator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -454,13 +453,19 @@ public class CryptObjectDecoratorExtensionsTest
 			new ByteArrayUndecorateCase("suffix longer than the input", "a", "<<", ">>>>", "a"),
 			new ByteArrayUndecorateCase("empty suffix is never removed", "abc", "<<", "", "abc"),
 			new ByteArrayUndecorateCase("neither prefix nor suffix", "abc", "<<", ">>", "abc"),
-			new ByteArrayUndecorateCase(
-				"prefix bytes that appear elsewhere are removed from the input once", "a<b<c", "<<",
-				">>", "abc"),
-			new ByteArrayUndecorateCase("a doubled prefix is removed completely", "<<<<abc", "<<",
-				">>", "abc"),
+			new ByteArrayUndecorateCase("prefix bytes that appear elsewhere are kept", "a<b<c",
+				"<<", ">>", "a<b<c"),
+			new ByteArrayUndecorateCase("only the outermost of a doubled prefix is removed",
+				"<<<<abc", "<<", ">>", "<<abc"),
 			new ByteArrayUndecorateCase("a prefix that only partially matches is kept", "<=abc",
-				"<<", ">>", "=abc"));
+				"<<", ">>", "<=abc"),
+			new ByteArrayUndecorateCase("input shorter than the prefix", "<", "<<", ">>", "<"),
+			// the boundary of the length guard in startsWith: an input exactly as long as the
+			// prefix and equal to it still starts with it, so the prefix has to go and nothing is
+			// left. Relaxing that guard to "array.length <= prefix.length" would keep the input.
+			new ByteArrayUndecorateCase("input exactly as long as the prefix", "<<", "<<", ">>",
+				""),
+			new ByteArrayUndecorateCase("empty input", "", "<<", ">>", ""));
 	}
 
 	/**
@@ -488,18 +493,91 @@ public class CryptObjectDecoratorExtensionsTest
 	 * {@link CryptObjectDecoratorExtensions#undecorateWithBytearrayDecorator(String, CryptObjectDecorator)}
 	 * with an input that is shorter than the suffix but matches its tail
 	 * <p>
-	 * Note: this test documents a known defect. The suffix check runs out of input bytes before it
-	 * runs out of suffix bytes and answers true, so the removal of the suffix tries to copy a
-	 * negative number of bytes.
+	 * Such an input does not carry the suffix, so it must come back unchanged. This used to throw a
+	 * {@link NegativeArraySizeException}: the suffix check ran out of input bytes before it ran out
+	 * of suffix bytes and answered true anyway, so the removal of the suffix tried to copy a
+	 * negative number of bytes. The string decorator variant returns the input unchanged for the
+	 * same scenario, which is the behaviour pinned here.
 	 */
 	@Test
-	void undecorateWithBytearrayDecorator_currentlyFailsForAnInputShorterThanAMatchingSuffix()
+	void undecorateWithBytearrayDecorator_keepsAnInputShorterThanAMatchingSuffix()
 	{
 		CryptObjectDecorator<byte[]> byteArrayDecorator = CryptObjectDecorator.<byte[]> builder()
 			.prefix(new byte[0]).suffix(">>".getBytes(StandardCharsets.UTF_8)).build();
 
-		assertThrows(NegativeArraySizeException.class, () -> CryptObjectDecoratorExtensions
-			.undecorateWithBytearrayDecorator(">", byteArrayDecorator));
+		assertEquals(">", CryptObjectDecoratorExtensions.undecorateWithBytearrayDecorator(">",
+			byteArrayDecorator));
+		assertEquals("a>>", CryptObjectDecoratorExtensions.undecorateWithBytearrayDecorator("a>>>>",
+			byteArrayDecorator));
+	}
+
+	/**
+	 * A scenario for a decorate / undecorate round trip with a byte array decorator
+	 *
+	 * @param description
+	 *            the human readable description of the scenario
+	 * @param content
+	 *            the undecorated content
+	 * @param prefix
+	 *            the prefix
+	 * @param suffix
+	 *            the suffix
+	 * @param expectedDecorated
+	 *            the expected decorated form of the content
+	 */
+	record ByteArrayRoundTripCase(String description, String content, String prefix, String suffix,
+		String expectedDecorated) {
+		@Override
+		public String toString()
+		{
+			return description;
+		}
+	}
+
+	static Stream<ByteArrayRoundTripCase> byteArrayRoundTripCases()
+	{
+		return Stream.of(
+			new ByteArrayRoundTripCase("content without a byte of the decorator",
+				"the quick brown fox", "<<", ">>", "<<the quick brown fox>>"),
+			new ByteArrayRoundTripCase(
+				"content that starts with the prefix and ends with the suffix", "hello", "he", "lo",
+				"hehellolo"),
+			new ByteArrayRoundTripCase("content that is exactly the prefix", "ab", "ab", "cd",
+				"ababcd"),
+			new ByteArrayRoundTripCase("content that repeats a prefix byte in the middle", "a<b<c",
+				"<<", ">>", "<<a<b<c>>"),
+			new ByteArrayRoundTripCase("content shorter than the prefix", "a", "<<", ">>", "<<a>>"),
+			new ByteArrayRoundTripCase("empty content", "", "<<", ">>", "<<>>"));
+	}
+
+	/**
+	 * Test method for
+	 * {@link CryptObjectDecoratorExtensions#decorateWithBytearrayDecorator(String, CryptObjectDecorator, Charset)}
+	 * followed by
+	 * {@link CryptObjectDecoratorExtensions#undecorateWithBytearrayDecorator(String, CryptObjectDecorator)}:
+	 * undecorating a decorated content must give the content back byte for byte
+	 * <p>
+	 * Guards against the defect where the undecoration first deleted the prefix bytes from anywhere
+	 * in the content, which silently lost content whenever it shared a byte with the prefix - the
+	 * content "hello" wrapped in the prefix "he" and the suffix "lo" came back as "llo".
+	 *
+	 * @param testCase
+	 *            the test case
+	 */
+	@ParameterizedTest
+	@MethodSource("byteArrayRoundTripCases")
+	void undecorateWithBytearrayDecorator_givesTheDecoratedContentBackUnchanged(
+		final ByteArrayRoundTripCase testCase)
+	{
+		CryptObjectDecorator<byte[]> byteArrayDecorator = CryptObjectDecorator.<byte[]> builder()
+			.prefix(testCase.prefix().getBytes(StandardCharsets.UTF_8))
+			.suffix(testCase.suffix().getBytes(StandardCharsets.UTF_8)).build();
+
+		String decorated = CryptObjectDecoratorExtensions.decorateWithBytearrayDecorator(
+			testCase.content(), byteArrayDecorator, StandardCharsets.UTF_8);
+		assertEquals(testCase.expectedDecorated(), decorated);
+		assertEquals(testCase.content(), CryptObjectDecoratorExtensions
+			.undecorateWithBytearrayDecorator(decorated, byteArrayDecorator));
 	}
 
 	/**

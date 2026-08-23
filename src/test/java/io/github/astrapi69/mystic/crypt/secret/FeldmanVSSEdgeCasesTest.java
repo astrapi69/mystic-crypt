@@ -89,6 +89,27 @@ public class FeldmanVSSEdgeCasesTest
 		}
 	}
 
+	/**
+	 * A scenario for the fixed width normalization of
+	 * {@link FeldmanVSS#reconstructSecretBytes(List, FeldmanVSS.Commitments, BigInteger, int)} that
+	 * is checked against an independently computed big endian encoding of the <em>original</em>
+	 * secret instead of against a hand written expectation
+	 *
+	 * @param description
+	 *            the human readable description of the scenario
+	 * @param secret
+	 *            the secret to split
+	 * @param expectedLength
+	 *            the requested length of the reconstructed secret
+	 */
+	record FixedWidthCase(String description, byte[] secret, int expectedLength) {
+		@Override
+		public String toString()
+		{
+			return description;
+		}
+	}
+
 	static Stream<InvalidThresholdCase> invalidThresholdCases()
 	{
 		return Stream.of(new InvalidThresholdCase("threshold of zero", 0, 5),
@@ -109,7 +130,56 @@ public class FeldmanVSSEdgeCasesTest
 				"secret with a high bit set does not keep the sign byte of the BigInteger",
 				new byte[] { (byte)0xff, 0x10 }, 2, new byte[] { (byte)0xff, 0x10 }),
 			new ReconstructBytesCase("leading zero bytes of the secret are not recoverable",
-				new byte[] { 0, 0, 7 }, 1, new byte[] { 7 }));
+				new byte[] { 0, 0, 7 }, 1, new byte[] { 7 }),
+			// the BigInteger encoding of 0x8001 carries a sign byte and is therefore exactly as
+			// long as the requested length - the equality boundary of the leading zero strip in
+			// reconstructSecretBytes. The sign byte doubles as the leading zero of the secret here
+			// and has to be kept
+			new ReconstructBytesCase(
+				"a sign byte that fits into the requested length stays part of the result",
+				new byte[] { 0, (byte)0x80, 1 }, 3, new byte[] { 0, (byte)0x80, 1 }));
+	}
+
+	static Stream<FixedWidthCase> fixedWidthCases()
+	{
+		return Stream.of(
+			new FixedWidthCase("sign byte fits into the requested length",
+				new byte[] { 0, (byte)0x80, 1 }, 3),
+			new FixedWidthCase("sign byte makes the encoding one byte too long",
+				new byte[] { 0, (byte)0x80, 1 }, 2),
+			new FixedWidthCase("encoding is two bytes too long", new byte[] { 0, (byte)0x80, 1 },
+				1),
+			new FixedWidthCase("requested length is one longer than the encoding",
+				new byte[] { (byte)0x80, 1 }, 3),
+			new FixedWidthCase("encoding without a sign byte has the exact length",
+				new byte[] { 1, 2, 3 }, 3),
+			new FixedWidthCase("requested length is much longer than the encoding",
+				new byte[] { 9 }, 6),
+			new FixedWidthCase("a zero secret is padded to the requested length", new byte[] { 0 },
+				4));
+	}
+
+	/**
+	 * Computes the big endian representation of {@code value} in exactly {@code length} bytes, the
+	 * least significant bytes win when the value does not fit. This is an oracle that is completely
+	 * independent of the length arithmetic of
+	 * {@link FeldmanVSS#reconstructSecretBytes(List, FeldmanVSS.Commitments, BigInteger, int)}
+	 *
+	 * @param value
+	 *            the value to encode
+	 * @param length
+	 *            the number of bytes of the result
+	 * @return the big endian representation
+	 */
+	private static byte[] toFixedWidthBigEndian(final BigInteger value, final int length)
+	{
+		byte[] encoded = new byte[length];
+		for (int i = 0; i < length; i++)
+		{
+			encoded[length - 1 - i] = value.shiftRight(8 * i).and(BigInteger.valueOf(0xff))
+				.byteValue();
+		}
+		return encoded;
 	}
 
 	/**
@@ -186,6 +256,44 @@ public class FeldmanVSSEdgeCasesTest
 			result.getCommitments(), result.getCommitments().getQ(), testCase.expectedLength());
 
 		assertArrayEquals(testCase.expected(), reconstructed);
+	}
+
+	/**
+	 * Test method for
+	 * {@link FeldmanVSS#reconstructSecretBytes(List, FeldmanVSS.Commitments, BigInteger, int)}, the
+	 * reconstructed bytes have to be the big endian representation of the <em>original</em> secret
+	 * in exactly the requested number of bytes. The expectation is recomputed from the original
+	 * input instead of from any intermediate the method produced, so that neither the leading zero
+	 * strip nor the pad/truncate arithmetic can define its own correctness. This guards against a
+	 * normalization that keeps the most significant bytes on truncation or that pads on the wrong
+	 * side.
+	 *
+	 * @param testCase
+	 *            the test case
+	 */
+	@ParameterizedTest
+	@MethodSource("fixedWidthCases")
+	public void reconstructSecretBytes_isTheBigEndianEncodingOfTheOriginalSecret(
+		final FixedWidthCase testCase)
+	{
+		BigInteger original = new BigInteger(1, testCase.secret());
+		byte[] expected = toFixedWidthBigEndian(original, testCase.expectedLength());
+
+		ShareGenerationResult result = FeldmanVSS.splitSecret(testCase.secret(), 2, 3);
+		byte[] reconstructed = FeldmanVSS.reconstructSecretBytes(result.getShares().subList(0, 2),
+			result.getCommitments(), result.getCommitments().getQ(), testCase.expectedLength());
+
+		assertEquals(testCase.expectedLength(), reconstructed.length);
+		assertArrayEquals(expected, reconstructed);
+
+		// the matching negative: taking the leading bytes of the raw BigInteger encoding (which
+		// also right pads instead of left pads when the encoding is too short) must never produce
+		// the same answer whenever it differs from the big endian representation
+		byte[] leadingBytes = Arrays.copyOf(original.toByteArray(), testCase.expectedLength());
+		if (!Arrays.equals(leadingBytes, expected))
+		{
+			assertFalse(Arrays.equals(leadingBytes, reconstructed));
+		}
 	}
 
 	/**
