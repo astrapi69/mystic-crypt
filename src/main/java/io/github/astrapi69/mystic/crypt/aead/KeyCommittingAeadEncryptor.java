@@ -164,7 +164,9 @@ public class KeyCommittingAeadEncryptor extends AbstractByteArrayEncryptor
 	{
 		byte[] keyBytes = commitmentKey.getEncoded();
 		byte[] input = ArrayUtils.addAll(keyBytes, iv);
-		if (associatedData != null && associatedData.length > 0)
+		// ArrayUtils.addAll with an empty array returns a content-identical copy of input, so
+		// checking associatedData.length > 0 first is redundant - only the null case matters
+		if (associatedData != null)
 		{
 			input = ArrayUtils.addAll(input, associatedData);
 		}
@@ -199,9 +201,10 @@ public class KeyCommittingAeadEncryptor extends AbstractByteArrayEncryptor
 		// Compute commitment tag over key, IV, and associated data
 		final byte[] commitmentTag = computeCommitmentTag(iv, associatedData);
 
-		// Include commitment tag in associated data for GCM
+		// Include commitment tag in associated data for GCM. ArrayUtils.addAll with an empty
+		// array is a content-identical copy, so only the null case needs distinguishing.
 		byte[] finalAssociatedData = commitmentTag;
-		if (associatedData != null && associatedData.length > 0)
+		if (associatedData != null)
 		{
 			finalAssociatedData = ArrayUtils.addAll(commitmentTag, associatedData);
 		}
@@ -271,9 +274,10 @@ public class KeyCommittingAeadEncryptor extends AbstractByteArrayEncryptor
 			throw new SecurityException("Commitment verification failed: key mismatch detected");
 		}
 
-		// Reconstruct associated data with commitment tag
+		// Reconstruct associated data with commitment tag. ArrayUtils.addAll with an empty array
+		// is a content-identical copy, so only the null case needs distinguishing.
 		byte[] finalAssociatedData = commitmentTag;
-		if (associatedData != null && associatedData.length > 0)
+		if (associatedData != null)
 		{
 			finalAssociatedData = ArrayUtils.addAll(commitmentTag, associatedData);
 		}
