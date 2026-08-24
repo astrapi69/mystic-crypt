@@ -233,8 +233,8 @@ This library is the top of a three-repository stack:
 Pull requests are welcome — fork [astrapi69/mystic-crypt](https://github.com/astrapi69/mystic-crypt/fork)
 and [open a PR](https://github.com/astrapi69/mystic-crypt/pull/new/develop) against `develop`.
 
-Please add tests for your change. This library sits at 99% line and 98% branch coverage with a 96%
-PIT mutation score; the [conventions for contributors](docs/TESTING.md#conventions-for-contributors)
+Please add tests for your change. This library sits at 99.91% line and 100% branch coverage with a
+98.8% PIT mutation score; the [conventions for contributors](docs/TESTING.md#conventions-for-contributors)
 describe what a good test looks like here — parameterized with records, a property assertion plus
 the matching negative case, and never lowering those numbers.
 
