@@ -176,20 +176,6 @@ None of the fifteen is unfinished. Each one is either physically impossible to k
 
 ---
 
-## A postscript: two of the fifteen, after all
-
-While preparing this piece, someone asked a fair question about the list above: could a low-risk experiment still turn up a real win among the fifteen, one worth keeping? Checking that question against each of them properly is what this whole post is arguing for, so it seemed dishonest not to actually do it before publishing.
-
-Thirteen held. Two didn't.
-
-`ScryptHasher.isPowerOfTwo` and the empty-suffix branch of `CryptObjectDecoratorExtensions.endsWith` had both been filed under "killable only by making the design worse" — one said it would need wider method visibility, the other noted reflection *could* observe the difference but stopped short of writing that test. Both were wrong in the same way: each is a `private` method whose current caller happens to make the boundary unobservable, but a test can still call the method directly through reflection and check its contract in isolation, at zero cost to the production code. It's the identical trick this post already used for the SRP password-buffer wipe, just not applied consistently the first time.
-
-Two mutants killed, no design compromised, the count moved to thirteen and the score from 98.8% to 99.0% for the larger library. The other thirteen are unchanged - still settled by proof, not effort, for the reasons already given above.
-
-Which is really the point twice over: mutation testing catches the bugs your first pass of reasoning misses, and it's just as good at catching the bugs in *that* reasoning, if you're willing to ask it the second time.
-
----
-
 ## The actual takeaway
 
 A mutation score isn't a target. It's a question generator.
@@ -203,6 +189,18 @@ Sometimes the honest answer is "because this line is dead weight," and the fix i
 And sometimes, after you've genuinely tried to disprove your own reasoning, not just restated it, the honest answer is "because killing this would require making the software worse."
 
 At that point the correct move isn't to keep pushing the number. It's to write the reason down where the next person can check it, and stop.
+
+## A postscript: two of the fifteen, after all
+
+While preparing this piece, someone asked a fair question about the list above: could a low-risk experiment still turn up a real win among the fifteen, one worth keeping? Checking that question against each of them properly is what this whole post is arguing for, so it seemed dishonest not to actually do it before publishing.
+
+Thirteen held. Two didn't.
+
+`ScryptHasher.isPowerOfTwo` and the empty-suffix branch of `CryptObjectDecoratorExtensions.endsWith` had both been filed under "killable only by making the design worse", one said it would need wider method visibility, the other noted reflection *could* observe the difference but stopped short of writing that test. Both were wrong in the same way: each is a `private` method whose current caller happens to make the boundary unobservable, but a test can still call the method directly through reflection and check its contract in isolation, at zero cost to the production code. It's the identical trick this post already used for the SRP password-buffer wipe, just not applied consistently the first time.
+
+Two mutants killed, no design compromised, the count moved to thirteen and the score from 98.8% to 99.0% for the larger library. The other thirteen are unchanged, still settled by proof, not effort, for the reasons already given above.
+
+Which is really the point twice over: mutation testing catches the bugs your first pass of reasoning misses, and it's just as good at catching the bugs in *that* reasoning, if you're willing to ask it the second time.
 
 ---
 
