@@ -1,0 +1,4 @@
+tasks.register('tagRelease', Exec) {
+    description = "Tags the current head with the project's version."
+    commandLine 'git', 'tag', '-a', "RELEASE-${project.version}", '-m', "New release in version ${project.version}"
+}

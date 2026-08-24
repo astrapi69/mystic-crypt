@@ -1,0 +1,39 @@
+# Publishes the artifact to Maven Central via the Central Portal (nmcp plugin).
+# Triggered by pushing a release tag (RELEASE-*) or manually via workflow_dispatch.
+# Required repository secrets:
+#   CENTRAL_PORTAL_TOKEN_USERNAME / CENTRAL_PORTAL_TOKEN_PASSWORD - Central Portal user token
+#   GPG_PRIVATE_KEY / GPG_PASSPHRASE    - ascii-armored signing key and its passphrase
+
+name: Publish to Maven Central
+
+on:
+  push:
+    tags: [ 'RELEASE-*' ]
+  workflow_dispatch:
+
+jobs:
+  publish:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+      - name: Build
+        run: ./gradlew build
+      # nmcp uploads and validates the bundle directly - no separate manual staging-upload step
+      # needed (unlike the plain maven-publish + OSSRH-staging-api repos in this family).
+      - name: Publish to the Central Portal
+        run: ./gradlew publishAllPublicationsToCentralPortal
+        env:
+          CENTRAL_PORTAL_TOKEN_USERNAME: ${{ secrets.CENTRAL_PORTAL_TOKEN_USERNAME }}
+          CENTRAL_PORTAL_TOKEN_PASSWORD: ${{ secrets.CENTRAL_PORTAL_TOKEN_PASSWORD }}
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}

@@ -9,7 +9,6 @@ commons-lang3-version = "3.20.0"
 crypt-api-version = "10.0.0"
 crypt-data-version = "11.0.0"
 file-worker-version = "19.0"
-gradle-plugin-grgit-version = "5.3.3"
 gradle-plugin-nmcp-version = "1.6.1"
 gradle-plugin-pitest-version = "1.19.0"
 gradle-plugin-shadow-version = "9.0.0"
@@ -77,7 +76,6 @@ unit-testing = [
 
 [plugins]
 gradle-versions-plugin = { id = "io.github.ben-manes.versions", version.ref = "gradle-plugin-versions-version" }
-grgit-gradle = { id = "org.ajoberstar.grgit", version.ref = "gradle-plugin-grgit-version" }
 nmcp-gradle-plugin = { id = "com.gradleup.nmcp", version.ref = "gradle-plugin-nmcp-version" }
 pitest-gradle-plugin = { id = "info.solidsoft.pitest", version.ref = "gradle-plugin-pitest-version" }
 shadow-gradle = { id = "com.gradleup.shadow", version.ref = "gradle-plugin-shadow-version" }
