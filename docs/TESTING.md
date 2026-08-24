@@ -81,18 +81,28 @@ prove the absence of weak tests.
 
 ## Numbers
 
-Measured 2026-08-22. *Mutation score* divides killed mutants by all mutants, including ones in code
+Measured 2026-08-23. *Mutation score* divides killed mutants by all mutants, including ones in code
 no test executes; *test strength* divides only by mutants in executed code, so it answers "of the
 code the tests do run, how much would they notice being broken?".
 
 | Repo | Measured on | Tests | Line | Branch | Mutation score (killed / generated) | Test strength |
 |---|---|---|---|---|---|---|
 | `crypt-api` | `develop` @ `cf35381` (released as 10.0.0) | 271 | 100.00% | 100.00% | 100.0% (78 / 78) | 100.0% |
-| `crypt-data` | `develop` @ `fdc183c` (released as 11.0.0) | 1018 | 100.00% | 100.00% | 99.1% (781 / 788) | 99.1% |
-| `mystic-crypt` | `test/kill-surviving-mutants` @ `d05a1f87` (PR #69) | 752 | 99.91% | 100.00% | 98.5% (1000 / 1015) | 98.6% |
+| `crypt-data` | `develop` @ `7effa34` (PR #5) | 1018 | 100.00% | 100.00% | 99.6% (779 / 782) | 99.6% |
+| `mystic-crypt` | `develop` @ `d2fa0824` (PR #76) | 752 | 99.91% | 100.00% | 98.8% (997 / 1009) | 98.9% |
 
 Regenerate with the commands under [How to run](#how-to-run); the reports are
 `build/reports/jacoco/test/jacocoTestReport.xml` and `build/reports/pitest/`.
+
+`crypt-api` is the only one of the three at a literal 100% mutation score. The other two are not
+at 100% because the remaining survivors cannot be killed without making the code worse - see
+["Why not literal 100%"](COVERAGE_EXCEPTIONS.md#why-not-literal-100) in
+[COVERAGE_EXCEPTIONS.md](COVERAGE_EXCEPTIONS.md) for the per-mutant reasoning. Two rounds of this
+cycle's work (PR #69/#76 for `mystic-crypt`, PR #5 for `crypt-data`) went specifically after every
+surviving mutant: the first round killed what was killable and documented the rest, a second pass
+re-examined every documented survivor and found seven that were dead code rather than genuinely
+untestable code - removing the redundant guard around them killed the mutant and simplified the
+method at the same time. What is left after both rounds is the floor, not something left undone.
 
 **What these numbers do not tell you.** The two uncovered lines in `mystic-crypt` are
 `MysticCryptCli.main`, which is `System.exit(execute(args))`: no in-process test can execute it
