@@ -90,6 +90,10 @@ signing {
         if (signingKey && signingPassphrase) {
             useInMemoryPgpKeys(signingKey, signingPassphrase)
         }
+        else if (!project.hasProperty("signing.keyId")) {
+            // fall back to the local gpg command with the key from signing.gnupg.keyName
+            useGpgCmd()
+        }
         sign publishing.publications.mavenJava
     }
 }
