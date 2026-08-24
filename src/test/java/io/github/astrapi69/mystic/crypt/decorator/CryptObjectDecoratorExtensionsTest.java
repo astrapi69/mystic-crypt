@@ -25,7 +25,10 @@
 package io.github.astrapi69.mystic.crypt.decorator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
@@ -630,5 +633,27 @@ public class CryptObjectDecoratorExtensionsTest
 		plain.deleteOnExit();
 		java.nio.file.Files.write(plain.toPath(), "payload".getBytes(StandardCharsets.UTF_8));
 		assertEquals("payload", CryptObjectDecoratorExtensions.undecorateFile(plain, decorator));
+	}
+
+	/**
+	 * Test method for the private {@code endsWith(byte[], byte[])} with an empty suffix. Through
+	 * the method's only current caller, {@code undecorateWithBytearrayDecorator}, the answer for an
+	 * empty suffix does not matter: {@code removeFromEnd} on a zero-length suffix returns a
+	 * content-identical copy of the array either way, so the public method's result is the same
+	 * regardless. That is exactly why a boolean-return mutant on this branch survives mutation
+	 * testing without this test - the primitive's own contract, "nothing ends with an empty
+	 * suffix", is untested and unenforced if this method is ever reused by different logic that
+	 * cares about the distinction. Invoked via reflection because the method is private; no
+	 * production code changed to make it testable.
+	 */
+	@Test
+	void endsWith_answersFalseForAnEmptySuffix()
+		throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
+	{
+		final Method endsWith = CryptObjectDecoratorExtensions.class.getDeclaredMethod("endsWith",
+			byte[].class, byte[].class);
+		endsWith.setAccessible(true);
+
+		assertFalse((boolean)endsWith.invoke(null, new byte[] { 'x' }, new byte[0]));
 	}
 }
