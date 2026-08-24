@@ -31,6 +31,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import org.junit.jupiter.api.Test;
 
 /**
@@ -202,6 +205,26 @@ class ScryptHasherTest
 
 		final byte[] hash16 = ScryptHasher.hashWithSalt(password.clone(), salt, 1024, 8, 1, 16);
 		assertEquals(16, hash16.length);
+	}
+
+	/**
+	 * Test method for the private {@code isPowerOfTwo(int)} at its zero boundary. Through the
+	 * method's only current caller, {@code validateParameters}, the answer at {@code n == 0} does
+	 * not matter: {@code !isPowerOfTwo(n) || n < MIN_N} throws either way, because the second
+	 * clause independently rejects zero. That redundancy is exactly why a boundary mutant on
+	 * {@code isPowerOfTwo} itself survives mutation testing without this test - the primitive's own
+	 * contract, "zero is not a power of two", is untested and unenforced if this method is ever
+	 * called from anywhere else. Invoked via reflection because the method is private; no
+	 * production code changed to make it testable.
+	 */
+	@Test
+	void isPowerOfTwo_answersFalseForZero()
+		throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
+	{
+		final Method isPowerOfTwo = ScryptHasher.class.getDeclaredMethod("isPowerOfTwo", int.class);
+		isPowerOfTwo.setAccessible(true);
+
+		assertFalse((boolean)isPowerOfTwo.invoke(null, 0));
 	}
 
 }

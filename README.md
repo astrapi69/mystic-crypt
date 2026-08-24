@@ -8,7 +8,7 @@ correctly without being a cryptographer.**
 
 [![Java CI with Gradle](https://github.com/astrapi69/mystic-crypt/actions/workflows/gradle.yml/badge.svg)](https://github.com/astrapi69/mystic-crypt/actions/workflows/gradle.yml)
 [![Coverage Status](https://codecov.io/gh/astrapi69/mystic-crypt/branch/develop/graph/badge.svg)](https://codecov.io/gh/astrapi69/mystic-crypt)
-[![Mutation Coverage](https://img.shields.io/badge/mutation%20coverage-98%25-brightgreen)](https://pitest.org/)
+[![Mutation Coverage](https://img.shields.io/badge/mutation%20coverage-99%25-brightgreen)](https://pitest.org/)
 [![Open Issues](https://img.shields.io/github/issues/astrapi69/mystic-crypt.svg?style=flat)](https://github.com/astrapi69/mystic-crypt/issues)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.astrapi69/mystic-crypt.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/io.github.astrapi69/mystic-crypt)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT)
@@ -234,7 +234,7 @@ Pull requests are welcome — fork [astrapi69/mystic-crypt](https://github.com/a
 and [open a PR](https://github.com/astrapi69/mystic-crypt/pull/new/develop) against `develop`.
 
 Please add tests for your change. This library sits at 99.91% line and 100% branch coverage with a
-98.8% PIT mutation score; the [conventions for contributors](docs/TESTING.md#conventions-for-contributors)
+99.0% PIT mutation score; the [conventions for contributors](docs/TESTING.md#conventions-for-contributors)
 describe what a good test looks like here — parameterized with records, a property assertion plus
 the matching negative case, and never lowering those numbers.
 
