@@ -89,7 +89,7 @@ code the tests do run, how much would they notice being broken?".
 |---|---|---|---|---|---|---|
 | `crypt-api` | `develop` @ `cf35381` (released as 10.0.0) | 271 | 100.00% | 100.00% | 100.0% (78 / 78) | 100.0% |
 | `crypt-data` | `develop` @ `7effa34` (PR #5) | 1018 | 100.00% | 100.00% | 99.6% (779 / 782) | 99.6% |
-| `mystic-crypt` | `develop` @ `d2fa0824` (PR #76) | 752 | 99.91% | 100.00% | 98.8% (997 / 1009) | 98.9% |
+| `mystic-crypt` | `develop` @ `d810ee53` | 754 | 99.91% | 100.00% | 99.0% (999 / 1009) | 99.1% |
 
 Regenerate with the commands under [How to run](#how-to-run); the reports are
 `build/reports/jacoco/test/jacocoTestReport.xml` and `build/reports/pitest/`.
@@ -97,12 +97,15 @@ Regenerate with the commands under [How to run](#how-to-run); the reports are
 `crypt-api` is the only one of the three at a literal 100% mutation score. The other two are not
 at 100% because the remaining survivors cannot be killed without making the code worse - see
 ["Why not literal 100%"](COVERAGE_EXCEPTIONS.md#why-not-literal-100) in
-[COVERAGE_EXCEPTIONS.md](COVERAGE_EXCEPTIONS.md) for the per-mutant reasoning. Two rounds of this
-cycle's work (PR #69/#76 for `mystic-crypt`, PR #5 for `crypt-data`) went specifically after every
-surviving mutant: the first round killed what was killable and documented the rest, a second pass
-re-examined every documented survivor and found seven that were dead code rather than genuinely
-untestable code - removing the redundant guard around them killed the mutant and simplified the
-method at the same time. What is left after both rounds is the floor, not something left undone.
+[COVERAGE_EXCEPTIONS.md](COVERAGE_EXCEPTIONS.md) for the per-mutant reasoning. Three rounds of this
+cycle's work went specifically after every surviving mutant: the first round (PR #69 for
+`mystic-crypt`) killed what was killable and documented the rest; a second pass (PR #5 for
+`crypt-data`, PR #76 for `mystic-crypt`) re-examined every documented survivor and found seven that
+were dead code rather than genuinely untestable code - removing the redundant guard around them
+killed the mutant and simplified the method at the same time; a third pass, prompted by asking
+whether a reflective test could reach a private method without touching production code, found two
+more that way at zero design cost. What is left after all three rounds is the floor, not something
+left undone.
 
 **What these numbers do not tell you.** The two uncovered lines in `mystic-crypt` are
 `MysticCryptCli.main`, which is `System.exit(execute(args))`: no in-process test can execute it
