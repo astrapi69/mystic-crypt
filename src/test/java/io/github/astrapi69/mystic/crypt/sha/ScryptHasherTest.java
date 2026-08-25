@@ -33,6 +33,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
+import java.util.HexFormat;
 
 import org.junit.jupiter.api.Test;
 
@@ -41,6 +43,24 @@ import org.junit.jupiter.api.Test;
  */
 class ScryptHasherTest
 {
+
+	/**
+	 * The RFC 7914 section 12 known-answer vector: scrypt(P="password", S="NaCl", N=1024, r=8, p=1,
+	 * dkLen=64). The expected hex was generated with {@code openssl kdf ... SCRYPT}, so a mismatch
+	 * here means Bouncy Castle's scrypt disagrees with OpenSSL - not a typo in this file. Without
+	 * it, a mutant that swaps in any other KDF would satisfy every existing assertion.
+	 */
+	@Test
+	void testKnownAnswerVectorFromRfc7914()
+	{
+		byte[] hash = ScryptHasher.hashWithSalt("password".toCharArray(),
+			"NaCl".getBytes(StandardCharsets.UTF_8), 1024, 8, 1, 64);
+
+		assertEquals(
+			"27b418c674c769d12501fbb1f53bac32df6514c0f28d043872b148b348961a79"
+				+ "057a6861cc3553246aa0ddb63bc074450b924022547a799538d603396835dd62",
+			HexFormat.of().formatHex(hash));
+	}
 
 	@Test
 	void testHashWithDefaultParameters()

@@ -64,4 +64,28 @@ public class PasswordStringDecryptorTest
 		assertEquals(text, decryptor.decrypt(firstEncrypted));
 		assertEquals(text, decryptor.decrypt(secondEncrypted));
 	}
+
+	/**
+	 * Test method for {@link PasswordStringDecryptor#decrypt(String)} with the wrong password: the
+	 * plaintext must never come back. The cipher is unauthenticated CBC, so a wrong key usually
+	 * fails the padding check but can (about 1 in 256) produce garbage instead of an exception -
+	 * the assertion therefore accepts either, but never the plaintext.
+	 */
+	@Test
+	public void decrypt_withTheWrongPassword_neverYieldsThePlaintext() throws Exception
+	{
+		String text = "bar";
+		String encrypted = new PasswordStringEncryptor("foo").encrypt(text);
+		PasswordStringDecryptor decryptor = new PasswordStringDecryptor("wrong-password");
+
+		try
+		{
+			assertNotEquals(text, decryptor.decrypt(encrypted),
+				"decrypting with the wrong password must never yield the plaintext");
+		}
+		catch (Exception exception)
+		{
+			// expected: the wrong key fails inside the cipher
+		}
+	}
 }

@@ -24,6 +24,9 @@
  */
 package io.github.astrapi69.mystic.crypt.key.agreement;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 import java.math.BigInteger;
 import java.security.KeyPair;
@@ -41,6 +44,7 @@ import java.util.Date;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import io.github.astrapi69.collection.array.ArrayFactory;
 import io.github.astrapi69.crypt.api.algorithm.key.KeyPairGeneratorAlgorithm;
@@ -55,10 +59,7 @@ import io.github.astrapi69.crypt.data.model.KeyStoreInfo;
 import io.github.astrapi69.crypt.data.model.Validity;
 import io.github.astrapi69.crypt.data.model.X509CertificateV1Info;
 import io.github.astrapi69.crypt.data.model.X509CertificateV3Info;
-import io.github.astrapi69.file.create.FileFactory;
 import io.github.astrapi69.file.create.model.FileInfo;
-import io.github.astrapi69.file.delete.DeleteFileExtensions;
-import io.github.astrapi69.file.search.PathFinder;
 import io.github.astrapi69.random.number.RandomBigIntegerFactory;
 
 /**
@@ -72,11 +73,14 @@ public class KeyToolFactoryTest
 	 * Test method for creating a keystore and a truststore using {@link KeyStoreInfo},
 	 * {@link KeyPairInfo}, and other related objects.
 	 *
+	 * @param temporaryDirectory
+	 *            the temporary directory of this test
 	 * @throws Exception
 	 *             if any error occurs during the creation or saving of keystores
 	 */
 	@Test
-	public void testCreateKeyStoreAndTrustStoreWithInfoObjects() throws Exception
+	public void testCreateKeyStoreAndTrustStoreWithInfoObjects(@TempDir File temporaryDirectory)
+		throws Exception
 	{
 		Security.addProvider(new BouncyCastleProvider());
 		DistinguishedNameInfo distinguishedNameInfo;
@@ -122,7 +126,7 @@ public class KeyToolFactoryTest
 		privateKey = keyPair.getPrivate();
 
 		// Initialize a KeyStore and store the key pair and certificate
-		keystoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(), "ssl-keystore.jks");
+		keystoreFile = new File(temporaryDirectory, "ssl-keystore.jks");
 		keystoreFileInfo = FileInfo.toFileInfo(keystoreFile);
 		keyStoreInfo = KeyStoreInfo.builder().fileInfo(keystoreFileInfo).type("JKS")
 			.keystorePassword(password).build();
@@ -130,27 +134,59 @@ public class KeyToolFactoryTest
 			certificateAlias, password);
 
 		// Initialize a KeyStore for the truststore and store the key pair and certificate
-		trustStoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(),
-			"ssl-truststore.jks");
+		trustStoreFile = new File(temporaryDirectory, "ssl-truststore.jks");
 		trustStoreFileInfo = FileInfo.toFileInfo(trustStoreFile);
 		KeyStoreInfo trustStoreInfo = KeyStoreInfo.builder().fileInfo(trustStoreFileInfo)
 			.type("JKS").keystorePassword(password).build();
 		KeyStoreFactory.newKeystoreAndSaveForSsl(trustStoreInfo, privateKey, certificate,
 			certificateAlias, password);
-		// comment if you want to check with SecureServer and SecureClient
-		DeleteFileExtensions.delete(keystoreFile);
-		DeleteFileExtensions.delete(trustStoreFile);
+
+		// the written stores must be loadable and actually hold the entry
+		assertStoreHoldsTheEntry(keystoreFile, certificateAlias, privateKey, "Test Server");
+		assertStoreHoldsTheEntry(trustStoreFile, certificateAlias, privateKey, "Test Server");
+	}
+
+	/**
+	 * Reloads the given store file and asserts it holds the expected private-key entry with a
+	 * certificate for the expected subject - the behavior properties the two creation tests exist
+	 * to secure.
+	 *
+	 * @param storeFile
+	 *            the key store file to reload
+	 * @param alias
+	 *            the expected alias
+	 * @param expectedPrivateKey
+	 *            the private key that must be stored under the alias
+	 * @param expectedCommonName
+	 *            the common name the stored certificate's subject must contain
+	 * @throws Exception
+	 *             if loading fails
+	 */
+	private static void assertStoreHoldsTheEntry(File storeFile, String alias,
+		PrivateKey expectedPrivateKey, String expectedCommonName) throws Exception
+	{
+		KeyStore reloaded = KeyStoreFactory.loadKeyStore(storeFile, "JKS", "password");
+		assertTrue(reloaded.containsAlias(alias), "the alias must exist in " + storeFile);
+		assertEquals(expectedPrivateKey, reloaded.getKey(alias, "password".toCharArray()),
+			"the stored private key must be readable and equal to the generated one");
+		X509Certificate storedCertificate = (X509Certificate)reloaded.getCertificate(alias);
+		assertTrue(
+			storedCertificate.getSubjectX500Principal().getName()
+				.contains("CN=" + expectedCommonName),
+			"the stored certificate must carry the expected subject");
 	}
 
 	/**
 	 * Test method for creating a keystore and a truststore without using {@link KeyStoreInfo},
 	 * {@link KeyPairInfo}, and other related objects.
 	 *
+	 * @param temporaryDirectory
+	 *            the temporary directory of this test
 	 * @throws Exception
 	 *             if any error occurs during the creation or saving of keystores
 	 */
 	@Test
-	public void testCreateKeyStoreAndTrustStore() throws Exception
+	public void testCreateKeyStoreAndTrustStore(@TempDir File temporaryDirectory) throws Exception
 	{
 		Security.addProvider(new BouncyCastleProvider());
 		KeyPair keyPair;
@@ -194,7 +230,7 @@ public class KeyToolFactoryTest
 		cert = CertFactory.newX509CertificateV3(keyPair, issuer, serial, notBefore, notAfter,
 			subject, signatureAlgorithm);
 
-		keystoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(), "ssl-keystore.jks");
+		keystoreFile = new File(temporaryDirectory, "ssl-keystore.jks");
 
 		// Initialize a KeyStore and store the key pair and certificate
 		keyStore = KeyStoreFactory.newKeyStore(keystoreFile, "JKS", "password");
@@ -203,8 +239,7 @@ public class KeyToolFactoryTest
 		// Save the KeyStore to a file
 		KeyStoreExtensions.store(keyStore, keystoreFile, "password");
 
-		trustStoreFile = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(),
-			"ssl-truststore.jks");
+		trustStoreFile = new File(temporaryDirectory, "ssl-truststore.jks");
 
 		// Initialize a KeyStore for the truststore and store the key pair and certificate
 		trustStore = KeyStoreFactory.newKeyStore(trustStoreFile, "JKS", "password");
@@ -212,9 +247,12 @@ public class KeyToolFactoryTest
 			new Certificate[] { cert });
 		// Save the KeyStore to a file
 		KeyStoreExtensions.store(trustStore, trustStoreFile, "password");
-		// comment if you want to check with SecureServer and SecureClient
-		DeleteFileExtensions.delete(keystoreFile);
-		DeleteFileExtensions.delete(trustStoreFile);
+
+		// the written stores must be loadable and actually hold the entry
+		assertStoreHoldsTheEntry(keystoreFile, certificateAlias, keyPair.getPrivate(),
+			"Tyler Durden");
+		assertStoreHoldsTheEntry(trustStoreFile, certificateAlias, keyPair.getPrivate(),
+			"Tyler Durden");
 	}
 
 }

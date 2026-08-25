@@ -185,16 +185,16 @@ class FeldmanVSSTest
 	void testReconstructSecretBytes()
 	{
 		byte[] originalSecret = "ByteTest".getBytes();
-		int expectedLength = 32;
 
 		ShareGenerationResult result = FeldmanVSS.splitSecret(originalSecret, 3, 5);
 
 		List<Share> subset = result.getShares().subList(0, 3);
 
-		BigInteger reconstructed = FeldmanVSS.reconstructSecret(subset, result.getCommitments(),
-			result.getCommitments().getQ());
+		byte[] reconstructed = FeldmanVSS.reconstructSecretBytes(subset, result.getCommitments(),
+			result.getCommitments().getQ(), originalSecret.length);
 
-		assertEquals(result.getSecret(), reconstructed, "Reconstructed BigInteger should match");
+		assertArrayEquals(originalSecret, reconstructed,
+			"the reconstructed bytes must equal the original secret");
 	}
 
 	@Test

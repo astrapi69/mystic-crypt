@@ -26,6 +26,7 @@ package io.github.astrapi69.mystic.crypt.key;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
@@ -113,5 +114,38 @@ public class SharedSecretEncryptorTest
 		actual = new String(decrypt, "UTF-8");
 
 		assertEquals(expected, actual);
+	}
+
+	/**
+	 * The matching negative case: a decryptor built from a third, unrelated key pair derives a
+	 * different shared secret, so the AES-GCM tag check must reject the ciphertext - the plaintext
+	 * must never come back for the wrong party.
+	 *
+	 * @throws Exception
+	 *             is thrown if any error occurs
+	 */
+	@Test
+	public void decrypt_withAnUnrelatedKeyPair_fails() throws Exception
+	{
+		Security.addProvider(new BouncyCastleProvider());
+
+		byte[] iv = new SecureRandom().generateSeed(16);
+		KeyPair keyPairBob = KeyPairGeneratorFactory
+			.newKeyPairGenerator("brainpoolp256r1", "ECDH", "BC").generateKeyPair();
+		KeyPair keyPairAlice = KeyPairGeneratorFactory
+			.newKeyPairGenerator("brainpoolp256r1", "ECDH", "BC").generateKeyPair();
+		KeyPair keyPairEve = KeyPairGeneratorFactory
+			.newKeyPairGenerator("brainpoolp256r1", "ECDH", "BC").generateKeyPair();
+
+		SharedSecretEncryptor encryptor = new SharedSecretEncryptor(keyPairBob.getPrivate(),
+			keyPairAlice.getPublic(), "ECDH", "AES", "BC", "AES/GCM/NoPadding", iv);
+		byte[] encrypted = encryptor
+			.encrypt("Hi there, whats up!".getBytes(StandardCharsets.UTF_8));
+
+		SharedSecretDecryptor eavesdropper = new SharedSecretDecryptor(keyPairEve.getPrivate(),
+			keyPairBob.getPublic(), "ECDH", "AES", "BC", "AES/GCM/NoPadding", iv);
+
+		assertThrows(Exception.class, () -> eavesdropper.decrypt(encrypted),
+			"a decryptor without the right key pair must fail the GCM tag check");
 	}
 }

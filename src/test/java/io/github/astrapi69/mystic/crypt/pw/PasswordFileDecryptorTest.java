@@ -25,6 +25,7 @@
 package io.github.astrapi69.mystic.crypt.pw;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
@@ -196,5 +197,40 @@ public class PasswordFileDecryptorTest extends AbstractTestCase<String, String>
 	{
 		assertEquals(Cipher.DECRYPT_MODE,
 			new PasswordFileDecryptor(password, null).newOperationMode());
+	}
+
+	/**
+	 * Test method for {@link PasswordFileDecryptor#decrypt(File)} with the wrong password: the
+	 * plaintext must never come back. The cipher is unauthenticated CBC, so a wrong key usually
+	 * fails the padding check but can (about 1 in 256) produce garbage instead of an exception -
+	 * the assertion therefore accepts either, but never the original content.
+	 *
+	 * @param temporaryDirectory
+	 *            the temporary directory of this test
+	 * @throws Exception
+	 *             is thrown if an error occurs
+	 */
+	@Test
+	public void decrypt_withTheWrongPassword_neverYieldsThePlaintext(
+		@TempDir File temporaryDirectory) throws Exception
+	{
+		File source = new File(temporaryDirectory, "secret-message.txt");
+		StoreFileExtensions.toFile(source, "the quick brown fox jumps over the lazy dog");
+		File encryptedFile = new PasswordFileEncryptor(password,
+			new File(temporaryDirectory, "secret-message.enc")).encrypt(source);
+		PasswordFileDecryptor fileDecryptor = new PasswordFileDecryptor("wrong-password",
+			new File(temporaryDirectory, "decrypted.txt"));
+
+		try
+		{
+			File decryptedFile = fileDecryptor.decrypt(encryptedFile);
+			assertNotEquals(FileChecksumExtensions.getChecksum(source, MdAlgorithm.MD5.name()),
+				FileChecksumExtensions.getChecksum(decryptedFile, MdAlgorithm.MD5.name()),
+				"decrypting with the wrong password must never yield the original content");
+		}
+		catch (Exception exception)
+		{
+			// expected: the wrong key fails inside the cipher
+		}
 	}
 }
