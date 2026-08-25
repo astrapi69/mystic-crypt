@@ -30,19 +30,22 @@ jobs:
         uses: gradle/actions/setup-gradle@v6
       - name: Execute Gradle build
         run: ./gradlew build
-        env:
-          ossrhUsername: ${{secrets.OSSRHUSERNAME}}
-          ossrhPassword: ${{secrets.OSSRHPASSWORD}}
       - uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-      - name: Publish to Maven Central
+          # a broken upload must not read as green coverage tracking
+          fail_ci_if_error: true
+      # Snapshots only. A non-SNAPSHOT version on develop is deliberately NOT
+      # published here: the release commit reaches develop before the RELEASE-*
+      # tag, and publishing it from this push would duplicate the tag-triggered
+      # upload in publish.yml (#84).
+      - name: Publish snapshot to Maven Central
         if: github.event_name == 'push'
         run: |
           if grep -q -- '-SNAPSHOT' gradle.properties; then
             ./gradlew publishAllPublicationsToCentralSnapshots
           else
-            ./gradlew publishAllPublicationsToCentralPortal
+            echo "non-SNAPSHOT version: release publishing happens only via publish.yml (RELEASE-* tag)"
           fi
         env:
           CENTRAL_PORTAL_TOKEN_USERNAME: ${{ secrets.CENTRAL_PORTAL_TOKEN_USERNAME }}
