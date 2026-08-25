@@ -205,6 +205,9 @@ java -jar mystic-crypt-${latestVersion}-all.jar --help
 | `checksum` | Compute the checksum of a file |
 | `der2pem` | Convert a DER-encoded private key to PEM |
 | `cert` | Create a self-signed X.509 certificate |
+| `keystore` | Manage a PKCS12, JKS or JCEKS key store: list, create, add-keypair, import-cert, export-cert, delete |
+| `sign` | Sign a file or stdin with an Ed25519, ML-DSA or SLH-DSA private key (PEM) |
+| `verify-signature` | Verify such a signature; exit code 0 = valid, 1 = invalid, 2 = error |
 | `obfuscate` / `disentangle` | Obfuscate text with a substitution map, and recover it |
 
 ```shell
@@ -233,8 +236,8 @@ This library is the top of a three-repository stack:
 Pull requests are welcome — fork [astrapi69/mystic-crypt](https://github.com/astrapi69/mystic-crypt/fork)
 and [open a PR](https://github.com/astrapi69/mystic-crypt/pull/new/develop) against `develop`.
 
-Please add tests for your change. This library sits at 99.91% line and 100% branch coverage with a
-99.0% PIT mutation score; the [conventions for contributors](docs/TESTING.md#conventions-for-contributors)
+Please add tests for your change. This library sits at 99.92% line and 100% branch coverage with a
+99.1% PIT mutation score; the [conventions for contributors](docs/TESTING.md#conventions-for-contributors)
 describe what a good test looks like here — parameterized with records, a property assertion plus
 the matching negative case, and never lowering those numbers.
 

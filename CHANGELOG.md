@@ -1,8 +1,30 @@
 ## Change log
 ----------------------
 
-Version 11.1-SNAPSHOT
+Version 11.2
 -------------
+
+ADDED:
+
+- CLI command family `keystore` for managing PKCS12, JKS and JCEKS key stores: `list` (alias,
+  entry kind, algorithm, subject, validity end, SHA-256 fingerprint), `create`, `add-keypair`
+  (generates a key pair plus a self-signed certificate; RSA, RSASSA-PSS, EC, DSA and
+  ML-DSA-44/65/87, with key-exchange algorithms rejected as certificate signers), `import-cert`
+  (PEM and DER), `export-cert` (PEM) and `delete`. Store writes go through a temp file with an
+  atomic move so a failed write cannot truncate the store, existing aliases and store files are
+  never silently overwritten, and an RSASSA-PSS key is certified with a PSS signature
+  (SHA256withRSAandMGF1) per RFC 4055.
+- CLI commands `sign` and `verify-signature` for Ed25519, ML-DSA-44/65/87 and every SLH-DSA
+  parameter set behind one string-keyed algorithm name: PEM keys, data from a file or standard
+  input (`--in -`), raw signature bytes in a file. The exit code of `verify-signature` is the
+  contract: 0 valid, 1 invalid, 2 an error before verification.
+
+CHANGED:
+
+- requires crypt-data 11.2 for the newly exported io.github.astrapi69.crypt.data.key package
+  (KeyStoreExtensions, CertificateExtensions)
+- test quality: 883 tests (up from 754), 99.92% line / 100% branch coverage, PIT mutation score
+  99.1% (1064 of 1074 mutants killed); the new CLI classes contribute no surviving mutants
 
 Version 11.0.0
 -------------

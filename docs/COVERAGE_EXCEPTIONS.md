@@ -35,7 +35,7 @@ reset digest). Removing the guards killed the mutants and simplified the method 
 (PR #5). See ["Why not literal 100%"](#why-not-literal-100) for how the remaining three were told
 apart from those two.
 
-## `mystic-crypt` - 2 lines / 0 branches uncovered; 10 surviving mutants of 1009
+## `mystic-crypt` - 2 lines / 0 branches uncovered; 10 surviving mutants of 1074
 
 Uncovered lines:
 
@@ -120,7 +120,7 @@ earns its keep:
 ## Why not literal 100%
 
 `crypt-api` is at 100.0%. `crypt-data` is at 99.6% (3 survivors of 782) and `mystic-crypt` at
-99.0% (10 survivors of 1009). This section is the answer to "why not push those to 100% too" -
+99.1% (10 survivors of 1074). This section is the answer to "why not push those to 100% too" -
 worked through for every one of the 13 remaining survivors, not asserted in general. It was written
 after three rounds of exactly that push: the first round (PR #69) killed everything killable and
 argued the rest was equivalent; the second round (PR #5, PR #76) went back over every argued
