@@ -156,52 +156,54 @@ public class CryptObjectDecoratorExtensionsTest
 	}
 
 	/**
-	 * Test method for the decoration of an crypt object with {@link CryptObjectDecorator} with byte
-	 * array as prefix and suffix
+	 * One decorate/undecorate edge case around empty prefixes and suffixes - the cases the CSV
+	 * files cannot carry, because an empty CSV field arrives as {@code null}, not as {@code ""}.
+	 * The empty-suffix case is the corner the {@code endsWith} mutant of the third mutation round
+	 * lived in.
 	 */
-	@Test
-	public void testDecorateWithByteArrayDecorator()
+	record PrefixSuffixCase(String description, String prefix, String suffix, String expected) {
+		@Override
+		public String toString()
+		{
+			return description;
+		}
+	}
+
+	static Stream<PrefixSuffixCase> decorateEdgeCases()
 	{
-		String actual;
-		String expected;
-		String toEncrypt;
-		CryptObjectDecorator<byte[]> decorator;
-		Charset utf8 = Charset.forName("UTF-8");
+		return Stream.of(new PrefixSuffixCase("prefix and suffix", "s", "s", "smiles"),
+			new PrefixSuffixCase("empty prefix", "", "s", "miles"),
+			new PrefixSuffixCase("empty suffix", "s", "", "smile"),
+			new PrefixSuffixCase("empty prefix and suffix", "", "", "mile"));
+	}
 
-		toEncrypt = "mile";
-		decorator = CryptObjectDecorator.<byte[]> builder().prefix("s".getBytes(utf8))
-			.suffix("s".getBytes(utf8)).build();
+	static Stream<PrefixSuffixCase> undecorateEdgeCases()
+	{
+		return Stream.of(new PrefixSuffixCase("prefix and suffix", "s", "s", "mile"),
+			new PrefixSuffixCase("empty prefix", "", "s", "smile"),
+			new PrefixSuffixCase("empty suffix", "s", "", "miles"),
+			new PrefixSuffixCase("empty prefix and suffix", "", "", "smiles"));
+	}
 
-		actual = CryptObjectDecoratorExtensions.decorateWithBytearrayDecorator(toEncrypt, decorator,
-			utf8);
-		expected = "smiles";
-		assertEquals(actual, expected);
+	/**
+	 * Test method for
+	 * {@link CryptObjectDecoratorExtensions#decorateWithBytearrayDecorator(String, CryptObjectDecorator, Charset)}
+	 * with empty prefixes and suffixes
+	 *
+	 * @param testCase
+	 *            the edge case
+	 */
+	@ParameterizedTest
+	@MethodSource("decorateEdgeCases")
+	public void decorateWithBytearrayDecorator_handlesEmptyPrefixAndSuffix(
+		PrefixSuffixCase testCase)
+	{
+		CryptObjectDecorator<byte[]> decorator = CryptObjectDecorator.<byte[]> builder()
+			.prefix(testCase.prefix().getBytes(StandardCharsets.UTF_8))
+			.suffix(testCase.suffix().getBytes(StandardCharsets.UTF_8)).build();
 
-		// new scenario ...
-		decorator = CryptObjectDecorator.<byte[]> builder().prefix("".getBytes(utf8))
-			.suffix("s".getBytes(utf8)).build();
-
-		actual = CryptObjectDecoratorExtensions.decorateWithBytearrayDecorator(toEncrypt, decorator,
-			utf8);
-		expected = "miles";
-		assertEquals(actual, expected);
-
-		// new scenario ...
-		decorator = CryptObjectDecorator.<byte[]> builder().prefix("s".getBytes(utf8))
-			.suffix("".getBytes(utf8)).build();
-
-		actual = CryptObjectDecoratorExtensions.decorateWithBytearrayDecorator(toEncrypt, decorator,
-			utf8);
-		expected = "smile";
-		assertEquals(actual, expected);
-		// new scenario ...
-		decorator = CryptObjectDecorator.<byte[]> builder().prefix("".getBytes(utf8))
-			.suffix("".getBytes(utf8)).build();
-
-		actual = CryptObjectDecoratorExtensions.decorateWithBytearrayDecorator(toEncrypt, decorator,
-			utf8);
-		expected = "mile";
-		assertEquals(actual, expected);
+		assertEquals(testCase.expected(), CryptObjectDecoratorExtensions
+			.decorateWithBytearrayDecorator("mile", decorator, StandardCharsets.UTF_8));
 	}
 
 	/**
@@ -225,90 +227,43 @@ public class CryptObjectDecoratorExtensionsTest
 	}
 
 	/**
-	 * Test method for the decoration of an crypt object with {@link CryptObjectDecorator}
+	 * Test method for
+	 * {@link CryptObjectDecoratorExtensions#decorateWithStringDecorator(String, CryptObjectDecorator)}
+	 * with empty prefixes and suffixes
+	 *
+	 * @param testCase
+	 *            the edge case
 	 */
-	@Test
-	public void testDecorateWithStringDecorator()
+	@ParameterizedTest
+	@MethodSource("decorateEdgeCases")
+	public void decorateWithStringDecorator_handlesEmptyPrefixAndSuffix(PrefixSuffixCase testCase)
 	{
-		String actual;
-		String expected;
-		String toEncrypt;
-		CryptObjectDecorator<String> decorator;
+		CryptObjectDecorator<String> decorator = CryptObjectDecorator.<String> builder()
+			.prefix(testCase.prefix()).suffix(testCase.suffix()).build();
 
-		toEncrypt = "mile";
-		decorator = CryptObjectDecorator.<String> builder().prefix("s").suffix("s").build();
-
-		actual = CryptObjectDecoratorExtensions.decorateWithStringDecorator(toEncrypt, decorator);
-		expected = "smiles";
-		assertEquals(actual, expected);
-
-		// new scenario ...
-		decorator = CryptObjectDecorator.<String> builder().prefix("").suffix("s").build();
-
-		actual = CryptObjectDecoratorExtensions.decorateWithStringDecorator(toEncrypt, decorator);
-		expected = "miles";
-		assertEquals(actual, expected);
-
-		// new scenario ...
-		decorator = CryptObjectDecorator.<String> builder().prefix("s").suffix("").build();
-
-		actual = CryptObjectDecoratorExtensions.decorateWithStringDecorator(toEncrypt, decorator);
-		expected = "smile";
-		assertEquals(actual, expected);
-		// new scenario ...
-		decorator = CryptObjectDecorator.<String> builder().prefix("").suffix("").build();
-
-		actual = CryptObjectDecoratorExtensions.decorateWithStringDecorator(toEncrypt, decorator);
-		expected = "mile";
-		assertEquals(actual, expected);
+		assertEquals(testCase.expected(),
+			CryptObjectDecoratorExtensions.decorateWithStringDecorator("mile", decorator));
 	}
 
 	/**
-	 * Test method for undecorate an crypt object with {@link CryptObjectDecorator} with byte array
-	 * as prefix and suffix
+	 * Test method for
+	 * {@link CryptObjectDecoratorExtensions#undecorateWithBytearrayDecorator(String, CryptObjectDecorator)}
+	 * with empty prefixes and suffixes
+	 *
+	 * @param testCase
+	 *            the edge case
 	 */
-	@Test
-	public void testUndecorateWithByteArrayDecorator()
+	@ParameterizedTest
+	@MethodSource("undecorateEdgeCases")
+	public void undecorateWithBytearrayDecorator_handlesEmptyPrefixAndSuffix(
+		PrefixSuffixCase testCase)
 	{
-		String actual;
-		String expected;
-		String toEncrypt;
-		CryptObjectDecorator<byte[]> decorator;
+		CryptObjectDecorator<byte[]> decorator = CryptObjectDecorator.<byte[]> builder()
+			.prefix(testCase.prefix().getBytes(StandardCharsets.UTF_8))
+			.suffix(testCase.suffix().getBytes(StandardCharsets.UTF_8)).build();
 
-		toEncrypt = "smiles";
-		decorator = CryptObjectDecorator.<byte[]> builder().prefix("s".getBytes())
-			.suffix("s".getBytes()).build();
-
-		actual = CryptObjectDecoratorExtensions.undecorateWithBytearrayDecorator(toEncrypt,
-			decorator);
-		expected = "mile";
-		assertEquals(actual, expected);
-
-		// new scenario ...
-		decorator = CryptObjectDecorator.<byte[]> builder().prefix("".getBytes())
-			.suffix("s".getBytes()).build();
-
-		actual = CryptObjectDecoratorExtensions.undecorateWithBytearrayDecorator(toEncrypt,
-			decorator);
-		expected = "smile";
-		assertEquals(actual, expected);
-
-		// new scenario ...
-		decorator = CryptObjectDecorator.<byte[]> builder().prefix("s".getBytes())
-			.suffix("".getBytes()).build();
-
-		actual = CryptObjectDecoratorExtensions.undecorateWithBytearrayDecorator(toEncrypt,
-			decorator);
-		expected = "miles";
-		assertEquals(actual, expected);
-		// new scenario ...
-		decorator = CryptObjectDecorator.<byte[]> builder().prefix("".getBytes())
-			.suffix("".getBytes()).build();
-
-		actual = CryptObjectDecoratorExtensions.undecorateWithBytearrayDecorator(toEncrypt,
-			decorator);
-		expected = "smiles";
-		assertEquals(actual, expected);
+		assertEquals(testCase.expected(),
+			CryptObjectDecoratorExtensions.undecorateWithBytearrayDecorator("smiles", decorator));
 	}
 
 	/**
@@ -332,42 +287,22 @@ public class CryptObjectDecoratorExtensionsTest
 	}
 
 	/**
-	 * Test method for undecorate an crypt object with {@link CryptObjectDecorator}
+	 * Test method for
+	 * {@link CryptObjectDecoratorExtensions#undecorateWithStringDecorator(String, CryptObjectDecorator)}
+	 * with empty prefixes and suffixes
+	 *
+	 * @param testCase
+	 *            the edge case
 	 */
-	@Test
-	public void testUndecorateWithStringDecorator()
+	@ParameterizedTest
+	@MethodSource("undecorateEdgeCases")
+	public void undecorateWithStringDecorator_handlesEmptyPrefixAndSuffix(PrefixSuffixCase testCase)
 	{
-		String actual;
-		String expected;
-		String toEncrypt;
-		CryptObjectDecorator<String> decorator;
+		CryptObjectDecorator<String> decorator = CryptObjectDecorator.<String> builder()
+			.prefix(testCase.prefix()).suffix(testCase.suffix()).build();
 
-		toEncrypt = "smiles";
-		decorator = CryptObjectDecorator.<String> builder().prefix("s").suffix("s").build();
-
-		actual = CryptObjectDecoratorExtensions.undecorateWithStringDecorator(toEncrypt, decorator);
-		expected = "mile";
-		assertEquals(actual, expected);
-
-		// new scenario ...
-		decorator = CryptObjectDecorator.<String> builder().prefix("").suffix("s").build();
-
-		actual = CryptObjectDecoratorExtensions.undecorateWithStringDecorator(toEncrypt, decorator);
-		expected = "smile";
-		assertEquals(actual, expected);
-
-		// new scenario ...
-		decorator = CryptObjectDecorator.<String> builder().prefix("s").suffix("").build();
-
-		actual = CryptObjectDecoratorExtensions.undecorateWithStringDecorator(toEncrypt, decorator);
-		expected = "miles";
-		assertEquals(actual, expected);
-		// new scenario ...
-		decorator = CryptObjectDecorator.<String> builder().prefix("").suffix("").build();
-
-		actual = CryptObjectDecoratorExtensions.undecorateWithStringDecorator(toEncrypt, decorator);
-		expected = "smiles";
-		assertEquals(actual, expected);
+		assertEquals(testCase.expected(),
+			CryptObjectDecoratorExtensions.undecorateWithStringDecorator("smiles", decorator));
 	}
 
 

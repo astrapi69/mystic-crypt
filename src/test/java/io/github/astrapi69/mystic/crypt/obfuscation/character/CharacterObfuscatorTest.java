@@ -28,9 +28,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -110,90 +114,45 @@ public class CharacterObfuscatorTest extends AbstractTestCase<String, String>
 	}
 
 	/**
-	 * Test method for {@link CharacterObfuscator#disentangle()}
+	 * One obfuscate/disentangle round trip. {@code expectedDisentangled} is a separate field
+	 * because the round trip is not lossless for every input: an uppercase first letter outside the
+	 * rule set comes back lowercase (see the "long text with an uppercase N" case).
 	 */
-	@Test
-	public void testDisentangle()
-	{
-		stringToObfuscate = "abac";
-		// obfuscate the key
-		obfuscator = new CharacterObfuscator(rules, stringToObfuscate);
-		actual = obfuscator.obfuscate();
-		expected = "AcAC";
-		assertEquals(expected, actual);
+	record RoundTripCase(String description, String input, String expectedObfuscated,
+		String expectedDisentangled) {
+	}
 
-		actual = obfuscator.disentangle();
-		expected = stringToObfuscate;
-		assertEquals(expected, actual);
+	static Stream<RoundTripCase> roundTripCases()
+	{
+		String loremText = "leonardo Lorem ipsum dolor sit amet, sea consul verterem perfecto id. Alii prompta electram te nec, at minimum copiosae quo. Eos iudico nominati oportere ei, usu at dicta legendos. In nostrum insolens disputando pro, iusto equidem ius id.";
+		String numbersText = "Numbers are only part of the data a typical Java program needs to read and write. Most programs also need to handle text, which is composed of characters. Since computers only really understand numbers, characters are encoded by matching each character in a given script to a particular number. For example, in the common ASCII encoding, the character A is mapped to the number 65; the character B is mapped to the number 66; the character C is mapped to the number 67; and so on. Different encodings may encode different scripts or may encode the same or similar scripts in different ways.";
+		return Stream.of(
+			new RoundTripCase("four characters covered by the rules", "abac", "AcAC", "abac"),
+			new RoundTripCase("eight characters", "leonardo", "Lfpobsep", "leonardo"),
+			new RoundTripCase("long text", loremText,
+				"Lfpobsep Lpsfn jqtvn epmps tju bnfu, tfb dpotvm wfsufsfn qfsgfdup je. Amjj qspnqub fmfdusbn uf ofd, bu njojnvn dpqjptbf rvp. Ept jvejdp opnjobuj pqpsufsf fj, vtv bu ejdub mfhfoept. Io optusvn jotpmfot ejtqvuboep qsp, jvtup frvjefn jvt je.",
+				loremText),
+			new RoundTripCase("long text with an uppercase N outside the rule set", numbersText,
+				"Nvncfst bsf pomz qbsu pg uif ebub b uzqjdbm Jbwb qsphsbn offet up sfbe boe xsjuf. Mptu qsphsbnt bmtp offe up iboemf ufyu, xijdi jt dpnqptfe pg dibsbdufst. Sjodf dpnqvufst pomz sfbmmz voefstuboe ovncfst, dibsbdufst bsf fodpefe cz nbudijoh fbdi dibsbdufs jo b hjwfo tdsjqu up b qbsujdvmbs ovncfs. Fps fybnqmf, jo uif dpnnpo ASCII fodpejoh, uif dibsbdufs A jt nbqqfe up uif ovncfs 65; uif dibsbdufs B jt nbqqfe up uif ovncfs 66; uif dibsbdufs C jt nbqqfe up uif ovncfs 67; boe tp po. Djggfsfou fodpejoht nbz fodpef ejggfsfou tdsjqut ps nbz fodpef uif tbnf ps tjnjmbs tdsjqut jo ejggfsfou xbzt.",
+				"numbers" + numbersText.substring("Numbers".length())));
 	}
 
 	/**
-	 * Test method for {@link CharacterObfuscator#obfuscate()}
+	 * Test method for {@link CharacterObfuscator#obfuscate()} and
+	 * {@link CharacterObfuscator#disentangle()}
+	 *
+	 * @param testCase
+	 *            the round-trip case
 	 */
-	@Test
-	public void testObfuscate()
+	@ParameterizedTest
+	@MethodSource("roundTripCases")
+	public void testObfuscateDisentangleRoundTrip(RoundTripCase testCase)
 	{
-		// a key for obfuscation
-		stringToObfuscate = "abac";
+		obfuscator = new CharacterObfuscator(rules, testCase.input());
 
-		// obfuscate the key
-		obfuscator = new CharacterObfuscator(rules, stringToObfuscate);
-		actual = obfuscator.obfuscate();
-		expected = "AcAC";
-		assertEquals(expected, actual);
-
-		actual = obfuscator.disentangle();
-		expected = stringToObfuscate;
-		assertEquals(expected, actual);
-	}
-
-	/**
-	 * Test method for {@link CharacterObfuscator#obfuscate()}
-	 */
-	@Test
-	public void testObfuscateEightChars()
-	{
-		// new scenario...
-		// a key for obfuscation
-		stringToObfuscate = "leonardo";
-
-		// obfuscate the key
-		obfuscator = new CharacterObfuscator(rules, stringToObfuscate);
-		actual = obfuscator.obfuscate();
-		expected = "Lfpobsep";
-		assertEquals(expected, actual);
-
-		actual = obfuscator.disentangle();
-		expected = stringToObfuscate;
-		assertEquals(expected, actual);
-
-		// new scenario...
-		// a key for obfuscation
-		stringToObfuscate = "leonardo Lorem ipsum dolor sit amet, sea consul verterem perfecto id. Alii prompta electram te nec, at minimum copiosae quo. Eos iudico nominati oportere ei, usu at dicta legendos. In nostrum insolens disputando pro, iusto equidem ius id.";
-
-		// obfuscate the key
-		obfuscator = new CharacterObfuscator(rules, stringToObfuscate);
-		actual = obfuscator.obfuscate();
-		expected = "Lfpobsep Lpsfn jqtvn epmps tju bnfu, tfb dpotvm wfsufsfn qfsgfdup je. Amjj qspnqub fmfdusbn uf ofd, bu njojnvn dpqjptbf rvp. Ept jvejdp opnjobuj pqpsufsf fj, vtv bu ejdub mfhfoept. Io optusvn jotpmfot ejtqvuboep qsp, jvtup frvjefn jvt je.";
-		assertEquals(expected, actual);
-
-		actual = obfuscator.disentangle();
-		expected = stringToObfuscate;
-		assertEquals(expected, actual);
-
-		// new scenario...
-		// a key for obfuscation
-		stringToObfuscate = "Numbers are only part of the data a typical Java program needs to read and write. Most programs also need to handle text, which is composed of characters. Since computers only really understand numbers, characters are encoded by matching each character in a given script to a particular number. For example, in the common ASCII encoding, the character A is mapped to the number 65; the character B is mapped to the number 66; the character C is mapped to the number 67; and so on. Different encodings may encode different scripts or may encode the same or similar scripts in different ways.";
-
-		// obfuscate the key
-		obfuscator = new CharacterObfuscator(rules, stringToObfuscate);
-		actual = obfuscator.obfuscate();
-		expected = "Nvncfst bsf pomz qbsu pg uif ebub b uzqjdbm Jbwb qsphsbn offet up sfbe boe xsjuf. Mptu qsphsbnt bmtp offe up iboemf ufyu, xijdi jt dpnqptfe pg dibsbdufst. Sjodf dpnqvufst pomz sfbmmz voefstuboe ovncfst, dibsbdufst bsf fodpefe cz nbudijoh fbdi dibsbdufs jo b hjwfo tdsjqu up b qbsujdvmbs ovncfs. Fps fybnqmf, jo uif dpnnpo ASCII fodpejoh, uif dibsbdufs A jt nbqqfe up uif ovncfs 65; uif dibsbdufs B jt nbqqfe up uif ovncfs 66; uif dibsbdufs C jt nbqqfe up uif ovncfs 67; boe tp po. Djggfsfou fodpejoht nbz fodpef ejggfsfou tdsjqut ps nbz fodpef uif tbnf ps tjnjmbs tdsjqut jo ejggfsfou xbzt.";
-		assertEquals(expected, actual);
-
-		actual = obfuscator.disentangle();
-		expected = "numbers are only part of the data a typical Java program needs to read and write. Most programs also need to handle text, which is composed of characters. Since computers only really understand numbers, characters are encoded by matching each character in a given script to a particular number. For example, in the common ASCII encoding, the character A is mapped to the number 65; the character B is mapped to the number 66; the character C is mapped to the number 67; and so on. Different encodings may encode different scripts or may encode the same or similar scripts in different ways.";
-		assertEquals(expected, actual);
+		assertEquals(testCase.expectedObfuscated(), obfuscator.obfuscate(), testCase.description());
+		assertEquals(testCase.expectedDisentangled(), obfuscator.disentangle(),
+			testCase.description());
 	}
 
 }

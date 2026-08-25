@@ -30,10 +30,12 @@ import java.io.File;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Security;
+import java.util.stream.Stream;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import io.github.astrapi69.crypt.data.key.reader.PrivateKeyReader;
 import io.github.astrapi69.crypt.data.key.reader.PublicKeyReader;
@@ -57,84 +59,54 @@ public class KeyHexEncryptDecryptorTest
 	}
 
 	/**
-	 * Test encrypt and decrypt with {@link PublicKeyHexEncryptor#encrypt(String)} and
-	 * {@link PrivateKeyHexDecryptor#decrypt(String)} loaded from pem files
-	 *
-	 * @throws Exception
-	 *             is thrown if the encryption or the decryption fails
+	 * One key-source case: the same round trip runs once over DER files and once over PEM files -
+	 * only how the key pair is read differs.
 	 */
-	@Test
-	public void testEncryptDecrypt() throws Exception
+	record KeySourceCase(String description, ThrowingSupplier<PrivateKey> privateKey,
+		ThrowingSupplier<PublicKey> publicKey) {
+	}
+
+	static Stream<KeySourceCase> keySourceCases()
 	{
-
-		String actual;
-		String expected;
-		File derDir;
-		File publickeyDerFile;
-		File privatekeyDerFile;
-		PrivateKey privateKey;
-		PublicKey publicKey;
-		PublicKeyHexEncryptor encryptor;
-		PrivateKeyHexDecryptor decryptor;
-		String encrypted;
-
-		expected = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
-
-		derDir = new File(PathFinder.getSrcTestResourcesDir(), "/der");
-		publickeyDerFile = new File(derDir, "public.der");
-		privatekeyDerFile = new File(derDir, "private.der");
-
-		privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
-
-		publicKey = PublicKeyReader.readPublicKey(publickeyDerFile);
-
-		encryptor = new PublicKeyHexEncryptor(publicKey);
-
-		encrypted = encryptor.encrypt(expected);
-
-		decryptor = new PrivateKeyHexDecryptor(privateKey);
-
-		actual = decryptor.decrypt(encrypted);
-		assertEquals(actual, expected);
+		File derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		File pemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
+		return Stream.of(
+			new KeySourceCase("keys read from DER files",
+				() -> PrivateKeyReader.readPrivateKey(new File(derDir, "private.der")),
+				() -> PublicKeyReader.readPublicKey(new File(derDir, "public.der"))),
+			new KeySourceCase("keys read from PEM files",
+				() -> PrivateKeyReader.readPemPrivateKey(new File(pemDir, "private.pem")),
+				() -> PublicKeyReader.readPemPublicKey(new File(pemDir, "public.pem"))));
 	}
 
 	/**
 	 * Test encrypt and decrypt with {@link PublicKeyHexEncryptor#encrypt(String)} and
-	 * {@link PrivateKeyHexDecryptor#decrypt(String)} loaded from pem files.
+	 * {@link PrivateKeyHexDecryptor#decrypt(String)} over every key source
 	 *
+	 * @param testCase
+	 *            the key-source case
 	 * @throws Exception
 	 *             is thrown if the encryption or the decryption fails
 	 */
-	@Test
-	public void testEncryptDecryptPemFiles() throws Exception
+	@ParameterizedTest
+	@MethodSource("keySourceCases")
+	public void testEncryptDecrypt(KeySourceCase testCase) throws Exception
 	{
-		String actual;
-		String expected;
-		File publickeyPemDir;
-		File publickeyPemFile;
-		File privatekeyPemFile;
-		PrivateKey privateKey;
-		PublicKey publicKey;
-		PublicKeyHexEncryptor encryptor;
-		PrivateKeyHexDecryptor decryptor;
-		String encrypted;
+		String expected = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
 
-		expected = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,;-)";
+		PublicKeyHexEncryptor encryptor = new PublicKeyHexEncryptor(testCase.publicKey().get());
+		String encrypted = encryptor.encrypt(expected);
 
-		publickeyPemDir = new File(PathFinder.getSrcTestResourcesDir(), "pem");
-		publickeyPemFile = new File(publickeyPemDir, "public.pem");
-		privatekeyPemFile = new File(publickeyPemDir, "private.pem");
+		PrivateKeyHexDecryptor decryptor = new PrivateKeyHexDecryptor(testCase.privateKey().get());
 
-		privateKey = PrivateKeyReader.readPemPrivateKey(privatekeyPemFile);
+		assertEquals(expected, decryptor.decrypt(encrypted), testCase.description());
+	}
 
-		publicKey = PublicKeyReader.readPemPublicKey(publickeyPemFile);
-
-		encryptor = new PublicKeyHexEncryptor(publicKey);
-
-		encrypted = encryptor.encrypt(expected);
-		decryptor = new PrivateKeyHexDecryptor(privateKey);
-		actual = decryptor.decrypt(encrypted);
-		assertEquals(actual, expected);
+	/** A supplier whose read may throw - key readers declare checked exceptions. */
+	@FunctionalInterface
+	interface ThrowingSupplier<T>
+	{
+		T get() throws Exception;
 	}
 
 }

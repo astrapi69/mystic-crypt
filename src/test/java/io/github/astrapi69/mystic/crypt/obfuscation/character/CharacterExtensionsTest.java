@@ -26,7 +26,11 @@ package io.github.astrapi69.mystic.crypt.obfuscation.character;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.meanbean.test.BeanTester;
 
 import io.github.astrapi69.test.base.AbstractTestCase;
@@ -38,34 +42,36 @@ public class CharacterExtensionsTest extends AbstractTestCase<Boolean, Boolean>
 {
 
 	/**
-	 * Test method for {@link CharacterExtensions#equalsIgnoreCase(Character, Character)}
+	 * One case of the {@link CharacterExtensions#equalsIgnoreCase(Character, Character)} truth
+	 * table; a record instead of a CSV source because half the cases carry {@code null}.
 	 */
-	@Test
-	public void testEqualsIgnoreCase()
+	record EqualsIgnoreCaseCase(String description, Character left, Character right,
+		boolean expected) {
+	}
+
+	static Stream<EqualsIgnoreCaseCase> equalsIgnoreCaseCases()
 	{
+		return Stream.of(
+			new EqualsIgnoreCaseCase("different case of the same letter", 'C', 'c', true),
+			new EqualsIgnoreCaseCase("null against a character", null, 'c', false),
+			new EqualsIgnoreCaseCase("a character against null", 'c', null, false),
+			new EqualsIgnoreCaseCase("two different letters", 'c', 'd', false),
+			new EqualsIgnoreCaseCase("null against null", null, null, true));
+	}
 
-		expected = true;
-		actual = CharacterExtensions.equalsIgnoreCase(Character.valueOf('C'),
-			Character.valueOf('c'));
-		assertEquals(expected, actual);
-
-		expected = false;
-		actual = CharacterExtensions.equalsIgnoreCase(null, Character.valueOf('c'));
-		assertEquals(expected, actual);
-
-		expected = false;
-		actual = CharacterExtensions.equalsIgnoreCase(Character.valueOf('c'), null);
-		assertEquals(expected, actual);
-
-		expected = false;
-		actual = CharacterExtensions.equalsIgnoreCase(Character.valueOf('c'),
-			Character.valueOf('d'));
-		assertEquals(expected, actual);
-
-		expected = true;
-		actual = CharacterExtensions.equalsIgnoreCase(null, null);
-
-		assertEquals(expected, actual);
+	/**
+	 * Test method for {@link CharacterExtensions#equalsIgnoreCase(Character, Character)}
+	 *
+	 * @param testCase
+	 *            the truth-table case
+	 */
+	@ParameterizedTest
+	@MethodSource("equalsIgnoreCaseCases")
+	public void testEqualsIgnoreCase(EqualsIgnoreCaseCase testCase)
+	{
+		assertEquals(testCase.expected(),
+			CharacterExtensions.equalsIgnoreCase(testCase.left(), testCase.right()),
+			testCase.description());
 	}
 
 	/**
