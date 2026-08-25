@@ -49,7 +49,8 @@ class MysticCryptCliTest extends AbstractCliTest
 	{
 		assertEquals(0, run("--help"));
 		for (String subcommand : new String[] { "hash", "verify", "keygen", "kem", "checksum",
-				"der2pem", "obfuscate", "disentangle", "cert" })
+				"der2pem", "obfuscate", "disentangle", "cert", "keystore", "sign",
+				"verify-signature" })
 		{
 			assertTrue(out.contains(subcommand),
 				"help must mention the '" + subcommand + "' command");

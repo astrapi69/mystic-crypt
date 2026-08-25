@@ -33,17 +33,20 @@ import picocli.CommandLine.Command;
 /**
  * Root command of the mystic-crypt command-line interface. It bundles the individual crypto
  * operations as subcommands (password hashing, key generation, key encapsulation, checksums,
- * DER/PEM conversion, obfuscation and X.509 certificate creation), each a thin wrapper over the
- * corresponding mystic-crypt / crypt-* library API.
+ * DER/PEM conversion, obfuscation, X.509 certificate creation, key store management and Ed25519 /
+ * ML-DSA / SLH-DSA signatures), each a thin wrapper over the corresponding mystic-crypt / crypt-*
+ * library API.
  * <p>
  * Run without a subcommand it prints the usage help.
  */
 @Command(name = "mystic-crypt", mixinStandardHelpOptions = true, version = "mystic-crypt CLI 1.0", //
 	description = "Command-line access to mystic-crypt: password hashing, key generation, key "
-		+ "encapsulation (KEM), checksums, DER/PEM conversion, obfuscation and certificates.", //
+		+ "encapsulation (KEM), checksums, DER/PEM conversion, obfuscation, certificates, "
+		+ "key store management and signatures.", //
 	subcommands = { HashCommand.class, VerifyCommand.class, KeygenCommand.class, KemCommand.class,
 			ChecksumCommand.class, DerToPemCommand.class, ObfuscateCommand.class,
-			DisentangleCommand.class, CertificateCommand.class, CommandLine.HelpCommand.class })
+			DisentangleCommand.class, CertificateCommand.class, KeystoreCommand.class,
+			SignCommand.class, VerifySignatureCommand.class, CommandLine.HelpCommand.class })
 public class MysticCryptCli implements Runnable
 {
 

@@ -170,6 +170,25 @@ final class CliSupport
 	}
 
 	/**
+	 * Reads the bytes to process from the given file, or from standard input when the file is the
+	 * conventional {@code -}.
+	 *
+	 * @param in
+	 *            the input file, or {@code -} for standard input
+	 * @return the bytes read
+	 * @throws IOException
+	 *             if reading fails
+	 */
+	static byte[] readData(File in) throws IOException
+	{
+		if ("-".equals(in.getPath()))
+		{
+			return System.in.readAllBytes();
+		}
+		return Files.readAllBytes(in.toPath());
+	}
+
+	/**
 	 * Writes a private key in PEM to the given file, or prints it to stdout when {@code out} is
 	 * {@code null}. Uses the file-based PEM writer (the only exported one) via a temporary file for
 	 * the stdout case.
