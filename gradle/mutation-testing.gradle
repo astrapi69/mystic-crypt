@@ -9,4 +9,9 @@ pitest {
     threads = 4
     outputFormats = ["HTML", "XML"]
     timestampedReports = false
+    // fail-closed floor for the documented mutation score (docs/TESTING.md:
+    // 99.1% with every survivor argued in docs/COVERAGE_EXCEPTIONS.md) - a
+    // run that falls under 99% fails instead of relying on someone reading
+    // the HTML report
+    mutationThreshold = 99
 }

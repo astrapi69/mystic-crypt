@@ -13,4 +13,22 @@ jacocoTestReport {
     }
 }
 
+// The documented quality bar (docs/TESTING.md) enforced, not just measured:
+// the build fails when branch coverage drops below 100%. Line coverage is not
+// gated because the two System.exit lines in MysticCryptCli#main are a
+// documented, argued exception (docs/COVERAGE_EXCEPTIONS.md).
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                counter = 'BRANCH'
+                value = 'COVEREDRATIO'
+                minimum = 1.0
+            }
+        }
+    }
+}
+jacocoTestCoverageVerification.dependsOn test
+
 check.dependsOn jacocoTestReport
+check.dependsOn jacocoTestCoverageVerification
