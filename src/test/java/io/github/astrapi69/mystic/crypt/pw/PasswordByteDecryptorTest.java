@@ -73,6 +73,32 @@ public class PasswordByteDecryptorTest
 	}
 
 	/**
+	 * Test method for {@link PasswordByteDecryptor#decrypt(byte[])} with the wrong password: the
+	 * core security property is that the plaintext never comes back. The cipher is unauthenticated
+	 * CBC, so a wrong key usually fails the padding check but can (about 1 in 256) produce garbage
+	 * instead of an exception - the assertion therefore accepts either, but never the plaintext.
+	 */
+	@Test
+	public void decrypt_withTheWrongPassword_neverYieldsThePlaintext() throws Exception
+	{
+		byte[] textBytes = "bar".getBytes(StandardCharsets.UTF_8);
+		byte[] encrypted = new PasswordByteEncryptor("foo").encrypt(textBytes);
+		PasswordByteDecryptor decryptor = new PasswordByteDecryptor("wrong-password");
+
+		try
+		{
+			byte[] decrypted = decryptor.decrypt(encrypted);
+			assertFalse(Arrays.equals(textBytes, decrypted),
+				"decrypting with the wrong password must never yield the plaintext");
+		}
+		catch (Exception exception)
+		{
+			assertFalse(exception instanceof IllegalArgumentException,
+				"the failure must come from the cipher, not from the length guard");
+		}
+	}
+
+	/**
 	 * Test method for {@link PasswordByteDecryptor#decrypt(byte[])}, encrypted data that is shorter
 	 * than the salt prefix has to be rejected
 	 */

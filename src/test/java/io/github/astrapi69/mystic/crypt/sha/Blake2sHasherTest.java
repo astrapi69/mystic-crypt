@@ -31,14 +31,46 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.HexFormat;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * Test class for {@link Blake2sHasher}.
  */
 class Blake2sHasherTest
 {
+
+	/**
+	 * A known-answer vector (RFC 7693). The expected digests were generated with
+	 * {@code printf '<input>' | openssl dgst -blake2s256 -r}, so a mismatch here means Bouncy
+	 * Castle's BLAKE2s disagrees with OpenSSL - not a typo in this file. Without these, a mutant
+	 * that swaps in any other hash would satisfy every length/determinism/sensitivity assertion in
+	 * this class.
+	 */
+	record Vector(String description, String input, String expectedHex) {
+	}
+
+	static Stream<Vector> knownAnswerVectors()
+	{
+		return Stream.of(
+			new Vector("empty input, 256 bit", "",
+				"69217a3079908094e11121d042354a7c1f55b6482ca1a51e1b250dfd1ed0eef9"),
+			new Vector("abc, 256 bit", "abc",
+				"508c5e8c327c14e2e1a72ba34eeb452f37458b209ed63a294d999b4c86675982"));
+	}
+
+	@ParameterizedTest
+	@MethodSource("knownAnswerVectors")
+	void testKnownAnswerVectors(Vector vector)
+	{
+		byte[] hash = Blake2sHasher.hash(vector.input().getBytes(StandardCharsets.UTF_8),
+			Blake2sHasher.DEFAULT_DIGEST_LENGTH);
+		assertEquals(vector.expectedHex(), HexFormat.of().formatHex(hash), vector.description());
+	}
 
 	@Test
 	void testHashDefaultLength()
