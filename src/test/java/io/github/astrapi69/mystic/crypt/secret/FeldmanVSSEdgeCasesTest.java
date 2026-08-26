@@ -40,6 +40,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import io.github.astrapi69.mystic.crypt.secret.FeldmanVSS.Commitments;
 import io.github.astrapi69.mystic.crypt.secret.FeldmanVSS.Share;
 import io.github.astrapi69.mystic.crypt.secret.FeldmanVSS.ShareGenerationResult;
 
@@ -110,6 +111,28 @@ public class FeldmanVSSEdgeCasesTest
 		}
 	}
 
+	/**
+	 * A scenario for
+	 * {@link FeldmanVSS#reconstructSecretBytes(List, FeldmanVSS.Commitments, BigInteger, int)} with
+	 * a negative expectedLength, where the failing truncate reports the copy window it was asked
+	 * for and thereby reveals whether the leading zero strip ran before it
+	 *
+	 * @param description
+	 *            the human readable description of the scenario
+	 * @param secret
+	 *            the secret value the sharing reconstructs to
+	 * @param expectedMessage
+	 *            the message of the {@link IllegalArgumentException} thrown by
+	 *            {@link Arrays#copyOfRange(byte[], int, int)}, of the form {@code "from > to"}
+	 */
+	record NegativeLengthCase(String description, BigInteger secret, String expectedMessage) {
+		@Override
+		public String toString()
+		{
+			return description;
+		}
+	}
+
 	static Stream<InvalidThresholdCase> invalidThresholdCases()
 	{
 		return Stream.of(new InvalidThresholdCase("threshold of zero", 0, 5),
@@ -157,6 +180,19 @@ public class FeldmanVSSEdgeCasesTest
 				new byte[] { 9 }, 6),
 			new FixedWidthCase("a zero secret is padded to the requested length", new byte[] { 0 },
 				4));
+	}
+
+	static Stream<NegativeLengthCase> negativeLengthCases()
+	{
+		return Stream.of(
+			// BigInteger.ZERO encodes as the single byte 0x00, so the strip removes it and the
+			// truncate is asked to copy [1, 0) of an empty array
+			new NegativeLengthCase("a zero secret has its single zero byte stripped first",
+				BigInteger.ZERO, "1 > 0"),
+			// BigInteger.ONE encodes as the single byte 0x01, the strip must not touch it and the
+			// truncate is asked to copy [2, 1) of the one byte array
+			new NegativeLengthCase("a non zero leading byte is not stripped", BigInteger.ONE,
+				"2 > 1"));
 	}
 
 	/**
@@ -294,6 +330,45 @@ public class FeldmanVSSEdgeCasesTest
 		{
 			assertFalse(Arrays.equals(leadingBytes, reconstructed));
 		}
+	}
+
+	/**
+	 * Test method for
+	 * {@link FeldmanVSS#reconstructSecretBytes(List, FeldmanVSS.Commitments, BigInteger, int)}, a
+	 * negative expectedLength is an unvalidated caller error that fails inside the truncate with
+	 * the {@link IllegalArgumentException} of {@link Arrays#copyOfRange(byte[], int, int)}. Its
+	 * message names the requested copy window {@code "from > to"}, and {@code from} counts from the
+	 * length the byte array has <em>after</em> the leading zero handling - so the message is the
+	 * one observable place where the exact strip condition {@code bytes.length > expectedLength
+	 * && bytes[0] == 0} is visible from outside: a zero secret (single 0x00 byte) must have been
+	 * stripped ("1 > 0"), a non zero byte must not have been ("2 > 1"). This kills the PIT mutants
+	 * that negate either half of the strip condition, which are byte for byte equivalent for every
+	 * non negative expectedLength. The message format is pinned to the JDK's
+	 * {@code Arrays.copyOfRange}; if a JDK update rewords it, update the expected messages here.
+	 * <p>
+	 * The sharing is built by hand as the smallest valid Feldman instance - threshold 1, constant
+	 * polynomial f(x) = secret, toy group p = 23, q = 11, g = 2 - because
+	 * {@code reconstructSecretBytes} is public and accepts arbitrary arguments, not only the output
+	 * of {@code splitSecret}
+	 *
+	 * @param testCase
+	 *            the test case
+	 */
+	@ParameterizedTest
+	@MethodSource("negativeLengthCases")
+	public void reconstructSecretBytes_withANegativeExpectedLength_failsAfterTheLeadingZeroStrip(
+		final NegativeLengthCase testCase)
+	{
+		BigInteger p = BigInteger.valueOf(23);
+		BigInteger q = BigInteger.valueOf(11);
+		BigInteger g = BigInteger.valueOf(2);
+		Commitments commitments = new Commitments(List.of(g.modPow(testCase.secret(), p)), p, q, g);
+		List<Share> shares = List.of(new Share(1, testCase.secret()));
+
+		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+			() -> FeldmanVSS.reconstructSecretBytes(shares, commitments, q, -1));
+
+		assertEquals(testCase.expectedMessage(), exception.getMessage());
 	}
 
 	/**

@@ -108,23 +108,42 @@ final class Argon2Support
 		Objects.requireNonNull(encoded);
 		try
 		{
-			final Decoded decoded;
-			try
-			{
-				decoded = decode(encoded);
-			}
-			catch (final RuntimeException malformed)
-			{
-				return false;
-			}
-			final byte[] actualHash = rawHash(password, decoded.salt, decoded.iterations,
-				decoded.memoryKB, decoded.parallelism);
-			return MessageDigest.isEqual(decoded.hash, actualHash);
+			return decodeAndCompare(password, encoded);
 		}
 		finally
 		{
 			Arrays.fill(password, '\0');
 		}
+	}
+
+	/**
+	 * Decodes {@code encoded} and compares its hash against a hash computed for {@code password}
+	 * with the decoded parameters. Split out of {@link #verify(char[], String)} so this method's
+	 * own {@code return false} for a malformed hash is not the last statement of a {@code try} with
+	 * a {@code finally} - that would force the compiler to route the return value through a local
+	 * variable, which defeats PIT's equivalent-mutant filter for the literal false return.
+	 *
+	 * @param password
+	 *            the password to check
+	 * @param encoded
+	 *            the previously encoded hash
+	 * @return true if the password matches, false if it does not match or {@code encoded} is
+	 *         malformed
+	 */
+	private static boolean decodeAndCompare(final char[] password, final String encoded)
+	{
+		final Decoded decoded;
+		try
+		{
+			decoded = decode(encoded);
+		}
+		catch (final RuntimeException malformed)
+		{
+			return false;
+		}
+		final byte[] actualHash = rawHash(password, decoded.salt, decoded.iterations,
+			decoded.memoryKB, decoded.parallelism);
+		return MessageDigest.isEqual(decoded.hash, actualHash);
 	}
 
 	private static byte[] rawHash(final char[] password, final byte[] salt, final int iterations,
