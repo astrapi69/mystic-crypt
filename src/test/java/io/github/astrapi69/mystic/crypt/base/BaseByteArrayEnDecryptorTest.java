@@ -30,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.stream.Stream;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -38,6 +39,8 @@ import javax.crypto.spec.PBEKeySpec;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import io.github.astrapi69.crypt.api.algorithm.AesAlgorithm;
 import io.github.astrapi69.crypt.api.algorithm.compound.CompoundAlgorithm;
@@ -92,32 +95,37 @@ public class BaseByteArrayEnDecryptorTest
 	}
 
 	/**
-	 * Regression test proving GCM support: a caller who explicitly opts into
-	 * {@link MysticSymmetricAlgorithm#AES_GCM_NO_PADDING} must be able to round-trip through
+	 * Regression test proving AEAD support: a caller who explicitly opts into an AEAD algorithm
+	 * must be able to round-trip through
 	 * {@link BaseByteArrayEncryptor}/{@link BaseByteArrayDecryptor}, and two encryptions of the
-	 * same plaintext must produce different ciphertext (a fresh nonce per call). Before this fix,
-	 * {@link BaseByteArrayDecryptor}'s construction-time cached cipher had no way to receive a
-	 * per-message GCM nonce and threw immediately.
+	 * same plaintext must produce different ciphertext (a fresh nonce per call). Before the GCM
+	 * fix, {@link BaseByteArrayDecryptor}'s construction-time cached cipher had no way to receive a
+	 * per-message nonce and threw immediately.
 	 *
+	 * @param testCase
+	 *            the AEAD case
 	 * @throws Exception
 	 *             is thrown if a security error occurs
 	 */
-	@Test
-	public void testEncryptDecryptWithGcm() throws Exception
+	@ParameterizedTest
+	@MethodSource("aeadCases")
+	public void testEncryptDecryptWithAeadAlgorithm(AeadCase testCase) throws Exception
 	{
-		SecretKey gcmKey = SecretKeyFactoryExtensions.newSecretKey(AesAlgorithm.AES.name(), 128);
-		CryptModel<Cipher, SecretKey, String> gcmModel = CryptModel
-			.<Cipher, SecretKey, String> builder().key(gcmKey)
-			.algorithm(MysticSymmetricAlgorithm.AES_GCM_NO_PADDING).build();
+		SecretKey secretKey = SecretKeyFactoryExtensions.newSecretKey(AesAlgorithm.AES.name(),
+			testCase.keyBits());
+		CryptModel<Cipher, SecretKey, String> cryptModel = CryptModel
+			.<Cipher, SecretKey, String> builder().key(secretKey).algorithm(testCase.algorithm())
+			.build();
 
-		BaseByteArrayEncryptor encryptor = new BaseByteArrayEncryptor(gcmModel);
-		BaseByteArrayDecryptor decryptor = new BaseByteArrayDecryptor(gcmModel);
+		BaseByteArrayEncryptor encryptor = new BaseByteArrayEncryptor(cryptModel);
+		BaseByteArrayDecryptor decryptor = new BaseByteArrayDecryptor(cryptModel);
 		byte[] plainMessageBytes = "the quick brown fox jumps over the lazy dog"
 			.getBytes(StandardCharsets.UTF_8);
 
 		byte[] firstEncrypted = encryptor.encrypt(plainMessageBytes);
 		byte[] secondEncrypted = encryptor.encrypt(plainMessageBytes);
-		assertFalse(Arrays.equals(firstEncrypted, secondEncrypted));
+		assertFalse(Arrays.equals(firstEncrypted, secondEncrypted),
+			testCase.description() + ": a fresh nonce per call must vary the ciphertext");
 
 		assertEquals(new String(plainMessageBytes, StandardCharsets.UTF_8),
 			new String(decryptor.decrypt(firstEncrypted), StandardCharsets.UTF_8));
@@ -126,36 +134,19 @@ public class BaseByteArrayEnDecryptorTest
 	}
 
 	/**
-	 * Test method proving ChaCha20-Poly1305 support: a caller who explicitly opts into
-	 * {@link MysticSymmetricAlgorithm#CHACHA20_POLY1305} must be able to round-trip through
-	 * {@link BaseByteArrayEncryptor}/{@link BaseByteArrayDecryptor}, and two encryptions of the
-	 * same plaintext must produce different ciphertext (a fresh nonce per call). ChaCha20 keys must
-	 * be exactly 32 bytes (256 bits), unlike AES which also accepts 128/192 bits.
-	 *
-	 * @throws Exception
-	 *             is thrown if a security error occurs
+	 * One AEAD round-trip case. ChaCha20 keys must be exactly 32 bytes (256 bits), unlike AES-GCM
+	 * which also accepts 128 bits - that is why the key size is part of the case.
 	 */
-	@Test
-	public void testEncryptDecryptWithChaCha20Poly1305() throws Exception
+	record AeadCase(String description, MysticSymmetricAlgorithm algorithm, int keyBits) {
+	}
+
+	static Stream<AeadCase> aeadCases()
 	{
-		SecretKey chaChaKey = SecretKeyFactoryExtensions.newSecretKey(AesAlgorithm.AES.name(), 256);
-		CryptModel<Cipher, SecretKey, String> chaChaModel = CryptModel
-			.<Cipher, SecretKey, String> builder().key(chaChaKey)
-			.algorithm(MysticSymmetricAlgorithm.CHACHA20_POLY1305).build();
-
-		BaseByteArrayEncryptor encryptor = new BaseByteArrayEncryptor(chaChaModel);
-		BaseByteArrayDecryptor decryptor = new BaseByteArrayDecryptor(chaChaModel);
-		byte[] plainMessageBytes = "the quick brown fox jumps over the lazy dog"
-			.getBytes(StandardCharsets.UTF_8);
-
-		byte[] firstEncrypted = encryptor.encrypt(plainMessageBytes);
-		byte[] secondEncrypted = encryptor.encrypt(plainMessageBytes);
-		assertFalse(Arrays.equals(firstEncrypted, secondEncrypted));
-
-		assertEquals(new String(plainMessageBytes, StandardCharsets.UTF_8),
-			new String(decryptor.decrypt(firstEncrypted), StandardCharsets.UTF_8));
-		assertEquals(new String(plainMessageBytes, StandardCharsets.UTF_8),
-			new String(decryptor.decrypt(secondEncrypted), StandardCharsets.UTF_8));
+		return Stream.of(
+			new AeadCase("AES/GCM/NoPadding, 128-bit key",
+				MysticSymmetricAlgorithm.AES_GCM_NO_PADDING, 128),
+			new AeadCase("ChaCha20-Poly1305, 256-bit key",
+				MysticSymmetricAlgorithm.CHACHA20_POLY1305, 256));
 	}
 
 	/**

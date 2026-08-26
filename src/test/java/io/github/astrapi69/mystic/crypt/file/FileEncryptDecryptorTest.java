@@ -30,12 +30,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.stream.Stream;
 
 import javax.crypto.Cipher;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import io.github.astrapi69.checksum.FileChecksumExtensions;
 import io.github.astrapi69.crypt.api.algorithm.MdAlgorithm;
@@ -86,22 +89,96 @@ public class FileEncryptDecryptorTest extends AbstractTestCase<String, String>
 	 * @throws Exception
 	 *             is thrown if any error occurs on the execution
 	 */
-	@Test
-	public void testEncryptDecryptConstructorFiles() throws Exception
+	/**
+	 * One constructor-variant case: the encrypt-decrypt-checksum round trip is identical, only how
+	 * encryptor and decryptor are constructed differs.
+	 */
+	record ConstructorCase(String description, FileEncryptorFactory encryptorFactory,
+		FileDecryptorFactory decryptorFactory) {
+		@Override
+		public String toString()
+		{
+			return description;
+		}
+	}
+
+	/** Builds the encryptor of one constructor variant. */
+	@FunctionalInterface
+	interface FileEncryptorFactory
 	{
-		// new scenario...
-		File encryptedCnstr = new File(cryptDir, "encryptedCnstr.enc");
-		File decryptedCnstr = new File(cryptDir, "decryptedCnstr.decrypted");
-		encryptor = new FileEncryptor(cryptModel, encryptedCnstr);
+		FileEncryptor create(CryptModel<Cipher, String, String> model, File directory)
+			throws Exception;
+	}
+
+	/** Builds the decryptor of one constructor variant. */
+	@FunctionalInterface
+	interface FileDecryptorFactory
+	{
+		FileDecryptor create(CryptModel<Cipher, String, String> model, File directory)
+			throws Exception;
+	}
+
+	static Stream<ConstructorCase> constructorCases()
+	{
+		return Stream.of(
+			new ConstructorCase("constructor files",
+				(model, directory) -> new FileEncryptor(model,
+					new File(directory, "encryptedCnstr.enc")),
+				(model, directory) -> new FileDecryptor(model,
+					new File(directory, "decryptedCnstr.decrypted"))),
+			new ConstructorCase("default file name convention",
+				(model, directory) -> new FileEncryptor(model),
+				(model, directory) -> new FileDecryptor(model)),
+			new ConstructorCase("factory methods overridden", (model, directory) -> {
+				return new FileEncryptor(model)
+				{
+					/** The Constant serialVersionUID. */
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					protected File newEncryptedFile(final String parent, final String child)
+					{
+						return new File(directory, "encryptedFctrNjctd.enc");
+					}
+				};
+			}, (model, directory) -> {
+				return new FileDecryptor(model)
+				{
+					/** The Constant serialVersionUID. */
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					protected File newDecryptedFile(final String parent, final String child)
+					{
+						return new File(directory, "decryptedFctrNjctd.decrypted");
+					}
+				};
+			}));
+	}
+
+	/**
+	 * Test method for the encryption with the class {@link FileEncryptor} and decryption with the
+	 * class {@link FileDecryptor} over every constructor variant
+	 *
+	 * @param testCase
+	 *            the constructor-variant case
+	 * @throws Exception
+	 *             is thrown if any error occurs on the execution
+	 */
+	@ParameterizedTest
+	@MethodSource("constructorCases")
+	public void testEncryptDecryptRoundTrip(ConstructorCase testCase) throws Exception
+	{
+		encryptor = testCase.encryptorFactory().create(cryptModel, cryptDir);
 		encrypted = encryptor.encrypt(toEncrypt);
 
-		decryptor = new FileDecryptor(cryptModel, decryptedCnstr);
+		decryptor = testCase.decryptorFactory().create(cryptModel, cryptDir);
 
 		decrypted = decryptor.decrypt(encrypted);
 
 		expected = FileChecksumExtensions.getChecksum(toEncrypt, MdAlgorithm.MD5.name());
 		actual = FileChecksumExtensions.getChecksum(decrypted, MdAlgorithm.MD5.name());
-		assertEquals(actual, expected);
+		assertEquals(actual, expected, testCase.description());
 		// clean up...
 		DeleteFileExtensions.delete(encrypted);
 		DeleteFileExtensions.delete(decrypted);
@@ -125,78 +202,6 @@ public class FileEncryptDecryptorTest extends AbstractTestCase<String, String>
 		});
 	}
 
-	/**
-	 * Test method for the encrpytion with the class {@link FileEncryptor} and decryption with the
-	 * class {@link FileDecryptor} with the default file name convention
-	 *
-	 * @throws Exception
-	 *             is thrown if any error occurs on the execution
-	 */
-	@Test
-	public void testEncryptDecryptDefaultFiles() throws Exception
-	{
-		encryptor = new FileEncryptor(cryptModel);
-		encrypted = encryptor.encrypt(toEncrypt);
-
-		decryptor = new FileDecryptor(cryptModel);
-
-		decrypted = decryptor.decrypt(encrypted);
-
-		expected = FileChecksumExtensions.getChecksum(toEncrypt, MdAlgorithm.MD5.name());
-		actual = FileChecksumExtensions.getChecksum(decrypted, MdAlgorithm.MD5.name());
-		assertEquals(actual, expected);
-		// clean up...
-		DeleteFileExtensions.delete(encrypted);
-		DeleteFileExtensions.delete(decrypted);
-	}
-
-	/**
-	 * Test method for the encrpytion with the class {@link FileEncryptor} and decryption with the
-	 * class {@link FileDecryptor} with factory injection
-	 *
-	 * @throws Exception
-	 *             is thrown if any error occurs on the execution
-	 */
-	@Test
-	public void testEncryptDecryptFactoryInjected() throws Exception
-	{
-		encryptor = new FileEncryptor(cryptModel)
-		{
-
-			/** The Constant serialVersionUID. */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected File newEncryptedFile(final String parent, final String child)
-			{
-				return new File(cryptDir, "encryptedFctrNjctd.enc");
-			}
-		};
-		encrypted = encryptor.encrypt(toEncrypt);
-
-		decryptor = new FileDecryptor(cryptModel)
-		{
-
-			/** The Constant serialVersionUID. */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected File newDecryptedFile(final String parent, final String child)
-			{
-				return new File(cryptDir, "decryptedFctrNjctd.decrypted");
-			}
-		};
-
-		decrypted = decryptor.decrypt(encrypted);
-
-		expected = FileChecksumExtensions.getChecksum(toEncrypt, MdAlgorithm.MD5.name());
-		actual = FileChecksumExtensions.getChecksum(decrypted, MdAlgorithm.MD5.name());
-		assertEquals(actual, expected);
-
-		// clean up...
-		DeleteFileExtensions.delete(encrypted);
-		DeleteFileExtensions.delete(decrypted);
-	}
 
 	/**
 	 * Test method for {@link FileDecryptor#decrypt(File)} that pins the observable effect of the

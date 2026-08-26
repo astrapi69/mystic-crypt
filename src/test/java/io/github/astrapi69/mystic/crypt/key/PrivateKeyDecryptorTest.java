@@ -33,6 +33,7 @@ import java.io.File;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Security;
+import java.util.stream.Stream;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -40,6 +41,8 @@ import javax.crypto.SecretKey;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import io.github.astrapi69.crypt.api.algorithm.AesAlgorithm;
 import io.github.astrapi69.crypt.data.factory.SecretKeyFactoryExtensions;
@@ -65,101 +68,69 @@ public class PrivateKeyDecryptorTest
 	}
 
 	/**
-	 * Test method for {@link PrivateKeyDecryptor} constructor with {@link PrivateKey} object
-	 *
-	 * @throws Exception
-	 *             is thrown if instantiation of the cipher object fails.
+	 * One constructor-variant case: the round trip is identical, only how encryptor and decryptor
+	 * are constructed (bare keys vs {@link CryptModel} objects) differs.
 	 */
-	@Test
-	public void testConstructorWithPrivateKey() throws Exception
+	record ConstructorCase(String description,
+		ThrowingFunction<PublicKey, PublicKeyEncryptor> encryptorFactory,
+		ThrowingFunction<PrivateKey, PrivateKeyDecryptor> decryptorFactory) {
+	}
+
+	static Stream<ConstructorCase> constructorCases()
 	{
-
-		String actual;
-		String expected;
-		PrivateKey privateKey;
-		PublicKey publicKey;
-		byte[] testBytes;
-		File derDir;
-		File privatekeyDerFile;
-		PublicKeyEncryptor encryptor;
-		PrivateKeyDecryptor decryptor;
-		byte[] decrypted;
-
-		actual = RandomStringFactory.newRandomLongString(10000000);
-
-		testBytes = actual.getBytes("UTF-8");
-
-		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		privatekeyDerFile = new File(derDir, "private.der");
-
-		privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
-		publicKey = PrivateKeyExtensions.generatePublicKey(privateKey);
-
-		encryptor = new PublicKeyEncryptor(publicKey);
-		assertNotNull(encryptor);
-
-		byte[] encrypt = encryptor.encrypt(testBytes);
-
-		decryptor = new PrivateKeyDecryptor(privateKey);
-		assertNotNull(decryptor);
-		decrypted = decryptor.decrypt(encrypt);
-		assertNotNull(decrypted);
-		expected = new String(decrypted, "UTF-8");
-		assertEquals(expected, actual);
+		return Stream.of(
+			new ConstructorCase("bare key constructors", PublicKeyEncryptor::new,
+				PrivateKeyDecryptor::new),
+			new ConstructorCase("CryptModel constructors", publicKey -> {
+				CryptModel<Cipher, PublicKey, byte[]> encryptModel = CryptModel
+					.<Cipher, PublicKey, byte[]> builder().key(publicKey).build();
+				SecretKey symmetricKey = SecretKeyFactoryExtensions
+					.newSecretKey(AesAlgorithm.AES.getAlgorithm(), 128);
+				CryptModel<Cipher, SecretKey, String> symmetricKeyModel = CryptModel
+					.<Cipher, SecretKey, String> builder().key(symmetricKey)
+					.algorithm(AesAlgorithm.AES).operationMode(Cipher.ENCRYPT_MODE).build();
+				return new PublicKeyEncryptor(encryptModel, symmetricKeyModel);
+			}, privateKey -> new PrivateKeyDecryptor(
+				CryptModel.<Cipher, PrivateKey, byte[]> builder().key(privateKey).build(),
+				AesAlgorithm.AES)));
 	}
 
 	/**
-	 * Test method for {@link PrivateKeyDecryptor} constructor with {@link CryptModel} object
+	 * Test method for the {@link PublicKeyEncryptor}/{@link PrivateKeyDecryptor} round trip over
+	 * every constructor variant
 	 *
+	 * @param testCase
+	 *            the constructor-variant case
 	 * @throws Exception
 	 *             is thrown if instantiation of the cipher object fails.
 	 */
-	@Test
-	public void testConstructorWithCryptModel() throws Exception
+	@ParameterizedTest
+	@MethodSource("constructorCases")
+	public void testEncryptDecryptRoundTrip(ConstructorCase testCase) throws Exception
 	{
-		String actual;
-		String expected;
-		PrivateKey privateKey;
-		PublicKey publicKey;
-		SecretKey symmetricKey;
-		CryptModel<Cipher, PublicKey, byte[]> encryptModel;
-		CryptModel<Cipher, SecretKey, String> symmetricKeyModel;
-		CryptModel<Cipher, PrivateKey, byte[]> decryptModel;
-		byte[] testBytes;
-		File derDir;
-		File privatekeyDerFile;
-		PublicKeyEncryptor encryptor;
-		PrivateKeyDecryptor decryptor;
-		byte[] decrypted;
+		String plainText = RandomStringFactory.newRandomLongString(10000000);
+		byte[] testBytes = plainText.getBytes("UTF-8");
 
-		actual = RandomStringFactory.newRandomLongString(10000000);
+		File derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		PrivateKey privateKey = PrivateKeyReader.readPrivateKey(new File(derDir, "private.der"));
+		PublicKey publicKey = PrivateKeyExtensions.generatePublicKey(privateKey);
 
-		testBytes = actual.getBytes("UTF-8");
-
-		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		privatekeyDerFile = new File(derDir, "private.der");
-
-		privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
-		publicKey = PrivateKeyExtensions.generatePublicKey(privateKey);
-
-		decryptModel = CryptModel.<Cipher, PrivateKey, byte[]> builder().key(privateKey).build();
-		encryptModel = CryptModel.<Cipher, PublicKey, byte[]> builder().key(publicKey).build();
-		symmetricKey = SecretKeyFactoryExtensions.newSecretKey(AesAlgorithm.AES.getAlgorithm(),
-			128);
-		symmetricKeyModel = CryptModel.<Cipher, SecretKey, String> builder().key(symmetricKey)
-			.algorithm(AesAlgorithm.AES).operationMode(Cipher.ENCRYPT_MODE).build();
-
-		encryptor = new PublicKeyEncryptor(encryptModel, symmetricKeyModel);
+		PublicKeyEncryptor encryptor = testCase.encryptorFactory().apply(publicKey);
 		assertNotNull(encryptor);
+		byte[] encrypted = encryptor.encrypt(testBytes);
 
-		byte[] encrypt = encryptor.encrypt(testBytes);
-
-		decryptor = new PrivateKeyDecryptor(decryptModel, AesAlgorithm.AES);
+		PrivateKeyDecryptor decryptor = testCase.decryptorFactory().apply(privateKey);
 		assertNotNull(decryptor);
-		decrypted = decryptor.decrypt(encrypt);
+		byte[] decrypted = decryptor.decrypt(encrypted);
 		assertNotNull(decrypted);
-		expected = new String(decrypted, "UTF-8");
-		assertEquals(expected, actual);
+		assertEquals(plainText, new String(decrypted, "UTF-8"), testCase.description());
+	}
+
+	/** A factory whose construction may throw - the cipher constructors declare exceptions. */
+	@FunctionalInterface
+	interface ThrowingFunction<T, R>
+	{
+		R apply(T input) throws Exception;
 	}
 
 	/**

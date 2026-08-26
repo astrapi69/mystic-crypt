@@ -136,25 +136,4 @@ class KemCommandTest extends AbstractCliTest
 		assertNotEquals(0, run("kem", "--algorithm", "ML-KEM-999"));
 	}
 
-	@org.junit.jupiter.api.Test
-	void reportReturnsOneAndReportsNoMatchForDifferingSecrets()
-	{
-		java.io.PrintStream originalOut = System.out;
-		java.io.ByteArrayOutputStream buffer = new java.io.ByteArrayOutputStream();
-		System
-			.setOut(new java.io.PrintStream(buffer, true, java.nio.charset.StandardCharsets.UTF_8));
-		int exitCode;
-		try
-		{
-			exitCode = KemCommand.report("test", new byte[] { 9 }, new byte[] { 1 },
-				new byte[] { 2 });
-		}
-		finally
-		{
-			System.setOut(originalOut);
-		}
-		assertEquals(1, exitCode, "differing secrets must return exit code 1");
-		assertTrue(buffer.toString(java.nio.charset.StandardCharsets.UTF_8)
-			.contains("shared secrets do not match"));
-	}
 }

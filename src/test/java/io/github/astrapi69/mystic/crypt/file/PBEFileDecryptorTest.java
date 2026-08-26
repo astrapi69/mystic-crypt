@@ -29,11 +29,14 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
+import java.util.stream.Stream;
 
 import javax.crypto.Cipher;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import io.github.astrapi69.checksum.FileChecksumExtensions;
 import io.github.astrapi69.crypt.api.algorithm.MdAlgorithm;
@@ -76,88 +79,74 @@ public class PBEFileDecryptorTest extends AbstractTestCase<String, String>
 	}
 
 	/**
-	 * Test method for the encrpytion with the class {@link PBEFileEncryptor} and decryption with
-	 * the class {@link PBEFileDecryptor} with the constructor with model
-	 *
-	 * @throws Exception
-	 *             is thrown if any error occurs on the execution
+	 * One constructor-variant case: the encrypt-decrypt-checksum round trip is identical, only how
+	 * encryptor and decryptor are constructed differs.
 	 */
-	@Test
-	public void testDecryptWithModel() throws Exception
+	record ConstructorCase(String description, PbeEncryptorFactory encryptorFactory,
+		PbeDecryptorFactory decryptorFactory) {
+		@Override
+		public String toString()
+		{
+			return description;
+		}
+	}
+
+	/** Builds the encryptor of one constructor variant. */
+	@FunctionalInterface
+	interface PbeEncryptorFactory
 	{
-		// new scenario...
-		encryptor = new PBEFileEncryptor(cryptModel);
-		encrypted = encryptor.encrypt(toEncrypt);
+		PBEFileEncryptor create(CryptModel<Cipher, String, String> model, File directory)
+			throws Exception;
+	}
 
-		decryptor = new PBEFileDecryptor(cryptModel);
+	/** Builds the decryptor of one constructor variant. */
+	@FunctionalInterface
+	interface PbeDecryptorFactory
+	{
+		PBEFileDecryptor create(CryptModel<Cipher, String, String> model, File directory)
+			throws Exception;
+	}
 
-		decrypted = decryptor.decrypt(encrypted);
-
-		expected = FileChecksumExtensions.getChecksum(toEncrypt, MdAlgorithm.MD5.name());
-		actual = FileChecksumExtensions.getChecksum(decrypted, MdAlgorithm.MD5.name());
-		assertEquals(actual, expected);
-		// clean up...
-		DeleteFileExtensions.delete(encrypted);
-		DeleteFileExtensions.delete(decrypted);
+	static Stream<ConstructorCase> constructorCases()
+	{
+		return Stream.of(
+			new ConstructorCase("model only", (model, directory) -> new PBEFileEncryptor(model),
+				(model, directory) -> new PBEFileDecryptor(model)),
+			new ConstructorCase("model and file",
+				(model, directory) -> new PBEFileEncryptor(model,
+					new File(directory, "encryptedCnstr.enc")),
+				(model, directory) -> new PBEFileDecryptor(model,
+					new File(directory, "decryptedCnstr.decrypted"))),
+			new ConstructorCase("model, file and custom file extension",
+				(model, directory) -> new PBEFileEncryptor(model,
+					new File(directory, "encryptedCnstr.encfoo"), ".encfoo"),
+				(model, directory) -> new PBEFileDecryptor(model,
+					new File(directory, "decryptedCnstr.decryptfoo"), ".decryptfoo")));
 	}
 
 	/**
-	 * Test method for the encrpytion with the class {@link PBEFileEncryptor} and decryption with
-	 * the class {@link PBEFileDecryptor} with the constructor with model and file
+	 * Test method for the encryption with the class {@link PBEFileEncryptor} and decryption with
+	 * the class {@link PBEFileDecryptor} over every constructor variant
 	 *
+	 * @param testCase
+	 *            the constructor-variant case
 	 * @throws Exception
 	 *             is thrown if any error occurs on the execution
 	 */
-	@Test
-	public void testDecryptWithModelAndFile() throws Exception
+	@ParameterizedTest
+	@MethodSource("constructorCases")
+	public void testEncryptDecryptRoundTrip(ConstructorCase testCase) throws Exception
 	{
-		// new scenario...
-		File encryptedCnstr = new File(cryptDir, "encryptedCnstr.enc");
-		File decryptedCnstr = new File(cryptDir, "decryptedCnstr.decrypted");
-		encryptor = new PBEFileEncryptor(cryptModel, encryptedCnstr);
+		encryptor = testCase.encryptorFactory().create(cryptModel, cryptDir);
 		encrypted = encryptor.encrypt(toEncrypt);
 
-		decryptor = new PBEFileDecryptor(cryptModel, decryptedCnstr);
+		decryptor = testCase.decryptorFactory().create(cryptModel, cryptDir);
 
 		decrypted = decryptor.decrypt(encrypted);
 
 		expected = FileChecksumExtensions.getChecksum(toEncrypt, MdAlgorithm.MD5.name());
 		actual = FileChecksumExtensions.getChecksum(decrypted, MdAlgorithm.MD5.name());
-		assertEquals(actual, expected);
-		// clean up...
-		DeleteFileExtensions.delete(encrypted);
-		DeleteFileExtensions.delete(decrypted);
-	}
-
-	/**
-	 * Test method for the encrpytion with the class {@link PBEFileEncryptor} and decryption with
-	 * the class {@link PBEFileDecryptor} with the constructor with model, file and custom file
-	 * extension
-	 *
-	 * @throws Exception
-	 *             is thrown if any error occurs on the execution
-	 */
-	@Test
-	public void testDecryptWithModelAndFileAndWithCustomFileExtension() throws Exception
-	{
-		// new scenario...
-		String customEncryptedFileExtension;
-		String customDecryptedFileExtension;
-
-		customEncryptedFileExtension = ".encfoo";
-		customDecryptedFileExtension = ".decryptfoo";
-		File encryptedCnstr = new File(cryptDir, "encryptedCnstr" + customEncryptedFileExtension);
-		File decryptedCnstr = new File(cryptDir, "decryptedCnstr" + customDecryptedFileExtension);
-		encryptor = new PBEFileEncryptor(cryptModel, encryptedCnstr, customEncryptedFileExtension);
-		encrypted = encryptor.encrypt(toEncrypt);
-
-		decryptor = new PBEFileDecryptor(cryptModel, decryptedCnstr, customDecryptedFileExtension);
-
-		decrypted = decryptor.decrypt(encrypted);
-
-		expected = FileChecksumExtensions.getChecksum(toEncrypt, MdAlgorithm.MD5.name());
-		actual = FileChecksumExtensions.getChecksum(decrypted, MdAlgorithm.MD5.name());
-		assertEquals(actual, expected);
+		assertEquals(actual, expected, testCase.description());
 		// clean up...
 		DeleteFileExtensions.delete(encrypted);
 		DeleteFileExtensions.delete(decrypted);

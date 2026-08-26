@@ -31,11 +31,13 @@ import java.io.File;
 import java.io.Serializable;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.stream.Stream;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import io.github.astrapi69.crypt.api.algorithm.AesAlgorithm;
 import io.github.astrapi69.crypt.data.factory.SecretKeyFactoryExtensions;
@@ -63,52 +65,109 @@ public class PrivateKeyGenericEnDecryptorTest
 	 * @throws Exception
 	 *             is thrown if any error occurs
 	 */
-	@Test
-	public void testDecrypt() throws Exception
+	/**
+	 * Builds the generic encryptor/decryptor pair for one constructor variant; the generic method
+	 * keeps the payload type flexible so the Person and the JSON round trip share the variants.
+	 */
+	interface GenericCryptorFactory
 	{
-		Person actual;
-		Person expected;
-		PrivateKey privateKey;
-		PublicKey publicKey;
-		SecretKey symmetricKey;
-		CryptModel<Cipher, PublicKey, byte[]> encryptModel;
-		CryptModel<Cipher, SecretKey, String> symmetricKeyModel;
-		CryptModel<Cipher, PrivateKey, byte[]> decryptModel;
-		File derDir;
-		File privatekeyDerFile;
-		PublicKeyEncryptor encryptor;
-		PrivateKeyDecryptor decryptor;
+		<T extends Serializable> PublicKeyGenericEncryptor<T> newEncryptor(PublicKey publicKey)
+			throws Exception;
 
-		PublicKeyGenericEncryptor<Person> genericEncryptor;
-		PrivateKeyGenericDecryptor<Person> genericDecryptor;
-		Person toEncrypt;
+		<T extends Serializable> PrivateKeyGenericDecryptor<T> newDecryptor(PrivateKey privateKey)
+			throws Exception;
+	}
 
-		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		privatekeyDerFile = new File(derDir, "private.der");
+	/** One constructor-variant case of the 2x2 matrix (payload x construction). */
+	record ConstructorVariant(String description, GenericCryptorFactory factory) {
+		@Override
+		public String toString()
+		{
+			return description;
+		}
+	}
 
-		privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
-		publicKey = PrivateKeyExtensions.generatePublicKey(privateKey);
+	static Stream<ConstructorVariant> constructorVariants()
+	{
+		return Stream.of(new ConstructorVariant("bare key constructors", new GenericCryptorFactory()
+		{
+			@Override
+			public <T extends Serializable> PublicKeyGenericEncryptor<T> newEncryptor(
+				PublicKey publicKey)
+			{
+				return new PublicKeyGenericEncryptor<>(publicKey);
+			}
 
-		decryptModel = CryptModel.<Cipher, PrivateKey, byte[]> builder().key(privateKey).build();
-		encryptModel = CryptModel.<Cipher, PublicKey, byte[]> builder().key(publicKey).build();
-		symmetricKey = SecretKeyFactoryExtensions.newSecretKey(AesAlgorithm.AES.getAlgorithm(),
-			128);
-		symmetricKeyModel = CryptModel.<Cipher, SecretKey, String> builder().key(symmetricKey)
-			.algorithm(AesAlgorithm.AES).operationMode(Cipher.ENCRYPT_MODE).build();
+			@Override
+			public <T extends Serializable> PrivateKeyGenericDecryptor<T> newDecryptor(
+				PrivateKey privateKey)
+			{
+				return new PrivateKeyGenericDecryptor<>(privateKey);
+			}
+		}), new ConstructorVariant("CryptModel constructors", new GenericCryptorFactory()
+		{
+			@Override
+			public <T extends Serializable> PublicKeyGenericEncryptor<T> newEncryptor(
+				PublicKey publicKey) throws Exception
+			{
+				CryptModel<Cipher, PublicKey, byte[]> encryptModel = CryptModel
+					.<Cipher, PublicKey, byte[]> builder().key(publicKey).build();
+				SecretKey symmetricKey = SecretKeyFactoryExtensions
+					.newSecretKey(AesAlgorithm.AES.getAlgorithm(), 128);
+				CryptModel<Cipher, SecretKey, String> symmetricKeyModel = CryptModel
+					.<Cipher, SecretKey, String> builder().key(symmetricKey)
+					.algorithm(AesAlgorithm.AES).operationMode(Cipher.ENCRYPT_MODE).build();
+				return new PublicKeyGenericEncryptor<>(
+					new PublicKeyEncryptor(encryptModel, symmetricKeyModel));
+			}
 
-		encryptor = new PublicKeyEncryptor(encryptModel, symmetricKeyModel);
-		assertNotNull(encryptor);
-		decryptor = new PrivateKeyDecryptor(decryptModel, AesAlgorithm.AES);
-		assertNotNull(decryptor);
+			@Override
+			public <T extends Serializable> PrivateKeyGenericDecryptor<T> newDecryptor(
+				PrivateKey privateKey) throws Exception
+			{
+				CryptModel<Cipher, PrivateKey, byte[]> decryptModel = CryptModel
+					.<Cipher, PrivateKey, byte[]> builder().key(privateKey).build();
+				return new PrivateKeyGenericDecryptor<>(
+					new PrivateKeyDecryptor(decryptModel, AesAlgorithm.AES));
+			}
+		}));
+	}
 
-		genericEncryptor = new PublicKeyGenericEncryptor<>(encryptor);
-		genericDecryptor = new PrivateKeyGenericDecryptor<Person>(decryptor);
+	/** Reads the test key pair from the DER resources. */
+	private static PrivateKey readTestPrivateKey() throws Exception
+	{
+		File derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
+		return PrivateKeyReader.readPrivateKey(new File(derDir, "private.der"));
+	}
 
-		actual = Person.builder().about("about").name("Foo").gender(Gender.MALE).build();
-		byte[] encrypt = genericEncryptor.encrypt(actual);
-		Person decryptedPerson = genericDecryptor.decrypt(encrypt);
-		expected = decryptedPerson;
-		assertEquals(actual, expected);
+	/**
+	 * Test method for {@link PublicKeyGenericEncryptor#encrypt(Serializable)} and the corresponding
+	 * method {@link PrivateKeyGenericDecryptor#decrypt(byte[])} with serializable test object
+	 * {@link Person}, over every constructor variant
+	 *
+	 * @param variant
+	 *            the constructor variant
+	 * @throws Exception
+	 *             is thrown if any error occurs
+	 */
+	@ParameterizedTest
+	@MethodSource("constructorVariants")
+	public void testEncryptDecryptPerson(ConstructorVariant variant) throws Exception
+	{
+		PrivateKey privateKey = readTestPrivateKey();
+		PublicKey publicKey = PrivateKeyExtensions.generatePublicKey(privateKey);
+
+		PublicKeyGenericEncryptor<Person> genericEncryptor = variant.factory()
+			.newEncryptor(publicKey);
+		PrivateKeyGenericDecryptor<Person> genericDecryptor = variant.factory()
+			.newDecryptor(privateKey);
+		assertNotNull(genericEncryptor);
+		assertNotNull(genericDecryptor);
+
+		Person person = Person.builder().about("about").name("Foo").gender(Gender.MALE).build();
+		byte[] encrypted = genericEncryptor.encrypt(person);
+
+		assertEquals(person, genericDecryptor.decrypt(encrypted), variant.description());
 	}
 
 	/**
@@ -118,137 +177,36 @@ public class PrivateKeyGenericEnDecryptorTest
 	 * @throws Exception
 	 *             is thrown if any error occurs
 	 */
-	@Test
-	public void testDecryptJson() throws Exception
-	{
-		String actual;
-		String expected;
-		PrivateKey privateKey;
-		PublicKey publicKey;
-		SecretKey symmetricKey;
-		CryptModel<Cipher, PublicKey, byte[]> encryptModel;
-		CryptModel<Cipher, SecretKey, String> symmetricKeyModel;
-		CryptModel<Cipher, PrivateKey, byte[]> decryptModel;
-		File derDir;
-		File privatekeyDerFile;
-		PublicKeyEncryptor encryptor;
-		PrivateKeyDecryptor decryptor;
-
-		PublicKeyGenericEncryptor<String> genericEncryptor;
-		PrivateKeyGenericDecryptor<String> genericDecryptor;
-		Person personToEncrypt;
-		byte[] encryptedBytes;
-		String decryptedJson;
-
-		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		privatekeyDerFile = new File(derDir, "private.der");
-
-		privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
-		publicKey = PrivateKeyExtensions.generatePublicKey(privateKey);
-
-		encryptModel = CryptModel.<Cipher, PublicKey, byte[]> builder().key(publicKey).build();
-		decryptModel = CryptModel.<Cipher, PrivateKey, byte[]> builder().key(privateKey).build();
-		symmetricKey = SecretKeyFactoryExtensions.newSecretKey(AesAlgorithm.AES.getAlgorithm(),
-			128);
-		symmetricKeyModel = CryptModel.<Cipher, SecretKey, String> builder().key(symmetricKey)
-			.algorithm(AesAlgorithm.AES).operationMode(Cipher.ENCRYPT_MODE).build();
-
-		encryptor = new PublicKeyEncryptor(encryptModel, symmetricKeyModel);
-		assertNotNull(encryptor);
-		decryptor = new PrivateKeyDecryptor(decryptModel, AesAlgorithm.AES);
-		assertNotNull(decryptor);
-
-		genericEncryptor = new PublicKeyGenericEncryptor<>(encryptor);
-		genericDecryptor = new PrivateKeyGenericDecryptor<>(decryptor);
-
-		personToEncrypt = Person.builder().about("about").name("Foo").gender(Gender.MALE).build();
-		actual = ObjectToJsonExtensions.toJson(personToEncrypt);
-		encryptedBytes = genericEncryptor.encrypt(actual);
-		decryptedJson = genericDecryptor.decrypt(encryptedBytes);
-		expected = decryptedJson;
-		assertEquals(actual, expected);
-		Person decryptedPerson = JsonStringToObjectExtensions.toObject(decryptedJson, Person.class);
-		assertEquals(personToEncrypt, decryptedPerson);
-	}
-
 	/**
 	 * Test method for {@link PublicKeyGenericEncryptor#encrypt(Serializable)} and the corresponding
-	 * method {@link PrivateKeyGenericDecryptor#decrypt(byte[])} with json object with only
-	 * {@link PrivateKey} and {@link PublicKey} object
+	 * method {@link PrivateKeyGenericDecryptor#decrypt(byte[])} with a json payload, over every
+	 * constructor variant
 	 *
+	 * @param variant
+	 *            the constructor variant
 	 * @throws Exception
 	 *             is thrown if any error occurs
 	 */
-	@Test
-	public void testDecryptJsonWithPrivateKeyAndPublicKey() throws Exception
+	@ParameterizedTest
+	@MethodSource("constructorVariants")
+	public void testEncryptDecryptJson(ConstructorVariant variant) throws Exception
 	{
-		String actual;
-		String expected;
-		PrivateKey privateKey;
-		PublicKey publicKey;
-		File derDir;
-		File privatekeyDerFile;
+		PrivateKey privateKey = readTestPrivateKey();
+		PublicKey publicKey = PrivateKeyExtensions.generatePublicKey(privateKey);
 
-		PublicKeyGenericEncryptor<String> genericEncryptor;
-		PrivateKeyGenericDecryptor<String> genericDecryptor;
-		Person personToEncrypt;
-		byte[] encryptedBytes;
-		String decryptedJson;
+		PublicKeyGenericEncryptor<String> genericEncryptor = variant.factory()
+			.newEncryptor(publicKey);
+		PrivateKeyGenericDecryptor<String> genericDecryptor = variant.factory()
+			.newDecryptor(privateKey);
 
-		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		privatekeyDerFile = new File(derDir, "private.der");
+		Person person = Person.builder().about("about").name("Foo").gender(Gender.MALE).build();
+		String json = ObjectToJsonExtensions.toJson(person);
+		byte[] encrypted = genericEncryptor.encrypt(json);
+		String decryptedJson = genericDecryptor.decrypt(encrypted);
 
-		privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
-		publicKey = PrivateKeyExtensions.generatePublicKey(privateKey);
-
-		genericEncryptor = new PublicKeyGenericEncryptor<>(publicKey);
-		genericDecryptor = new PrivateKeyGenericDecryptor<>(privateKey);
-
-		personToEncrypt = Person.builder().about("about").name("Foo").gender(Gender.MALE).build();
-		actual = ObjectToJsonExtensions.toJson(personToEncrypt);
-		encryptedBytes = genericEncryptor.encrypt(actual);
-		decryptedJson = genericDecryptor.decrypt(encryptedBytes);
-		expected = decryptedJson;
-		assertEquals(actual, expected);
-		Person decryptedPerson = JsonStringToObjectExtensions.toObject(decryptedJson, Person.class);
-		assertEquals(personToEncrypt, decryptedPerson);
-	}
-
-	/**
-	 * Test method for {@link PublicKeyGenericEncryptor#encrypt(Serializable)} and the corresponding
-	 * method {@link PrivateKeyGenericDecryptor#decrypt(byte[])} with serializable test object
-	 * {@link Person} with only {@link PrivateKey} and {@link PublicKey} object
-	 *
-	 * @throws Exception
-	 *             is thrown if any error occurs
-	 */
-	@Test
-	public void testDecryptWithPrivateKeyAndPublicKey() throws Exception
-	{
-		Person actual;
-		Person expected;
-		PrivateKey privateKey;
-		PublicKey publicKey;
-		File derDir;
-		File privatekeyDerFile;
-
-		PublicKeyGenericEncryptor<Person> genericEncryptor;
-		PrivateKeyGenericDecryptor<Person> genericDecryptor;
-
-		derDir = new File(PathFinder.getSrcTestResourcesDir(), "der");
-		privatekeyDerFile = new File(derDir, "private.der");
-
-		privateKey = PrivateKeyReader.readPrivateKey(privatekeyDerFile);
-		publicKey = PrivateKeyExtensions.generatePublicKey(privateKey);
-
-		genericEncryptor = new PublicKeyGenericEncryptor<>(publicKey);
-		genericDecryptor = new PrivateKeyGenericDecryptor<Person>(privateKey);
-
-		actual = Person.builder().about("about").name("Foo").gender(Gender.MALE).build();
-		byte[] encrypt = genericEncryptor.encrypt(actual);
-		Person decryptedPerson = genericDecryptor.decrypt(encrypt);
-		expected = decryptedPerson;
-		assertEquals(actual, expected);
+		assertEquals(json, decryptedJson, variant.description());
+		assertEquals(person, JsonStringToObjectExtensions.toObject(decryptedJson, Person.class),
+			variant.description());
 	}
 
 }
