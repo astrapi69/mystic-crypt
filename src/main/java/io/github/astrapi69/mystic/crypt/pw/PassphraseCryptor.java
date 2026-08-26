@@ -211,6 +211,11 @@ public final class PassphraseCryptor
 		}
 		finally
 		{
+			// SecretKeySpec copies the bytes it is given, so nothing observable changes whether
+			// this wipe happens or not - it is here because leaving derived key material in a
+			// live array is the kind of thing that only becomes visible in a heap dump. PIT
+			// reports removing it as a surviving mutant for exactly that reason; see
+			// docs/COVERAGE_EXCEPTIONS.md.
 			Arrays.fill(keyBytes, (byte)0);
 		}
 	}
