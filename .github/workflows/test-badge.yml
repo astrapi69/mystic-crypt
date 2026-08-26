@@ -1,0 +1,58 @@
+name: Test Cases Badge
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  test-and-badge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Run tests
+        run: mvn test --batch-mode
+
+      - name: Extract test count
+        id: test_count
+        run: |
+          # Surefire Reports parsen: alle "Tests run:" Werte summieren
+          TOTAL=$(grep -rh "Tests run:" target/surefire-reports/*.txt \
+            | awk -F'[,:]' '{sum += $2} END {print sum}')
+
+          # Fallback falls kein Report existiert
+          if [ -z "$TOTAL" ] || [ "$TOTAL" -eq 0 ]; then
+            TOTAL="0"
+            COLOR="red"
+          elif [ "$TOTAL" -lt 50 ]; then
+            COLOR="yellow"
+          elif [ "$TOTAL" -lt 200 ]; then
+            COLOR="green"
+          else
+            COLOR="brightgreen"
+          fi
+
+          echo "total=$TOTAL" >> $GITHUB_OUTPUT
+          echo "color=$COLOR" >> $GITHUB_OUTPUT
+          echo "Test cases found: $TOTAL"
+
+      - name: Update badge
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_TOKEN }}
+          gistID: 69b2e93dd826ce43cc3f02433a465ae3
+          filename: test-cases.json
+          label: test cases
+          message: ${{ steps.test_count.outputs.total }}
+          color: ${{ steps.test_count.outputs.color }}
