@@ -12,23 +12,27 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up JDK
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
-          java-version: '21'
+          java-version: '25'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
 
       - name: Run tests
-        run: mvn test --batch-mode
+        run: ./gradlew test
 
       - name: Extract test count
         id: test_count
         run: |
-          # Surefire Reports parsen: alle "Tests run:" Werte summieren
-          TOTAL=$(grep -rh "Tests run:" target/surefire-reports/*.txt \
-            | awk -F'[,:]' '{sum += $2} END {print sum}')
+          # Gradle's JUnit XML reports: one <testsuite tests="N" .../> root per test class,
+          # sum the tests attribute across all of them.
+          TOTAL=$(grep -ohE 'tests="[0-9]+"' build/test-results/test/*.xml \
+            | grep -oE '[0-9]+' | awk '{sum += $1} END {print sum}')
 
           # Fallback falls kein Report existiert
           if [ -z "$TOTAL" ] || [ "$TOTAL" -eq 0 ]; then
