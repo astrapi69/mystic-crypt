@@ -141,17 +141,20 @@ final class ScryptSupport
 	 */
 	private static boolean decodeAndCompare(final char[] password, final String encoded)
 	{
-		final Decoded decoded;
 		try
 		{
-			decoded = decode(encoded);
+			final Decoded decoded = decode(encoded);
+			// the hasher is inside the guard as well: a cost that is well formed but absurd - ln=30
+			// asks for a gigabyte of state - makes Bouncy Castle fail rather than return, and the
+			// contract of verify is "false for a hash this password does not open", not "throws
+			// for a hash somebody wrote a large number into"
+			return ScryptHasher.verify(password.clone(), decoded.salt, decoded.hash,
+				1 << decoded.logN, decoded.r, decoded.p);
 		}
-		catch (final RuntimeException malformed)
+		catch (final RuntimeException malformedOrUnusable)
 		{
 			return false;
 		}
-		return ScryptHasher.verify(password.clone(), decoded.salt, decoded.hash, 1 << decoded.logN,
-			decoded.r, decoded.p);
 	}
 
 	private static Decoded decode(final String encoded)
@@ -189,11 +192,11 @@ final class ScryptSupport
 					throw new IllegalArgumentException("not a valid scrypt encoded hash");
 			}
 		}
-		// scrypt requires n to be a power of two greater than one, and r and p at least one; a
-		// value outside that would make Bouncy Castle throw from the hasher instead of verify()
-		// answering false for a malformed hash. The upper bound on ln keeps 1 << logN from
-		// overflowing into a negative n.
-		if (logN < 1 || logN > 30 || r < 1 || p < 1)
+		// scrypt requires n to be a power of two greater than one, and r and p at least one. There
+		// is deliberately no upper bound on ln: a cost too large to run - including one whose
+		// shift overflows into a negative n - is refused by the hasher, and that already comes
+		// back as "does not match" because the hasher call is inside the guard below.
+		if (logN < 1 || r < 1 || p < 1)
 		{
 			throw new IllegalArgumentException("not a valid scrypt encoded hash");
 		}

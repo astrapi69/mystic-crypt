@@ -131,10 +131,9 @@ public final class PassphraseCryptor
 	{
 		try
 		{
-			// the header check runs outside the catch below on purpose: "this is not our format at
-			// all" is a different answer from "this is our format and it would not open", and the
-			// caller distinguishes the two by exception type
-			requireOwnFormat(encrypted);
+			// iterationsOf checks the header, and it does so outside the catch below on purpose:
+			// "this is not our format at all" is a different answer from "this is our format and
+			// it would not open", and the caller distinguishes the two by exception type
 			final int iterations = iterationsOf(encrypted);
 			final byte[] salt = Arrays.copyOfRange(encrypted, MAGIC.length + 1 + Integer.BYTES,
 				HEADER_LENGTH);
@@ -212,6 +211,11 @@ public final class PassphraseCryptor
 		}
 		finally
 		{
+			// SecretKeySpec copies the bytes it is given, so nothing observable changes whether
+			// this wipe happens or not - it is here because leaving derived key material in a
+			// live array is the kind of thing that only becomes visible in a heap dump. PIT
+			// reports removing it as a surviving mutant for exactly that reason; see
+			// docs/COVERAGE_EXCEPTIONS.md.
 			Arrays.fill(keyBytes, (byte)0);
 		}
 	}

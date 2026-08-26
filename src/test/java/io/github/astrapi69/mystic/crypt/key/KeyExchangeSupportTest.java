@@ -82,11 +82,17 @@ class KeyExchangeSupportTest
 		assertEquals("this is not a stored key of this tool", rejected.getMessage());
 	}
 
-	@Test
-	void aStoredPrivateKeyMissingItsHalvesIsCalledIncomplete()
+	/**
+	 * Two parts is the least that can be read far enough to tell the kind, and that is the point of
+	 * checking the kind before the length: "MCKX1$PRV" is recognised as a stored private key that
+	 * is merely incomplete, not as something foreign.
+	 */
+	@ParameterizedTest
+	@ValueSource(strings = { "MCKX1$PRV", "MCKX1$PRV$X25519", "MCKX1$PRV$X25519$AAAA" })
+	void aStoredPrivateKeyMissingItsHalvesIsCalledIncomplete(String text)
 	{
 		IllegalArgumentException rejected = assertThrows(IllegalArgumentException.class,
-			() -> KeyExchangeSupport.partyFrom("MCKX1$PRV$X25519$AAAA"));
+			() -> KeyExchangeSupport.partyFrom(text));
 
 		assertEquals("this stored key is incomplete", rejected.getMessage());
 	}
@@ -177,6 +183,35 @@ class KeyExchangeSupportTest
 			rejected.getMessage().contains("is not one of")
 				&& rejected.getMessage().contains(KeyExchangeSupport.ML_KEM_768),
 			"the message must list the algorithms, but was: '" + rejected.getMessage() + "'");
+	}
+
+	/**
+	 * The length checks sit exactly one part away from a usable envelope, so both sides of each
+	 * boundary are pinned: three parts is enough to read an algorithm, two is not; five parts is a
+	 * complete stored key, four is not.
+	 */
+	@Test
+	void theShortestUsableEnvelopeIsAcceptedAndOnePartLessIsNot()
+	{
+		assertEquals("X25519", KeyExchangeSupport.algorithmOf("MCKX1$PUB$X25519"),
+			"three parts carry an algorithm");
+		assertThrows(IllegalArgumentException.class,
+			() -> KeyExchangeSupport.algorithmOf("MCKX1$PUB"));
+	}
+
+	@Test
+	void theShortestCompleteStoredKeyIsAcceptedAndOnePartLessIsCalledIncomplete() throws Exception
+	{
+		KeyExchangeSupport.Party party = KeyExchangeSupport.newParty(KeyExchangeSupport.X25519);
+		String stored = KeyExchangeSupport.privateKeyOf(party);
+		assertEquals(5, stored.split("\\$").length, "an X25519 stored key has five parts");
+
+		assertEquals(KeyExchangeSupport.X25519, KeyExchangeSupport.partyFrom(stored).algorithm());
+
+		String oneShort = stored.substring(0, stored.lastIndexOf('$'));
+		IllegalArgumentException rejected = assertThrows(IllegalArgumentException.class,
+			() -> KeyExchangeSupport.partyFrom(oneShort));
+		assertEquals("this stored key is incomplete", rejected.getMessage());
 	}
 
 	@Test

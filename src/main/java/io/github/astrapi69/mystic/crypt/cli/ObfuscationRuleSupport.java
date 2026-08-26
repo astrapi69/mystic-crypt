@@ -117,60 +117,6 @@ final class ObfuscationRuleSupport
 		return new Rules(null, operated);
 	}
 
-	/**
-	 * Reverses what
-	 * {@link io.github.astrapi69.mystic.crypt.obfuscation.character.ObfuscatorExtensions#obfuscateWith}
-	 * produced.
-	 * <p>
-	 * The library's own operated {@code disentangle} does not do this correctly: for the rules
-	 * {@code a=x:UPPERCASE@0} and {@code b=y} it turns {@code Ayx} back into {@code ayx} rather
-	 * than into {@code aba}, and {@code disentangleImproved} throws a NullPointerException on the
-	 * same input. Reversing this rule shape is completely determined - at a named position the
-	 * operated character stands for the original, everywhere else the replacement does - so it is
-	 * done here rather than on top of a reversal that does not reverse.
-	 *
-	 * @param rules
-	 *            the same rules the text was obfuscated with
-	 * @param obfuscated
-	 *            the obfuscated text
-	 * @return the original text
-	 */
-	static String disentangleOperated(
-		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
-		final String obfuscated)
-	{
-		final StringBuilder text = new StringBuilder(obfuscated.length());
-		for (int position = 0; position < obfuscated.length(); position++)
-		{
-			text.append(originalOf(rules, obfuscated.charAt(position), position));
-		}
-		return text.toString();
-	}
-
-	private static char originalOf(
-		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
-		final char obfuscated, final int position)
-	{
-		for (final ObfuscationOperationRule<Character, Character> rule : rules.values())
-		{
-			// a position the rule operates at carries the operated character, not the replacement
-			if (rule.getIndexes().contains(position)
-				&& Operation.operate(rule.getCharacter(), rule.getOperation()) == obfuscated)
-			{
-				return rule.getCharacter();
-			}
-		}
-		for (final ObfuscationOperationRule<Character, Character> rule : rules.values())
-		{
-			if (rule.getReplaceWith() == obfuscated)
-			{
-				return rule.getCharacter();
-			}
-		}
-		// a character no rule produced was never obfuscated, so it stands for itself
-		return obfuscated;
-	}
-
 	private static Character replacementOf(final String value)
 	{
 		if (value.length() != 1)
@@ -196,10 +142,14 @@ final class ObfuscationRuleSupport
 		final Character replaceWith = replacementOf(value.substring(0, operationAt));
 		final String rest = value.substring(operationAt + 1);
 		final int indexAt = rest.indexOf(INDEX_SEPARATOR);
-		final String operationName = indexAt < 0 ? rest : rest.substring(0, indexAt);
-		final Set<Integer> indexes = indexAt < 0
-			? new HashSet<>()
-			: parseIndexes(rest.substring(indexAt + 1));
+		// one decision, asked once: writing it as two ternaries left a second boundary that no
+		// input could tell apart from the first, because a rule with the separator at the front
+		// has an empty operation name and is refused before the positions matter
+		final boolean carriesPositions = indexAt >= 0;
+		final String operationName = carriesPositions ? rest.substring(0, indexAt) : rest;
+		final Set<Integer> indexes = carriesPositions
+			? parseIndexes(rest.substring(indexAt + 1))
+			: new HashSet<>();
 		return ObfuscationOperationRule.<Character, Character> builder().character(character)
 			.replaceWith(replaceWith).operation(parseOperation(operationName)).indexes(indexes)
 			.build();

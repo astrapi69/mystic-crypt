@@ -31,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 /**
@@ -146,6 +147,70 @@ class OperatedObfuscationCommandTest extends AbstractCliTest
 
 		assertTrue(err.contains("UPPERCASE") && err.contains("NEGATE"),
 			"the message must list the operations, but was: '" + err + "'");
+	}
+
+	/**
+	 * The two separators are looked for by position, so the degenerate placements are pinned: a
+	 * rule that starts with the operation separator has no replacement, and one that starts with
+	 * the position separator has no operation name.
+	 */
+	/**
+	 * One malformed rule and the words its message has to contain.
+	 *
+	 * @param rule
+	 *            the rule as it would be typed
+	 * @param expectedWords
+	 *            what the message must name
+	 */
+	record MalformedRuleCase(String rule, String expectedWords) {
+	}
+
+	static java.util.stream.Stream<MalformedRuleCase> malformedRuleCases()
+	{
+		return java.util.stream.Stream.of(
+			new MalformedRuleCase("a=:UPPERCASE", "the replacement was ''"),
+			new MalformedRuleCase("a=x:@0", "'' is not an operation"),
+			new MalformedRuleCase("a=x:UPPERCASE@", "but one was ''"));
+	}
+
+	/**
+	 * The two separators are located by position, so the degenerate placements are pinned by the
+	 * part they leave empty: which part is missing is what tells the reader where the separator
+	 * went wrong, and a message that only says "refused" would be the same for all three.
+	 *
+	 * @param testCase
+	 *            the malformed rule and the words its message must contain
+	 */
+	@ParameterizedTest
+	@MethodSource("malformedRuleCases")
+	void aSeparatorWithNothingBeforeItIsRefusedByWhatIsMissing(MalformedRuleCase testCase)
+	{
+		assertEquals(2, run("obfuscate", "--text", "abc", "--rule", testCase.rule()),
+			"'" + testCase.rule() + "' must be refused, stderr was: '" + err + "'");
+
+		assertTrue(err.contains(testCase.expectedWords()), "for '" + testCase.rule()
+			+ "' the message must name the empty part, but was: '" + err + "'");
+	}
+
+	/**
+	 * A position other than zero has to reach the rule, otherwise every operated rule would behave
+	 * as if it operated at the start of the text.
+	 */
+	@Test
+	void aPositionOtherThanZeroIsTheOneThatIsUsed()
+	{
+		assertEquals("xxAx", obfuscate("aaaa", "a=x:UPPERCASE@2"),
+			"only position 2 carries the operated character");
+		assertEquals("Axxx", obfuscate("aaaa", "a=x:UPPERCASE@0"),
+			"and with position 0 it is the first one instead");
+		assertEquals("aaaa", disentangle("xxAx", "a=x:UPPERCASE@2"));
+	}
+
+	@Test
+	void severalPositionsAreAllUsed()
+	{
+		assertEquals("AxAx", obfuscate("aaaa", "a=x:UPPERCASE@0,2"));
+		assertEquals("aaaa", disentangle("AxAx", "a=x:UPPERCASE@0,2"));
 	}
 
 	@Test

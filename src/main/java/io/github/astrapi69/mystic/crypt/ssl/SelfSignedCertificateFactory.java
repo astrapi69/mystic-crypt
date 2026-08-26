@@ -45,6 +45,7 @@ import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.operator.ContentSigner;
+import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 
 import io.github.astrapi69.mystic.crypt.provider.SecurityProviderSupport;
@@ -176,10 +177,7 @@ public final class SelfSignedCertificateFactory
 			Date.from(now.plus(days, ChronoUnit.DAYS)), distinguishedName, keyPair.getPublic());
 		addExtensions(builder, extensions);
 
-		final ContentSigner signer = new JcaContentSignerBuilder(signatureAlgorithm)
-			.setProvider(BouncyCastleProvider.PROVIDER_NAME).build(keyPair.getPrivate());
-		return new JcaX509CertificateConverter().setProvider(BouncyCastleProvider.PROVIDER_NAME)
-			.getCertificate(builder.build(signer));
+		return converter().getCertificate(builder.build(newSigner(signatureAlgorithm, keyPair)));
 	}
 
 	/**
@@ -237,6 +235,48 @@ public final class SelfSignedCertificateFactory
 				extensions.criticalExtensions().contains("san"),
 				newGeneralNames(extensions.subjectAlternativeNames()));
 		}
+	}
+
+	/**
+	 * Builds the signer, preferring Bouncy Castle but not insisting on it.
+	 * <p>
+	 * Bouncy Castle is preferred because an elliptic curve key on a named curve has to be signed by
+	 * the provider that understands it. It cannot be insisted on: a post-quantum key such as ML-DSA
+	 * comes from the JDK's own provider since JDK 24, and Bouncy Castle refuses a key it did not
+	 * produce with "unknown private key passed to ML-DSA". Naming it unconditionally is what made
+	 * this factory unable to certify ML-DSA keys, which the factory it replaced could.
+	 *
+	 * @param signatureAlgorithm
+	 *            the signature algorithm
+	 * @param keyPair
+	 *            the key pair whose private half signs
+	 * @return the signer
+	 * @throws OperatorCreationException
+	 *             if no provider can sign with this key and algorithm
+	 */
+	private static ContentSigner newSigner(final String signatureAlgorithm, final KeyPair keyPair)
+		throws OperatorCreationException
+	{
+		try
+		{
+			return new JcaContentSignerBuilder(signatureAlgorithm)
+				.setProvider(BouncyCastleProvider.PROVIDER_NAME).build(keyPair.getPrivate());
+		}
+		catch (final OperatorCreationException notABouncyCastleKey)
+		{
+			return new JcaContentSignerBuilder(signatureAlgorithm).build(keyPair.getPrivate());
+		}
+	}
+
+	/**
+	 * Builds the certificate converter, with the same preference and for the same reason as
+	 * {@link #newSigner(String, KeyPair)}.
+	 *
+	 * @return the converter
+	 */
+	private static JcaX509CertificateConverter converter()
+	{
+		return new JcaX509CertificateConverter();
 	}
 
 	private static BasicConstraints newBasicConstraints(final BasicConstraintsSpec specification)

@@ -198,6 +198,30 @@ class EncryptDecryptCommandTest extends AbstractCliTest
 			"the message must name the options, but was: '" + err + "'");
 	}
 
+	/**
+	 * Writing to a file prints a confirmation instead of the content, and it has to name both how
+	 * much was written and where, otherwise a run that wrote nothing looks the same as one that
+	 * worked.
+	 */
+	@Test
+	void writingToAFileConfirmsHowMuchWentWhere(@TempDir File tempDir) throws IOException
+	{
+		File plain = new File(tempDir, "plain.txt");
+		File encrypted = new File(tempDir, "plain.enc");
+		File back = new File(tempDir, "back.txt");
+		Files.writeString(plain.toPath(), "0123456789");
+
+		assertEquals(0,
+			run("encrypt", "-i", plain.getPath(), "-o", encrypted.getPath(), "-p", "pass"));
+		assertTrue(out.contains("encrypted 10 bytes to " + encrypted.getPath()),
+			"stdout was: '" + out + "'");
+
+		assertEquals(0,
+			run("decrypt", "-i", encrypted.getPath(), "-o", back.getPath(), "-p", "pass"));
+		assertTrue(out.contains("decrypted 10 bytes to " + back.getPath()),
+			"stdout was: '" + out + "'");
+	}
+
 	@Test
 	void bothCommandsAnswerTheirOwnHelp()
 	{

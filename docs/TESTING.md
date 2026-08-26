@@ -90,7 +90,7 @@ code the tests do run, how much would they notice being broken?".
 |---|---|---|---|---|---|---|
 | `crypt-api` | `develop` @ `cf35381` (released as 10.0.0) | 271 | 100.00% | 100.00% | 100.0% (78 / 78) | 100.0% |
 | `crypt-data` | `2374c66` (PR #8) | 1019 | 100.00% | 100.00% | 100.0% (779 / 779) | 100.0% |
-| `mystic-crypt` | `develop` @ `b7491c26` | 896 | 99.92% | 100.00% | 99.5% (1071 / 1076) | 99.6% |
+| `mystic-crypt` | `01b143b4` (PR #96) | 1234 | 99.94% | 100.00% | 99.6% (1498 / 1504) | 99.6% |
 
 Regenerate with the commands under [How to run](#how-to-run); the reports are
 `build/reports/jacoco/test/jacocoTestReport.xml` and `build/reports/pitest/`.
@@ -115,7 +115,13 @@ its last three and overturned the reasoning behind two of them: the `PEMParser.c
 documented as an acceptable leak whose test would be flaky, and both halves of that were wrong -
 the leak happens on the exception path where `close()` never runs at all, and counting the
 descriptors in `/proc/self/fd` that point at one named file is deterministic, not a total-count
-heuristic. What is left after all five rounds is the floor, not something left undone.
+heuristic. A sixth pass went over the command line work of 12.0.0 (PR #96): 1500 mutants where there had been
+1076, 35 of them surviving at first, and all but one killed or removed. The one that stays is
+`PassphraseCryptor`'s wipe of the derived key bytes, which `SecretKeySpec` makes unobservable by
+copying what it is given. Four of the 35 needed no test at all - they pointed at code that decided
+the same thing twice, wiped an array something else already wipes, or guarded a range the guard
+below it already covered - which is the more useful half of what a mutation run reports. What is
+left after all six rounds is the floor, not something left undone.
 
 **What these numbers do not tell you.** The two uncovered lines in `mystic-crypt` are
 `MysticCryptCli.main`, which is `System.exit(execute(args))`: no in-process test can execute it

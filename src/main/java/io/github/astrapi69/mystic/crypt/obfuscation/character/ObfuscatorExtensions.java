@@ -67,71 +67,57 @@ public final class ObfuscatorExtensions
 	{
 		Objects.requireNonNull(rules);
 		Objects.requireNonNull(obfuscated);
-		boolean processed;
-		char currentChar;
-		boolean upperCase;
-		boolean lowerCase;
-		Character currentCharacter;
-		final StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder(obfuscated.length());
 		for (int i = 0; i < obfuscated.length(); i++)
 		{
-			processed = false;
-			currentChar = obfuscated.charAt(i);
-			upperCase = Character.isUpperCase(currentChar);
-			lowerCase = Character.isLowerCase(currentChar);
-			currentCharacter = currentChar;
-
-			for (final Entry<Character, ObfuscationOperationRule<Character, Character>> entry : rules
-				.entrySet())
-			{
-				ObfuscationOperationRule<Character, Character> obfuscationOperationRule = entry
-					.getValue();
-				Set<Integer> indexes = obfuscationOperationRule.getIndexes();
-				Operation operation = obfuscationOperationRule.getOperation();
-				if (operation != null)
-				{
-					obfuscationOperationRule.setOperatedCharacter(
-						Optional.of(Operation.operate(currentCharacter, operation)));
-				}
-				Character character = obfuscationOperationRule.getCharacter();
-				Character replaceWith = obfuscationOperationRule.getReplaceWith();
-				if (!indexes.isEmpty() && indexes.contains(i) && operation != null)
-				{
-					Character operatedCharacter = Operation.operate(character, operation);
-					if (currentCharacter.equals(operatedCharacter))
-					{
-						if ((operation.equals(Operation.UPPERCASE) && upperCase)
-							|| (operation.equals(Operation.LOWERCASE) && lowerCase))
-						{
-							sb.append(Operation.operate(currentChar, operation, true));
-						}
-						else
-						{
-							sb.append(Operation.operate(currentChar, operation, false));
-						}
-						processed = true;
-						continue;
-					}
-					if (currentCharacter.equals(replaceWith))
-					{
-						sb.append(character);
-						processed = true;
-						continue;
-					}
-				}
-				if (currentCharacter.equals(replaceWith) && rules.containsKey(replaceWith))
-				{
-					sb.append(character);
-					processed = true;
-					continue;
-				}
-			}
-			if (!processed && !rules.containsKey(currentCharacter))
-			{
-				sb.append(currentChar);
-			}
+			sb.append(originalOf(rules, obfuscated.charAt(i), i));
 		}
 		return sb.toString();
+	}
+
+	/**
+	 * Reverses one character of an obfuscated text.
+	 * <p>
+	 * Reversing is completely determined by what {@link #obfuscateWith} does: at a position a rule
+	 * operates at, the operated character stands for that rule's character; everywhere else the
+	 * replacement does; and a character no rule ever produced stands for itself.
+	 * <p>
+	 * The operated positions are looked at before the plain replacements, because a replacement
+	 * that happens to equal some rule's operated character would otherwise win at a position where
+	 * the operation applies.
+	 *
+	 * @param rules
+	 *            the rules the text was obfuscated with
+	 * @param obfuscated
+	 *            the character to reverse
+	 * @param position
+	 *            its position in the text
+	 * @return the original character
+	 */
+	private static char originalOf(
+		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
+		final char obfuscated, final int position)
+	{
+		for (final ObfuscationOperationRule<Character, Character> rule : rules.values())
+		{
+			final Operation operation = rule.getOperation();
+			if (operation != null && rule.getIndexes().contains(position)
+				&& Operation.operate(rule.getCharacter(), operation) == obfuscated)
+			{
+				return rule.getCharacter();
+			}
+		}
+		for (final ObfuscationOperationRule<Character, Character> rule : rules.values())
+		{
+			if (rule.getReplaceWith() == obfuscated)
+			{
+				return rule.getCharacter();
+			}
+		}
+		// a character that no rule produced was never obfuscated, so it stands for itself. The old
+		// code appended it only when it was not itself a rule key, which dropped such a character
+		// from the output entirely (issue #95).
+		return obfuscated;
 	}
 
 	/**
@@ -177,6 +163,7 @@ public final class ObfuscatorExtensions
 	 *            the obfuscated text
 	 * @return the disentangled string
 	 */
+	@Deprecated
 	public static String disentangleImproved(
 		final BiMap<Character, ObfuscationOperationRule<Character, Character>> rules,
 		final String obfuscated)

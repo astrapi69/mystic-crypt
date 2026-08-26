@@ -26,6 +26,7 @@ package io.github.astrapi69.mystic.crypt.cli;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -252,6 +253,31 @@ class ShareCommandTest extends AbstractCliTest
 			"-o", tempDir.getPath());
 
 		assertEquals(2, exitCode, "stderr was: '" + err + "'");
+		assertFalse(err.isBlank(), "a failed write has to be explained, not only counted");
+	}
+
+	@Test
+	void combiningIntoAFileConfirmsWhereTheSecretWent(@TempDir File tempDir) throws IOException
+	{
+		List<String> lines = splitLines(2, 2);
+		File recovered = new File(tempDir, "secret.bin");
+
+		assertEquals(0, run("share", "combine", "--share", lines.get(0), "--share", lines.get(1),
+			"-o", recovered.getPath()), "stderr was: '" + err + "'");
+
+		assertTrue(out.contains("wrote the reconstructed secret to " + recovered.getPath()),
+			"stdout was: '" + out + "'");
+		assertEquals(SECRET, Files.readString(recovered.toPath()));
+	}
+
+	@Test
+	void combiningWithoutAFilePrintsTheSecretItself()
+	{
+		List<String> lines = splitLines(2, 2);
+
+		assertEquals(0, run("share", "combine", "--share", lines.get(0), "--share", lines.get(1)));
+
+		assertEquals(SECRET, out.trim(), "without -o the secret itself is the output");
 	}
 
 	@Test
