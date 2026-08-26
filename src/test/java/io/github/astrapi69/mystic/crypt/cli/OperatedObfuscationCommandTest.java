@@ -31,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 /**
@@ -153,12 +154,42 @@ class OperatedObfuscationCommandTest extends AbstractCliTest
 	 * rule that starts with the operation separator has no replacement, and one that starts with
 	 * the position separator has no operation name.
 	 */
-	@ParameterizedTest
-	@ValueSource(strings = { "a=:UPPERCASE", "a=x:@0", "a=x:UPPERCASE@" })
-	void aSeparatorWithNothingBeforeItIsRefused(String rule)
+	/**
+	 * One malformed rule and the words its message has to contain.
+	 *
+	 * @param rule
+	 *            the rule as it would be typed
+	 * @param expectedWords
+	 *            what the message must name
+	 */
+	record MalformedRuleCase(String rule, String expectedWords) {
+	}
+
+	static java.util.stream.Stream<MalformedRuleCase> malformedRuleCases()
 	{
-		assertEquals(2, run("obfuscate", "--text", "abc", "--rule", rule),
-			"'" + rule + "' must be refused, stderr was: '" + err + "'");
+		return java.util.stream.Stream.of(
+			new MalformedRuleCase("a=:UPPERCASE", "the replacement was ''"),
+			new MalformedRuleCase("a=x:@0", "'' is not an operation"),
+			new MalformedRuleCase("a=x:UPPERCASE@", "but one was ''"));
+	}
+
+	/**
+	 * The two separators are located by position, so the degenerate placements are pinned by the
+	 * part they leave empty: which part is missing is what tells the reader where the separator
+	 * went wrong, and a message that only says "refused" would be the same for all three.
+	 *
+	 * @param testCase
+	 *            the malformed rule and the words its message must contain
+	 */
+	@ParameterizedTest
+	@MethodSource("malformedRuleCases")
+	void aSeparatorWithNothingBeforeItIsRefusedByWhatIsMissing(MalformedRuleCase testCase)
+	{
+		assertEquals(2, run("obfuscate", "--text", "abc", "--rule", testCase.rule()),
+			"'" + testCase.rule() + "' must be refused, stderr was: '" + err + "'");
+
+		assertTrue(err.contains(testCase.expectedWords()), "for '" + testCase.rule()
+			+ "' the message must name the empty part, but was: '" + err + "'");
 	}
 
 	/**

@@ -26,6 +26,7 @@ package io.github.astrapi69.mystic.crypt.cli;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -435,6 +436,13 @@ class ConvertCommandTest extends AbstractCliTest
 		assertArrayEquals(Files.readAllBytes(fromPem.toPath()),
 			Files.readAllBytes(fromDer.toPath()),
 			"the DER of a certificate must not depend on how it was handed in");
+
+		// and it has to be DER rather than the armoured text handed straight through: a DER
+		// certificate begins with an ASN.1 SEQUENCE and carries no BEGIN line
+		byte[] der = Files.readAllBytes(fromPem.toPath());
+		assertEquals(0x30, der[0] & 0xff, "DER starts with a SEQUENCE tag");
+		assertFalse(new String(der, StandardCharsets.UTF_8).contains("BEGIN CERTIFICATE"),
+			"the PEM armour must be gone, not passed through");
 	}
 
 	/**
