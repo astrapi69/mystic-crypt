@@ -30,6 +30,7 @@ import java.security.PublicKey;
 import java.util.concurrent.Callable;
 
 import io.github.astrapi69.crypt.data.key.reader.PublicKeyReader;
+import io.github.astrapi69.mystic.crypt.key.KeyFileReader;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
@@ -58,12 +59,13 @@ public class VerifySignatureCommand implements Callable<Integer>
 	}
 
 	@Option(names = { "-a", "--algorithm" }, required = true, //
-		description = "Signature algorithm: Ed25519, ML-DSA-44, ML-DSA-65, ML-DSA-87 or an "
-			+ "SLH-DSA parameter set such as SLH-DSA-SHA2-128S (dashes or underscores accepted).")
+		description = "Signature algorithm: RSA, EC (or ECDSA), DSA, Ed25519, ML-DSA-44, ML-DSA-65, "
+			+ "ML-DSA-87, an SLH-DSA parameter set such as SLH-DSA-SHA2-128S, or a JCA name such "
+			+ "as SHA512withRSA (dashes or underscores accepted).")
 	String algorithm;
 
 	@Option(names = "--key", required = true, //
-		description = "The PEM file with the public key.")
+		description = "The file with the public key, PEM or DER.")
 	File key;
 
 	@Option(names = "--in", required = true, //
@@ -83,16 +85,7 @@ public class VerifySignatureCommand implements Callable<Integer>
 			String keyFactoryAlgorithm = SignatureSupport.keyFactoryAlgorithm(algorithm);
 			byte[] data = CliSupport.readData(in);
 			byte[] signatureBytes = Files.readAllBytes(signature.toPath());
-			PublicKey publicKey;
-			try
-			{
-				publicKey = PublicKeyReader.readPemPublicKey(key, keyFactoryAlgorithm);
-			}
-			catch (Exception exception)
-			{
-				throw new IllegalArgumentException("could not read a " + keyFactoryAlgorithm
-					+ " public key from '" + key + "': " + exception, exception);
-			}
+			PublicKey publicKey = readPublicKey(keyFactoryAlgorithm);
 			valid = SignatureSupport.verify(algorithm, publicKey, data, signatureBytes);
 		}
 		catch (Exception exception)
@@ -104,5 +97,30 @@ public class VerifySignatureCommand implements Callable<Integer>
 		}
 		System.out.println(valid ? "signature is valid" : "signature is invalid");
 		return valid ? 0 : 1;
+	}
+
+	/**
+	 * Reads the verification key, accepting PEM and DER alike, through the same provider that will
+	 * verify with it for the classical families.
+	 *
+	 * @param keyFactoryAlgorithm
+	 *            the key algorithm the signature algorithm implies
+	 * @return the public key
+	 */
+	private PublicKey readPublicKey(String keyFactoryAlgorithm)
+	{
+		try
+		{
+			if (SignatureSupport.isClassical(algorithm))
+			{
+				return KeyFileReader.readPublicKey(key, keyFactoryAlgorithm);
+			}
+			return PublicKeyReader.readPemPublicKey(key, keyFactoryAlgorithm);
+		}
+		catch (Exception exception)
+		{
+			throw new IllegalArgumentException("could not read a " + keyFactoryAlgorithm
+				+ " public key from '" + key + "': " + exception, exception);
+		}
 	}
 }

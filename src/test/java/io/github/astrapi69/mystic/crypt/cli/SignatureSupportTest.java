@@ -76,10 +76,13 @@ class SignatureSupportTest
 		assertEquals(expected, SignatureSupport.keyFactoryAlgorithm(input));
 	}
 
-	/** Algorithms that exist but cannot sign are rejected with a clear message. */
+	/**
+	 * Algorithms that exist but cannot sign are rejected with a clear message. RSA, EC and DSA used
+	 * to be on this list and no longer are: they sign, through Bouncy Castle. What is left here are
+	 * the key-exchange algorithms, which have no signature operation at all.
+	 */
 	@ParameterizedTest
-	@ValueSource(strings = { "RSA", "EC", "DSA", "X25519", "X448", "ML-KEM-512", "ML-KEM-768",
-			"ML-KEM-1024" })
+	@ValueSource(strings = { "X25519", "X448", "ML-KEM-512", "ML-KEM-768", "ML-KEM-1024" })
 	void nonSignatureAlgorithmsAreRejected(String name)
 	{
 		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
@@ -87,6 +90,25 @@ class SignatureSupportTest
 		assertTrue(exception.getMessage().contains("is not a supported signature algorithm"),
 			"the message must say why '" + name + "' is rejected, but was: '"
 				+ exception.getMessage() + "'");
+	}
+
+	/**
+	 * A JCA-style name of a family this tool has no signer for is not a classical algorithm, so it
+	 * falls through to the post-quantum parser and is rejected there rather than being attempted.
+	 */
+	@ParameterizedTest
+	@ValueSource(strings = { "SHA256withFOO", "nothing at all", "with" })
+	void aWithNameOfAnUnknownFamilyIsNotClassical(String algorithm)
+	{
+		assertFalse(SignatureSupport.isClassical(algorithm));
+	}
+
+	@ParameterizedTest
+	@ValueSource(strings = { "RSA", "ec", "ECDSA", "DSA", "SHA512withRSA", "SHA256withECDSA" })
+	void theClassicalFamiliesAreRecognisedByEitherName(String algorithm)
+	{
+		assertTrue(SignatureSupport.isClassical(algorithm),
+			algorithm + " must be recognised as a classical signature algorithm");
 	}
 
 	@Test

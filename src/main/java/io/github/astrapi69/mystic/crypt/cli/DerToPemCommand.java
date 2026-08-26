@@ -36,7 +36,8 @@ import picocli.CommandLine.Option;
  * Converts a DER-encoded private key to PEM, printing it or writing it to a file.
  */
 @Command(name = "der2pem", mixinStandardHelpOptions = true, //
-	description = "Convert a DER-encoded private key to PEM.")
+	description = "Deprecated: use 'convert' instead, which detects what the file is and "
+		+ "converts in both directions. Convert a DER-encoded private key to PEM.")
 public class DerToPemCommand implements Callable<Integer>
 {
 

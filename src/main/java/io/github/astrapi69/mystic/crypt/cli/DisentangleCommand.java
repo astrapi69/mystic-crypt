@@ -27,8 +27,6 @@ package io.github.astrapi69.mystic.crypt.cli;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-import com.google.common.collect.HashBiMap;
-
 import io.github.astrapi69.mystic.crypt.obfuscation.simple.SimpleObfuscatorExtensions;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -54,7 +52,7 @@ public class DisentangleCommand implements Callable<Integer>
 	}
 
 	@Option(names = "--rule", required = true, description = "A character substitution a=x (repeatable).")
-	Map<Character, Character> rules;
+	Map<Character, String> rules;
 
 	@Option(names = "--text", description = "The obfuscated text. Prefer --text-stdin for larger input.")
 	String text;
@@ -66,8 +64,10 @@ public class DisentangleCommand implements Callable<Integer>
 	public Integer call()
 	{
 		String input = CliSupport.resolveText(text, textStdin);
-		System.out
-			.println(SimpleObfuscatorExtensions.disentangleBiMap(HashBiMap.create(rules), input));
+		ObfuscationRuleSupport.Rules parsed = ObfuscationRuleSupport.parse(rules);
+		System.out.println(parsed.isOperated()
+			? ObfuscationRuleSupport.disentangleOperated(parsed.operated(), input)
+			: SimpleObfuscatorExtensions.disentangleBiMap(parsed.simple(), input));
 		return 0;
 	}
 }

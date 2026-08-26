@@ -27,16 +27,19 @@ package io.github.astrapi69.mystic.crypt.cli;
 import java.util.concurrent.Callable;
 
 import io.github.astrapi69.mystic.crypt.pw.PasswordEncryptor;
+import io.github.astrapi69.mystic.crypt.pw.PasswordHashFormat;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
 /**
- * Verifies a password against an encoded Argon2id/PBKDF2 hash. Exit code 0 means the password
- * matches, 1 means it does not.
+ * Verifies a password against an encoded hash, reading from the hash which algorithm produced it.
+ * Exit code 0 means the password matches, 1 means it does not, and 2 means the hash belongs to no
+ * algorithm this tool knows.
  */
 @Command(name = "verify", mixinStandardHelpOptions = true, //
-	description = "Verify a password against an encoded Argon2id/PBKDF2 hash. "
-		+ "Exit code 0 = matches, 1 = does not match.")
+	description = "Verify a password against an encoded hash. The algorithm is read from "
+		+ "the hash itself. Exit code 0 = matches, 1 = does not match, 2 = the hash is not of a "
+		+ "known algorithm.")
 public class VerifyCommand implements Callable<Integer>
 {
 
@@ -51,11 +54,8 @@ public class VerifyCommand implements Callable<Integer>
 	{
 	}
 
-	@Option(names = { "-a",
-			"--algorithm" }, defaultValue = "argon2id", description = "Hashing algorithm: ${COMPLETION-CANDIDATES} (default: argon2id).")
-	PasswordAlgorithm algorithm;
-
-	@Option(names = "--hash", required = true, description = "The encoded hash to verify against.")
+	@Option(names = "--hash", required = true, description = "The encoded hash to verify against. "
+		+ "Which algorithm produced it is read from the hash itself.")
 	String hash;
 
 	@Option(names = "--password", description = "The password to verify. Prefer --password-stdin.")
@@ -67,12 +67,20 @@ public class VerifyCommand implements Callable<Integer>
 	@Override
 	public Integer call()
 	{
-		String plainPassword = CliSupport.resolvePassword(password, passwordStdin);
-		PasswordEncryptor passwordEncryptor = PasswordEncryptor.getInstance();
-		boolean matches = algorithm == PasswordAlgorithm.pbkdf2
-			? passwordEncryptor.matchPbkdf2(plainPassword, hash)
-			: passwordEncryptor.matchArgon2id(plainPassword, hash);
-		System.out.println(matches ? "matches" : "does not match");
-		return matches ? 0 : 1;
+		try
+		{
+			String plainPassword = CliSupport.resolvePassword(password, passwordStdin);
+			PasswordHashFormat format = PasswordHashFormat.of(hash);
+			boolean matches = PasswordEncryptor.getInstance().matchEncodedHash(plainPassword, hash);
+			System.out.println((matches ? "matches" : "does not match") + " (" + format + ")");
+			return matches ? 0 : 1;
+		}
+		catch (Exception exception)
+		{
+			// an encoding that belongs to no known algorithm is not "the password does not match";
+			// answering 1 there would send the reader after the password instead of after the hash
+			System.err.println(CliSupport.error(exception.getMessage()));
+			return 2;
+		}
 	}
 }

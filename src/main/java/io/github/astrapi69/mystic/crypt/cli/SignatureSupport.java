@@ -26,6 +26,11 @@ package io.github.astrapi69.mystic.crypt.cli;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.Signature;
+import java.util.Locale;
+import java.util.Map;
+
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import io.github.astrapi69.crypt.api.algorithm.key.KeyPairGeneratorAlgorithm;
 import io.github.astrapi69.mystic.crypt.key.Ed25519Signer;
@@ -34,6 +39,7 @@ import io.github.astrapi69.mystic.crypt.key.MlDsaSigner;
 import io.github.astrapi69.mystic.crypt.key.MlDsaVerifier;
 import io.github.astrapi69.mystic.crypt.key.SlhDsaSigner;
 import io.github.astrapi69.mystic.crypt.key.SlhDsaVerifier;
+import io.github.astrapi69.mystic.crypt.provider.SecurityProviderSupport;
 
 /**
  * One entry point for the three signature families the library provides: the classical Ed25519 and
@@ -48,8 +54,61 @@ final class SignatureSupport
 	/** the name under which the Ed25519 signature family is offered */
 	static final String ED25519 = "Ed25519";
 
+	/**
+	 * The classical families, mapped from the name a user gives to the JCA signature algorithm and
+	 * the key factory algorithm that decodes their keys. {@code ECDSA} and {@code EC} name the same
+	 * thing - a private key file reports one and a certificate the other - so both are accepted.
+	 */
+	private static final Map<String, Classical> CLASSICAL = Map.of(//
+		"RSA", new Classical("SHA256withRSA", "RSA"), //
+		"EC", new Classical("SHA256withECDSA", "EC"), //
+		"ECDSA", new Classical("SHA256withECDSA", "EC"), //
+		"DSA", new Classical("SHA256withDSA", "DSA"));
+
+	/**
+	 * One classical signature family.
+	 *
+	 * @param signatureAlgorithm
+	 *            the JCA signature algorithm used when the user names only the key algorithm
+	 * @param keyAlgorithm
+	 *            the key factory algorithm that decodes keys of this family
+	 */
+	private record Classical(String signatureAlgorithm, String keyAlgorithm) {
+	}
+
 	private SignatureSupport()
 	{
+	}
+
+	/**
+	 * Whether the given name selects one of the classical families, either by naming the key
+	 * algorithm ({@code RSA}, {@code EC}, {@code ECDSA}, {@code DSA}) or by naming a JCA signature
+	 * algorithm of one of them outright ({@code SHA512withRSA}).
+	 *
+	 * @param algorithm
+	 *            the name the user gave
+	 * @return true if this is a classical signature algorithm
+	 */
+	static boolean isClassical(String algorithm)
+	{
+		return classicalOf(algorithm) != null;
+	}
+
+	private static Classical classicalOf(String algorithm)
+	{
+		final String normalized = algorithm.trim().toUpperCase(Locale.ROOT);
+		final Classical named = CLASSICAL.get(normalized);
+		if (named != null)
+		{
+			return named;
+		}
+		final int with = normalized.indexOf("WITH");
+		if (with < 0)
+		{
+			return null;
+		}
+		final Classical family = CLASSICAL.get(normalized.substring(with + "WITH".length()));
+		return family == null ? null : new Classical(algorithm.trim(), family.keyAlgorithm());
 	}
 
 	/** Whether the given algorithm name selects the Ed25519 family. */
@@ -74,6 +133,11 @@ final class SignatureSupport
 		{
 			return ED25519;
 		}
+		Classical classical = classicalOf(algorithm);
+		if (classical != null)
+		{
+			return classical.keyAlgorithm();
+		}
 		return parse(algorithm).getAlgorithm();
 	}
 
@@ -95,6 +159,14 @@ final class SignatureSupport
 		if (isEd25519(algorithm))
 		{
 			return new Ed25519Signer(privateKey).sign(data);
+		}
+		Classical classical = classicalOf(algorithm);
+		if (classical != null)
+		{
+			Signature signer = newClassicalSignature(classical);
+			signer.initSign(privateKey);
+			signer.update(data);
+			return signer.sign();
 		}
 		KeyPairGeneratorAlgorithm parsed = parse(algorithm);
 		return parsed.name().startsWith("ML_DSA")
@@ -124,6 +196,14 @@ final class SignatureSupport
 		{
 			return new Ed25519Verifier(publicKey).verify(data, signature);
 		}
+		Classical classical = classicalOf(algorithm);
+		if (classical != null)
+		{
+			Signature verifier = newClassicalSignature(classical);
+			verifier.initVerify(publicKey);
+			verifier.update(data);
+			return verifier.verify(signature);
+		}
 		KeyPairGeneratorAlgorithm parsed = parse(algorithm);
 		return parsed.name().startsWith("ML_DSA")
 			? new MlDsaVerifier(publicKey, parsed).verify(data, signature)
@@ -135,14 +215,31 @@ final class SignatureSupport
 	 * algorithms that cannot sign at all - is rejected with a clear message. Ed25519 never reaches
 	 * this method because its callers branch on {@link #isEd25519(String)} first.
 	 */
+	/**
+	 * Builds the signature object for a classical family, naming Bouncy Castle explicitly.
+	 * <p>
+	 * The provider is not incidental. An elliptic-curve key on a named curve, as Bouncy Castle
+	 * generates them, is rejected by the JDK's own SunEC provider when it signs ("Curve not
+	 * supported"), and verification with such a key returns false rather than throwing - a valid
+	 * signature then reads as an invalid one with nothing saying why. Signing, verifying and
+	 * decoding all go through the same provider so that mismatch cannot arise.
+	 */
+	private static Signature newClassicalSignature(Classical classical) throws Exception
+	{
+		SecurityProviderSupport.ensureBouncyCastle();
+		return Signature.getInstance(classical.signatureAlgorithm(),
+			BouncyCastleProvider.PROVIDER_NAME);
+	}
+
 	private static KeyPairGeneratorAlgorithm parse(String algorithm)
 	{
 		KeyPairGeneratorAlgorithm parsed = CliSupport.parseKeyPairAlgorithm(algorithm);
 		if (!parsed.name().startsWith("ML_DSA") && !parsed.name().startsWith("SLH_DSA"))
 		{
 			throw new IllegalArgumentException("'" + algorithm
-				+ "' is not a supported signature algorithm. Use Ed25519, ML-DSA-44, ML-DSA-65, "
-				+ "ML-DSA-87 or an SLH-DSA parameter set such as SLH-DSA-SHA2-128S.");
+				+ "' is not a supported signature algorithm. Use RSA, EC (or ECDSA), DSA, Ed25519, "
+				+ "ML-DSA-44, ML-DSA-65, ML-DSA-87, an SLH-DSA parameter set such as "
+				+ "SLH-DSA-SHA2-128S, or a JCA name such as SHA512withRSA.");
 		}
 		return parsed;
 	}

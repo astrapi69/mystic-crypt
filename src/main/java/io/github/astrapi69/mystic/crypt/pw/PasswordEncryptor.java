@@ -41,6 +41,7 @@ import javax.crypto.NoSuchPaddingException;
 
 import io.github.astrapi69.crypt.api.algorithm.HashAlgorithm;
 import io.github.astrapi69.crypt.data.hash.HashExtensions;
+import io.github.astrapi69.mystic.crypt.sha.BcryptHasher;
 import io.github.astrapi69.mystic.crypt.sha.Hasher;
 import io.github.astrapi69.random.object.RandomObjectFactory;
 import io.github.astrapi69.random.object.RandomWebObjectFactory;
@@ -278,6 +279,96 @@ public class PasswordEncryptor implements Serializable
 	public boolean matchPbkdf2(final String password, final String encodedHash)
 	{
 		return Pbkdf2Support.verify(password.toCharArray(), encodedHash);
+	}
+
+	/**
+	 * Hashes the given password with bcrypt. The salt and cost travel inside the returned
+	 * {@code $2a$} string, so {@link #matchBcrypt(String, String)} needs only the password and this
+	 * string.
+	 * <p>
+	 * Prefer {@link #hashPasswordArgon2id(String)} for new code: bcrypt is not memory-hard in the
+	 * way Argon2id is, and it silently truncates passwords beyond 72 bytes. This exists for interop
+	 * with systems that already store bcrypt hashes.
+	 *
+	 * @param password
+	 *            the password
+	 * @return the encoded bcrypt hash
+	 */
+	public String hashPasswordBcrypt(final String password)
+	{
+		return BcryptHasher.hash(password.toCharArray());
+	}
+
+	/**
+	 * Verifies the given password against a hash previously produced by
+	 * {@link #hashPasswordBcrypt(String)}.
+	 *
+	 * @param password
+	 *            the password to check
+	 * @param encodedHash
+	 *            the encoded bcrypt hash to check against
+	 * @return true if the password matches
+	 */
+	public boolean matchBcrypt(final String password, final String encodedHash)
+	{
+		return BcryptHasher.verify(password.toCharArray(), encodedHash);
+	}
+
+	/**
+	 * Hashes the given password with scrypt. A fresh random salt is generated per call; the salt
+	 * and the three cost parameters are encoded together with the hash in the returned string, so
+	 * {@link #matchScrypt(String, String)} needs only the password and this string.
+	 *
+	 * @param password
+	 *            the password
+	 * @return the encoded scrypt hash
+	 */
+	public String hashPasswordScrypt(final String password)
+	{
+		return ScryptSupport.hash(password.toCharArray());
+	}
+
+	/**
+	 * Verifies the given password against a hash previously produced by
+	 * {@link #hashPasswordScrypt(String)}.
+	 *
+	 * @param password
+	 *            the password to check
+	 * @param encodedHash
+	 *            the encoded scrypt hash to check against
+	 * @return true if the password matches
+	 */
+	public boolean matchScrypt(final String password, final String encodedHash)
+	{
+		return ScryptSupport.verify(password.toCharArray(), encodedHash);
+	}
+
+	/**
+	 * Verifies the given password against an encoded hash of any algorithm this class produces,
+	 * reading which one it is from the hash itself.
+	 * <p>
+	 * A stored hash already says how it was made, so asking the caller to name the algorithm again
+	 * only creates a way to get it wrong: naming the wrong one turns "this is a bcrypt hash" into
+	 * "the password does not match", which sends the reader after the password instead of after the
+	 * mismatch.
+	 *
+	 * @param password
+	 *            the password to check
+	 * @param encodedHash
+	 *            the encoded hash, of any supported algorithm
+	 * @return true if the password matches
+	 * @throws IllegalArgumentException
+	 *             if the encoding belongs to no algorithm this class knows
+	 */
+	public boolean matchEncodedHash(final String password, final String encodedHash)
+	{
+		return switch (PasswordHashFormat.of(encodedHash))
+		{
+			case ARGON2ID -> matchArgon2id(password, encodedHash);
+			case PBKDF2 -> matchPbkdf2(password, encodedHash);
+			case BCRYPT -> matchBcrypt(password, encodedHash);
+			case SCRYPT -> matchScrypt(password, encodedHash);
+		};
 	}
 
 }

@@ -177,9 +177,38 @@ final class Pbkdf2Support
 	static byte[] rawHash(final char[] password, final byte[] salt, final int iterations,
 		final String algorithm)
 	{
+		return derive(password, salt, iterations, HASH_LENGTH_BITS, algorithm);
+	}
+
+	/**
+	 * Derives a key of the given length from the given password with the fixed
+	 * {@code PBKDF2WithHmacSHA256} algorithm. Unlike {@link #hash(char[])} and
+	 * {@link #verify(char[], String)} this does not zero the password: it is a building block for
+	 * callers such as {@link PassphraseCryptor} that own the array and clear it themselves once
+	 * they are done with it.
+	 *
+	 * @param password
+	 *            the password to derive from, left untouched
+	 * @param salt
+	 *            the salt
+	 * @param iterations
+	 *            the iteration count
+	 * @param keyLengthBits
+	 *            the length of the derived key in bits
+	 * @return the derived key
+	 */
+	static byte[] deriveKey(final char[] password, final byte[] salt, final int iterations,
+		final int keyLengthBits)
+	{
+		return derive(password, salt, iterations, keyLengthBits, ALGORITHM);
+	}
+
+	private static byte[] derive(final char[] password, final byte[] salt, final int iterations,
+		final int keyLengthBits, final String algorithm)
+	{
 		try
 		{
-			final PBEKeySpec spec = new PBEKeySpec(password, salt, iterations, HASH_LENGTH_BITS);
+			final PBEKeySpec spec = new PBEKeySpec(password, salt, iterations, keyLengthBits);
 			final SecretKeyFactory factory = SecretKeyFactory.getInstance(algorithm);
 			return factory.generateSecret(spec).getEncoded();
 		}

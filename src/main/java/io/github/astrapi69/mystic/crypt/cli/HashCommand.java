@@ -64,9 +64,13 @@ public class HashCommand implements Callable<Integer>
 	{
 		String plainPassword = CliSupport.resolvePassword(password, passwordStdin);
 		PasswordEncryptor passwordEncryptor = PasswordEncryptor.getInstance();
-		String encodedHash = algorithm == PasswordAlgorithm.pbkdf2
-			? passwordEncryptor.hashPasswordPbkdf2(plainPassword)
-			: passwordEncryptor.hashPasswordArgon2id(plainPassword);
+		String encodedHash = switch (algorithm)
+		{
+			case pbkdf2 -> passwordEncryptor.hashPasswordPbkdf2(plainPassword);
+			case bcrypt -> passwordEncryptor.hashPasswordBcrypt(plainPassword);
+			case scrypt -> passwordEncryptor.hashPasswordScrypt(plainPassword);
+			case argon2id -> passwordEncryptor.hashPasswordArgon2id(plainPassword);
+		};
 		System.out.println(encodedHash);
 		return 0;
 	}

@@ -25,12 +25,19 @@
 package io.github.astrapi69.mystic.crypt.cli;
 
 /**
- * The password hashing algorithms the {@code hash} and {@code verify} subcommands support.
+ * The password hashing algorithms the {@code hash} subcommand supports.
+ * <p>
+ * {@code verify} deliberately has no such option: every one of these writes what it is into the
+ * encoded hash, so the algorithm is read from the hash rather than named again.
  */
 public enum PasswordAlgorithm
 {
 	/** Argon2id (memory-hard, the recommended default). */
 	argon2id,
 	/** PBKDF2. */
-	pbkdf2
+	pbkdf2,
+	/** bcrypt. */
+	bcrypt,
+	/** scrypt. */
+	scrypt
 }

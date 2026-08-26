@@ -25,10 +25,15 @@
 package io.github.astrapi69.mystic.crypt.cli;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.Callable;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -44,7 +49,9 @@ import picocli.CommandLine.Parameters;
  * offer the non-cryptographic digests (CRC32, Adler32).
  */
 @Command(name = "checksum", mixinStandardHelpOptions = true, //
-	description = "Compute the checksum (message digest) of a file.")
+	description = "Compute the checksum of a file: a plain digest, which answers whether the "
+		+ "file changed, or with --hmac a keyed MAC, which answers whether it changed at the "
+		+ "hands of someone without the key.")
 public class ChecksumCommand implements Callable<Integer>
 {
 
@@ -59,10 +66,27 @@ public class ChecksumCommand implements Callable<Integer>
 	{
 	}
 
-	@Option(names = { "-a", "--algorithm" }, defaultValue = "SHA-256", //
+	/** The digest used when none is named. */
+	private static final String DEFAULT_DIGEST_ALGORITHM = "SHA-256";
+
+	/** The MAC used when --hmac is given without naming one. */
+	private static final String DEFAULT_MAC_ALGORITHM = "HmacSHA256";
+
+	@Option(names = { "-a", "--algorithm" }, //
 		description = "Digest algorithm (a JDK name), e.g. MD5, SHA-1, SHA-256, SHA-512 "
-			+ "(default: SHA-256).")
+			+ "(default: SHA-256). With --hmac a MAC name such as HmacSHA256 (default: HmacSHA256).")
 	String algorithm;
+
+	@Option(names = "--hmac", description = "Compute a keyed MAC instead of a plain digest, which "
+		+ "answers whether the file was changed by someone who does not hold the key.")
+	boolean hmac;
+
+	@Option(names = "--key", description = "The MAC key. Prefer --key-stdin to keep it out of the "
+		+ "process arguments.")
+	String key;
+
+	@Option(names = "--key-stdin", description = "Read the MAC key from the first line of standard input.")
+	boolean keyStdin;
 
 	@Parameters(index = "0", paramLabel = "FILE", description = "The file to checksum.")
 	File file;
@@ -70,18 +94,74 @@ public class ChecksumCommand implements Callable<Integer>
 	@Override
 	public Integer call() throws Exception
 	{
-		MessageDigest messageDigest;
 		try
 		{
-			messageDigest = MessageDigest.getInstance(algorithm);
+			byte[] content = Files.readAllBytes(file.toPath());
+			if (hmac)
+			{
+				String macAlgorithm = algorithm == null ? DEFAULT_MAC_ALGORITHM : algorithm;
+				byte[] mac = keyedDigest(content, macAlgorithm);
+				print(mac, macAlgorithm + " keyed digest");
+				return 0;
+			}
+			String digestAlgorithm = algorithm == null ? DEFAULT_DIGEST_ALGORITHM : algorithm;
+			print(plainDigest(content, digestAlgorithm), digestAlgorithm + " digest");
+			return 0;
 		}
-		catch (NoSuchAlgorithmException exception)
+		catch (IllegalArgumentException wrongInput)
 		{
-			throw new IllegalArgumentException("unknown digest algorithm '" + algorithm
+			System.err.println(CliSupport.error(wrongInput.getMessage()));
+			return 2;
+		}
+	}
+
+	/**
+	 * Prints the result the way {@code sha256sum} does, the value first so it stays the first
+	 * whitespace-separated field, followed by what question it answers.
+	 *
+	 * @param result
+	 *            the digest or MAC bytes
+	 * @param label
+	 *            what was computed
+	 */
+	private void print(final byte[] result, final String label)
+	{
+		System.out
+			.println(CliSupport.HEX.formatHex(result) + "  " + label + " of " + file.getPath());
+	}
+
+	private static byte[] plainDigest(final byte[] content, final String digestAlgorithm)
+	{
+		try
+		{
+			return MessageDigest.getInstance(digestAlgorithm).digest(content);
+		}
+		catch (NoSuchAlgorithmException unknown)
+		{
+			throw new IllegalArgumentException("unknown digest algorithm '" + digestAlgorithm
 				+ "'. Use a JDK digest name such as MD5, SHA-1, SHA-256 or SHA-512.");
 		}
-		byte[] digest = messageDigest.digest(Files.readAllBytes(file.toPath()));
-		System.out.println(CliSupport.HEX.formatHex(digest));
-		return 0;
+	}
+
+	private byte[] keyedDigest(final byte[] content, final String macAlgorithm)
+	{
+		String macKey = CliSupport.resolvePassword(key, keyStdin);
+		try
+		{
+			Mac mac = Mac.getInstance(macAlgorithm);
+			mac.init(new SecretKeySpec(macKey.getBytes(StandardCharsets.UTF_8), macAlgorithm));
+			return mac.doFinal(content);
+		}
+		catch (NoSuchAlgorithmException unknown)
+		{
+			throw new IllegalArgumentException("unknown MAC algorithm '" + macAlgorithm
+				+ "'. Use a JDK MAC name such as HmacSHA256, HmacSHA512 or HmacSHA3-256. A plain "
+				+ "digest name like SHA-256 is not one: drop --hmac to compute that instead.");
+		}
+		catch (InvalidKeyException rejected)
+		{
+			throw new IllegalArgumentException("the MAC key was rejected: " + rejected.getMessage(),
+				rejected);
+		}
 	}
 }
