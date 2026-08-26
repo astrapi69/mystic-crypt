@@ -163,7 +163,7 @@ class SignCommandTest extends AbstractCliTest
 
 	/** Algorithms that exist but cannot sign - and unknown names - are rejected clearly. */
 	@ParameterizedTest
-	@ValueSource(strings = { "RSA", "EC", "X25519", "ML-KEM-768" })
+	@ValueSource(strings = { "X25519", "X448", "ML-KEM-768" })
 	void nonSignatureAlgorithmsAreRejected(String algorithm, @TempDir File tempDir) throws Exception
 	{
 		File dataFile = new File(tempDir, "data.txt");

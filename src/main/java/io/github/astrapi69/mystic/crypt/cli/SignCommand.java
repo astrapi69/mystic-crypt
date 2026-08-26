@@ -30,16 +30,19 @@ import java.security.PrivateKey;
 import java.util.concurrent.Callable;
 
 import io.github.astrapi69.crypt.data.key.reader.PrivateKeyReader;
+import io.github.astrapi69.mystic.crypt.key.KeyFileReader;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
 /**
- * Signs a file (or standard input) with an Ed25519, ML-DSA or SLH-DSA private key read from a PEM
- * file and writes the raw signature bytes to a file. The matching {@code verify-signature}
- * subcommand checks such a signature.
+ * Signs a file (or standard input) with a private key read from a PEM or DER file and writes the
+ * raw signature bytes to a file. RSA, ECDSA and DSA are signed through Bouncy Castle, as are their
+ * keys decoded; Ed25519, ML-DSA and SLH-DSA go through their own signer classes. The matching
+ * {@code verify-signature} subcommand checks such a signature.
  */
 @Command(name = "sign", mixinStandardHelpOptions = true, //
-	description = "Sign a file (or standard input) with an Ed25519, ML-DSA or SLH-DSA private key.")
+	description = "Sign a file (or standard input) with an RSA, ECDSA, DSA, Ed25519, ML-DSA or "
+		+ "SLH-DSA private key, from a PEM or DER file.")
 public class SignCommand implements Callable<Integer>
 {
 
@@ -55,12 +58,13 @@ public class SignCommand implements Callable<Integer>
 	}
 
 	@Option(names = { "-a", "--algorithm" }, required = true, //
-		description = "Signature algorithm: Ed25519, ML-DSA-44, ML-DSA-65, ML-DSA-87 or an "
-			+ "SLH-DSA parameter set such as SLH-DSA-SHA2-128S (dashes or underscores accepted).")
+		description = "Signature algorithm: RSA, EC (or ECDSA), DSA, Ed25519, ML-DSA-44, ML-DSA-65, "
+			+ "ML-DSA-87, an SLH-DSA parameter set such as SLH-DSA-SHA2-128S, or a JCA name such "
+			+ "as SHA512withRSA (dashes or underscores accepted).")
 	String algorithm;
 
 	@Option(names = "--key", required = true, //
-		description = "The PEM file with the private key.")
+		description = "The file with the private key, PEM or DER.")
 	File key;
 
 	@Option(names = "--in", required = true, //
@@ -84,19 +88,38 @@ public class SignCommand implements Callable<Integer>
 		}
 		String keyFactoryAlgorithm = SignatureSupport.keyFactoryAlgorithm(algorithm);
 		byte[] data = CliSupport.readData(in);
-		PrivateKey privateKey;
+		PrivateKey privateKey = readPrivateKey(keyFactoryAlgorithm);
+		byte[] signatureBytes = SignatureSupport.sign(algorithm, privateKey, data);
+		Files.write(signature.toPath(), signatureBytes);
+		System.out.println("wrote signature to " + signature);
+		return 0;
+	}
+
+	/**
+	 * Reads the signing key, accepting PEM and DER alike.
+	 * <p>
+	 * The classical families go through {@link KeyFileReader}, which decodes with the same Bouncy
+	 * Castle provider that signs; the post-quantum and Ed25519 families keep the crypt-data reader
+	 * they already used, whose provider lookup is not in question for them.
+	 *
+	 * @param keyFactoryAlgorithm
+	 *            the key algorithm the signature algorithm implies
+	 * @return the private key
+	 */
+	private PrivateKey readPrivateKey(String keyFactoryAlgorithm)
+	{
 		try
 		{
-			privateKey = PrivateKeyReader.readPemPrivateKey(key, keyFactoryAlgorithm);
+			if (SignatureSupport.isClassical(algorithm))
+			{
+				return KeyFileReader.readPrivateKey(key, keyFactoryAlgorithm);
+			}
+			return PrivateKeyReader.readPemPrivateKey(key, keyFactoryAlgorithm);
 		}
 		catch (Exception exception)
 		{
 			throw new IllegalArgumentException("could not read a " + keyFactoryAlgorithm
 				+ " private key from '" + key + "': " + exception, exception);
 		}
-		byte[] signatureBytes = SignatureSupport.sign(algorithm, privateKey, data);
-		Files.write(signature.toPath(), signatureBytes);
-		System.out.println("wrote signature to " + signature);
-		return 0;
 	}
 }
