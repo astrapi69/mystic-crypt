@@ -57,6 +57,6 @@ jobs:
           auth: ${{ secrets.GIST_TOKEN }}
           gistID: 69b2e93dd826ce43cc3f02433a465ae3
           filename: test-cases.json
-          label: test cases
+          label: Tested Use Cases
           message: ${{ steps.test_count.outputs.total }}
           color: ${{ steps.test_count.outputs.color }}
