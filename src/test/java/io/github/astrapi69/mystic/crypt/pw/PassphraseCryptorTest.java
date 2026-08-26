@@ -194,6 +194,60 @@ class PassphraseCryptorTest
 	}
 
 	@Test
+	void decryptClearsThePassphraseOnBothPaths()
+	{
+		byte[] encrypted = PassphraseCryptor.encrypt(passphrase("right"),
+			"payload".getBytes(StandardCharsets.UTF_8));
+
+		char[] onSuccess = passphrase("right");
+		PassphraseCryptor.decrypt(onSuccess, encrypted);
+		assertArrayEquals(new char[onSuccess.length], onSuccess,
+			"decrypt must zero the passphrase after a successful open");
+
+		char[] onFailure = passphrase("wrong");
+		assertThrows(SecurityException.class,
+			() -> PassphraseCryptor.decrypt(onFailure, encrypted));
+		assertArrayEquals(new char[onFailure.length], onFailure,
+			"and after a failed one, which is when it matters most");
+	}
+
+	/**
+	 * The iteration count can only be read out of this format, and says so when asked otherwise.
+	 */
+	@Test
+	void theIterationCountCannotBeReadFromSomethingThatIsNotThisFormat()
+	{
+		byte[] foreign = "not encrypted by this tool".getBytes(StandardCharsets.UTF_8);
+
+		IllegalArgumentException rejected = assertThrows(IllegalArgumentException.class,
+			() -> PassphraseCryptor.iterationsOf(foreign));
+
+		assertTrue(rejected.getMessage().contains("marker"),
+			"the message was: '" + rejected.getMessage() + "'");
+	}
+
+	/**
+	 * The header length is the boundary between "too short to even look at" and "long enough to
+	 * check", so both sides of it are pinned rather than only one.
+	 */
+	@Test
+	void oneByteShortOfAHeaderIsNotEncryptedAndExactlyAHeaderIsLookedAt()
+	{
+		byte[] oneShort = new byte[PassphraseCryptor.HEADER_LENGTH - 1];
+		System.arraycopy(PassphraseCryptor.MAGIC, 0, oneShort, 0, PassphraseCryptor.MAGIC.length);
+		oneShort[PassphraseCryptor.MAGIC.length] = PassphraseCryptor.FORMAT_VERSION;
+
+		byte[] exactly = new byte[PassphraseCryptor.HEADER_LENGTH];
+		System.arraycopy(PassphraseCryptor.MAGIC, 0, exactly, 0, PassphraseCryptor.MAGIC.length);
+		exactly[PassphraseCryptor.MAGIC.length] = PassphraseCryptor.FORMAT_VERSION;
+
+		assertFalse(PassphraseCryptor.isEncrypted(oneShort),
+			"one byte short of a header cannot carry one");
+		assertTrue(PassphraseCryptor.isEncrypted(exactly),
+			"exactly a header is a header, even with no payload behind it");
+	}
+
+	@Test
 	void thePassphraseArrayIsClearedSoItCannotLingerInMemory()
 	{
 		char[] toEncrypt = passphrase("wipe me");

@@ -255,6 +255,30 @@ class ShareCommandTest extends AbstractCliTest
 	}
 
 	@Test
+	void combiningIntoAFileConfirmsWhereTheSecretWent(@TempDir File tempDir) throws IOException
+	{
+		List<String> lines = splitLines(2, 2);
+		File recovered = new File(tempDir, "secret.bin");
+
+		assertEquals(0, run("share", "combine", "--share", lines.get(0), "--share", lines.get(1),
+			"-o", recovered.getPath()), "stderr was: '" + err + "'");
+
+		assertTrue(out.contains("wrote the reconstructed secret to " + recovered.getPath()),
+			"stdout was: '" + out + "'");
+		assertEquals(SECRET, Files.readString(recovered.toPath()));
+	}
+
+	@Test
+	void combiningWithoutAFilePrintsTheSecretItself()
+	{
+		List<String> lines = splitLines(2, 2);
+
+		assertEquals(0, run("share", "combine", "--share", lines.get(0), "--share", lines.get(1)));
+
+		assertEquals(SECRET, out.trim(), "without -o the secret itself is the output");
+	}
+
+	@Test
 	void everyShareCommandAnswersItsOwnHelp()
 	{
 		assertEquals(0, run("share", "--help"));

@@ -131,10 +131,9 @@ public final class PassphraseCryptor
 	{
 		try
 		{
-			// the header check runs outside the catch below on purpose: "this is not our format at
-			// all" is a different answer from "this is our format and it would not open", and the
-			// caller distinguishes the two by exception type
-			requireOwnFormat(encrypted);
+			// iterationsOf checks the header, and it does so outside the catch below on purpose:
+			// "this is not our format at all" is a different answer from "this is our format and
+			// it would not open", and the caller distinguishes the two by exception type
 			final int iterations = iterationsOf(encrypted);
 			final byte[] salt = Arrays.copyOfRange(encrypted, MAGIC.length + 1 + Integer.BYTES,
 				HEADER_LENGTH);

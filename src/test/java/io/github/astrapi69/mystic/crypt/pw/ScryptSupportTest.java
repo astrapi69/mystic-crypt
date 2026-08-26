@@ -121,6 +121,57 @@ class ScryptSupportTest
 			"verify must zero the password it was given");
 	}
 
+	/**
+	 * Each of the three cost parameters has a lowest value that is still valid, and the check has
+	 * to accept it rather than treat it as one step too far. A hash built at those values verifies,
+	 * which is the only way to tell the boundary was not moved.
+	 */
+	@Test
+	void theLowestValidCostParametersAreAccepted()
+	{
+		String atTheFloor = ScryptSupport.hash("floor".toCharArray())
+			.replaceFirst("\\$scrypt\\$[^$]+\\$", "\\$scrypt\\$ln=1,r=1,p=1\\$");
+
+		// the hash bytes no longer match, so this must be a clean "does not match" rather than an
+		// exception out of the hasher, which is what an out-of-range parameter would cause
+		assertFalse(ScryptSupport.verify("floor".toCharArray(), atTheFloor));
+
+		String justBelow = atTheFloor.replace("ln=1,", "ln=0,");
+		assertFalse(ScryptSupport.verify("floor".toCharArray(), justBelow));
+	}
+
+	@Test
+	void aHashBuiltAtTheLowestCostStillVerifies()
+	{
+		// built through the real hasher at ln=1, r=1, p=1 so the round trip proves those values are
+		// inside the accepted range and not one step outside it
+		byte[] salt = new byte[ScryptSupport.SALT_LENGTH];
+		byte[] hash = io.github.astrapi69.mystic.crypt.sha.ScryptHasher
+			.hashWithSalt("floor".toCharArray(), salt, 2, 1, 1, ScryptSupport.HASH_LENGTH);
+		java.util.Base64.Encoder encoder = java.util.Base64.getEncoder().withoutPadding();
+		String encoded = ScryptSupport.PREFIX + "ln=1,r=1,p=1$" + encoder.encodeToString(salt) + "$"
+			+ encoder.encodeToString(hash);
+
+		assertTrue(ScryptSupport.verify("floor".toCharArray(), encoded),
+			"ln=1, r=1 and p=1 are the lowest valid values and must be accepted");
+		assertFalse(ScryptSupport.verify("wrong".toCharArray(), encoded));
+	}
+
+	/**
+	 * A cost that is well formed but far beyond what any machine can allocate must still answer
+	 * "does not match" rather than throwing out of the hasher, because that is what verify promises
+	 * for a hash it cannot open.
+	 */
+	@Test
+	void aCostTooLargeToRunAnswersFalseRatherThanThrowing()
+	{
+		String template = ScryptSupport.hash("x".toCharArray());
+		String absurdButWellFormed = template.replaceFirst("\\$scrypt\\$[^$]+\\$",
+			"\\$scrypt\\$ln=30,r=8,p=1\\$");
+
+		assertFalse(ScryptSupport.verify("x".toCharArray(), absurdButWellFormed));
+	}
+
 	@Test
 	void anEncodingOfNoKnownAlgorithmIsNamedWithTheOnesThatAre()
 	{

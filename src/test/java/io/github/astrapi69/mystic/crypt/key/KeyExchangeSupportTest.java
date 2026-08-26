@@ -179,6 +179,35 @@ class KeyExchangeSupportTest
 			"the message must list the algorithms, but was: '" + rejected.getMessage() + "'");
 	}
 
+	/**
+	 * The length checks sit exactly one part away from a usable envelope, so both sides of each
+	 * boundary are pinned: three parts is enough to read an algorithm, two is not; five parts is a
+	 * complete stored key, four is not.
+	 */
+	@Test
+	void theShortestUsableEnvelopeIsAcceptedAndOnePartLessIsNot()
+	{
+		assertEquals("X25519", KeyExchangeSupport.algorithmOf("MCKX1$PUB$X25519"),
+			"three parts carry an algorithm");
+		assertThrows(IllegalArgumentException.class,
+			() -> KeyExchangeSupport.algorithmOf("MCKX1$PUB"));
+	}
+
+	@Test
+	void theShortestCompleteStoredKeyIsAcceptedAndOnePartLessIsCalledIncomplete() throws Exception
+	{
+		KeyExchangeSupport.Party party = KeyExchangeSupport.newParty(KeyExchangeSupport.X25519);
+		String stored = KeyExchangeSupport.privateKeyOf(party);
+		assertEquals(5, stored.split("\\$").length, "an X25519 stored key has five parts");
+
+		assertEquals(KeyExchangeSupport.X25519, KeyExchangeSupport.partyFrom(stored).algorithm());
+
+		String oneShort = stored.substring(0, stored.lastIndexOf('$'));
+		IllegalArgumentException rejected = assertThrows(IllegalArgumentException.class,
+			() -> KeyExchangeSupport.partyFrom(oneShort));
+		assertEquals("this stored key is incomplete", rejected.getMessage());
+	}
+
 	@Test
 	void aMessageEncryptedWithTheSharedSecretComesBackThroughIt() throws Exception
 	{

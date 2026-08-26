@@ -25,7 +25,6 @@
 package io.github.astrapi69.mystic.crypt.cli;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.concurrent.Callable;
 
 import io.github.astrapi69.mystic.crypt.pw.PassphraseCryptor;
@@ -77,12 +76,11 @@ public class EncryptCommand implements Callable<Integer>
 	@Override
 	public Integer call()
 	{
-		char[] resolvedPassphrase = null;
 		try
 		{
 			PassphraseCryptSupport.requireOnlyOneStandardInputReader(textStdin, passphraseStdin);
 			byte[] plain = PassphraseCryptSupport.readInput(in, text, textStdin);
-			resolvedPassphrase = PassphraseCryptSupport.resolvePassphrase(passphrase,
+			char[] resolvedPassphrase = PassphraseCryptSupport.resolvePassphrase(passphrase,
 				passphraseStdin);
 			byte[] encrypted = PassphraseCryptor.encrypt(resolvedPassphrase, plain);
 			String printed = PassphraseCryptSupport.writeOutput(out, encrypted,
@@ -101,13 +99,6 @@ public class EncryptCommand implements Callable<Integer>
 		{
 			System.err.println(CliSupport.error(exception.getMessage()));
 			return 2;
-		}
-		finally
-		{
-			if (resolvedPassphrase != null)
-			{
-				Arrays.fill(resolvedPassphrase, '\0');
-			}
 		}
 	}
 }

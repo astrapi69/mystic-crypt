@@ -253,6 +253,53 @@ class KeyExchangeCommandTest extends AbstractCliTest
 		assertTrue(err.contains("nothing to read"), "stderr was: '" + err + "'");
 	}
 
+	/**
+	 * Each of the three runs prints what it did and where, and a run that wrote a file must say so
+	 * rather than leaving the reader to check the filesystem.
+	 */
+	@Test
+	void everyRunSaysWhatItWroteAndWhere(@TempDir File tempDir)
+	{
+		File privateKey = new File(tempDir, "recipient.key");
+		File publicKey = new File(tempDir, "recipient.pub");
+		File handshake = new File(tempDir, "handshake.txt");
+
+		assertEquals(0, run("keyx", "new", "-k", privateKey.getPath(), "-p", publicKey.getPath()));
+		assertTrue(out.contains("algorithm: " + KeyExchangeSupport.ML_KEM_768),
+			"new must name the algorithm, but was: '" + out + "'");
+		assertTrue(out.contains("private key written to " + privateKey.getPath()),
+			"new must name the private key file, but was: '" + out + "'");
+		assertTrue(out.contains("public key written to " + publicKey.getPath()),
+			"new must name the public key file, but was: '" + out + "'");
+
+		assertEquals(0, run("keyx", "send", "-r", publicKey.getPath(), "-o", handshake.getPath()));
+		assertTrue(out.contains("algorithm: " + KeyExchangeSupport.ML_KEM_768),
+			"send must name the algorithm, but was: '" + out + "'");
+		assertTrue(out.contains("handshake written to " + handshake.getPath()),
+			"send must name the handshake file, but was: '" + out + "'");
+
+		assertEquals(0,
+			run("keyx", "receive", "-k", privateKey.getPath(), "-s", handshake.getPath()));
+		assertTrue(out.contains("algorithm: " + KeyExchangeSupport.ML_KEM_768),
+			"receive must name the algorithm, but was: '" + out + "'");
+	}
+
+	@Test
+	void anEncryptedMessageWrittenToAFileIsAnnouncedByName(@TempDir File tempDir)
+	{
+		File privateKey = new File(tempDir, "r.key");
+		File publicKey = new File(tempDir, "r.pub");
+		File handshake = new File(tempDir, "h.txt");
+		File encrypted = new File(tempDir, "m.enc");
+		assertEquals(0, run("keyx", "new", "-k", privateKey.getPath(), "-p", publicKey.getPath()));
+
+		assertEquals(0, run("keyx", "send", "-r", publicKey.getPath(), "-o", handshake.getPath(),
+			"-m", "hello", "-e", encrypted.getPath()));
+
+		assertTrue(out.contains("encrypted message written to " + encrypted.getPath()),
+			"stdout was: '" + out + "'");
+	}
+
 	@Test
 	void everyKeyxCommandAnswersItsOwnHelp()
 	{

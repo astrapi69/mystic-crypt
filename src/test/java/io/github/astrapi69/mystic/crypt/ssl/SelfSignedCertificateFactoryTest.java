@@ -104,6 +104,20 @@ class SelfSignedCertificateFactoryTest
 			"the message must show what one looks like, but was: '" + rejected.getMessage() + "'");
 	}
 
+	/**
+	 * The colon has to sit at position one at the earliest - a one character type is still a type -
+	 * and the value after it must not be empty.
+	 */
+	@Test
+	void aOneCharacterTypeIsStillAType()
+	{
+		SelfSignedCertificateFactory.SubjectAlternativeName name = SelfSignedCertificateFactory.SubjectAlternativeName
+			.parse("d:x");
+
+		assertEquals("d", name.type());
+		assertEquals("x", name.value());
+	}
+
 	@Test
 	void anUnknownKeyUsageIsNamedWithTheOnesThatExist()
 	{

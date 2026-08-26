@@ -251,6 +251,67 @@ class CertificateExtensionsCommandTest extends AbstractCliTest
 		assertFalse(err.isBlank(), "the failure must be explained for '" + value + "'");
 	}
 
+	/** Zero is a path length, not a missing one: it says no CA may appear below this one. */
+	@Test
+	void aPathLengthOfZeroIsAcceptedAndNegativeIsNot(@TempDir File tempDir) throws Exception
+	{
+		File pem = new File(tempDir, "ca0.pem");
+
+		assertEquals(0, run("cert", "--subject", "CN=ca0", "--days", "1", "--basic-constraints",
+			"ca,pathlen=0", "--out", pem.getPath()), "stderr was: '" + err + "'");
+		assertEquals(0, read(pem).getBasicConstraints(), "pathlen=0 must reach the certificate");
+
+		assertEquals(2, run("cert", "--subject", "CN=x", "--days", "1", "--basic-constraints",
+			"ca,pathlen=-1", "--out", new File(tempDir, "x.pem").getPath()));
+		assertTrue(err.contains("cannot be negative"), "stderr was: '" + err + "'");
+	}
+
+	/**
+	 * An algorithm with a fixed parameter set takes no key size, and cert has to handle both. The
+	 * post-quantum case also pins that the certificate can be signed at all: an ML-DSA key comes
+	 * from the JDK's own provider, and a factory that insists on Bouncy Castle refuses it with
+	 * "unknown private key passed to ML-DSA".
+	 */
+	@ParameterizedTest
+	@CsvSource({ "ML_DSA_65, ML-DSA-65", "EC, SHA256withECDSA", "DSA, SHA256withDSA" })
+	void anAlgorithmWithAFixedParameterSetNeedsNoKeySize(String algorithm,
+		String signatureAlgorithm, @TempDir File tempDir) throws Exception
+	{
+		File pem = new File(tempDir, "fixed.pem");
+
+		assertEquals(0,
+			run("cert", "--subject", "CN=pq", "--days", "1", "-a", algorithm,
+				"--signature-algorithm", signatureAlgorithm, "--out", pem.getPath()),
+			"stderr was: '" + err + "'");
+
+		assertNotNull(read(pem), algorithm + " must produce a readable certificate");
+	}
+
+	/**
+	 * The confirmation names only the extensions that were actually written, so a run with one of
+	 * them must not claim the others.
+	 */
+	@Test
+	void theConfirmationNamesOnlyWhatWasWritten(@TempDir File tempDir)
+	{
+		assertEquals(0, run("cert", "--subject", "CN=only-bc", "--days", "1", "--basic-constraints",
+			"ca", "--out", new File(tempDir, "a.pem").getPath()));
+		assertTrue(out.contains("basic constraints"), "stdout was: '" + out + "'");
+		assertFalse(out.contains("key usage"), "no key usage was asked for: '" + out + "'");
+		assertFalse(out.contains("subject alternative"), "none was asked for: '" + out + "'");
+
+		assertEquals(0, run("cert", "--subject", "CN=only-ku", "--days", "1", "--key-usage",
+			"keyCertSign", "--out", new File(tempDir, "b.pem").getPath()));
+		assertTrue(out.contains("key usage (keyCertSign)"), "stdout was: '" + out + "'");
+		assertFalse(out.contains("basic constraints"), "stdout was: '" + out + "'");
+
+		assertEquals(0, run("cert", "--subject", "CN=only-san", "--days", "1", "--san",
+			"dns:example.org", "--out", new File(tempDir, "c.pem").getPath()));
+		assertTrue(out.contains("subject alternative names (dns:example.org)"),
+			"stdout was: '" + out + "'");
+		assertFalse(out.contains("key usage"), "stdout was: '" + out + "'");
+	}
+
 	@Test
 	void theCommandAnswersItsOwnHelp()
 	{
