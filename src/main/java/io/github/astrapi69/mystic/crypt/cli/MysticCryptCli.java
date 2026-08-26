@@ -48,7 +48,7 @@ import picocli.CommandLine.Command;
 			DisentangleCommand.class, CertificateCommand.class, KeystoreCommand.class,
 			SignCommand.class, VerifySignatureCommand.class, EncryptCommand.class,
 			DecryptCommand.class, ShareCommand.class, KeyExchangeCommand.class,
-			CommandLine.HelpCommand.class })
+			ConvertCommand.class, CommandLine.HelpCommand.class })
 public class MysticCryptCli implements Runnable
 {
 

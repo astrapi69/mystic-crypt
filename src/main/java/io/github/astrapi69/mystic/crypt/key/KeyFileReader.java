@@ -28,11 +28,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
 
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
@@ -85,8 +82,11 @@ public final class KeyFileReader
 		}
 		try
 		{
-			return keyFactory(algorithm)
-				.generatePrivate(new PKCS8EncodedKeySpec(Files.readAllBytes(file.toPath())));
+			// DER carries its own algorithm in the PKCS#8 structure, so it is read from there
+			// rather than from the name the caller passed; the name is only used to say what was
+			// expected if this fails
+			return converter()
+				.getPrivateKey(PrivateKeyInfo.getInstance(Files.readAllBytes(file.toPath())));
 		}
 		catch (final Exception notADerPrivateKey)
 		{
@@ -119,8 +119,9 @@ public final class KeyFileReader
 		}
 		try
 		{
-			return keyFactory(algorithm)
-				.generatePublic(new X509EncodedKeySpec(Files.readAllBytes(file.toPath())));
+			// as above: the algorithm comes out of the SubjectPublicKeyInfo itself
+			return converter()
+				.getPublicKey(SubjectPublicKeyInfo.getInstance(Files.readAllBytes(file.toPath())));
 		}
 		catch (final Exception notADerPublicKey)
 		{
@@ -234,8 +235,4 @@ public final class KeyFileReader
 		return new JcaPEMKeyConverter().setProvider(BouncyCastleProvider.PROVIDER_NAME);
 	}
 
-	private static KeyFactory keyFactory(final String algorithm) throws Exception
-	{
-		return KeyFactory.getInstance(algorithm, BouncyCastleProvider.PROVIDER_NAME);
-	}
 }
