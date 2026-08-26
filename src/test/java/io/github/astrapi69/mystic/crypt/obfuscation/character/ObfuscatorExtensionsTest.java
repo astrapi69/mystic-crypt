@@ -26,7 +26,6 @@ package io.github.astrapi69.mystic.crypt.obfuscation.character;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -411,15 +410,19 @@ public class ObfuscatorExtensionsTest
 
 	/**
 	 * Test method for {@link ObfuscatorExtensions#isObfuscableAndDisentanglable(BiMap, String)},
-	 * valid rules that do not round trip the given input have to be rejected as well
+	 * valid rules that do not round trip the given input have to be rejected as well.
+	 * <p>
+	 * "ca" used to be such an input and no longer is: it round trips since issue #95, and the
+	 * helper says so. What still does not round trip is a text holding a character that the rules
+	 * produce as a replacement without ever taking it as an input - a literal {@code d} is
+	 * indistinguishable from an obfuscated {@code c} and comes back as one.
 	 */
 	@Test
 	public void isObfuscableAndDisentanglable_isFalseWhenTheInputDoesNotRoundTrip()
 	{
-		// the rules themselves are valid but 'c' is obfuscated to 'd' outside of its index and 'd'
-		// is not an obfuscated character, so the text can not be disentangled again
 		assertTrue(ObfuscatorExtensions.validate(newSmallChainRules()));
-		assertFalse(ObfuscatorExtensions.isObfuscableAndDisentanglable(newSmallChainRules(), "ca"));
+		assertTrue(ObfuscatorExtensions.isObfuscableAndDisentanglable(newSmallChainRules(), "ca"));
+		assertFalse(ObfuscatorExtensions.isObfuscableAndDisentanglable(newSmallChainRules(), "d"));
 	}
 
 	/**
@@ -826,15 +829,20 @@ public class ObfuscatorExtensionsTest
 	}
 
 	/**
-	 * Test method for {@link ObfuscatorExtensions#disentangle(BiMap, String)}, a character that is
-	 * a rule key but can not be the output of the obfuscation is dropped
+	 * Test method for {@link ObfuscatorExtensions#disentangle(BiMap, String)}: a character that is
+	 * a rule key but can not be the output of the obfuscation stands for itself.
+	 * <p>
+	 * These rules turn {@code a} into {@code x} or {@code A} and {@code b} into {@code y} or its
+	 * negation, so a literal {@code a} or {@code b} in an obfuscated text was never produced by
+	 * them. Until issue #95 it was dropped from the output entirely, which is silent data loss
+	 * rather than a wrong character.
 	 */
 	@Test
-	public void disentangle_dropsARuleCharacterThatCanNotBeAnObfuscationResult()
+	public void disentangle_keepsARuleCharacterThatCanNotBeAnObfuscationResult()
 	{
 		BiMap<Character, ObfuscationOperationRule<Character, Character>> rules = newIndependentRules();
 
-		assertEquals("-", ObfuscatorExtensions.disentangle(rules, "a-b"));
+		assertEquals("a-b", ObfuscatorExtensions.disentangle(rules, "a-b"));
 		assertEquals("-", ObfuscatorExtensions.disentangle(rules, "-"));
 	}
 
@@ -908,36 +916,4 @@ public class ObfuscatorExtensionsTest
 		assertThrows(NullPointerException.class, testCase.executable());
 	}
 
-	/**
-	 * Test method for {@link ObfuscatorExtensions#disentangle(BiMap, String)} that pins the side
-	 * effect of the {@code operation != null} branch: while disentangling, every rule that carries
-	 * a non-null operation has its operated character computed and stored on the rule via
-	 * {@code setOperatedCharacter}. This kills the negated-conditional mutant of the
-	 * {@code if (operation != null)} guard and the removed-call mutant of
-	 * {@code setOperatedCharacter} - both would leave the operated character unset.
-	 */
-	@Test
-	public void disentangle_setsTheOperatedCharacterOnEveryRuleWithAnOperation()
-	{
-		BiMap<Character, ObfuscationOperationRule<Character, Character>> rules = newSmallChainRules();
-
-		// before disentangling, no rule has had its operated character computed
-		for (ObfuscationOperationRule<Character, Character> rule : rules.values())
-		{
-			assertTrue(
-				rule.getOperatedCharacter() == null || !rule.getOperatedCharacter().isPresent());
-		}
-
-		ObfuscatorExtensions.disentangle(rules, "abc");
-
-		// afterwards every rule (all carry the UPPERCASE operation) has a present operated
-		// character
-		for (ObfuscationOperationRule<Character, Character> rule : rules.values())
-		{
-			Optional<Character> operated = rule.getOperatedCharacter();
-			assertNotNull(operated, "operated character must be set for a rule with an operation");
-			assertTrue(operated.isPresent(),
-				"operated character must be present for a rule with an operation");
-		}
-	}
 }

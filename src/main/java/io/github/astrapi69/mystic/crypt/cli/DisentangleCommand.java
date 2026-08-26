@@ -27,6 +27,7 @@ package io.github.astrapi69.mystic.crypt.cli;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
+import io.github.astrapi69.mystic.crypt.obfuscation.character.ObfuscatorExtensions;
 import io.github.astrapi69.mystic.crypt.obfuscation.simple.SimpleObfuscatorExtensions;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -66,7 +67,7 @@ public class DisentangleCommand implements Callable<Integer>
 		String input = CliSupport.resolveText(text, textStdin);
 		ObfuscationRuleSupport.Rules parsed = ObfuscationRuleSupport.parse(rules);
 		System.out.println(parsed.isOperated()
-			? ObfuscationRuleSupport.disentangleOperated(parsed.operated(), input)
+			? ObfuscatorExtensions.disentangle(parsed.operated(), input)
 			: SimpleObfuscatorExtensions.disentangleBiMap(parsed.simple(), input));
 		return 0;
 	}
