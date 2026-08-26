@@ -237,7 +237,7 @@ Pull requests are welcome — fork [astrapi69/mystic-crypt](https://github.com/a
 and [open a PR](https://github.com/astrapi69/mystic-crypt/pull/new/develop) against `develop`.
 
 Please add tests for your change. This library sits at 99.92% line and 100% branch coverage with a
-99.1% PIT mutation score; the [conventions for contributors](docs/TESTING.md#conventions-for-contributors)
+99.5% PIT mutation score; the [conventions for contributors](docs/TESTING.md#conventions-for-contributors)
 describe what a good test looks like here — parameterized with records, a property assertion plus
 the matching negative case, and never lowering those numbers.
 
