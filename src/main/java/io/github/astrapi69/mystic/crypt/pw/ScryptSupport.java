@@ -192,11 +192,11 @@ final class ScryptSupport
 					throw new IllegalArgumentException("not a valid scrypt encoded hash");
 			}
 		}
-		// scrypt requires n to be a power of two greater than one, and r and p at least one. The
-		// upper bound on ln is only about the shift: 1 << 31 is negative, and a negative n is not
-		// a large cost but a broken one. Costs that are in range yet unusable are caught where the
-		// hasher runs.
-		if (logN < 1 || logN > 30 || r < 1 || p < 1)
+		// scrypt requires n to be a power of two greater than one, and r and p at least one. There
+		// is deliberately no upper bound on ln: a cost too large to run - including one whose
+		// shift overflows into a negative n - is refused by the hasher, and that already comes
+		// back as "does not match" because the hasher call is inside the guard below.
+		if (logN < 1 || r < 1 || p < 1)
 		{
 			throw new IllegalArgumentException("not a valid scrypt encoded hash");
 		}

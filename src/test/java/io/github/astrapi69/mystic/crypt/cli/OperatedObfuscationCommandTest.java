@@ -148,6 +148,40 @@ class OperatedObfuscationCommandTest extends AbstractCliTest
 			"the message must list the operations, but was: '" + err + "'");
 	}
 
+	/**
+	 * The two separators are looked for by position, so the degenerate placements are pinned: a
+	 * rule that starts with the operation separator has no replacement, and one that starts with
+	 * the position separator has no operation name.
+	 */
+	@ParameterizedTest
+	@ValueSource(strings = { "a=:UPPERCASE", "a=x:@0", "a=x:UPPERCASE@" })
+	void aSeparatorWithNothingBeforeItIsRefused(String rule)
+	{
+		assertEquals(2, run("obfuscate", "--text", "abc", "--rule", rule),
+			"'" + rule + "' must be refused, stderr was: '" + err + "'");
+	}
+
+	/**
+	 * A position other than zero has to reach the rule, otherwise every operated rule would behave
+	 * as if it operated at the start of the text.
+	 */
+	@Test
+	void aPositionOtherThanZeroIsTheOneThatIsUsed()
+	{
+		assertEquals("xxAx", obfuscate("aaaa", "a=x:UPPERCASE@2"),
+			"only position 2 carries the operated character");
+		assertEquals("Axxx", obfuscate("aaaa", "a=x:UPPERCASE@0"),
+			"and with position 0 it is the first one instead");
+		assertEquals("aaaa", disentangle("xxAx", "a=x:UPPERCASE@2"));
+	}
+
+	@Test
+	void severalPositionsAreAllUsed()
+	{
+		assertEquals("AxAx", obfuscate("aaaa", "a=x:UPPERCASE@0,2"));
+		assertEquals("aaaa", disentangle("AxAx", "a=x:UPPERCASE@0,2"));
+	}
+
 	@Test
 	void bothCommandsExplainTheOperatedShapeInTheirHelp()
 	{

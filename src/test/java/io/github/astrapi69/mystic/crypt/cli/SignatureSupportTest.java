@@ -111,6 +111,29 @@ class SignatureSupportTest
 			algorithm + " must be recognised as a classical signature algorithm");
 	}
 
+	/**
+	 * The key factory algorithm a classical name implies, which is what decides how the key file is
+	 * read. ECDSA and EC both mean an EC key.
+	 */
+	@ParameterizedTest
+	@CsvSource({ "RSA, RSA", "ec, EC", "ECDSA, EC", "DSA, DSA", "SHA512withRSA, RSA",
+			"SHA256withECDSA, EC" })
+	void aClassicalNameImpliesItsKeyFactoryAlgorithm(String algorithm, String expected)
+	{
+		assertEquals(expected, SignatureSupport.keyFactoryAlgorithm(algorithm));
+	}
+
+	/**
+	 * A name that begins with "with" has the separator at position zero, which is still a
+	 * separator: what follows it is the family.
+	 */
+	@Test
+	void aNameThatBeginsWithTheSeparatorStillNamesItsFamily()
+	{
+		assertTrue(SignatureSupport.isClassical("withRSA"));
+		assertEquals("RSA", SignatureSupport.keyFactoryAlgorithm("withRSA"));
+	}
+
 	@Test
 	void unknownAlgorithmNamesAreRejected()
 	{

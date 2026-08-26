@@ -390,6 +390,68 @@ class ConvertCommandTest extends AbstractCliTest
 			"the message must say the body could not be read, but was: '" + err + "'");
 	}
 
+	/**
+	 * The confirmation names the wrapping that was actually written, which is how a reader sees
+	 * that --to pem kept the input's own wrapping instead of silently changing it.
+	 */
+	@Test
+	void theConfirmationNamesTheWrappingThatWasWritten(@TempDir File tempDir) throws Exception
+	{
+		KeyPair keyPair = keyPair("RSA");
+		File pkcs8Der = writeDerPrivate(tempDir, keyPair);
+		File pkcs1Pem = new File(tempDir, "in-pkcs1.pem");
+		Files.writeString(pkcs1Pem.toPath(), KeyFileWriter.toPem(keyPair.getPrivate(), true),
+			StandardCharsets.UTF_8);
+
+		assertEquals(0, run("convert", "--in", pkcs8Der.getPath(), "--to", "pem", "--out",
+			new File(tempDir, "a.pem").getPath()));
+		assertTrue(out.contains("wrote PEM, PKCS#8"), "stdout was: '" + out + "'");
+
+		assertEquals(0, run("convert", "--in", pkcs1Pem.getPath(), "--to", "pem", "--out",
+			new File(tempDir, "b.pem").getPath()));
+		assertTrue(out.contains("wrote PEM, PKCS#1"), "stdout was: '" + out + "'");
+	}
+
+	/**
+	 * A certificate reaches the conversion from either encoding, and the bytes have to be the same
+	 * either way - otherwise one of the two paths is reading something else.
+	 */
+	@Test
+	void aCertificateGivesTheSameDerWhicheverEncodingItArrivedIn(@TempDir File tempDir)
+		throws Exception
+	{
+		File asPem = new File(tempDir, "cert.pem");
+		assertEquals(0,
+			run("cert", "--subject", "CN=either", "--days", "1", "--out", asPem.getPath()));
+		File fromPem = new File(tempDir, "from-pem.der");
+		assertEquals(0,
+			run("convert", "--in", asPem.getPath(), "--to", "der", "--out", fromPem.getPath()));
+
+		File fromDer = new File(tempDir, "from-der.der");
+		assertEquals(0,
+			run("convert", "--in", fromPem.getPath(), "--to", "der", "--out", fromDer.getPath()),
+			"stderr was: '" + err + "'");
+
+		assertArrayEquals(Files.readAllBytes(fromPem.toPath()),
+			Files.readAllBytes(fromDer.toPath()),
+			"the DER of a certificate must not depend on how it was handed in");
+	}
+
+	/**
+	 * The description names the algorithm the file carries, which is the part that tells a reader
+	 * whether they are looking at the key they think they are.
+	 */
+	@Test
+	void theDescriptionNamesTheAlgorithmOfTheKey(@TempDir File tempDir) throws Exception
+	{
+		File rsa = writeDerPrivate(tempDir, keyPair("RSA"));
+
+		assertEquals(0, run("convert", "--in", rsa.getPath(), "--describe"));
+
+		assertTrue(out.contains("algorithm 1.2.840.113549.1.1.1"),
+			"the RSA object identifier must be named, but the output was: '" + out + "'");
+	}
+
 	@Test
 	void theCommandAnswersItsOwnHelp()
 	{

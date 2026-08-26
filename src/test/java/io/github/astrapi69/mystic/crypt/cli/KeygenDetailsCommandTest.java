@@ -190,6 +190,18 @@ class KeygenDetailsCommandTest extends AbstractCliTest
 			"stdout was: '" + out + "'");
 	}
 
+	/** The details name the encoding that was asked for, in both directions. */
+	@ParameterizedTest
+	@CsvSource({ "pkcs8, PKCS#8", "pkcs1, PKCS#1" })
+	void theDetailsNameTheEncodingThatWasAskedFor(String format, String expected,
+		@TempDir File tempDir)
+	{
+		assertEquals(0, run("keygen", "-a", "RSA", "-s", "2048", "--format", format,
+			"--print-details", "--out-private", new File(tempDir, "k.pem").getPath()));
+
+		assertTrue(out.contains("private key format: " + expected), "stdout was: '" + out + "'");
+	}
+
 	@Test
 	void theCommandAnswersItsOwnHelp()
 	{

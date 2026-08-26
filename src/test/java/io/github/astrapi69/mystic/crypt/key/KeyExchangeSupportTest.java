@@ -82,11 +82,17 @@ class KeyExchangeSupportTest
 		assertEquals("this is not a stored key of this tool", rejected.getMessage());
 	}
 
-	@Test
-	void aStoredPrivateKeyMissingItsHalvesIsCalledIncomplete()
+	/**
+	 * Two parts is the least that can be read far enough to tell the kind, and that is the point of
+	 * checking the kind before the length: "MCKX1$PRV" is recognised as a stored private key that
+	 * is merely incomplete, not as something foreign.
+	 */
+	@ParameterizedTest
+	@ValueSource(strings = { "MCKX1$PRV", "MCKX1$PRV$X25519", "MCKX1$PRV$X25519$AAAA" })
+	void aStoredPrivateKeyMissingItsHalvesIsCalledIncomplete(String text)
 	{
 		IllegalArgumentException rejected = assertThrows(IllegalArgumentException.class,
-			() -> KeyExchangeSupport.partyFrom("MCKX1$PRV$X25519$AAAA"));
+			() -> KeyExchangeSupport.partyFrom(text));
 
 		assertEquals("this stored key is incomplete", rejected.getMessage());
 	}

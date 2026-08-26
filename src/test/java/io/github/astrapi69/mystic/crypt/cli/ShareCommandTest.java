@@ -26,6 +26,7 @@ package io.github.astrapi69.mystic.crypt.cli;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -252,6 +253,7 @@ class ShareCommandTest extends AbstractCliTest
 			"-o", tempDir.getPath());
 
 		assertEquals(2, exitCode, "stderr was: '" + err + "'");
+		assertFalse(err.isBlank(), "a failed write has to be explained, not only counted");
 	}
 
 	@Test
