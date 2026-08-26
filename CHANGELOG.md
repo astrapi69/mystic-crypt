@@ -1,6 +1,12 @@
 ## Change log
 ----------------------
 
+Version 12.1-SNAPSHOT
+-------------
+
+(nothing released yet)
+
+
 Version 12.0.0
 -------------
 
