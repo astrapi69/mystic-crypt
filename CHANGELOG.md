@@ -1,6 +1,100 @@
 ## Change log
 ----------------------
 
+Version 12.0.0
+-------------
+
+ADDED:
+
+- CLI commands `encrypt` and `decrypt` for a file or a piece of text with a passphrase. AES-GCM
+  over a key derived with PBKDF2-HMAC-SHA256 at 600000 iterations and a salt that is fresh per
+  call, sealed with the key-committing AEAD so a wrong passphrase is rejected by the commitment
+  rather than producing plausible rubbish. The output carries a marker, a format version and the
+  iteration count, so an encrypted file is recognisable without opening it and raising the default
+  later does not strand what the old default produced. Backed by the new public
+  `PassphraseCryptor`.
+- CLI commands `share split` and `share combine`, exposing Shamir secret sharing. The scheme has
+  no integrity check of its own - combining fewer shares than the threshold, or shares of another
+  split, silently yields a wrong secret - so the share line carries a random split identifier, the
+  threshold and a per-share checksum, and both cases are now statements the tool makes. The
+  checksum covers the share and not the secret, so holding one share does not let its holder test
+  guesses offline. Backed by the new public `SecretShare` and `SecretSharing`.
+- CLI command family `keyx` with `new`, `send` and `receive`: the key exchange as two people use
+  it, in three separate runs, each side holding only its own half. ML-KEM 512/768/1024, X25519 and
+  the hybrid of X25519 with ML-KEM-768. X25519 has no ciphertext, so there the handshake carries
+  the sender's ephemeral public key instead, and every envelope names its algorithm so nobody has
+  to know which of the three they hold. Both sides print an eight character fingerprint of the
+  derived secret. Backed by the new public `KeyExchangeSupport`. Where `kem` plays both sides
+  against itself and shows the mathematics, this is the usable exchange.
+- CLI command `convert`, which replaces `der2pem`: it examines a key or certificate file, names
+  what it found, and converts between PEM and DER and between PKCS#1 and PKCS#8, for private keys,
+  public keys and X.509 certificates. `--describe` asks only what a file is. `der2pem` remains as
+  a deprecated alias. Backed by the new public `KeyFileDescription`, `KeyFileReader` and
+  `KeyFileWriter`.
+- `checksum --hmac` computes a keyed MAC next to the plain digest, so the CLI can answer "was this
+  changed by someone without the key" and not only "was this changed". The key is read from
+  standard input.
+- `hash` offers bcrypt and scrypt alongside Argon2id and PBKDF2. scrypt needed an encoding first:
+  `ScryptHasher` produces raw bytes, so the salt and the three cost parameters had to live
+  somewhere else, which a stored password hash cannot rely on. The new `PasswordHashFormat` reads
+  from a stored hash which algorithm produced it.
+- `sign` and `verify-signature` accept RSA, ECDSA and DSA next to Ed25519, ML-DSA and SLH-DSA, and
+  read the key from DER as readily as from PEM. Signing, verifying and key decoding all go through
+  Bouncy Castle: an EC key on a named curve is rejected by the JDK's own provider when it signs,
+  and verification with such a key returns false rather than throwing, so a valid signature would
+  read as an invalid one with nothing saying why.
+- `cert` writes basic constraints, key usage and subject alternative names, with `--critical`
+  naming which of them to mark critical. Backed by the new public `SelfSignedCertificateFactory`,
+  which also refuses to sign an RSASSA-PSS key with a plain RSA signature: RFC 4055 requires PSS,
+  and a certificate signed the other way is rejected by some verifiers without saying why.
+- `keygen` takes `--curve` for elliptic curve keys, `--format` for PKCS#8 or PKCS#1, and
+  `--print-details`, which names the algorithm, the size or curve and the encoding actually
+  written.
+- `obfuscate` and `disentangle` take rules that carry an operation and the positions it applies at
+  (`--rule a=x:UPPERCASE@0,3`) next to the plain substitution.
+
+CHANGED:
+
+- BREAKING for the command line: `verify` no longer accepts `--algorithm`. Every encoding this
+  library writes says what produced it, so the algorithm is read from the hash; naming it a second
+  time was only a way to get it wrong, and the wrong name turned "this is a bcrypt hash" into "the
+  password does not match". A hash whose encoding belongs to no known algorithm is now exit code 2
+  with the encodings it knows, not the negative answer 1.
+- BREAKING for the command line: `checksum` prints the value followed by which of the two
+  questions it answered, in the shape `sha256sum` uses. The value is still the first
+  whitespace-separated field.
+- `PasswordAlgorithm` gained the constants `bcrypt` and `scrypt`. It is a public enum in an
+  exported package, so a consumer whose `switch` covered all of its constants no longer compiles.
+- requires crypt-data 12.0.0, whose `EncryptedPrivateKeyReader#getKeyPair` no longer leaks a file
+  descriptor for every malformed PEM file
+- the quality gates fail closed rather than warning, and the rule set the repository works under is
+  written down in `CLAUDE.md` and `.claude/rules/`
+- a CI workflow publishes the tested-use-case count as a badge
+- test quality: 1234 tests (up from 883), 99.94% line and 100% branch coverage, PIT mutation score
+  99.6% (1498 of 1504 mutants killed). The command line work added roughly four hundred mutants;
+  the six that survive are argued one by one in docs/COVERAGE_EXCEPTIONS.md, and four of the
+  thirty-five that first survived were answered by removing code that decided the same thing twice
+  rather than by adding a test for it
+
+FIXED:
+
+- `ObfuscatorExtensions#disentangle(BiMap, String)` did not reverse what `obfuscateWith` produced.
+  A replacement that was not itself an original character was never reversed, an unmatched
+  character that happened to be a rule key was dropped from the output entirely rather than kept,
+  and a match kept walking the remaining rules so a second one could append again. It also wrote
+  the operated character onto the shared rules while reading, carrying state from one position
+  into the next. (#95)
+
+DEPRECATED:
+
+- `ObfuscatorExtensions#disentangleImproved(BiMap, String)`: it reverses through `inverse(BiMap)`,
+  which tries to clone the rule map first and throws a `NullPointerException` for a map
+  implementation it cannot clone. Making the clone optional does not repair it - `inverse` then
+  inverts the caller's own rules in place, so every later call with them answers wrongly. Use
+  `disentangle`, which has neither limitation.
+- CLI command `der2pem`: use `convert`, which detects what the file is and converts in both
+  directions.
+
 Version 11.2
 -------------
 

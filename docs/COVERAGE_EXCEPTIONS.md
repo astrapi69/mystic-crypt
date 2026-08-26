@@ -48,7 +48,7 @@ reset digest). Removing the guards killed the mutants and simplified the method 
 (PR #5). See ["Why not literal 100%"](#why-not-literal-100) for how the remaining three were told
 apart from those two.
 
-## `mystic-crypt` - 2 lines / 0 branches uncovered; 5 surviving mutants of 1076
+## `mystic-crypt` - 2 lines / 0 branches uncovered; 6 surviving mutants of 1504
 
 Uncovered lines:
 
@@ -166,8 +166,8 @@ earns its keep:
 
 ## Why not literal 100%
 
-`crypt-api` and `crypt-data` are at 100.0%. `mystic-crypt` is at 99.5% (5 survivors of 1076). This
-section is the answer to "why not push those to 100% too" - worked through for every one of the 5
+`crypt-api` and `crypt-data` are at 100.0%. `mystic-crypt` is at 99.6% (6 survivors of 1504). This
+section is the answer to "why not push those to 100% too" - worked through for every one of the 6
 remaining survivors, not asserted in general. It was written
 after four rounds of exactly that push: the first round (PR #69) killed everything killable and
 argued the rest was equivalent; the second round (PR #5, PR #76) went back over every argued
@@ -191,6 +191,14 @@ by why it stays.
   survive to assert on it. Not "hard" - there is no API for it anymore.
 
 **Killable only by making the design worse.**
+
+- `PassphraseCryptor.deriveKey` (`VoidMethodCallMutator`, the `Arrays.fill` of the derived key
+  bytes): `SecretKeySpec` copies the array it is handed, so whether the caller's copy is zeroed
+  afterwards changes nothing any API can observe - which is exactly why the mutant survives. The
+  wipe stays: derived key material left in a live array is the kind of thing that shows up in a
+  heap dump and nowhere else, and that is worth a line of code whose absence no test can prove.
+  Killing this would mean exposing the intermediate array through some accessor solely so a test
+  could look at it, which trades a real property for a number.
 
 - `FeldmanVSS.reconstructSecretBytes` (3 `ConditionalsBoundaryMutator` mutants, lines 616/622/628):
   the two variants of each boundary produce byte-identical output arrays for any `byte[]` and any
@@ -219,11 +227,12 @@ heading calling their removal cosmetic. Both retirements were wrong, for differe
 `crypt-data` section above records why. What that says about this list: an argument for keeping a
 survivor ages exactly as badly as any other state assertion in these docs.
 
-Conclusion: of the 5 individual surviving mutants, 1 is impossible under the current JDK
-(`System.exit`) and 4 can only be killed by weakening a real design property (a
+Conclusion: of the 6 individual surviving mutants, 1 is impossible under the current JDK
+(`System.exit`) and 5 can only be killed by weakening a real design property (a
 bytecode-compilation artifact of `try`-with-resources, absence of side channels - the 3
-`FeldmanVSS` mutants count as one design property, secret-reconstruction arithmetic). None of the
-five is a case of "nobody got around to it yet" - and eight mutants that briefly *were* exactly
+`FeldmanVSS` mutants count as one design property, secret-reconstruction arithmetic - and a wipe of
+key material that `SecretKeySpec` makes unobservable by copying). None of the
+six is a case of "nobody got around to it yet" - and eight mutants that briefly *were* exactly
 that (`ScryptHasher.isPowerOfTwo`, `CryptObjectDecoratorExtensions.endsWith` in round three;
 `FeldmanVSS.reconstructSecretBytes`'s two `NegateConditionalsMutator` variants and
 `KemCommand.call` in round four; `EncryptedPrivateKeyReader.getKeyPair` and the two `getPrivateKey`
