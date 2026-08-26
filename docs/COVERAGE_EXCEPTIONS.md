@@ -17,18 +17,29 @@ check found.
 
 Nothing. Every line, branch and mutant. 78 mutants generated, 78 killed.
 
-## `crypt-data` - 0 lines / 0 branches uncovered; 3 surviving mutants of 782
+## `crypt-data` - 0 lines / 0 branches uncovered; 0 surviving mutants of 779
 
-Every line and branch is covered; no JaCoCo exclusions were added to get there.
+Every line and branch is covered; no JaCoCo exclusions were added to get there. Nothing survives
+either: 779 mutants generated, 779 killed.
 
-Surviving mutants:
+The three mutants that used to survive here were cleared in PR #8, and two of them only because
+the reasoning that had retired them was re-read rather than re-quoted:
 
-- `EncryptedPrivateKeyReader.getKeyPair` (line 104): an explicit `PEMParser.close()` after the PEM
-  object has already been read - removing it leaks a reader but changes no result.
+- `EncryptedPrivateKeyReader.getKeyPair` (line 104, `PEMParser.close()`): documented below as a
+  leak worth accepting because observing it "would be flaky and platform-dependent". Both halves
+  were wrong. The leak is not on the happy path the note assumed but on the exception path, where
+  `close()` is never reached at all, so a malformed PEM file leaks a descriptor per call - a real
+  defect, filed as `crypt-data` issue #7. And the observation is deterministic: counting the
+  entries under `/proc/self/fd` that point at one named file is not the flaky total-descriptor
+  heuristic the note had in mind. The fix is `try`-with-resources, which also makes the method
+  match `PemObjectReader`, the only other place in `src/main` that opens a PEM parser.
 - `EncryptedPrivateKeyReader.getPrivateKey(File, String)` (line 275) and
-  `PrivateKeyReader.getPrivateKey(byte[])` (line 474): the fall-through `return` after every
-  algorithm attempt has failed, reached only when a preceding attempt that succeeds on every JDK
-  shipped does not.
+  `PrivateKeyReader.getPrivateKey(byte[])` (line 474): the fall-through `return optionalPrivateKey`
+  after every algorithm attempt has failed. The note below called restructuring these "cosmetic".
+  It was cheap rather than cosmetic: the local was initialised to `Optional.empty()`, reassigned in
+  every success branch and returned there immediately, so it could never be observed holding
+  anything else. Returning `Optional.of(...)` per branch and `Optional.empty()` at the end says so
+  in the source, and PIT's own equivalent-constant filter then stops generating the mutant.
 
 Two more used to survive here - `CertFactory.newX509CertificateV3(...)` ×2 and
 `HashExtensions.hash(...)` ×2 - until a second look found the guarded conditions were redundant
@@ -155,9 +166,9 @@ earns its keep:
 
 ## Why not literal 100%
 
-`crypt-api` is at 100.0%. `crypt-data` is at 99.6% (3 survivors of 782) and `mystic-crypt` at
-99.5% (5 survivors of 1076). This section is the answer to "why not push those to 100% too" -
-worked through for every one of the 8 remaining survivors, not asserted in general. It was written
+`crypt-api` and `crypt-data` are at 100.0%. `mystic-crypt` is at 99.5% (5 survivors of 1076). This
+section is the answer to "why not push those to 100% too" - worked through for every one of the 5
+remaining survivors, not asserted in general. It was written
 after four rounds of exactly that push: the first round (PR #69) killed everything killable and
 argued the rest was equivalent; the second round (PR #5, PR #76) went back over every argued
 survivor a second time and found seven that were not equivalent at all, but dead code that
@@ -167,8 +178,10 @@ killable through reflection alone, at zero cost to production code; a fourth rou
 `mystic-crypt` found three more killable (two by testing outside the input domain a prior
 "equivalent" argument had implicitly assumed, one by substituting a defective JCA provider) and
 turned two more from unkillable into killable by extracting a `finally`-free helper method so PIT's
-own equivalent-constant filter could apply (see above). What follows is what was left after all
-four rounds, sorted by why it stays.
+own equivalent-constant filter could apply (see above); a fifth round on `crypt-data` (PR #8)
+cleared its last three, two of them by re-reading a retirement argument instead of re-quoting it
+(see the `crypt-data` section above). What follows is what was left after all five rounds, sorted
+by why it stays.
 
 **Provably impossible - not a matter of effort.**
 
@@ -199,30 +212,23 @@ four rounds, sorted by why it stays.
   moving the guarded logic out of the `finally`-carrying method entirely. The same move is not
   available here: the `try`-with-resources *is* the guarded logic, there is nothing to extract it
   from.)
-- `EncryptedPrivateKeyReader.getKeyPair:104` (`PEMParser.close()`, `VoidMethodCallMutator`): this
-  is the one case in the list that is **not dead code** - removing the call introduces a real
-  resource leak. It survives because a leaked file descriptor is not something a unit test observes
-  without OS-level introspection (open file counts, `lsof`-style checks), which would be flaky and
-  platform-dependent. Kept exactly as-is; killing this mutant is not worth what the test would cost
-  in reliability.
+Two entries stood here until round five and no longer do, both from `crypt-data`:
+`EncryptedPrivateKeyReader.getKeyPair:104` was filed under this heading as an acceptable leak whose
+test would be too flaky to be worth it, and the two `getPrivateKey` fall-through returns under a
+heading calling their removal cosmetic. Both retirements were wrong, for different reasons, and the
+`crypt-data` section above records why. What that says about this list: an argument for keeping a
+survivor ages exactly as badly as any other state assertion in these docs.
 
-**Already dead code for an unrelated reason - restructuring would be cosmetic.**
-
-- `EncryptedPrivateKeyReader.getPrivateKey(File, String):275` and
-  `PrivateKeyReader.getPrivateKey(byte[]):474` (`EmptyObjectReturnValsMutator`): fall-through
-  returns after every preceding attempt already returns on success. Provably unreachable given the
-  current algorithm list, not merely unobservable. Restructuring to remove the fall-through would
-  change nothing about test coverage and is a separate refactor, not a mutation-testing exercise.
-
-Conclusion: of the 8 individual surviving mutants, 1 is impossible under the current JDK
-(`System.exit`), 5 can only be killed by weakening a real design property (resource safety, a
+Conclusion: of the 5 individual surviving mutants, 1 is impossible under the current JDK
+(`System.exit`) and 4 can only be killed by weakening a real design property (a
 bytecode-compilation artifact of `try`-with-resources, absence of side channels - the 3
-`FeldmanVSS` mutants count as one design property, secret-reconstruction arithmetic), and the
-remaining 2 are unreachable dead code whose removal would be cosmetic. None of the eight is a case
-of "nobody got around to it yet" - and five mutants that briefly *were* exactly that
-(`ScryptHasher.isPowerOfTwo`, `CryptObjectDecoratorExtensions.endsWith` in round three;
+`FeldmanVSS` mutants count as one design property, secret-reconstruction arithmetic). None of the
+five is a case of "nobody got around to it yet" - and eight mutants that briefly *were* exactly
+that (`ScryptHasher.isPowerOfTwo`, `CryptObjectDecoratorExtensions.endsWith` in round three;
 `FeldmanVSS.reconstructSecretBytes`'s two `NegateConditionalsMutator` variants and
-`KemCommand.call` in round four) are why this list gets re-checked rather than taken as final. Round
+`KemCommand.call` in round four; `EncryptedPrivateKeyReader.getKeyPair` and the two `getPrivateKey`
+fall-through returns in round five) are why this list gets re-checked rather than taken as final.
+Round
 four also demonstrates a second way a survivor disappears: `Argon2Support.verify` and
 `Pbkdf2Support.verify` moved out of this document entirely not because a new test targets them
 directly, but because extracting the guarded logic out of the `finally`-carrying method changed

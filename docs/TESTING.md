@@ -36,6 +36,7 @@ fix ships with a test that is verified to fail without it.
 | `CryptObjectDecoratorExtensions.startsWith` / `endsWith` (private) | `startsWith` indexed `array[i]` without checking the array is at least as long as the prefix (`ArrayIndexOutOfBoundsException`). `endsWith` fell through to an unconditional `return true` whether every suffix byte matched *or* the array simply ran out first, so `removeFromEnd` then computed a negative length (`NegativeArraySizeException`) - and the existing test asserted that exception as correct. The fourth bug-enshrining test of the cycle. | Same mutation pass. |
 | `SRP6aClient.computeSessionKey` / `SRP6aVerifierGenerator.generateVerifier` | Not a defect in the code, but an untested security property: both wipe the UTF-8 `passwordBytes` they derive, and no test could tell whether they did. Declared an equivalent mutant in the first pass; the adversarial verifier disproved that - Bouncy Castle's `SRP6Util.calculateX` hands the array to `Digest.update` *by reference*, so a recording digest observes the production buffer. | Adversarial verification of an equivalence claim. `SrpPasswordBytesWipeTest` now asserts the buffer reads all zeroes. |
 | `Argon2SupportTest.verify_answersFalseForATamperedHash` (test suite) | Flaky by construction: it flipped the *last* base64 character of the 43-character unpadded hash, of which only 4 bits are significant - whenever that character was `A`, the `A→B` flip decoded to identical bytes, `verify` correctly answered `true`, and the test failed. One run in sixteen. The sibling PBKDF2 test already carried a comment warning about exactly this. | First reported as "could not be reproduced in eight runs"; root-caused during the mutation pass when it failed on a clean tree. Now tampers the first character. |
+| `EncryptedPrivateKeyReader.getKeyPair` (`crypt-data`) | **Resource leak.** The PEM parser was closed with a plain call after `readObject()`, so a malformed PEM body - which makes `readObject()` throw - left the underlying `FileReader` open until the garbage collector reclaimed it. A caller validating a batch of key files leaked one descriptor per rejected file. It was the only PEM/Reader construction site in `src/main` not using `try`-with-resources. | Fifth mutation pass: the surviving `PEMParser.close()` mutant had been documented as an acceptable leak whose test would be flaky. Re-reading the code for *which* path leaks showed the exception path never closes at all, and a test that counts the `/proc/self/fd` entries pointing at one named file observes it deterministically. |
 
 ---
 
@@ -88,16 +89,16 @@ code the tests do run, how much would they notice being broken?".
 | Repo | Measured on | Tests | Line | Branch | Mutation score (killed / generated) | Test strength |
 |---|---|---|---|---|---|---|
 | `crypt-api` | `develop` @ `cf35381` (released as 10.0.0) | 271 | 100.00% | 100.00% | 100.0% (78 / 78) | 100.0% |
-| `crypt-data` | `develop` @ `7effa34` (PR #5) | 1018 | 100.00% | 100.00% | 99.6% (779 / 782) | 99.6% |
+| `crypt-data` | `2374c66` (PR #8) | 1019 | 100.00% | 100.00% | 100.0% (779 / 779) | 100.0% |
 | `mystic-crypt` | `develop` @ `b7491c26` | 896 | 99.92% | 100.00% | 99.5% (1071 / 1076) | 99.6% |
 
 Regenerate with the commands under [How to run](#how-to-run); the reports are
 `build/reports/jacoco/test/jacocoTestReport.xml` and `build/reports/pitest/`.
 
-`crypt-api` is the only one of the three at a literal 100% mutation score. The other two are not
-at 100% because the remaining survivors cannot be killed without making the code worse - see
+`crypt-api` and `crypt-data` are at a literal 100% mutation score. `mystic-crypt` is not, because
+its remaining survivors cannot be killed without making the code worse - see
 ["Why not literal 100%"](COVERAGE_EXCEPTIONS.md#why-not-literal-100) in
-[COVERAGE_EXCEPTIONS.md](COVERAGE_EXCEPTIONS.md) for the per-mutant reasoning. Four rounds of this
+[COVERAGE_EXCEPTIONS.md](COVERAGE_EXCEPTIONS.md) for the per-mutant reasoning. Five rounds of this
 cycle's work went specifically after every surviving mutant: the first round (PR #69 for
 `mystic-crypt`) killed what was killable and documented the rest; a second pass (PR #5 for
 `crypt-data`, PR #76 for `mystic-crypt`) re-examined every documented survivor and found seven that
@@ -109,8 +110,12 @@ questioning an unstated assumption in a prior "equivalent for every reachable in
 input space was bigger than the reachable-through-`splitSecret` subset the argument implicitly
 assumed) and one by substituting a defective JCA provider instead of touching production code - plus
 turned two more from unkillable into killable by extracting a `finally`-free helper method, which
-let PIT's own equivalent-constant filter apply. What is left after all four rounds is the floor, not
-something left undone.
+let PIT's own equivalent-constant filter apply. A fifth pass on `crypt-data` alone (PR #8) cleared
+its last three and overturned the reasoning behind two of them: the `PEMParser.close()` mutant was
+documented as an acceptable leak whose test would be flaky, and both halves of that were wrong -
+the leak happens on the exception path where `close()` never runs at all, and counting the
+descriptors in `/proc/self/fd` that point at one named file is deterministic, not a total-count
+heuristic. What is left after all five rounds is the floor, not something left undone.
 
 **What these numbers do not tell you.** The two uncovered lines in `mystic-crypt` are
 `MysticCryptCli.main`, which is `System.exit(execute(args))`: no in-process test can execute it
