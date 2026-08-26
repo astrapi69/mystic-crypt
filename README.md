@@ -14,7 +14,7 @@ correctly without being a cryptographer.**
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT)
 [![Javadoc](http://www.javadoc.io/badge/io.github.astrapi69/mystic-crypt.svg)](http://www.javadoc.io/doc/io.github.astrapi69/mystic-crypt)
 [![Java](https://img.shields.io/badge/Java-25-orange)](https://openjdk.org/projects/jdk/25/)
-
+![Test Cases](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/astrapi69/69b2e93dd826ce43cc3f02433a465ae3/raw/test-cases.json)
 </div>
 
 mystic-crypt wraps the JDK's and Bouncy Castle's cryptographic primitives in small, focused classes
