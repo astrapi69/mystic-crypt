@@ -170,6 +170,40 @@ final class CliSupport
 	}
 
 	/**
+	 * Refuses {@code -} where a path to write to is wanted
+	 * <p>
+	 * The input side reads standard input from {@code -}, so a caller who learned that convention
+	 * reaches for it on the output side too. There it is a plain file name: a file called {@code -}
+	 * appears in the working directory, the command reports success, and the bytes the caller
+	 * expected in a pipe are on disk instead - a private key among them, for
+	 * {@code keygen --out-private}. Standard output is reachable on this side as well, by leaving
+	 * the option out, so the dash is refused rather than given a second meaning (issue #101).
+	 *
+	 * @param file
+	 *            the value of the output option, may be null when the option was left out
+	 * @param option
+	 *            the name of the option, for the message
+	 * @param hint
+	 *            what the caller should do instead, for the message
+	 * @throws IllegalArgumentException
+	 *             if the given file is the dash
+	 */
+	static void refuseDashAsPath(final File file, final String option, final String hint)
+	{
+		if (file != null && "-".equals(file.getPath()))
+		{
+			throw new IllegalArgumentException("'-' is not a file name for " + option
+				+ "; it would create a file called '-' in the working directory. " + hint);
+		}
+	}
+
+	/** What to tell a caller whose output option may simply be left out. */
+	static final String LEAVE_IT_OUT = "Leave the option out to write to standard output.";
+
+	/** What to tell a caller whose output option is required. */
+	static final String PASS_A_PATH = "Pass a real file path.";
+
+	/**
 	 * Reads the bytes to process from the given file, or from standard input when the file is the
 	 * conventional {@code -}.
 	 *

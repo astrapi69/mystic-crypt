@@ -78,14 +78,9 @@ public class SignCommand implements Callable<Integer>
 	@Override
 	public Integer call() throws Exception
 	{
-		if ("-".equals(signature.getPath()))
-		{
-			// without this guard a file literally named '-' would silently appear in the working
-			// directory - surprising for users who learned the '-' convention from --in
-			throw new IllegalArgumentException(
-				"writing the signature to standard output is not supported; pass a file path "
-					+ "for --signature");
-		}
+		// this command guarded its output path from the start; the guard lives in CliSupport now,
+		// because every other command needed the same one (issue #101)
+		CliSupport.refuseDashAsPath(signature, "--signature", CliSupport.PASS_A_PATH);
 		String keyFactoryAlgorithm = SignatureSupport.keyFactoryAlgorithm(algorithm);
 		byte[] data = CliSupport.readData(in);
 		PrivateKey privateKey = readPrivateKey(keyFactoryAlgorithm);

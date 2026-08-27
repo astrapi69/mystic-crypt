@@ -108,6 +108,8 @@ public class KeygenCommand implements Callable<Integer>
 	@Override
 	public Integer call()
 	{
+		CliSupport.refuseDashAsPath(outPrivate, "--out-private", CliSupport.LEAVE_IT_OUT);
+		CliSupport.refuseDashAsPath(outPublic, "--out-public", CliSupport.LEAVE_IT_OUT);
 		try
 		{
 			KeyPair keyPair = generate();

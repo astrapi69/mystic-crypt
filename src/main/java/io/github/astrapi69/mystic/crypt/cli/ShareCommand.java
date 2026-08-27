@@ -106,6 +106,7 @@ public class ShareCommand implements Runnable
 		@Override
 		public Integer call()
 		{
+			CliSupport.refuseDashAsPath(out, "--out", CliSupport.PASS_A_PATH);
 			try
 			{
 				byte[] secretBytes = readSecret();
@@ -185,6 +186,7 @@ public class ShareCommand implements Runnable
 		@Override
 		public Integer call()
 		{
+			CliSupport.refuseDashAsPath(out, "--out", CliSupport.LEAVE_IT_OUT);
 			// the two phases are kept apart because they answer different questions: reading the
 			// shares can fail before there is anything to reconstruct (exit 2), while combining
 			// them can succeed as an operation and still not produce a secret (exit 1)
