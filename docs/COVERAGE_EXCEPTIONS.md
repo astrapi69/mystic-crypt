@@ -17,10 +17,10 @@ check found.
 
 Nothing. Every line, branch and mutant. 78 mutants generated, 78 killed.
 
-## `crypt-data` - 0 lines / 0 branches uncovered; 0 surviving mutants of 779
+## `crypt-data` - 0 lines / 0 branches uncovered; 0 surviving mutants of 820
 
 Every line and branch is covered; no JaCoCo exclusions were added to get there. Nothing survives
-either: 779 mutants generated, 779 killed.
+either: 820 mutants generated, 820 killed.
 
 The three mutants that used to survive here were cleared in PR #8, and two of them only because
 the reasoning that had retired them was re-read rather than re-quoted:
