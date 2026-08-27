@@ -90,7 +90,7 @@ code the tests do run, how much would they notice being broken?".
 |---|---|---|---|---|---|---|
 | `crypt-api` | `develop` @ `cf35381` (released as 10.0.0) | 271 | 100.00% | 100.00% | 100.0% (78 / 78) | 100.0% |
 | `crypt-data` | `991aa47` (develop, after PR #30) | 1294 | 100.00% | 100.00% | 100.0% (820 / 820) | 100.0% |
-| `mystic-crypt` | `04ea8a59` (PR #102) | 1249 | 99.94% | 100.00% | 99.6% (1498 / 1504) | 99.6% |
+| `mystic-crypt` | `10ef5fd5` (PR #103) | 1261 | 99.94% | 100.00% | 99.6% (1511 / 1517) | 99.6% |
 
 Regenerate with the commands under [How to run](#how-to-run); the reports are
 `build/reports/jacoco/test/jacocoTestReport.xml` and `build/reports/pitest/`.
