@@ -124,6 +124,7 @@ public class KeyExchangeCommand implements Runnable
 		@Override
 		public Integer call()
 		{
+			CliSupport.refuseDashAsPath(key, "--key", CliSupport.PASS_A_PATH);
 			try
 			{
 				KeyExchangeSupport.Party party = KeyExchangeSupport.newParty(algorithm);
@@ -182,6 +183,8 @@ public class KeyExchangeCommand implements Runnable
 		@Override
 		public Integer call()
 		{
+			CliSupport.refuseDashAsPath(out, "--out", CliSupport.LEAVE_IT_OUT);
+			CliSupport.refuseDashAsPath(encrypted, "--encrypted", CliSupport.LEAVE_IT_OUT);
 			try
 			{
 				String publicKey = readEnvelope(recipient);
@@ -240,6 +243,7 @@ public class KeyExchangeCommand implements Runnable
 		@Override
 		public Integer call()
 		{
+			CliSupport.refuseDashAsPath(encrypted, "--encrypted", CliSupport.LEAVE_IT_OUT);
 			try
 			{
 				KeyExchangeSupport.Party party = KeyExchangeSupport.partyFrom(readEnvelope(key));

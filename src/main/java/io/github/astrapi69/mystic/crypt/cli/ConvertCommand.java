@@ -91,6 +91,7 @@ public class ConvertCommand implements Callable<Integer>
 	@Override
 	public Integer call()
 	{
+		CliSupport.refuseDashAsPath(out, "--out", CliSupport.LEAVE_IT_OUT);
 		try
 		{
 			KeyFileDescription description = KeyFileDescription.of(in);

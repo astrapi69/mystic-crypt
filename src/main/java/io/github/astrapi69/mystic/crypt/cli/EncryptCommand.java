@@ -76,6 +76,7 @@ public class EncryptCommand implements Callable<Integer>
 	@Override
 	public Integer call()
 	{
+		CliSupport.refuseDashAsPath(out, "--out", CliSupport.LEAVE_IT_OUT);
 		try
 		{
 			PassphraseCryptSupport.requireOnlyOneStandardInputReader(textStdin, passphraseStdin);

@@ -232,8 +232,11 @@ class SignCommandTest extends AbstractCliTest
 		Files.writeString(dataFile.toPath(), "data");
 		assertNotEquals(0, run("sign", "--algorithm", "Ed25519", "--key",
 			privatePem.getAbsolutePath(), "--in", dataFile.getAbsolutePath(), "--signature", "-"));
-		assertTrue(err.contains("standard output is not supported"),
-			"the error must reject '-' as signature target, but was: '" + err + "'");
+		// the wording moved to the shared guard every command uses now (issue #101); what is
+		// asserted is that the option is named and the reason is given, not the old sentence
+		assertTrue(err.contains("--signature") && err.contains("'-' is not a file name"),
+			"the error must reject '-' as signature target and name the option, but was: '" + err
+				+ "'");
 	}
 
 	@Test

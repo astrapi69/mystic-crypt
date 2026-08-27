@@ -4,7 +4,20 @@
 Version 12.1-SNAPSHOT
 -------------
 
-(nothing released yet)
+FIXED:
+
+- Every command that writes to a file refused nothing when handed '-' as the path: a file literally
+  called '-' appeared in the working directory, the command reported success, and the bytes the
+  caller expected in a pipe were on disk instead. For 'keygen --out-private' those bytes are a
+  private key. The input side reads standard input from '-', which is where the expectation comes
+  from, and standard output is already reachable on the output side by leaving the option out - so
+  '-' is refused now rather than given a second meaning. 'sign --signature' had guarded itself from
+  the start; that guard moved to CliSupport and is used by all twelve output options. (#101)
+
+CHANGED:
+
+- The message 'sign --signature -' answers with is the shared one now. It names the option and says
+  what would have happened, where it used to say only that standard output is not supported. (#101)
 
 
 Version 12.0.0
