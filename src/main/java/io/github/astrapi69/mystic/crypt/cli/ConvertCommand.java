@@ -91,16 +91,25 @@ public class ConvertCommand implements Callable<Integer>
 	@Override
 	public Integer call()
 	{
-		CliSupport.refuseDashAsPath(out, "--out", CliSupport.LEAVE_IT_OUT);
 		try
 		{
 			KeyFileDescription description = KeyFileDescription.of(in);
-			System.out.println(in.getPath() + " is " + description.describe());
+			// with --describe the description is the answer and belongs on standard output; while
+			// converting it is a remark about the input and would sit in front of the result
+			String said = in.getPath() + " is " + description.describe();
+			if (describe)
+			{
+				System.out.println(said);
+			}
+			else
+			{
+				CliSupport.report(said);
+			}
 			if (describe || to == null)
 			{
 				if (!describe)
 				{
-					System.out.println("nothing was converted: pass --to to say what to convert it "
+					CliSupport.report("nothing was converted: pass --to to say what to convert it "
 						+ "to, or --describe to ask only what it is");
 				}
 				return 0;
@@ -205,14 +214,14 @@ public class ConvertCommand implements Callable<Integer>
 	{
 		if (converted.text() == null)
 		{
-			if (out == null)
+			if (CliSupport.isStandardOutput(out))
 			{
 				throw new IllegalArgumentException(
 					"DER is binary and cannot be printed; pass --out to write it to a file");
 			}
 			Files.write(out.toPath(), converted.bytes());
 		}
-		else if (out == null)
+		else if (CliSupport.isStandardOutput(out))
 		{
 			System.out.print(converted.text());
 			return;
@@ -221,7 +230,7 @@ public class ConvertCommand implements Callable<Integer>
 		{
 			Files.writeString(out.toPath(), converted.text(), StandardCharsets.UTF_8);
 		}
-		System.out.println("wrote " + converted.what() + " to " + out.getPath());
+		CliSupport.report("wrote " + converted.what() + " to " + out.getPath());
 	}
 
 	private byte[] certificateDerFromPem() throws Exception

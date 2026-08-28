@@ -98,9 +98,9 @@ class ConvertCommandTest extends AbstractCliTest
 			run("convert", "--in", der.getPath(), "--to", "pkcs8", "--out", pem.getPath()),
 			"stderr was: '" + err + "'");
 
-		assertTrue(out.contains("is a private key in PKCS#8"),
-			"the run must say what it found first, but was: '" + out + "'");
-		assertTrue(out.contains("wrote PEM"), "stdout was: '" + out + "'");
+		assertTrue(err.contains("is a private key in PKCS#8"),
+			"the run must say what it found first, but was: '" + err + "'");
+		assertTrue(err.contains("wrote PEM"), "stderr was: '" + err + "'");
 	}
 
 	/**
@@ -225,8 +225,8 @@ class ConvertCommandTest extends AbstractCliTest
 
 		assertEquals(0, run("convert", "--in", der.getPath()));
 
-		assertTrue(out.contains("nothing was converted"), "stdout was: '" + out + "'");
-		assertTrue(out.contains("--to"), "stdout was: '" + out + "'");
+		assertTrue(err.contains("nothing was converted"), "stderr was: '" + err + "'");
+		assertTrue(err.contains("--to"), "stderr was: '" + err + "'");
 	}
 
 	@Test
@@ -406,11 +406,11 @@ class ConvertCommandTest extends AbstractCliTest
 
 		assertEquals(0, run("convert", "--in", pkcs8Der.getPath(), "--to", "pem", "--out",
 			new File(tempDir, "a.pem").getPath()));
-		assertTrue(out.contains("wrote PEM, PKCS#8"), "stdout was: '" + out + "'");
+		assertTrue(err.contains("wrote PEM, PKCS#8"), "stderr was: '" + err + "'");
 
 		assertEquals(0, run("convert", "--in", pkcs1Pem.getPath(), "--to", "pem", "--out",
 			new File(tempDir, "b.pem").getPath()));
-		assertTrue(out.contains("wrote PEM, PKCS#1"), "stdout was: '" + out + "'");
+		assertTrue(err.contains("wrote PEM, PKCS#1"), "stderr was: '" + err + "'");
 	}
 
 	/**

@@ -81,7 +81,6 @@ public class DecryptCommand implements Callable<Integer>
 	@Override
 	public Integer call()
 	{
-		CliSupport.refuseDashAsPath(out, "--out", CliSupport.LEAVE_IT_OUT);
 		try
 		{
 			PassphraseCryptSupport.requireOnlyOneStandardInputReader(textStdin, passphraseStdin);
@@ -93,7 +92,7 @@ public class DecryptCommand implements Callable<Integer>
 				PassphraseCryptSupport::asText);
 			if (printed == null)
 			{
-				System.out.println("decrypted " + decrypted.length + " bytes to " + out.getPath());
+				CliSupport.report("decrypted " + decrypted.length + " bytes to " + out.getPath());
 			}
 			else
 			{
