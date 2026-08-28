@@ -296,11 +296,15 @@ class ConvertCommandTest extends AbstractCliTest
 	}
 
 	/**
-	 * Only RSA has a traditional label of its own; an EC key asked for PKCS#1 keeps the PKCS#8
-	 * label, because there is no traditional form for it to be mistaken for.
+	 * An EC key asked for the traditional form gets the label that belongs to it.
+	 * <p>
+	 * This asserted the opposite while the conversions lived in KeyFileWriter, on the premise that
+	 * only RSA has a traditional label of its own. That premise was wrong: an ec key has RFC 5915
+	 * and the EC PRIVATE KEY label, which is what openssl writes and reads. crypt-data picks the
+	 * label from the key rather than from its bytes, so the file says what it holds.
 	 */
 	@Test
-	void aNonRsaKeyAskedForPkcs1KeepsThePkcs8Label(@TempDir File tempDir) throws Exception
+	void anEcKeyAskedForPkcs1GetsTheEcLabel(@TempDir File tempDir) throws Exception
 	{
 		java.security.KeyPairGenerator generator = java.security.KeyPairGenerator.getInstance("EC",
 			BouncyCastleProvider.PROVIDER_NAME);
@@ -314,10 +318,16 @@ class ConvertCommandTest extends AbstractCliTest
 			run("convert", "--in", der.getPath(), "--to", "pkcs1", "--out", pem.getPath()),
 			"stderr was: '" + err + "'");
 
-		assertTrue(
-			Files.readString(pem.toPath())
-				.contains("-----BEGIN " + KeyFileWriter.PKCS8_LABEL + "-----"),
-			"an EC key has no traditional label of its own");
+		String written = Files.readString(pem.toPath());
+		assertTrue(written.startsWith("-----BEGIN EC PRIVATE KEY-----"),
+			"an ec key has a traditional label of its own, but the file began '"
+				+ written.lines().findFirst().orElse("") + "'");
+		assertArrayEquals(
+			io.github.astrapi69.crypt.data.key.PrivateKeyExtensions
+				.toPKCS1Format(keyPair.getPrivate()),
+			java.util.Base64.getDecoder()
+				.decode(written.replaceAll("-----[A-Z0-9 ]+-----", "").replaceAll("\\s", "")),
+			"and the body must be the traditional encoding that label names");
 	}
 
 	@Test

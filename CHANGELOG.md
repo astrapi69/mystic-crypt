@@ -4,6 +4,19 @@
 Version 12.1-SNAPSHOT
 -------------
 
+CHANGED:
+
+- crypt-data 12.0.0 to 12.2, and KeyFileWriter gives the conversions back to it. The class existed
+  because crypt-data wrote PKCS#1 under a PKCS#8 header; that is fixed at its source since 12.1, so
+  what is left here is the shape the commands want - text and bytes rather than a stream - and the
+  conversions are crypt-data's again.
+- The traditional form of a key now carries the label of its own algorithm. The workaround labelled
+  everything but RSA 'PRIVATE KEY', which means PKCS#8, over content with the wrapper stripped - a
+  file readable as neither format. An EC key gets 'EC PRIVATE KEY' and a DSA key 'DSA PRIVATE KEY';
+  a key with no traditional form of its own keeps its PKCS#8 encoding under the header that names
+  it. A test had held the wrong premise - "an EC key has no traditional label of its own" - and is
+  corrected with the code.
+
 FIXED:
 
 - Every command that writes to a file refused nothing when handed '-' as the path: a file literally
