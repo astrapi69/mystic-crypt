@@ -1,8 +1,16 @@
 ## Change log
 ----------------------
 
-Version 12.1-SNAPSHOT
+Version 12.1
 -------------
+
+ADDED:
+
+- The commands whose result is a stream write it to standard output when the output path is '-':
+  'encrypt', 'decrypt', 'convert' and both halves of 'share'. It is the same marker '--in' already
+  reads standard input from, and it means what leaving the option out means; it exists so that the
+  intent can be said out loud in a pipeline. 'convert --to der' still refuses, because DER is
+  binary and there is nothing to print. (#104)
 
 CHANGED:
 
@@ -16,6 +24,17 @@ CHANGED:
   a key with no traditional form of its own keeps its PKCS#8 encoding under the header that names
   it. A test had held the wrong premise - "an EC key has no traditional label of its own" - and is
   corrected with the code.
+- The message 'sign --signature -' answers with is the shared one now. It names the option and says
+  what would have happened, where it used to say only that standard output is not supported. (#101)
+- In those commands a remark about the result no longer shares the stream with the result. 'wrote
+  23 bytes to out.bin', 'wrote 3 shares to ...' and the description 'convert' prints before
+  converting go to standard error, so standard output carries the bytes alone and a pipeline gets
+  exactly them. With '--describe' the description IS the answer and stays on standard output. A
+  script that parsed these lines out of standard output has to read standard error now. (#104)
+- 'encrypt', 'decrypt', 'convert' and 'share' no longer refuse '-' as an output path; that refusal
+  from #101 was what kept the trap closed until this meaning existed. 'keygen', 'keyx' and 'sign'
+  keep it: a private key, a key exchange secret and a raw signature are not streams a pipeline
+  wants. (#104)
 
 FIXED:
 
@@ -26,31 +45,6 @@ FIXED:
   from, and standard output is already reachable on the output side by leaving the option out - so
   '-' is refused now rather than given a second meaning. 'sign --signature' had guarded itself from
   the start; that guard moved to CliSupport and is used by all twelve output options. (#101)
-
-CHANGED:
-
-- The message 'sign --signature -' answers with is the shared one now. It names the option and says
-  what would have happened, where it used to say only that standard output is not supported. (#101)
-
-ADDED:
-
-- The commands whose result is a stream write it to standard output when the output path is '-':
-  'encrypt', 'decrypt', 'convert' and both halves of 'share'. It is the same marker '--in' already
-  reads standard input from, and it means what leaving the option out means; it exists so that the
-  intent can be said out loud in a pipeline. 'convert --to der' still refuses, because DER is
-  binary and there is nothing to print. (#104)
-
-CHANGED:
-
-- In those commands a remark about the result no longer shares the stream with the result. 'wrote
-  23 bytes to out.bin', 'wrote 3 shares to ...' and the description 'convert' prints before
-  converting go to standard error, so standard output carries the bytes alone and a pipeline gets
-  exactly them. With '--describe' the description IS the answer and stays on standard output. A
-  script that parsed these lines out of standard output has to read standard error now. (#104)
-- 'encrypt', 'decrypt', 'convert' and 'share' no longer refuse '-' as an output path; that refusal
-  from #101 was what kept the trap closed until this meaning existed. 'keygen', 'keyx' and 'sign'
-  keep it: a private key, a key exchange secret and a raw signature are not streams a pipeline
-  wants. (#104)
 
 
 Version 12.0.0
