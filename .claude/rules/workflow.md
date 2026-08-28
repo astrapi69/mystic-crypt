@@ -45,6 +45,34 @@ Releases follow the family order crypt-api -> crypt-data -> mystic-crypt;
 a downstream release commit is pushed only when the upstream version is
 actually resolvable on Maven Central.
 
+## The downstream is built before the upstream is published
+
+A published version cannot be replaced, so the check that it works belongs
+BEFORE the upload, not after it. Upstream tests passing is not that check:
+they test the library against itself, never against the consumer that will
+get it.
+
+Before `publishAllPublicationsToCentralPortal` for any repo in this family:
+
+1. `./gradlew publishToMavenLocal` in the repo being released
+2. point the downstream at that exact version (`mavenLocal()` is already first
+   in `gradle/repositories.gradle`)
+3. `./gradlew clean build` in the downstream - green, or the release does not
+   go out
+4. report what that run said, then ask
+
+crypt-data 12.1 is why this is written down. Eight defects were fixed and
+verified in crypt-data alone - 100% branch coverage, every mutant killed - and
+published. mystic-crypt had never been compiled against it and failed four
+tests immediately: the fix that made certificate signing name Bouncy Castle
+for EC curves the JDK lacks made it refuse ML-DSA keys the JDK generates.
+Because a version on Central is permanent, that cost a 12.2 that existed only
+to undo it.
+
+The same applies in the small: a change to crypt-api or crypt-data made while
+working in mystic-crypt is built into the consumer locally before it is
+proposed, not after it is merged.
+
 ## Git discipline
 
 - Never `--amend` + force-push on an open PR - add a new commit instead
