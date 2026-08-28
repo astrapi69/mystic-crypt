@@ -41,8 +41,12 @@ import org.junit.jupiter.api.io.TempDir;
  * <p>
  * The input side teaches that convention - {@code --in -} reads standard input - and standard
  * output is already reachable on the output side by leaving the option out, which is what the
- * commands that support it document. So {@code -} as an output path is not a missing feature but a
- * name that shadows a working one, and every command refuses it the way {@code sign} already did.
+ * commands that support it document.
+ * <p>
+ * The commands whose output is a stream took the marker on afterwards and write to standard output
+ * for it; what they promise is asserted in {@code StreamOutputTest}. What stays here is everything
+ * that still refuses: a private key, a key exchange secret and a raw signature are not streams a
+ * pipeline wants, so {@code keygen}, {@code keyx} and {@code sign} answer as they did (issue #104).
  */
 class DashAsOutputPathTest extends AbstractCliTest
 {
@@ -72,28 +76,6 @@ class DashAsOutputPathTest extends AbstractCliTest
 		dashInTheWorkingDirectory.delete();
 	}
 
-	@Test
-	void encryptRefusesADashAsItsOutput(@TempDir File tempDir) throws Exception
-	{
-		File plain = new File(tempDir, "plain.txt");
-		Files.writeString(plain.toPath(), "some content");
-
-		assertTheDashIsRefused("--out", "encrypt", "--in", plain.getAbsolutePath(), "--out", "-",
-			"--passphrase", "secret");
-	}
-
-	@Test
-	void decryptRefusesADashAsItsOutput(@TempDir File tempDir) throws Exception
-	{
-		File plain = new File(tempDir, "plain.txt");
-		Files.writeString(plain.toPath(), "some content");
-		File encrypted = new File(tempDir, "encrypted.bin");
-		run("encrypt", "--in", plain.getAbsolutePath(), "--out", encrypted.getAbsolutePath(),
-			"--passphrase", "secret");
-
-		assertTheDashIsRefused("--out", "decrypt", "--in", encrypted.getAbsolutePath(), "--out",
-			"-", "--passphrase", "secret");
-	}
 
 	@Test
 	void keygenRefusesADashForThePrivateKey()
@@ -109,23 +91,6 @@ class DashAsOutputPathTest extends AbstractCliTest
 			"--out-public", "-");
 	}
 
-	@Test
-	void convertRefusesADashAsItsOutput(@TempDir File tempDir) throws Exception
-	{
-		File pem = new File(tempDir, "key.pem");
-		run("keygen", "--algorithm", "RSA", "--size", "2048", "--out-private",
-			pem.getAbsolutePath());
-
-		assertTheDashIsRefused("--out", "convert", "--in", pem.getAbsolutePath(), "--to", "der",
-			"--out", "-");
-	}
-
-	@Test
-	void shareSplitRefusesADashAsItsOutput()
-	{
-		assertTheDashIsRefused("--out", "share", "split", "--secret", "the-secret", "-t", "2", "-n",
-			"3", "-o", "-");
-	}
 
 	@Test
 	void keyExchangeRefusesADashForTheKeyItWrites()
@@ -133,18 +98,6 @@ class DashAsOutputPathTest extends AbstractCliTest
 		assertTheDashIsRefused("--key", "keyx", "new", "-a", "X25519", "-k", "-");
 	}
 
-	/**
-	 * The guard is the first statement of every {@code call()}, so it answers before the command
-	 * looks at anything else. These four options are therefore driven with arguments that would not
-	 * carry the command through on their own - what is asserted is the refusal, and that it comes
-	 * first.
-	 */
-	@Test
-	void shareCombineRefusesADashAsItsOutput()
-	{
-		assertTheDashIsRefused("--out", "share", "combine", "--share", "1-aa", "--share", "2-bb",
-			"-o", "-");
-	}
 
 	@Test
 	void keyExchangeSendRefusesADashForTheHandshake()

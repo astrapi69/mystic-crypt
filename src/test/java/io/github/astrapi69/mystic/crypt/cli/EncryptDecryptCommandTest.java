@@ -213,13 +213,13 @@ class EncryptDecryptCommandTest extends AbstractCliTest
 
 		assertEquals(0,
 			run("encrypt", "-i", plain.getPath(), "-o", encrypted.getPath(), "-p", "pass"));
-		assertTrue(out.contains("encrypted 10 bytes to " + encrypted.getPath()),
-			"stdout was: '" + out + "'");
+		assertTrue(err.contains("encrypted 10 bytes to " + encrypted.getPath()),
+			"stderr was: '" + err + "'");
 
 		assertEquals(0,
 			run("decrypt", "-i", encrypted.getPath(), "-o", back.getPath(), "-p", "pass"));
-		assertTrue(out.contains("decrypted 10 bytes to " + back.getPath()),
-			"stdout was: '" + out + "'");
+		assertTrue(err.contains("decrypted 10 bytes to " + back.getPath()),
+			"stderr was: '" + err + "'");
 	}
 
 	@Test

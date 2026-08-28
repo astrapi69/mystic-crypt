@@ -133,7 +133,7 @@ final class PassphraseCryptSupport
 	static String writeOutput(final File out, final byte[] result, final Printable printable)
 		throws IOException
 	{
-		if (out != null)
+		if (!CliSupport.isStandardOutput(out))
 		{
 			Files.write(out.toPath(), result);
 			return null;

@@ -170,6 +170,37 @@ final class CliSupport
 	}
 
 	/**
+	 * Answers whether the given output option asks for standard output
+	 * <p>
+	 * The commands whose result is a stream take {@code -} for it, the same marker the input side
+	 * reads standard input from. Leaving the option out means the same thing; the marker exists so
+	 * that a required option can still say it (issue #104).
+	 *
+	 * @param out
+	 *            the value of the output option, may be null when the option was left out
+	 * @return true if the result is to go to standard output
+	 */
+	static boolean isStandardOutput(final File out)
+	{
+		return out == null || "-".equals(out.getPath());
+	}
+
+	/**
+	 * Reports what happened, on standard error
+	 * <p>
+	 * A remark about the result is not the result. It goes to the other stream so that standard
+	 * output carries the bytes alone and a pipeline gets exactly them, while the caller still sees
+	 * what was done (issue #104).
+	 *
+	 * @param message
+	 *            what to report
+	 */
+	static void report(final String message)
+	{
+		System.err.println(message);
+	}
+
+	/**
 	 * Refuses {@code -} where a path to write to is wanted
 	 * <p>
 	 * The input side reads standard input from {@code -}, so a caller who learned that convention

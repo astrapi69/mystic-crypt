@@ -172,8 +172,8 @@ class ShareCommandTest extends AbstractCliTest
 
 		assertEquals(0, run("share", "split", "--file", secretFile.getPath(), "-t", "2", "-n", "3",
 			"-o", sharesFile.getPath()));
-		assertTrue(out.contains("any 2 of them"),
-			"the confirmation must state the threshold, but was: '" + out + "'");
+		assertTrue(err.contains("any 2 of them"),
+			"the confirmation must state the threshold, but was: '" + err + "'");
 
 		// keep only two of the three lines, the situation combine exists for
 		List<String> all = Files.readAllLines(sharesFile.toPath());
@@ -265,8 +265,8 @@ class ShareCommandTest extends AbstractCliTest
 		assertEquals(0, run("share", "combine", "--share", lines.get(0), "--share", lines.get(1),
 			"-o", recovered.getPath()), "stderr was: '" + err + "'");
 
-		assertTrue(out.contains("wrote the reconstructed secret to " + recovered.getPath()),
-			"stdout was: '" + out + "'");
+		assertTrue(err.contains("wrote the reconstructed secret to " + recovered.getPath()),
+			"stderr was: '" + err + "'");
 		assertEquals(SECRET, Files.readString(recovered.toPath()));
 	}
 

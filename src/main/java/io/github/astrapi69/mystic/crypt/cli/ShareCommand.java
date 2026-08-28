@@ -106,7 +106,6 @@ public class ShareCommand implements Runnable
 		@Override
 		public Integer call()
 		{
-			CliSupport.refuseDashAsPath(out, "--out", CliSupport.PASS_A_PATH);
 			try
 			{
 				byte[] secretBytes = readSecret();
@@ -116,10 +115,10 @@ public class ShareCommand implements Runnable
 				{
 					lines.append(share.encode()).append(System.lineSeparator());
 				}
-				if (out != null)
+				if (!CliSupport.isStandardOutput(out))
 				{
 					Files.writeString(out.toPath(), lines.toString(), StandardCharsets.UTF_8);
-					System.out.println("wrote " + split.size() + " shares to " + out.getPath()
+					CliSupport.report("wrote " + split.size() + " shares to " + out.getPath()
 						+ "; any " + threshold + " of them reconstruct the secret");
 				}
 				else
@@ -186,7 +185,6 @@ public class ShareCommand implements Runnable
 		@Override
 		public Integer call()
 		{
-			CliSupport.refuseDashAsPath(out, "--out", CliSupport.LEAVE_IT_OUT);
 			// the two phases are kept apart because they answer different questions: reading the
 			// shares can fail before there is anything to reconstruct (exit 2), while combining
 			// them can succeed as an operation and still not produce a secret (exit 1)
@@ -203,10 +201,10 @@ public class ShareCommand implements Runnable
 			try
 			{
 				byte[] secret = SecretSharing.combine(shares);
-				if (out != null)
+				if (!CliSupport.isStandardOutput(out))
 				{
 					Files.write(out.toPath(), secret);
-					System.out.println("wrote the reconstructed secret to " + out.getPath());
+					CliSupport.report("wrote the reconstructed secret to " + out.getPath());
 				}
 				else
 				{
