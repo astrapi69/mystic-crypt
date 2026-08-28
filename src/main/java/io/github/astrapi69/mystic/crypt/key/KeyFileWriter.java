@@ -29,20 +29,22 @@ import java.io.StringWriter;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
-import org.bouncycastle.asn1.ASN1Primitive;
-import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.util.io.pem.PemObject;
 import org.bouncycastle.util.io.pem.PemWriter;
+
+import io.github.astrapi69.crypt.data.key.PrivateKeyExtensions;
 
 /**
  * Writes a key as PEM or DER, in the encoding that was actually asked for.
  * <p>
- * This exists because {@code PrivateKeyWriter.write(..., KeyFormat.PKCS_8)} in crypt-data does not
- * write PKCS#8: it routes through {@code PrivateKeyExtensions.toPemFormat}, which calls
- * {@code toPKCS1Format} for every key type and so strips the PKCS#8 wrapper before armouring the
- * result. Asking for PKCS#8 there yields PKCS#1 under an RSA PRIVATE KEY header. Until that is
- * fixed at its source, the commands that let a user choose the encoding use this instead, so what
- * the option says is what lands in the file.
+ * This was a workaround while {@code PrivateKeyWriter.write(..., KeyFormat.PKCS_8)} in crypt-data
+ * wrote PKCS#1 under a PKCS#8 header. That is fixed at its source since crypt-data 12.1, so the
+ * conversions are its again and what is left here is the shape the commands want: text and bytes
+ * rather than a stream, and one place to ask for either encoding.
+ * <p>
+ * The workaround had carried a smaller version of the same fault - it labelled the traditional form
+ * of anything but RSA {@code PRIVATE KEY}, which means PKCS#8, over content with the wrapper
+ * stripped. crypt-data picks the header that belongs to the algorithm, so that goes with it.
  */
 public final class KeyFileWriter
 {
@@ -85,9 +87,7 @@ public final class KeyFileWriter
 	 */
 	public static byte[] toPkcs1(final PrivateKey privateKey) throws IOException
 	{
-		final PrivateKeyInfo privateKeyInfo = PrivateKeyInfo.getInstance(privateKey.getEncoded());
-		final ASN1Primitive inner = privateKeyInfo.parsePrivateKey().toASN1Primitive();
-		return inner.getEncoded();
+		return PrivateKeyExtensions.toPKCS1Format(privateKey);
 	}
 
 	/**
@@ -104,8 +104,8 @@ public final class KeyFileWriter
 	public static String toPem(final PrivateKey privateKey, final boolean pkcs1) throws IOException
 	{
 		return pkcs1
-			? toPem(labelFor(privateKey), toPkcs1(privateKey))
-			: toPem(PKCS8_LABEL, toPkcs8(privateKey));
+			? PrivateKeyExtensions.toPemFormat(privateKey)
+			: PrivateKeyExtensions.toPkcs8PemFormat(privateKey);
 	}
 
 	/**
@@ -143,17 +143,4 @@ public final class KeyFileWriter
 		return text.toString();
 	}
 
-	/**
-	 * The PEM label a traditional private key of this algorithm is written under. Only RSA has a
-	 * widely used traditional label of its own; anything else keeps the PKCS#8 label, because there
-	 * is no traditional form for it to be mistaken for.
-	 *
-	 * @param privateKey
-	 *            the private key
-	 * @return the PEM label
-	 */
-	private static String labelFor(final PrivateKey privateKey)
-	{
-		return "RSA".equals(privateKey.getAlgorithm()) ? PKCS1_RSA_LABEL : PKCS8_LABEL;
-	}
 }
