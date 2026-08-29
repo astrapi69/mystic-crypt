@@ -1,7 +1,12 @@
 # Workflow (adopted from adaptive-learner, adapted for the crypt-* family)
 
-These rules apply to mystic-crypt and, when working there, to crypt-api and
-crypt-data as well.
+These rules apply to all three repositories of the family - mystic-crypt,
+crypt-data and crypt-api - whichever of them the work starts in. They used to
+say "when working there", which left work that begins in crypt-api alone
+outside them: that is how a lesson already fixed in mystic-crypt stayed unfixed
+in crypt-api (crypt-api#6), and how crypt-api 10.1 was released with an
+untouched changelog (crypt-api#5). The rules live here because mystic-crypt is
+the top of the family, not because they stop here.
 
 ## GITHUB-ISSUE-PFLICHT
 
@@ -44,6 +49,33 @@ first, then continue. Exception: a fix that blocks the release itself.
 Releases follow the family order crypt-api -> crypt-data -> mystic-crypt;
 a downstream release commit is pushed only when the upstream version is
 actually resolvable on Maven Central.
+
+## What publishes a release is not the same in the three repositories
+
+Know which one you are in before tagging or merging. They differ, and the
+difference is not visible from the command you are about to run.
+
+| repo | what uploads a release |
+|---|---|
+| `crypt-api` | a deliberate manual `publishAllPublicationsToCentralPortal` |
+| `crypt-data` | the same |
+| `mystic-crypt` | pushing a `RELEASE-*` tag, through `publish.yml` |
+
+So in mystic-crypt **tagging is publishing**: the question of whether to upload
+belongs BEFORE the tag, not after it. In the other two the tag is a marker and
+the upload is a separate, deliberate act.
+
+None of the three publishes a release from an ordinary merge any more. All
+three did once: `gradle.yml` chose between snapshot and release from the version
+string alone, and a release commit reaches `develop` when its pull request is
+merged - so the merge uploaded, with nobody deciding to. mystic-crypt fixed it
+in its #84, crypt-data in its #38, crypt-api in its #6. crypt-data 12.1 and 12.2
+each went out twice before that: once from the merge, once by hand, because the
+absence of a tag trigger was mistaken for the absence of automatic publishing.
+
+`publishingType` is `USER_MANAGED` in all three, so an unintended upload waits
+in the Portal for a click instead of going live. That is a net, not a design -
+it makes a mistake recoverable, it does not make the mechanism correct.
 
 ## The downstream is built before the upstream is published
 
