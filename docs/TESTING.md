@@ -82,13 +82,13 @@ prove the absence of weak tests.
 
 ## Numbers
 
-Measured 2026-08-23. *Mutation score* divides killed mutants by all mutants, including ones in code
+Measured 2026-08-31, each row on the release it names. *Mutation score* divides killed mutants by all mutants, including ones in code
 no test executes; *test strength* divides only by mutants in executed code, so it answers "of the
 code the tests do run, how much would they notice being broken?".
 
 | Repo | Measured on | Tests | Line | Branch | Mutation score (killed / generated) | Test strength |
 |---|---|---|---|---|---|---|
-| `crypt-api` | `develop` @ `cf35381` (released as 10.0.0) | 271 | 100.00% | 100.00% | 100.0% (78 / 78) | 100.0% |
+| `crypt-api` | `RELEASE-10.1` | 271 | 100.00% | 100.00% | 100.0% (78 / 78) | 100.0% |
 | `crypt-data` | `RELEASE-12.2` | 1301 | 100.00% | 100.00% | 100.0% (822 / 822) | 100.0% |
 | `mystic-crypt` | `RELEASE-12.1` | 1278 | 99.94% | 100.00% | 99.6% (1510 / 1516) | 99.6% |
 
