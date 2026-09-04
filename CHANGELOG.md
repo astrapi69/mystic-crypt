@@ -4,7 +4,16 @@
 Version 12.2-SNAPSHOT
 -------------
 
-(nothing released yet)
+ADDED:
+
+- ECIES, so an EC key pair can encrypt and decrypt and not only sign: EcPublicKeyEncryptor and
+  EcPrivateKeyDecryptor on bytes, EcPublicKeyHexEncryptor and EcPrivateKeyHexDecryptor on hex
+  strings, in the shape of the RSA pair they sit beside. An EC key has no direct encryption
+  primitive the way an RSA key does; ECIES derives a shared secret by ECDH against an ephemeral key
+  pair generated for that one message and encrypts under it, so every encryption carries a fresh
+  public value and no two are alike. The transformation is ECIESwithSHA256, which needs no
+  parameter spec - the block cipher variants require both sides to be handed the same nonce, which
+  would have to travel beside the ciphertext. A key of another algorithm is refused by name. (#112)
 
 
 Version 12.1
