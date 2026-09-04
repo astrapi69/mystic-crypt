@@ -24,13 +24,17 @@
  */
 package io.github.astrapi69.mystic.crypt.cli;
 
+import static io.github.astrapi69.mystic.crypt.key.KeyFileWriter.PKCS8_LABEL;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.security.interfaces.ECPrivateKey;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -160,7 +164,8 @@ class KeygenDetailsCommandTest extends AbstractCliTest
 	}
 
 	@Test
-	void anEcKeyAskedForPkcs1KeepsThePkcs8LabelAndSaysSo(@TempDir File tempDir) throws Exception
+	void anEcKeyAskedForPkcs1GetsTheEcTraditionalLabelAndSaysSo(@TempDir File tempDir)
+		throws Exception
 	{
 		File privateKey = new File(tempDir, "ec.pem");
 
@@ -169,8 +174,10 @@ class KeygenDetailsCommandTest extends AbstractCliTest
 				"--print-details", "--out-private", privateKey.getPath()),
 			"stderr was: '" + err + "'");
 
-		assertTrue(out.contains("PEM label: " + KeyFileWriter.PKCS8_LABEL),
-			"only RSA has a traditional label of its own, but the details said: '" + out + "'");
+		assertEquals("EC PRIVATE KEY", pemLabelOf(privateKey),
+			"RFC 5915 is EC's traditional form, and PKCS#1 was asked for");
+		assertTrue(out.contains("PEM label: " + pemLabelOf(privateKey)),
+			"the details must name the label the file carries, but said: '" + out + "'");
 	}
 
 	/**
@@ -193,7 +200,7 @@ class KeygenDetailsCommandTest extends AbstractCliTest
 	/** The details name the encoding that was asked for, in both directions. */
 	@ParameterizedTest
 	@CsvSource({ "pkcs8, PKCS#8", "pkcs1, PKCS#1" })
-	void theDetailsNameTheEncodingThatWasAskedFor(String format, String expected,
+	void theDetailsNameTheEncodingForAKeyWhoseTraditionalFormExists(String format, String expected,
 		@TempDir File tempDir)
 	{
 		assertEquals(0, run("keygen", "-a", "RSA", "-s", "2048", "--format", format,
@@ -209,5 +216,99 @@ class KeygenDetailsCommandTest extends AbstractCliTest
 		assertTrue(
 			out.contains("--curve") && out.contains("--format") && out.contains("--print-details"),
 			"stdout was: '" + out + "'");
+	}
+
+	/**
+	 * The written PEM says in its own first line which encoding it is. The details line must agree
+	 * with it, for every algorithm - not only for RSA, where the requested format and the written
+	 * one happen to coincide. See issue #114.
+	 *
+	 * @param algorithm
+	 *            the KeyPairGeneratorAlgorithm name to generate with
+	 * @param sizeOrCurve
+	 *            the -s size or --curve name to pass, or null to pass neither
+	 * @param tempDir
+	 *            the directory the key is written to
+	 * @throws Exception
+	 *             if the key cannot be written or read back
+	 */
+	@ParameterizedTest(name = "{0} asked for PKCS#1")
+	@CsvSource({ "RSA, 2048", "EC, secp256r1", "DSA, 1024", "ML_DSA_65," })
+	void theDetailsNameTheEncodingThatWasActuallyWritten(String algorithm, String sizeOrCurve,
+		@TempDir File tempDir) throws Exception
+	{
+		File privateKey = new File(tempDir, "key.pem");
+
+		assertEquals(0, run(argumentsFor(algorithm, sizeOrCurve, privateKey)),
+			"stderr was: '" + err + "'");
+
+		String writtenLabel = pemLabelOf(privateKey);
+		assertTrue(out.contains("PEM label: " + writtenLabel),
+			"the details must name the label the file carries, '" + writtenLabel
+				+ "', but stdout was: '" + out + "'");
+
+		String writtenEncoding = PKCS8_LABEL.equals(writtenLabel) ? "PKCS#8" : "PKCS#1";
+		assertTrue(out.contains("private key format: " + writtenEncoding),
+			"the details must name the encoding the file carries, '" + writtenEncoding
+				+ "', but stdout was: '" + out + "'");
+	}
+
+	/**
+	 * A key with no traditional form is written as PKCS#8 even when PKCS#1 was requested. The run
+	 * must not claim otherwise. See issue #114.
+	 *
+	 * @param tempDir
+	 *            the directory the key is written to
+	 * @throws Exception
+	 *             if the key cannot be written or read back
+	 */
+	@Test
+	void aKeyWithoutATraditionalFormIsNotReportedAsPkcs1(@TempDir File tempDir) throws Exception
+	{
+		File privateKey = new File(tempDir, "mldsa.pem");
+
+		assertEquals(0, run(argumentsFor("ML_DSA_65", null, privateKey)),
+			"stderr was: '" + err + "'");
+
+		assertEquals(PKCS8_LABEL, pemLabelOf(privateKey),
+			"ML-DSA has no traditional form, so PKCS#8 is what lands on disk");
+		assertFalse(out.contains("PKCS#1"),
+			"nothing written was PKCS#1, so nothing printed may say so, but stdout was: '" + out
+				+ "'");
+	}
+
+	/**
+	 * A DSA key has a size like an RSA key has one. Reporting a fixed parameter set for it hides
+	 * the number the user chose. See issue #114.
+	 *
+	 * @param tempDir
+	 *            the directory the key is written to
+	 */
+	@Test
+	void theDetailsNameTheSizeOfADsaKey(@TempDir File tempDir)
+	{
+		assertEquals(0, run(argumentsFor("DSA", "1024", new File(tempDir, "dsa.pem"))),
+			"stderr was: '" + err + "'");
+
+		assertTrue(out.contains("size: 1024 bits"),
+			"a DSA key has a size, but stdout was: '" + out + "'");
+	}
+
+	private String[] argumentsFor(String algorithm, String sizeOrCurve, File privateKey)
+	{
+		List<String> arguments = new ArrayList<>(List.of("keygen", "-a", algorithm, "--format",
+			"pkcs1", "--print-details", "--out-private", privateKey.getPath()));
+		if (sizeOrCurve != null)
+		{
+			arguments.add("EC".equals(algorithm) ? "--curve" : "-s");
+			arguments.add(sizeOrCurve);
+		}
+		return arguments.toArray(String[]::new);
+	}
+
+	private String pemLabelOf(File pem) throws Exception
+	{
+		String firstLine = Files.readAllLines(pem.toPath()).get(0);
+		return firstLine.replace("-----BEGIN ", "").replace("-----", "");
 	}
 }
