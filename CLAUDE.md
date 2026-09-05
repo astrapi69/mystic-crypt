@@ -30,6 +30,9 @@ Maven Central.
 
 ## Commands
 
+`make help` lists the same things as named targets; the Gradle calls below are
+what those targets run.
+
 ```
 ./gradlew clean build      # tests + Jacoco + Spotless check - the everyday gate
 ./gradlew spotlessApply    # format + license headers (run before committing)
@@ -39,6 +42,10 @@ Maven Central.
                            # needs CENTRAL_PORTAL_TOKEN_USERNAME/PASSWORD env)
 ./gradlew tagRelease       # RELEASE-X tag (tag push triggers publish.yml!)
 ```
+
+`make pitest` restores `src/test/resources/crypt/test.txt` itself and keeps PIT's
+exit code; `make publish-central` and `make tag-release` refuse to run without
+`CONFIRM=yes`, because in this repo the tag is what uploads.
 
 ## Conventions (details in .claude/rules/)
 
