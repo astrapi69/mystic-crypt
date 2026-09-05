@@ -15,6 +15,15 @@ ADDED:
   parameter spec - the block cipher variants require both sides to be handed the same nonce, which
   would have to travel beside the ciphertext. A key of another algorithm is refused by name. (#112)
 
+FIXED:
+
+- 'keygen --print-details' named the encoding that was requested rather than the one that was
+  written. An EC key and a DSA key asked for PKCS#1 got their traditional label on disk, RFC 5915
+  and OpenSSL's DSA form, while the run reported the PKCS#8 label; a key with no traditional form
+  at all, ML-DSA among them, was written as PKCS#8 and still reported as PKCS#1. The details line
+  now reads the format and the label out of the PEM that was actually written, so it cannot drift
+  from the file again, and a DSA key reports its size instead of 'fixed parameter set'. (#114)
+
 
 Version 12.1
 -------------

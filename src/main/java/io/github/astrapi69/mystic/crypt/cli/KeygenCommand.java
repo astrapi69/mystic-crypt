@@ -30,6 +30,7 @@ import java.nio.file.Files;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
+import java.security.interfaces.DSAPrivateKey;
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.spec.ECGenParameterSpec;
@@ -113,11 +114,11 @@ public class KeygenCommand implements Callable<Integer>
 		try
 		{
 			KeyPair keyPair = generate();
-			writePrivateKey(keyPair.getPrivate());
+			String privateKeyPem = writePrivateKey(keyPair.getPrivate());
 			CliSupport.writePublicKeyPem(keyPair.getPublic(), outPublic);
 			if (printDetails)
 			{
-				System.out.println(details(keyPair.getPrivate()));
+				System.out.println(details(keyPair.getPrivate(), privateKeyPem));
 			}
 			return 0;
 		}
@@ -168,7 +169,8 @@ public class KeygenCommand implements Callable<Integer>
 	}
 
 	/**
-	 * Writes the private key in the requested encoding.
+	 * Writes the private key in the requested encoding and returns what was written, so that the
+	 * details line can report the encoding that really landed rather than the one asked for.
 	 * <p>
 	 * This does not go through the crypt-data writer, whose PKCS#8 option writes PKCS#1; see
 	 * {@link KeyFileWriter}.
@@ -178,32 +180,38 @@ public class KeygenCommand implements Callable<Integer>
 	 * @throws Exception
 	 *             if the key cannot be written
 	 */
-	private void writePrivateKey(PrivateKey privateKey) throws Exception
+	private String writePrivateKey(PrivateKey privateKey) throws Exception
 	{
 		String pem = KeyFileWriter.toPem(privateKey, format == Format.pkcs1);
 		if (outPrivate == null)
 		{
 			System.out.print(pem);
-			return;
+			return pem;
 		}
 		// deliberately silent: with output files the existing contract is that nothing goes to
 		// stdout, so a shell can redirect the printed form without a stray line in it
 		Files.writeString(outPrivate.toPath(), pem, StandardCharsets.UTF_8);
+		return pem;
 	}
 
 	/**
-	 * Says what was generated. The encoding named here is the one actually written, which is also
-	 * the honest way to see that a requested PKCS#8 really is PKCS#8.
+	 * Says what was generated. The encoding and the PEM label named here are read out of the PEM
+	 * that was actually written, not out of the requested format, so a request for PKCS#1 that a
+	 * key has no traditional form for is reported as the PKCS#8 it really became.
 	 *
 	 * @param privateKey
 	 *            the generated private key
+	 * @param privateKeyPem
+	 *            the PEM that was written for that key
 	 * @return the detail line
 	 */
-	private String details(PrivateKey privateKey)
+	private String details(PrivateKey privateKey, String privateKeyPem)
 	{
+		String label = labelOf(privateKeyPem);
 		return "algorithm: " + privateKey.getAlgorithm() + ", " + sizeOrCurve(privateKey)
-			+ ", private key format: " + (format == Format.pkcs1 ? "PKCS#1" : "PKCS#8")
-			+ ", PEM label: " + labelOf(privateKey);
+			+ ", private key format: "
+			+ (KeyFileWriter.PKCS8_LABEL.equals(label) ? "PKCS#8" : "PKCS#1") + ", PEM label: "
+			+ label;
 	}
 
 	private String sizeOrCurve(PrivateKey privateKey)
@@ -217,13 +225,16 @@ public class KeygenCommand implements Callable<Integer>
 		{
 			return "size: " + rsaPrivateKey.getModulus().bitLength() + " bits";
 		}
+		if (privateKey instanceof DSAPrivateKey dsaPrivateKey)
+		{
+			return "size: " + dsaPrivateKey.getParams().getP().bitLength() + " bits";
+		}
 		return "fixed parameter set";
 	}
 
-	private String labelOf(PrivateKey privateKey)
+	private static String labelOf(String privateKeyPem)
 	{
-		return format == Format.pkcs1 && "RSA".equals(privateKey.getAlgorithm())
-			? KeyFileWriter.PKCS1_RSA_LABEL
-			: KeyFileWriter.PKCS8_LABEL;
+		String firstLine = privateKeyPem.lines().findFirst().orElse("");
+		return firstLine.replace("-----BEGIN ", "").replace("-----", "");
 	}
 }
