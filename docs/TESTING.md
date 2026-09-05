@@ -183,9 +183,11 @@ input, a `System.exit`, and a handful of calls with no observable effect.
 Tooling: JUnit Jupiter 6 with `junit-jupiter-params`; meanbean; Mockito in `crypt-data` only,
 used to stub `PrivateKey`/`PublicKey`/`X509Certificate` where only `getEncoded()`/`getAlgorithm()`
 matter; JaCoCo 0.8.15 (XML + HTML, `check` depends on `jacocoTestReport`, uploaded to Codecov);
-PIT 1.25.9 via `info.solidsoft.pitest`, opt-in (`./gradlew pitest`, not part of `check`/`build`
+PIT 1.30.0 via `info.solidsoft.pitest`, opt-in (`./gradlew pitest`, not part of `check`/`build`
 because a run takes minutes); Spotless as part of `build`; GitHub Actions running `./gradlew build`
-on JDK 25 (Temurin) for pushes and pull requests, with Maven Central publishing on push events only.
+on JDK 25 (Temurin) for pushes and pull requests. That workflow uploads SNAPSHOTS only; a release
+is uploaded by pushing a `RELEASE-*` tag, which `publish.yml` acts on (see
+[workflow.md](../.claude/rules/workflow.md) - the three repos do not all work the same way).
 
 ---
 

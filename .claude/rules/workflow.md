@@ -57,13 +57,20 @@ difference is not visible from the command you are about to run.
 
 | repo | what uploads a release |
 |---|---|
-| `crypt-api` | a deliberate manual `publishAllPublicationsToCentralPortal` |
-| `crypt-data` | the same |
+| `crypt-api` | pushing a `RELEASE-*` tag, through `publish.yml` (since its #9) |
+| `crypt-data` | a deliberate manual `publishAllPublicationsToCentralPortal` |
 | `mystic-crypt` | pushing a `RELEASE-*` tag, through `publish.yml` |
 
-So in mystic-crypt **tagging is publishing**: the question of whether to upload
-belongs BEFORE the tag, not after it. In the other two the tag is a marker and
-the upload is a separate, deliberate act.
+So in mystic-crypt **and now crypt-api, tagging is publishing**: the question of
+whether to upload belongs BEFORE the tag, not after it. Only in crypt-data is the
+tag still a marker with the upload as a separate, deliberate act.
+
+crypt-api moved into the tag-triggered group by accident of history rather than by
+a decision taken in the open. Its `publish.yml` was written on the RELEASE-10.1
+line, that line was never merged back, and `develop` therefore had no publish
+workflow at all until crypt-api#9 reconciled the two. Merging that reconciliation
+is what changed the mechanism - which is exactly the shape this section warns
+about, so it is recorded here rather than left to be discovered at the next tag.
 
 None of the three publishes a release from an ordinary merge any more. All
 three did once: `gradle.yml` chose between snapshot and release from the version
