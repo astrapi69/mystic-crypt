@@ -4,7 +4,11 @@
 Version 12.3-SNAPSHOT
 -------------
 
-(nothing released yet)
+CHANGED:
+
+- build only: the publish workflow's actions leave the deprecated Node 20 set behind -
+  actions/checkout v4 to v7, actions/setup-java v4 to v5, gradle/actions/setup-gradle v4 to v6.
+  publish.yml was the last workflow in the family still on the old versions (#124)
 
 
 Version 12.2

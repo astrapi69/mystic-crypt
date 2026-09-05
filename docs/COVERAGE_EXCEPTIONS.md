@@ -17,10 +17,10 @@ check found.
 
 Nothing. Every line, branch and mutant. 78 mutants generated, 78 killed.
 
-## `crypt-data` - 0 lines / 0 branches uncovered; 0 surviving mutants of 820
+## `crypt-data` - 0 lines / 0 branches uncovered; 0 surviving mutants of 822
 
 Every line and branch is covered; no JaCoCo exclusions were added to get there. Nothing survives
-either: 820 mutants generated, 820 killed.
+either: 822 mutants generated, 822 killed.
 
 The three mutants that used to survive here were cleared in PR #8, and two of them only because
 the reasoning that had retired them was re-read rather than re-quoted:
@@ -48,7 +48,7 @@ reset digest). Removing the guards killed the mutants and simplified the method 
 (PR #5). See ["Why not literal 100%"](#why-not-literal-100) for how the remaining three were told
 apart from those two.
 
-## `mystic-crypt` - 2 lines / 0 branches uncovered; 6 surviving mutants of 1504
+## `mystic-crypt` - 2 lines / 0 branches uncovered; 6 surviving mutants of 1526
 
 Uncovered lines:
 
@@ -166,7 +166,7 @@ earns its keep:
 
 ## Why not literal 100%
 
-`crypt-api` and `crypt-data` are at 100.0%. `mystic-crypt` is at 99.6% (6 survivors of 1504). This
+`crypt-api` and `crypt-data` are at 100.0%. `mystic-crypt` is at 99.6% (6 survivors of 1526). This
 section is the answer to "why not push those to 100% too" - worked through for every one of the 6
 remaining survivors, not asserted in general. It was written
 after four rounds of exactly that push: the first round (PR #69) killed everything killable and
