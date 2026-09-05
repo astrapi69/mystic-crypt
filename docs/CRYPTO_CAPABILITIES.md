@@ -17,9 +17,14 @@ Status key:
   infrastructure-level, or hardware-level concerns; a data/key-encryption utility library is
   the wrong layer to implement them in. Reasoning given per item.
 
-Last verified: 2026-08-22, against `mystic-crypt` 11.0.0,
-`crypt-data` 10.4-SNAPSHOT (next release 11.0.0) and `crypt-api` 10.0.0. The capability tables
-below are current as of this date; coverage and mutation-testing numbers live in
+Last full pass: 2026-08-22, against `mystic-crypt` 11.0.0, `crypt-data` 10.4-SNAPSHOT
+and `crypt-api` 10.0.0.
+
+Partially re-verified 2026-09-05 against `mystic-crypt` 12.2-SNAPSHOT, which resolves
+`crypt-data` 12.2 and `crypt-api` 10.0.0 (`gradle/libs.versions.toml`; note that `crypt-api` 10.1
+is released but not yet pinned here). That pass re-read source for the rows it changed only -
+ECIES, ECC/named curves and the new HMAC row - and did not re-walk the rest, so every other row
+still carries the 2026-08-22 verification date. Coverage and mutation-testing numbers live in
 [TESTING.md](TESTING.md). All three libraries now require **JDK 25** (raised from 21, 21 and 17
 respectively in the same release cycle - see [README.md](../README.md#requirements)).
 
@@ -41,7 +46,8 @@ respectively in the same release cycle - see [README.md](../README.md#requiremen
 | Topic | Status | Where |
 |---|---|---|
 | RSA | ✅ | `PublicKeyEncryptor`/`PrivateKeyDecryptor` (`mystic-crypt`) — hybrid RSA+AES-GCM envelope, RSA wraps the AES key rather than encrypting data directly (correct usage; RSA is unsuited to bulk encryption). `KeyPairGeneratorAlgorithm.RSA`/`.RSASSA_PSS` (`crypt-api`). |
-| ECC / named curves | ✅ (as constants) | `SECGCurveAlgorithm` (incl. P-256/`SECP256R1`), `BrainpoolCurveAlgorithm` (`crypt-api`). "Curve25519" has no dedicated enum constant — X25519/Ed25519 are the JDK-native algorithm names actually used. |
+| ECIES (EC hybrid encryption) | ✅ | `EcPublicKeyEncryptor`/`EcPrivateKeyDecryptor` on bytes, `EcPublicKeyHexEncryptor`/`EcPrivateKeyHexDecryptor` on hex strings (`mystic-crypt`), in the shape of the RSA pair above. Bouncy Castle `ECIESwithSHA256`, picked because it is self-contained: the block-cipher variants (`ECIESwithAES-CBC` and friends) need an `IESParameterSpec` carrying the same nonce on both sides, which would have to travel beside the ciphertext, and BC registers no AES-GCM variant at all. An ephemeral key pair is generated per message and ECDH'd against the recipient's public key, so two encryptions of the same plaintext never match. A key of another algorithm is refused by name (`EcCipherSupport.requireEcKey`), including X25519/X448, ML-KEM and the signature families, none of which have an encryption primitive. |
+| ECC / named curves | ✅ | `SECGCurveAlgorithm` (incl. P-256/`SECP256R1`), `BrainpoolCurveAlgorithm` (`crypt-api`) supply the names; `keygen --curve` and the ECIES row above are the call sites that consume them, so these are no longer constants without a consumer. "Curve25519" has no dedicated enum constant — X25519/Ed25519 are the JDK-native algorithm names actually used. |
 | X25519 (ECDH) | ✅ | `X25519KeyExchange` (`mystic-crypt`) — JDK-native since JDK 11, no Bouncy Castle. Derives the raw ECDH shared secret then runs it through HKDF (see below) rather than using it directly. |
 | Ed25519 (signatures) | ✅ | `Ed25519Signer`/`Ed25519Verifier` (`mystic-crypt`) — JDK-native since JDK 15. `SignatureFactory` (`crypt-data`) is the generic sign/verify primitive underneath, algorithm-agnostic (also usable for RSA signature schemes). |
 | DH / ECDH (generic) | ✅ | `KeyAgreementAlgorithm` (`DIFFIE_HELLMAN`, `ECDH`, `ECMQV`, `XDH`, `X25519`, `X448` — `crypt-api`); `KeyAgreementFactory` (`crypt-data`) executes it. Note: `KeyAgreementFactory.toSecretKey()` truncates the shared secret to 16 bytes regardless of algorithm — fine for classic (EC)DH's byte-agnostic usage, but callers deriving a full-strength key from a 32-byte X25519 secret should use the raw-bytes overload + HKDF instead (as `X25519KeyExchange` does), not `toSecretKey()`. |
@@ -54,6 +60,7 @@ respectively in the same release cycle - see [README.md](../README.md#requiremen
 | SHA-3 / Keccak | ✅ | `Sha3Hasher` (`mystic-crypt`) — all four fixed-length FIPS 202 variants (SHA3-224/256/384/512) via the JDK's built-in `MessageDigest`, no Bouncy Castle. Selected through the `MessageDigestAlgorithm.SHA3_*` constants (`crypt-api`), which finally have a call site; any non-SHA-3 constant is rejected so the class can never silently compute MD5/SHA-2 under a SHA-3 name. Verified against OpenSSL-generated known-answer vectors. SHAKE128/256 (the variable-length XOFs) are not wrapped — no consumer need, and `MessageDigest` can't express variable output length. |
 | MD5 / SHA-1 | ✅ (present, legacy) | Still defined and reachable (e.g. for checksums, not security use) — not a gap, these are correctly *not* used for anything security-sensitive. |
 | BLAKE2 / BLAKE3 | ✅ (BLAKE2 only) | `Blake2bHasher`/`Blake2sHasher` (`mystic-crypt`) — Bouncy Castle-backed, both BLAKE2b (64-bit optimized) and BLAKE2s (32-bit/embedded optimized) with configurable digest length. Also the commitment-tag primitive under `KeyCommittingAeadEncryptor` (see Key-committing AEAD, Part 2). BLAKE3 remains absent — no BLAKE3 implementation ships in Bouncy Castle or the JDK, only third-party libraries this project doesn't depend on. |
+| HMAC / keyed MAC | ✅ (capability), ⚠️ (as a library API) | `ChecksumCommand --hmac` (`mystic-crypt`) computes a keyed MAC through the JDK's `Mac`/`SecretKeySpec`, default `HmacSHA256`, any JDK MAC name accepted (`HmacSHA512`, `HmacSHA3-256`, ...); a plain digest name is refused with a message that says to drop `--hmac` instead. The MAC key is the passphrase's UTF-8 bytes, not a KDF output — adequate for the "did this file change, and was the change made by someone holding the key" question the command answers, not a substitute for a derived key. `MacAlgorithm` (`crypt-api`) enumerates the names but has no caller anywhere in the three repos: the CLI passes strings straight to the JDK, so the enum is a constant set rather than a wired API. |
 | Constant-time comparison | ✅ | `MessageDigest.isEqual(...)` used in `PasswordEncryptor` and `Argon2Support` (`mystic-crypt`). Not used in `crypt-data`/`crypt-api` (no password/MAC comparison logic lives there). |
 
 ### Password hashing
@@ -142,6 +149,11 @@ improvement, not a category-level gap):
 
 - **BLAKE3** — no BLAKE3 implementation ships in Bouncy Castle or the JDK; BLAKE2 already covers
   the "modern, fast, non-SHA hash" use case.
+- **`MacAlgorithm` has no caller** — the HMAC capability is real (see the row in Part 1), but it is
+  reached by passing JDK MAC name strings from `ChecksumCommand`, while the `crypt-api` enum that
+  names those same algorithms is referenced from nowhere in the three repos. Wiring the CLI through
+  the enum would make an unknown name fail at one documented place instead of at
+  `Mac.getInstance`; it is a tidiness item, not a missing capability.
 - **Pedersen VSS specifically** (as opposed to Feldman, which is what's actually implemented) —
   would additionally hide the secret from the dealer via a second generator; no current consumer
   need for dealer-blindness specifically.
