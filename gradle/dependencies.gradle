@@ -14,7 +14,6 @@ dependencies {
     api libs.silly.bean
     implementation libs.jobj.cloner
     api libs.bcprov.jdk18on
-    implementation libs.bcprov.ext.jdk18on
     implementation libs.bcpkix.jdk18on
     implementation libs.xml.base
     // command-line interface (io.github.astrapi69.mystic.crypt.cli)
