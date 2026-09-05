@@ -94,7 +94,7 @@ run, how much would they notice being broken?".
 |---|---|---|---|---|---|---|
 | `crypt-api` | `RELEASE-10.1` | 271 | 100.00% | 100.00% | 100.0% (78 / 78) | 100.0% |
 | `crypt-data` | `RELEASE-12.2` | 1301 | 100.00% | 100.00% | 100.0% (822 / 822) | 100.0% |
-| `mystic-crypt` | `develop` @ `2caafcf3` | 1308 | 99.94% | 100.00% | 99.6% (1520 / 1526) | 99.7% |
+| `mystic-crypt` | `RELEASE-12.2` | 1308 | 99.94% | 100.00% | 99.6% (1520 / 1526) | 99.7% |
 
 Regenerate with the commands under [How to run](#how-to-run); the reports are
 `build/reports/jacoco/test/jacocoTestReport.xml` and `build/reports/pitest/`.

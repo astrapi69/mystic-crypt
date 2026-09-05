@@ -20,12 +20,12 @@ Status key:
 Last full pass: 2026-08-22, against `mystic-crypt` 11.0.0, `crypt-data` 10.4-SNAPSHOT
 and `crypt-api` 10.0.0.
 
-Partially re-verified 2026-09-05 against `mystic-crypt` 12.2-SNAPSHOT, which resolves
-`crypt-data` 12.2 and `crypt-api` 10.0.0 (`gradle/libs.versions.toml`; note that `crypt-api` 10.1
-is released but not yet pinned here). That pass re-read source for the rows it changed only -
-ECIES, ECC/named curves and the new HMAC row - and did not re-walk the rest, so every other row
-still carries the 2026-08-22 verification date. Coverage and mutation-testing numbers live in
-[TESTING.md](TESTING.md). All three libraries now require **JDK 25** (raised from 21, 21 and 17
+Partially re-verified 2026-09-05 against what became `mystic-crypt` 12.2, which resolves
+`crypt-data` 12.2 and `crypt-api` 10.1 (`gradle/libs.versions.toml`; the crypt-api pin moved from
+10.0.0 to 10.1 in the same release, a build-only change on that side). That pass re-read source
+for the rows it changed only - ECIES, ECC/named curves and the new HMAC row - and did not re-walk
+the rest, so every other row still carries the 2026-08-22 verification date. Coverage and
+mutation-testing numbers live in [TESTING.md](TESTING.md). All three libraries now require **JDK 25** (raised from 21, 21 and 17
 respectively in the same release cycle - see [README.md](../README.md#requirements)).
 
 ---
