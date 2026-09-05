@@ -1,6 +1,5 @@
 [versions]
 bcpkix-jdk18on-version = "1.85"
-bcprov-ext-jdk18on-version = "1.78.1"
 bcprov-jdk18on-version = "1.85.2"
 checksum-up-version = "3.2"
 commons-codec-version = "1.22.1"
@@ -38,7 +37,6 @@ xml-base-version = "2"
 
 [libraries]
 bcpkix-jdk18on = { module = "org.bouncycastle:bcpkix-jdk18on", version.ref = "bcpkix-jdk18on-version" }
-bcprov-ext-jdk18on = { module = "org.bouncycastle:bcprov-ext-jdk18on", version.ref = "bcprov-ext-jdk18on-version" }
 bcprov-jdk18on = { module = "org.bouncycastle:bcprov-jdk18on", version.ref = "bcprov-jdk18on-version" }
 checksum-up = { module = "io.github.astrapi69:checksum-up", version.ref = "checksum-up-version" }
 commons-codec = { module = "commons-codec:commons-codec", version.ref = "commons-codec-version" }

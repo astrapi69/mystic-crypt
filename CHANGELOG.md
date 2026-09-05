@@ -17,6 +17,12 @@ ADDED:
 
 CHANGED:
 
+- the dependency org.bouncycastle:bcprov-ext-jdk18on is gone. It was pinned at 1.78.1 while
+  bcprov-jdk18on is at 1.85.2, and Bouncy Castle publishes no release after 1.78.1 for it, so the
+  two could never be brought level. Nothing needed it: without it the suite is green, keygen still
+  answers for 27 of the 28 algorithm constants and for all 101 named curves, signing and verifying
+  still work across RSA, EC, DSA, ML-DSA and SLH-DSA, and the shadow uber-jar comes out
+  byte-identical, all 9296 Bouncy Castle entries with the same CRC. (#120)
 - dependency and plugin versions raised through the version catalog: crypt-api 10.0.0 to 10.1,
   checksum-up 3.1 to 3.2, picocli 4.7.6 to 4.7.7, randomizer 10.3 to 10.4, silly-collection 28.1 to
   28.2, test-object 9 to 9.1, and the build plugins nmcp 1.6.1 to 1.6.2, shadow 9.0.0 to 9.6.1,
