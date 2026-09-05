@@ -15,6 +15,15 @@ ADDED:
   parameter spec - the block cipher variants require both sides to be handed the same nonce, which
   would have to travel beside the ciphertext. A key of another algorithm is refused by name. (#112)
 
+CHANGED:
+
+- dependency and plugin versions raised through the version catalog: crypt-api 10.0.0 to 10.1,
+  checksum-up 3.1 to 3.2, picocli 4.7.6 to 4.7.7, randomizer 10.3 to 10.4, silly-collection 28.1 to
+  28.2, test-object 9 to 9.1, and the build plugins nmcp 1.6.1 to 1.6.2, shadow 9.0.0 to 9.6.1,
+  spotless 8.10.0 to 8.10.2 and the PIT engine 1.25.9 to 1.30.0. guava stays on 33.7.1-jre: the
+  update tool proposed '999.0.0-HEAD-jre-SNAPSHOT', which is guava's placeholder version and not a
+  release.
+
 FIXED:
 
 - 'keygen --print-details' named the encoding that was requested rather than the one that was
