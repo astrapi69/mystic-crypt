@@ -6,6 +6,11 @@ Version 12.3-SNAPSHOT
 
 CHANGED:
 
+- BREAKING for the command line: 'keygen --format pkcs1' and 'convert --to pkcs1' refuse a key
+  whose algorithm has no traditional form, with exit code 2 and a message naming the algorithm,
+  instead of writing PKCS#8. They wrote PKCS#8 before; 'convert' additionally announced 'wrote PEM,
+  PKCS#1' while doing it, the same fault #114 fixed in 'keygen'. Nothing is written when the
+  request is refused. RSA, DSA and EC are unaffected. This is step 2 of crypt-data#42 (#127)
 - build only: the publish workflow's actions leave the deprecated Node 20 set behind -
   actions/checkout v4 to v7, actions/setup-java v4 to v5, gradle/actions/setup-gradle v4 to v6.
   publish.yml was the last workflow in the family still on the old versions (#124)

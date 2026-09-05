@@ -38,6 +38,7 @@ import java.util.HexFormat;
 import io.github.astrapi69.crypt.api.algorithm.key.KeyPairGeneratorAlgorithm;
 import io.github.astrapi69.crypt.data.key.writer.PrivateKeyWriter;
 import io.github.astrapi69.crypt.data.key.writer.PublicKeyWriter;
+import io.github.astrapi69.mystic.crypt.key.KeyFileWriter;
 import picocli.CommandLine.Help.Ansi;
 
 /**
@@ -311,6 +312,46 @@ final class CliSupport
 		finally
 		{
 			Files.deleteIfExists(temp.toPath());
+		}
+	}
+
+	/**
+	 * The PEM label the given text carries, read from its first line. This is the honest source for
+	 * "what encoding is this": the writer put it there, so it cannot disagree with the bytes below
+	 * it the way a second lookup table can.
+	 *
+	 * @param pem
+	 *            the PEM text
+	 * @return the label between the BEGIN markers, or the empty string if there is no first line
+	 */
+	static String pemLabelOf(String pem)
+	{
+		String firstLine = pem.lines().findFirst().orElse("");
+		return firstLine.replace("-----BEGIN ", "").replace("-----", "");
+	}
+
+	/**
+	 * Refuses a request for PKCS#1 that the key cannot satisfy. RSA, DSA and EC have a traditional
+	 * form of their own; the edwards and montgomery families, Diffie-Hellman and the post-quantum
+	 * families have only PKCS#8, and asking for PKCS#1 there used to produce PKCS#8 with a note
+	 * claiming otherwise. Called with the PEM the writer already produced, so the decision is read
+	 * off the result rather than predicted from the algorithm name, and before anything is written.
+	 *
+	 * @param privateKeyPem
+	 *            the PEM the writer produced for the key
+	 * @param privateKey
+	 *            the key it was produced from, named in the message
+	 * @throws IllegalArgumentException
+	 *             if PKCS#8 is what came out
+	 */
+	static void refusePkcs1WithoutTraditionalForm(String privateKeyPem, PrivateKey privateKey)
+	{
+		if (KeyFileWriter.PKCS8_LABEL.equals(pemLabelOf(privateKeyPem)))
+		{
+			throw new IllegalArgumentException(
+				"PKCS#1 was asked for, but a '" + privateKey.getAlgorithm()
+					+ "' private key has no traditional form - PKCS#8 is the only encoding it has. "
+					+ "Ask for pkcs8, or leave the format option out.");
 		}
 	}
 }

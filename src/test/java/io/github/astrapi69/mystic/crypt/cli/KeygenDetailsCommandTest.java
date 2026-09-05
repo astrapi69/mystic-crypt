@@ -233,7 +233,7 @@ class KeygenDetailsCommandTest extends AbstractCliTest
 	 *             if the key cannot be written or read back
 	 */
 	@ParameterizedTest(name = "{0} asked for PKCS#1")
-	@CsvSource({ "RSA, 2048", "EC, secp256r1", "DSA, 1024", "ML_DSA_65," })
+	@CsvSource({ "RSA, 2048", "EC, secp256r1", "DSA, 1024" })
 	void theDetailsNameTheEncodingThatWasActuallyWritten(String algorithm, String sizeOrCurve,
 		@TempDir File tempDir) throws Exception
 	{
@@ -254,27 +254,24 @@ class KeygenDetailsCommandTest extends AbstractCliTest
 	}
 
 	/**
-	 * A key with no traditional form is written as PKCS#8 even when PKCS#1 was requested. The run
-	 * must not claim otherwise. See issue #114.
+	 * A key with no traditional form cannot be written as PKCS#1. Until #127 the run wrote PKCS#8
+	 * and said so, which was honest but still not what was asked for; now it refuses before writing
+	 * anything. The older behaviour is what this test used to pin.
 	 *
 	 * @param tempDir
-	 *            the directory the key is written to
-	 * @throws Exception
-	 *             if the key cannot be written or read back
+	 *            the directory the key would have been written to
 	 */
 	@Test
-	void aKeyWithoutATraditionalFormIsNotReportedAsPkcs1(@TempDir File tempDir) throws Exception
+	void aKeyWithoutATraditionalFormIsRefusedRatherThanSubstituted(@TempDir File tempDir)
 	{
 		File privateKey = new File(tempDir, "mldsa.pem");
 
-		assertEquals(0, run(argumentsFor("ML_DSA_65", null, privateKey)),
-			"stderr was: '" + err + "'");
-
-		assertEquals(PKCS8_LABEL, pemLabelOf(privateKey),
-			"ML-DSA has no traditional form, so PKCS#8 is what lands on disk");
-		assertFalse(out.contains("PKCS#1"),
-			"nothing written was PKCS#1, so nothing printed may say so, but stdout was: '" + out
-				+ "'");
+		assertEquals(2, run(argumentsFor("ML_DSA_65", null, privateKey)),
+			"a format that cannot be produced must be an error, not a substitution");
+		assertFalse(privateKey.exists(),
+			"nothing may be written when the requested format cannot be produced");
+		assertTrue(err.contains("ML-DSA") && err.contains("PKCS#8"),
+			"the message must name the algorithm and what it does have, but was: '" + err + "'");
 	}
 
 	/**

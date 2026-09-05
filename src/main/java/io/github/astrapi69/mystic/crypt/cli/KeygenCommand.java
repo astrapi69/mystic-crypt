@@ -183,6 +183,10 @@ public class KeygenCommand implements Callable<Integer>
 	private String writePrivateKey(PrivateKey privateKey) throws Exception
 	{
 		String pem = KeyFileWriter.toPem(privateKey, format == Format.pkcs1);
+		if (format == Format.pkcs1)
+		{
+			CliSupport.refusePkcs1WithoutTraditionalForm(pem, privateKey);
+		}
 		if (outPrivate == null)
 		{
 			System.out.print(pem);
@@ -207,7 +211,7 @@ public class KeygenCommand implements Callable<Integer>
 	 */
 	private String details(PrivateKey privateKey, String privateKeyPem)
 	{
-		String label = labelOf(privateKeyPem);
+		String label = CliSupport.pemLabelOf(privateKeyPem);
 		return "algorithm: " + privateKey.getAlgorithm() + ", " + sizeOrCurve(privateKey)
 			+ ", private key format: "
 			+ (KeyFileWriter.PKCS8_LABEL.equals(label) ? "PKCS#8" : "PKCS#1") + ", PEM label: "
@@ -232,9 +236,4 @@ public class KeygenCommand implements Callable<Integer>
 		return "fixed parameter set";
 	}
 
-	private static String labelOf(String privateKeyPem)
-	{
-		String firstLine = privateKeyPem.lines().findFirst().orElse("");
-		return firstLine.replace("-----BEGIN ", "").replace("-----", "");
-	}
 }

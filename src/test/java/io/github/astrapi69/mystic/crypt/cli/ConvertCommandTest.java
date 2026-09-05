@@ -40,6 +40,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import io.github.astrapi69.mystic.crypt.key.KeyFileReader;
@@ -475,5 +476,66 @@ class ConvertCommandTest extends AbstractCliTest
 	{
 		assertEquals(0, run("convert", "--help"));
 		assertTrue(out.contains("--describe") && out.contains("--to"), "stdout was: '" + out + "'");
+	}
+
+	/**
+	 * A key whose algorithm has no traditional form cannot be written as PKCS#1. The command used
+	 * to write PKCS#8 and announce PKCS#1 anyway, with exit code 0. It must refuse instead, before
+	 * anything is written, and name the algorithm. See issue #127.
+	 *
+	 * @param algorithm
+	 *            the KeyPairGeneratorAlgorithm name of a key with no traditional form
+	 * @param tempDir
+	 *            the directory the key is written to
+	 */
+	@ParameterizedTest(name = "convert --to pkcs1 refuses {0}")
+	@ValueSource(strings = { "ML_DSA_65", "ML_KEM_768", "X25519" })
+	void refusesToConvertToPkcs1WhatHasNoTraditionalForm(String algorithm, @TempDir File tempDir)
+	{
+		File privateKey = new File(tempDir, "key.pem");
+		File converted = new File(tempDir, "converted.pem");
+		assertEquals(0, run("keygen", "-a", algorithm, "--out-private", privateKey.getPath()),
+			"stderr was: '" + err + "'");
+
+		assertEquals(2,
+			run("convert", "--in", privateKey.getPath(), "--to", "pkcs1", "--out",
+				converted.getPath()),
+			"a format that cannot be produced must be an error, not a silent substitution");
+		assertFalse(converted.exists(),
+			"nothing may be written when the requested format cannot be produced");
+		assertTrue(err.contains("PKCS#1") && err.contains("PKCS#8"),
+			"the message must name what was asked for and what the key actually has, but was: '"
+				+ err + "'");
+	}
+
+	/**
+	 * The counterpart: an algorithm that does have a traditional form still converts, and the note
+	 * names the encoding the file really carries.
+	 *
+	 * @param algorithm
+	 *            an algorithm whose private key has a traditional form
+	 * @param expectedLabel
+	 *            the PEM label that form carries
+	 * @param tempDir
+	 *            the directory the key is written to
+	 * @throws Exception
+	 *             if the key cannot be written or read back
+	 */
+	@ParameterizedTest(name = "convert --to pkcs1 keeps working for {0}")
+	@CsvSource({ "RSA, RSA PRIVATE KEY", "DSA, DSA PRIVATE KEY" })
+	void stillConvertsWhatDoesHaveATraditionalForm(String algorithm, String expectedLabel,
+		@TempDir File tempDir) throws Exception
+	{
+		File privateKey = new File(tempDir, "key.pem");
+		File converted = new File(tempDir, "converted.pem");
+		assertEquals(0, run("keygen", "-a", algorithm, "--out-private", privateKey.getPath()),
+			"stderr was: '" + err + "'");
+
+		assertEquals(0, run("convert", "--in", privateKey.getPath(), "--to", "pkcs1", "--out",
+			converted.getPath()), "stderr was: '" + err + "'");
+
+		assertEquals("-----BEGIN " + expectedLabel + "-----",
+			Files.readAllLines(converted.toPath()).get(0));
+		assertTrue(err.contains("PKCS#1"), "the note must name PKCS#1, but was: '" + err + "'");
 	}
 }
