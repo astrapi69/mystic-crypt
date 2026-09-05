@@ -6,6 +6,11 @@ Version 12.3-SNAPSHOT
 
 CHANGED:
 
+- test: every algorithm the enum names is driven through this repository's key writing surface,
+  with two assertions that make a change on the crypt-data side loud rather than silent - the set
+  of generatable algorithms is pinned by name, and so is the set that has a traditional form of its
+  own (DSA, EC, RSA, RSASSA-PSS). The CLI refuses PKCS#1 exactly outside that set, so the set
+  changing is a change in what the CLI accepts
 - BREAKING for the command line: 'keygen --format pkcs1' and 'convert --to pkcs1' refuse a key
   whose algorithm has no traditional form, with exit code 2 and a message naming the algorithm,
   instead of writing PKCS#8. They wrote PKCS#8 before; 'convert' additionally announced 'wrote PEM,
