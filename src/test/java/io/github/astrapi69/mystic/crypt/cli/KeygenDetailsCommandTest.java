@@ -311,4 +311,33 @@ class KeygenDetailsCommandTest extends AbstractCliTest
 		String firstLine = Files.readAllLines(pem.toPath()).get(0);
 		return firstLine.replace("-----BEGIN ", "").replace("-----", "");
 	}
+
+	/**
+	 * Without --out-private the PEM itself goes to standard output, and the details line follows
+	 * it. Both come from the same written PEM, so the label the details name must be the label the
+	 * printed PEM carries - the path that has no file to read the answer back from.
+	 *
+	 * @param algorithm
+	 *            the KeyPairGeneratorAlgorithm name to generate with
+	 * @param sizeOrCurve
+	 *            the -s size or --curve name to pass
+	 * @param expectedLabel
+	 *            the PEM label the traditional form of that algorithm carries
+	 */
+	@ParameterizedTest(name = "{0} to standard output")
+	@CsvSource({ "RSA, 2048, RSA PRIVATE KEY", "EC, secp256r1, EC PRIVATE KEY",
+			"DSA, 1024, DSA PRIVATE KEY" })
+	void printsThePemAndItsDetailsToStandardOutputAndTheyAgree(String algorithm, String sizeOrCurve,
+		String expectedLabel)
+	{
+		assertEquals(0, run("keygen", "-a", algorithm, "EC".equals(algorithm) ? "--curve" : "-s",
+			sizeOrCurve, "--format", "pkcs1", "--print-details"), "stderr was: '" + err + "'");
+
+		assertTrue(out.contains("-----BEGIN " + expectedLabel + "-----"),
+			"the PEM itself must go to standard output, but was: '" + out + "'");
+		assertTrue(out.contains("PEM label: " + expectedLabel),
+			"the details must name the label the printed PEM carries, but was: '" + out + "'");
+		assertTrue(out.contains("private key format: PKCS#1"),
+			"a traditional form was written, so PKCS#1 is what must be reported: '" + out + "'");
+	}
 }
