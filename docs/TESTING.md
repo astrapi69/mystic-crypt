@@ -82,15 +82,19 @@ prove the absence of weak tests.
 
 ## Numbers
 
-Measured 2026-08-31, each row on the release it names. *Mutation score* divides killed mutants by all mutants, including ones in code
-no test executes; *test strength* divides only by mutants in executed code, so it answers "of the
-code the tests do run, how much would they notice being broken?".
+Each row names the commit it was measured on: a release tag where the repo has one for the
+current state, a development head where the next release is not cut yet. The crypt-api and
+crypt-data rows were measured 2026-08-31, the mystic-crypt row 2026-09-05.
+
+*Mutation score* divides killed mutants by all mutants, including ones in code no test executes;
+*test strength* divides only by mutants in executed code, so it answers "of the code the tests do
+run, how much would they notice being broken?".
 
 | Repo | Measured on | Tests | Line | Branch | Mutation score (killed / generated) | Test strength |
 |---|---|---|---|---|---|---|
 | `crypt-api` | `RELEASE-10.1` | 271 | 100.00% | 100.00% | 100.0% (78 / 78) | 100.0% |
 | `crypt-data` | `RELEASE-12.2` | 1301 | 100.00% | 100.00% | 100.0% (822 / 822) | 100.0% |
-| `mystic-crypt` | `RELEASE-12.1` | 1278 | 99.94% | 100.00% | 99.6% (1510 / 1516) | 99.6% |
+| `mystic-crypt` | `develop` @ `2caafcf3` | 1308 | 99.94% | 100.00% | 99.6% (1520 / 1526) | 99.7% |
 
 Regenerate with the commands under [How to run](#how-to-run); the reports are
 `build/reports/jacoco/test/jacocoTestReport.xml` and `build/reports/pitest/`.
