@@ -165,13 +165,31 @@ public class ConvertCommand implements Callable<Integer>
 		return switch (to)
 		{
 			case der -> Converted.bytes(KeyFileWriter.toPkcs8(privateKey), "DER, PKCS#8");
-			case pkcs1 -> Converted.text(KeyFileWriter.toPem(privateKey, true), "PEM, PKCS#1");
+			case pkcs1 -> pkcs1Converted(privateKey);
 			case pkcs8 -> Converted.text(KeyFileWriter.toPem(privateKey, false), "PEM, PKCS#8");
 			// a private key asked for "pem" keeps the wrapping it already had, so that converting
 			// only the encoding does not silently change the structure as well
 			case pem -> Converted.text(KeyFileWriter.toPem(privateKey, wasPkcs1),
 				"PEM, " + (wasPkcs1 ? "PKCS#1" : "PKCS#8"));
 		};
+	}
+
+	/**
+	 * Converts to the traditional form, refusing a key that has none instead of writing PKCS#8
+	 * under a PKCS#1 announcement. The encoding named is read from the PEM that was produced. See
+	 * #127.
+	 *
+	 * @param privateKey
+	 *            the key to convert
+	 * @return the converted text and the encoding it really is
+	 * @throws Exception
+	 *             if the key cannot be written
+	 */
+	private Converted pkcs1Converted(PrivateKey privateKey) throws Exception
+	{
+		String pem = KeyFileWriter.toPem(privateKey, true);
+		CliSupport.refusePkcs1WithoutTraditionalForm(pem, privateKey);
+		return Converted.text(pem, "PEM, PKCS#1");
 	}
 
 	private Converted convertPublicKey(KeyFileDescription description) throws Exception
