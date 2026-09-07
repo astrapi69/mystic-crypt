@@ -53,6 +53,19 @@ met. What is promised instead:
 - if it is not, or it turns out to be intended behaviour: an explanation of why,
   rather than silence
 
+### Defects found by the maintainer
+
+A security defect that is found from the inside - during development, a review,
+or an audit of this project's own code - is tracked in a public issue like any
+other bug, because that is where its fix, its regression test and its discussion
+already live. The rule above is about a report from outside, which must not be
+public before a fix exists; it is not a reason to hide the maintainer's own
+findings from the people running the code.
+
+Both paths end in the same place: once the fixed release is out, the defect gets
+a published advisory naming the affected versions and the fixed one. The
+advisory follows the release, never precedes it.
+
 ## Two things specific to this project
 
 ### The runnable jar bundles its dependencies
