@@ -12,16 +12,21 @@ Only the current minor line receives security fixes. This is a
 single-maintainer project, and supporting several lines at once is a promise it
 could not keep.
 
+The table names **lines, not releases**: the top row is the supported one, and a
+patch release inside it changes nothing here. It is revised when a line ends,
+not when a version number moves.
+
 | Version | Supported          | Required JDK | Needs crypt-data |
 |---------|--------------------|--------------|------------------|
-| 12.x    | :white_check_mark: | 25 and above | 12.0.0 - 12.2    |
+| 13.x    | :white_check_mark: | 25 and above | 12.3             |
+| 12.x    | :x:                | 25 and above | 12.0.0 - 12.2    |
 | 11.x    | :x:                | 25 and above | 11.0.0 - 11.2    |
 | 9.x     | :x:                | 17 and above | 9.4              |
 | 8.x     | :x:                | 11 and above |                  |
 
-The current release is **12.2**. There is no 10.x line - the versions went from
-9.x to 11.0.0. If you are on an older line, the fix for a reported vulnerability
-will be an upgrade to the current one rather than a backport.
+There is no 10.x line - the versions went from 9.x to 11.0.0. If you are on an
+older line, the fix for a reported vulnerability will be an upgrade to the
+current one rather than a backport.
 
 ## Reporting a Vulnerability
 
