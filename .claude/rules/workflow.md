@@ -84,6 +84,21 @@ absence of a tag trigger was mistaken for the absence of automatic publishing.
 in the Portal for a click instead of going live. That is a net, not a design -
 it makes a mistake recoverable, it does not make the mechanism correct.
 
+The other side of that net: a green tag run has NOT published anything yet. The
+release sits in the Portal as a validated deployment until it is released by hand
+at <https://central.sonatype.com>, and only that click is irreversible. A release
+is finished when `repo1.maven.org` answers 200 for the pom, the jar and the
+`.asc`, and `gpg --verify` accepts the signature - not when the workflow is green.
+
+**A pushed tag is never deleted or moved.** If the publishing run fails, the fix
+goes on `develop` and the workflow is re-run on the SAME tag. Moving a tag
+rewrites what a version means for everyone who already fetched it, in order to
+repair a run that can simply be repeated. And before a release depends on a
+publishing workflow that changed, run it once manually against the snapshot
+target (`workflow_dispatch`, `target: snapshot`): 13.0 was preceded by exactly
+that, which is how the unsigned-snapshot gap in #137 was found before a tag
+depended on it.
+
 ## The downstream is built before the upstream is published
 
 A published version cannot be replaced, so the check that it works belongs
