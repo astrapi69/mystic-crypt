@@ -1,24 +1,45 @@
 ## Change log
 ----------------------
 
-Version 12.3-SNAPSHOT
+Version 13.0
 -------------
+
+BREAKING:
+
+- the command line refuses PKCS#1 where it cannot produce it, instead of writing PKCS#8.
+  'keygen --format pkcs1' and 'convert --to pkcs1' exit 2 with a message naming the algorithm
+  when that algorithm has no traditional form, and nothing is written. Before, both wrote a
+  PKCS#8 file, and 'convert' additionally announced "wrote PEM, PKCS#1" while doing it - the same
+  fault #114 had fixed in 'keygen'. RSA, DSA and EC are unaffected. Callers that relied on
+  getting a file back now get an error, which is what makes this release 13.0 and not 12.3 (#127)
+
+ADDED:
+
+- a security policy. For a cryptography library the missing part was not the file but the
+  reporting path: private vulnerability reporting is enabled here, so the policy points at it
+  instead of at the public issue tracker (#130). It also states how a defect found by the
+  maintainer is handled - public issue, advisory after the fixed release (#131)
+- the CodeQL workflow the other repositories in the family already had (#126)
 
 CHANGED:
 
-- test: every algorithm the enum names is driven through this repository's key writing surface,
-  with two assertions that make a change on the crypt-data side loud rather than silent - the set
-  of generatable algorithms is pinned by name, and so is the set that has a traditional form of its
-  own (DSA, EC, RSA, RSASSA-PSS). The CLI refuses PKCS#1 exactly outside that set, so the set
-  changing is a change in what the CLI accepts
-- BREAKING for the command line: 'keygen --format pkcs1' and 'convert --to pkcs1' refuse a key
-  whose algorithm has no traditional form, with exit code 2 and a message naming the algorithm,
-  instead of writing PKCS#8. They wrote PKCS#8 before; 'convert' additionally announced 'wrote PEM,
-  PKCS#1' while doing it, the same fault #114 fixed in 'keygen'. Nothing is written when the
-  request is refused. RSA, DSA and EC are unaffected. This is step 2 of crypt-data#42 (#127)
+- consumes crypt-data 12.3, which adds PrivateKeyExtensions#hasTraditionalForm and deliberately
+  does NOT carry the breaking PKCS#1 refusal held back for crypt-data 13.0. It declares
+  crypt-api 10.1, which is the version this repository pins (#133)
+- every algorithm the enum names is driven through this repository's key writing surface, and
+  two sets are pinned by name: the algorithms that can be generated, and those with a
+  traditional form of their own (DSA, EC, RSA, RSASSA-PSS). The CLI refuses PKCS#1 exactly
+  outside the second set, so a change on the crypt-data side is now loud rather than a silent
+  change in what the CLI accepts (#129)
 - build only: the publish workflow's actions leave the deprecated Node 20 set behind -
   actions/checkout v4 to v7, actions/setup-java v4 to v5, gradle/actions/setup-gradle v4 to v6.
   publish.yml was the last workflow in the family still on the old versions (#124)
+- build only: the publish workflow can be run manually against the snapshot repository, so a
+  change to it is executed once before a release tag depends on it (#135). Signing follows the
+  signing key rather than the version form, so that manual run covers the signature too, and a
+  release without a key is refused instead of being published unsigned (#137)
+- four statements the 12.2 release and its follow-ups made false are corrected, each re-checked
+  against the repository rather than taken from the sweep that found them (#125)
 
 
 Version 12.2

@@ -77,8 +77,11 @@ advisory follows the release, never precedes it.
 
 Besides the library jar, each release publishes `mystic-crypt-<version>-all.jar`,
 a runnable uber-jar for the command line tool. It contains every runtime
-dependency: in 12.2 that is 9296 Bouncy Castle class entries beside 431 of this
-project's own.
+dependency: in 13.0 that is 9296 entries under `org/bouncycastle/` beside 431
+under `io/github/astrapi69/crypt/` and `io/github/astrapi69/mystic/`. Both
+numbers count every entry under the package, not only `.class` files, and are
+read off the built `-all.jar` at release time - the counting method is written
+here so the figures can be checked rather than believed.
 
 So an advisory against **Bouncy Castle** affects that artifact directly, and a
 consumer of the uber-jar cannot swap the affected version out the way a Maven or
