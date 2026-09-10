@@ -188,7 +188,18 @@ The manifest is `funding.json` in the root of this repository. Submit its URL he
 - Manifest URL to paste: `https://github.com/astrapi69/mystic-crypt/blob/develop/funding.json`
 - Validator, worth running first: <https://dir.floss.fund/validate>
 
-It validates against schema v1.1.0 locally; the programme's own validator is the one that counts.
+It validates against schema v1.1.0 locally, and the programme's validator is the one that counts -
+measured, not assumed: the published schema file carries no length limit on a plan description
+while the live validator enforces `should be of length 0 - 500`, and both plan descriptions were
+over it on the first attempt. So the order is: write, run the live validator, then submit. Field
+lengths as submitted, against the limits that actually apply:
+
+| Field | Length | Limit |
+|---|---|---|
+| entity.description | 250 | 2000 |
+| project descriptions | 453 / 306 | 2000 |
+| channel descriptions | 116 / 80 | 500 |
+| plan descriptions | 497 / 499 | 500, enforced by the validator only |
 
 Before pasting the URL:
 
