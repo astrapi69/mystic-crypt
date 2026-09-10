@@ -1,7 +1,8 @@
 # FLOSS/fund application, draft
 
-Status: ready to submit, not submitted. Aster submits it; this file and the `funding.json` in the
-repository root are what gets submitted. Every number was retrieved on 2026-09-10 and is
+Status: **submitted on 2026-09-10** through <https://dir.floss.fund/submit>, with the manifest URL
+`https://github.com/astrapi69/mystic-crypt/blob/develop/funding.json`. What follows is what was
+submitted, kept as it went out rather than tidied afterwards. Every number was retrieved on 2026-09-10 and is
 reproducible with the command or the source next to it.
 
 ## What the programme actually requires, read from the programme pages
