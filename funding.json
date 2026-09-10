@@ -1,0 +1,98 @@
+{
+  "version": "v1.1.0",
+  "entity": {
+    "type": "individual",
+    "role": "owner",
+    "name": "Asterios Raptis",
+    "email": "asteri.raptis@gmail.com",
+    "description": "Solo maintainer of the astrapi69 library family on the JVM. mystic-crypt and its companions crypt-api and crypt-data have been published on Maven Central continuously since 2015, under the MIT licence, with a desktop application built on top of them.",
+    "webpageUrl": {
+      "url": "https://github.com/astrapi69"
+    }
+  },
+  "projects": [
+    {
+      "guid": "mystic-crypt",
+      "name": "mystic-crypt",
+      "description": "A cryptography library and command line tool for the JVM: it generates key pairs, converts between the key and certificate formats that tools in this space keep disagreeing about (PEM, DER, PKCS#1, PKCS#8), computes checksums and message authentication codes, and encrypts files and text through Bouncy Castle rather than hand-rolled primitives. It is the layer other projects consume from Maven Central, and the layer the desktop workbench is built on.",
+      "webpageUrl": {
+        "url": "https://github.com/astrapi69/mystic-crypt"
+      },
+      "repositoryUrl": {
+        "url": "https://github.com/astrapi69/mystic-crypt"
+      },
+      "licenses": [
+        "spdx:MIT"
+      ],
+      "tags": [
+        "cryptography",
+        "security",
+        "developer-tools",
+        "privacy",
+        "software-engineering"
+      ]
+    },
+    {
+      "guid": "mystic-crypt-ui",
+      "name": "mystic-crypt-ui",
+      "description": "The desktop application built on mystic-crypt: a workbench for the keys and secrets a developer or administrator handles every day, with an encrypted local vault as one of its functions rather than its purpose. Listed here as the dependent project where part of the funded work lands, not as the applicant.",
+      "webpageUrl": {
+        "url": "https://github.com/astrapi69/mystic-crypt-ui"
+      },
+      "repositoryUrl": {
+        "url": "https://github.com/astrapi69/mystic-crypt-ui"
+      },
+      "licenses": [
+        "spdx:MIT"
+      ],
+      "tags": [
+        "cryptography",
+        "security",
+        "developer-tools",
+        "privacy",
+        "productivity"
+      ]
+    }
+  ],
+  "funding": {
+    "channels": [
+      {
+        "guid": "grant-bank-transfer",
+        "type": "bank",
+        "description": "Bank account of the maintainer, supplied directly during the grant paperwork rather than published in this manifest."
+      },
+      {
+        "guid": "open-collective",
+        "type": "payment-provider",
+        "address": "https://opencollective.com/asterios-raptis",
+        "description": "Existing public channel for ongoing support, unrelated to the grant plans below."
+      }
+    ],
+    "plans": [
+      {
+        "guid": "kdbx-lossless-round-trip",
+        "status": "active",
+        "name": "Milestone 1: a lossless KeePass (KDBX) round trip",
+        "description": "Importing a KDBX database and exporting it again does not return what went in: entry identity is regenerated, timestamps are replaced, history is dropped. KDBX is the de facto interchange format for local password storage, so a tool that cannot round-trip it is a one-way door rather than a bridge. Deliverables: identity and timestamps preserved in both directions, history preserved or refused with a message naming what would be lost instead of dropped silently, and a round-trip test with a real KDBX file that compares identity and timestamps rather than titles alone. Lands in mystic-crypt-ui, where the KDBX handling lives.",
+        "amount": 6000,
+        "currency": "USD",
+        "frequency": "one-time",
+        "channels": [
+          "grant-bank-transfer"
+        ]
+      },
+      {
+        "guid": "keys-as-first-class-entries",
+        "status": "active",
+        "name": "Milestone 2: keys as first-class objects in the library",
+        "description": "Key material is handled as opaque bytes: the format, algorithm, fingerprint and expiry of a key are known to whoever wrote the file, not to the software holding it. Deliverables in mystic-crypt itself: a key description model that reads those properties off the key rather than taking them on trust, the existing conversion, fingerprint and checksum operations bound to it, and an expiry query for certificates. The desktop application consumes the model as the first user of it. Library work, so the funded result is usable by every project that already depends on mystic-crypt.",
+        "amount": 4000,
+        "currency": "USD",
+        "frequency": "one-time",
+        "channels": [
+          "grant-bank-transfer"
+        ]
+      }
+    ]
+  }
+}
