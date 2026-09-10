@@ -1,7 +1,30 @@
 # FLOSS/fund application, draft
 
-Status: draft for review, not submitted. Every number in it was retrieved on 2026-09-10 and is
-reproducible with the command next to it.
+Status: ready to submit, not submitted. Aster submits it; this file and the `funding.json` in the
+repository root are what gets submitted. Every number was retrieved on 2026-09-10 and is
+reproducible with the command or the source next to it.
+
+## What the programme actually requires, read from the programme pages
+
+| Question | Answer | Source |
+|---|---|---|
+| May an individual apply without a legal entity? | Yes. "Individuals, projects, groups, communities, or organisations can apply." The applicant "must have a bank account and the necessary tax documents (which vary between jurisdictions) to receive funds." | <https://floss.fund/faq/> |
+| What may be requested? | "A project can apply for funding of up to $100,000 in one year", and "we accept requests in denominations of a minimum of $10,000 and multiples of $25,000 thereafter." | <https://floss.fund/faq/> |
+| How is it submitted? | Write a `funding.json` manifest, publish it, and "Submit the URL to the directory" at <https://dir.floss.fund/submit>. A validator is at <https://dir.floss.fund/validate>. | <https://floss.fund/faq/>, <https://dir.floss.fund/submit> |
+| Manifest format | funding.json **v1.1.0**, schema at <https://fundingjson.org/schema/v1.1.0.json>. Hosted on the project website or in the repository. | <https://fundingjson.org> |
+| Is there a rule about generative AI? | **None.** Neither the FAQ nor the programme pages mention AI, LLMs, machine learning or generative tools. Projects are judged on "value, impact, criticality, and innovation". | <https://floss.fund/faq/> |
+| How is it paid out? | "our team will reach out to you for the necessary paperwork (such as tax residency documents required by Indian laws) before processing the funds", up to four weeks by email. | <https://floss.fund/faq/> |
+
+**Two consequences, and the first one changed this application.**
+
+The requested sum had to move. 12,000 USD is not an accepted denomination: the minimum is 10,000
+and everything above it goes in steps of 25,000. Inside the band that was agreed, 10,000 is the
+only permitted figure, so that is what is requested, split 6,000 and 4,000 across the two
+milestones.
+
+The eligibility rule that could have stopped this does not: an individual may apply. What the
+payout needs is a bank account and tax residency paperwork under Indian law, which is a form to
+fill in, not a legal entity to found.
 
 ---
 
@@ -54,9 +77,12 @@ claim: this is maintained, not archived.
 
 ## Milestones applied for
 
-Two, both mandatory work in the next six months regardless of funding, and both free of any
-generative-AI component. That last point is deliberate: it keeps the application answerable without
-a discussion the work does not need.
+Two, both mandatory work in the next six months regardless of funding.
+
+**On generative tooling.** The programme has no rule about it - checked, not assumed. The
+commitment is made anyway, because it is in this application and therefore binds the execution:
+these two milestones will not be predominantly machine-generated. Design, cryptographic decisions
+and the tests that pin them are the maintainer's work.
 
 ### Milestone 1: a lossless KeePass (KDBX) round trip
 
@@ -81,51 +107,52 @@ alternative without committing to it.
 **Acceptance.** A KDBX file imported and exported again compares equal on identity, timestamps and
 entry count. The test is in the repository and runs in CI.
 
-**Requested: 7,000 USD.**
+**Requested: 6,000 USD.**
 
-### Milestone 2: keys as first-class entries
+### Milestone 2: keys as first-class objects in the library
 
-**Problem.** A key or a certificate is stored as an attachment, which means the application knows
-it as bytes and nothing else. Everything it can do with keys, and it can do a lot, lives in
-separate tool windows disconnected from the entry the key belongs to.
+**Problem.** Key material is handled as opaque bytes. What a key is - its format, its algorithm,
+its fingerprint, when the certificate around it expires - is known to whoever wrote the file and
+not to the software holding it. Every consumer of the library that wants those properties reads
+them off the key itself, or asks the user to type them in and hopes.
 
-**Deliverables.**
-- An entry type for key material carrying format, algorithm, fingerprint and, for certificates, the
-  expiry date, filled by reading the key rather than typed by the user.
-- The operations the library already provides, bound to the entry: convert the format, export the
-  public half, show the fingerprint, compute a checksum.
-- An expiry view: what becomes invalid within a chosen period.
-- Tests that drive each operation through the running application against real key material.
+**Deliverables, in `mystic-crypt` itself.**
+- A key description model that reads format, algorithm and fingerprint off the key rather than
+  taking them on trust, and the certificate expiry where there is one.
+- The operations the library already has, bound to that model: convert the format, export the
+  public half, compute the fingerprint, compute a checksum.
+- An expiry query: which of a set of keys becomes invalid within a given period.
+- Tests against real key material for every algorithm the library can generate, not a sample.
 
-**Acceptance.** A key imported as an entry reports its own algorithm and fingerprint, converts
-between the four formats without leaving the entry, and an expiring certificate appears in the
-expiry view before it expires.
+**Consumer.** The desktop application uses the model as its first consumer, so the key becomes an
+entry type there rather than an attachment. That part is deliberately the smaller half: the funded
+result is in the library, where every project that already depends on it can use it.
 
-**Requested: 5,000 USD.**
+**Acceptance.** Given a key file, the library reports its algorithm, format and fingerprint without
+being told them, converts between the four formats through the model, and answers which keys in a
+set expire inside a period.
 
-### Total requested: 12,000 USD
+**Requested: 4,000 USD.**
 
-At the lower end of the range on purpose. A first application asking for a modest amount against
-two verifiable milestones is a better proposition than one asking for the maximum, and the work is
-scoped so that a smaller grant still delivers something whole: milestone 1 alone is a complete,
-useful result.
+### Total requested: 10,000 USD
+
+The minimum the programme accepts, and deliberately so. A first application asking for a modest
+amount against two verifiable milestones is a better proposition than one asking for the maximum,
+and the work is scoped so that a smaller grant still delivers something whole: milestone 1 alone is
+a complete, useful result.
 
 ---
 
 ## Which repository the work lands in
 
-Both milestones land in `mystic-crypt-ui`, the dependent desktop application, while the applicant
-is the library. That is stated plainly rather than blurred:
+Milestone 2 is library work: the key description model and its operations are built in
+`mystic-crypt`, the applicant repository, and the desktop application is its first consumer. That
+is the cut, not an option left open.
 
-- The library supplies the operations both milestones build on and gains the pieces they need
-  (identity and timestamp handling for the KDBX model, format metadata for key entries).
-- The application is where a user meets them.
-- Both repositories are maintained by the same person, under the same licence, in the same release
-  discipline.
-
-If the programme requires the funded work to land inside the applicant repository, milestone 2 can
-be re-cut so that the entry model and the key metadata are library work with a thin consumer in the
-application. Milestone 1 cannot: KDBX handling lives in the application today.
+Milestone 1 lands in `mystic-crypt-ui`, because KDBX handling lives there and moving it would be a
+different project than the one being funded. Both repositories are maintained by the same person,
+under the same licence, in the same release discipline, and the application is listed in the
+manifest as a project so a reviewer can see where the work happens rather than having to ask.
 
 ---
 
@@ -153,13 +180,30 @@ is the candidate: it is new, it is substantial, and nothing about it is done.
 
 ---
 
-## Before submitting
+## Submitting
 
-- [ ] Publish a `funding.json` manifest at the location the programme expects, and check its
-      current schema version against the programme page rather than against this note.
-- [ ] Decide whether the applicant is the library alone or the library plus the application, and
-      make the milestone section match that decision.
-- [ ] Retrieve the download figures from the Central Portal and either include them or leave the
-      row out, but do not estimate.
-- [ ] Have someone who is not the author read the one-paragraph description and say what they think
-      the project is. If the answer is "a password manager", the paragraph has failed.
+The manifest is `funding.json` in the root of this repository. Submit its URL here:
+
+- Submission form: <https://dir.floss.fund/submit>
+- Manifest URL to paste: `https://github.com/astrapi69/mystic-crypt/blob/develop/funding.json`
+- Validator, worth running first: <https://dir.floss.fund/validate>
+
+It validates against schema v1.1.0 locally; the programme's own validator is the one that counts.
+
+Before pasting the URL:
+
+- [ ] Check the contact address in the manifest. It is the address the repository's commits carry,
+      which is not necessarily the one to receive grant correspondence.
+- [ ] Read the one-paragraph description aloud to someone who does not know the project. If they
+      say "a password manager", the paragraph has failed.
+
+Deliberately not done here: the download figures. Maven Central publishes none through a public
+endpoint, and a guessed number is worth less than an absent one.
+
+## The risk this application carries
+
+The programme says: "Very new projects or projects with minimal usage are not considered for the
+time being." Ten years of continuous releases answer the first half. The second half is thinner:
+eleven stars and six forks are small numbers, and the download figures that would answer it
+properly are not publicly retrievable. The honest reading is that this is a small, old, maintained
+project rather than a widely known one, and the application says so rather than dressing it up.
