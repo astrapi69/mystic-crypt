@@ -1,0 +1,93 @@
+/**
+ * The API compatibility gate, as in crypt-data (crypt-data#70): the public API of this build
+ * against the last release on Maven Central, by japicmp.
+ *
+ * Semantic versioning decides whether a difference is an error: with the same major version as the
+ * baseline, a binary or source incompatible change fails the build, because a minor or patch
+ * release must not break a consumer. With a higher major it is written to the report and the build
+ * goes on, because a major is where breaking changes belong. crypt-data's develop carried two
+ * breaking changes under 12.3-SNAPSHOT for weeks (crypt-data#42, #51) without anything saying so;
+ * this is what says so.
+ *
+ * apiBaselineVersion in gradle.properties is the last release and moves with every release, in the
+ * same commit that opens the next development cycle.
+ *
+ * The japicmp core runs through JavaExec rather than the Gradle plugin me.champeau.gradle.japicmp,
+ * whose last release is from 2025-02; the core is maintained (0.26.2, 2026-09).
+ */
+configurations {
+    japicmpTool {
+        canBeConsumed = false
+        transitive = false
+    }
+}
+
+dependencies {
+    japicmpTool(variantOf(libs.japicmp) { classifier('jar-with-dependencies') })
+}
+
+def majorOf = { String version -> Integer.parseInt(version.tokenize('.-')[0]) }
+
+/**
+ * The released jar, fetched from Maven Central itself. Resolving the coordinates through Gradle
+ * does not work here: they are this project's own, and Gradle answers them with the project - the
+ * first run compared the new jar with itself and reported no change.
+ */
+def baselineName = "${rootProject.name}-${apiBaselineVersion}.jar"
+def baselineUrl = "https://repo1.maven.org/maven2/${groupPackage.replace('.', '/')}/" +
+    "${rootProject.name}/${apiBaselineVersion}/${baselineName}"
+def baselineFile = layout.buildDirectory.file("api-baseline/${baselineName}")
+
+tasks.register('apiBaselineJar') {
+    description = "Fetches release $apiBaselineVersion from Maven Central as the API baseline"
+    inputs.property('url', baselineUrl)
+    outputs.file(baselineFile)
+    doLast {
+        def target = baselineFile.get().asFile
+        target.parentFile.mkdirs()
+        new URL(baselineUrl).withInputStream { input -> target.withOutputStream { it << input } }
+        logger.lifecycle("apiBaselineJar: ${target.length()} bytes from $baselineUrl")
+    }
+}
+
+tasks.register('apiCompatibility', JavaExec) {
+    group = 'verification'
+    description = "Compares the public API with release $apiBaselineVersion; breaking it fails within the same major"
+    def newJar = tasks.named('jar').flatMap { it.archiveFile }
+    def report = layout.buildDirectory.file('reports/japicmp/api-compatibility.html')
+    def breakingIsAllowed = majorOf(projectVersion) > majorOf(apiBaselineVersion)
+    dependsOn 'apiBaselineJar'
+    inputs.file(baselineFile)
+    inputs.file(newJar)
+    inputs.property('breakingIsAllowed', breakingIsAllowed)
+    outputs.file(report)
+    classpath = configurations.japicmpTool
+    mainClass = 'japicmp.JApiCmp'
+    doFirst {
+        def baselineJar = baselineFile.get().asFile
+        // fail closed: a baseline that is not the release, or is the jar under test, compares
+        // nothing and would report green
+        if (!baselineJar.name.contains("-${apiBaselineVersion}.") ||
+            baselineJar.canonicalPath == newJar.get().asFile.canonicalPath) {
+            throw new GradleException("apiCompatibility: the baseline resolved to " +
+                "${baselineJar}, not release $apiBaselineVersion - refusing to compare")
+        }
+        def dependencyClasspath = configurations.runtimeClasspath.asPath
+        args = ['--old', baselineJar.absolutePath,
+                '--new', newJar.get().asFile.absolutePath,
+                '--old-classpath', dependencyClasspath,
+                '--new-classpath', dependencyClasspath,
+                '--only-modified',
+                '--html-file', report.get().asFile.absolutePath]
+        if (!breakingIsAllowed) {
+            args += ['--error-on-binary-incompatibility', '--error-on-source-incompatibility']
+        }
+        logger.lifecycle("apiCompatibility: $projectVersion against release $apiBaselineVersion - " +
+            (breakingIsAllowed ? 'a higher major, incompatibilities are reported, not refused'
+                               : 'the same major, an incompatibility fails the build'))
+    }
+}
+
+tasks.named('check') {
+    dependsOn 'apiCompatibility'
+}

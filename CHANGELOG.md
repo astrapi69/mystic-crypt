@@ -17,6 +17,9 @@ ADDED:
 
 CHANGED:
 
+- build only: an API compatibility gate (apiCompatibility, part of check), as in crypt-data#71.
+  japicmp compares the jar with the last release on Maven Central (apiBaselineVersion=13.0);
+  within the same major a binary or source incompatibility fails the build (#156)
 - 'sign' and 'verify-signature' name an unknown algorithm as "'NOPE' is not a supported signature
   algorithm" followed by the list of signature suites. Before, a name that was no key algorithm
   at all got the generic "unknown key algorithm" message, whose examples were key-exchange
