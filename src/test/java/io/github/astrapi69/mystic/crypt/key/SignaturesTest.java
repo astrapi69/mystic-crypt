@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.mystic.crypt.cli;
+package io.github.astrapi69.mystic.crypt.key;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -31,20 +31,24 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
+import java.security.KeyPairGenerator;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import io.github.astrapi69.crypt.api.algorithm.key.KeyPairGeneratorAlgorithm;
 import io.github.astrapi69.mystic.crypt.provider.SecurityProviderSupport;
 
 /**
- * Unit tests for the {@link SignatureSupport} helper that hides the split between the Ed25519,
- * ML-DSA and SLH-DSA signer families behind one string-keyed API.
+ * Unit tests for {@link Signatures}, the public entry point that dispatches by suite identifier to
+ * the Ed25519, ML-DSA, SLH-DSA and classical signer families (#149). The tests moved here from the
+ * command line package, where the same dispatch used to be package-private.
  */
-class SignatureSupportTest
+class SignaturesTest
 {
 
 	@BeforeAll
@@ -57,14 +61,14 @@ class SignatureSupportTest
 	@ValueSource(strings = { "Ed25519", "ed25519", "ED25519", " Ed25519 " })
 	void ed25519IsRecognizedInAnyCase(String name)
 	{
-		assertTrue(SignatureSupport.isEd25519(name));
-		assertEquals("Ed25519", SignatureSupport.keyFactoryAlgorithm(name));
+		assertTrue(Signatures.isEd25519(name));
+		assertEquals("Ed25519", Signatures.keyFactoryAlgorithm(name));
 	}
 
 	@Test
 	void otherAlgorithmNamesAreNotEd25519()
 	{
-		assertFalse(SignatureSupport.isEd25519("ML-DSA-65"));
+		assertFalse(Signatures.isEd25519("ML-DSA-65"));
 	}
 
 	/** The key factory algorithm is the JCA name of the parameter set, dashes included. */
@@ -73,7 +77,7 @@ class SignatureSupportTest
 			"SLH-DSA-SHA2-128S, SLH-DSA-SHA2-128S", "slh_dsa_shake_128f, SLH-DSA-SHAKE-128F" })
 	void keyFactoryAlgorithmIsTheJcaNameOfTheParameterSet(String input, String expected)
 	{
-		assertEquals(expected, SignatureSupport.keyFactoryAlgorithm(input));
+		assertEquals(expected, Signatures.keyFactoryAlgorithm(input));
 	}
 
 	/**
@@ -86,7 +90,7 @@ class SignatureSupportTest
 	void nonSignatureAlgorithmsAreRejected(String name)
 	{
 		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-			() -> SignatureSupport.keyFactoryAlgorithm(name));
+			() -> Signatures.keyFactoryAlgorithm(name));
 		assertTrue(exception.getMessage().contains("is not a supported signature algorithm"),
 			"the message must say why '" + name + "' is rejected, but was: '"
 				+ exception.getMessage() + "'");
@@ -100,14 +104,14 @@ class SignatureSupportTest
 	@ValueSource(strings = { "SHA256withFOO", "nothing at all", "with" })
 	void aWithNameOfAnUnknownFamilyIsNotClassical(String algorithm)
 	{
-		assertFalse(SignatureSupport.isClassical(algorithm));
+		assertFalse(Signatures.isClassical(algorithm));
 	}
 
 	@ParameterizedTest
 	@ValueSource(strings = { "RSA", "ec", "ECDSA", "DSA", "SHA512withRSA", "SHA256withECDSA" })
 	void theClassicalFamiliesAreRecognisedByEitherName(String algorithm)
 	{
-		assertTrue(SignatureSupport.isClassical(algorithm),
+		assertTrue(Signatures.isClassical(algorithm),
 			algorithm + " must be recognised as a classical signature algorithm");
 	}
 
@@ -120,7 +124,7 @@ class SignatureSupportTest
 			"SHA256withECDSA, EC" })
 	void aClassicalNameImpliesItsKeyFactoryAlgorithm(String algorithm, String expected)
 	{
-		assertEquals(expected, SignatureSupport.keyFactoryAlgorithm(algorithm));
+		assertEquals(expected, Signatures.keyFactoryAlgorithm(algorithm));
 	}
 
 	/**
@@ -130,27 +134,98 @@ class SignatureSupportTest
 	@Test
 	void aNameThatBeginsWithTheSeparatorStillNamesItsFamily()
 	{
-		assertTrue(SignatureSupport.isClassical("withRSA"));
-		assertEquals("RSA", SignatureSupport.keyFactoryAlgorithm("withRSA"));
+		assertTrue(Signatures.isClassical("withRSA"));
+		assertEquals("RSA", Signatures.keyFactoryAlgorithm("withRSA"));
 	}
 
 	@Test
 	void unknownAlgorithmNamesAreRejected()
 	{
-		assertThrows(IllegalArgumentException.class,
-			() -> SignatureSupport.keyFactoryAlgorithm("NOPE"));
+		assertThrows(IllegalArgumentException.class, () -> Signatures.keyFactoryAlgorithm("NOPE"));
 	}
 
 	/** The sign and verify dispatch must pick the family that belongs to the algorithm name. */
 	@ParameterizedTest
-	@ValueSource(strings = { "Ed25519", "ML-DSA-65", "SLH-DSA-SHA2-128F" })
+	@ValueSource(strings = { "Ed25519", "ML-DSA-65", "SLH-DSA-SHA2-128F", "RSA", "EC",
+			"SHA512withRSA", "DSA" })
 	void signAndVerifyRoundTripInEveryFamily(String algorithm) throws Exception
 	{
-		KeyPair keyPair = SignCommandTest.newKeyPair(algorithm);
+		KeyPair keyPair = newKeyPair(algorithm);
 		byte[] data = ("round trip " + algorithm).getBytes(StandardCharsets.UTF_8);
-		byte[] signature = SignatureSupport.sign(algorithm, keyPair.getPrivate(), data);
-		assertTrue(SignatureSupport.verify(algorithm, keyPair.getPublic(), data, signature));
-		assertFalse(SignatureSupport.verify(algorithm, keyPair.getPublic(), "other data".getBytes(),
-			signature), "the signature must not verify against different data");
+		byte[] signature = Signatures.sign(algorithm, keyPair.getPrivate(), data);
+		assertTrue(Signatures.verify(algorithm, keyPair.getPublic(), data, signature));
+		assertFalse(
+			Signatures.verify(algorithm, keyPair.getPublic(), "other data".getBytes(), signature),
+			"the signature must not verify against different data");
+	}
+
+	/**
+	 * Reproduction of #149: a caller that learns the suite at runtime must get a refusal for an
+	 * identifier the library does not know - on signing and on verifying alike - never a quiet
+	 * {@code false} that reads like an invalid signature. The message names the value.
+	 */
+	@ParameterizedTest
+	@ValueSource(strings = { "NOPE", "", "   ", "X25519", "ML-KEM-768", "SHA256withFOO", "Ed448x" })
+	void anUnknownSuiteIsRefusedOnSignAndOnVerify(String suite) throws Exception
+	{
+		KeyPair keyPair = Ed25519Signer.newKeyPair();
+		byte[] payload = "payload".getBytes(StandardCharsets.UTF_8);
+
+		IllegalArgumentException onSign = assertThrows(IllegalArgumentException.class,
+			() -> Signatures.sign(suite, keyPair.getPrivate(), payload));
+		IllegalArgumentException onVerify = assertThrows(IllegalArgumentException.class,
+			() -> Signatures.verify(suite, keyPair.getPublic(), payload, new byte[64]));
+
+		assertTrue(onSign.getMessage().contains("'" + suite + "'"), onSign.getMessage());
+		assertTrue(onVerify.getMessage().contains("'" + suite + "'"), onVerify.getMessage());
+	}
+
+	/** A missing suite is a programming error and fails as one, before any key is touched. */
+	@ParameterizedTest
+	@NullSource
+	void aNullSuiteIsRefused(String suite) throws Exception
+	{
+		KeyPair keyPair = Ed25519Signer.newKeyPair();
+
+		assertThrows(NullPointerException.class,
+			() -> Signatures.sign(suite, keyPair.getPrivate(), new byte[1]));
+		assertThrows(NullPointerException.class,
+			() -> Signatures.verify(suite, keyPair.getPublic(), new byte[1], new byte[64]));
+	}
+
+	/**
+	 * A signature made under one suite does not verify under another suite with an unrelated key:
+	 * the dispatch uses the suite it is given, not whatever the key happens to be.
+	 */
+	@Test
+	void aSignatureDoesNotVerifyUnderAnotherSuite() throws Exception
+	{
+		KeyPair ed25519 = newKeyPair("Ed25519");
+		KeyPair mlDsa = newKeyPair("ML-DSA-44");
+		byte[] payload = "payload".getBytes(StandardCharsets.UTF_8);
+		byte[] signature = Signatures.sign("Ed25519", ed25519.getPrivate(), payload);
+
+		assertFalse(Signatures.verify("ML-DSA-44", mlDsa.getPublic(), payload, signature));
+	}
+
+	/** A fresh key pair for the given suite, generated at test time. */
+	static KeyPair newKeyPair(String suite) throws Exception
+	{
+		if ("Ed25519".equalsIgnoreCase(suite))
+		{
+			return Ed25519Signer.newKeyPair();
+		}
+		String keyAlgorithm = Signatures.keyFactoryAlgorithm(suite);
+		if (Signatures.isClassical(suite))
+		{
+			KeyPairGenerator generator = KeyPairGenerator.getInstance(keyAlgorithm);
+			generator.initialize("EC".equals(keyAlgorithm) ? 256 : 2048);
+			return generator.generateKeyPair();
+		}
+		KeyPairGeneratorAlgorithm parsed = KeyPairGeneratorAlgorithm
+			.valueOf(suite.toUpperCase().replace('-', '_'));
+		return parsed.name().startsWith("ML_DSA")
+			? MlDsaSigner.newKeyPair(parsed)
+			: SlhDsaSigner.newKeyPair(parsed);
 	}
 }

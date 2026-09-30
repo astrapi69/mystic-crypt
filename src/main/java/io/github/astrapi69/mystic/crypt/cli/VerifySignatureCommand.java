@@ -31,6 +31,7 @@ import java.util.concurrent.Callable;
 
 import io.github.astrapi69.crypt.data.key.reader.PublicKeyReader;
 import io.github.astrapi69.mystic.crypt.key.KeyFileReader;
+import io.github.astrapi69.mystic.crypt.key.Signatures;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
@@ -82,11 +83,11 @@ public class VerifySignatureCommand implements Callable<Integer>
 		boolean valid;
 		try
 		{
-			String keyFactoryAlgorithm = SignatureSupport.keyFactoryAlgorithm(algorithm);
+			String keyFactoryAlgorithm = Signatures.keyFactoryAlgorithm(algorithm);
 			byte[] data = CliSupport.readData(in);
 			byte[] signatureBytes = Files.readAllBytes(signature.toPath());
 			PublicKey publicKey = readPublicKey(keyFactoryAlgorithm);
-			valid = SignatureSupport.verify(algorithm, publicKey, data, signatureBytes);
+			valid = Signatures.verify(algorithm, publicKey, data, signatureBytes);
 		}
 		catch (Exception exception)
 		{
@@ -111,7 +112,7 @@ public class VerifySignatureCommand implements Callable<Integer>
 	{
 		try
 		{
-			if (SignatureSupport.isClassical(algorithm))
+			if (Signatures.isClassical(algorithm))
 			{
 				return KeyFileReader.readPublicKey(key, keyFactoryAlgorithm);
 			}

@@ -22,33 +22,42 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.mystic.crypt.cli;
+package io.github.astrapi69.mystic.crypt.key;
 
+import java.security.GeneralSecurityException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import io.github.astrapi69.crypt.api.algorithm.key.KeyPairGeneratorAlgorithm;
-import io.github.astrapi69.mystic.crypt.key.Ed25519Signer;
-import io.github.astrapi69.mystic.crypt.key.Ed25519Verifier;
-import io.github.astrapi69.mystic.crypt.key.MlDsaSigner;
-import io.github.astrapi69.mystic.crypt.key.MlDsaVerifier;
-import io.github.astrapi69.mystic.crypt.key.SlhDsaSigner;
-import io.github.astrapi69.mystic.crypt.key.SlhDsaVerifier;
 import io.github.astrapi69.mystic.crypt.provider.SecurityProviderSupport;
 
 /**
- * One entry point for the three signature families the library provides: the classical Ed25519 and
- * the NIST post-quantum ML-DSA (FIPS 204) and SLH-DSA (FIPS 205). Each family has its own signer
- * and verifier class, and Ed25519 differs from the other two in that its signer takes no algorithm
- * parameter. This class hides that split behind one string-keyed API, so the {@code sign} and
- * {@code verify-signature} subcommands can treat all of them alike.
+ * One entry point for every signature suite the library provides, chosen by name at runtime:
+ * Ed25519, the NIST post-quantum ML-DSA (FIPS 204) and SLH-DSA (FIPS 205), and the classical RSA,
+ * EC (ECDSA) and DSA. Each post-quantum family and Ed25519 has its own signer and verifier class;
+ * this class dispatches to them by the suite identifier, so a caller that learns the suite at
+ * runtime - from a transaction, a file header, a command line option - does not write that switch
+ * itself.
+ * <p>
+ * The identifiers are the ones the {@code sign} and {@code verify-signature} commands accept:
+ * {@code Ed25519}, {@code ML-DSA-44}, {@code ML-DSA-65}, {@code ML-DSA-87}, an SLH-DSA parameter
+ * set such as {@code SLH-DSA-SHA2-128S}, {@code RSA}, {@code EC} (or {@code ECDSA}), {@code DSA},
+ * or a JCA signature name such as {@code SHA512withRSA}; case does not matter, and dashes and
+ * underscores are interchangeable.
+ * <p>
+ * An identifier that names no suite is refused with an {@link IllegalArgumentException} on signing
+ * and on verifying alike - it never verifies as {@code false}, so an unknown suite cannot be
+ * mistaken for an invalid signature. SLH-DSA is not in the JDK as of 25; it is served here through
+ * Bouncy Castle, which is one reason the dispatch belongs to the library rather than to each caller
+ * (#149).
  */
-final class SignatureSupport
+public final class Signatures
 {
 
 	/** the name under which the Ed25519 signature family is offered */
@@ -76,7 +85,7 @@ final class SignatureSupport
 	private record Classical(String signatureAlgorithm, String keyAlgorithm) {
 	}
 
-	private SignatureSupport()
+	private Signatures()
 	{
 	}
 
@@ -86,16 +95,17 @@ final class SignatureSupport
 	 * algorithm of one of them outright ({@code SHA512withRSA}).
 	 *
 	 * @param algorithm
-	 *            the name the user gave
+	 *            the suite identifier
 	 * @return true if this is a classical signature algorithm
 	 */
-	static boolean isClassical(String algorithm)
+	public static boolean isClassical(String algorithm)
 	{
 		return classicalOf(algorithm) != null;
 	}
 
 	private static Classical classicalOf(String algorithm)
 	{
+		Objects.requireNonNull(algorithm, "the signature suite must not be null");
 		final String normalized = algorithm.trim().toUpperCase(Locale.ROOT);
 		final Classical named = CLASSICAL.get(normalized);
 		if (named != null)
@@ -111,9 +121,16 @@ final class SignatureSupport
 		return family == null ? null : new Classical(algorithm.trim(), family.keyAlgorithm());
 	}
 
-	/** Whether the given algorithm name selects the Ed25519 family. */
-	static boolean isEd25519(String algorithm)
+	/**
+	 * Whether the given suite identifier selects the Ed25519 family.
+	 *
+	 * @param algorithm
+	 *            the suite identifier
+	 * @return true if this is Ed25519
+	 */
+	public static boolean isEd25519(String algorithm)
 	{
+		Objects.requireNonNull(algorithm, "the signature suite must not be null");
 		return ED25519.equalsIgnoreCase(algorithm.trim());
 	}
 
@@ -127,7 +144,7 @@ final class SignatureSupport
 	 * @throws IllegalArgumentException
 	 *             if the name is not a supported signature algorithm
 	 */
-	static String keyFactoryAlgorithm(String algorithm)
+	public static String keyFactoryAlgorithm(String algorithm)
 	{
 		if (isEd25519(algorithm))
 		{
@@ -151,10 +168,13 @@ final class SignatureSupport
 	 * @param data
 	 *            the bytes to sign
 	 * @return the signature
-	 * @throws Exception
-	 *             if signing fails
+	 * @throws IllegalArgumentException
+	 *             if the name is not a supported signature algorithm
+	 * @throws GeneralSecurityException
+	 *             if signing fails, e.g. because the key does not belong to the suite
 	 */
-	static byte[] sign(String algorithm, PrivateKey privateKey, byte[] data) throws Exception
+	public static byte[] sign(String algorithm, PrivateKey privateKey, byte[] data)
+		throws GeneralSecurityException
 	{
 		if (isEd25519(algorithm))
 		{
@@ -186,11 +206,13 @@ final class SignatureSupport
 	 * @param signature
 	 *            the signature to check
 	 * @return true if the signature belongs to the data and the key
-	 * @throws Exception
-	 *             if verifying fails
+	 * @throws IllegalArgumentException
+	 *             if the name is not a supported signature algorithm - never answered with false
+	 * @throws GeneralSecurityException
+	 *             if verifying fails, e.g. because the key does not belong to the suite
 	 */
-	static boolean verify(String algorithm, PublicKey publicKey, byte[] data, byte[] signature)
-		throws Exception
+	public static boolean verify(String algorithm, PublicKey publicKey, byte[] data,
+		byte[] signature) throws GeneralSecurityException
 	{
 		if (isEd25519(algorithm))
 		{
@@ -211,11 +233,6 @@ final class SignatureSupport
 	}
 
 	/**
-	 * Parses an ML-DSA or SLH-DSA algorithm name; everything else - including key-exchange
-	 * algorithms that cannot sign at all - is rejected with a clear message. Ed25519 never reaches
-	 * this method because its callers branch on {@link #isEd25519(String)} first.
-	 */
-	/**
 	 * Builds the signature object for a classical family, naming Bouncy Castle explicitly.
 	 * <p>
 	 * The provider is not incidental. An elliptic-curve key on a named curve, as Bouncy Castle
@@ -224,23 +241,33 @@ final class SignatureSupport
 	 * signature then reads as an invalid one with nothing saying why. Signing, verifying and
 	 * decoding all go through the same provider so that mismatch cannot arise.
 	 */
-	private static Signature newClassicalSignature(Classical classical) throws Exception
+	private static Signature newClassicalSignature(Classical classical)
+		throws GeneralSecurityException
 	{
 		SecurityProviderSupport.ensureBouncyCastle();
 		return Signature.getInstance(classical.signatureAlgorithm(),
 			BouncyCastleProvider.PROVIDER_NAME);
 	}
 
+	/**
+	 * Parses an ML-DSA or SLH-DSA algorithm name; everything else - unknown names and key-exchange
+	 * algorithms that cannot sign at all - is refused with one message naming the value. Ed25519
+	 * and the classical families never reach this method because its callers branch on them first.
+	 */
 	private static KeyPairGeneratorAlgorithm parse(String algorithm)
 	{
-		KeyPairGeneratorAlgorithm parsed = CliSupport.parseKeyPairAlgorithm(algorithm);
-		if (!parsed.name().startsWith("ML_DSA") && !parsed.name().startsWith("SLH_DSA"))
+		String constantName = algorithm.trim().toUpperCase(Locale.ROOT).replace('-', '_');
+		for (KeyPairGeneratorAlgorithm candidate : KeyPairGeneratorAlgorithm.values())
 		{
-			throw new IllegalArgumentException("'" + algorithm
-				+ "' is not a supported signature algorithm. Use RSA, EC (or ECDSA), DSA, Ed25519, "
-				+ "ML-DSA-44, ML-DSA-65, ML-DSA-87, an SLH-DSA parameter set such as "
-				+ "SLH-DSA-SHA2-128S, or a JCA name such as SHA512withRSA.");
+			if (candidate.name().equals(constantName) && (candidate.name().startsWith("ML_DSA")
+				|| candidate.name().startsWith("SLH_DSA")))
+			{
+				return candidate;
+			}
 		}
-		return parsed;
+		throw new IllegalArgumentException("'" + algorithm
+			+ "' is not a supported signature algorithm. Use RSA, EC (or ECDSA), DSA, Ed25519, "
+			+ "ML-DSA-44, ML-DSA-65, ML-DSA-87, an SLH-DSA parameter set such as "
+			+ "SLH-DSA-SHA2-128S, or a JCA name such as SHA512withRSA.");
 	}
 }
