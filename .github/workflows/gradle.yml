@@ -35,6 +35,12 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
           # a broken upload must not read as green coverage tracking
           fail_ci_if_error: true
+          # the uploader searches the tree and found .idea/runConfigurations/code_coverage_main.xml,
+          # an IntelliJ run configuration, as a second "coverage file" (#151). Name the report
+          # and switch the search off: a gate reporting numbers nobody produced is worse than one
+          # reporting none
+          files: build/reports/jacoco/test/jacocoTestReport.xml
+          disable_search: true
       # Snapshots only. A non-SNAPSHOT version on develop is deliberately NOT
       # published here: the release commit reaches develop before the RELEASE-*
       # tag, and publishing it from this push would duplicate the tag-triggered
