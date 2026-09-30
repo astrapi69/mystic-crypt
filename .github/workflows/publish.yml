@@ -27,13 +27,18 @@ on:
           - release
 
 jobs:
+  # The task names carry the nmcp prefix. The names without it are deprecated aliases that the
+  # plugin warns about on every run and will remove; they still work today because each alias
+  # depends on the prefixed task, which is also why the unsigned-release refusal (#137) fires
+  # through them - measured, not assumed. Naming the real task removes the warning and the day
+  # the alias disappears (#139).
   publish:
 
     runs-on: ubuntu-latest
 
     env:
       # a tag push publishes a release; a manual run publishes what it was asked for
-      PUBLISH_TASK: ${{ (github.event_name == 'workflow_dispatch' && inputs.target == 'snapshot') && 'publishAllPublicationsToCentralPortalSnapshots' || 'publishAllPublicationsToCentralPortal' }}
+      PUBLISH_TASK: ${{ (github.event_name == 'workflow_dispatch' && inputs.target == 'snapshot') && 'nmcpPublishAllPublicationsToCentralPortalSnapshots' || 'nmcpPublishAllPublicationsToCentralPortal' }}
 
     steps:
       - name: Checkout sources
