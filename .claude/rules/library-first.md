@@ -3,6 +3,16 @@
 Before writing any new utility, walk this hierarchy top-down and stop at the
 first level that fits. The PR/commit documents WHY a lower level was chosen.
 
+**This hierarchy is for work INSIDE these three libraries.** It puts the JDK
+above the family because a library cannot depend on itself. In a CONSUMING
+project - mystic-crypt-ui, lethenon, an application or a plugin - the order
+runs the other way: the family first, then the JDK. A consumer that follows
+the hierarchy below ends up reinventing what it already depends on, which is
+exactly what happened on 2026-09-30 in lethenon, where a signature suite
+duplicated `KeyPairGeneratorAlgorithm` and a `"SHA-256"` literal duplicated
+`HashAlgorithm.SHA_256`. The consuming side of the rule is in the global
+`~/.claude/CLAUDE.md` and in each consumer's own rules.
+
 ## 0. Never implement cryptographic primitives yourself
 
 Ciphers, hashes, signatures, KDFs, random generation, padding, encodings of
