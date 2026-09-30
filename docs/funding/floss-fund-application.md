@@ -80,10 +80,18 @@ claim: this is maintained, not archived.
 
 Two, both mandatory work in the next six months regardless of funding.
 
-**On generative tooling.** The programme has no rule about it - checked, not assumed. The
-commitment is made anyway, because it is in this application and therefore binds the execution:
-these two milestones will not be predominantly machine-generated. Design, cryptographic decisions
-and the tests that pin them are the maintainer's work.
+**How the work is produced.** The programme has no rule about generative tooling - checked, not
+assumed (<https://floss.fund/faq/>). An earlier version of this page pledged that the two
+milestones would not be predominantly machine-generated. That pledge is withdrawn and replaced by
+a description of what actually happens, because milestone 1 has since been delivered in the way
+described here and the evidence page for it is public: a commitment contradicted by the work it
+covers is worse than no commitment.
+
+Asterios Raptis designs the work, writes the specifications and the acceptance criteria, and
+reviews and measures every change; an AI coding assistant writes most of the implementation. Every
+commit is traceable to a reviewed issue. A complete log of the assistance is kept privately and is
+provided on request. The cryptographic decisions, the architecture and what counts as done are the
+maintainer's, and so is the responsibility for correctness.
 
 ### Milestone 1: a lossless KeePass (KDBX) round trip
 
