@@ -1,0 +1,31 @@
+# Refuses a pull request whose commits credit a non-human collaborator: as a co-author trailer, or
+# as author or committer (#154). The script is the same file as in mystic-crypt-ui, whose
+# CommitProvenanceCheckTest drives it against real git repositories.
+#
+# The commit-msg hook catches this before the commit exists, but a hook has to be installed locally
+# and is absent in a fresh clone - which is exactly where a session starts without knowing the
+# rule. This is the half that cannot be skipped by not having run a setup step.
+name: Commit provenance
+
+on:
+  pull_request:
+    branches: [ master, develop ]
+
+jobs:
+  no-non-human-collaborators:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v7
+        with:
+          # the commits of the pull request are the subject, so its history has to be here - a
+          # shallow checkout would leave the base unresolvable, and the check refuses to read that
+          # as nothing to find
+          fetch-depth: 0
+      - name: Check the commits of this pull request
+        run: |
+          git fetch --no-tags origin "${{ github.base_ref }}"
+          scripts/check-commit-provenance.sh \
+            --range "origin/${{ github.base_ref }}..${{ github.event.pull_request.head.sha }}"
