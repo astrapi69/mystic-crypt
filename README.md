@@ -209,6 +209,10 @@ java -jar mystic-crypt-${latestVersion}-all.jar --help
 | `sign` | Sign a file or stdin with an Ed25519, ML-DSA or SLH-DSA private key (PEM) |
 | `verify-signature` | Verify such a signature; exit code 0 = valid, 1 = invalid, 2 = error |
 | `obfuscate` / `disentangle` | Obfuscate text with a substitution map, and recover it |
+| `encrypt` / `decrypt` | Encrypt a file or a text with a passphrase (AES-GCM, PBKDF2-HMAC-SHA256), and decrypt it again |
+| `share` | Split a secret into shares and combine them back (Shamir secret sharing) |
+| `keyx` | Exchange a shared secret with another person: `new` on the recipient's side, `send` on the sender's, `receive` back on the recipient's |
+| `convert` | Say what a key or certificate file is, and convert it between PEM and DER or between PKCS#1 and PKCS#8 |
 
 ```shell
 java -jar mystic-crypt-${latestVersion}-all.jar hash --password "correct horse battery staple"
@@ -273,20 +277,9 @@ If mystic-crypt is useful to you, a star on
 [GitHub](https://github.com/astrapi69/mystic-crypt) helps others find it. Sharing it or reporting a
 bug helps just as much.
 
-If you would like to contribute financially:
-
-<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GVBTWLRAZ7HB8" target="_blank">
-<img src="https://www.paypalobjects.com/en_US/GB/i/btn/btn_donateCC_LG.gif" alt="Donate via PayPal" title="PayPal - The safer, easier way to pay online!" style="border: none" />
-</a>
-
-or Monero (XMR):
-
-```
-49bqeRQ7Bf49oJFVC72pqpe5hFbb62pfXDYPdLsadGGF81KZW2ZfrPZ8PbAVu5X2v1TYAspeczMya3cYQysNS4usRRPQHVw
-```
-
-<img src="https://raw.githubusercontent.com/astrapi69/jgeohash/master/src/main/resources/img/49bqeRQ7Bf49oJFVC72pqpe5hFbb62pfXDYPdLsadGGF81KZW2ZfrPZ8PbAVu5X2v1TYAspeczMya3cYQysNS4usRRPQHVw.png"
-alt="Monero donation wallet QR code" width="250"/>
+If you would like to contribute financially, the channels are on the repository's Sponsor button,
+which reads [.github/FUNDING.yml](.github/FUNDING.yml): GitHub Sponsors, Liberapay, Ko-fi and
+PayPal.
 
 ## Credits
 
