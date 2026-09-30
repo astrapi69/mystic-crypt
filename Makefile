@@ -15,7 +15,8 @@ PIT_FIXTURE := src/test/resources/crypt/test.txt
 
 .PHONY: help build build-fast test clean cli run spotless spotless-java spotless-misc \
 	pitest jacoco-coverage jacoco-report jar javadoc dependencies dependency-updates \
-	version-catalog-format version-catalog-update publish-local publish-central tag-release
+	version-catalog-format version-catalog-update publish-local publish-central tag-release \
+	install-hooks check-commit-provenance
 
 help:
 	@echo "mystic-crypt - make targets"
@@ -45,6 +46,9 @@ help:
 	@echo "  publish-local           install into the local Maven repository"
 	@echo "  publish-central         upload to Maven Central (needs CONFIRM=yes)"
 	@echo "  tag-release             PUBLISHES: the RELEASE tag triggers publish.yml (needs CONFIRM=yes)"
+	@echo ""
+	@echo "  install-hooks           point git at .githooks (once per clone or worktree)"
+	@echo "  check-commit-provenance check this branch's commits against develop, as CI does"
 
 build:
 	$(GRADLE) clean build
@@ -130,3 +134,12 @@ tag-release:
 		echo "to Maven Central. Re-run with CONFIRM=yes if that is intended."; \
 		exit 1; }
 	$(GRADLE) tagRelease
+
+# the commit-msg hook refuses a commit that credits a non-human collaborator (#154); CI runs the
+# same script over every pull request, so the hook is the early half, not the only one
+install-hooks:
+	git config core.hooksPath .githooks
+	@echo "git hooks: .githooks (commit-msg runs scripts/check-commit-provenance.sh)"
+
+check-commit-provenance:
+	./scripts/check-commit-provenance.sh --range develop..HEAD
