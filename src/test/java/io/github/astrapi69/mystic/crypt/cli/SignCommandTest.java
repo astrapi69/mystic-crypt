@@ -188,7 +188,7 @@ class SignCommandTest extends AbstractCliTest
 			run("sign", "--algorithm", "NOPE", "--key", dataFile.getAbsolutePath(), "--in",
 				dataFile.getAbsolutePath(), "--signature",
 				new File(tempDir, "out.sig").getAbsolutePath()));
-		assertTrue(err.contains("unknown key algorithm"),
+		assertTrue(err.contains("'NOPE' is not a supported signature algorithm"),
 			"the error must name the unknown algorithm, but was: '" + err + "'");
 	}
 

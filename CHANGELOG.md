@@ -4,6 +4,24 @@
 Version 13.1-SNAPSHOT
 -------------
 
+ADDED:
+
+- key.Signatures: sign and verify by a suite identifier the caller learns at runtime - Ed25519,
+  ML-DSA-44/65/87, the SLH-DSA parameter sets, RSA, EC/ECDSA, DSA or a JCA name such as
+  SHA512withRSA. It dispatches to the existing per-scheme signers and refuses an unknown
+  identifier with an IllegalArgumentException on signing and on verifying alike, never with a
+  false that would read as an invalid signature. It is the command line's former package-private
+  SignatureSupport, moved rather than copied: 'sign' and 'verify-signature' go through it, so the
+  dispatch exists once. SLH-DSA is not in the JDK as of 25, so a caller dispatching against the
+  platform by hand loses it; through the library it keeps it (#149)
+
+CHANGED:
+
+- 'sign' and 'verify-signature' name an unknown algorithm as "'NOPE' is not a supported signature
+  algorithm" followed by the list of signature suites. Before, a name that was no key algorithm
+  at all got the generic "unknown key algorithm" message, whose examples were key-exchange
+  algorithms that cannot sign (#149)
+
 
 Version 13.0
 -------------

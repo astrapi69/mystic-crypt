@@ -31,6 +31,7 @@ import java.util.concurrent.Callable;
 
 import io.github.astrapi69.crypt.data.key.reader.PrivateKeyReader;
 import io.github.astrapi69.mystic.crypt.key.KeyFileReader;
+import io.github.astrapi69.mystic.crypt.key.Signatures;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
@@ -81,10 +82,10 @@ public class SignCommand implements Callable<Integer>
 		// this command guarded its output path from the start; the guard lives in CliSupport now,
 		// because every other command needed the same one (issue #101)
 		CliSupport.refuseDashAsPath(signature, "--signature", CliSupport.PASS_A_PATH);
-		String keyFactoryAlgorithm = SignatureSupport.keyFactoryAlgorithm(algorithm);
+		String keyFactoryAlgorithm = Signatures.keyFactoryAlgorithm(algorithm);
 		byte[] data = CliSupport.readData(in);
 		PrivateKey privateKey = readPrivateKey(keyFactoryAlgorithm);
-		byte[] signatureBytes = SignatureSupport.sign(algorithm, privateKey, data);
+		byte[] signatureBytes = Signatures.sign(algorithm, privateKey, data);
 		Files.write(signature.toPath(), signatureBytes);
 		System.out.println("wrote signature to " + signature);
 		return 0;
@@ -105,7 +106,7 @@ public class SignCommand implements Callable<Integer>
 	{
 		try
 		{
-			if (SignatureSupport.isClassical(algorithm))
+			if (Signatures.isClassical(algorithm))
 			{
 				return KeyFileReader.readPrivateKey(key, keyFactoryAlgorithm);
 			}
