@@ -49,7 +49,7 @@ jobs:
         if: github.event_name == 'push'
         run: |
           if grep -q -- '-SNAPSHOT' gradle.properties; then
-            ./gradlew publishAllPublicationsToCentralSnapshots
+            ./gradlew nmcpPublishAllPublicationsToCentralPortalSnapshots
           else
             echo "non-SNAPSHOT version: release publishing happens only via publish.yml (RELEASE-* tag)"
           fi
