@@ -38,7 +38,7 @@ what those targets run.
 ./gradlew spotlessApply    # format + license headers (run before committing)
 ./gradlew pitest           # PIT mutation testing (minutes; restores needed:
                            #   git checkout -- src/test/resources/crypt/test.txt)
-./gradlew publishAllPublicationsToCentralPortal   # Central upload (USER_MANAGED;
+./gradlew nmcpPublishAllPublicationsToCentralPortal   # Central upload (USER_MANAGED;
                            # needs CENTRAL_PORTAL_TOKEN_USERNAME/PASSWORD env)
 ./gradlew tagRelease       # RELEASE-X tag (tag push triggers publish.yml!)
 ```

@@ -106,7 +106,7 @@ BEFORE the upload, not after it. Upstream tests passing is not that check:
 they test the library against itself, never against the consumer that will
 get it.
 
-Before `publishAllPublicationsToCentralPortal` for any repo in this family:
+Before `nmcpPublishAllPublicationsToCentralPortal` for any repo in this family:
 
 1. `./gradlew publishToMavenLocal` in the repo being released
 2. point the downstream at that exact version (`mavenLocal()` is already first

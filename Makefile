@@ -123,7 +123,7 @@ publish-central:
 	@test "$(CONFIRM)" = "yes" || { \
 		echo "publish-central uploads to Maven Central. Re-run with CONFIRM=yes if that is intended."; \
 		exit 1; }
-	$(GRADLE) publishAllPublicationsToCentralPortal
+	$(GRADLE) nmcpPublishAllPublicationsToCentralPortal
 
 # In THIS repository tagging is publishing: .github/workflows/publish.yml triggers on 'RELEASE-*'
 # tag pushes. crypt-api and crypt-data differ - there the tag is only a marker. Decide whether to
