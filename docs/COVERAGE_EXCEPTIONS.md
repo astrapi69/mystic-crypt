@@ -117,6 +117,21 @@ found `ArrayUtils.addAll` with an empty second array already returns a content-i
 the first, so the length check never changed the outcome. Removing it killed all three mutants and
 simplified three call sites at once (PR #76). See ["Why not literal 100%"](#why-not-literal-100).
 
+**Wipes of buffers that never leave the method (#166, measured separately):**
+
+- `Ed25519ExpandedPrivateKey.of` (lines 99 and 100, `VoidMethodCallMutator`): `Arrays.fill` on
+  `clamped` and `hash`, the two local copies of secret material made while a seed is expanded.
+  Neither array is returned, stored or handed to anything that keeps it; the scalar and the prefix
+  are copied out of them first. Removing the wipe changes how long the secret lingers on the heap
+  and nothing any caller can observe without a heap dump. The third wipe in that method, of the
+  seed array the key handed out, IS observable and is killed:
+  `Ed25519KeyBlindingTest.theSeedBytesAKeyHandsOutAreWipedAfterExpansion` passes a key that hands
+  out its own array and asserts it is zero afterwards.
+
+  These two were measured by a PIT run restricted to the four classes of #166 and their test class
+  (66 mutants, 64 killed); the module totals in the heading above predate #166 and are re-measured
+  with the next full run.
+
 ## What was *not* accepted as equivalent
 
 For the record, because the line between "equivalent" and "uncovered" is where mutation testing
