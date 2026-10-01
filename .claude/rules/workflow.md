@@ -58,12 +58,20 @@ difference is not visible from the command you are about to run.
 | repo | what uploads a release |
 |---|---|
 | `crypt-api` | pushing a `RELEASE-*` tag, through `publish.yml` (since its #9) |
-| `crypt-data` | a deliberate manual `publishAllPublicationsToCentralPortal` |
+| `crypt-data` | pushing a `RELEASE-*` tag, through `publish.yml` (since its 7e62f0f, 2026-09-07) |
 | `mystic-crypt` | pushing a `RELEASE-*` tag, through `publish.yml` |
 
-So in mystic-crypt **and now crypt-api, tagging is publishing**: the question of
-whether to upload belongs BEFORE the tag, not after it. Only in crypt-data is the
-tag still a marker with the upload as a separate, deliberate act.
+So in all three, **tagging is publishing**: the question of whether to upload
+belongs BEFORE the tag, not after it. A manual
+`nmcpPublishAllPublicationsToCentralPortal` after a tag is a second upload of the
+same version, not the upload.
+
+From 2026-09-07 until #161 this table said crypt-data was uploaded by hand and its tag
+was only a marker. It stopped being true when crypt-data's `publish.yml` arrived
+on 2026-09-07, and the table was edited two days later without noticing (#161):
+a rule that describes a mechanism goes stale silently, so whoever changes a
+publishing workflow in any of the three repositories updates this table in the
+same change.
 
 crypt-api moved into the tag-triggered group by accident of history rather than by
 a decision taken in the open. Its `publish.yml` was written on the RELEASE-10.1
@@ -106,7 +114,7 @@ BEFORE the upload, not after it. Upstream tests passing is not that check:
 they test the library against itself, never against the consumer that will
 get it.
 
-Before `publishAllPublicationsToCentralPortal` for any repo in this family:
+Before `nmcpPublishAllPublicationsToCentralPortal` for any repo in this family:
 
 1. `./gradlew publishToMavenLocal` in the repo being released
 2. point the downstream at that exact version (`mavenLocal()` is already first
