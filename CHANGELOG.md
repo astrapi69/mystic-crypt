@@ -1,6 +1,21 @@
 ## Change log
 ----------------------
 
+Version 13.2-SNAPSHOT
+-------------
+
+ADDED:
+
+- key.Ed25519KeyBlinding and key.Ed25519ExpandedPrivateKey: additive blinding of Ed25519 keys,
+  the one-time keys of stealth payments. From a public key A and a tweak t the key A + t*B, from
+  the private key the expanded key with scalar s + t mod l, and RFC 8032 signing with that
+  expanded key; the JDK's own Ed25519 verifier accepts the signatures. Checked against Monero's
+  known-answer vectors (derive_public_key, derive_secret_key, secret_key_to_public_key,
+  check_key) and the RFC 8032 test vectors. This is curve arithmetic in a library that otherwise
+  never writes any, a deliberate exception decided in #166: the group operations are Bouncy
+  Castle's Weierstrass Curve25519, and only the map to and from Edwards form and the point
+  encoding are written here. The scalar arithmetic is not constant-time (#166)
+
 Version 13.1
 -------------
 
