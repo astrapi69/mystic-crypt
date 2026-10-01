@@ -1,7 +1,7 @@
 ## Change log
 ----------------------
 
-Version 13.1-SNAPSHOT
+Version 13.1
 -------------
 
 ADDED:
@@ -24,6 +24,13 @@ CHANGED:
   algorithm" followed by the list of signature suites. Before, a name that was no key algorithm
   at all got the generic "unknown key algorithm" message, whose examples were key-exchange
   algorithms that cannot sign (#149)
+- build only: a CI check and a local hook refuse a commit that credits a non-human collaborator,
+  checking the author and the committer as well as the trailers. It is the same script in four
+  repositories of this family (#154)
+- build only: the coverage upload names the JaCoCo report instead of searching the working tree,
+  which had been uploading an IntelliJ run configuration as a second "coverage file" (#151)
+- build only: the publish workflow names the nmcp tasks rather than the deprecated aliases, which
+  the plugin warns about on every run and will remove (#139)
 
 
 Version 13.0
