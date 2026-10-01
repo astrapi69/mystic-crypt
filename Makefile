@@ -125,9 +125,9 @@ publish-central:
 		exit 1; }
 	$(GRADLE) nmcpPublishAllPublicationsToCentralPortal
 
-# In THIS repository tagging is publishing: .github/workflows/publish.yml triggers on 'RELEASE-*'
-# tag pushes. crypt-api and crypt-data differ - there the tag is only a marker. Decide whether to
-# upload BEFORE the tag, not after it.
+# Tagging is publishing: .github/workflows/publish.yml triggers on 'RELEASE-*' tag pushes, and so
+# do crypt-api's and crypt-data's (see .claude/rules/workflow.md, #161). Decide whether to upload
+# BEFORE the tag, not after it.
 tag-release:
 	@test "$(CONFIRM)" = "yes" || { \
 		echo "tag-release creates a RELEASE tag, and pushing it triggers publish.yml, which uploads"; \
