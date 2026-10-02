@@ -15,6 +15,19 @@ ADDED:
   never writes any, a deliberate exception decided in #166: the group operations are Bouncy
   Castle's Weierstrass Curve25519, and only the map to and from Edwards form and the point
   encoding are written here. The scalar arithmetic is not constant-time (#166)
+- key.SeedDerivation: hierarchical key derivation from a seed after SLIP-0010, hardened only, for
+  ed25519 and curve25519 - a node from a seed and a path, and the Ed25519 or X25519 key pair at
+  that path. Only HMAC-SHA512 and no curve arithmetic: SLIP-0010 defines no unhardened derivation
+  for these curves. Checked against the SLIP-0010 test vectors (#163)
+- mac.HmacExtensions: HMAC as one call over a MacAlgorithm, checked against RFC 4231. A value that
+  is no HMAC over a raw key (UNKNOWN, the PBEWith... values) is refused with an
+  IllegalArgumentException before it reaches a provider, because with Bouncy Castle registered
+  those values would accept raw key bytes. A new exported package (#163)
+
+CHANGED:
+
+- gm.GoogleMapsUrlSigner computes its HMAC-SHA1 through mac.HmacExtensions; its signatures are
+  unchanged, and a known-answer test pins its output (#163)
 
 Version 13.1
 -------------

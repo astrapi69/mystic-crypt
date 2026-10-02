@@ -31,8 +31,9 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
+import io.github.astrapi69.crypt.api.algorithm.MacAlgorithm;
+import io.github.astrapi69.mystic.crypt.mac.HmacExtensions;
+
 
 /**
  * The class {@link GoogleMapsUrlSigner} can sign urls with the private key. This class is inspired
@@ -87,26 +88,7 @@ public final class GoogleMapsUrlSigner
 		// Retrieve the proper URL components to sign
 		final String resource = path + '?' + query;
 
-		// Get an HMAC-SHA1 signing key from the raw key bytes
-		final SecretKeySpec sha1Key = new SecretKeySpec(
-			convertToKeyByteArray(yourGooglePrivateKeyString), "HmacSHA1");
-
-		// Get an HMAC-SHA1 Mac instance and initialize it with the HMAC-SHA1
-		// key
-		final Mac mac = Mac.getInstance("HmacSHA1");
-		mac.init(sha1Key);
-
-		// compute the binary signature for the request
-		final byte[] sigBytes = mac.doFinal(resource.getBytes());
-
-		// base 64 encode the binary signature
-		// Base64 is JDK 1.8 only - older versions may need to use Apache
-		// Commons or similar.
-		String signature = Base64.getEncoder().encodeToString(sigBytes);
-
-		// convert the signature to 'web safe' base 64
-		signature = signature.replace('+', '-');
-		signature = signature.replace('/', '_');
+		final String signature = webSafeSignature(yourGooglePrivateKeyString, resource);
 
 		return resource + "&signature=" + signature;
 	}
@@ -136,30 +118,23 @@ public final class GoogleMapsUrlSigner
 		// Retrieve the proper URL components to sign
 		final String resource = url.getPath() + '?' + url.getQuery();
 
-		// Get an HMAC-SHA1 signing key from the raw key bytes
-		final SecretKeySpec sha1Key = new SecretKeySpec(
-			convertToKeyByteArray(yourGooglePrivateKeyString), "HmacSHA1");
-
-		// Get an HMAC-SHA1 Mac instance and initialize it with the HMAC-SHA1
-		// key
-		final Mac mac = Mac.getInstance("HmacSHA1");
-		mac.init(sha1Key);
-
-		// compute the binary signature for the request
-		final byte[] sigBytes = mac.doFinal(resource.getBytes());
-
-		// base 64 encode the binary signature
-		// Base64 is JDK 1.8 only - older versions may need to use Apache
-		// Commons or similar.
-		String signature = Base64.getEncoder().encodeToString(sigBytes);
-
-		// convert the signature to 'web safe' base 64
-		signature = signature.replace('+', '-');
-		signature = signature.replace('/', '_');
+		final String signature = webSafeSignature(yourGooglePrivateKeyString, resource);
 		final String signedRequestPath = resource + "&signature=" + signature;
 		final String urlGoogleMapSignedRequest = url.getProtocol() + "://" + url.getHost()
 			+ signedRequestPath;
 		return urlGoogleMapSignedRequest;
 	}
 
+
+	/**
+	 * The HMAC-SHA1 of the resource under the key, as web-safe Base64 - what both signing methods
+	 * append. The HMAC itself comes from {@link HmacExtensions} (#163)
+	 */
+	private static String webSafeSignature(final String yourGooglePrivateKeyString,
+		final String resource)
+	{
+		final byte[] sigBytes = HmacExtensions.hmac(MacAlgorithm.HmacSHA1,
+			convertToKeyByteArray(yourGooglePrivateKeyString), resource.getBytes());
+		return Base64.getEncoder().encodeToString(sigBytes).replace('+', '-').replace('/', '_');
+	}
 }
