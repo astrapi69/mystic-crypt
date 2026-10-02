@@ -132,6 +132,29 @@ simplified three call sites at once (PR #76). See ["Why not literal 100%"](#why-
   (66 mutants, 64 killed); the module totals in the heading above predate #166 and are re-measured
   with the next full run.
 
+**Hierarchical derivation and the HMAC helper (#163, measured separately):**
+
+- `SeedDerivation.keyPairOf` (line 203, `VoidMethodCallMutator`): `Arrays.fill` on the private key
+  bytes of the derived node. The node is a local of the method and the bytes are its own field,
+  copied into the key spec before the wipe, so nothing a caller holds ever points at them. The
+  same argument as the two `Ed25519ExpandedPrivateKey` wipes above: removing it changes how long a
+  secret lingers on the heap, which no test observes without a heap dump.
+- Uncovered lines `SeedDerivation.java` 195 and 198 and `HmacExtensions.java` 92 and 95: the
+  `catch (GeneralSecurityException)` blocks that turn a missing algorithm into an
+  `IllegalStateException`. `keyPairOf` asks for Ed25519 or X25519, both in every JDK since 15, with
+  a 32 byte key that the spec accepts by construction. `HmacExtensions.hmac` refuses every
+  `MacAlgorithm` value whose name does not start with `Hmac` before it reaches the platform, and
+  every value that does is computed by the JDK, which
+  `HmacExtensionsTest.hmac_computesEveryRawKeyHmacTheEnumNames` asserts value by value. What is
+  left for the catch is a runtime stripped of a standard algorithm. The refusal was first written
+  into that catch; the test showed that with Bouncy Castle registered the `PBEWith...` values
+  accept raw key bytes and compute something, so it became a guard clause that does not depend on
+  which provider is installed.
+
+  Measured by a PIT run restricted to `mac.*`, `SeedDerivation*` and `GoogleMapsUrlSigner` and
+  their three test classes (23 mutants, 22 killed); the module totals in the heading above predate
+  #163 as they predate #166.
+
 ## What was *not* accepted as equivalent
 
 For the record, because the line between "equivalent" and "uncovered" is where mutation testing

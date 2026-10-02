@@ -24,6 +24,7 @@
  */
 package io.github.astrapi69.mystic.crypt.gm;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -121,4 +122,22 @@ public class GoogleMapsUrlSignerTest
 		beanTester.testBean(GoogleMapsUrlSigner.class);
 	}
 
+
+	/**
+	 * A known answer, so that the signature itself is checked and not only where it stands. The
+	 * expected value was computed with Python's hmac and base64 modules, independently of this
+	 * library: HMAC-SHA1 under the key 00 01 .. 13, web-safe Base64 (#163)
+	 */
+	@Test
+	public void testSignRequestGivesTheKnownSignature() throws Exception
+	{
+		String expected = "/maps/api/geocode/json?address=Lethe&client=gme-test&signature=DALziu772A3EL8LOvt-h69rudmk=";
+
+		assertEquals(expected, GoogleMapsUrlSigner.signRequest("AAECAwQFBgcICQoLDA0ODxAREhM=",
+			"/maps/api/geocode/json", "address=Lethe&client=gme-test"));
+		assertEquals("https://maps.googleapis.com" + expected,
+			GoogleMapsUrlSigner.signRequest(new java.net.URL(
+				"https://maps.googleapis.com/maps/api/geocode/json?address=Lethe&client=gme-test"),
+				"AAECAwQFBgcICQoLDA0ODxAREhM="));
+	}
 }

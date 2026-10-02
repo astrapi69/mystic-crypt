@@ -61,6 +61,7 @@ module io.github.astrapisixtynine.mystic.crypt
 	exports io.github.astrapi69.mystic.crypt.hex;
 	exports io.github.astrapi69.mystic.crypt.io;
 	exports io.github.astrapi69.mystic.crypt.key;
+	exports io.github.astrapi69.mystic.crypt.mac;
 	exports io.github.astrapi69.mystic.crypt.obfuscation.character;
 	exports io.github.astrapi69.mystic.crypt.obfuscation.simple;
 	exports io.github.astrapi69.mystic.crypt.processor.bruteforce;
