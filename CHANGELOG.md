@@ -1,7 +1,7 @@
 ## Change log
 ----------------------
 
-Version 13.2-SNAPSHOT
+Version 13.2
 -------------
 
 ADDED:
@@ -25,6 +25,13 @@ ADDED:
   those values would accept raw key bytes. A new exported package (#163)
 
 CHANGED:
+
+- build only: crypt-api moves from 10.1 to 10.3, which brings
+  SecretKeyFactoryAlgorithm.PBKDF2_WITH_HMAC_SHA256 and PBKDF2_WITH_HMAC_SHA512 (crypt-api#15),
+  so Pbkdf2Support and PassphraseCryptor can stop writing those names as literals. Two minor
+  steps within the same major, which is what a release carries; crypt-data stays at 12.3 because
+  12 to 13 is a major bump and gets its own session (#169). Gate on the bumped build: 138
+  classes, 1809 tests, 3 skipped, 0 failures
 
 - gm.GoogleMapsUrlSigner computes its HMAC-SHA1 through mac.HmacExtensions; its signatures are
   unchanged, and a known-answer test pins its output (#163)
