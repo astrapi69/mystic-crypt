@@ -105,9 +105,19 @@ class ConvertCommandTest extends AbstractCliTest
 	}
 
 	/**
-	 * The defect this pins: asking for PKCS#8 must produce PKCS#8. crypt-data's PrivateKeyWriter
-	 * strips the wrapper and writes PKCS#1 under an RSA PRIVATE KEY header instead, which is why
-	 * the writing here does not go through it.
+	 * The defect this pins: asking for PKCS#8 must produce PKCS#8, and asking for PKCS#1 must
+	 * produce PKCS#1.
+	 * <p>
+	 * The sentence that stood here - that crypt-data's {@code PrivateKeyWriter} strips the wrapper
+	 * and writes PKCS#1 under an {@code RSA PRIVATE KEY} header - has been false since crypt-data
+	 * 12.1 fixed it at its source (its #12), which
+	 * {@link io.github.astrapi69.mystic.crypt.key.KeyFileWriter} already said. Measured again on
+	 * crypt-data 13.0 while bumping to it (#169):
+	 * {@code PrivateKeyWriter.write(key, stream, KeyFileFormat.PEM, KeyFormat.PKCS_8)} writes
+	 * {@code -----BEGIN PRIVATE KEY-----} over the bytes {@code getEncoded} returns.
+	 * <p>
+	 * The test stays, because what it asserts is the command's behaviour and that is still worth
+	 * pinning; only the reason given for it was out of date.
 	 */
 	@Test
 	void askingForPkcs8ProducesPkcs8AndAskingForPkcs1ProducesPkcs1(@TempDir File tempDir)
