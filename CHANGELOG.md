@@ -1,7 +1,7 @@
 ## Change log
 ----------------------
 
-Version 13.3-SNAPSHOT
+Version 13.3
 -------------
 
 ADDED:
@@ -17,6 +17,11 @@ ADDED:
 
 CHANGED:
 
+- build only: mavenLocal() is used only behind -PuseMavenLocal. Anything in the local repository
+  wins over Maven Central, so a snapshot published hours earlier becomes what a build compiles
+  against - on that machine and nowhere else. Checking a consumer against a candidate before it is
+  published stays possible and now says so on the command line
+  (astrapi69/mystic-crypt-ui#475)
 - build only: crypt-data moves from 12.3 to 13.0, two majors in one step. Both of its breaking
   changes were measured against this code first and neither touches it: nothing here catches
   org.apache.commons.codec.DecoderException (crypt-data#51), and no call asks PrivateKeyWriter for
