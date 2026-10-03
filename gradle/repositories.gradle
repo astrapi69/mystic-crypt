@@ -1,5 +1,14 @@
 repositories {
-    mavenLocal()
+    /**
+     * Only when asked for, because it decides what every other resolution means: anything in the
+     * local repository wins over Maven Central, so a snapshot somebody published hours ago is what
+     * the build compiles against - on that machine, and nowhere else. It is a tool for one job,
+     * checking a consumer against a candidate before it is published, and that job names itself on
+     * the command line: ./gradlew build -PuseMavenLocal (mystic-crypt-ui#475)
+     **/
+    if (providers.gradleProperty('useMavenLocal').isPresent()) {
+        mavenLocal()
+    }
     mavenCentral()
     /**
      * This repository is intended for snapshot versions that are previously deployed
