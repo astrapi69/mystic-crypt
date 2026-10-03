@@ -4,6 +4,17 @@
 Version 13.3-SNAPSHOT
 -------------
 
+ADDED:
+
+- secret.SecretBuffers and secret.WipingCharWriter: wipe(char[]), wipe(byte[]), and the two
+  conversions between the forms that must not pass through a String - a String cannot be
+  overwritten, and the obvious new String(chars).getBytes(UTF_8) is the mistake. The writer
+  collects into a character array and overwrites every array it outgrew on the way, which
+  CharArrayWriter does not: it drops the old one on each growth, leaving a chain of copies of the
+  beginning of the plaintext. Moved out of mystic-crypt-ui, where they were written for its #294
+  and have 12 and 2 users, so every consumer holding a passphrase gets them - lethenon hand-rolls
+  Arrays.fill in six places today (#173)
+
 CHANGED:
 
 - build only: crypt-data moves from 12.3 to 13.0, two majors in one step. Both of its breaking
