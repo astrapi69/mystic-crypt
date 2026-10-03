@@ -1,6 +1,18 @@
 ## Change log
 ----------------------
 
+Version 13.3-SNAPSHOT
+-------------
+
+CHANGED:
+
+- build only: crypt-data moves from 12.3 to 13.0, two majors in one step. Both of its breaking
+  changes were measured against this code first and neither touches it: nothing here catches
+  org.apache.commons.codec.DecoderException (crypt-data#51), and no call asks PrivateKeyWriter for
+  KeyFormat.PKCS_1 - every call is writeInPemFormat (crypt-data#42). The deprecated
+  HashExtensions#getMerkleRootHash is unused as well. Both consumers were built against the
+  candidate: lethenon 313 tests, mystic-crypt-ui 581 tests, both green (#169)
+
 Version 13.2
 -------------
 
