@@ -12,7 +12,7 @@ on:
     branches: [ master, develop ]
 
 jobs:
-  no-non-human-collaborators:
+  no-non-human-co-authors:
 
     runs-on: ubuntu-latest
 
