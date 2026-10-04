@@ -1,6 +1,20 @@
 ## Change log
 ----------------------
 
+Version 13.5 (unreleased)
+-------------
+
+CHANGED:
+
+- PassphraseEnvelope declares GeneralSecurityException instead of Exception on encrypt, decrypt and
+  deriveKey. Everything a caller acts on was a runtime exception already - IllegalArgumentException
+  for "not this format", SecurityException for "would not open" - so the declared type now says
+  what is left: the security machinery failing underneath. A caller that catches or declares
+  Exception compiles unchanged; one that catches an unrelated checked type around the call would
+  not, and no caller in the family does. japicmp counts the narrowing as source-incompatible, so
+  apiCompatibility leaves these six methods out against baseline 13.4 only, declared in
+  gradle/api-compatibility.gradle (#182)
+
 Version 13.4
 -------------
 

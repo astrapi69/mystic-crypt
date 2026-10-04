@@ -27,18 +27,28 @@ package io.github.astrapi69.mystic.crypt.pw;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.List;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * The envelope has one job that no round trip of its own can check: opening the files that are
@@ -223,6 +233,97 @@ class PassphraseEnvelopeTest
 			() -> PassphraseEnvelope.decrypt(VAULT_MAGIC, sealed, passphrase));
 		assertArrayEquals(PASSPHRASE, passphrase,
 			"a failed decrypt must leave the array as it was, too");
+	}
+
+	/**
+	 * What a caller has to handle is the JDK's GeneralSecurityException and nothing wider: the two
+	 * answers it acts on are runtime exceptions (#182). Compiling this method is the first half of
+	 * the assertion - it declares nothing but GeneralSecurityException and calls every entry point
+	 */
+	@Test
+	@DisplayName("every entry point compiles in a method that declares only GeneralSecurityException")
+	void everyEntryPoint_needsNothingWiderThanGeneralSecurityException()
+		throws GeneralSecurityException
+	{
+		byte[] plaintext = "x".getBytes(StandardCharsets.UTF_8);
+		byte[] fromCharacters = PassphraseEnvelope.encrypt(VAULT_MAGIC, plaintext,
+			PASSPHRASE.clone());
+		byte[] fromString = PassphraseEnvelope.encrypt(VAULT_MAGIC, plaintext,
+			new String(PASSPHRASE));
+
+		assertArrayEquals(plaintext,
+			PassphraseEnvelope.decrypt(VAULT_MAGIC, fromCharacters, PASSPHRASE.clone()));
+		assertArrayEquals(plaintext,
+			PassphraseEnvelope.decrypt(VAULT_MAGIC, fromString, new String(PASSPHRASE)));
+		assertArrayEquals(
+			PassphraseEnvelope.deriveKey(PASSPHRASE.clone(), new byte[16], 1000).getEncoded(),
+			PassphraseEnvelope.deriveKey(new String(PASSPHRASE), new byte[16], 1000).getEncoded());
+	}
+
+	/**
+	 * The second half, for every public method there is and every one added later: nothing it
+	 * declares is wider than GeneralSecurityException (#182)
+	 */
+	@Test
+	@DisplayName("no public method declares an exception wider than GeneralSecurityException")
+	void noPublicMethod_declaresAnythingWider()
+	{
+		List<String> wider = new ArrayList<>();
+		for (Method method : PassphraseEnvelope.class.getDeclaredMethods())
+		{
+			if (!Modifier.isPublic(method.getModifiers()))
+			{
+				continue;
+			}
+			for (Class<?> declared : method.getExceptionTypes())
+			{
+				if (!GeneralSecurityException.class.isAssignableFrom(declared)
+					&& !RuntimeException.class.isAssignableFrom(declared))
+				{
+					wider.add(method.getName() + " declares " + declared.getSimpleName());
+				}
+			}
+		}
+
+		assertEquals(List.of(), wider);
+	}
+
+	/**
+	 * What the cipher throws reaches the caller as this class declares it: the JDK's security
+	 * exception and runtime exceptions unchanged, the same instance (#182)
+	 */
+	@ParameterizedTest(name = "{0} passes through unchanged")
+	@MethodSource("whatPassesThrough")
+	@DisplayName("a security failure or a runtime exception from the cipher passes through as it is")
+	void aSecurityOrRuntimeFailure_passesThroughUnchanged(final String what, final Exception thrown)
+	{
+		Exception caught = assertThrows(Exception.class, () -> PassphraseEnvelope.runCipher(() -> {
+			throw thrown;
+		}));
+
+		assertSame(thrown, caught, what + " must reach the caller as it was thrown");
+	}
+
+	static Stream<Arguments> whatPassesThrough()
+	{
+		return Stream.of(
+			Arguments.of("a GeneralSecurityException", new GeneralSecurityException("no provider")),
+			Arguments.of("a SecurityException", new SecurityException("would not open")));
+	}
+
+	@Test
+	@DisplayName("any other checked exception from the cipher becomes a GeneralSecurityException carrying it")
+	void anyOtherCheckedFailure_becomesAGeneralSecurityException()
+	{
+		IOException thrown = new IOException("not a security failure");
+
+		GeneralSecurityException caught = assertThrows(GeneralSecurityException.class,
+			() -> PassphraseEnvelope.runCipher(() -> {
+				throw thrown;
+			}));
+
+		assertSame(thrown, caught.getCause(), "the original failure travels as the cause");
+		assertTrue(caught.getMessage().contains("not a security failure"), caught.getMessage());
 	}
 
 	@Test
