@@ -373,13 +373,7 @@ public final class PassphraseEnvelope
 	}
 
 	/**
-	 * Encrypts the payload with the header as associated data.
-	 * <p>
-	 * {@link KeyCommittingAeadEncryptor} declares {@code throws Exception} through the cryptor
-	 * hierarchy it inherits from; everything a cipher can fail with is a
-	 * {@link GeneralSecurityException} or a runtime exception, and those pass through unchanged.
-	 * Anything else checked is wrapped in one, so this class declares no more than the JDK's
-	 * security exception (#182)
+	 * Encrypts the payload with the header as associated data
 	 *
 	 * @param key
 	 *            the derived key
@@ -394,9 +388,32 @@ public final class PassphraseEnvelope
 	private static byte[] sealPayload(final SecretKey key, final byte[] plaintext,
 		final byte[] header) throws GeneralSecurityException
 	{
+		return runCipher(() -> new KeyCommittingAeadEncryptor(key).encrypt(plaintext, header));
+	}
+
+	/**
+	 * Runs a call into the cipher and turns what it throws into what this class declares.
+	 * <p>
+	 * {@link KeyCommittingAeadEncryptor} declares {@code throws Exception} through the cryptor
+	 * hierarchy it inherits from. A {@link GeneralSecurityException} or a runtime exception passes
+	 * through unchanged; anything else checked is wrapped in a GeneralSecurityException, so this
+	 * class declares no more than the JDK's security exception (#182).
+	 * <p>
+	 * Package-visible and taking the call as a parameter so that each of the three cases can be
+	 * tested: the real cipher throws none of them for a well-formed key, this library gates every
+	 * branch, and a guard nothing can reach is a guard nothing proves
+	 *
+	 * @param call
+	 *            the call into the cipher
+	 * @return what the call returned
+	 * @throws GeneralSecurityException
+	 *             what the call threw, as described above
+	 */
+	static byte[] runCipher(final CipherCall call) throws GeneralSecurityException
+	{
 		try
 		{
-			return new KeyCommittingAeadEncryptor(key).encrypt(plaintext, header);
+			return call.run();
 		}
 		catch (GeneralSecurityException | RuntimeException asItWas)
 		{
@@ -407,6 +424,18 @@ public final class PassphraseEnvelope
 			throw new GeneralSecurityException(
 				"could not seal: " + notASecurityFailure.getMessage(), notASecurityFailure);
 		}
+	}
+
+	/** A call into the cipher, see {@link #runCipher(CipherCall)} */
+	@FunctionalInterface
+	interface CipherCall
+	{
+		/**
+		 * @return what the cipher produced
+		 * @throws Exception
+		 *             whatever the cipher declares
+		 */
+		byte[] run() throws Exception;
 	}
 
 	/**
