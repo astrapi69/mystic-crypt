@@ -265,9 +265,13 @@ public final class PassphraseEnvelope
 	 * @param passphrase
 	 *            the passphrase
 	 * @return the plaintext
+	 * @throws SecurityException
+	 *             if the content is of this format but does not open: the passphrase is wrong or
+	 *             the data was altered
+	 * @throws IllegalArgumentException
+	 *             if the content is not of this format at all, or is truncated
 	 * @throws Exception
-	 *             if the passphrase is wrong, the content was tampered with, or it is not of this
-	 *             format at all
+	 *             if the key cannot be derived
 	 */
 	public static byte[] decrypt(final byte[] magic, final byte[] content, final char[] passphrase)
 		throws Exception
@@ -288,9 +292,24 @@ public final class PassphraseEnvelope
 		byte[] salt = Arrays.copyOfRange(header, magic.length, magic.length + SALT_LENGTH);
 		int iterations = iterationsOf(magic, content);
 		byte[] payload = Arrays.copyOfRange(content, headerLength, content.length);
-		// the header is the associated data, so a changed salt or iteration count breaks the tag
-		return new KeyCommittingAeadEncryptor(deriveKey(passphrase, salt, iterations))
-			.decrypt(payload, header);
+		SecretKey key = deriveKey(passphrase, salt, iterations);
+		try
+		{
+			// the header is the associated data, so a changed salt or iteration count breaks the
+			// tag
+			return new KeyCommittingAeadEncryptor(key).decrypt(payload, header);
+		}
+		catch (Exception openingFailed)
+		{
+			// everything that fails from here on is "this is ours and it would not open" - a wrong
+			// passphrase fails the key commitment, an altered payload fails the tag - and the
+			// caller
+			// tells that apart from "this is not ours", above, by the exception type alone. The
+			// same contract as PassphraseCryptor, which the command line's exit codes rest on
+			throw new SecurityException(
+				"could not decrypt: the passphrase is wrong or the data was altered",
+				openingFailed);
+		}
 	}
 
 	/**
