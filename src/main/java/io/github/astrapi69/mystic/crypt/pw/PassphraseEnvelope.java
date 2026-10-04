@@ -64,6 +64,27 @@ import io.github.astrapi69.mystic.crypt.secret.SecretBuffers;
  * {@link PassphraseCryptor#MAGIC}: files in that layout exist, written by this library's own
  * command line since 13.2 and by lethenon 0.1.0, and they carry a version byte exactly where this
  * layout has the first byte of the salt. {@link PassphraseCryptor} stays as it is and reads them.
+ * <p>
+ * <b>The caller owns the passphrase array.</b> Every method here that takes a {@code char[]} reads
+ * it and never modifies it - not on success, not on failure. Overwriting it is the caller's job,
+ * once the call has returned, with {@link SecretBuffers#wipe(char[])}:
+ *
+ * <pre>
+ * char[] passphrase = ...;
+ * try
+ * {
+ * 	return PassphraseEnvelope.decrypt(magic, content, passphrase);
+ * }
+ * finally
+ * {
+ * 	SecretBuffers.wipe(passphrase);
+ * }
+ * </pre>
+ *
+ * This is the opposite of {@link PassphraseCryptor}, which overwrites the array it is given; a
+ * caller moving from one to the other has to add the wipe, or the passphrase stays in memory after
+ * every call. The promise is pinned by a test, so a later change that starts overwriting here fails
+ * it rather than surprising a caller that still needs the array.
  */
 public final class PassphraseEnvelope
 {
@@ -163,7 +184,7 @@ public final class PassphraseEnvelope
 	 * holds the passphrase as a character array should not have to make one to use this
 	 *
 	 * @param passphrase
-	 *            the passphrase, read and not modified
+	 *            the passphrase, read and not modified; the caller overwrites it afterwards
 	 * @param salt
 	 *            the salt
 	 * @param iterations
@@ -211,7 +232,8 @@ public final class PassphraseEnvelope
 	/**
 	 * Seals the given bytes with a passphrase held as characters rather than as a {@link String},
 	 * so that a caller that keeps it in a character array does not have to make an unwipeable copy
-	 * to use it. The array is read, never modified: whoever owns it decides when it is overwritten
+	 * to use it. The array is read, never modified: the caller owns it and overwrites it with
+	 * {@link SecretBuffers#wipe(char[])} once this returns
 	 *
 	 * @param magic
 	 *            the marker to put in front, not {@link PassphraseCryptor#MAGIC}
@@ -256,7 +278,8 @@ public final class PassphraseEnvelope
 
 	/**
 	 * Opens what {@link #encrypt(byte[], byte[], char[])} produced, with a passphrase held as
-	 * characters rather than as a {@link String}. The array is read, never modified
+	 * characters rather than as a {@link String}. The array is read, never modified: the caller
+	 * owns it and overwrites it with {@link SecretBuffers#wipe(char[])} once this returns
 	 *
 	 * @param magic
 	 *            the marker the content must start with

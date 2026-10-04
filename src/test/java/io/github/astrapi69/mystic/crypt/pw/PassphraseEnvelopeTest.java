@@ -195,6 +195,36 @@ class PassphraseEnvelopeTest
 			"the message has to name both possible causes: " + thrown.getMessage());
 	}
 
+	/**
+	 * The class promises that the caller owns the passphrase array: read, never modified, on
+	 * success and on failure. A caller that wipes it afterwards relies on that, and so does one
+	 * that still needs it for a second call - so the promise is held here, for every char[] entry
+	 * point
+	 */
+	@Test
+	@DisplayName("the passphrase array is the caller's: read, never modified, even on failure")
+	void thePassphraseArray_isNeverModified() throws Exception
+	{
+		char[] passphrase = PASSPHRASE.clone();
+		byte[] salt = new byte[PassphraseEnvelope.SALT_LENGTH];
+
+		byte[] sealed = PassphraseEnvelope.encrypt(VAULT_MAGIC,
+			"x".getBytes(StandardCharsets.UTF_8), passphrase);
+		assertArrayEquals(PASSPHRASE, passphrase, "encrypt must leave the array as it was");
+
+		PassphraseEnvelope.decrypt(VAULT_MAGIC, sealed, passphrase);
+		assertArrayEquals(PASSPHRASE, passphrase, "decrypt must leave the array as it was");
+
+		PassphraseEnvelope.deriveKey(passphrase, salt, 1000);
+		assertArrayEquals(PASSPHRASE, passphrase, "deriveKey must leave the array as it was");
+
+		sealed[sealed.length - 1] ^= 0x01;
+		assertThrows(SecurityException.class,
+			() -> PassphraseEnvelope.decrypt(VAULT_MAGIC, sealed, passphrase));
+		assertArrayEquals(PASSPHRASE, passphrase,
+			"a failed decrypt must leave the array as it was, too");
+	}
+
 	@Test
 	@DisplayName("content without the marker is refused, and the message says so")
 	void contentWithoutTheMarker_isRefused()
