@@ -1,6 +1,39 @@
 ## Change log
 ----------------------
 
+Version 13.4
+-------------
+
+ADDED:
+
+- pw.PassphraseEnvelope: seals bytes with a passphrase under a marker the caller chooses -
+  magic | salt (16) | iterations (4, big endian) | key-committing AES-GCM, with the header as
+  associated data and PBKDF2-HMAC-SHA256 at 600,000 iterations for new output. Byte for byte the
+  layout mystic-crypt-ui has written its vault and its file-crypt output with since 8.6; a file
+  that application wrote is the acceptance vector in the test. It carries no version byte of its
+  own - the caller's magic is the format identifier - and refuses PassphraseCryptor's MCRYPT
+  marker by name, because files in that layout carry a version byte where this one carries the
+  salt. "Not ours" is an IllegalArgumentException, "ours, and it would not open" a
+  SecurityException, the same split PassphraseCryptor makes. The caller owns the passphrase
+  array: it is read and never modified, and the caller overwrites it with SecretBuffers.wipe once
+  the call returns (#160)
+
+CHANGED:
+
+- encrypt / decrypt: encrypt writes the general envelope under the marker MCFILE. decrypt reads
+  MCFILE and the MCRYPT layout that 13.2 and 13.3 wrote, and opening an MCRYPT file never rewrites
+  it - a migration is an action of the user, not a side effect of reading. The exit codes keep
+  their meaning: 1 for a wrong passphrase or altered data, 2 for input in neither layout. The
+  commands overwrite the passphrase after every call themselves, since the envelope does not
+  (#160)
+- PassphraseCryptor is unchanged, as the reader and writer of the layout on disk since 13.2; its
+  javadoc points to PassphraseEnvelope for new formats (#160)
+
+MIGRATION:
+
+- A file written by 13.4's encrypt starts with MCFILE and does not open with the decrypt of 13.3 or
+  older. Files written by 13.2 and 13.3 keep opening, unchanged, with 13.4.
+
 Version 13.3
 -------------
 
