@@ -26,6 +26,7 @@ package io.github.astrapi69.mystic.crypt.pw;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.util.Arrays;
 
@@ -159,11 +160,11 @@ public final class PassphraseEnvelope
 	 * @param iterations
 	 *            the iteration count
 	 * @return the derived key
-	 * @throws Exception
+	 * @throws GeneralSecurityException
 	 *             if the key cannot be derived
 	 */
 	public static SecretKey deriveKey(final String passphrase, final byte[] salt,
-		final int iterations) throws Exception
+		final int iterations) throws GeneralSecurityException
 	{
 		byte[] keyBytes = withCharactersOf(passphrase,
 			characters -> deriveKey(characters, salt, iterations).getEncoded());
@@ -190,11 +191,11 @@ public final class PassphraseEnvelope
 	 * @param iterations
 	 *            the iteration count
 	 * @return the derived key
-	 * @throws Exception
+	 * @throws GeneralSecurityException
 	 *             if the key cannot be derived
 	 */
 	public static SecretKey deriveKey(final char[] passphrase, final byte[] salt,
-		final int iterations) throws Exception
+		final int iterations) throws GeneralSecurityException
 	{
 		PBEKeySpec keySpec = new PBEKeySpec(passphrase, salt, iterations, KEY_LENGTH_BITS);
 		try
@@ -220,11 +221,11 @@ public final class PassphraseEnvelope
 	 * @param passphrase
 	 *            the passphrase
 	 * @return the sealed result, header included
-	 * @throws Exception
+	 * @throws GeneralSecurityException
 	 *             if sealing fails
 	 */
 	public static byte[] encrypt(final byte[] magic, final byte[] plaintext,
-		final String passphrase) throws Exception
+		final String passphrase) throws GeneralSecurityException
 	{
 		return withCharactersOf(passphrase, characters -> encrypt(magic, plaintext, characters));
 	}
@@ -242,11 +243,11 @@ public final class PassphraseEnvelope
 	 * @param passphrase
 	 *            the passphrase
 	 * @return the sealed result, header included
-	 * @throws Exception
+	 * @throws GeneralSecurityException
 	 *             if sealing fails
 	 */
 	public static byte[] encrypt(final byte[] magic, final byte[] plaintext,
-		final char[] passphrase) throws Exception
+		final char[] passphrase) throws GeneralSecurityException
 	{
 		byte[] salt = new byte[SALT_LENGTH];
 		// deliberately not SecureRandom.getInstanceStrong(): on Linux that can resolve to the
@@ -266,12 +267,16 @@ public final class PassphraseEnvelope
 	 * @param passphrase
 	 *            the passphrase
 	 * @return the plaintext
-	 * @throws Exception
-	 *             if the passphrase is wrong, the content was tampered with, or it is not of this
-	 *             format at all
+	 * @throws SecurityException
+	 *             if the content is of this format but does not open: the passphrase is wrong or
+	 *             the data was altered
+	 * @throws IllegalArgumentException
+	 *             if the content is not of this format at all, or is truncated
+	 * @throws GeneralSecurityException
+	 *             if the key cannot be derived
 	 */
 	public static byte[] decrypt(final byte[] magic, final byte[] content, final String passphrase)
-		throws Exception
+		throws GeneralSecurityException
 	{
 		return withCharactersOf(passphrase, characters -> decrypt(magic, content, characters));
 	}
@@ -293,11 +298,11 @@ public final class PassphraseEnvelope
 	 *             the data was altered
 	 * @throws IllegalArgumentException
 	 *             if the content is not of this format at all, or is truncated
-	 * @throws Exception
+	 * @throws GeneralSecurityException
 	 *             if the key cannot be derived
 	 */
 	public static byte[] decrypt(final byte[] magic, final byte[] content, final char[] passphrase)
-		throws Exception
+		throws GeneralSecurityException
 	{
 		refuseTheReservedMarker(magic);
 		if (!hasMagic(content, magic))
@@ -354,18 +359,54 @@ public final class PassphraseEnvelope
 	 * @param iterations
 	 *            the cost to derive with and to record
 	 * @return the sealed result, header included
-	 * @throws Exception
+	 * @throws GeneralSecurityException
 	 *             if sealing fails
 	 */
 	static byte[] seal(final byte[] magic, final byte[] plaintext, final char[] passphrase,
-		final byte[] salt, final int iterations) throws Exception
+		final byte[] salt, final int iterations) throws GeneralSecurityException
 	{
 		refuseTheReservedMarker(magic);
 		byte[] header = ByteBuffer.allocate(headerLength(magic)).put(magic).put(salt)
 			.putInt(iterations).array();
-		byte[] payload = new KeyCommittingAeadEncryptor(deriveKey(passphrase, salt, iterations))
-			.encrypt(plaintext, header);
+		byte[] payload = sealPayload(deriveKey(passphrase, salt, iterations), plaintext, header);
 		return ByteBuffer.allocate(header.length + payload.length).put(header).put(payload).array();
+	}
+
+	/**
+	 * Encrypts the payload with the header as associated data.
+	 * <p>
+	 * {@link KeyCommittingAeadEncryptor} declares {@code throws Exception} through the cryptor
+	 * hierarchy it inherits from; everything a cipher can fail with is a
+	 * {@link GeneralSecurityException} or a runtime exception, and those pass through unchanged.
+	 * Anything else checked is wrapped in one, so this class declares no more than the JDK's
+	 * security exception (#182)
+	 *
+	 * @param key
+	 *            the derived key
+	 * @param plaintext
+	 *            what to encrypt
+	 * @param header
+	 *            the associated data
+	 * @return the payload
+	 * @throws GeneralSecurityException
+	 *             if the cipher cannot run
+	 */
+	private static byte[] sealPayload(final SecretKey key, final byte[] plaintext,
+		final byte[] header) throws GeneralSecurityException
+	{
+		try
+		{
+			return new KeyCommittingAeadEncryptor(key).encrypt(plaintext, header);
+		}
+		catch (GeneralSecurityException | RuntimeException asItWas)
+		{
+			throw asItWas;
+		}
+		catch (Exception notASecurityFailure)
+		{
+			throw new GeneralSecurityException(
+				"could not seal: " + notASecurityFailure.getMessage(), notASecurityFailure);
+		}
 	}
 
 	/**
@@ -404,11 +445,11 @@ public final class PassphraseEnvelope
 	 * @param operation
 	 *            what to do with its characters
 	 * @return whatever the operation returned
-	 * @throws Exception
+	 * @throws GeneralSecurityException
 	 *             if the operation fails
 	 */
 	private static byte[] withCharactersOf(final String passphrase,
-		final PassphraseOperation operation) throws Exception
+		final PassphraseOperation operation) throws GeneralSecurityException
 	{
 		char[] characters = passphrase.toCharArray();
 		try
@@ -425,6 +466,6 @@ public final class PassphraseEnvelope
 	@FunctionalInterface
 	private interface PassphraseOperation
 	{
-		byte[] apply(char[] passphrase) throws Exception;
+		byte[] apply(char[] passphrase) throws GeneralSecurityException;
 	}
 }

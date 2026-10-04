@@ -30,10 +30,15 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -223,6 +228,59 @@ class PassphraseEnvelopeTest
 			() -> PassphraseEnvelope.decrypt(VAULT_MAGIC, sealed, passphrase));
 		assertArrayEquals(PASSPHRASE, passphrase,
 			"a failed decrypt must leave the array as it was, too");
+	}
+
+	/**
+	 * What a caller has to handle is the JDK's GeneralSecurityException and nothing wider: the two
+	 * answers it acts on are runtime exceptions (#182). Compiling this method is the first half of
+	 * the assertion - it declares nothing but GeneralSecurityException and calls every entry point
+	 */
+	@Test
+	@DisplayName("every entry point compiles in a method that declares only GeneralSecurityException")
+	void everyEntryPoint_needsNothingWiderThanGeneralSecurityException()
+		throws GeneralSecurityException
+	{
+		byte[] plaintext = "x".getBytes(StandardCharsets.UTF_8);
+		byte[] fromCharacters = PassphraseEnvelope.encrypt(VAULT_MAGIC, plaintext,
+			PASSPHRASE.clone());
+		byte[] fromString = PassphraseEnvelope.encrypt(VAULT_MAGIC, plaintext,
+			new String(PASSPHRASE));
+
+		assertArrayEquals(plaintext,
+			PassphraseEnvelope.decrypt(VAULT_MAGIC, fromCharacters, PASSPHRASE.clone()));
+		assertArrayEquals(plaintext,
+			PassphraseEnvelope.decrypt(VAULT_MAGIC, fromString, new String(PASSPHRASE)));
+		assertArrayEquals(
+			PassphraseEnvelope.deriveKey(PASSPHRASE.clone(), new byte[16], 1000).getEncoded(),
+			PassphraseEnvelope.deriveKey(new String(PASSPHRASE), new byte[16], 1000).getEncoded());
+	}
+
+	/**
+	 * The second half, for every public method there is and every one added later: nothing it
+	 * declares is wider than GeneralSecurityException (#182)
+	 */
+	@Test
+	@DisplayName("no public method declares an exception wider than GeneralSecurityException")
+	void noPublicMethod_declaresAnythingWider()
+	{
+		List<String> wider = new ArrayList<>();
+		for (Method method : PassphraseEnvelope.class.getDeclaredMethods())
+		{
+			if (!Modifier.isPublic(method.getModifiers()))
+			{
+				continue;
+			}
+			for (Class<?> declared : method.getExceptionTypes())
+			{
+				if (!GeneralSecurityException.class.isAssignableFrom(declared)
+					&& !RuntimeException.class.isAssignableFrom(declared))
+				{
+					wider.add(method.getName() + " declares " + declared.getSimpleName());
+				}
+			}
+		}
+
+		assertEquals(List.of(), wider);
 	}
 
 	@Test
