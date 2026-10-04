@@ -28,7 +28,6 @@ import java.io.File;
 import java.util.Base64;
 import java.util.concurrent.Callable;
 
-import io.github.astrapi69.mystic.crypt.pw.PassphraseCryptor;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
@@ -87,7 +86,7 @@ public class DecryptCommand implements Callable<Integer>
 			byte[] encrypted = readEncrypted();
 			char[] resolvedPassphrase = PassphraseCryptSupport.resolvePassphrase(passphrase,
 				passphraseStdin);
-			byte[] decrypted = PassphraseCryptor.decrypt(resolvedPassphrase, encrypted);
+			byte[] decrypted = PassphraseCryptSupport.open(resolvedPassphrase, encrypted);
 			String printed = PassphraseCryptSupport.writeOutput(out, decrypted,
 				PassphraseCryptSupport::asText);
 			if (printed == null)

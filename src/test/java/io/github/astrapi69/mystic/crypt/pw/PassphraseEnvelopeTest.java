@@ -146,7 +146,10 @@ class PassphraseEnvelopeTest
 		byte[] sealed = PassphraseEnvelope.encrypt(VAULT_MAGIC,
 			"secret".getBytes(StandardCharsets.UTF_8), PASSPHRASE.clone());
 
-		assertThrows(Exception.class, () -> PassphraseEnvelope.decrypt(VAULT_MAGIC, sealed,
+		// SecurityException, not merely some exception: it is how a caller tells "this would not
+		// open" from "this is not ours at all", which is an IllegalArgumentException - the same
+		// contract PassphraseCryptor has, and the one the command line's exit codes rest on
+		assertThrows(SecurityException.class, () -> PassphraseEnvelope.decrypt(VAULT_MAGIC, sealed,
 			"not the passphrase".toCharArray()));
 	}
 
@@ -163,9 +166,63 @@ class PassphraseEnvelopeTest
 			"secret".getBytes(StandardCharsets.UTF_8), PASSPHRASE.clone());
 		sealed[position] = (byte)(sealed[position] ^ 0x01);
 
-		assertThrows(Exception.class,
+		Class<? extends Exception> expected = "magic".equals(field)
+			? IllegalArgumentException.class
+			: SecurityException.class;
+		assertThrows(expected,
 			() -> PassphraseEnvelope.decrypt(VAULT_MAGIC, sealed, PASSPHRASE.clone()),
-			"a changed " + field + " at byte " + position + " has to break the tag");
+			"a changed " + field + " at byte " + position + " has to be refused as "
+				+ expected.getSimpleName());
+	}
+
+	/**
+	 * Salt and iteration count feed the key, so changing either fails the key commitment first.
+	 * What reaches the GCM tag with the right key is a changed payload - and that is the case that
+	 * has to come out as the same answer, or a caller reads "altered data" as "not this format"
+	 */
+	@Test
+	@DisplayName("an altered payload is refused as would-not-open, not as not-ours")
+	void anAlteredPayload_isRefusedAsWouldNotOpen() throws Exception
+	{
+		byte[] sealed = PassphraseEnvelope.encrypt(VAULT_MAGIC,
+			"do not tamper".getBytes(StandardCharsets.UTF_8), PASSPHRASE.clone());
+		sealed[sealed.length - 1] ^= 0x01;
+
+		SecurityException thrown = assertThrows(SecurityException.class,
+			() -> PassphraseEnvelope.decrypt(VAULT_MAGIC, sealed, PASSPHRASE.clone()));
+
+		assertTrue(thrown.getMessage().contains("passphrase is wrong or the data was altered"),
+			"the message has to name both possible causes: " + thrown.getMessage());
+	}
+
+	/**
+	 * The class promises that the caller owns the passphrase array: read, never modified, on
+	 * success and on failure. A caller that wipes it afterwards relies on that, and so does one
+	 * that still needs it for a second call - so the promise is held here, for every char[] entry
+	 * point
+	 */
+	@Test
+	@DisplayName("the passphrase array is the caller's: read, never modified, even on failure")
+	void thePassphraseArray_isNeverModified() throws Exception
+	{
+		char[] passphrase = PASSPHRASE.clone();
+		byte[] salt = new byte[PassphraseEnvelope.SALT_LENGTH];
+
+		byte[] sealed = PassphraseEnvelope.encrypt(VAULT_MAGIC,
+			"x".getBytes(StandardCharsets.UTF_8), passphrase);
+		assertArrayEquals(PASSPHRASE, passphrase, "encrypt must leave the array as it was");
+
+		PassphraseEnvelope.decrypt(VAULT_MAGIC, sealed, passphrase);
+		assertArrayEquals(PASSPHRASE, passphrase, "decrypt must leave the array as it was");
+
+		PassphraseEnvelope.deriveKey(passphrase, salt, 1000);
+		assertArrayEquals(PASSPHRASE, passphrase, "deriveKey must leave the array as it was");
+
+		sealed[sealed.length - 1] ^= 0x01;
+		assertThrows(SecurityException.class,
+			() -> PassphraseEnvelope.decrypt(VAULT_MAGIC, sealed, passphrase));
+		assertArrayEquals(PASSPHRASE, passphrase,
+			"a failed decrypt must leave the array as it was, too");
 	}
 
 	@Test

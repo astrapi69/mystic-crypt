@@ -30,6 +30,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Base64;
 
+import io.github.astrapi69.mystic.crypt.pw.PassphraseCryptor;
+import io.github.astrapi69.mystic.crypt.pw.PassphraseEnvelope;
+import io.github.astrapi69.mystic.crypt.secret.SecretBuffers;
+
 /**
  * Shared plumbing of the {@code encrypt} and {@code decrypt} commands: both resolve the same kind
  * of input (a file or a piece of text), the same passphrase sources and the same output target, and
@@ -38,8 +42,74 @@ import java.util.Base64;
 final class PassphraseCryptSupport
 {
 
+	/**
+	 * The marker {@code encrypt} writes since #160: the general envelope under this command's own
+	 * name. Files in the released layout, {@link PassphraseCryptor#MAGIC}, stay readable and are
+	 * never written again - a migration is an action of the user, not a side effect of reading
+	 */
+	static final byte[] MAGIC = { 'M', 'C', 'F', 'I', 'L', 'E' };
+
 	private PassphraseCryptSupport()
 	{
+	}
+
+	/**
+	 * Seals the given bytes in the general envelope under {@link #MAGIC}, and overwrites the
+	 * passphrase afterwards.
+	 * <p>
+	 * {@link PassphraseEnvelope} reads the array and leaves it alone, where
+	 * {@link PassphraseCryptor} used to overwrite it; the overwriting is therefore done here, on
+	 * success and on failure alike
+	 *
+	 * @param passphrase
+	 *            the passphrase, zero-filled when this returns
+	 * @param plain
+	 *            what to seal
+	 * @return the sealed bytes
+	 * @throws Exception
+	 *             if sealing fails
+	 */
+	static byte[] seal(final char[] passphrase, final byte[] plain) throws Exception
+	{
+		try
+		{
+			return PassphraseEnvelope.encrypt(MAGIC, plain, passphrase);
+		}
+		finally
+		{
+			SecretBuffers.wipe(passphrase);
+		}
+	}
+
+	/**
+	 * Opens what {@code encrypt} wrote - in the general envelope since #160, or in the released
+	 * {@code MCRYPT} layout before it - and overwrites the passphrase afterwards. Opening reads,
+	 * nothing more: an old file is not rewritten by being opened
+	 *
+	 * @param passphrase
+	 *            the passphrase, zero-filled when this returns
+	 * @param encrypted
+	 *            the sealed bytes, in either layout
+	 * @return the plaintext
+	 * @throws SecurityException
+	 *             if the passphrase is wrong or the data was altered
+	 * @throws Exception
+	 *             if the bytes are in neither layout, or cannot be opened for another reason
+	 */
+	static byte[] open(final char[] passphrase, final byte[] encrypted) throws Exception
+	{
+		try
+		{
+			if (PassphraseCryptor.isEncrypted(encrypted))
+			{
+				return PassphraseCryptor.decrypt(passphrase, encrypted);
+			}
+			return PassphraseEnvelope.decrypt(MAGIC, encrypted, passphrase);
+		}
+		finally
+		{
+			SecretBuffers.wipe(passphrase);
+		}
 	}
 
 	/**

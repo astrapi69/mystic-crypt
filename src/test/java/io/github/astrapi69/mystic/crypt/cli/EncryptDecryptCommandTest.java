@@ -40,6 +40,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import io.github.astrapi69.mystic.crypt.pw.PassphraseCryptor;
+import io.github.astrapi69.mystic.crypt.pw.PassphraseEnvelope;
 
 /**
  * Unit tests for the {@code encrypt} and {@code decrypt} subcommands, driven through the real
@@ -60,8 +61,10 @@ class EncryptDecryptCommandTest extends AbstractCliTest
 
 		assertEquals(0, run("encrypt", "-i", plain.getPath(), "-o", encrypted.getPath(), "-p",
 			"a good passphrase"));
-		assertTrue(PassphraseCryptor.isEncrypted(Files.readAllBytes(encrypted.toPath())),
-			"the written file must carry the format marker");
+		assertTrue(
+			PassphraseEnvelope.hasMagic(Files.readAllBytes(encrypted.toPath()),
+				PassphraseCryptSupport.MAGIC),
+			"the written file must carry the MCFILE marker (#160)");
 		assertFalse(new String(Files.readAllBytes(encrypted.toPath()), StandardCharsets.UTF_8)
 			.contains("with two lines"), "the plaintext must not survive in the output");
 
@@ -70,13 +73,57 @@ class EncryptDecryptCommandTest extends AbstractCliTest
 		assertArrayEquals(original, Files.readAllBytes(back.toPath()));
 	}
 
+	/**
+	 * Files in the released MCRYPT layout exist - written by this command since 13.2, and by
+	 * lethenon 0.1.0 - so decrypt keeps reading them. And reading is all it does: a migration is an
+	 * action of the user, not a side effect of reading (#160)
+	 */
+	@Test
+	void aFileInTheReleasedLayoutStillOpensAndIsNotRewritten(@TempDir File tempDir) throws Exception
+	{
+		File old = new File(tempDir, "written-by-13.3.enc");
+		File back = new File(tempDir, "back.txt");
+		byte[] original = "encrypted before MCFILE existed".getBytes(StandardCharsets.UTF_8);
+		Files.write(old.toPath(), PassphraseCryptor.encrypt("old pass".toCharArray(), original));
+		byte[] onDiskBefore = Files.readAllBytes(old.toPath());
+
+		assertEquals(0,
+			run("decrypt", "-i", old.getPath(), "-o", back.getPath(), "-p", "old pass"));
+
+		assertArrayEquals(original, Files.readAllBytes(back.toPath()));
+		assertArrayEquals(onDiskBefore, Files.readAllBytes(old.toPath()),
+			"opening an old file must leave it byte for byte as it was");
+	}
+
+	@Test
+	void aWrongPassphraseOnAFileInTheReleasedLayoutIsStillTheNegativeAnswer(@TempDir File tempDir)
+		throws Exception
+	{
+		File old = new File(tempDir, "written-by-13.3.enc");
+		Files.write(old.toPath(), PassphraseCryptor.encrypt("old pass".toCharArray(),
+			"x".getBytes(StandardCharsets.UTF_8)));
+
+		assertEquals(1, run("decrypt", "-i", old.getPath(), "-p", "wrong"));
+	}
+
+	@Test
+	void whatEncryptWritesIsNoLongerTheReleasedLayout()
+	{
+		assertEquals(0, run("encrypt", "--text", "new", "-p", "pass"));
+
+		assertFalse(PassphraseCryptor.isEncrypted(Base64.getDecoder().decode(out.trim())),
+			"encrypt writes only the general envelope from now on (#160)");
+	}
+
 	@Test
 	void textIsPrintedAsBase64AndComesBackAsTheSameText()
 	{
 		assertEquals(0, run("encrypt", "--text", "hello over the wire", "-p", "pass"));
 		String base64 = out.trim();
-		assertTrue(PassphraseCryptor.isEncrypted(Base64.getDecoder().decode(base64)),
-			"the printed text must be the base64 of an encrypted blob, but was: '" + base64 + "'");
+		assertTrue(
+			PassphraseEnvelope.hasMagic(Base64.getDecoder().decode(base64),
+				PassphraseCryptSupport.MAGIC),
+			"the printed text must be the base64 of an MCFILE blob, but was: '" + base64 + "'");
 
 		assertEquals(0, run("decrypt", "--text", base64, "-p", "pass"));
 		assertEquals("hello over the wire", out.trim());
