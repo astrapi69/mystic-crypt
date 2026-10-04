@@ -36,6 +36,7 @@ operation; the library picks parameters that are not a footgun.
 - [Features](#features)
 - [Command-line interface](#command-line-interface)
 - [Documentation](#documentation)
+- [Releasing](#releasing)
 - [Contributing](#contributing)
 - [Similar projects](#similar-projects)
 
@@ -238,6 +239,29 @@ This library is the top of a three-repository stack:
 [crypt-api](https://github.com/astrapi69/crypt-api) (algorithm constants and interfaces), then
 [crypt-data](https://github.com/astrapi69/crypt-data) (factories, readers/writers, models), then
 **mystic-crypt** (the ready-to-use encryptors).
+
+## Releasing
+
+What a release consists of, in the order it is run:
+
+1. **One pull request** with the CHANGELOG entry and `projectVersion` without `-SNAPSHOT`
+   (`docs: changelog for X.Y, and the version that carries it`), the full build green on it, with
+   the test task forced (`./gradlew test --rerun`, then `./gradlew build`).
+2. **The consumers, against the candidate**: `./gradlew publishToMavenLocal`, then lethenon and
+   mystic-crypt-ui built with `-PuseMavenLocal` and the version pointed at the candidate. The
+   local candidate is deleted from `~/.m2` afterwards, so it cannot stand in for the published one.
+3. **Tag the merge commit** with `./gradlew tagRelease`, which names it `RELEASE-X.Y`, and push the
+   tag. The publish workflow uploads to the Central Portal, where the maintainer releases it. A
+   pushed tag is never moved or deleted; a failed run is fixed on the branch and re-run.
+4. **Verify on Central**, with the artifacts downloaded inside the command that checks them: the
+   jar, pom, `-sources.jar`, `-javadoc.jar`, and `gpg --verify` on the `.asc`.
+5. **GitHub release** from the CHANGELOG entry.
+6. **`master` follows the release**: a fast-forward where `master` is an ancestor of the tag
+   (`git push origin "RELEASE-X.Y^{}:master"`), otherwise a merge of the tag on `master`, never a
+   force push. Afterwards `git diff RELEASE-X.Y master` is empty - `master` is always the latest
+   release, nothing else.
+7. **Open the next cycle**: `projectVersion` to the next `-SNAPSHOT`, and `apiBaselineVersion` to the
+   release just made, so the compatibility gate compares against what is actually out.
 
 ## Contributing
 
