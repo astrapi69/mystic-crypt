@@ -27,7 +27,6 @@ package io.github.astrapi69.mystic.crypt.cli;
 import java.io.File;
 import java.util.concurrent.Callable;
 
-import io.github.astrapi69.mystic.crypt.pw.PassphraseCryptor;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
@@ -82,7 +81,7 @@ public class EncryptCommand implements Callable<Integer>
 			byte[] plain = PassphraseCryptSupport.readInput(in, text, textStdin);
 			char[] resolvedPassphrase = PassphraseCryptSupport.resolvePassphrase(passphrase,
 				passphraseStdin);
-			byte[] encrypted = PassphraseCryptor.encrypt(resolvedPassphrase, plain);
+			byte[] encrypted = PassphraseCryptSupport.seal(resolvedPassphrase, plain);
 			String printed = PassphraseCryptSupport.writeOutput(out, encrypted,
 				PassphraseCryptSupport::asBase64);
 			if (printed == null)
