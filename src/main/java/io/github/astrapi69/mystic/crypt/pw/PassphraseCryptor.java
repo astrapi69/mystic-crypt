@@ -55,6 +55,14 @@ import io.github.astrapi69.random.number.RandomByteFactory;
  * <p>
  * As everywhere in this package, the given passphrase array is zeroed before returning, on success
  * and on failure alike; callers must not reuse it.
+ * <p>
+ * <b>For a new format, use {@link PassphraseEnvelope}</b>, which is the same construction with the
+ * caller's own marker instead of this fixed one and no version byte, and which is the layout
+ * mystic-crypt-ui has had on disk since 8.6 (#160). This class stays exactly as it is, because its
+ * layout is on disk too: the {@code encrypt} and {@code decrypt} commands have shipped it since
+ * 13.2, and lethenon 0.1.0 seals its wallet file with it. {@code MCRYPT} is therefore a marker
+ * {@link PassphraseEnvelope} refuses, so that the version byte at offset 6 can never be confused
+ * with a salt byte.
  */
 public final class PassphraseCryptor
 {
