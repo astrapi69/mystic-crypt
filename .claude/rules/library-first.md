@@ -19,6 +19,13 @@ Ciphers, hashes, signatures, KDFs, random generation, padding, encodings of
 key material: always the JDK or Bouncy Castle. Own code only orchestrates
 proven primitives. This level has no exceptions.
 
+A new cryptographic construction - a published scheme this family has not
+shipped before, such as a lattice-based way to hide an amount or a sender - is
+not built here. It is built in lethenon, under its ADR 0001 (peer-reviewed
+publication, the authors' test vectors, the test chain first), and moves into
+this library only after the external cryptographic review that ADR requires.
+Decided by the maintainer on 2026-10-06 (lethenon#49).
+
 ## 1. JDK first
 
 `java.security`, `javax.crypto`, `java.util.HexFormat`, `java.nio.file`,
