@@ -1,5 +1,11 @@
+# max_report_age off: a JaCoCo report restored from Gradle's build cache carries the time of the
+# run that first produced it, and codecov refused such reports as older than 12 hours - no status,
+# and a pull request requiring codecov/patch and codecov/project waited forever
+# (astrapi69/mystic-crypt-ui#503). The workflow names the report explicitly, so the stale-file
+# case the age check guards against cannot occur.
 codecov:
   require_ci_to_pass: yes
+  max_report_age: off
 
 coverage:
   precision: 2
