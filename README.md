@@ -1,33 +1,13 @@
-# Overview
+# gh-pages of mystic-crypt
 
-This is the gh-pages of the mystic-crypt project.
+This branch holds the project page served at <https://astrapi69.github.io/mystic-crypt/>.
 
-## License
+It is one self-contained `index.html`: no build step, no package manager, no JavaScript framework.
+`.nojekyll` tells GitHub Pages to serve it as is.
 
-The source code comes under the liberal MIT License.
-
-## Want to Help and improve it? ###
-
-The source code for mystic-crypt are on GitHub. Please feel free to fork and send pull requests!
-
-Create your own fork of [astrapi69/mystic-crypt/fork](https://github.com/astrapi69/mystic-crypt/fork)
-
-To share your changes, [submit a pull request](https://github.com/astrapi69/mystic-crypt/pull/new/gh-pages).
-
-Don't forget to add new units tests on your changes.
-
-## Contacting the Developer
-
-Do not hesitate to contact the mystic-crypt developers with your questions, concerns, comments, bug reports, or feature requests.
-- Feature requests, questions and bug reports can be reported at the [issues page](https://github.com/astrapi69/mystic-crypt/issues).
-
-## Note
-
-No animals were harmed in the making of this library.
-
-# Donate
-
-If you like this library, please consider a donation through
-<a href="http://flattr.com/thing/4152938/astrapi69mystic-crypt-on-GitHub" target="_blank">
-<img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" />
-</a>
+The page summarizes the [README on `develop`](https://github.com/astrapi69/mystic-crypt/blob/develop/README.md)
+and links to the documentation there. It deliberately carries no version number and no coverage or
+mutation figures: the version comes from the Maven Central badge, the measured numbers live in
+[docs/TESTING.md](https://github.com/astrapi69/mystic-crypt/blob/develop/docs/TESTING.md). When the
+README's quick start, feature list or CLI table changes, this page follows in a pull request against
+`gh-pages`.
