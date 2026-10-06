@@ -283,7 +283,7 @@ SecretKey received = MlKemKeyExchange.decapsulate(recipient.getPrivate(),
         <h2>Command-line interface</h2>
         <p>The published <code>-all</code> artifact is a runnable uber-jar:</p>
 <pre><code>java -jar mystic-crypt-${latestVersion}-all.jar --help
-java -jar mystic-crypt-${latestVersion}-all.jar hash --password "correct horse battery staple"
+java -jar mystic-crypt-${latestVersion}-all.jar hash --password-stdin &lt; password.txt
 java -jar mystic-crypt-${latestVersion}-all.jar checksum --file build.gradle --algorithm SHA-256</code></pre>
         <div class="table-wrap">
           <table>
