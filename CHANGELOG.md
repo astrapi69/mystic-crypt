@@ -1,7 +1,7 @@
 ## Change log
 ----------------------
 
-Version 13.5 (unreleased)
+Version 13.5
 -------------
 
 CHANGED:
