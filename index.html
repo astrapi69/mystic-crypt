@@ -1,74 +1,410 @@
-<html>
-
+<!doctype html>
+<html lang="en">
 <head>
-  <title>index.html</title>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-  <!-- Optional theme -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
-  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+  <title>mystic-crypt</title>
+  <meta name="description" content="mystic-crypt - a modern Java cryptography library: authenticated encryption, password hashing, signatures, key agreement and post-quantum cryptography with safe defaults.">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #f5f6f8;
+      --fg: #1c1e21;
+      --fg-muted: #5a6068;
+      --border: #dde1e6;
+      --accent: #5b3cc4;
+      --accent-fg: #ffffff;
+      --code-bg: #f0f1f4;
+      --radius: 8px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #14161a;
+        --bg-soft: #1c1f24;
+        --fg: #e6e8eb;
+        --fg-muted: #a0a6ae;
+        --border: #2e333a;
+        --accent: #9d86f0;
+        --accent-fg: #14161a;
+        --code-bg: #1f2329;
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    a { color: var(--accent); }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 0 16px; }
+    header.site {
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+    @media (min-width: 720px) {
+      header.site { position: sticky; top: 0; z-index: 10; }
+    }
+    header.site .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 56px; flex-wrap: wrap; }
+    header.site .brand { font-weight: 700; text-decoration: none; color: var(--fg); font-family: var(--mono); }
+    header.site nav { display: flex; gap: 16px; flex-wrap: wrap; font-size: 15px; }
+    header.site nav a { color: var(--fg-muted); text-decoration: none; }
+    header.site nav a:hover { color: var(--fg); }
+    .hero { padding: 56px 16px 40px; }
+    .hero h1 { font-size: clamp(32px, 6vw, 48px); line-height: 1.15; margin: 0 0 16px; font-family: var(--mono); }
+    .hero p.lead { font-size: 19px; color: var(--fg-muted); max-width: 720px; margin: 0 0 24px; }
+    .badges { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 24px; }
+    .badges img { height: 20px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn {
+      display: inline-block; padding: 10px 18px; border-radius: var(--radius);
+      border: 1px solid var(--border); text-decoration: none; color: var(--fg); font-weight: 600;
+    }
+    .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
+    section { padding: 32px 0; border-top: 1px solid var(--border); }
+    h2 { font-size: 26px; margin: 0 0 16px; }
+    h3 { font-size: 18px; margin: 24px 0 8px; }
+    p { margin: 0 0 12px; }
+    code { font-family: var(--mono); font-size: 0.92em; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+    pre {
+      background: var(--code-bg); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 14px 16px; overflow-x: auto; margin: 0 0 16px; font-size: 14px; line-height: 1.5;
+    }
+    pre code { background: none; padding: 0; font-size: inherit; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+    .card { background: var(--bg-soft); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; }
+    .card h3 { margin-top: 0; }
+    .card p { color: var(--fg-muted); margin: 0; font-size: 15px; }
+    .table-wrap { overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; font-size: 15px; }
+    th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { color: var(--fg-muted); font-weight: 600; }
+    td:first-child { white-space: nowrap; }
+    .tabs { display: flex; gap: 4px; margin-bottom: 8px; flex-wrap: wrap; }
+    .tabs button {
+      font: inherit; font-size: 14px; padding: 6px 12px; border-radius: var(--radius);
+      border: 1px solid var(--border); background: var(--bg); color: var(--fg-muted); cursor: pointer;
+    }
+    .tabs button[aria-selected="true"] { background: var(--bg-soft); color: var(--fg); border-color: var(--accent); }
+    .muted { color: var(--fg-muted); }
+    .family { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-family: var(--mono); }
+    .family span.arrow { color: var(--fg-muted); }
+    footer { border-top: 1px solid var(--border); padding: 24px 0 40px; color: var(--fg-muted); font-size: 14px; }
+  </style>
 </head>
-
 <body>
-  <h1> Overview</h1>
-  <div>
-    This is the gh-pages of the mystic-crypt project.
-  </div>
-  <h2> License</h2>
-  <div>
-  </div>
+  <header class="site">
+    <div class="wrap">
+      <a class="brand" href="#">mystic-crypt</a>
+      <nav aria-label="Sections">
+        <a href="#install">Install</a>
+        <a href="#quick-start">Quick start</a>
+        <a href="#features">Features</a>
+        <a href="#cli">CLI</a>
+        <a href="#docs">Docs</a>
+        <a href="https://github.com/astrapi69/mystic-crypt">GitHub</a>
+      </nav>
+    </div>
+  </header>
 
-  <div>
-    The source code comes under the liberal MIT License.
-  </div>
+  <main>
+    <div class="wrap hero">
+      <h1>mystic-crypt</h1>
+      <p class="lead">A modern Java cryptography library: symmetric and public-key encryption, password
+        hashing, digital signatures, key agreement and post-quantum cryptography, with an API you can
+        use correctly without being a cryptographer.</p>
+      <div class="badges">
+        <a href="https://central.sonatype.com/artifact/io.github.astrapi69/mystic-crypt"><img alt="Maven Central" src="https://img.shields.io/maven-central/v/io.github.astrapi69/mystic-crypt.svg?label=Maven%20Central"></a>
+        <a href="https://github.com/astrapi69/mystic-crypt/actions/workflows/gradle.yml"><img alt="Java CI with Gradle" src="https://github.com/astrapi69/mystic-crypt/actions/workflows/gradle.yml/badge.svg"></a>
+        <a href="https://codecov.io/gh/astrapi69/mystic-crypt"><img alt="Coverage" src="https://codecov.io/gh/astrapi69/mystic-crypt/branch/develop/graph/badge.svg"></a>
+        <a href="https://www.javadoc.io/doc/io.github.astrapi69/mystic-crypt"><img alt="Javadoc" src="https://www.javadoc.io/badge/io.github.astrapi69/mystic-crypt.svg"></a>
+        <a href="https://openjdk.org/projects/jdk/25/"><img alt="Java 25" src="https://img.shields.io/badge/Java-25-orange"></a>
+        <a href="https://opensource.org/licenses/MIT"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-brightgreen.svg"></a>
+      </div>
+      <div class="actions">
+        <a class="btn primary" href="#install">Get started</a>
+        <a class="btn" href="https://github.com/astrapi69/mystic-crypt">Source on GitHub</a>
+        <a class="btn" href="https://www.javadoc.io/doc/io.github.astrapi69/mystic-crypt">API reference</a>
+      </div>
+    </div>
 
-  <h2> Want to Help and improve it?</h2>
+    <section>
+      <div class="wrap">
+        <p>mystic-crypt wraps the JDK's and Bouncy Castle's cryptographic primitives in small, focused
+          classes with safe defaults: authenticated encryption (AES-GCM, ChaCha20-Poly1305) with a fresh
+          nonce per call, memory-hard password hashing (Argon2id), modern elliptic-curve signatures and
+          key agreement (Ed25519, X25519), and the NIST post-quantum algorithms (ML-KEM, ML-DSA,
+          SLH-DSA). You pick the operation; the library picks parameters that are not a footgun.</p>
+      </div>
+    </section>
 
-  <div>
-    The source code for mystic-crypt are on GitHub. Please feel free to fork and send pull requests!
-  </div>
-  <div>
-    Create your own fork of [astrapi69/mystic-crypt/fork](https://github.com/astrapi69/mystic-crypt/fork) To share your changes, [submit a pull request](https://github.com/astrapi69/mystic-crypt/pull/new/gh-pages). Don't forget to add new units tests on your
-    changes.
-  </div>
-  <h2> Contacting the Developer</h2>
+    <section id="install">
+      <div class="wrap">
+        <h2>Installation</h2>
+        <p><strong>Requires JDK 25 or newer</strong>, at build and at runtime: the published jar targets
+          JDK 25 bytecode. Replace <code>${latestVersion}</code> with the version shown on
+          <a href="https://central.sonatype.com/artifact/io.github.astrapi69/mystic-crypt">Maven Central</a>.</p>
+        <div class="tabs" role="tablist">
+          <button role="tab" aria-selected="true" data-target="install-catalog">Gradle (catalog)</button>
+          <button role="tab" aria-selected="false" data-target="install-gradle">Gradle</button>
+          <button role="tab" aria-selected="false" data-target="install-maven">Maven</button>
+        </div>
+        <div id="install-catalog" role="tabpanel">
+<pre><code># gradle/libs.versions.toml
+[versions]
+mystic-crypt-version = "${latestVersion}"
 
-  <div>
-    Do not hesitate to contact the mystic-crypt developers with your questions, concerns, comments, bug reports, or feature requests. - Feature requests, questions and bug reports can be reported at the [issues page](https://github.com/astrapi69/mystic-crypt/issues).
-  </div>
+[libraries]
+mystic-crypt = { module = "io.github.astrapi69:mystic-crypt", version.ref = "mystic-crypt-version" }
 
-  <h2> Note</h2>
+// build.gradle
+dependencies {
+    implementation libs.mystic.crypt
+}</code></pre>
+        </div>
+        <div id="install-gradle" role="tabpanel" hidden>
+<pre><code>dependencies {
+    implementation "io.github.astrapi69:mystic-crypt:${latestVersion}"
+}</code></pre>
+        </div>
+        <div id="install-maven" role="tabpanel" hidden>
+<pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;io.github.astrapi69&lt;/groupId&gt;
+    &lt;artifactId&gt;mystic-crypt&lt;/artifactId&gt;
+    &lt;version&gt;${latestVersion}&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+        </div>
+      </div>
+    </section>
 
-  <div>
-    No animals were harmed in the making of this library.
-  </div>
+    <section id="quick-start">
+      <div class="wrap">
+        <h2>Quick start</h2>
+        <p class="muted">These snippets are taken from the README, where every one is compiled and executed by
+          <a href="https://github.com/astrapi69/mystic-crypt/blob/develop/src/test/java/io/github/astrapi69/mystic/crypt/ReadmeExamplesTest.java"><code>ReadmeExamplesTest</code></a>.</p>
 
+        <h3>Encrypt and decrypt data</h3>
+        <p>AES-256-GCM with a fresh random nonce per call, prepended to the ciphertext:</p>
+<pre><code>SecretKey key = SecretKeyFactoryExtensions.newSecretKey(AesAlgorithm.AES.getAlgorithm(), 256);
 
-  <h2> Donate</h2>
+byte[] encrypted = new BaseByteArrayEncryptor(key)
+    .encrypt("attack at dawn".getBytes(StandardCharsets.UTF_8));
+byte[] decrypted = new BaseByteArrayDecryptor(key).decrypt(encrypted);</code></pre>
 
+        <h3>Store a password</h3>
+        <p>Argon2id with a random salt; the salt and all parameters travel inside the returned string:</p>
+<pre><code>PasswordEncryptor passwordEncryptor = PasswordEncryptor.getInstance();
 
-  <div>
-    If you like this library, please consider a donation through
-    <a href="http://flattr.com/thing/4152938/astrapi69mystic-crypt-on-GitHub" target="_blank">
-      <img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" />
-      </a>
-  </div>
+String stored = passwordEncryptor.hashPasswordArgon2id("correct horse battery staple");
 
-  <!-- bower:js -->
-  <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js'></script>
-  <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-debug.js'></script>
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-  <script type='text/javascript' src='app.js' defer="defer"></script>
+boolean ok = passwordEncryptor.matchArgon2id("correct horse battery staple", stored);</code></pre>
+
+        <h3>Sign and verify</h3>
+<pre><code>KeyPair keyPair = Ed25519Signer.newKeyPair();
+byte[] document = "release 11.0.0".getBytes(StandardCharsets.UTF_8);
+
+byte[] signature = new Ed25519Signer(keyPair.getPrivate()).sign(document);
+
+boolean valid = new Ed25519Verifier(keyPair.getPublic()).verify(document, signature);</code></pre>
+
+        <h3>Agree on a shared key</h3>
+        <p>X25519 Diffie-Hellman, with the raw shared secret run through HKDF rather than used directly:</p>
+<pre><code>KeyPair alice = X25519KeyExchange.newKeyPair();
+KeyPair bob = X25519KeyExchange.newKeyPair();
+
+SecretKey aliceSecret = X25519KeyExchange.deriveSharedSecret(alice.getPrivate(), bob.getPublic(), 32);
+SecretKey bobSecret = X25519KeyExchange.deriveSharedSecret(bob.getPrivate(), alice.getPublic(), 32);
+// aliceSecret and bobSecret are equal</code></pre>
+
+        <h3>Post-quantum key encapsulation</h3>
+        <p>ML-KEM (FIPS 203). <code>HybridKemKeyExchange</code> combines X25519 and ML-KEM and stays
+          secure as long as <em>either</em> half is unbroken:</p>
+<pre><code>KeyPair recipient = MlKemKeyExchange.newKeyPair(KeyPairGeneratorAlgorithm.ML_KEM_768);
+
+MlKemKeyExchange.Encapsulation sent =
+    MlKemKeyExchange.encapsulate(recipient.getPublic(), KeyPairGeneratorAlgorithm.ML_KEM_768);
+SecretKey received = MlKemKeyExchange.decapsulate(recipient.getPrivate(),
+    sent.getCiphertext(), KeyPairGeneratorAlgorithm.ML_KEM_768);
+// sent.getSharedSecret() and received are equal</code></pre>
+
+        <h3>Hash</h3>
+<pre><code>byte[] digest = Sha3Hasher.hashUtf8("hello", MessageDigestAlgorithm.SHA3_256);</code></pre>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="wrap">
+        <h2>Features</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Symmetric encryption</h3>
+            <p>AES-GCM and ChaCha20-Poly1305 with a fresh nonce per call, for byte arrays, strings, files,
+              streams and serializable objects. Chainable encryptors, hex-encoded variants, key-committing
+              AEAD against the "invisible salamanders" attack.</p>
+          </div>
+          <div class="card">
+            <h3>Password hashing</h3>
+            <p>Argon2id (recommended), PBKDF2-HMAC-SHA256, bcrypt and scrypt for interop. Salt and
+              parameters are encoded with the hash; comparisons are constant-time.</p>
+          </div>
+          <div class="card">
+            <h3>Public-key cryptography</h3>
+            <p>RSA hybrid encryption, Ed25519 signatures, X25519 key agreement with HKDF, PEM/DER/PKCS#8
+              keys from OpenSSL or Java, X.509 certificates, key stores, Ed25519 key blinding and
+              SLIP-0010 seed derivation.</p>
+          </div>
+          <div class="card">
+            <h3>Post-quantum</h3>
+            <p>ML-KEM (FIPS 203), ML-DSA (FIPS 204), SLH-DSA (FIPS 205), and a hybrid X25519+ML-KEM
+              combiner for the transition period.</p>
+          </div>
+          <div class="card">
+            <h3>Hashing</h3>
+            <p>SHA-2, SHA-3, BLAKE2b/BLAKE2s including keyed (MAC) mode, HMAC as one call, file and
+              object checksums.</p>
+          </div>
+          <div class="card">
+            <h3>Secret sharing and PAKE</h3>
+            <p>Shamir's Secret Sharing, Feldman verifiable secret sharing, J-PAKE and SRP-6a, AES key
+              wrap, PKCS#11/HSM provider configuration.</p>
+          </div>
+        </div>
+        <p style="margin-top:16px">The
+          <a href="https://github.com/astrapi69/mystic-crypt/blob/develop/docs/CRYPTO_CAPABILITIES.md">capability matrix</a>
+          lists every algorithm with the classes involved, and what is deliberately <em>not</em>
+          implemented and why.</p>
+      </div>
+    </section>
+
+    <section id="cli">
+      <div class="wrap">
+        <h2>Command-line interface</h2>
+        <p>The published <code>-all</code> artifact is a runnable uber-jar:</p>
+<pre><code>java -jar mystic-crypt-${latestVersion}-all.jar --help
+java -jar mystic-crypt-${latestVersion}-all.jar hash --password-stdin &lt; password.txt
+java -jar mystic-crypt-${latestVersion}-all.jar checksum --file build.gradle --algorithm SHA-256</code></pre>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Command</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>hash</code></td><td>Hash a password with Argon2id or PBKDF2 and print the encoded hash</td></tr>
+              <tr><td><code>verify</code></td><td>Verify a password against an encoded hash (exit code 0 = match)</td></tr>
+              <tr><td><code>keygen</code></td><td>Generate a key pair and print or write it as PEM</td></tr>
+              <tr><td><code>kem</code></td><td>Run an ML-KEM or hybrid X25519+ML-KEM encapsulation between two parties</td></tr>
+              <tr><td><code>checksum</code></td><td>Compute the checksum of a file</td></tr>
+              <tr><td><code>der2pem</code></td><td>Convert a DER-encoded private key to PEM</td></tr>
+              <tr><td><code>cert</code></td><td>Create a self-signed X.509 certificate</td></tr>
+              <tr><td><code>keystore</code></td><td>Manage a PKCS12, JKS or JCEKS key store: list, create, add-keypair, import-cert, export-cert, delete</td></tr>
+              <tr><td><code>sign</code></td><td>Sign a file or stdin with an Ed25519, ML-DSA or SLH-DSA private key (PEM)</td></tr>
+              <tr><td><code>verify-signature</code></td><td>Verify such a signature; exit code 0 = valid, 1 = invalid, 2 = error</td></tr>
+              <tr><td><code>obfuscate</code> / <code>disentangle</code></td><td>Obfuscate text with a substitution map, and recover it</td></tr>
+              <tr><td><code>encrypt</code> / <code>decrypt</code></td><td>Encrypt a file or a text with a passphrase (AES-GCM, PBKDF2-HMAC-SHA256), and decrypt it again</td></tr>
+              <tr><td><code>share</code></td><td>Split a secret into shares and combine them back (Shamir secret sharing)</td></tr>
+              <tr><td><code>keyx</code></td><td>Exchange a shared secret with another person: <code>new</code> on the recipient's side, <code>send</code> on the sender's, <code>receive</code> back on the recipient's</td></tr>
+              <tr><td><code>convert</code></td><td>Say what a key or certificate file is, and convert it between PEM and DER or between PKCS#1 and PKCS#8</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="margin-top:16px">Prefer a desktop application? <a href="https://github.com/astrapi69/mystic-crypt-ui">mystic-crypt-ui</a>
+          puts the same library behind a Swing front end.</p>
+      </div>
+    </section>
+
+    <section id="docs">
+      <div class="wrap">
+        <h2>Documentation</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Document</th><th>What it covers</th></tr></thead>
+            <tbody>
+              <tr><td><a href="https://github.com/astrapi69/mystic-crypt/blob/develop/docs/CRYPTO_CAPABILITIES.md">Capability matrix</a></td><td>Every algorithm, its class, and what is out of scope with reasons</td></tr>
+              <tr><td><a href="https://github.com/astrapi69/mystic-crypt/blob/develop/docs/TESTING.md">Testing strategy</a></td><td>How it is tested, the coverage and mutation numbers, and the defects the process caught</td></tr>
+              <tr><td><a href="https://github.com/astrapi69/mystic-crypt/blob/develop/docs/COVERAGE_EXCEPTIONS.md">Coverage exceptions</a></td><td>Every uncovered line and surviving mutant, with its reason</td></tr>
+              <tr><td><a href="https://github.com/astrapi69/mystic-crypt/blob/develop/docs/KEY_AGREEMENT_EVOLUTION.md">Key agreement, explained</a></td><td>From book ciphers to the Double Ratchet</td></tr>
+              <tr><td><a href="https://github.com/astrapi69/mystic-crypt/blob/develop/CHANGELOG.md">Changelog</a></td><td>What changed in each release</td></tr>
+              <tr><td><a href="https://www.javadoc.io/doc/io.github.astrapi69/mystic-crypt">Javadoc</a></td><td>API reference</td></tr>
+              <tr><td><a href="https://github.com/astrapi69/mystic-crypt/wiki">Wiki</a></td><td>Task-oriented guides</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>The crypt family</h3>
+        <p>mystic-crypt is the top of a three-repository stack:</p>
+        <p class="family">
+          <a href="https://github.com/astrapi69/crypt-api">crypt-api</a><span class="arrow">-&gt;</span>
+          <a href="https://github.com/astrapi69/crypt-data">crypt-data</a><span class="arrow">-&gt;</span>
+          <strong>mystic-crypt</strong>
+        </p>
+        <p class="muted">crypt-api holds the algorithm constants and interfaces, crypt-data the factories,
+          readers/writers and models, mystic-crypt the ready-to-use encryptors.</p>
+      </div>
+    </section>
+
+    <section id="quality">
+      <div class="wrap">
+        <h2>Quality</h2>
+        <p>The release gate is 100% branch coverage plus PIT mutation testing, and every uncovered line
+          and surviving mutant has a stated reason. The measured numbers, with the commit they were
+          measured on, live in
+          <a href="https://github.com/astrapi69/mystic-crypt/blob/develop/docs/TESTING.md">docs/TESTING.md</a>.</p>
+      </div>
+    </section>
+
+    <section id="contributing">
+      <div class="wrap">
+        <h2>Contributing</h2>
+        <p>Pull requests are welcome: fork
+          <a href="https://github.com/astrapi69/mystic-crypt/fork">astrapi69/mystic-crypt</a> and
+          <a href="https://github.com/astrapi69/mystic-crypt/pull/new/develop">open a PR</a> against
+          <code>develop</code>. Please add tests for your change; the
+          <a href="https://github.com/astrapi69/mystic-crypt/blob/develop/docs/TESTING.md#conventions-for-contributors">conventions for contributors</a>
+          describe what a good test looks like here.</p>
+<pre><code>./gradlew build            # tests + coverage + formatting check
+./gradlew spotlessApply    # fix formatting
+./gradlew pitest           # mutation testing (opt-in, minutes)</code></pre>
+        <p>Questions, bug reports and feature requests belong on the
+          <a href="https://github.com/astrapi69/mystic-crypt/issues">issues page</a>. Security issues:
+          see the <a href="https://github.com/astrapi69/mystic-crypt/blob/develop/SECURITY.md">security policy</a>.</p>
+      </div>
+    </section>
+
+    <section id="support">
+      <div class="wrap">
+        <h2>Support this project</h2>
+        <p>If mystic-crypt is useful to you, a star on
+          <a href="https://github.com/astrapi69/mystic-crypt">GitHub</a> helps others find it. Sharing it
+          or reporting a bug helps just as much.</p>
+        <p>Financial support is possible through
+          <a href="https://github.com/sponsors/astrapi69">GitHub Sponsors</a>,
+          <a href="https://liberapay.com/astrapi69">Liberapay</a>,
+          <a href="https://ko-fi.com/astrapi69">Ko-fi</a> and
+          <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=GVBTWLRAZ7HB8">PayPal</a>.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>mystic-crypt is released under the
+        <a href="https://github.com/astrapi69/mystic-crypt/blob/develop/LICENSE">MIT License</a>.</p>
+      <p>No animals were harmed in the making of this library.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.tabs').forEach(function (tabList) {
+      var buttons = tabList.querySelectorAll('button');
+      buttons.forEach(function (button) {
+        button.addEventListener('click', function () {
+          buttons.forEach(function (other) {
+            var selected = other === button;
+            other.setAttribute('aria-selected', String(selected));
+            document.getElementById(other.dataset.target).hidden = !selected;
+          });
+        });
+      });
+    });
+  </script>
 </body>
-
 </html>
