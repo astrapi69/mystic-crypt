@@ -82,29 +82,6 @@ tasks.register('apiCompatibility', JavaExec) {
         if (!breakingIsAllowed) {
             args += ['--error-on-binary-incompatibility', '--error-on-source-incompatibility']
         }
-        // A declared exception, decided by the maintainer in #182, and valid ONLY against baseline
-        // 13.4. PassphraseEnvelope's six public methods narrowed `throws Exception` to
-        // `throws GeneralSecurityException`. japicmp reports each as
-        // METHOD_NO_LONGER_THROWS_CHECKED_EXCEPTION plus METHOD_NOW_THROWS_CHECKED_EXCEPTION and calls
-        // both source-incompatible. In Java only the first can break a caller - one that catches an
-        // unrelated checked type around the call - and none in the family does (measured in #182 over
-        // mystic-crypt, lethenon and mystic-crypt-ui); the second is covered by the Exception callers
-        // already handle, and binary compatibility is untouched. The command line cannot accept single
-        // findings, so the six methods are left out of the comparison for this one cycle - which also
-        // means the gate does not see other changes to them until the baseline moves. From baseline
-        // 13.5 on this block is dead: delete it in the commit that moves apiBaselineVersion.
-        if (apiBaselineVersion == '13.4') {
-            def envelope = 'io.github.astrapi69.mystic.crypt.pw.PassphraseEnvelope'
-            args += ['--exclude', [
-                "${envelope}#encrypt(byte[],byte[],char[])",
-                "${envelope}#encrypt(byte[],byte[],java.lang.String)",
-                "${envelope}#decrypt(byte[],byte[],char[])",
-                "${envelope}#decrypt(byte[],byte[],java.lang.String)",
-                "${envelope}#deriveKey(char[],byte[],int)",
-                "${envelope}#deriveKey(java.lang.String,byte[],int)"].join(';')]
-            logger.lifecycle("apiCompatibility: the six PassphraseEnvelope methods are excluded " +
-                "against baseline 13.4 (#182)")
-        }
         logger.lifecycle("apiCompatibility: $projectVersion against release $apiBaselineVersion - " +
             (breakingIsAllowed ? 'a higher major, incompatibilities are reported, not refused'
                                : 'the same major, an incompatibility fails the build'))
