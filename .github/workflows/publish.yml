@@ -9,6 +9,8 @@
 # Required repository secrets:
 #   CENTRAL_PORTAL_TOKEN_USERNAME / CENTRAL_PORTAL_TOKEN_PASSWORD - Central Portal user token
 #   GPG_PRIVATE_KEY / GPG_PASSPHRASE    - ascii-armored signing key and its passphrase
+#   GPG_KEY_ID (optional)               - the signing subkey's last 8 hex digits, when GPG_PRIVATE_KEY
+#                                         holds that subkey alone (astrapi69/lethenon, docs/launch/release-key.md)
 
 name: Publish to Maven Central
 
@@ -63,3 +65,4 @@ jobs:
           CENTRAL_PORTAL_TOKEN_PASSWORD: ${{ secrets.CENTRAL_PORTAL_TOKEN_PASSWORD }}
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}

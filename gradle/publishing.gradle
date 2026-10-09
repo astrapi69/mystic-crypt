@@ -95,13 +95,23 @@ nmcp {
 //                       not publishing it, and it used to happen silently
 def signingKey = System.getenv("GPG_PRIVATE_KEY")
 def signingPassphrase = System.getenv("GPG_PASSPHRASE")
+// The signing subkey's short id, its last 8 hex digits, when GPG_PRIVATE_KEY is an export of that
+// subkey alone and the primary key stays offline (astrapi69/lethenon, docs/launch/release-key.md;
+// #190). Without it Gradle takes the primary key, which such an export holds only as a stub, and
+// fails; Gradle 9.7.1 refused the 16-digit form (astrapi69/lethenon#155). Unset, the call is the one
+// for a full key, as before.
+def signingKeyId = System.getenv("GPG_KEY_ID")
 def hasInMemoryKey = signingKey && signingPassphrase
 def hasLocalKey = ["signing.keyId", "signing.gnupg.keyName", "signing.secretKeyRingFile"]
     .any { project.hasProperty(it) }
 
 signing {
     if (hasInMemoryKey) {
-        useInMemoryPgpKeys(signingKey, signingPassphrase)
+        if (signingKeyId) {
+            useInMemoryPgpKeys(signingKeyId, signingKey, signingPassphrase)
+        } else {
+            useInMemoryPgpKeys(signingKey, signingPassphrase)
+        }
         sign publishing.publications.mavenJava
     }
     else if (hasLocalKey) {
