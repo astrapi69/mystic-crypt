@@ -240,6 +240,35 @@ This library is the top of a three-repository stack:
 [crypt-data](https://github.com/astrapi69/crypt-data) (factories, readers/writers, models), then
 **mystic-crypt** (the ready-to-use encryptors).
 
+## Verifying the release signatures
+
+The releases on Maven Central are signed with the OpenPGP key
+
+```text
+5B2F A6B1 1E29 8BC0 9287  F423 D8C4 0351 8C49 CA75
+```
+
+Since 13.6 they are signed by its signing subkey
+
+```text
+6D67 F844 2A6F CC96 BD7C  1B5E 9FCF 7C97 10E2 BD8D
+```
+
+valid until 2028-10-09. Earlier releases were signed by the primary key itself. The key, with the subkey, is on keyserver.ubuntu.com and keys.openpgp.org.
+
+To check a download, fetch the key once, then verify the signature that lies next to each file on
+Maven Central:
+
+```sh
+gpg --keyserver hkps://keys.openpgp.org --recv-keys 5B2FA6B11E298BC09287F423D8C403518C49CA75
+gpg --verify mystic-crypt-13.6.jar.asc mystic-crypt-13.6.jar
+```
+
+gpg answers `Good signature` and prints the `Primary key fingerprint`, for a release signed by the
+subkey also the `Subkey fingerprint`. Both have to be the ones above. The warning that the key "is
+not certified with a trusted signature" only says that you have not marked the key as trusted in your
+own keyring; the fingerprints are what to compare.
+
 ## Releasing
 
 What a release consists of, in the order it is run:
