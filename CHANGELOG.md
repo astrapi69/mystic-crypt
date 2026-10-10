@@ -1,6 +1,19 @@
 ## Change log
 ----------------------
 
+Version 13.6
+-------------
+
+CHANGED:
+
+- From this version on, releases are signed by a signing subkey instead of the primary key: the
+  subkey `6D67 F844 2A6F CC96 BD7C  1B5E 9FCF 7C97 10E2 BD8D` (rsa4096, valid until 2028-10-09) of
+  the key `5B2F A6B1 1E29 8BC0 9287  F423 D8C4 0351 8C49 CA75`. The key with this subkey is on
+  keyserver.ubuntu.com and keys.openpgp.org; `gpg --verify` on an artifact's `.asc` names the
+  subkey as the signer and the key above as its primary. 13.5 and earlier were signed by the
+  primary key itself. The publish workflow passes the subkey's id to Gradle's in-memory signing as
+  the secret `GPG_KEY_ID`; without it the build signs with a full key, as before (#190)
+
 Version 13.5
 -------------
 
