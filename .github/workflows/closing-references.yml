@@ -1,0 +1,47 @@
+# Refuses a pull request into develop that would close an issue it does not name on a closing line
+# of its own. GitHub reads "fixed" before an issue number as a closing keyword whatever stands
+# before it, so a release pull request listing an issue as "known and not fixed" closed it on the
+# merge, twice in astrapi69/mystic-crypt-ui (astrapi69/mystic-crypt-ui#555). The check reads what
+# GitHub would close and what the text says, and is required by develop's branch protection.
+name: Closing references
+
+on:
+  pull_request:
+    branches: [ develop ]
+    types: [ opened, reopened, synchronize, edited ]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  closing-references:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v7
+      - name: Every issue this pull request would close is named on a closing line
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          gh api graphql -F owner="${REPO%/*}" -F name="${REPO#*/}" -F pr="$PR" -f query='
+            query($owner: String!, $name: String!, $pr: Int!) {
+              repository(owner: $owner, name: $name) {
+                pullRequest(number: $pr) {
+                  body
+                  closingIssuesReferences(first: 50) { nodes { number repository { nameWithOwner } } }
+                  commits(first: 250) { nodes { commit { message } } }
+                }
+              }
+            }' > response.json
+          jq --arg repository "$REPO" '.data.repository.pullRequest | {
+              repository: $repository,
+              body: (.body // ""),
+              commits: [.commits.nodes[].commit.message],
+              closing: [.closingIssuesReferences.nodes[] | "\(.repository.nameWithOwner)#\(.number)"]
+            }' response.json > references.json
+          python3 scripts/closing-references.py < references.json

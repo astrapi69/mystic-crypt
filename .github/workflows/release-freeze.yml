@@ -1,0 +1,55 @@
+# Sets the status "release-freeze" on every open pull request into develop: failure while a pull
+# request from a release/* branch is open, success otherwise; the release pull request itself and a
+# pull request labelled release-content pass. develop's branch protection requires the status, so
+# GitHub refuses a merge during a freeze in the browser and through auto-merge alike. Taken over
+# from astrapi69/mystic-crypt-ui, where it was decided and tested live (astrapi69/mystic-crypt-ui#516).
+#
+# A status rather than a check run: opening or closing the release pull request changes the answer
+# for every other pull request, and a check run only reruns on events of its own pull request. So
+# any event recomputes all of them.
+#
+# pull_request_target, so that a pull request from a fork gets its status too; the job checks out
+# develop's scripts only and runs nothing a pull request brings.
+name: Release freeze
+
+on:
+  pull_request_target:
+    branches: [ develop ]
+    types: [ opened, reopened, synchronize, closed, labeled, unlabeled ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+  statuses: write
+
+concurrency:
+  group: release-freeze
+  cancel-in-progress: false
+
+jobs:
+  # not named release-freeze: a job's own check run of that name would satisfy the required status
+  set-statuses:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout develop's scripts
+        uses: actions/checkout@v7
+        with:
+          ref: develop
+      - name: Set the release-freeze status of every open pull request into develop
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          gh api --paginate "repos/$REPO/pulls?state=open&base=develop&per_page=100" \
+            --jq '.[] | {number, head_ref: .head.ref, head_sha: .head.sha, labels: [.labels[].name]}' \
+            | jq -s '{pulls: .}' > pulls.json
+          echo "open pull requests into develop: $(jq '.pulls | length' pulls.json)"
+          python3 scripts/release-freeze.py < pulls.json > statuses.tsv
+          while IFS=$'\t' read -r sha state number description; do
+            gh api -X POST "repos/$REPO/statuses/$sha" -f state="$state" -f context=release-freeze \
+              -f description="$description" > /dev/null
+            echo "#$number $state: $description"
+          done < statuses.tsv
