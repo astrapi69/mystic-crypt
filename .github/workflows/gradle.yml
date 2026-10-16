@@ -30,6 +30,13 @@ jobs:
         uses: gradle/actions/setup-gradle@v6
       - name: Execute Gradle build
         run: ./gradlew build
+      - name: Mutation testing (PIT, fails below mutationThreshold in build.gradle)
+        run: |
+          ./gradlew pitest
+          # PIT's forked test runs leave src/test/resources/crypt/test.txt
+          # deleted (see gradle/mutation-testing.gradle); put it back for the
+          # steps after this one.
+          git checkout -- src/test/resources/crypt/test.txt
       - uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos

@@ -27,6 +27,17 @@ description = "$rootProject.name"
 // import gradle files
 apply from: "gradle/apply-gradle-files.gradle"
 
+// Mutation-score floor the CI build fails below: .github/workflows/gradle.yml
+// runs `./gradlew pitest` after the build. Fail-closed floor for the documented
+// mutation score (docs/TESTING.md: 99.1 % with every survivor argued in
+// docs/COVERAGE_EXCEPTIONS.md); measured 1665 of 1688 mutants killed on
+// 2026-10-16, which PIT rounds to 99 %. Kept here, not in
+// gradle/mutation-testing.gradle, so that the floor sits in the file a reader
+// (and awesome-well-tested's check) looks at.
+pitest {
+    mutationThreshold = 99
+}
+
 java {
     sourceCompatibility = "$projectSourceCompatibility" as Object
     toolchain {
