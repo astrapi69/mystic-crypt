@@ -65,3 +65,7 @@ jobs:
           CENTRAL_PORTAL_TOKEN_PASSWORD: ${{ secrets.CENTRAL_PORTAL_TOKEN_PASSWORD }}
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          # the signing subkey's last 8 hex digits, as publish.yml passes it (#190): since the
+          # secrets hold the subkey alone (2026-10-10), signing without it takes the primary
+          # key's stub and fails every push build at this step
+          GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
