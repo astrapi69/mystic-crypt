@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 #
-# Refuses a commit whose files Spotless would format (#200; the pattern of astrapi69/mystic-crypt-ui#592).
+# Refuses a commit whose files Spotless would format (#200).
 #
-# Thin on purpose: which files count and what is run lives in scripts/check-formatting.sh, which a
-# test drives directly.
+# Thin on purpose: which files count and what is run lives in scripts/check-formatting.sh, the same
+# script in every repository of the family that uses Spotless (astrapi69/mystic-crypt-ui#592).
 #
-# Installed with: git config core.hooksPath .githooks   (once per clone or worktree)
+# Installed with: make install-hooks   (once per clone or worktree)
 set -euo pipefail
 repository_root="$(git rev-parse --show-toplevel)"
 exec "$repository_root/scripts/check-formatting.sh"

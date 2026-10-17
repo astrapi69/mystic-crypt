@@ -1,20 +1,22 @@
 #!/usr/bin/env bash
 #
-# Refuses a commit whose files Spotless would format (#200; the pattern of astrapi69/mystic-crypt-ui#592). The pre-commit hook runs it; CI checks
-# the same with spotlessCheck in the build, which is where a forgotten spotlessApply used to surface,
-# a gate run or a CI run later.
+# Refuses a commit whose files Spotless would format (#200).
 #
-# Only what Spotless covers in this build counts, and only when the commit stages it:
+# The pre-commit hook runs it; the build checks the same with spotlessCheck, which is where a
+# forgotten spotlessApply used to surface, a build or a CI run later. The same script runs in every
+# repository of the family that uses Spotless (astrapi69/mystic-crypt-ui#592).
+#
+# Only what Spotless covers counts, and only when the commit stages it:
 #   src/**/*.java                          spotlessJavaCheck
 #   *.gradle, *.md, .gitignore at the top  spotlessMiscCheck
-# The plugin builds have no Spotless of their own, and a commit that touches nothing of the above
-# costs no Gradle run. With a daemon running, a check takes under a second (measured in mystic-crypt-ui
-# on 2026-10-17: 0.5 to 0.9 s; 5.3 s without one).
+# A commit that touches nothing of the above costs no Gradle run. With a Gradle daemon running, the
+# check takes under a second (measured in mystic-crypt-ui on 2026-10-17: 0.5 to 0.9 s; 5.3 s without
+# a daemon).
 #
 # Spotless checks the files as they are in the working tree, so a file staged in one form and edited
 # further is checked in its edited form.
 #
-#   scripts/check-formatting.sh            GRADLEW overrides the Gradle wrapper, for the test
+#   scripts/check-formatting.sh            GRADLEW overrides the Gradle wrapper
 set -euo pipefail
 
 root="$(git rev-parse --show-toplevel)"
