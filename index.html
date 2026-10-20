@@ -55,8 +55,12 @@
     .hero { padding: 56px 16px 40px; }
     .hero h1 { font-size: clamp(32px, 6vw, 48px); line-height: 1.15; margin: 0 0 16px; font-family: var(--mono); }
     .hero p.lead { font-size: 19px; color: var(--fg-muted); max-width: 720px; margin: 0 0 24px; }
-    .badges { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 24px; }
-    .badges img { height: 20px; }
+    .badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 24px; }
+    .badges a {
+      padding: 2px 10px; border: 1px solid var(--border); border-radius: var(--radius);
+      background: var(--bg-soft); color: var(--fg-muted); font-size: 14px; text-decoration: none;
+    }
+    .badges a:hover { color: var(--fg); border-color: var(--accent); }
     .actions { display: flex; flex-wrap: wrap; gap: 12px; }
     .btn {
       display: inline-block; padding: 10px 18px; border-radius: var(--radius);
@@ -116,12 +120,12 @@
         hashing, digital signatures, key agreement and post-quantum cryptography, with an API you can
         use correctly without being a cryptographer.</p>
       <div class="badges">
-        <a href="https://central.sonatype.com/artifact/io.github.astrapi69/mystic-crypt"><img alt="Maven Central" src="https://img.shields.io/maven-central/v/io.github.astrapi69/mystic-crypt.svg?label=Maven%20Central"></a>
-        <a href="https://github.com/astrapi69/mystic-crypt/actions/workflows/gradle.yml"><img alt="Java CI with Gradle" src="https://github.com/astrapi69/mystic-crypt/actions/workflows/gradle.yml/badge.svg"></a>
-        <a href="https://codecov.io/gh/astrapi69/mystic-crypt"><img alt="Coverage" src="https://codecov.io/gh/astrapi69/mystic-crypt/branch/develop/graph/badge.svg"></a>
-        <a href="https://www.javadoc.io/doc/io.github.astrapi69/mystic-crypt"><img alt="Javadoc" src="https://www.javadoc.io/badge/io.github.astrapi69/mystic-crypt.svg"></a>
-        <a href="https://openjdk.org/projects/jdk/25/"><img alt="Java 25" src="https://img.shields.io/badge/Java-25-orange"></a>
-        <a href="https://opensource.org/licenses/MIT"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-brightgreen.svg"></a>
+        <a href="https://central.sonatype.com/artifact/io.github.astrapi69/mystic-crypt">Maven Central</a>
+        <a href="https://github.com/astrapi69/mystic-crypt/actions/workflows/gradle.yml">Build status</a>
+        <a href="https://codecov.io/gh/astrapi69/mystic-crypt">Coverage</a>
+        <a href="https://www.javadoc.io/doc/io.github.astrapi69/mystic-crypt">Javadoc</a>
+        <a href="https://openjdk.org/projects/jdk/25/">Java 25</a>
+        <a href="https://opensource.org/licenses/MIT">MIT license</a>
       </div>
       <div class="actions">
         <a class="btn primary" href="#install">Get started</a>
