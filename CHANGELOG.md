@@ -1,6 +1,15 @@
 ## Change log
 ----------------------
 
+Version 13.7
+-------------
+
+CHANGED:
+
+- randomizer 10.6 and file-worker 19.1: what they bring now resolves jackson-databind 2.22.4
+  instead of the release candidate 2.16.0-rc1 (through jobj-copy 4.3) and commons-beanutils
+  1.11.0 instead of 1.9.4 (through jobj-compare 12), both flagged by Dependabot in consumers (#204)
+
 Version 13.6
 -------------
 
