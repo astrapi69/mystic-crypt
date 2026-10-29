@@ -31,6 +31,8 @@ import java.io.File;
 import java.io.Serializable;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.Collection;
+import java.util.List;
 import java.util.stream.Stream;
 
 import javax.crypto.Cipher;
@@ -74,8 +76,8 @@ public class PrivateKeyGenericEnDecryptorTest
 		<T extends Serializable> PublicKeyGenericEncryptor<T> newEncryptor(PublicKey publicKey)
 			throws Exception;
 
-		<T extends Serializable> PrivateKeyGenericDecryptor<T> newDecryptor(PrivateKey privateKey)
-			throws Exception;
+		<T extends Serializable> PrivateKeyGenericDecryptor<T> newDecryptor(PrivateKey privateKey,
+			Collection<Class<?>> allowedTypes) throws Exception;
 	}
 
 	/** One constructor-variant case of the 2x2 matrix (payload x construction). */
@@ -100,9 +102,9 @@ public class PrivateKeyGenericEnDecryptorTest
 
 			@Override
 			public <T extends Serializable> PrivateKeyGenericDecryptor<T> newDecryptor(
-				PrivateKey privateKey)
+				PrivateKey privateKey, Collection<Class<?>> allowedTypes)
 			{
-				return new PrivateKeyGenericDecryptor<>(privateKey);
+				return new PrivateKeyGenericDecryptor<>(privateKey, allowedTypes);
 			}
 		}), new ConstructorVariant("CryptModel constructors", new GenericCryptorFactory()
 		{
@@ -123,12 +125,12 @@ public class PrivateKeyGenericEnDecryptorTest
 
 			@Override
 			public <T extends Serializable> PrivateKeyGenericDecryptor<T> newDecryptor(
-				PrivateKey privateKey) throws Exception
+				PrivateKey privateKey, Collection<Class<?>> allowedTypes) throws Exception
 			{
 				CryptModel<Cipher, PrivateKey, byte[]> decryptModel = CryptModel
 					.<Cipher, PrivateKey, byte[]> builder().key(privateKey).build();
 				return new PrivateKeyGenericDecryptor<>(
-					new PrivateKeyDecryptor(decryptModel, AesAlgorithm.AES));
+					new PrivateKeyDecryptor(decryptModel, AesAlgorithm.AES), allowedTypes);
 			}
 		}));
 	}
@@ -159,8 +161,8 @@ public class PrivateKeyGenericEnDecryptorTest
 
 		PublicKeyGenericEncryptor<Person> genericEncryptor = variant.factory()
 			.newEncryptor(publicKey);
-		PrivateKeyGenericDecryptor<Person> genericDecryptor = variant.factory()
-			.newDecryptor(privateKey);
+		PrivateKeyGenericDecryptor<Person> genericDecryptor = variant.factory().newDecryptor(
+			privateKey, List.of(Person.class, Gender.class, Enum.class, Boolean.class));
 		assertNotNull(genericEncryptor);
 		assertNotNull(genericDecryptor);
 
@@ -197,7 +199,7 @@ public class PrivateKeyGenericEnDecryptorTest
 		PublicKeyGenericEncryptor<String> genericEncryptor = variant.factory()
 			.newEncryptor(publicKey);
 		PrivateKeyGenericDecryptor<String> genericDecryptor = variant.factory()
-			.newDecryptor(privateKey);
+			.newDecryptor(privateKey, List.of(String.class));
 
 		Person person = Person.builder().about("about").name("Foo").gender(Gender.MALE).build();
 		String json = ObjectToJsonExtensions.toJson(person);

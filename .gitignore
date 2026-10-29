@@ -102,3 +102,7 @@ hs_err_pid*
 ##############################################################
 /src/test/resources/crypt/*.enc
 /src/test/resources/der/keystore.jks
+
+# the state of the build that resolves the published releases (gradle/testing.gradle)
+gradle/published-releases/.gradle/
+gradle/published-releases/build/

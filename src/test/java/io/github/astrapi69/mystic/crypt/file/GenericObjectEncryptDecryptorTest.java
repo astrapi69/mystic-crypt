@@ -27,6 +27,7 @@ package io.github.astrapi69.mystic.crypt.file;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
+import java.util.List;
 
 import javax.crypto.Cipher;
 
@@ -88,7 +89,8 @@ public class GenericObjectEncryptDecryptorTest extends AbstractTestCase<Person, 
 			new File(cryptDir, "encryptedPerson.enc"));
 		encrypted = encryptor.encrypt(toEncrypt);
 
-		decryptor = new GenericObjectDecryptor<>(cryptModel);
+		decryptor = new GenericObjectDecryptor<>(cryptModel,
+			List.of(Person.class, Gender.class, Enum.class, Boolean.class));
 
 		decrypted = decryptor.decrypt(encrypted);
 

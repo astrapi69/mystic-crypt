@@ -34,6 +34,8 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 import javax.crypto.Cipher;
@@ -42,9 +44,13 @@ import javax.crypto.NoSuchPaddingException;
 
 import io.github.astrapi69.crypt.data.model.CryptModel;
 import io.github.astrapi69.mystic.crypt.core.AbstractObjectDecryptor;
+import io.github.astrapi69.mystic.crypt.io.FilteredDeserialization;
 
 /**
  * The class {@link GenericObjectDecryptor} can decrypt files from the given crypt model bean
+ * <p>
+ * The decrypted stream is read back through an allow-list: only the types given to the constructor
+ * are built, {@link String} when none are given.
  *
  * @param <R>
  *            the generic type of the object to decrypt
@@ -56,6 +62,9 @@ public class GenericObjectDecryptor<R, D> extends AbstractObjectDecryptor<R, D>
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+
+	/** Every class the decrypted object may be made of */
+	private final List<Class<?>> allowedTypes;
 
 	/**
 	 * Instantiates a new {@link GenericObjectDecryptor}
@@ -79,7 +88,36 @@ public class GenericObjectDecryptor<R, D> extends AbstractObjectDecryptor<R, D>
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
+		this(model, List.of(String.class));
+	}
+
+	/**
+	 * Instantiates a new {@link GenericObjectDecryptor} that reads back objects of the given types
+	 *
+	 * @param model
+	 *            the model
+	 * @param allowedTypes
+	 *            every class the decrypted object is made of, the object's own class first
+	 * @throws InvalidKeyException
+	 *             the invalid key exception
+	 * @throws NoSuchAlgorithmException
+	 *             is thrown if instantiation of the SecretKeyFactory object fails.
+	 * @throws InvalidKeySpecException
+	 *             is thrown if generation of the SecretKey object fails.
+	 * @throws NoSuchPaddingException
+	 *             the no such padding exception
+	 * @throws InvalidAlgorithmParameterException
+	 *             is thrown if initialization of the cipher object fails.
+	 * @throws UnsupportedEncodingException
+	 *             is thrown if the named charset is not supported.
+	 */
+	public GenericObjectDecryptor(final CryptModel<Cipher, String, D> model,
+		final Collection<Class<?>> allowedTypes)
+		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
+		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+	{
 		super(model);
+		this.allowedTypes = List.copyOf(allowedTypes);
 	}
 
 	@Override
@@ -135,7 +173,8 @@ public class GenericObjectDecryptor<R, D> extends AbstractObjectDecryptor<R, D>
 		try (
 			CipherInputStream cipherInputStream = new CipherInputStream(
 				new BufferedInputStream(new FileInputStream(encrypted)), cipher);
-			ObjectInputStream inputStream = new ObjectInputStream(cipherInputStream);)
+			ObjectInputStream inputStream = FilteredDeserialization.open(cipherInputStream,
+				FilteredDeserialization.allowing(allowedTypes));)
 		{
 			genericObject = (R)inputStream.readObject();
 		}

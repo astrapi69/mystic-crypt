@@ -24,12 +24,14 @@
  */
 package io.github.astrapi69.mystic.crypt.key;
 
+import java.io.ObjectInputFilter;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.spec.InvalidKeySpecException;
+import java.util.List;
 import java.util.Objects;
 
 import javax.crypto.Cipher;
@@ -40,7 +42,6 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.SerializationUtils;
 
 import io.github.astrapi69.crypt.api.ByteArrayDecryptor;
 import io.github.astrapi69.crypt.api.algorithm.AesAlgorithm;
@@ -51,6 +52,7 @@ import io.github.astrapi69.crypt.data.model.AesRsaCryptModel;
 import io.github.astrapi69.crypt.data.model.CryptModel;
 import io.github.astrapi69.mystic.crypt.algorithm.MysticSymmetricAlgorithm;
 import io.github.astrapi69.mystic.crypt.core.AbstractDecryptor;
+import io.github.astrapi69.mystic.crypt.io.FilteredDeserialization;
 
 /**
  * The class {@link PrivateKeyDecryptor} decrypts encrypted byte array the was encrypted with the
@@ -60,6 +62,14 @@ public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey, b
 	implements
 		ByteArrayDecryptor
 {
+
+	/**
+	 * The types the hybrid envelope holds: the model and its two byte arrays. The envelope comes
+	 * from whoever wrote the bytes, so nothing else is built while it is read
+	 */
+	static final ObjectInputFilter ENVELOPE = FilteredDeserialization
+		.allowing(List.of(AesRsaCryptModel.class, byte[].class));
+
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -170,7 +180,8 @@ public class PrivateKeyDecryptor extends AbstractDecryptor<Cipher, PrivateKey, b
 	@Override
 	public byte[] decrypt(final byte[] encrypted) throws Exception
 	{
-		AesRsaCryptModel cryptData = SerializationUtils.deserialize(encrypted);
+		AesRsaCryptModel cryptData = FilteredDeserialization.deserialize(encrypted,
+			AesRsaCryptModel.class, ENVELOPE);
 		byte[] decryptedKey = getModel().getCipher().doFinal(cryptData.getEncryptedKey());
 		byte[] symmetricBlob = cryptData.getSymmetricKeyEncryptedObject();
 		String algorithm = symmetricAlgorithm.getAlgorithm();

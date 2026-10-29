@@ -4,6 +4,23 @@
 Version 13.8 (unreleased)
 -------------
 
+SECURITY:
+
+- **Update to 13.8.** `PrivateKeyDecryptor`, `PrivateKeyGenericDecryptor` and `GenericObjectDecryptor`
+  turned the bytes they were given back into objects with Java serialization, without a filter.
+  Up to 13.7, whoever supplied those bytes chose which classes on the caller's class path were
+  built while they were read (GHSA-87j9-xjf5-f387). Each of them now reads through an
+  `ObjectInputFilter` set on its own stream, through the new `FilteredDeserialization`:
+  - the hybrid envelope of `PrivateKeyDecryptor` admits exactly `AesRsaCryptModel` and `byte[]`;
+  - the generic decryptors admit the types their caller names, `String` when none are named;
+  - every stream is bounded in depth, references, array length and size.
+
+  A caller that decrypts other types than `String` passes them to the new constructors,
+  `PrivateKeyGenericDecryptor(PrivateKey, Collection<Class<?>>)` and
+  `GenericObjectDecryptor(CryptModel, Collection<Class<?>>)`. Envelopes written by every release
+  mystic-crypt-ui shipped, 8 to 13.7, still open; a test lets each of those releases write one.
+  Replacing Java serialization with a format that cannot build classes at all is a later step.
+
 ADDED:
 
 - `io.github.astrapi69.mystic.crypt.gnupg`: reads a GnuPG 2.1+ home with Bouncy Castle's OpenPGP
