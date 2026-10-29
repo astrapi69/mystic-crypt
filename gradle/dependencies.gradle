@@ -28,7 +28,6 @@ dependencies {
     testImplementation libs.checksum.up
     testImplementation libs.test.object
     testImplementation libs.silly.io
-    testImplementation libs.random.beans
     // Note: use of bundles...
     testImplementation libs.bundles.unit.testing
     testRuntimeOnly libs.junit.platform.launcher
