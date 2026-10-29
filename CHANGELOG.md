@@ -1,6 +1,14 @@
 ## Change log
 ----------------------
 
+Version 13.9 (unreleased)
+-------------
+
+CHANGED:
+
+- guava 33.7.2-jre, from 33.7.1-jre. random-beans is gone from the tests, and with it the
+  jackson 2.9.8 it put on the test class path; it was used by no test (#213)
+
 Version 13.8
 -------------
 
