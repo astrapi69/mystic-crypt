@@ -44,7 +44,8 @@ import io.github.astrapi69.crypt.data.factory.CipherFactory;
 
 /**
  * The unit test class for the key only constructors of the abstract cryptor classes
- * {@link AbstractFileEncryptor}, {@link AbstractFileDecryptor} and {@link AbstractObjectDecryptor}
+ * {@link AbstractFileEncryptor}, {@link AbstractFileDecryptor}, {@link AbstractObjectDecryptor},
+ * {@link AbstractStringEncryptor} and {@link AbstractStringDecryptor}
  */
 public class AbstractCryptorKeyConstructorTest
 {
@@ -98,6 +99,42 @@ public class AbstractCryptorKeyConstructorTest
 	public void abstractObjectDecryptor_withKeyOnly_createsAnInitializedModel() throws Exception
 	{
 		TestObjectDecryptor decryptor = new TestObjectDecryptor(PRIVATE_KEY);
+
+		assertEquals(PRIVATE_KEY, decryptor.getModel().getKey());
+		assertTrue(decryptor.getModel().isInitialized());
+		assertNotNull(decryptor.getModel().getCipher());
+		assertEquals(Cipher.DECRYPT_MODE, decryptor.newOperationMode());
+	}
+
+	/**
+	 * Test method for {@link AbstractStringEncryptor#AbstractStringEncryptor(String)}, the key only
+	 * constructor has to create an initialized model with the given key
+	 *
+	 * @throws Exception
+	 *             is thrown if an error occurs
+	 */
+	@Test
+	public void abstractStringEncryptor_withKeyOnly_createsAnInitializedModel() throws Exception
+	{
+		TestStringEncryptor encryptor = new TestStringEncryptor(PRIVATE_KEY);
+
+		assertEquals(PRIVATE_KEY, encryptor.getModel().getKey());
+		assertTrue(encryptor.getModel().isInitialized());
+		assertNotNull(encryptor.getModel().getCipher());
+		assertEquals(Cipher.ENCRYPT_MODE, encryptor.newOperationMode());
+	}
+
+	/**
+	 * Test method for {@link AbstractStringDecryptor#AbstractStringDecryptor(String)}, the key only
+	 * constructor has to create an initialized model with the given key
+	 *
+	 * @throws Exception
+	 *             is thrown if an error occurs
+	 */
+	@Test
+	public void abstractStringDecryptor_withKeyOnly_createsAnInitializedModel() throws Exception
+	{
+		TestStringDecryptor decryptor = new TestStringDecryptor(PRIVATE_KEY);
 
 		assertEquals(PRIVATE_KEY, decryptor.getModel().getKey());
 		assertTrue(decryptor.getModel().isInitialized());
@@ -187,6 +224,66 @@ public class AbstractCryptorKeyConstructorTest
 
 		@Override
 		public String decrypt(final File encrypted)
+		{
+			throw new UnsupportedOperationException("not needed for this test");
+		}
+
+		@Override
+		protected Cipher newCipher(final String key, final String algorithm, final byte[] salt,
+			final int iterationCount, final int operationMode)
+			throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
+			InvalidKeyException, InvalidAlgorithmParameterException
+		{
+			return newPbeCipher(key, algorithm, salt, iterationCount, operationMode);
+		}
+	}
+
+	private static class TestStringEncryptor extends AbstractStringEncryptor
+	{
+		private static final long serialVersionUID = 1L;
+
+		TestStringEncryptor(final String privateKey)
+			throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
+			NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+		{
+			super(privateKey);
+		}
+
+		@Override
+		public String encrypt(final String toEncrypt)
+		{
+			throw new UnsupportedOperationException("not needed for this test");
+		}
+
+		@Override
+		public byte[] encrypt(final byte[] toEncrypt)
+		{
+			throw new UnsupportedOperationException("not needed for this test");
+		}
+
+		@Override
+		protected Cipher newCipher(final String key, final String algorithm, final byte[] salt,
+			final int iterationCount, final int operationMode)
+			throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
+			InvalidKeyException, InvalidAlgorithmParameterException
+		{
+			return newPbeCipher(key, algorithm, salt, iterationCount, operationMode);
+		}
+	}
+
+	private static class TestStringDecryptor extends AbstractStringDecryptor
+	{
+		private static final long serialVersionUID = 1L;
+
+		TestStringDecryptor(final String privateKey)
+			throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
+			NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
+		{
+			super(privateKey);
+		}
+
+		@Override
+		public String decrypt(final String encrypted)
 		{
 			throw new UnsupportedOperationException("not needed for this test");
 		}
