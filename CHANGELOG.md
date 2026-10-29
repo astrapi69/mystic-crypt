@@ -4,6 +4,17 @@
 Version 13.9 (unreleased)
 -------------
 
+FIXED:
+
+- `HexableEncryptor(key, algorithm)` and `HexableDecryptor(key, algorithm)` ignored the algorithm
+  they were given. It was set on the model after the cipher had been built for the AES/GCM
+  default, so `AesAlgorithm.AES` - the way back to the pre-10.0 transformation the 10.0 notes
+  name - encrypted with GCM and wrote no nonce: neither ECB nor GCM could read the result, and
+  data written by 7.x with plain "AES" failed with `AEADBadTagException`. The algorithm is now in
+  the model before the cipher is built; tests check the output against plain JCE in both
+  directions. Ciphertext written through `HexableEncryptor(key, AesAlgorithm.AES)` from 10.0 to
+  13.8 cannot be recovered by any version: its nonce was never stored (#210)
+
 DEPRECATED:
 
 - A secret given as an argument: `hash --password`, `verify --password`, `checksum --key`,
