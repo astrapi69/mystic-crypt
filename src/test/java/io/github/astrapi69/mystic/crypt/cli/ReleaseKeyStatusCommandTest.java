@@ -86,6 +86,7 @@ class ReleaseKeyStatusCommandTest extends AbstractCliTest
 		assertEquals(0, run("release-key", "status", "--home", home.directory().toString()), err);
 
 		assertTrue(out.contains("2 certificate(s)"), out);
+		assertTrue(out.contains("expires never"), "a primary key without expiry says so: " + out);
 		assertTrue(out.contains("Release Test <release@example.org>"), out);
 		assertTrue(out.contains("Other Test <other@example.org>"), out);
 		List<String> releaseKeys = out.lines().filter(line -> line.contains("ed25519"))

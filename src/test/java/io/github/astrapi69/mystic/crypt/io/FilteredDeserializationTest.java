@@ -35,6 +35,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InvalidClassException;
 import java.io.InvalidObjectException;
+import java.io.ObjectInputFilter;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serial;
@@ -171,6 +172,101 @@ class FilteredDeserializationTest
 		});
 		assertThrows(InvalidClassException.class, () -> FilteredDeserialization.deserialize(claim,
 			long[].class, FilteredDeserialization.allowing(List.of(long[].class))));
+	}
+
+	/** How far a stream reaches: the largest depth, reference count and size a filter saw */
+	record Reach(long depth, long references, long streamBytes) {
+	}
+
+	/** Reads the bytes with a filter that admits everything and notes how far the stream got */
+	private static Reach reachOf(final byte[] bytes) throws Exception
+	{
+		long[] largest = new long[3];
+		try (ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(bytes)))
+		{
+			in.setObjectInputFilter(info -> {
+				largest[0] = Math.max(largest[0], info.depth());
+				largest[1] = Math.max(largest[1], info.references());
+				largest[2] = Math.max(largest[2], info.streamBytes());
+				return ObjectInputFilter.Status.ALLOWED;
+			});
+			in.readObject();
+		}
+		return new Reach(largest[0], largest[1], largest[2]);
+	}
+
+	@Test
+	@DisplayName("a nesting exactly as deep as the limit is still read")
+	void deserialize_aNestingAtTheDepthLimit_isRead() throws Exception
+	{
+		int levels = 1;
+		byte[] nested = serialized(nestedLists(levels));
+		while (reachOf(nested).depth() < FilteredDeserialization.MAXIMUM_DEPTH)
+		{
+			nested = serialized(nestedLists(++levels));
+		}
+		assertEquals(FilteredDeserialization.MAXIMUM_DEPTH, reachOf(nested).depth(),
+			"precondition: the nesting reaches the limit exactly");
+
+		assertEquals(nestedLists(levels),
+			FilteredDeserialization.deserialize(nested, ArrayList.class,
+				FilteredDeserialization.allowing(List.of(ArrayList.class, Object[].class))));
+	}
+
+	@Test
+	@DisplayName("a stream with exactly as many references as the limit is still read")
+	void deserialize_aStreamAtTheReferenceLimit_isRead() throws Exception
+	{
+		long overhead = reachOf(serialized(dates(100))).references() - 100;
+		ArrayList<Object> atTheLimit = dates(
+			(int)(FilteredDeserialization.MAXIMUM_REFERENCES - overhead));
+		byte[] bytes = serialized(atTheLimit);
+		assertEquals(FilteredDeserialization.MAXIMUM_REFERENCES, reachOf(bytes).references(),
+			"precondition: the stream reaches the limit exactly");
+
+		assertEquals(atTheLimit,
+			FilteredDeserialization.deserialize(bytes, ArrayList.class, FilteredDeserialization
+				.allowing(List.of(ArrayList.class, Object[].class, java.util.Date.class))));
+	}
+
+	@Test
+	@DisplayName("a stream exactly as long as the size limit is still read")
+	void deserialize_aStreamAtTheSizeLimit_isRead() throws Exception
+	{
+		ArrayList<Object> some = dates(50);
+		byte[] bytes = serialized(some);
+		long size = reachOf(bytes).streamBytes();
+
+		assertEquals(some,
+			FilteredDeserialization.deserialize(bytes, ArrayList.class, FilteredDeserialization
+				.allowing(List.of(ArrayList.class, Object[].class, java.util.Date.class), size)));
+	}
+
+	@Test
+	@DisplayName("an array exactly as long as the length limit passes the filter")
+	void anArrayAtTheLengthLimit_passesTheFilter() throws Exception
+	{
+		byte[] oneByte = serialized(new byte[1]);
+		byte[] claim = oneByte.clone();
+		ByteBuffer.wrap(claim).putInt(claim.length - 1 - Integer.BYTES,
+			(int)FilteredDeserialization.MAXIMUM_ARRAY_LENGTH);
+
+		IOException failed = assertThrows(IOException.class,
+			() -> FilteredDeserialization.deserialize(claim, byte[].class,
+				FilteredDeserialization.allowing(List.of(byte[].class))));
+
+		assertFalse(failed instanceof InvalidClassException,
+			"the filter let the array through; the stream then ran out of bytes: " + failed);
+	}
+
+	private static ArrayList<Object> dates(final int count)
+	{
+		ArrayList<Object> dates = new ArrayList<>();
+		for (int index = 0; index < count; index++)
+		{
+			dates.add(new java.util.Date(index));
+		}
+		return dates;
 	}
 
 	@Test

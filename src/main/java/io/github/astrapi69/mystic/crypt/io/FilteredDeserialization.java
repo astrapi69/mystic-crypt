@@ -86,18 +86,28 @@ public final class FilteredDeserialization
 		final long maximumStreamBytes)
 	{
 		Set<Class<?>> classes = Set.copyOf(allowed);
-		return info -> {
-			if (info.depth() > MAXIMUM_DEPTH || info.references() > MAXIMUM_REFERENCES
-				|| info.arrayLength() > MAXIMUM_ARRAY_LENGTH
-				|| info.streamBytes() > maximumStreamBytes)
-			{
-				return ObjectInputFilter.Status.REJECTED;
-			}
-			Class<?> serialClass = info.serialClass();
-			return serialClass == null || classes.contains(serialClass)
+		return info -> isWithinLimits(info, maximumStreamBytes)
+			&& isAllowed(info.serialClass(), classes)
 				? ObjectInputFilter.Status.ALLOWED
 				: ObjectInputFilter.Status.REJECTED;
-		};
+	}
+
+	/** Whether the stream, as far as it was read, stays within every limit */
+	private static boolean isWithinLimits(final ObjectInputFilter.FilterInfo info,
+		final long maximumStreamBytes)
+	{
+		return info.depth() <= MAXIMUM_DEPTH && info.references() <= MAXIMUM_REFERENCES
+			&& info.arrayLength() <= MAXIMUM_ARRAY_LENGTH
+			&& info.streamBytes() <= maximumStreamBytes;
+	}
+
+	/**
+	 * Whether the class is one of the allowed ones. A call without a class only reports how far the
+	 * stream got, which the limits judge
+	 */
+	private static boolean isAllowed(final Class<?> serialClass, final Set<Class<?>> classes)
+	{
+		return serialClass == null || classes.contains(serialClass);
 	}
 
 	/**
