@@ -1,6 +1,27 @@
 ## Change log
 ----------------------
 
+Version 13.8 (unreleased)
+-------------
+
+ADDED:
+
+- `io.github.astrapi69.mystic.crypt.gnupg`: reads a GnuPG 2.1+ home with Bouncy Castle's OpenPGP
+  module, never through gpg and never writing to it. `GnuPgHome.read` returns every certificate of
+  `pubring.kbx`, with each key's use, algorithm, creation and expiry. It says whether the secret
+  part is in `private-keys-v1.d` or offline, found by the public part each key file carries in the
+  clear, since Bouncy Castle's keygrip differs from gpg's for RSA. It also says whether
+  `openpgp-revocs.d` holds a revocation certificate that verifies against the primary key.
+  `GnuPgHome.find` takes a fingerprint or a long key id, written either way (#211)
+- the command `release-key status [--home DIR] [--key FINGERPRINT] [--json]`, the same facts for a
+  shell and, with `--json`, for a script. Exit codes: 0 read, 1 the named key is not in the home,
+  2 the home cannot be read (#211)
+
+CHANGED:
+
+- Bouncy Castle 1.86 for bcprov (from 1.85.2) and bcpkix (from 1.85), and bcpg 1.86 as a new
+  dependency, in the version the OpenPGP reader needs next to bcprov (#211)
+
 Version 13.7
 -------------
 

@@ -42,13 +42,13 @@ import picocli.CommandLine.Command;
 @Command(name = "mystic-crypt", mixinStandardHelpOptions = true, version = "mystic-crypt CLI 1.0", //
 	description = "Command-line access to mystic-crypt: password hashing, key generation, key "
 		+ "encapsulation (KEM), checksums, DER/PEM conversion, obfuscation, certificates, "
-		+ "key store management and signatures.", //
+		+ "key store management, signatures and the state of a release key.", //
 	subcommands = { HashCommand.class, VerifyCommand.class, KeygenCommand.class, KemCommand.class,
 			ChecksumCommand.class, DerToPemCommand.class, ObfuscateCommand.class,
 			DisentangleCommand.class, CertificateCommand.class, KeystoreCommand.class,
 			SignCommand.class, VerifySignatureCommand.class, EncryptCommand.class,
 			DecryptCommand.class, ShareCommand.class, KeyExchangeCommand.class,
-			ConvertCommand.class, CommandLine.HelpCommand.class })
+			ConvertCommand.class, ReleaseKeyCommand.class, CommandLine.HelpCommand.class })
 public class MysticCryptCli implements Runnable
 {
 

@@ -21,7 +21,8 @@ Maven Central.
 - `src/main/java/.../mystic/crypt/` - one package per concern: `key` (signers,
   verifiers, KEM, key exchange), `cli` (picocli commands, root
   `MysticCryptCli`), `pw` (password hashing), `obfuscation`, `file`, `sha`,
-  `ssl`, `provider` (Bouncy Castle registration), ...
+  `ssl`, `provider` (Bouncy Castle registration), `gnupg` (reading a GnuPG
+  home with bcpg, for `release-key status`), ...
 - `docs/TESTING.md` - canonical test/coverage/mutation numbers (with the
   commit they were measured on); `docs/COVERAGE_EXCEPTIONS.md` - every
   uncovered line and surviving PIT mutant with its reason.
