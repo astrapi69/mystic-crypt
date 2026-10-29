@@ -80,6 +80,32 @@ record SecretInput(String argument, String stdinFlag, String what) {
 	 */
 	char[] resolve(final String value, final boolean fromStandardInput)
 	{
+		return resolve(value, fromStandardInput, terminal(), Console::readPassword);
+	}
+
+	/**
+	 * The secret, from standard input, from the argument that is going away, or from a prompt in
+	 * the given terminal, in this order. The terminal is a type parameter so that a test can hand
+	 * in one of its own: the JVM that runs the tests has none
+	 *
+	 * @param <T>
+	 *            the type of the terminal
+	 * @param value
+	 *            the argument's value, null when it was not given
+	 * @param fromStandardInput
+	 *            whether the standard input flag was given
+	 * @param terminal
+	 *            the terminal to ask in, null when there is none
+	 * @param prompt
+	 *            how the terminal is asked without echoing
+	 * @return the secret
+	 * @throws IllegalArgumentException
+	 *             when standard input is empty, or nothing was given and there is no terminal to
+	 *             ask in
+	 */
+	<T> char[] resolve(final String value, final boolean fromStandardInput, final T terminal,
+		final HiddenPrompt<T> prompt)
+	{
 		if (fromStandardInput)
 		{
 			return firstLineOfStandardInput().toCharArray();
@@ -89,7 +115,12 @@ record SecretInput(String argument, String stdinFlag, String what) {
 			System.err.println(warning());
 			return value.toCharArray();
 		}
-		return askInTerminal();
+		if (terminal == null)
+		{
+			throw new IllegalArgumentException("a " + what + " is required: pass " + stdinFlag
+				+ ", or run in a terminal to be asked for it");
+		}
+		return prompt.ask(terminal, "%s: ", what);
 	}
 
 	/**
@@ -137,14 +168,35 @@ record SecretInput(String argument, String stdinFlag, String what) {
 	}
 
 	/**
-	 * Asks in the terminal without echoing. A JVM without a terminal - a pipe, a test, a CI job -
-	 * has nobody to ask, and is told the option that works there instead
+	 * The terminal of this JVM, null when it has none - a pipe, a test, a CI job. Since JDK 22
+	 * {@link System#console()} alone is no longer a sign of one
 	 */
-	private char[] askInTerminal()
+	private static Console terminal()
 	{
-		return Optional.ofNullable(System.console()).filter(Console::isTerminal)
-			.map(console -> console.readPassword("%s: ", what))
-			.orElseThrow(() -> new IllegalArgumentException("a " + what + " is required: pass "
-				+ stdinFlag + ", or run in a terminal to be asked for it"));
+		return Optional.ofNullable(System.console()).filter(Console::isTerminal).orElse(null);
+	}
+
+	/**
+	 * Asks a terminal for a line without echoing it, as
+	 * {@link Console#readPassword(String, Object...)} does
+	 *
+	 * @param <T>
+	 *            the type of the terminal
+	 */
+	@FunctionalInterface
+	interface HiddenPrompt<T>
+	{
+		/**
+		 * Shows the formatted prompt and reads what is typed, without echoing it
+		 *
+		 * @param terminal
+		 *            the terminal to ask in
+		 * @param format
+		 *            the prompt's format string
+		 * @param args
+		 *            the prompt's arguments
+		 * @return what was typed
+		 */
+		char[] ask(T terminal, String format, Object... args);
 	}
 }

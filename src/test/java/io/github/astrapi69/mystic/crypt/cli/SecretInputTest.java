@@ -108,6 +108,37 @@ class SecretInputTest
 	}
 
 	@Test
+	@DisplayName("nothing given and a terminal: it is asked with the name of the secret, and its answer is the secret")
+	void aTerminal_isAskedWithTheNameOfTheSecret()
+	{
+		StringBuilder shownPrompt = new StringBuilder();
+
+		char[] typed = SecretInput.PASSPHRASE.resolve(null, false, "terminal",
+			(terminal, format, args) -> {
+				shownPrompt.append(terminal).append(' ').append(String.format(format, args));
+				return "typed".toCharArray();
+			});
+
+		assertArrayEquals("typed".toCharArray(), typed);
+		assertEquals("terminal passphrase: ", shownPrompt.toString());
+		assertEquals("", standardError());
+	}
+
+	@Test
+	@DisplayName("no terminal: the prompt is never called, the refusal names the standard input flag")
+	void noTerminal_isNeverAsked()
+	{
+		IllegalArgumentException refused = assertThrows(IllegalArgumentException.class,
+			() -> SecretInput.SHARED_SECRET.resolve(null, false, null, (terminal, format, args) -> {
+				throw new AssertionError("asked without a terminal");
+			}));
+
+		assertEquals(
+			"a secret is required: pass --secret-stdin, or run in a terminal to be asked for it",
+			refused.getMessage());
+	}
+
+	@Test
 	@DisplayName("an empty argument means: ask, as keystore -p without a value always did")
 	void anEmptyArgument_asks()
 	{
