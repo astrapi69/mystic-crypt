@@ -1,6 +1,6 @@
 [versions]
-bcpkix-jdk18on-version = "1.85"
-bcprov-jdk18on-version = "1.85.2"
+bcpkix-jdk18on-version = "1.86"
+bcprov-jdk18on-version = "1.86"
 checksum-up-version = "3.2"
 commons-codec-version = "1.22.1"
 commons-io-version = "2.22.0"
