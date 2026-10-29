@@ -21,6 +21,8 @@ CHANGED:
 
 - Bouncy Castle 1.86 for bcprov (from 1.85.2) and bcpkix (from 1.85), and bcpg 1.86 as a new
   dependency, in the version the OpenPGP reader needs next to bcprov (#211)
+- jackson-databind is declared directly for the JSON of `release-key status`. It was already on the
+  runtime class path in the same version, 2.22.4, through randomizer and jobj-copy (#211)
 
 Version 13.7
 -------------

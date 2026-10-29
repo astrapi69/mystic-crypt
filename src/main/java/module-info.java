@@ -50,6 +50,8 @@ module io.github.astrapisixtynine.mystic.crypt
 	requires org.bouncycastle.pg;
 	// command-line interface
 	requires info.picocli;
+	// the --json output of the command line
+	requires com.fasterxml.jackson.databind;
 
 
 	exports io.github.astrapi69.mystic.crypt.aead;

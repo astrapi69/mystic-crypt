@@ -19,6 +19,7 @@ guava-version = "33.7.1-jre"
 japicmp-version = "0.26.2"
 jobj-cloner-version = "2.1"
 jobj-core-version = "9.1"
+jackson-databind-version = "2.22.4"
 json-extensions-version = "3.1"
 junit-jupiter-params-version = "6.1.3"
 junit-jupiter-version = "6.1.3"
@@ -52,6 +53,7 @@ guava = { module = "com.google.guava:guava", version.ref = "guava-version" }
 japicmp = { module = "com.github.siom79.japicmp:japicmp", version.ref = "japicmp-version" }
 jobj-cloner = { module = "io.github.astrapi69:jobj-cloner", version.ref = "jobj-cloner-version" }
 jobj-core = { module = "io.github.astrapi69:jobj-core", version.ref = "jobj-core-version" }
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-databind-version" }
 json-extensions = { module = "io.github.astrapi69:json-extensions", version.ref = "json-extensions-version" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter-version" }
 junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit-jupiter-params-version" }

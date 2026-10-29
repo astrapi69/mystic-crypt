@@ -27,19 +27,24 @@ package io.github.astrapi69.mystic.crypt.cli;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.github.astrapi69.mystic.crypt.gnupg.KeyRingState;
 import io.github.astrapi69.mystic.crypt.gnupg.KeyState;
 
 /**
- * The JSON form of {@code release-key status}. Written here rather than through a JSON library: the
- * structure is fixed and small, and the one library on hand that writes JSON would bring YAML, XML
- * and JSON schema support into every consumer of this library for it. The strings are escaped as
- * RFC 8259 requires, and the test reads the output back with a JSON parser.
+ * The JSON form of {@code release-key status}, written with Jackson, which this library already has
+ * at runtime through randomizer. The tree is built by hand rather than by mapping the records, so
+ * the field names and the form of the dates are fixed here and do not follow a refactoring of the
+ * records.
  */
 final class ReleaseKeyJson
 {
+
+	private static final ObjectMapper MAPPER = new ObjectMapper();
 
 	private ReleaseKeyJson()
 	{
@@ -56,58 +61,35 @@ final class ReleaseKeyJson
 	 */
 	static String of(final Path gnuPgHome, final List<KeyRingState> certificates)
 	{
-		return "{\"home\":" + quoted(gnuPgHome.toString()) + ",\"certificates\":[" + certificates
-			.stream().map(ReleaseKeyJson::certificateOf).collect(Collectors.joining(",")) + "]}";
+		ObjectNode status = MAPPER.createObjectNode();
+		status.put("home", gnuPgHome.toString());
+		ArrayNode certificateNodes = status.putArray("certificates");
+		for (KeyRingState certificate : certificates)
+		{
+			ObjectNode certificateNode = certificateNodes.addObject();
+			certificateNode.put("fingerprint", certificate.fingerprint());
+			certificateNode.put("userId", certificate.userId());
+			certificateNode.put("revocationCertificate",
+				certificate.revocationCertificate().name());
+			ArrayNode keyNodes = certificateNode.putArray("keys");
+			certificate.keys().forEach(keyState -> describe(keyNodes.addObject(), keyState));
+		}
+		return status.toString();
 	}
 
-	private static String certificateOf(final KeyRingState certificate)
+	private static void describe(final ObjectNode keyNode, final KeyState keyState)
 	{
-		return "{\"fingerprint\":" + quoted(certificate.fingerprint()) + ",\"userId\":"
-			+ quoted(certificate.userId()) + ",\"revocationCertificate\":"
-			+ quoted(certificate.revocationCertificate().name()) + ",\"keys\":[" + certificate
-				.keys().stream().map(ReleaseKeyJson::keyOf).collect(Collectors.joining(","))
-			+ "]}";
-	}
-
-	private static String keyOf(final KeyState keyState)
-	{
-		return "{\"fingerprint\":" + quoted(keyState.fingerprint()) + ",\"primary\":"
-			+ keyState.primary() + ",\"algorithm\":" + quoted(keyState.algorithm()) + ",\"usage\":"
-			+ quoted(keyState.usage()) + ",\"created\":" + instantOf(keyState.created())
-			+ ",\"expires\":" + instantOf(keyState.expires()) + ",\"secret\":"
-			+ quoted(keyState.secret().name()) + "}";
+		keyNode.put("fingerprint", keyState.fingerprint());
+		keyNode.put("primary", keyState.primary());
+		keyNode.put("algorithm", keyState.algorithm());
+		keyNode.put("usage", keyState.usage());
+		keyNode.put("created", keyState.created().toString());
+		keyNode.put("expires", instantOf(keyState.expires()));
+		keyNode.put("secret", keyState.secret().name());
 	}
 
 	private static String instantOf(final Instant instant)
 	{
-		return instant == null ? "null" : quoted(instant.toString());
-	}
-
-	/** A JSON string: quotes, backslashes and control characters escaped */
-	static String quoted(final String text)
-	{
-		StringBuilder quoted = new StringBuilder("\"");
-		for (char character : text.toCharArray())
-		{
-			switch (character)
-			{
-				case '"' -> quoted.append("\\\"");
-				case '\\' -> quoted.append("\\\\");
-				case '\n' -> quoted.append("\\n");
-				case '\r' -> quoted.append("\\r");
-				case '\t' -> quoted.append("\\t");
-				default -> {
-					if (character < 0x20)
-					{
-						quoted.append(String.format("\\u%04x", (int)character));
-					}
-					else
-					{
-						quoted.append(character);
-					}
-				}
-			}
-		}
-		return quoted.append('"').toString();
+		return instant == null ? null : instant.toString();
 	}
 }
