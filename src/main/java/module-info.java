@@ -46,8 +46,12 @@ module io.github.astrapisixtynine.mystic.crypt
 	requires transitive io.github.astrapisixtynine.silly.bean;
 	requires io.github.astrapisixtynine.silly.collection;
 	requires org.bouncycastle.pkix;
+	// OpenPGP: the GnuPG home reader; no bcpg type is part of this module's API
+	requires org.bouncycastle.pg;
 	// command-line interface
 	requires info.picocli;
+	// the --json output of the command line
+	requires com.fasterxml.jackson.databind;
 
 
 	exports io.github.astrapi69.mystic.crypt.aead;
@@ -58,6 +62,7 @@ module io.github.astrapisixtynine.mystic.crypt
 	exports io.github.astrapi69.mystic.crypt.decorator;
 	exports io.github.astrapi69.mystic.crypt.file;
 	exports io.github.astrapi69.mystic.crypt.gm;
+	exports io.github.astrapi69.mystic.crypt.gnupg;
 	exports io.github.astrapi69.mystic.crypt.hex;
 	exports io.github.astrapi69.mystic.crypt.io;
 	exports io.github.astrapi69.mystic.crypt.key;

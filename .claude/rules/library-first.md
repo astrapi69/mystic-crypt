@@ -57,3 +57,24 @@ automatic module name).
 
 Smallest scope that works, library-grade (own tests, javadoc, no incidental
 coupling), and the reason documented in the PR.
+
+## The command line reaches what the library does
+
+Every function of this library that a user triggers - not a building block
+another class calls, but an operation a person sets off: hash, sign, verify,
+encrypt, read a key store, read a release key - is also reachable through the
+`mystic-crypt` command line, with a readable answer and, where a script reads
+the answer, `--json`. The command is built with the function, in the same
+change, and its exit codes are documented (coding-standards.md). A consumer
+such as mystic-crypt-ui calls the library and offers nothing a shell cannot
+reach; a function only an application can start is a function nobody can
+script, test from outside or use without that application (decided by the
+maintainer on 2026-10-29, #211).
+
+A command that takes a passphrase reads it from standard input or from a
+hidden prompt, never from an argument: an argument is visible to every
+process on the machine and lands in shell history. This holds for every new
+command, starting with the release-key commands of stage 2 (mystic-crypt-ui
+#642). `hash --password`, `verify --password` and `checksum --key` predate
+the rule and still accept the secret as an argument; they are the known
+exceptions, not a pattern to copy.
