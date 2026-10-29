@@ -81,8 +81,8 @@ public class ChecksumCommand implements Callable<Integer>
 		+ "answers whether the file was changed by someone who does not hold the key.")
 	boolean hmac;
 
-	@Option(names = "--key", description = "The MAC key. Prefer --key-stdin to keep it out of the "
-		+ "process arguments.")
+	@Option(names = "--key", description = "The MAC key."
+		+ " Deprecated, it puts the secret into the process arguments and goes away in 14.0: use --key-stdin, or leave both out to be asked in a terminal.")
 	String key;
 
 	@Option(names = "--key-stdin", description = "Read the MAC key from the first line of standard input.")
@@ -145,7 +145,7 @@ public class ChecksumCommand implements Callable<Integer>
 
 	private byte[] keyedDigest(final byte[] content, final String macAlgorithm)
 	{
-		String macKey = CliSupport.resolvePassword(key, keyStdin);
+		String macKey = SecretInput.MAC_KEY.resolveText(key, keyStdin);
 		try
 		{
 			Mac mac = Mac.getInstance(macAlgorithm);

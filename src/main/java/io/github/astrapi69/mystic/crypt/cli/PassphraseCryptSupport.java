@@ -113,11 +113,8 @@ final class PassphraseCryptSupport
 	}
 
 	/**
-	 * Resolves the passphrase from the option value or from standard input.
-	 * <p>
-	 * Reading it from standard input keeps it out of the process argument list, which is why the
-	 * plain option carries a warning in its own help text rather than being removed: scripts that
-	 * cannot pipe still need a way in.
+	 * Resolves the passphrase from standard input, from a prompt in a terminal or - deprecated,
+	 * with a warning - from the option value (#214)
 	 *
 	 * @param passphrase
 	 *            the value of {@code --passphrase}, or null
@@ -125,20 +122,11 @@ final class PassphraseCryptSupport
 	 *            whether to read the passphrase from standard input
 	 * @return the passphrase, to be zeroed by the caller
 	 * @throws IllegalArgumentException
-	 *             if neither source was given
+	 *             if standard input is empty, or nothing was given and there is no terminal
 	 */
 	static char[] resolvePassphrase(final String passphrase, final boolean stdin)
 	{
-		if (stdin)
-		{
-			return CliSupport.resolvePassword(null, true).toCharArray();
-		}
-		if (passphrase == null)
-		{
-			throw new IllegalArgumentException(
-				"a passphrase is required: pass --passphrase or --passphrase-stdin");
-		}
-		return passphrase.toCharArray();
+		return SecretInput.PASSPHRASE.resolve(passphrase, stdin);
 	}
 
 	/**

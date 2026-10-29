@@ -75,6 +75,8 @@ A command that takes a passphrase reads it from standard input or from a
 hidden prompt, never from an argument: an argument is visible to every
 process on the machine and lands in shell history. This holds for every new
 command, starting with the release-key commands of stage 2 (mystic-crypt-ui
-#642). `hash --password`, `verify --password` and `checksum --key` predate
-the rule and still accept the secret as an argument; they are the known
-exceptions, not a pattern to copy.
+#642). Seven options predate the rule: `hash` and `verify --password`,
+`checksum --key`, `encrypt` and `decrypt --passphrase`, `keystore --password`
+and `share split --secret`. Since 13.9 they warn on standard error, and 14.0
+removes them (#214). They all read through `SecretInput`, which is where a
+new secret option starts as well.

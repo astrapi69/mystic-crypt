@@ -55,49 +55,6 @@ class CliSupportTest
 {
 
 	@Test
-	void resolvePasswordFromArgument()
-	{
-		assertEquals("secret", CliSupport.resolvePassword("secret", false));
-	}
-
-	@Test
-	void resolvePasswordFromStdin()
-	{
-		InputStream originalIn = System.in;
-		System.setIn(new ByteArrayInputStream("from-stdin\n".getBytes(StandardCharsets.UTF_8)));
-		try
-		{
-			assertEquals("from-stdin", CliSupport.resolvePassword(null, true));
-		}
-		finally
-		{
-			System.setIn(originalIn);
-		}
-	}
-
-	@Test
-	void resolvePasswordMissingThrows()
-	{
-		assertThrows(IllegalArgumentException.class, () -> CliSupport.resolvePassword(null, false));
-	}
-
-	@Test
-	void resolvePasswordEmptyStdinThrows()
-	{
-		InputStream originalIn = System.in;
-		System.setIn(new ByteArrayInputStream(new byte[0]));
-		try
-		{
-			assertThrows(IllegalArgumentException.class,
-				() -> CliSupport.resolvePassword(null, true));
-		}
-		finally
-		{
-			System.setIn(originalIn);
-		}
-	}
-
-	@Test
 	void resolveTextFromArgumentAndStdin()
 	{
 		assertEquals("hello", CliSupport.resolveText("hello", false));
@@ -121,7 +78,7 @@ class CliSupportTest
 	}
 
 	/** An input stream that always fails, to exercise the stdin read-error branches. */
-	private static InputStream failingStdin()
+	static InputStream failingStdin()
 	{
 		return new InputStream()
 		{
@@ -131,22 +88,6 @@ class CliSupportTest
 				throw new java.io.IOException("boom");
 			}
 		};
-	}
-
-	@Test
-	void resolvePasswordStdinReadErrorThrows()
-	{
-		InputStream originalIn = System.in;
-		System.setIn(failingStdin());
-		try
-		{
-			assertThrows(IllegalArgumentException.class,
-				() -> CliSupport.resolvePassword(null, true));
-		}
-		finally
-		{
-			System.setIn(originalIn);
-		}
 	}
 
 	@Test
