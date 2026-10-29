@@ -9,5 +9,8 @@ pitest {
     threads = 4
     outputFormats = ["HTML", "XML"]
     timestampedReports = false
+    // measures compatibility with the published releases, which the test task resolves for it
+    // (gradle/testing.gradle); PIT's own JVMs do not get those class paths
+    excludedTestClasses = ['*PublishedEnvelopesStillOpenTest']
     // mutationThreshold lives in build.gradle (fail-closed floor, see there)
 }

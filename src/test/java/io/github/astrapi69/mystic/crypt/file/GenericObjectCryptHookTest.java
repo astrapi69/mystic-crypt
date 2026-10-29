@@ -169,7 +169,8 @@ public class GenericObjectCryptHookTest
 
 		RecordingObjectDecryptor(final CryptModel<Cipher, String, String> model) throws Exception
 		{
-			super(model);
+			super(model, List.of(String.class, Person.class, Gender.class, Enum.class,
+				Boolean.class, Integer.class, Number.class));
 		}
 
 		@Override

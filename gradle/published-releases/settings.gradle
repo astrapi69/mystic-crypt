@@ -1,0 +1,4 @@
+// A build of its own, so that io.github.astrapi69:mystic-crypt resolves to the module on Maven
+// Central: inside the mystic-crypt build, Gradle replaces a dependency on the project's own
+// coordinates with the project itself
+rootProject.name = 'published-releases'

@@ -32,3 +32,22 @@ jacocoTestCoverageVerification.dependsOn test
 
 check.dependsOn jacocoTestReport
 check.dependsOn jacocoTestCoverageVerification
+
+// The mystic-crypt releases that mystic-crypt-ui shipped, resolved by a build of their own
+// (gradle/published-releases), since this build would resolve its own coordinates to itself.
+// PublishedEnvelopesStillOpenTest loads every one in a class loader of its own and lets it write a
+// hybrid envelope, which the reader of this version must still open: the allow-list that guards
+// the reader is measured against what the published versions write
+def publishedClasspathsFile = layout.buildDirectory.file('published-releases/classpaths.properties')
+def resolvePublishedReleases = tasks.register('resolvePublishedReleases', GradleBuild) {
+    dir = file('gradle/published-releases')
+    tasks = ['writeClasspaths']
+    startParameter.projectProperties = [out: publishedClasspathsFile.get().asFile.absolutePath]
+    outputs.file(publishedClasspathsFile)
+}
+
+test {
+    dependsOn resolvePublishedReleases
+    inputs.file(publishedClasspathsFile).withPropertyName('publishedReleases')
+    systemProperty 'mystic.crypt.published', publishedClasspathsFile.get().asFile.absolutePath
+}

@@ -24,20 +24,27 @@
  */
 package io.github.astrapi69.mystic.crypt.key;
 
+import java.io.ObjectInputFilter;
 import java.io.Serializable;
 import java.security.PrivateKey;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 import javax.crypto.Cipher;
 
-import org.apache.commons.lang3.SerializationUtils;
-
 import io.github.astrapi69.crypt.data.model.CryptModel;
+import io.github.astrapi69.mystic.crypt.io.FilteredDeserialization;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 
 /**
  * The class {@link PrivateKeyGenericDecryptor} decrypts encrypted objects the was encrypted with
  * the public key of the pendant private key of this class.
+ *
+ * <p>
+ * The decrypted bytes are read back through an allow-list: only the types given to the constructor
+ * are built, {@link String} when none are given. Whoever wrote the encrypted bytes does not decide
+ * which classes of the class path are instantiated.
  *
  * @param <T>
  *            the generic type of the decrypted object. It has to be {@link Serializable}, because
@@ -49,6 +56,9 @@ public class PrivateKeyGenericDecryptor<T extends Serializable>
 	 * The decorated decryptor object
 	 */
 	private final PrivateKeyDecryptor decryptor;
+
+	/** The filter the decrypted object is read through */
+	private final ObjectInputFilter payloadFilter;
 
 	/**
 	 * Instantiates a new {@link PrivateKeyGenericDecryptor} with the given {@link CryptModel}
@@ -81,8 +91,40 @@ public class PrivateKeyGenericDecryptor<T extends Serializable>
 	 */
 	public PrivateKeyGenericDecryptor(final PrivateKeyDecryptor decryptor)
 	{
+		this(decryptor, List.of(String.class));
+	}
+
+	/**
+	 * Instantiates a new {@link PrivateKeyGenericDecryptor} that reads back objects of the given
+	 * types
+	 *
+	 * @param privateKey
+	 *            The private key
+	 * @param allowedTypes
+	 *            every class the decrypted object is made of, the object's own class first
+	 */
+	public PrivateKeyGenericDecryptor(final PrivateKey privateKey,
+		final Collection<Class<?>> allowedTypes)
+	{
+		this(RuntimeExceptionDecorator.decorate(() -> new PrivateKeyDecryptor(privateKey)),
+			allowedTypes);
+	}
+
+	/**
+	 * Instantiates a new {@link PrivateKeyGenericDecryptor} that reads back objects of the given
+	 * types
+	 *
+	 * @param decryptor
+	 *            The decryptor that will do the most work
+	 * @param allowedTypes
+	 *            every class the decrypted object is made of, the object's own class first
+	 */
+	public PrivateKeyGenericDecryptor(final PrivateKeyDecryptor decryptor,
+		final Collection<Class<?>> allowedTypes)
+	{
 		Objects.requireNonNull(decryptor);
 		this.decryptor = decryptor;
+		this.payloadFilter = FilteredDeserialization.allowing(allowedTypes);
 	}
 
 	/**
@@ -94,9 +136,10 @@ public class PrivateKeyGenericDecryptor<T extends Serializable>
 	 * @throws Exception
 	 *             is thrown if decryption fails
 	 */
+	@SuppressWarnings("unchecked")
 	public T decrypt(final byte[] encrypted) throws Exception
 	{
 		byte[] decrypt = this.decryptor.decrypt(encrypted);
-		return SerializationUtils.deserialize(decrypt);
+		return (T)FilteredDeserialization.deserialize(decrypt, Serializable.class, payloadFilter);
 	}
 }

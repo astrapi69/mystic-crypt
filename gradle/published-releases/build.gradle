@@ -1,0 +1,48 @@
+// Resolves the mystic-crypt releases that mystic-crypt-ui shipped, each with what it depends on,
+// and writes their class paths into one properties file for PublishedEnvelopesStillOpenTest
+
+repositories {
+    mavenCentral()
+}
+
+def publishedReleases = ['8', '8.1', '9', '11.0.0', '12.2', '13.6', '13.7']
+
+def publishedClasspaths = publishedReleases.collectEntries { release ->
+    def configuration = configurations.create("mysticCrypt${release.replace('.', '_')}") {
+        canBeResolved = true
+        canBeConsumed = false
+        // what a runtime class path asks for, so that modules with Gradle metadata such as guava
+        // pick their JVM jar
+        attributes {
+            attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage, Usage.JAVA_RUNTIME))
+            attribute(Category.CATEGORY_ATTRIBUTE, objects.named(Category, Category.LIBRARY))
+            attribute(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE, objects.named(LibraryElements, LibraryElements.JAR))
+            attribute(TargetJvmEnvironment.TARGET_JVM_ENVIRONMENT_ATTRIBUTE,
+                objects.named(TargetJvmEnvironment, TargetJvmEnvironment.STANDARD_JVM))
+            // the plain jar with its dependencies, not the shadow jar some releases publish beside it
+            attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling, Bundling.EXTERNAL))
+        }
+        // guava 32 names annotation libraries whose versions some releases leave to a platform
+        // they do not publish; nothing reads them at runtime
+        exclude group: 'org.checkerframework'
+        exclude group: 'com.google.errorprone'
+        exclude group: 'com.google.j2objc'
+    }
+    dependencies.add(configuration.name, "io.github.astrapi69:mystic-crypt:$release")
+    [(release): configuration]
+}
+
+tasks.register('writeClasspaths') {
+    def out = file(providers.gradleProperty('out').get())
+    inputs.files(publishedClasspaths.values())
+    outputs.file(out)
+    doLast {
+        def properties = new Properties()
+        properties.setProperty('releases', publishedReleases.join(','))
+        publishedClasspaths.each { release, configuration ->
+            properties.setProperty(release, configuration.asPath)
+        }
+        out.parentFile.mkdirs()
+        out.withWriter('UTF-8') { properties.store(it, 'class paths of the published mystic-crypt releases') }
+    }
+}
