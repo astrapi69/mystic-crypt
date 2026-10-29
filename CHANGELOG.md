@@ -1,6 +1,18 @@
 ## Change log
 ----------------------
 
+Version 13.9 (unreleased)
+-------------
+
+DEPRECATED:
+
+- A secret given as an argument: `hash --password`, `verify --password`, `checksum --key`,
+  `encrypt --passphrase`, `decrypt --passphrase`, `keystore --password` and `share split --secret`.
+  An argument is visible to every process on the machine and lands in shell history. They still
+  work in 13.x and print a warning on standard error; 14.0 removes them. Use the `-stdin` option
+  beside each, or leave both out: in a terminal the command now asks without echoing what is
+  typed, and without one it refuses and names the `-stdin` option (#214)
+
 Version 13.8
 -------------
 

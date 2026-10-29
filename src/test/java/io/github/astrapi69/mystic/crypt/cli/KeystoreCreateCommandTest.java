@@ -139,7 +139,7 @@ class KeystoreCreateCommandTest extends AbstractCliTest
 	{
 		File storeFile = new File(tempDir, "no-password.ks");
 		assertNotEquals(0, run("keystore", "create", "--file", storeFile.getAbsolutePath()));
-		assertTrue(err.contains("a password is required"),
-			"the error must ask for a password, but was: '" + err + "'");
+		assertTrue(err.contains("password is required") && err.contains("--password-stdin"),
+			"the error must ask for a password and name the way in, but was: '" + err + "'");
 	}
 }

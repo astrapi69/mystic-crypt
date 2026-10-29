@@ -160,9 +160,10 @@ public class KeystoreCommand implements Runnable
 			description = "The key store type: PKCS12, JKS or JCEKS (default: PKCS12).")
 		KeystoreType type;
 
-		@Option(names = { "-p", "--password" }, arity = "0..1", interactive = true, //
-			description = "The key store password; asked for interactively when the value is left "
-				+ "out. Prefer --password-stdin in scripts to keep it out of the process arguments.")
+		@Option(names = { "-p", "--password" }, arity = "0..1", fallbackValue = "", //
+			description = "The key store password; asked for in a terminal when the value is left "
+				+ "out."
+				+ " Deprecated, it puts the secret into the process arguments and goes away in 14.0: use --password-stdin, or leave the value and --password-stdin out to be asked in a terminal.")
 		String password;
 
 		@Option(names = "--password-stdin", description = "Read the key store password from the first line of standard input.")
@@ -204,7 +205,8 @@ public class KeystoreCommand implements Runnable
 		{
 			if (resolvedPassword == null)
 			{
-				resolvedPassword = CliSupport.resolvePassword(password, passwordStdin);
+				resolvedPassword = SecretInput.KEY_STORE_PASSWORD.resolveText(password,
+					passwordStdin);
 			}
 			return resolvedPassword;
 		}

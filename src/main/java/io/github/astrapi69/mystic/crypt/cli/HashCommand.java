@@ -53,7 +53,8 @@ public class HashCommand implements Callable<Integer>
 			"--algorithm" }, defaultValue = "argon2id", description = "Hashing algorithm: ${COMPLETION-CANDIDATES} (default: argon2id).")
 	PasswordAlgorithm algorithm;
 
-	@Option(names = "--password", description = "The password to hash. Prefer --password-stdin to keep it out of the process arguments.")
+	@Option(names = "--password", description = "The password to hash."
+		+ " Deprecated, it puts the secret into the process arguments and goes away in 14.0: use --password-stdin, or leave both out to be asked in a terminal.")
 	String password;
 
 	@Option(names = "--password-stdin", description = "Read the password from the first line of standard input.")
@@ -62,7 +63,7 @@ public class HashCommand implements Callable<Integer>
 	@Override
 	public Integer call()
 	{
-		String plainPassword = CliSupport.resolvePassword(password, passwordStdin);
+		String plainPassword = SecretInput.PASSWORD.resolveText(password, passwordStdin);
 		PasswordEncryptor passwordEncryptor = PasswordEncryptor.getInstance();
 		String encodedHash = switch (algorithm)
 		{

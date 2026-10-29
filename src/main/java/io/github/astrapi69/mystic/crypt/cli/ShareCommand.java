@@ -82,7 +82,8 @@ public class ShareCommand implements Runnable
 		{
 		}
 
-		@Option(names = "--secret", description = "The secret to split. Prefer --secret-stdin to keep it out of the process arguments.")
+		@Option(names = "--secret", description = "The secret to split."
+			+ " Deprecated, it puts the secret into the process arguments and goes away in 14.0: use --secret-stdin, or leave both out to be asked in a terminal.")
 		String secret;
 
 		@Option(names = "--secret-stdin", description = "Read the secret from the first line of standard input.")
@@ -140,16 +141,8 @@ public class ShareCommand implements Runnable
 			{
 				return CliSupport.readData(file);
 			}
-			if (secretStdin)
-			{
-				return CliSupport.resolvePassword(null, true).getBytes(StandardCharsets.UTF_8);
-			}
-			if (secret == null)
-			{
-				throw new IllegalArgumentException(
-					"a secret is required: pass --secret, --secret-stdin or --file");
-			}
-			return secret.getBytes(StandardCharsets.UTF_8);
+			return SecretInput.SHARED_SECRET.resolveText(secret, secretStdin)
+				.getBytes(StandardCharsets.UTF_8);
 		}
 	}
 

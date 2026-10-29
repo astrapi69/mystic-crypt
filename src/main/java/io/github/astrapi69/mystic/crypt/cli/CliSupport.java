@@ -24,10 +24,8 @@
  */
 package io.github.astrapi69.mystic.crypt.cli;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.security.PrivateKey;
@@ -120,54 +118,16 @@ final class CliSupport
 		return text;
 	}
 
-	/**
-	 * Resolves a password from either the {@code --password} value or, when {@code stdin} is set,
-	 * the first line read from standard input. Reading from stdin keeps the secret out of the
-	 * process argument list.
-	 *
-	 * @param password
-	 *            the value of {@code --password} (may be {@code null})
-	 * @param stdin
-	 *            whether to read the password from standard input instead
-	 * @return the resolved password
-	 * @throws IllegalArgumentException
-	 *             if neither a password nor stdin was provided, or stdin was empty
-	 */
-	static String resolvePassword(String password, boolean stdin)
-	{
-		if (stdin)
-		{
-			try
-			{
-				BufferedReader reader = new BufferedReader(
-					new InputStreamReader(System.in, StandardCharsets.UTF_8));
-				String line = reader.readLine();
-				if (line == null)
-				{
-					throw new IllegalArgumentException(
-						"no password was provided on standard input");
-				}
-				return line;
-			}
-			catch (java.io.IOException exception)
-			{
-				throw new IllegalArgumentException(
-					"could not read the password from standard input: " + exception.getMessage(),
-					exception);
-			}
-		}
-		if (password == null)
-		{
-			throw new IllegalArgumentException(
-				"a password is required: pass --password or --password-stdin");
-		}
-		return password;
-	}
-
 	/** Renders an error line for a failed subcommand. */
 	static String error(String message)
 	{
 		return Ansi.AUTO.string("@|red error:|@ " + message);
+	}
+
+	/** Renders a warning line: the command goes on, but the user did something to stop doing. */
+	static String warning(String message)
+	{
+		return Ansi.AUTO.string("@|yellow warning:|@ " + message);
 	}
 
 	/**

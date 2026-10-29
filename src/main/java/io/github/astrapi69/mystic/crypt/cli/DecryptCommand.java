@@ -70,8 +70,8 @@ public class DecryptCommand implements Callable<Integer>
 	@Option(names = "--text-stdin", description = "Read the base64 text to decrypt from standard input.")
 	boolean textStdin;
 
-	@Option(names = { "-p",
-			"--passphrase" }, description = "The passphrase. Prefer --passphrase-stdin to keep it out of the process arguments.")
+	@Option(names = { "-p", "--passphrase" }, description = "The passphrase."
+		+ " Deprecated, it puts the secret into the process arguments and goes away in 14.0: use --passphrase-stdin, or leave both out to be asked in a terminal.")
 	String passphrase;
 
 	@Option(names = "--passphrase-stdin", description = "Read the passphrase from the first line of standard input.")

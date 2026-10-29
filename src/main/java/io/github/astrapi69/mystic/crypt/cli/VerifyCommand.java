@@ -58,7 +58,8 @@ public class VerifyCommand implements Callable<Integer>
 		+ "Which algorithm produced it is read from the hash itself.")
 	String hash;
 
-	@Option(names = "--password", description = "The password to verify. Prefer --password-stdin.")
+	@Option(names = "--password", description = "The password to verify."
+		+ " Deprecated, it puts the secret into the process arguments and goes away in 14.0: use --password-stdin, or leave both out to be asked in a terminal.")
 	String password;
 
 	@Option(names = "--password-stdin", description = "Read the password from the first line of standard input.")
@@ -69,7 +70,7 @@ public class VerifyCommand implements Callable<Integer>
 	{
 		try
 		{
-			String plainPassword = CliSupport.resolvePassword(password, passwordStdin);
+			String plainPassword = SecretInput.PASSWORD.resolveText(password, passwordStdin);
 			PasswordHashFormat format = PasswordHashFormat.of(hash);
 			boolean matches = PasswordEncryptor.getInstance().matchEncodedHash(plainPassword, hash);
 			System.out.println((matches ? "matches" : "does not match") + " (" + format + ")");
