@@ -9,3 +9,4 @@ gradle/testing.gradle
 gradle/version-catalog-update.gradle
 gradle/api-compatibility.gradle
 gradle/release-docs.gradle
+gradle/release-dependencies.gradle

@@ -1,0 +1,71 @@
+import org.gradle.api.artifacts.component.ModuleComponentIdentifier
+import org.gradle.api.artifacts.result.ResolvedComponentResult
+import org.gradle.api.artifacts.result.ResolvedDependencyResult
+import org.gradle.api.artifacts.result.UnresolvedDependencyResult
+
+// A release resolves no SNAPSHOT anywhere, test scope included: a snapshot changes under a tag that is
+// never moved, so the tagged build could not be reproduced (#245). The task reads the resolved graph of
+// every configuration that can be resolved, and of the build script's classpath, and fails on every
+// -SNAPSHOT it finds, naming the configuration. A dependency that does not resolve fails it too: a check
+// that cannot look must not report green. tagRelease depends on it always; check depends on it for a
+// release version, so the release pull request and the build in publish.yml fail before any upload.
+def collectSnapshots(ResolvedComponentResult component, String configuration, Set<String> found,
+    Set<String> unresolved, Set<Object> seen)
+{
+    if (!seen.add(component.id))
+    {
+        return
+    }
+    def id = component.id
+    if (id instanceof ModuleComponentIdentifier && id.version.endsWith('-SNAPSHOT'))
+    {
+        found << "${configuration}: ${id.displayName}".toString()
+    }
+    component.dependencies.each { dependency ->
+        if (dependency instanceof ResolvedDependencyResult)
+        {
+            collectSnapshots(dependency.selected, configuration, found, unresolved, seen)
+        }
+        else if (dependency instanceof UnresolvedDependencyResult)
+        {
+            unresolved << "${configuration}: ${dependency.requested.displayName}".toString()
+        }
+    }
+}
+
+tasks.register('noSnapshotDependencies') {
+    group = 'verification'
+    description = 'Fails if any configuration or the build script classpath resolves a SNAPSHOT version'
+    def graphs = [:]
+    configurations.matching { it.canBeResolved }.each { configuration ->
+        graphs[configuration.name] = configuration.incoming.resolutionResult.rootComponent
+    }
+    graphs['buildscript classpath'] = buildscript.configurations.classpath.incoming.resolutionResult.rootComponent
+    doLast {
+        Set<String> found = new TreeSet<>()
+        Set<String> unresolved = new TreeSet<>()
+        graphs.each { name, root -> collectSnapshots(root.get(), name, found, unresolved, new HashSet<>()) }
+        if (!unresolved.isEmpty())
+        {
+            throw new GradleException("noSnapshotDependencies cannot check what does not resolve:\n  "
+                + unresolved.join('\n  '))
+        }
+        if (!found.isEmpty())
+        {
+            throw new GradleException("A release resolves no SNAPSHOT, and these do:\n  "
+                + found.join('\n  '))
+        }
+        logger.lifecycle("noSnapshotDependencies: ${graphs.size()} graphs, no SNAPSHOT")
+    }
+}
+
+tasks.named('tagRelease') {
+    dependsOn 'noSnapshotDependencies'
+}
+
+if (!version.toString().endsWith('-SNAPSHOT'))
+{
+    tasks.named('check') {
+        dependsOn 'noSnapshotDependencies'
+    }
+}

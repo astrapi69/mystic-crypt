@@ -26,6 +26,9 @@ DEPRECATED:
 
 CHANGED:
 
+- build only: a release resolves no SNAPSHOT, test scope included. `noSnapshotDependencies` reads
+  every resolvable configuration and the build script classpath and fails on a `-SNAPSHOT`;
+  `tagRelease` depends on it, and `check` for a release version (#245)
 - guava 33.7.2-jre, from 33.7.1-jre. random-beans is gone from the tests, and with it the
   jackson 2.9.8 it put on the test class path; it was used by no test (#213)
 

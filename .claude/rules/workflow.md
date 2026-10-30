@@ -50,6 +50,12 @@ Releases follow the family order crypt-api -> crypt-data -> mystic-crypt;
 a downstream release commit is pushed only when the upstream version is
 actually resolvable on Maven Central.
 
+A release resolves no SNAPSHOT, test scope included: where a sibling's next
+version is not published at the cut, the release takes the last published one.
+`noSnapshotDependencies` checks every resolvable configuration and the build
+script classpath; `tagRelease` depends on it, and so does `check` for a release
+version (#245).
+
 ## What publishes a release is not the same in the three repositories
 
 Know which one you are in before tagging or merging. They differ, and the
