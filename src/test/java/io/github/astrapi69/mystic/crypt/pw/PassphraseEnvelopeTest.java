@@ -113,6 +113,54 @@ class PassphraseEnvelopeTest
 			"a reused salt would make two files with the same passphrase comparable");
 	}
 
+	/**
+	 * The test above compares whole files, and the payload's own AEAD nonce makes two files differ
+	 * whatever the salt is: with the salt left all zeros it still passed (#227, the counter-run
+	 * that removed {@code nextBytes(salt)}). This one looks at the salt itself, and at the
+	 * ciphertext behind the header, which a fixed salt would make depend on the passphrase alone.
+	 */
+	@Test
+	@DisplayName("the same passphrase and plaintext twice give two different salts and ciphertexts")
+	void twoEncryptionsOfTheSameThing_carryDifferentSaltsAndCiphertexts() throws Exception
+	{
+		byte[] plaintext = "the same thing".getBytes(StandardCharsets.UTF_8);
+		int saltStart = VAULT_MAGIC.length;
+		int headerLength = PassphraseEnvelope.headerLength(VAULT_MAGIC);
+
+		byte[] first = PassphraseEnvelope.encrypt(VAULT_MAGIC, plaintext, PASSPHRASE.clone());
+		byte[] second = PassphraseEnvelope.encrypt(VAULT_MAGIC, plaintext, PASSPHRASE.clone());
+
+		byte[] firstSalt = Arrays.copyOfRange(first, saltStart,
+			saltStart + PassphraseEnvelope.SALT_LENGTH);
+		byte[] secondSalt = Arrays.copyOfRange(second, saltStart,
+			saltStart + PassphraseEnvelope.SALT_LENGTH);
+		assertFalse(Arrays.equals(firstSalt, secondSalt),
+			"each envelope draws its own salt; a fixed one makes the key depend on the passphrase "
+				+ "alone");
+		assertFalse(
+			Arrays.equals(Arrays.copyOfRange(first, headerLength, first.length),
+				Arrays.copyOfRange(second, headerLength, second.length)),
+			"the same plaintext under the same passphrase must not seal to the same ciphertext");
+	}
+
+	/**
+	 * The salt is 16 bytes in every file already on disk, so its width is fixed by those files and
+	 * not by the constant: the iteration count has to sit right behind 16 bytes of salt, and the
+	 * constant has to say 16
+	 */
+	@Test
+	@DisplayName("the salt is 16 bytes wide, the width every existing file has")
+	void theSaltIsSixteenBytes() throws Exception
+	{
+		byte[] sealed = PassphraseEnvelope.encrypt(VAULT_MAGIC,
+			"x".getBytes(StandardCharsets.UTF_8), PASSPHRASE.clone());
+
+		assertEquals(16, PassphraseEnvelope.SALT_LENGTH);
+		assertEquals(PassphraseEnvelope.ITERATIONS,
+			ByteBuffer.wrap(sealed, VAULT_MAGIC.length + 16, Integer.BYTES).getInt(),
+			"the iteration count follows exactly 16 bytes of salt");
+	}
+
 	@Test
 	@DisplayName("the header is magic, then a 16 byte salt, then the iteration count big endian")
 	void theHeaderIsTheLayoutTheApplicationWrote() throws Exception

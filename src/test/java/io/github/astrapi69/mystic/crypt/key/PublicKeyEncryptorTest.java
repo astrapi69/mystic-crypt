@@ -24,6 +24,7 @@
  */
 package io.github.astrapi69.mystic.crypt.key;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -40,8 +41,10 @@ import org.junit.jupiter.api.Test;
 import io.github.astrapi69.crypt.api.algorithm.AesAlgorithm;
 import io.github.astrapi69.crypt.data.factory.SecretKeyFactoryExtensions;
 import io.github.astrapi69.crypt.data.key.reader.PublicKeyReader;
+import io.github.astrapi69.crypt.data.model.AesRsaCryptModel;
 import io.github.astrapi69.crypt.data.model.CryptModel;
 import io.github.astrapi69.file.search.PathFinder;
+import io.github.astrapi69.mystic.crypt.io.FilteredDeserialization;
 import io.github.astrapi69.random.object.RandomStringFactory;
 
 /**
@@ -138,5 +141,46 @@ public class PublicKeyEncryptorTest
 		byte[] second = encryptor.encrypt(plaintext);
 
 		assertFalse(Arrays.equals(first, second));
+	}
+
+	/**
+	 * The test above compares the whole outputs, and RSA-OAEP wraps the symmetric key differently
+	 * every time, so two outputs differ whatever the GCM nonce is: with the nonce left all zeros it
+	 * still passed (#227, the counter-run that replaced the random nonce by a zero array). One
+	 * instance keeps one AES key for all its calls, so a repeated nonce is a repeated (key, nonce)
+	 * pair, which in GCM gives the XOR of the plaintexts away. This test opens the envelope the way
+	 * {@link PrivateKeyDecryptor} does and looks at the nonce and the ciphertext themselves.
+	 *
+	 * @throws Exception
+	 *             is thrown if any error occurs
+	 */
+	@Test
+	public void testEncryptTwiceOnSameInstanceUsesAFreshTwelveByteNonce() throws Exception
+	{
+		File publickeyDerFile = new File(new File(PathFinder.getSrcTestResourcesDir(), "der"),
+			"public.der");
+		PublicKeyEncryptor encryptor = new PublicKeyEncryptor(
+			PublicKeyReader.readPublicKey(publickeyDerFile));
+		byte[] plaintext = "the quick brown fox jumps over the lazy dog"
+			.getBytes(StandardCharsets.UTF_8);
+
+		byte[] first = symmetricPartOf(encryptor.encrypt(plaintext));
+		byte[] second = symmetricPartOf(encryptor.encrypt(plaintext));
+
+		assertEquals(12 + plaintext.length + 16, first.length,
+			"a 12 byte nonce, the ciphertext as long as the plaintext, a 16 byte GCM tag");
+		assertFalse(Arrays.equals(Arrays.copyOf(first, 12), Arrays.copyOf(second, 12)),
+			"each call draws its own nonce under the same AES key");
+		assertFalse(
+			Arrays.equals(Arrays.copyOfRange(first, 12, first.length),
+				Arrays.copyOfRange(second, 12, second.length)),
+			"the same plaintext must not encrypt to the same ciphertext");
+	}
+
+	private static byte[] symmetricPartOf(final byte[] envelope) throws Exception
+	{
+		return FilteredDeserialization
+			.deserialize(envelope, AesRsaCryptModel.class, PrivateKeyDecryptor.ENVELOPE)
+			.getSymmetricKeyEncryptedObject();
 	}
 }
