@@ -49,7 +49,7 @@ import io.github.astrapi69.crypt.data.model.CryptObjectDecorator;
 import io.github.astrapi69.mystic.crypt.algorithm.MysticSymmetricAlgorithm;
 import io.github.astrapi69.mystic.crypt.core.AbstractStringDecryptor;
 import io.github.astrapi69.mystic.crypt.decorator.CryptObjectDecoratorExtensions;
-import io.github.astrapi69.random.number.RandomByteFactory;
+import io.github.astrapi69.mystic.crypt.secret.SecretRandom;
 
 /**
  * The class {@link HexableDecryptor} is the pendant class of {@link HexableEncryptor} and decrypts
@@ -209,9 +209,7 @@ public class HexableDecryptor extends AbstractStringDecryptor
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
 		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		final byte[] iv = needsRandomNonce(algorithm)
-			? RandomByteFactory.randomByteArray(NONCE_LENGTH)
-			: null;
+		final byte[] iv = needsRandomNonce(algorithm) ? SecretRandom.bytes(NONCE_LENGTH) : null;
 		return newSymmetricCipher(privateKey, algorithm, iv, operationMode);
 	}
 

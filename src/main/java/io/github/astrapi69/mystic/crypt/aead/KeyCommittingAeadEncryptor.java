@@ -42,8 +42,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import io.github.astrapi69.crypt.data.model.CryptModel;
 import io.github.astrapi69.mystic.crypt.algorithm.MysticSymmetricAlgorithm;
 import io.github.astrapi69.mystic.crypt.core.AbstractByteArrayEncryptor;
+import io.github.astrapi69.mystic.crypt.secret.SecretRandom;
 import io.github.astrapi69.mystic.crypt.sha.Blake2bHasher;
-import io.github.astrapi69.random.number.RandomByteFactory;
 
 /**
  * The class {@link KeyCommittingAeadEncryptor} implements key-committing authenticated encryption
@@ -196,7 +196,7 @@ public class KeyCommittingAeadEncryptor extends AbstractByteArrayEncryptor
 	public byte[] encrypt(final byte[] toEncrypt, final byte[] associatedData) throws Exception
 	{
 		final String algorithm = MysticSymmetricAlgorithm.AES_GCM_NO_PADDING.getAlgorithm();
-		final byte[] iv = RandomByteFactory.randomByteArray(NONCE_LENGTH);
+		final byte[] iv = SecretRandom.bytes(NONCE_LENGTH);
 
 		// Compute commitment tag over key, IV, and associated data
 		final byte[] commitmentTag = computeCommitmentTag(iv, associatedData);
@@ -320,7 +320,7 @@ public class KeyCommittingAeadEncryptor extends AbstractByteArrayEncryptor
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
 		InvalidKeyException, InvalidAlgorithmParameterException
 	{
-		final byte[] iv = RandomByteFactory.randomByteArray(NONCE_LENGTH);
+		final byte[] iv = SecretRandom.bytes(NONCE_LENGTH);
 		return newSymmetricCipher(key, algorithm, iv, operationMode);
 	}
 

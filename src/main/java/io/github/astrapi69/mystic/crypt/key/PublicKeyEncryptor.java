@@ -50,7 +50,7 @@ import io.github.astrapi69.crypt.data.model.AesRsaCryptModel;
 import io.github.astrapi69.crypt.data.model.CryptModel;
 import io.github.astrapi69.mystic.crypt.algorithm.MysticSymmetricAlgorithm;
 import io.github.astrapi69.mystic.crypt.core.AbstractEncryptor;
-import io.github.astrapi69.random.number.RandomByteFactory;
+import io.github.astrapi69.mystic.crypt.secret.SecretRandom;
 
 /**
  * The class {@link PublicKeyEncryptor} can encrypt a byte array with his public key.
@@ -142,7 +142,7 @@ public class PublicKeyEncryptor extends AbstractEncryptor<Cipher, PublicKey, byt
 		if (needsRandomNonce(symmetricAlgorithm))
 		{
 			// a fresh nonce must be generated for every encryption with this transformation
-			final byte[] iv = RandomByteFactory.randomByteArray(NONCE_LENGTH);
+			final byte[] iv = SecretRandom.bytes(NONCE_LENGTH);
 			Cipher symmetricKeyCipher = newSymmetricCipher(symmetricKey, symmetricAlgorithm, iv,
 				symmetricKeyModel.getOperationMode());
 			symmetricKeyEncryptedBytes = ArrayUtils.addAll(iv,

@@ -32,7 +32,8 @@ import java.util.Objects;
 import org.bouncycastle.crypto.generators.Argon2BytesGenerator;
 import org.bouncycastle.crypto.params.Argon2Parameters;
 
-import io.github.astrapi69.random.number.RandomByteFactory;
+import io.github.astrapi69.mystic.crypt.secret.SecretRandom;
+
 
 /**
  * Package-private helper for Argon2id password hashing, encoded in the standard PHC string format
@@ -81,7 +82,7 @@ final class Argon2Support
 		Objects.requireNonNull(password);
 		try
 		{
-			final byte[] salt = RandomByteFactory.randomByteArray(SALT_LENGTH);
+			final byte[] salt = SecretRandom.bytes(SALT_LENGTH);
 			final byte[] hash = rawHash(password, salt, DEFAULT_ITERATIONS, DEFAULT_MEMORY_KB,
 				DEFAULT_PARALLELISM);
 			return encode(salt, hash, DEFAULT_ITERATIONS, DEFAULT_MEMORY_KB, DEFAULT_PARALLELISM);

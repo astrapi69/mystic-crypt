@@ -28,8 +28,8 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Objects;
 
+import io.github.astrapi69.mystic.crypt.secret.SecretRandom;
 import io.github.astrapi69.mystic.crypt.sha.ScryptHasher;
-import io.github.astrapi69.random.number.RandomByteFactory;
 
 /**
  * Package-private helper for scrypt password hashing, encoded in a PHC-like string format so the
@@ -89,7 +89,7 @@ final class ScryptSupport
 		Objects.requireNonNull(password);
 		try
 		{
-			final byte[] salt = RandomByteFactory.randomByteArray(SALT_LENGTH);
+			final byte[] salt = SecretRandom.bytes(SALT_LENGTH);
 			final byte[] hash = ScryptHasher.hashWithSalt(password.clone(), salt,
 				1 << DEFAULT_LOG_N, DEFAULT_R, DEFAULT_P, HASH_LENGTH);
 			final Base64.Encoder encoder = Base64.getEncoder().withoutPadding();

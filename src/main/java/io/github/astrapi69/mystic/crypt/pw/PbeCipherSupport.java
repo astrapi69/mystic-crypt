@@ -35,7 +35,7 @@ import javax.crypto.NoSuchPaddingException;
 import io.github.astrapi69.crypt.api.algorithm.compound.CompoundAlgorithm;
 import io.github.astrapi69.crypt.data.factory.CipherFactory;
 import io.github.astrapi69.mystic.crypt.provider.SecurityProviderSupport;
-import io.github.astrapi69.random.number.RandomByteFactory;
+import io.github.astrapi69.mystic.crypt.secret.SecretRandom;
 
 /**
  * Package-private helper shared by the {@code pw} package's PBE-based encryptor/decryptor classes:
@@ -75,7 +75,7 @@ final class PbeCipherSupport
 	 */
 	static byte[] newSalt()
 	{
-		return RandomByteFactory.randomByteArray(SALT_LENGTH);
+		return SecretRandom.bytes(SALT_LENGTH);
 	}
 
 	/**

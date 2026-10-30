@@ -34,7 +34,8 @@ import java.util.Objects;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
-import io.github.astrapi69.random.number.RandomByteFactory;
+import io.github.astrapi69.mystic.crypt.secret.SecretRandom;
+
 
 /**
  * Package-private helper for PBKDF2 password hashing, encoded in a PHC-like string format
@@ -87,7 +88,7 @@ final class Pbkdf2Support
 		Objects.requireNonNull(password);
 		try
 		{
-			final byte[] salt = RandomByteFactory.randomByteArray(SALT_LENGTH);
+			final byte[] salt = SecretRandom.bytes(SALT_LENGTH);
 			final byte[] hash = rawHash(password, salt, DEFAULT_ITERATIONS);
 			return encode(salt, hash, DEFAULT_ITERATIONS);
 		}

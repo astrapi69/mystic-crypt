@@ -41,10 +41,9 @@ import javax.crypto.NoSuchPaddingException;
 
 import io.github.astrapi69.crypt.api.algorithm.HashAlgorithm;
 import io.github.astrapi69.crypt.data.hash.HashExtensions;
+import io.github.astrapi69.mystic.crypt.secret.SecretRandom;
 import io.github.astrapi69.mystic.crypt.sha.BcryptHasher;
 import io.github.astrapi69.mystic.crypt.sha.Hasher;
-import io.github.astrapi69.random.object.RandomObjectFactory;
-import io.github.astrapi69.random.object.RandomWebObjectFactory;
 
 /**
  * The class {@link PasswordEncryptor} is a singleton and helps to generate secure encrypted random
@@ -89,7 +88,8 @@ public class PasswordEncryptor implements Serializable
 	}
 
 	/**
-	 * Gets a random password.
+	 * Gets a random password of lowercase and uppercase letters and digits, drawn from
+	 * {@link java.security.SecureRandom} (#241)
 	 *
 	 * @param length
 	 *            the length
@@ -97,19 +97,20 @@ public class PasswordEncryptor implements Serializable
 	 */
 	public String getRandomPassword(final int length)
 	{
-		return RandomWebObjectFactory.randomPassword(length);
+		return SecretRandom.alphanumeric(length);
 	}
 
 	/**
-	 * Gets a random password.
+	 * Gets a random password of lowercase and uppercase letters and digits, drawn from
+	 * {@link java.security.SecureRandom} (#241)
 	 *
 	 * @param length
-	 *            the length
+	 *            the length, 8 when empty
 	 * @return the new secure random password
 	 */
 	public String getRandomPassword(final Optional<Integer> length)
 	{
-		return RandomWebObjectFactory.randomPassword(length);
+		return SecretRandom.alphanumeric(length.orElse(8));
 	}
 
 	/**
@@ -131,7 +132,7 @@ public class PasswordEncryptor implements Serializable
 	 */
 	public String getRandomSalt(final int length)
 	{
-		return new String(RandomObjectFactory.randomSalt(length, DEFAULT_CHARSET), DEFAULT_CHARSET);
+		return SecretRandom.alphanumeric(length);
 	}
 
 	/**

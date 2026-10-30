@@ -33,7 +33,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 import io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor;
 import io.github.astrapi69.mystic.crypt.secret.SecretCopies;
-import io.github.astrapi69.random.number.RandomByteFactory;
+import io.github.astrapi69.mystic.crypt.secret.SecretRandom;
 
 /**
  * Passphrase-based authenticated encryption of arbitrary bytes, the operation behind the
@@ -106,7 +106,7 @@ public final class PassphraseCryptor
 	{
 		try
 		{
-			final byte[] salt = RandomByteFactory.randomByteArray(SALT_LENGTH);
+			final byte[] salt = SecretRandom.bytes(SALT_LENGTH);
 			final SecretKey key = deriveKey(passphrase, salt, DEFAULT_ITERATIONS);
 			final byte[] payload = new KeyCommittingAeadEncryptor(key).encrypt(plain);
 			return ByteBuffer.allocate(HEADER_LENGTH + payload.length).put(MAGIC)
