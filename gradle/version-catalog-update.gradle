@@ -26,3 +26,36 @@ versionCatalogUpdate {
         keepUnusedVersions = true
     }
 }
+
+// versionCatalogUpdate takes its candidates from dependencyUpdates, which accepts milestones, release
+// candidates and snapshots; a release candidate is how jackson 2.16.0-rc1 once reached every consumer of
+// jobj-copy. Only stable versions are offered (test-object#17; here as in the rest of the family). Guava's -jre and -android are the names of
+// its stable flavours, not qualifiers; a snapshot or a HEAD build is never stable.
+def isNonStable = { String version ->
+    def upper = version.toUpperCase()
+    if (upper.contains("SNAPSHOT") || upper.contains("HEAD")) {
+        return true
+    }
+    def plain = version.replaceAll(/-(jre|android)$/, "")
+    def stableKeyword = ["RELEASE", "FINAL", "GA"].any { upper.contains(it) }
+    def regex = /^[0-9,.v-]+(-r)?$/
+    return !stableKeyword && !(plain ==~ regex)
+}
+
+tasks.named("dependencyUpdates").configure {
+    rejectVersionIf {
+        isNonStable(it.candidate.version) && !isNonStable(it.currentVersion)
+    }
+}
+
+// version-catalog-update 1.x chooses its versions itself and no longer asks dependencyUpdates; its default,
+// PREFER_STABLE, takes a -jre version for unstable and then offered guava 999.0.0-HEAD-jre-SNAPSHOT. The
+// rule above decides instead: a stable version moves only to a stable one, a pre-release may move to a
+// newer pre-release (so jaxb-api 2.4.0-b180830.0359 is not set back to 2.3.1), and never to a snapshot.
+versionCatalogUpdate {
+    versionSelector { candidate ->
+        def version = candidate.candidate.version
+        def snapshot = version.toUpperCase().contains("SNAPSHOT") || version.toUpperCase().contains("HEAD")
+        !snapshot && (!isNonStable(version) || isNonStable(candidate.currentVersion))
+    }
+}
