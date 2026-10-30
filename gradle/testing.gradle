@@ -50,4 +50,6 @@ test {
     dependsOn resolvePublishedReleases
     inputs.file(publishedClasspathsFile).withPropertyName('publishedReleases')
     systemProperty 'mystic.crypt.published', publishedClasspathsFile.get().asFile.absolutePath
+    // the project page's index.html, checked out from gh-pages by CI (ReleaseConsistencyTest)
+    systemProperty 'mysticcrypt.pagesIndex', System.getenv('PAGES_INDEX') ?: ''
 }

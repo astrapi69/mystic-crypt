@@ -49,14 +49,15 @@ JDK 21) instead of carrying Bouncy Castle fallbacks for what the JDK already pro
 
 ## Installation
 
-Replace `${latestVersion}` with the current release:
+Latest release on Maven Central: 13.8
+
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.astrapi69/mystic-crypt.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/io.github.astrapi69/mystic-crypt)
 
 **Gradle** (version catalog, `gradle/libs.versions.toml`):
 
 ```toml
 [versions]
-mystic-crypt-version = "${latestVersion}"
+mystic-crypt-version = "13.8"
 
 [libraries]
 mystic-crypt = { module = "io.github.astrapi69:mystic-crypt", version.ref = "mystic-crypt-version" }
@@ -72,7 +73,7 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation "io.github.astrapi69:mystic-crypt:${latestVersion}"
+    implementation "io.github.astrapi69:mystic-crypt:13.8"
 }
 ```
 
@@ -82,7 +83,7 @@ dependencies {
 <dependency>
     <groupId>io.github.astrapi69</groupId>
     <artifactId>mystic-crypt</artifactId>
-    <version>${latestVersion}</version>
+    <version>13.8</version>
 </dependency>
 ```
 
@@ -205,7 +206,7 @@ involved, and, just as importantly, what is deliberately *not* implemented and w
 The published `-all` artifact is a runnable uber-jar:
 
 ```shell
-java -jar mystic-crypt-${latestVersion}-all.jar --help
+java -jar mystic-crypt-13.8-all.jar --help
 ```
 
 | Command | Description |
@@ -234,8 +235,8 @@ standard error and goes away in 14.0, because an argument is visible to every pr
 and lands in shell history.
 
 ```shell
-java -jar mystic-crypt-${latestVersion}-all.jar hash --password-stdin < password.txt
-java -jar mystic-crypt-${latestVersion}-all.jar checksum --file build.gradle --algorithm SHA-256
+java -jar mystic-crypt-13.8-all.jar hash --password-stdin < password.txt
+java -jar mystic-crypt-13.8-all.jar checksum --file build.gradle --algorithm SHA-256
 ```
 
 ## Documentation
@@ -288,8 +289,9 @@ own keyring; the fingerprints are what to compare.
 What a release consists of, in the order it is run:
 
 1. **One pull request** with the CHANGELOG entry and `projectVersion` without `-SNAPSHOT`
-   (`docs: changelog for X.Y, and the version that carries it`), the full build green on it, with
-   the test task forced (`./gradlew test --rerun`, then `./gradlew build`).
+   (`docs: changelog for X.Y, and the version that carries it`), the README's version set by
+   `./gradlew syncReleaseVersion`, the full build green on it, with the test task forced
+   (`./gradlew test --rerun`, then `./gradlew build`).
 2. **The docs describe this release**: the command table in this README, the feature list, and
    [docs/CRYPTO_CAPABILITIES.md](docs/CRYPTO_CAPABILITIES.md) show what the release contains, with
    nothing from an earlier cycle left out or added. The project page on `gh-pages` gets its own pull

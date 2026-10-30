@@ -1,0 +1,31 @@
+// The README names the latest released version in its install snippets, its -all jar and its
+// "Latest release" line. The version comes from the changelog: the first version heading that is
+// not marked unreleased. The release step runs this task in the release pull request, before the
+// tag, so the tagged commit carries the version it names. ReleaseConsistencyTest checks the result.
+tasks.register('syncReleaseVersion') {
+    group = 'release'
+    description = 'Sets the latest released version from CHANGELOG.md in the README snippets'
+    def readme = file('README.md')
+    def changelog = file('CHANGELOG.md')
+    def version = '(?:\\$\\{latestVersion\\}|\\d+(?:\\.\\d+)+)'
+    doLast {
+        def heading = (changelog.text =~ /(?m)^Version (\d+(?:\.\d+)+)$/)
+        if (!heading.find()) {
+            throw new GradleException('CHANGELOG.md has no released version heading')
+        }
+        def released = heading.group(1)
+        def text = readme.text
+        def replaced = text
+            .replaceAll(/(mystic-crypt-version = ")${version}(")/, "\$1${released}\$2")
+            .replaceAll(/(io\.github\.astrapi69:mystic-crypt:)${version}/, "\$1${released}")
+            .replaceAll(/(<version>)${version}(<\/version>)/, "\$1${released}\$2")
+            .replaceAll(/(mystic-crypt-)${version}(-all\.jar)/, "\$1${released}\$2")
+            .replaceAll(/(Latest release on Maven Central: )${version}/, "\$1${released}")
+        if (replaced != text) {
+            readme.text = replaced
+            logger.lifecycle("README.md: latest released version is ${released}")
+        } else {
+            logger.lifecycle("README.md: already names ${released}")
+        }
+    }
+}
