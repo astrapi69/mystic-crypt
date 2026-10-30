@@ -81,3 +81,16 @@ command, starting with the release-key commands of stage 2 (mystic-crypt-ui
 and `share split --secret`. Since 13.9 they warn on standard error, and 14.0
 removes them (#214). They all read through `SecretInput`, which is where a
 new secret option starts as well.
+
+## The family's base is JDK 25
+
+Every library of the family compiles, tests and releases on JDK 25. A library that still targets an older
+version moves to 25 at its next release, and because a consumer on that older version can no longer use it,
+the move is a new major version, with one sentence in the CHANGELOG naming the new minimum (decided by the
+maintainer on 2026-10-30).
+
+The reason: the family's libraries are used by the maintainer's own projects, and all of them run on JDK 25.
+A lower minimum gains no user, only maintenance - a second JDK in the build, toolchains to keep, and
+dependencies whose current releases no longer resolve below 25 (crypt-api 10.3 and crypt-data 13.1 did not
+resolve in gson-extensions, which built for 17). If that changes, for instance because a library gains users
+outside the family, the rule is weighed again for that library.
