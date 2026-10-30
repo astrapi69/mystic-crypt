@@ -1,7 +1,8 @@
 # Coverage and mutation exceptions
 
 Every line, branch and mutant that the suites do not cover or kill, with the reason. Companion to
-[TESTING.md](TESTING.md); measured on the same trees as the numbers there (2026-08-26). The
+[TESTING.md](TESTING.md); measured on the same trees as the numbers there (2026-08-26; the
+`mystic-crypt` section again on 2026-10-30, commit `09b39502`, see #227). The
 "equivalent mutant" judgements are reasoning from the source, checked by an adversarial
 verification stage that tried to construct a distinguishing test for each one - not a formal proof,
 except where noted below as verified by bytecode inspection (`javap -c`) or exhaustive fuzzing,
@@ -48,7 +49,7 @@ reset digest). Removing the guards killed the mutants and simplified the method 
 (PR #5). See ["Why not literal 100%"](#why-not-literal-100) for how the remaining three were told
 apart from those two.
 
-## `mystic-crypt` - 2 lines / 0 branches uncovered; 6 surviving mutants of 1526
+## `mystic-crypt` - 6 lines / 0 branches uncovered; 6 surviving mutants of 1845
 
 Uncovered lines:
 
@@ -117,28 +118,8 @@ found `ArrayUtils.addAll` with an empty second array already returns a content-i
 the first, so the length check never changed the outcome. Removing it killed all three mutants and
 simplified three call sites at once (PR #76). See ["Why not literal 100%"](#why-not-literal-100).
 
-**Wipes of buffers that never leave the method (#166, measured separately):**
-
-- `Ed25519ExpandedPrivateKey.of` (lines 99 and 100, `VoidMethodCallMutator`): `Arrays.fill` on
-  `clamped` and `hash`, the two local copies of secret material made while a seed is expanded.
-  Neither array is returned, stored or handed to anything that keeps it; the scalar and the prefix
-  are copied out of them first. Removing the wipe changes how long the secret lingers on the heap
-  and nothing any caller can observe without a heap dump. The third wipe in that method, of the
-  seed array the key handed out, IS observable and is killed:
-  `Ed25519KeyBlindingTest.theSeedBytesAKeyHandsOutAreWipedAfterExpansion` passes a key that hands
-  out its own array and asserts it is zero afterwards.
-
-  These two were measured by a PIT run restricted to the four classes of #166 and their test class
-  (66 mutants, 64 killed); the module totals in the heading above predate #166 and are re-measured
-  with the next full run.
-
 **Hierarchical derivation and the HMAC helper (#163, measured separately):**
 
-- `SeedDerivation.keyPairOf` (line 203, `VoidMethodCallMutator`): `Arrays.fill` on the private key
-  bytes of the derived node. The node is a local of the method and the bytes are its own field,
-  copied into the key spec before the wipe, so nothing a caller holds ever points at them. The
-  same argument as the two `Ed25519ExpandedPrivateKey` wipes above: removing it changes how long a
-  secret lingers on the heap, which no test observes without a heap dump.
 - Uncovered lines `SeedDerivation.java` 195 and 198 and `HmacExtensions.java` 92 and 95: the
   `catch (GeneralSecurityException)` blocks that turn a missing algorithm into an
   `IllegalStateException`. `keyPairOf` asks for Ed25519 or X25519, both in every JDK since 15, with
@@ -152,8 +133,44 @@ simplified three call sites at once (PR #76). See ["Why not literal 100%"](#why-
   which provider is installed.
 
   Measured by a PIT run restricted to `mac.*`, `SeedDerivation*` and `GoogleMapsUrlSigner` and
-  their three test classes (23 mutants, 22 killed); the module totals in the heading above predate
-  #163 as they predate #166.
+  their three test classes (23 mutants, 22 killed); the full run of 2026-10-30 behind the heading
+  above includes them, and the one survivor of that run here, the `SeedDerivation.keyPairOf` wipe,
+  is killed since #227.
+
+**The survivors of #227, taken apart on 2026-10-30:**
+
+A full run on develop found 17 survivors in classes this file did not mention. Fifteen are killed
+now, each by a test that was first run against the mutation by hand and turned red:
+
+- untested behaviour (nine): the random salt of `PassphraseEnvelope.encrypt`, its refusal of the
+  reserved marker on reading, the boundary of `hasMagic`, the growth of `WipingCharWriter.write(int)`,
+  the overwriting in `WipingCharWriter.wipe` and on growing (read through the array the test holds
+  across the call, not through the writer's content), `SecretBuffers.wipeBackingArrayOf` for byte
+  and char buffers, and the message `DecryptCommand` prints for a wrong passphrase (the old test asked
+  only for a non-blank stderr, which the warning about `-p` already filled);
+- wipes of copies that never leave their method (five): `PassphraseEnvelope.deriveKey` (both
+  overloads) and `withCharactersOf`, `SecretBuffers.toUtf8` and `fromUtf8`. These were first argued
+  here as equivalent and are not: without the wipe the secret stays in memory longer, which is a change
+  of behaviour. Every such copy now goes through `SecretCopies`, which overwrites it on close and shows
+  it to a test afterwards; `SecretCopiesTest` reads each one;
+- the boundary of `WipingCharWriter.ensureRoomFor` (line 111, `<=` to `<`), first taken for
+  equivalent: the test that reads the outgrown array fills the writer exactly and then writes one
+  more character, so a writer that grows one step early has no outgrown array where the test looks.
+
+The other two stay:
+
+- `WipingCharWriter.ensureRoomFor` (line 115, `buffer.length * 2` to `/ 2`), equivalent: the new
+  capacity is `Math.max` of that and what the write needs, so it is always large enough; the mutant
+  grows to exactly the need instead of doubling. That changes how often the writer copies, not what
+  it holds or what it overwrites.
+- `SecretInput.terminal` (line 176, returns null), bound to the environment: the method answers null
+  when there is no terminal, which is every test JVM, so the mutant gives the same answer there.
+  Asking for a secret on a terminal is covered by `SecretInputTest`, which hands `resolve` a stand-in
+  terminal; this private accessor is the one line that needs a process attached to a real one.
+
+**Security-relevant, not testable from outside:** no entries. A wipe is never argued as equivalent
+here: a missing one leaves a secret in memory longer. It is made observable through `SecretCopies`,
+and only where that is impossible does it go into this category, with the reason.
 
 ## What was *not* accepted as equivalent
 
@@ -204,9 +221,12 @@ earns its keep:
 
 ## Why not literal 100%
 
-`crypt-api` and `crypt-data` are at 100.0%. `mystic-crypt` is at 99.6% (6 survivors of 1526). This
-section is the answer to "why not push those to 100% too" - worked through for every one of the 6
-remaining survivors, not asserted in general. It was written
+`crypt-api` and `crypt-data` are at 100.0%. `mystic-crypt` is at 99.6% (6 survivors and 1 mutant
+without coverage of 1845, measured 2026-10-30 on `09b39502`). This section is the answer to "why not
+push those to 100% too" - worked through for every one of the remaining survivors, not asserted in
+general: the four below, and the two of #227 argued in the `mystic-crypt` section
+(`WipingCharWriter.ensureRoomFor:115`, equivalent, and `SecretInput.terminal:176`, bound to the
+environment). It was written
 after four rounds of exactly that push: the first round (PR #69) killed everything killable and
 argued the rest was equivalent; the second round (PR #5, PR #76) went back over every argued
 survivor a second time and found seven that were not equivalent at all, but dead code that
@@ -230,13 +250,11 @@ by why it stays.
 
 **Killable only by making the design worse.**
 
-- `PassphraseCryptor.deriveKey` (`VoidMethodCallMutator`, the `Arrays.fill` of the derived key
-  bytes): `SecretKeySpec` copies the array it is handed, so whether the caller's copy is zeroed
-  afterwards changes nothing any API can observe - which is exactly why the mutant survives. The
-  wipe stays: derived key material left in a live array is the kind of thing that shows up in a
-  heap dump and nowhere else, and that is worth a line of code whose absence no test can prove.
-  Killing this would mean exposing the intermediate array through some accessor solely so a test
-  could look at it, which trades a real property for a number.
+- `PassphraseCryptor.deriveKey` used to stand here: the wipe of the derived key bytes, argued as
+  killable only by exposing the array to a test. #227 found the way that costs nothing: the copy goes
+  through `SecretCopies`, which a test in the `secret` package can watch, and the mutant is killed.
+  The same holds for the `Ed25519ExpandedPrivateKey.of` and `SeedDerivation.keyPairOf` wipes that
+  were listed above as unobservable.
 
 - `FeldmanVSS.reconstructSecretBytes` (3 `ConditionalsBoundaryMutator` mutants, lines 616/622/628):
   the two variants of each boundary produce byte-identical output arrays for any `byte[]` and any

@@ -6,6 +6,12 @@ Version 13.9 (unreleased)
 
 FIXED:
 
+- `PassphraseEnvelope.deriveKey(char[], ...)` left the derived key bytes in memory. Every working copy
+  of secret material - the characters of a passphrase, derived key bytes, the buffers of a charset
+  coder, a `PBEKeySpec` - now goes through the new `SecretCopies`, which overwrites it when the method
+  is done and lets a test read each copy afterwards; in `PassphraseEnvelope`, `PassphraseCryptor`,
+  `SecretBuffers`, `Ed25519ExpandedPrivateKey` and `SeedDerivation` (#227)
+
 - `HexableEncryptor(key, algorithm)` and `HexableDecryptor(key, algorithm)` ignored the algorithm
   they were given. It was set on the model after the cipher had been built for the AES/GCM
   default, so `AesAlgorithm.AES` - the way back to the pre-10.0 transformation the 10.0 notes
