@@ -4,6 +4,14 @@
 Version 13.9 (unreleased)
 -------------
 
+SECURITY:
+
+- salts, GCM nonces, IVs and generated passwords come from `java.security.SecureRandom` directly,
+  through the new `SecretRandom`, and no longer through randomizer, a library for test data whose
+  default generator was seeded with the current time before its 10.5 (GHSA-rmpr-hqmh-r8gp). The
+  library no longer depends on randomizer at runtime; a test fails if any class of it refers to
+  randomizer again (#241)
+
 FIXED:
 
 - `PassphraseEnvelope.deriveKey(char[], ...)` left the derived key bytes in memory. Every working copy

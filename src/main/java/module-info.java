@@ -42,7 +42,6 @@ module io.github.astrapisixtynine.mystic.crypt
 	requires org.apache.commons.io;
 	requires org.apache.commons.lang3;
 	requires transitive org.bouncycastle.provider;
-	requires randomizer.main;
 	requires transitive io.github.astrapisixtynine.silly.bean;
 	requires io.github.astrapisixtynine.silly.collection;
 	requires org.bouncycastle.pkix;

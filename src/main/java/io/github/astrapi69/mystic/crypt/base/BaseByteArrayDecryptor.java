@@ -42,7 +42,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import io.github.astrapi69.crypt.data.model.CryptModel;
 import io.github.astrapi69.mystic.crypt.algorithm.MysticSymmetricAlgorithm;
 import io.github.astrapi69.mystic.crypt.core.AbstractByteArrayDecryptor;
-import io.github.astrapi69.random.number.RandomByteFactory;
+import io.github.astrapi69.mystic.crypt.secret.SecretRandom;
 
 /**
  * The class {@link BaseByteArrayDecryptor} can decrypt a byte array with his symmetric key
@@ -174,9 +174,7 @@ public class BaseByteArrayDecryptor extends AbstractByteArrayDecryptor
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
 		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		final byte[] iv = needsRandomNonce(algorithm)
-			? RandomByteFactory.randomByteArray(NONCE_LENGTH)
-			: null;
+		final byte[] iv = needsRandomNonce(algorithm) ? SecretRandom.bytes(NONCE_LENGTH) : null;
 		return newSymmetricCipher(key, algorithm, iv, operationMode);
 	}
 

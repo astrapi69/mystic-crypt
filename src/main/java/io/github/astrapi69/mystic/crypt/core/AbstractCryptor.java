@@ -50,7 +50,7 @@ import io.github.astrapi69.crypt.data.factory.KeySpecFactory;
 import io.github.astrapi69.crypt.data.factory.SecretKeyFactoryExtensions;
 import io.github.astrapi69.crypt.data.model.CryptModel;
 import io.github.astrapi69.mystic.crypt.provider.SecurityProviderSupport;
-import io.github.astrapi69.random.number.RandomByteFactory;
+import io.github.astrapi69.mystic.crypt.secret.SecretRandom;
 
 /**
  * The abstract class {@link AbstractCryptor} provides factory methods that may or must be
@@ -301,7 +301,7 @@ public abstract class AbstractCryptor<C, K, T> implements Serializable, Cryptor
 	{
 		if (ArrayUtils.isEmpty(getModel().getSalt()))
 		{
-			final byte[] generatedSalt = RandomByteFactory.randomByteArray(DEFAULT_SALT_LENGTH);
+			final byte[] generatedSalt = SecretRandom.bytes(DEFAULT_SALT_LENGTH);
 			getModel().setSalt(generatedSalt);
 		}
 		return getModel().getSalt();

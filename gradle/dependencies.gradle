@@ -7,7 +7,7 @@ dependencies {
     api libs.crypt.api
     api libs.crypt.data
     implementation libs.throwable
-    implementation libs.randomizer
+    testImplementation libs.randomizer
     implementation libs.file.worker
     implementation libs.silly.collection
     implementation libs.jobj.core

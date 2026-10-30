@@ -51,7 +51,7 @@ import io.github.astrapi69.crypt.data.model.CryptObjectDecorator;
 import io.github.astrapi69.mystic.crypt.algorithm.MysticSymmetricAlgorithm;
 import io.github.astrapi69.mystic.crypt.core.AbstractStringEncryptor;
 import io.github.astrapi69.mystic.crypt.decorator.CryptObjectDecoratorExtensions;
-import io.github.astrapi69.random.number.RandomByteFactory;
+import io.github.astrapi69.mystic.crypt.secret.SecretRandom;
 
 /**
  * The class {@link HexableEncryptor} is the pendant class of {@link HexableDecryptor} and encrypts
@@ -195,7 +195,7 @@ public class HexableEncryptor extends AbstractStringEncryptor
 		{
 			// a fresh nonce must be generated for every encryption with this transformation; the
 			// cipher cached at construction time (if any) must never be reused across calls
-			final byte[] iv = RandomByteFactory.randomByteArray(NONCE_LENGTH);
+			final byte[] iv = SecretRandom.bytes(NONCE_LENGTH);
 			final Cipher cipher = newSymmetricCipher(getModel().getKey(), algorithm, iv,
 				Cipher.ENCRYPT_MODE);
 			output = ArrayUtils.addAll(iv, cipher.doFinal(utf8));
@@ -230,9 +230,7 @@ public class HexableEncryptor extends AbstractStringEncryptor
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
 		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		final byte[] iv = needsRandomNonce(algorithm)
-			? RandomByteFactory.randomByteArray(NONCE_LENGTH)
-			: null;
+		final byte[] iv = needsRandomNonce(algorithm) ? SecretRandom.bytes(NONCE_LENGTH) : null;
 		return newSymmetricCipher(privateKey, algorithm, iv, operationMode);
 	}
 

@@ -42,7 +42,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import io.github.astrapi69.crypt.data.model.CryptModel;
 import io.github.astrapi69.mystic.crypt.algorithm.MysticSymmetricAlgorithm;
 import io.github.astrapi69.mystic.crypt.core.AbstractByteArrayEncryptor;
-import io.github.astrapi69.random.number.RandomByteFactory;
+import io.github.astrapi69.mystic.crypt.secret.SecretRandom;
 
 /**
  * The class {@link BaseByteArrayEncryptor} can encrypt a byte array with his symmetric key
@@ -150,7 +150,7 @@ public class BaseByteArrayEncryptor extends AbstractByteArrayEncryptor
 		if (needsRandomNonce(algorithm))
 		{
 			// a fresh nonce must be generated for every encryption with this transformation
-			final byte[] iv = RandomByteFactory.randomByteArray(NONCE_LENGTH);
+			final byte[] iv = SecretRandom.bytes(NONCE_LENGTH);
 			final Cipher cipher = newSymmetricCipher(model.getKey(), algorithm, iv,
 				newOperationMode());
 			return ArrayUtils.addAll(iv, cipher.doFinal(toEncrypt));
@@ -169,9 +169,7 @@ public class BaseByteArrayEncryptor extends AbstractByteArrayEncryptor
 		throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
 		InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		final byte[] iv = needsRandomNonce(algorithm)
-			? RandomByteFactory.randomByteArray(NONCE_LENGTH)
-			: null;
+		final byte[] iv = needsRandomNonce(algorithm) ? SecretRandom.bytes(NONCE_LENGTH) : null;
 		return newSymmetricCipher(key, algorithm, iv, operationMode);
 	}
 
