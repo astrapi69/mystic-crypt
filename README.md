@@ -8,7 +8,7 @@ correctly without being a cryptographer.**
 
 [![Java CI with Gradle](https://github.com/astrapi69/mystic-crypt/actions/workflows/gradle.yml/badge.svg)](https://github.com/astrapi69/mystic-crypt/actions/workflows/gradle.yml)
 [![Coverage Status](https://codecov.io/gh/astrapi69/mystic-crypt/branch/develop/graph/badge.svg)](https://codecov.io/gh/astrapi69/mystic-crypt)
-[![Mutation Coverage](https://img.shields.io/badge/mutation%20coverage-99%25-brightgreen)](https://pitest.org/)
+[![Mutation Score](https://img.shields.io/badge/mutation%20score-98.6%25-brightgreen)](docs/TESTING.md#numbers)
 ![Tested Use Cases](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/astrapi69/69b2e93dd826ce43cc3f02433a465ae3/raw/test-cases.json)
 [![Open Issues](https://img.shields.io/github/issues/astrapi69/mystic-crypt.svg?style=flat)](https://github.com/astrapi69/mystic-crypt/issues)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.astrapi69/mystic-crypt.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/io.github.astrapi69/mystic-crypt)
@@ -316,8 +316,10 @@ What a release consists of, in the order it is run:
 Pull requests are welcome, fork [astrapi69/mystic-crypt](https://github.com/astrapi69/mystic-crypt/fork)
 and [open a PR](https://github.com/astrapi69/mystic-crypt/pull/new/develop) against `develop`.
 
-Please add tests for your change. This library sits at 99.94% line and 100% branch coverage with a
-99.6% PIT mutation score; the [conventions for contributors](docs/TESTING.md#conventions-for-contributors)
+Please add tests for your change. Measured 2026-10-30 on `develop` at `e288d588`: 1981 tests, 99.85%
+line and 100% branch coverage, and a PIT mutation score of 98.6% (1810 of 1836 mutants; the
+survivors are [#227](https://github.com/astrapi69/mystic-crypt/issues/227) and
+[docs/TESTING.md](docs/TESTING.md#numbers)). The [conventions for contributors](docs/TESTING.md#conventions-for-contributors)
 describe what a good test looks like here, parameterized with records, a property assertion plus
 the matching negative case, and never lowering those numbers.
 
