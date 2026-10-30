@@ -1,7 +1,7 @@
 ## Change log
 ----------------------
 
-Version 13.9 (unreleased)
+Version 13.9
 -------------
 
 SECURITY:
@@ -45,6 +45,11 @@ CHANGED:
   `tagRelease` depends on it, and `check` for a release version (#245)
 - guava 33.7.2-jre, from 33.7.1-jre. random-beans is gone from the tests, and with it the
   jackson 2.9.8 it put on the test class path; it was used by no test (#213)
+- dependencies raised by `versionCatalogUpdate`, stable versions only: crypt-data 13.2, commons-codec
+  1.23.0, commons-lang3 3.21.0, and for the tests randomizer 10.7 and json-extensions 4.0; the build
+  plugins spotless 8.10.4, versions 0.66.0, version-catalog-update 1.1.2, japicmp 0.26.5, jacoco
+  0.8.16, pitest 1.30.1. The catalog update keeps to stable versions: without a selector it had
+  offered guava 999.0.0-HEAD-jre-SNAPSHOT (#247)
 
 Version 13.8
 -------------
