@@ -1,11 +1,8 @@
 import datetime, html, json, re, sys
 from pathlib import Path
 
-CSS = open('/tmp/claude-0/orig_style.css', encoding='utf-8').read() + """
-    .meta-line { color: var(--fg-muted); font-size: 15px; margin: 0 0 16px; }
-    .faq h3 { margin-top: 20px; }
-    .foot-links a { margin-right: 12px; }
-"""
+# The stylesheet lives next to this script; the page inlines it, so it loads nothing from another host.
+CSS = (Path(__file__).resolve().parent / "page.css").read_text(encoding="utf-8")
 
 SITE = "https://astrapi69.github.io/mystic-crypt/"
 REPO = "https://github.com/astrapi69/mystic-crypt"
