@@ -26,8 +26,10 @@ package io.github.astrapi69.mystic.crypt.secret;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -79,6 +81,57 @@ class WipingCharWriterTest
 		writer.wipe();
 
 		assertEquals(0, writer.toCharArray().length);
+	}
+
+	/**
+	 * The two tests above pass on content alone, and the overwriting they name survived PIT (#227):
+	 * this one holds the outgrown array across the growth and reads it afterwards
+	 */
+	@Test
+	@DisplayName("the array left behind by growing is zero-filled")
+	void growing_zeroFills_theArrayItLeavesBehind() throws Exception
+	{
+		WipingCharWriter writer = new WipingCharWriter(8);
+		writer.write("secret!!", 0, 8);
+		char[] outgrown = bufferOf(writer);
+
+		writer.write("x", 0, 1);
+
+		assertNotSame(outgrown, bufferOf(writer), "the write has to have grown the writer");
+		assertArrayEquals(new char[8], outgrown, "the outgrown array must hold nothing anymore");
+	}
+
+	@Test
+	@DisplayName("wiping zero-fills the array the writer holds")
+	void wipe_zeroFills_theArrayItHolds() throws Exception
+	{
+		WipingCharWriter writer = new WipingCharWriter(16);
+		writer.write("the whole vault", 0, 15);
+		char[] held = bufferOf(writer);
+
+		writer.wipe();
+
+		assertArrayEquals(new char[16], held, "wiping must overwrite, not only forget");
+	}
+
+	@Test
+	@DisplayName("writing single characters grows the writer too")
+	void singleCharacters_growTheWriter() throws IOException
+	{
+		WipingCharWriter writer = new WipingCharWriter(1);
+
+		writer.write('a');
+		writer.write('b');
+		writer.write('c');
+
+		assertArrayEquals("abc".toCharArray(), writer.toCharArray());
+	}
+
+	private static char[] bufferOf(final WipingCharWriter writer) throws Exception
+	{
+		Field buffer = WipingCharWriter.class.getDeclaredField("buffer");
+		buffer.setAccessible(true);
+		return (char[])buffer.get(writer);
 	}
 
 	@Test

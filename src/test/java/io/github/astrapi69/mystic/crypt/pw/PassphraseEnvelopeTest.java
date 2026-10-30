@@ -416,10 +416,16 @@ class PassphraseEnvelopeTest
 
 		assertTrue(thrown.getMessage().contains("MCRYPT"),
 			"the message has to name the marker that is taken, or the caller cannot pick another");
-		assertThrows(IllegalArgumentException.class,
-			() -> PassphraseEnvelope.decrypt(PassphraseCryptor.MAGIC, new byte[64],
+		// content that does start with the marker: zeros alone would be refused as not carrying
+		// it, and that refusal has the same type, which let the missing check pass unnoticed (#227)
+		byte[] startsWithTheMarker = Arrays.copyOf(PassphraseCryptor.MAGIC, 64);
+		IllegalArgumentException onReading = assertThrows(IllegalArgumentException.class,
+			() -> PassphraseEnvelope.decrypt(PassphraseCryptor.MAGIC, startsWithTheMarker,
 				PASSPHRASE.clone()),
 			"and reading under that marker is the same mistake as writing under it");
+		assertTrue(onReading.getMessage().contains("belongs to PassphraseCryptor"),
+			"the read has to be refused for the marker, not for anything after it, but said: "
+				+ onReading.getMessage());
 	}
 
 	@Test
@@ -430,6 +436,8 @@ class PassphraseEnvelopeTest
 			"x".getBytes(StandardCharsets.UTF_8), PASSPHRASE.clone());
 
 		assertTrue(PassphraseEnvelope.hasMagic(sealed, VAULT_MAGIC));
+		assertTrue(PassphraseEnvelope.hasMagic(VAULT_MAGIC.clone(), VAULT_MAGIC),
+			"content exactly as long as the marker carries it");
 		assertFalse(PassphraseEnvelope.hasMagic(null, VAULT_MAGIC), "null is not a file");
 		assertFalse(PassphraseEnvelope.hasMagic(new byte[] { 'M', 'C' }, VAULT_MAGIC),
 			"content shorter than the marker cannot carry it");

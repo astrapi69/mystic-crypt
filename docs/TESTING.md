@@ -85,8 +85,8 @@ prove the absence of weak tests.
 Each row names the commit it was measured on: a release tag where the repo has one for the
 current state, a development head where the next release is not cut yet. The crypt-api and
 crypt-data rows were measured 2026-08-31. The mystic-crypt row was measured 2026-10-30 on
-`develop` at `e288d588` (13.9-SNAPSHOT), JDK 25.0.4: `./gradlew clean build --no-build-cache`, then
-`./gradlew pitest --no-build-cache`.
+`09b39502` (13.9-SNAPSHOT, the branch of #227), JDK 25.0.4: `./gradlew clean build
+--no-build-cache`, then `./gradlew pitest --no-build-cache`.
 
 *Mutation score* divides killed mutants by all mutants, including ones in code no test executes;
 *test strength* divides only by mutants in executed code, so it answers "of the code the tests do
@@ -96,21 +96,21 @@ run, how much would they notice being broken?".
 |---|---|---|---|---|---|---|
 | `crypt-api` | `RELEASE-10.1` | 271 | 100.00% | 100.00% | 100.0% (78 / 78) | 100.0% |
 | `crypt-data` | `RELEASE-12.2` | 1301 | 100.00% | 100.00% | 100.0% (822 / 822) | 100.0% |
-| `mystic-crypt` | `e288d588`, 2026-10-30 | 1981 | 99.85% | 100.00% | 98.6% (1810 / 1836) | 98.6% |
+| `mystic-crypt` | `09b39502`, 2026-10-30 | 2010 | 99.85% | 100.00% | 99.6% (1838 / 1845) | 99.7% |
 
 Regenerate with the commands under [How to run](#how-to-run); the reports are
 `build/reports/jacoco/test/jacocoTestReport.xml` and `build/reports/pitest/`.
 
-`crypt-api` and `crypt-data` are at a literal 100% mutation score. `mystic-crypt` is not. Of its 25
-survivors at `e288d588`, 8 are the ones
-["Why not literal 100%"](COVERAGE_EXCEPTIONS.md#why-not-literal-100) in
-[COVERAGE_EXCEPTIONS.md](COVERAGE_EXCEPTIONS.md) explains mutant by mutant: they cannot be killed
-without making the code worse. The other 17 arrived with the passphrase envelope, the secret
-buffers and the command line of 13.x, and nobody has examined them yet
-([#227](https://github.com/astrapi69/mystic-crypt/issues/227)). Among them is the random salt of
-`PassphraseEnvelope`. PIT reports the score as 99% and the build passes its threshold of 99 only
-because the score is rounded. PIT also counts a mutant whose test run times out as killed: 91 of the
-1810 are timeouts, 85 of them in the GnuPG home reader (`io.github.astrapi69.mystic.crypt.gnupg`).
+`crypt-api` and `crypt-data` are at a literal 100% mutation score. `mystic-crypt` is not: 6
+survivors and 1 mutant without coverage of 1845, each argued in
+[COVERAGE_EXCEPTIONS.md](COVERAGE_EXCEPTIONS.md). A run at `e288d588` earlier the same day had 25
+survivors; 17 of them came with the passphrase envelope, the secret buffers and the command line of
+13.x and had not been examined ([#227](https://github.com/astrapi69/mystic-crypt/issues/227)). Fifteen
+of those are killed now, among them the random salt of `PassphraseEnvelope` and five wipes of copies
+that never leave their method: those copies go through `SecretCopies`, which a test can watch, and a
+wipe is never argued as equivalent. PIT counts a mutant whose test run times out as killed: 95 of the
+1838 are timeouts, 85 of them in the GnuPG home reader (`io.github.astrapi69.mystic.crypt.gnupg`).
+Of the 2010 tests, 7 are skipped.
 The history below describes how the survivors of 12.2 were worked through. Five rounds of this
 cycle's work went specifically after every surviving mutant: the first round (PR #69 for
 `mystic-crypt`) killed what was killable and documented the rest; a second pass (PR #5 for

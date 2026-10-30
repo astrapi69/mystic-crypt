@@ -37,6 +37,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 import io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor;
 import io.github.astrapi69.mystic.crypt.secret.SecretBuffers;
+import io.github.astrapi69.mystic.crypt.secret.SecretCopies;
 
 /**
  * Seals something with a passphrase under a marker the caller chooses, so that a wrong passphrase
@@ -166,16 +167,12 @@ public final class PassphraseEnvelope
 	public static SecretKey deriveKey(final String passphrase, final byte[] salt,
 		final int iterations) throws GeneralSecurityException
 	{
-		byte[] keyBytes = withCharactersOf(passphrase,
-			characters -> deriveKey(characters, salt, iterations).getEncoded());
-		try
+		try (SecretCopies copies = SecretCopies.open())
 		{
-			// the spec copies what it is given, so the array this method holds is its own to wipe
+			// the spec copies what it is given, so the array held here is this method's to wipe
+			byte[] keyBytes = copies.hold(withCharactersOf(passphrase,
+				characters -> deriveKey(characters, salt, iterations).getEncoded()));
 			return new SecretKeySpec(keyBytes, "AES");
-		}
-		finally
-		{
-			SecretBuffers.wipe(keyBytes);
 		}
 	}
 
@@ -197,17 +194,15 @@ public final class PassphraseEnvelope
 	public static SecretKey deriveKey(final char[] passphrase, final byte[] salt,
 		final int iterations) throws GeneralSecurityException
 	{
-		PBEKeySpec keySpec = new PBEKeySpec(passphrase, salt, iterations, KEY_LENGTH_BITS);
-		try
+		try (SecretCopies copies = SecretCopies.open())
 		{
-			byte[] keyBytes = SecretKeyFactory.getInstance(KEY_DERIVATION_ALGORITHM)
-				.generateSecret(keySpec).getEncoded();
+			// the spec holds a copy of the passphrase, and the derived bytes are copied by the
+			// key spec below: both are this method's to clear
+			PBEKeySpec keySpec = copies
+				.hold(new PBEKeySpec(passphrase, salt, iterations, KEY_LENGTH_BITS));
+			byte[] keyBytes = copies.hold(SecretKeyFactory.getInstance(KEY_DERIVATION_ALGORITHM)
+				.generateSecret(keySpec).getEncoded());
 			return new SecretKeySpec(keyBytes, "AES");
-		}
-		finally
-		{
-			// the spec holds a copy of the passphrase; there is no reason to leave it lying around
-			keySpec.clearPassword();
 		}
 	}
 
@@ -480,14 +475,9 @@ public final class PassphraseEnvelope
 	private static byte[] withCharactersOf(final String passphrase,
 		final PassphraseOperation operation) throws GeneralSecurityException
 	{
-		char[] characters = passphrase.toCharArray();
-		try
+		try (SecretCopies copies = SecretCopies.open())
 		{
-			return operation.apply(characters);
-		}
-		finally
-		{
-			SecretBuffers.wipe(characters);
+			return operation.apply(copies.hold(passphrase.toCharArray()));
 		}
 	}
 

@@ -40,6 +40,7 @@ import io.github.astrapi69.crypt.api.algorithm.MacAlgorithm;
 import io.github.astrapi69.crypt.api.algorithm.key.KeyPairGeneratorAlgorithm;
 import io.github.astrapi69.crypt.data.key.PrivateKeyExtensions;
 import io.github.astrapi69.mystic.crypt.mac.HmacExtensions;
+import io.github.astrapi69.mystic.crypt.secret.SecretCopies;
 
 /**
  * Hierarchical key derivation from a seed after SLIP-0010, hardened only, for ed25519 and
@@ -182,12 +183,12 @@ public final class SeedDerivation
 	 */
 	public static KeyPair keyPairOf(final Curve curve, final byte[] seed, final int... path)
 	{
-		byte[] privateKeyBytes = derive(curve, seed, path).privateKey;
-		KeySpec spec = curve == Curve.ED25519
-			? new EdECPrivateKeySpec(curve.parameters, privateKeyBytes)
-			: new XECPrivateKeySpec(curve.parameters, privateKeyBytes);
-		try
+		try (SecretCopies copies = SecretCopies.open())
 		{
+			byte[] privateKeyBytes = copies.hold(derive(curve, seed, path).privateKey);
+			KeySpec spec = curve == Curve.ED25519
+				? new EdECPrivateKeySpec(curve.parameters, privateKeyBytes)
+				: new XECPrivateKeySpec(curve.parameters, privateKeyBytes);
 			PrivateKey privateKey = KeyFactory.getInstance(curve.algorithm.getAlgorithm())
 				.generatePrivate(spec);
 			return new KeyPair(PrivateKeyExtensions.generatePublicKey(privateKey), privateKey);
@@ -197,10 +198,6 @@ public final class SeedDerivation
 			// both are part of every JDK since 15, and the key was just made from 32 bytes
 			throw new IllegalStateException(
 				"this Java runtime cannot make a " + curve.algorithm + " key pair", missing);
-		}
-		finally
-		{
-			Arrays.fill(privateKeyBytes, (byte)0);
 		}
 	}
 

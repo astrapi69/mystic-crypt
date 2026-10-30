@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import io.github.astrapi69.crypt.api.algorithm.HashAlgorithm;
+import io.github.astrapi69.mystic.crypt.secret.SecretCopies;
 
 /**
  * An Ed25519 private key in expanded form: the secret scalar {@code s} and the 32-byte nonce prefix
@@ -88,17 +89,17 @@ public final class Ed25519ExpandedPrivateKey
 		Objects.requireNonNull(privateKey);
 		byte[] seed = privateKey.getBytes().orElseThrow(() -> new IllegalArgumentException(
 			"the Ed25519 private key does not expose its seed bytes, so it cannot be expanded"));
-		byte[] hash = sha512(seed);
-		Arrays.fill(seed, (byte)0);
-		byte[] clamped = Arrays.copyOf(hash, 32);
-		clamped[0] &= (byte)248;
-		clamped[31] &= 127;
-		clamped[31] |= 64;
-		Ed25519ExpandedPrivateKey expanded = new Ed25519ExpandedPrivateKey(
-			Ed25519Scalars.fromLittleEndian(clamped), Arrays.copyOfRange(hash, 32, 64));
-		Arrays.fill(clamped, (byte)0);
-		Arrays.fill(hash, (byte)0);
-		return expanded;
+		try (SecretCopies copies = SecretCopies.open())
+		{
+			byte[] hash = copies.hold(sha512(seed));
+			Arrays.fill(seed, (byte)0);
+			byte[] clamped = copies.hold(Arrays.copyOf(hash, 32));
+			clamped[0] &= (byte)248;
+			clamped[31] &= 127;
+			clamped[31] |= 64;
+			return new Ed25519ExpandedPrivateKey(Ed25519Scalars.fromLittleEndian(clamped),
+				Arrays.copyOfRange(hash, 32, 64));
+		}
 	}
 
 	/**

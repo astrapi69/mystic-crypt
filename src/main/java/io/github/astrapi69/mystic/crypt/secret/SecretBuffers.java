@@ -87,12 +87,14 @@ public final class SecretBuffers
 	 */
 	public static byte[] toUtf8(final char[] chars)
 	{
-		ByteBuffer encoded = StandardCharsets.UTF_8.encode(CharBuffer.wrap(chars));
-		byte[] bytes = new byte[encoded.remaining()];
-		encoded.get(bytes);
-		// the encoder sizes its buffer generously and it still holds what was encoded
-		wipeBackingArrayOf(encoded);
-		return bytes;
+		try (SecretCopies copies = SecretCopies.open())
+		{
+			// the encoder sizes its buffer generously and it still holds what was encoded
+			ByteBuffer encoded = copies.hold(StandardCharsets.UTF_8.encode(CharBuffer.wrap(chars)));
+			byte[] bytes = new byte[encoded.remaining()];
+			encoded.get(bytes);
+			return bytes;
+		}
 	}
 
 	/**
@@ -105,11 +107,13 @@ public final class SecretBuffers
 	 */
 	public static char[] fromUtf8(final byte[] bytes)
 	{
-		CharBuffer decoded = StandardCharsets.UTF_8.decode(ByteBuffer.wrap(bytes));
-		char[] chars = new char[decoded.remaining()];
-		decoded.get(chars);
-		wipeBackingArrayOf(decoded);
-		return chars;
+		try (SecretCopies copies = SecretCopies.open())
+		{
+			CharBuffer decoded = copies.hold(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(bytes)));
+			char[] chars = new char[decoded.remaining()];
+			decoded.get(chars);
+			return chars;
+		}
 	}
 
 	/**
