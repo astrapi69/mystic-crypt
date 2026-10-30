@@ -35,9 +35,19 @@ contrast, layout at phone width, link check).
    me and I add it to the page as a meta tag or a file in this branch.
 2. **Bing Webmaster Tools**: the same, with the same sitemap URL. The verification code is also
    yours to send.
-3. **Repository description and topics** on GitHub. Proposal, not yet set:
-   - Description: `Java cryptography library: AES-GCM, Ed25519, X25519, ML-KEM, ML-DSA, PEM/PKCS#8 and OpenPGP key reading, Argon2id. Requires JDK 25.`
-   - Topics: `java`, `cryptography`, `encryption`, `digital-signatures`, `key-agreement`, `post-quantum-cryptography`, `bouncy-castle`, `pem`, `pkcs8`, `openpgp`, `argon2`
+3. **Repository description and topics** on GitHub: **done on 30 October 2026**, approved by Aster with
+   two changes to the proposal.
+   - Description, with SLH-DSA added, which the library supports and the proposal had left out:
+     `Java cryptography library: AES-GCM, Ed25519, X25519, ML-KEM, ML-DSA, SLH-DSA, PEM/PKCS#8 and OpenPGP key reading, Argon2id. Requires JDK 25.`
+   - Topics: the repository already had 20, which is GitHub's limit, so adding the proposal's 11 alone
+     was not possible. The set is now the 11 proposed plus 9 of the old ones: `java`, `cryptography`,
+     `encryption`, `digital-signatures`, `key-agreement`, `post-quantum-cryptography`, `bouncy-castle`,
+     `pem`, `pkcs8`, `openpgp`, `argon2`, `ml-kem`, `ml-dsa`, `slh-dsa`, `der`, `hashing`, `jpms`,
+     `maven-central`, `obfuscation`, `decryption`. Removed: `hex`, `openssl`, `crypt`, `mystic-crypt` and
+     `bouncycastle`, which duplicated `bouncy-castle`.
+   - Set with `gh repo edit astrapi69/mystic-crypt --remove-topic …`, then `--description … --add-topic …`.
+     Read back with `gh api repos/astrapi69/mystic-crypt --jq '.description, (.topics | length), (.topics | sort)'`:
+     the description as above, 20 topics, exactly this set.
 
 ## Open decisions
 
