@@ -130,3 +130,26 @@ tasks.matching { it.name.startsWith("nmcpPublishAllPublicationsToCentralPortal")
         }
     }
 }
+
+// An upload to the Central Portal leaves only from CI: publish.yml on a RELEASE-* tag for a release, a manual
+// run of publish.yml for a snapshot. Never from a local tree: test-object 9.1 was released from a clone whose
+// commits never reached the repository (astrapi69/test-object#19, #21, #236 here). Read now, not when the task runs, for the
+// configuration cache. The match is the tasks that send to the Central Portal, releases and snapshots; the
+// nmcpPublish...ToMavenLocal task of the same plugin writes to the local repository and stays allowed.
+def uploadInCi = System.getenv("GITHUB_ACTIONS") == "true"
+def uploadRef = System.getenv("GITHUB_REF") ?: ""
+def uploadVersion = version.toString()
+def uploadIsRelease = !uploadVersion.endsWith("SNAPSHOT")
+tasks.matching { it.name.startsWith("nmcpPublish") && it.name.contains("ToCentralPortal") }.configureEach {
+    doFirst {
+        if (!uploadInCi) {
+            throw new GradleException("Uploads to the Central Portal run only in CI: a RELEASE-* tag runs "
+                + "publish.yml for a release, and a manual run of publish.yml publishes a snapshot. This is a "
+                + "local build (GITHUB_ACTIONS is not set), so ${uploadVersion} is not uploaded.")
+        }
+        if (uploadIsRelease && !uploadRef.startsWith("refs/tags/RELEASE-")) {
+            throw new GradleException("A release uploads only from a RELEASE-* tag. This run builds "
+                + "${uploadRef ?: 'no ref'}, so ${uploadVersion} is not uploaded.")
+        }
+    }
+}
