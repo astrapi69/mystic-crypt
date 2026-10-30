@@ -121,10 +121,21 @@ signing {
     }
 }
 
+// Half a key is a misconfiguration, not "no key": GPG_PRIVATE_KEY with an empty GPG_PASSPHRASE (a secret
+// created without a value), or the reverse, signs nothing, and a snapshot went up without its .asc files
+// while CI was green (astrapi69/crypt-data#105, #238 here). Every upload refuses it. Read now, not when
+// the task runs: Task.project at execution time is deprecated and Gradle 10 removes it.
+def halfKeyVersion = version.toString()
+def halfKey = (signingKey && !signingPassphrase) ? "GPG_PASSPHRASE is empty"
+    : (!signingKey && signingPassphrase) ? "GPG_PRIVATE_KEY is empty" : null
 tasks.matching { it.name.startsWith("nmcpPublishAllPublicationsToCentralPortal") }.configureEach {
     doFirst {
+        if (halfKey) {
+            throw new GradleException("GPG_PRIVATE_KEY and GPG_PASSPHRASE must be set together: ${halfKey}, "
+                + "so ${halfKeyVersion} would go up unsigned. Set the missing secret, or neither.")
+        }
         if (releaseVersion && !hasInMemoryKey && !hasLocalKey) {
-            throw new GradleException("Refusing to publish ${project.version} unsigned. "
+            throw new GradleException("Refusing to publish ${halfKeyVersion} unsigned. "
                 + "Set GPG_PRIVATE_KEY and GPG_PASSPHRASE, or a local signing.keyId / "
                 + "signing.gnupg.keyName / signing.secretKeyRingFile property.")
         }
