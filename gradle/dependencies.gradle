@@ -20,7 +20,7 @@ dependencies {
     implementation libs.xml.base
     // command-line interface (io.github.astrapi69.mystic.crypt.cli)
     implementation libs.picocli
-    // the --json output of the command line; already at runtime through randomizer, used directly
+    // the --json output of the command line
     implementation libs.jackson.databind
 
     testImplementation libs.silly.strings
