@@ -24,6 +24,7 @@
  */
 package io.github.astrapi69.mystic.crypt;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -34,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
@@ -74,6 +76,13 @@ class ReleaseConsistencyTest
 	 * command table does not list it and the comparison leaves it out.
 	 */
 	private static final String PICOCLI_HELP = "help";
+
+	private static final String SEARCH_CONSOLE_FILE = "google5bee4cd8b72b08de.html";
+
+	private static final String PAGE_ADDRESS = "https://astrapi69.github.io/mystic-crypt/";
+
+	private static final Pattern LASTMOD = Pattern
+		.compile("<lastmod>(\\d{4}-\\d{2}-\\d{2})</lastmod>");
 
 	private static final Pattern RELEASE_HEADING = Pattern.compile("^Version (\\d+(?:\\.\\d+)+)$",
 		Pattern.MULTILINE);
@@ -120,6 +129,37 @@ class ReleaseConsistencyTest
 			"project page does not name " + coordinates() + ":" + latestReleaseVersion());
 		assertTrue(page.contains("<version>" + latestReleaseVersion() + "</version>"),
 			"project page does not give the Maven version " + latestReleaseVersion());
+	}
+
+	/**
+	 * The Search Console ownership file must stay on the page's branch. Removing it withdraws the
+	 * verification that Google granted.
+	 */
+	@Test
+	void projectPage_keepsTheSearchConsoleVerificationFile() throws IOException
+	{
+		Path verification = pagesIndex().resolveSibling(SEARCH_CONSOLE_FILE);
+
+		assertTrue(Files.isRegularFile(verification), SEARCH_CONSOLE_FILE
+			+ " is missing from the project page: Search Console would lose " + "its verification");
+		assertEquals("google-site-verification: " + SEARCH_CONSOLE_FILE,
+			Files.readString(verification).strip(),
+			SEARCH_CONSOLE_FILE + " does not carry the verification line");
+	}
+
+	/** The sitemap lists the page's address, with a lastmod date that is a calendar date. */
+	@Test
+	void projectPage_hasASitemapWithADatedEntry() throws IOException
+	{
+		Path sitemap = pagesIndex().resolveSibling("sitemap.xml");
+		assertTrue(Files.isRegularFile(sitemap), "sitemap.xml is missing from the project page");
+		String xml = Files.readString(sitemap);
+
+		assertTrue(xml.contains("<loc>" + PAGE_ADDRESS + "</loc>"),
+			"sitemap.xml does not list " + PAGE_ADDRESS);
+		Matcher lastmod = LASTMOD.matcher(xml);
+		assertTrue(lastmod.find(), "sitemap.xml has no lastmod date");
+		LocalDate.parse(lastmod.group(1));
 	}
 
 	@Test
