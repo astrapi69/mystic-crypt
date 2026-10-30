@@ -84,7 +84,9 @@ prove the absence of weak tests.
 
 Each row names the commit it was measured on: a release tag where the repo has one for the
 current state, a development head where the next release is not cut yet. The crypt-api and
-crypt-data rows were measured 2026-08-31, the mystic-crypt row 2026-09-05.
+crypt-data rows were measured 2026-08-31. The mystic-crypt row was measured 2026-10-30 on
+`develop` at `e288d588` (13.9-SNAPSHOT), JDK 25.0.4: `./gradlew clean build --no-build-cache`, then
+`./gradlew pitest --no-build-cache`.
 
 *Mutation score* divides killed mutants by all mutants, including ones in code no test executes;
 *test strength* divides only by mutants in executed code, so it answers "of the code the tests do
@@ -94,15 +96,22 @@ run, how much would they notice being broken?".
 |---|---|---|---|---|---|---|
 | `crypt-api` | `RELEASE-10.1` | 271 | 100.00% | 100.00% | 100.0% (78 / 78) | 100.0% |
 | `crypt-data` | `RELEASE-12.2` | 1301 | 100.00% | 100.00% | 100.0% (822 / 822) | 100.0% |
-| `mystic-crypt` | `RELEASE-12.2` | 1308 | 99.94% | 100.00% | 99.6% (1520 / 1526) | 99.7% |
+| `mystic-crypt` | `e288d588`, 2026-10-30 | 1981 | 99.85% | 100.00% | 98.6% (1810 / 1836) | 98.6% |
 
 Regenerate with the commands under [How to run](#how-to-run); the reports are
 `build/reports/jacoco/test/jacocoTestReport.xml` and `build/reports/pitest/`.
 
-`crypt-api` and `crypt-data` are at a literal 100% mutation score. `mystic-crypt` is not, because
-its remaining survivors cannot be killed without making the code worse - see
+`crypt-api` and `crypt-data` are at a literal 100% mutation score. `mystic-crypt` is not. Of its 25
+survivors at `e288d588`, 8 are the ones
 ["Why not literal 100%"](COVERAGE_EXCEPTIONS.md#why-not-literal-100) in
-[COVERAGE_EXCEPTIONS.md](COVERAGE_EXCEPTIONS.md) for the per-mutant reasoning. Five rounds of this
+[COVERAGE_EXCEPTIONS.md](COVERAGE_EXCEPTIONS.md) explains mutant by mutant: they cannot be killed
+without making the code worse. The other 17 arrived with the passphrase envelope, the secret
+buffers and the command line of 13.x, and nobody has examined them yet
+([#227](https://github.com/astrapi69/mystic-crypt/issues/227)). Among them is the random salt of
+`PassphraseEnvelope`. PIT reports the score as 99% and the build passes its threshold of 99 only
+because the score is rounded. PIT also counts a mutant whose test run times out as killed: 91 of the
+1810 are timeouts, 85 of them in the GnuPG home reader (`io.github.astrapi69.mystic.crypt.gnupg`).
+The history below describes how the survivors of 12.2 were worked through. Five rounds of this
 cycle's work went specifically after every surviving mutant: the first round (PR #69 for
 `mystic-crypt`) killed what was killable and documented the rest; a second pass (PR #5 for
 `crypt-data`, PR #76 for `mystic-crypt`) re-examined every documented survivor and found seven that
@@ -127,9 +136,13 @@ the same thing twice, wiped an array something else already wipes, or guarded a 
 below it already covered - which is the more useful half of what a mutation run reports. What is
 left after all six rounds is the floor, not something left undone.
 
-**What these numbers do not tell you.** The two uncovered lines in `mystic-crypt` are
-`MysticCryptCli.main`, which is `System.exit(execute(args))`: no in-process test can execute it
-and survive, and all CLI logic lives in the covered `execute`. The PKCS#11 tests run on CI against
+**What these numbers do not tell you.** `mystic-crypt` has six uncovered lines:
+- the two of `MysticCryptCli.main`, which is `System.exit(execute(args))`. No in-process test can
+  execute it and survive, and all CLI logic lives in the covered `execute`;
+- the two `catch` lines each of `SeedDerivation.keyPairOf` and `HmacExtensions.hmac`. They are
+  reached only by a Java runtime that lacks an algorithm every JDK has (COVERAGE_EXCEPTIONS.md).
+
+The PKCS#11 tests run on CI against
 a SoftHSM2 token set up by the workflow, so `Pkcs11Factory` counts towards the `crypt-data` number
 everywhere, not only on a developer machine with SoftHSM2 installed. There has been no external
 audit and no fuzzing. Known-answer vectors exist only where the primitive is deterministic and a
