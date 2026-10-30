@@ -32,6 +32,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import io.github.astrapi69.mystic.crypt.aead.KeyCommittingAeadEncryptor;
+import io.github.astrapi69.mystic.crypt.secret.SecretCopies;
 import io.github.astrapi69.random.number.RandomByteFactory;
 
 /**
@@ -211,20 +212,13 @@ public final class PassphraseCryptor
 	private static SecretKey deriveKey(final char[] passphrase, final byte[] salt,
 		final int iterations)
 	{
-		final byte[] keyBytes = Pbkdf2Support.deriveKey(passphrase, salt, iterations,
-			KEY_LENGTH_BITS);
-		try
+		try (SecretCopies copies = SecretCopies.open())
 		{
-			return new SecretKeySpec(keyBytes, "AES");
-		}
-		finally
-		{
-			// SecretKeySpec copies the bytes it is given, so nothing observable changes whether
-			// this wipe happens or not - it is here because leaving derived key material in a
-			// live array is the kind of thing that only becomes visible in a heap dump. PIT
-			// reports removing it as a surviving mutant for exactly that reason; see
-			// docs/COVERAGE_EXCEPTIONS.md.
-			Arrays.fill(keyBytes, (byte)0);
+			// SecretKeySpec copies the bytes it is given, so the derived array is this method's
+			// to overwrite
+			return new SecretKeySpec(
+				copies.hold(Pbkdf2Support.deriveKey(passphrase, salt, iterations, KEY_LENGTH_BITS)),
+				"AES");
 		}
 	}
 }
