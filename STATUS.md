@@ -13,6 +13,16 @@ Last updated: 2026-10-30. Page: https://astrapi69.github.io/mystic-crypt/ (branc
   and documentation. Maven and Gradle coordinates show the current release 13.8, checked 30 October 2026.
 - The page loads nothing from other hosts. The footer says so.
 
+## Status after the merge
+
+- Merged on 30 October 2026: pull request 225 (`5e935431`). The page content is on `gh-pages`.
+- Not yet verified: the live page at https://astrapi69.github.io/mystic-crypt/. The check environment
+  could not reach github.io, so the live rendering, the social preview and the sitemap fetch still need a
+  check from a browser. Also: the links the environment could not reach (central.sonatype.com, javadoc.io,
+  ko-fi.com, liberapay.com, PayPal) need a check from a normal browser.
+- Open repository tensions, not on the page: `README.md` still has the `${latestVersion}` placeholder, and
+  the sources disagree on whether the JDK provides ML-KEM and ML-DSA (see the PR description).
+
 ## Measurements
 
 The numbers before and after the PR are in the PR description (Lighthouse, page weight, requests,
