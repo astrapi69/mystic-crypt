@@ -9,8 +9,7 @@ REPO = "https://github.com/astrapi69/mystic-crypt"
 DESCRIPTION = ("Java cryptography library: AES-GCM, Ed25519, X25519, ML-KEM and ML-DSA, "
                "PEM/PKCS#8 and OpenPGP key reading, Argon2id. Requires JDK 25.")
 TITLE = "mystic-crypt: Java encryption, signature and key library"
-VERSION = "13.8"
-RELEASE_CHECKED = "30 October 2026"
+VERSION = "13.9"
 
 FAQ = [
  ("Which Java version does mystic-crypt need?",
@@ -124,7 +123,7 @@ HEADER = f"""<body>
         <p class="lead">Encryption, password hashing, digital signatures, key agreement and post-quantum
           algorithms for Java 25, built on the JDK and Bouncy Castle. It reads PEM and PKCS#8 keys and
           OpenPGP key homes, and it ships a command line tool.</p>
-        <p class="meta-line">Current release {VERSION} on Maven Central, checked {RELEASE_CHECKED}. License: MIT.</p>
+        <p class="meta-line">Current release {VERSION} on Maven Central. License: MIT.</p>
         <div class="badges">
           <a href="https://central.sonatype.com/artifact/io.github.astrapi69/mystic-crypt">Maven Central</a>
           <a href="{REPO}">Source on GitHub</a>
@@ -143,7 +142,7 @@ HEADER = f"""<body>
       <div class="wrap">
         <h2>Getting started</h2>
         <p>Requires JDK 25 or newer, at build and at runtime. Add the library with the current release
-          {VERSION} from Maven Central. Version 13.9 is in development and is not published yet.</p>
+          {VERSION} from Maven Central.</p>
 
         <h3>Gradle</h3>
         <pre><code>dependencies {{
@@ -315,8 +314,13 @@ java -jar mystic-crypt-{VERSION}-all.jar checksum --file build.gradle --algorith
         <h3>Known advisories and fixes</h3>
         <p>Up to 13.7, <code>PrivateKeyDecryptor</code>, <code>PrivateKeyGenericDecryptor</code> and
           <code>GenericObjectDecryptor</code> built whatever classes the ciphertext named, without a filter
-          (GHSA-87j9-xjf5-f387). 13.8 fixes this. The <a href="{REPO}/blob/develop/CHANGELOG.md">changelog</a>
-          describes the fix and what callers must change.</p>
+          (<a href="{REPO}/security/advisories/GHSA-87j9-xjf5-f387">GHSA-87j9-xjf5-f387</a>). 13.8 fixes this. The
+          <a href="{REPO}/blob/develop/CHANGELOG.md">changelog</a> describes the fix and what callers must change.</p>
+        <p>Before 13.7, generated passwords, salts and GCM nonces came from the default generator of randomizer,
+          which randomizer before 10.5 seeded with the current time
+          (<a href="{REPO}/security/advisories/GHSA-rmpr-hqmh-r8gp">GHSA-rmpr-hqmh-r8gp</a>). 13.7 fixes this. Since 13.9
+          these values come from the JDK's <code>SecureRandom</code> directly, and the library no longer depends on
+          randomizer at runtime. Key generation was not affected: it always used the JDK's source.</p>
 
         <h3>Verify a release signature</h3>
         <p>Since 13.6 the releases are signed by a signing subkey. Import the key once, then verify the signature

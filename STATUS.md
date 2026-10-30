@@ -1,6 +1,6 @@
 # Status of the project page
 
-Last updated: 2026-10-30. Page: https://astrapi69.github.io/mystic-crypt/ (branch `gh-pages`, file `index.html`).
+Last updated: 2026-10-30, for 13.9. Page: https://astrapi69.github.io/mystic-crypt/ (branch `gh-pages`, file `index.html`).
 
 ## Done in the search-optimisation PR
 
@@ -10,7 +10,9 @@ Last updated: 2026-10-30. Page: https://astrapi69.github.io/mystic-crypt/ (branc
   Both were checked with `schema-dts` and `tsc` (see the PR for the command and output).
 - `robots.txt` and `sitemap.xml` are in the branch.
 - The page has one h1, sections for getting started, examples, features, command line, FAQ, security
-  and documentation. Maven and Gradle coordinates show the current release 13.8, checked 30 October 2026.
+  and documentation. Maven and Gradle coordinates show the release 13.9. The page follows a release before
+  its tag (README release step 2), so between the tag and the maintainer's release in the Central Portal it
+  names a version Central does not serve yet.
 - The page loads nothing from other hosts. The footer says so.
 
 ## Files that must stay
@@ -24,8 +26,9 @@ Last updated: 2026-10-30. Page: https://astrapi69.github.io/mystic-crypt/ (branc
 
 ## Generating the page
 
-`python3 tools/build_page.py` writes `index.html` and `sitemap.xml` in this branch. The script holds
-the page text; the FAQ answers there are the same as the visible text and the structured data.
+`python3 -I tools/build_page.py` writes `index.html` and `sitemap.xml` in this branch. The script holds
+the page text and the version (`VERSION`); the FAQ answers there are the same as the visible text and the
+structured data. The stylesheet is `tools/page.css`, inlined into the page.
 
 ## Status after the merge
 

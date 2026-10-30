@@ -43,7 +43,7 @@
     "name": "Asterios Raptis",
     "url": "https://github.com/astrapi69"
   },
-  "version": "13.8",
+  "version": "13.9",
   "sameAs": "https://central.sonatype.com/artifact/io.github.astrapi69/mystic-crypt",
   "keywords": [
     "Java",
@@ -239,7 +239,7 @@
         <p class="lead">Encryption, password hashing, digital signatures, key agreement and post-quantum
           algorithms for Java 25, built on the JDK and Bouncy Castle. It reads PEM and PKCS#8 keys and
           OpenPGP key homes, and it ships a command line tool.</p>
-        <p class="meta-line">Current release 13.8 on Maven Central, checked 30 October 2026. License: MIT.</p>
+        <p class="meta-line">Current release 13.9 on Maven Central. License: MIT.</p>
         <div class="badges">
           <a href="https://central.sonatype.com/artifact/io.github.astrapi69/mystic-crypt">Maven Central</a>
           <a href="https://github.com/astrapi69/mystic-crypt">Source on GitHub</a>
@@ -258,24 +258,24 @@
       <div class="wrap">
         <h2>Getting started</h2>
         <p>Requires JDK 25 or newer, at build and at runtime. Add the library with the current release
-          13.8 from Maven Central. Version 13.9 is in development and is not published yet.</p>
+          13.9 from Maven Central.</p>
 
         <h3>Gradle</h3>
         <pre><code>dependencies {
-    implementation "io.github.astrapi69:mystic-crypt:13.8"
+    implementation "io.github.astrapi69:mystic-crypt:13.9"
 }</code></pre>
 
         <h3>Maven</h3>
         <pre><code>&lt;dependency&gt;
     &lt;groupId&gt;io.github.astrapi69&lt;/groupId&gt;
     &lt;artifactId&gt;mystic-crypt&lt;/artifactId&gt;
-    &lt;version&gt;13.8&lt;/version&gt;
+    &lt;version&gt;13.9&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
 
         <h3>Command line</h3>
         <p>The published <code>-all</code> jar runs the command line tool. Pass secrets through standard input
           rather than as arguments, because an argument is visible to other processes and lands in the shell history:</p>
-        <pre><code>java -jar mystic-crypt-13.8-all.jar hash --password-stdin &lt; password.txt</code></pre>
+        <pre><code>java -jar mystic-crypt-13.9-all.jar hash --password-stdin &lt; password.txt</code></pre>
       </div>
     </section>
 
@@ -383,9 +383,9 @@ SecretKey received = MlKemKeyExchange.decapsulate(recipient.getPrivate(),
       <div class="wrap">
         <h2>Command line</h2>
         <p>The published <code>-all</code> artifact is a runnable jar:</p>
-        <pre><code>java -jar mystic-crypt-13.8-all.jar --help
-java -jar mystic-crypt-13.8-all.jar hash --password-stdin &lt; password.txt
-java -jar mystic-crypt-13.8-all.jar checksum --file build.gradle --algorithm SHA-256</code></pre>
+        <pre><code>java -jar mystic-crypt-13.9-all.jar --help
+java -jar mystic-crypt-13.9-all.jar hash --password-stdin &lt; password.txt
+java -jar mystic-crypt-13.9-all.jar checksum --file build.gradle --algorithm SHA-256</code></pre>
         <div class="table-wrap">
           <table>
             <thead><tr><th>Command</th><th>Description</th></tr></thead>
@@ -443,14 +443,19 @@ java -jar mystic-crypt-13.8-all.jar checksum --file build.gradle --algorithm SHA
         <h3>Known advisories and fixes</h3>
         <p>Up to 13.7, <code>PrivateKeyDecryptor</code>, <code>PrivateKeyGenericDecryptor</code> and
           <code>GenericObjectDecryptor</code> built whatever classes the ciphertext named, without a filter
-          (GHSA-87j9-xjf5-f387). 13.8 fixes this. The <a href="https://github.com/astrapi69/mystic-crypt/blob/develop/CHANGELOG.md">changelog</a>
-          describes the fix and what callers must change.</p>
+          (<a href="https://github.com/astrapi69/mystic-crypt/security/advisories/GHSA-87j9-xjf5-f387">GHSA-87j9-xjf5-f387</a>). 13.8 fixes this. The
+          <a href="https://github.com/astrapi69/mystic-crypt/blob/develop/CHANGELOG.md">changelog</a> describes the fix and what callers must change.</p>
+        <p>Before 13.7, generated passwords, salts and GCM nonces came from the default generator of randomizer,
+          which randomizer before 10.5 seeded with the current time
+          (<a href="https://github.com/astrapi69/mystic-crypt/security/advisories/GHSA-rmpr-hqmh-r8gp">GHSA-rmpr-hqmh-r8gp</a>). 13.7 fixes this. Since 13.9
+          these values come from the JDK's <code>SecureRandom</code> directly, and the library no longer depends on
+          randomizer at runtime. Key generation was not affected: it always used the JDK's source.</p>
 
         <h3>Verify a release signature</h3>
         <p>Since 13.6 the releases are signed by a signing subkey. Import the key once, then verify the signature
           next to the jar:</p>
         <pre><code>gpg --keyserver hkps://keys.openpgp.org --recv-keys 5B2FA6B11E298BC09287F423D8C403518C49CA75
-gpg --verify mystic-crypt-13.8.jar.asc mystic-crypt-13.8.jar</code></pre>
+gpg --verify mystic-crypt-13.9.jar.asc mystic-crypt-13.9.jar</code></pre>
         <p>The primary key fingerprint must be <code>5B2F A6B1 1E29 8BC0 9287 F423 D8C4 0351 8C49 CA75</code>,
           and for a release signed by the subkey its fingerprint must be
           <code>6D67 F844 2A6F CC96 BD7C 1B5E 9FCF 7C97 10E2 BD8D</code>.

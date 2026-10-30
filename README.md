@@ -13,8 +13,8 @@ plain links only, which is why the badge row holds text links where the main REA
 images.
 
 The page summarizes the [README on `develop`](https://github.com/astrapi69/mystic-crypt/blob/develop/README.md)
-and links to the documentation there. It deliberately carries no version number and no coverage or
-mutation figures: the version is one click away on Maven Central, the measured numbers live in
-[docs/TESTING.md](https://github.com/astrapi69/mystic-crypt/blob/develop/docs/TESTING.md). When the
-README's quick start, feature list or CLI table changes, this page follows in a pull request against
-`gh-pages`.
+and links to the documentation there. It carries the current release in its coordinates, set by
+`VERSION` in `tools/build_page.py`, and no coverage or mutation figures: the measured numbers live in
+[docs/TESTING.md](https://github.com/astrapi69/mystic-crypt/blob/develop/docs/TESTING.md). When a
+release is cut, or the README's quick start, feature list or CLI table changes, this page follows in a
+pull request against `gh-pages`, merged before the tag.
