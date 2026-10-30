@@ -155,7 +155,10 @@ class EncryptDecryptCommandTest extends AbstractCliTest
 			"a wrong passphrase is the negative answer, not a tool error, but exit code was "
 				+ exitCode + " and stderr was: '" + err + "'");
 		assertFalse(out.contains("secret"), "nothing of the plaintext may be printed");
-		assertFalse(err.isBlank(), "the failure must be explained on stderr");
+		// not only "not blank": the warning about a passphrase on the command line fills stderr
+		// too, which let a missing message pass unnoticed (#227)
+		assertTrue(err.contains("the passphrase is wrong or the data was altered"),
+			"the failure must be explained on stderr, but stderr was: '" + err + "'");
 	}
 
 	@Test

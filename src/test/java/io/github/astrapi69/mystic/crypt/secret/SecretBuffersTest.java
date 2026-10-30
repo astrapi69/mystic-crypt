@@ -110,6 +110,33 @@ class SecretBuffersTest
 		assertTrue(true, "and neither null throws - a close path must not fail on an empty vault");
 	}
 
+	/**
+	 * What toUtf8 and fromUtf8 hand these methods is the JDK coder's own buffer, which never leaves
+	 * them, so a test of those two cannot see it. The methods themselves are checked on a buffer
+	 * the test keeps (#227)
+	 */
+	@Test
+	@DisplayName("the array behind a byte buffer is zero-filled")
+	void wipeBackingArrayOf_zeroFills_theArrayBehindAByteBuffer()
+	{
+		byte[] behind = "encoded secret".getBytes(StandardCharsets.UTF_8);
+
+		SecretBuffers.wipeBackingArrayOf(ByteBuffer.wrap(behind));
+
+		assertArrayEquals(new byte[behind.length], behind);
+	}
+
+	@Test
+	@DisplayName("the array behind a char buffer is zero-filled")
+	void wipeBackingArrayOf_zeroFills_theArrayBehindACharBuffer()
+	{
+		char[] behind = "decoded secret".toCharArray();
+
+		SecretBuffers.wipeBackingArrayOf(CharBuffer.wrap(behind));
+
+		assertArrayEquals(new char[behind.length], behind);
+	}
+
 	@Test
 	@DisplayName("a buffer that will not hand out its array is left alone rather than throwing")
 	void aBufferWithoutAnAccessibleArray_isLeftAlone()
