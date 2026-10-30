@@ -34,9 +34,8 @@ import io.github.astrapi69.crypt.data.factory.SignatureFactory;
 
 /**
  * The class {@link MlDsaVerifier} verifies signatures produced by {@link MlDsaSigner} with an
- * ML-DSA public key. Requires Bouncy Castle registered as a security provider (
- * {@code Security.addProvider(new BouncyCastleProvider())}), since ML-DSA is not natively supported
- * by the JDK.
+ * ML-DSA public key. The JDK provides ML-DSA since JDK 24, so no security provider has to be
+ * registered for it (see {@link MlDsaSigner}).
  */
 public class MlDsaVerifier
 {

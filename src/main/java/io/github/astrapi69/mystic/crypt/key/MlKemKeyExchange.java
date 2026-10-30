@@ -42,9 +42,9 @@ import io.github.astrapi69.crypt.data.factory.KeyPairFactory;
 
 /**
  * The class {@link MlKemKeyExchange} establishes a shared {@link SecretKey} with ML-KEM, the
- * NIST-standardized (FIPS 203) post-quantum key encapsulation mechanism. Requires Bouncy Castle
- * registered as a security provider ({@code Security.addProvider(new BouncyCastleProvider())}),
- * since ML-KEM is not natively supported by the JDK.
+ * NIST-standardized (FIPS 203) post-quantum key encapsulation mechanism. The JDK provides ML-KEM
+ * since JDK 24, and this library runs on JDK 25 at the earliest, so no security provider has to be
+ * registered for it; Bouncy Castle is not needed here.
  * <p>
  * Unlike Diffie-Hellman-style key agreement (see {@link X25519KeyExchange}), a KEM is
  * one-directional: only the recipient needs a key pair. The sender calls
