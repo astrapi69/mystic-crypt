@@ -256,8 +256,8 @@ SecretKey received = MlKemKeyExchange.decapsulate(recipient.getPrivate(),
           <div class="card">
             <h3>Public-key cryptography</h3>
             <p>RSA hybrid encryption, Ed25519 signatures, X25519 key agreement with HKDF, PEM/DER/PKCS#8
-              keys from OpenSSL or Java, X.509 certificates, key stores, Ed25519 key blinding and
-              SLIP-0010 seed derivation.</p>
+              keys from OpenSSL or Java, X.509 certificates, key stores, read-only reading of an
+              OpenPGP key home (never through gpg), Ed25519 key blinding and SLIP-0010 seed derivation.</p>
           </div>
           <div class="card">
             <h3>Post-quantum</h3>
@@ -308,6 +308,7 @@ java -jar mystic-crypt-${latestVersion}-all.jar checksum --file build.gradle --a
               <tr><td><code>share</code></td><td>Split a secret into shares and combine them back (Shamir secret sharing)</td></tr>
               <tr><td><code>keyx</code></td><td>Exchange a shared secret with another person: <code>new</code> on the recipient's side, <code>send</code> on the sender's, <code>receive</code> back on the recipient's</td></tr>
               <tr><td><code>convert</code></td><td>Say what a key or certificate file is, and convert it between PEM and DER or between PKCS#1 and PKCS#8</td></tr>
+              <tr><td><code>release-key</code></td><td>Read the state of an OpenPGP release key in a GnuPG home (<code>status</code>, with <code>--home</code>, <code>--key</code> and <code>--json</code>). Only reads</td></tr>
             </tbody>
           </table>
         </div>
