@@ -126,6 +126,43 @@ class PassphraseCryptorTest
 			"a fresh salt and nonce per call must make two encryptions of the same input differ");
 	}
 
+	/**
+	 * The test above compares whole outputs, and the payload's own AEAD nonce makes two outputs
+	 * differ whatever the salt is: with the salt left all zeros it still passed (#227, the
+	 * counter-run that replaced the random salt by a zero array). This one looks at the salt
+	 * itself, and at the ciphertext behind the header
+	 */
+	@Test
+	void encryptingTheSameInputTwiceDrawsTwoSaltsAndTwoCiphertexts()
+	{
+		byte[] plain = "same input".getBytes(StandardCharsets.UTF_8);
+		int saltStart = PassphraseCryptor.MAGIC.length + 1 + Integer.BYTES;
+
+		byte[] first = PassphraseCryptor.encrypt(passphrase("pass"), plain);
+		byte[] second = PassphraseCryptor.encrypt(passphrase("pass"), plain);
+
+		assertFalse(
+			Arrays.equals(Arrays.copyOfRange(first, saltStart, PassphraseCryptor.HEADER_LENGTH),
+				Arrays.copyOfRange(second, saltStart, PassphraseCryptor.HEADER_LENGTH)),
+			"each call draws its own salt; a fixed one makes the key depend on the passphrase alone");
+		assertFalse(
+			Arrays.equals(Arrays.copyOfRange(first, PassphraseCryptor.HEADER_LENGTH, first.length),
+				Arrays.copyOfRange(second, PassphraseCryptor.HEADER_LENGTH, second.length)),
+			"the same input under the same passphrase must not seal to the same ciphertext");
+	}
+
+	/**
+	 * The salt is 16 bytes in every file already written in this format, by this library's command
+	 * line and by lethenon 0.1.0, so its width is fixed by those files and not by the constant
+	 */
+	@Test
+	void theSaltIsSixteenBytesAndThePayloadStartsBehindIt()
+	{
+		assertEquals(16, PassphraseCryptor.SALT_LENGTH);
+		assertEquals(PassphraseCryptor.MAGIC.length + 1 + Integer.BYTES + 16,
+			PassphraseCryptor.HEADER_LENGTH);
+	}
+
 	@Test
 	void inputThatIsNotOfThisFormatIsRejectedByName()
 	{
