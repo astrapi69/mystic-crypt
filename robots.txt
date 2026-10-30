@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://astrapi69.github.io/mystic-crypt/sitemap.xml

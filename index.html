@@ -3,8 +3,122 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>mystic-crypt</title>
-  <meta name="description" content="mystic-crypt - a modern Java cryptography library: authenticated encryption, password hashing, signatures, key agreement and post-quantum cryptography with safe defaults.">
+  <title>mystic-crypt: Java encryption, signature and key library</title>
+  <meta name="description" content="Java cryptography library: AES-GCM, Ed25519, X25519, ML-KEM and ML-DSA, PEM/PKCS#8 and OpenPGP key reading, Argon2id. Requires JDK 25.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://astrapi69.github.io/mystic-crypt/">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%235b3cc4'/%3E%3Ctext x='8' y='12' font-size='11' text-anchor='middle' fill='white' font-family='monospace'%3Em%3C/text%3E%3C/svg%3E">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="mystic-crypt">
+  <meta property="og:title" content="mystic-crypt: Java encryption, signature and key library">
+  <meta property="og:description" content="Java cryptography library: AES-GCM, Ed25519, X25519, ML-KEM and ML-DSA, PEM/PKCS#8 and OpenPGP key reading, Argon2id. Requires JDK 25.">
+  <meta property="og:url" content="https://astrapi69.github.io/mystic-crypt/">
+  <meta property="og:image" content="https://astrapi69.github.io/mystic-crypt/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="mystic-crypt: Java encryption, signature and key library">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="mystic-crypt: Java encryption, signature and key library">
+  <meta name="twitter:description" content="Java cryptography library: AES-GCM, Ed25519, X25519, ML-KEM and ML-DSA, PEM/PKCS#8 and OpenPGP key reading, Argon2id. Requires JDK 25.">
+  <meta name="twitter:image" content="https://astrapi69.github.io/mystic-crypt/og-image.png">
+  <meta name="twitter:image:alt" content="mystic-crypt: Java encryption, signature and key library">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  "@id": "https://astrapi69.github.io/mystic-crypt/#software",
+  "name": "mystic-crypt",
+  "identifier": "io.github.astrapi69:mystic-crypt",
+  "description": "Java cryptography library: AES-GCM, Ed25519, X25519, ML-KEM and ML-DSA, PEM/PKCS#8 and OpenPGP key reading, Argon2id. Requires JDK 25.",
+  "url": "https://astrapi69.github.io/mystic-crypt/",
+  "codeRepository": "https://github.com/astrapi69/mystic-crypt",
+  "programmingLanguage": {
+    "@type": "ComputerLanguage",
+    "name": "Java"
+  },
+  "runtimePlatform": "JDK 25",
+  "license": "https://opensource.org/licenses/MIT",
+  "author": {
+    "@type": "Person",
+    "name": "Asterios Raptis",
+    "url": "https://github.com/astrapi69"
+  },
+  "version": "13.8",
+  "sameAs": "https://central.sonatype.com/artifact/io.github.astrapi69/mystic-crypt",
+  "keywords": [
+    "Java",
+    "cryptography",
+    "digital signatures",
+    "key agreement",
+    "post-quantum cryptography",
+    "OpenPGP"
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Which Java version does mystic-crypt need?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "JDK 25 or newer, both to build and to run. The published jar targets JDK 25 bytecode and will not load on an older JVM."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which key and keystore formats does it read and write?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "PEM, DER and PKCS#8 private and public keys from OpenSSL or Java, X.509 certificates, and PKCS12, JKS and JCEKS key stores. A GnuPG key home is read-only: the OpenPGP key reader reads pubring.kbx and the secret-key files through Bouncy Castle, never through gpg."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is mystic-crypt post-quantum?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. It includes ML-KEM (FIPS 203), ML-DSA (FIPS 204) and SLH-DSA (FIPS 205), and a hybrid X25519 plus ML-KEM combiner. ML-KEM and ML-DSA come from the JDK, which has them since JDK 24, and SLH-DSA from Bouncy Castle. The project does not claim FIPS 140 validation for any module."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How safe is decrypting Java objects since 13.8?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Objects decrypted by PrivateKeyDecryptor, PrivateKeyGenericDecryptor and GenericObjectDecryptor pass an ObjectInputFilter. It admits only the classes the caller names, String by default, and bounds depth, references, array length and size. Callers that decrypt other types name them in the constructors that take a class collection. Java serialization is still the format; replacing it is a later step."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I pass a password on the command line?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The commands read secrets from standard input with their -stdin option, or ask for them in a terminal without echo. Passing a secret as an argument still works in 13.x, prints a warning, and is removed in 14.0."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I verify a release?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Import the signing key, then run gpg --verify on the .asc file next to the jar. The fingerprints to compare are in the Security section of this page."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the library or this page send data anywhere?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The library opens no network connections; it contains no socket or HTTP client code. This page loads no scripts, fonts, images or trackers from other hosts and sets no cookies. A link leaves the page only when you follow it."
+      }
+    }
+  ]
+}
+  </script>
   <style>
     :root {
       --bg: #ffffff;
@@ -96,98 +210,80 @@
     .family { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-family: var(--mono); }
     .family span.arrow { color: var(--fg-muted); }
     footer { border-top: 1px solid var(--border); padding: 24px 0 40px; color: var(--fg-muted); font-size: 14px; }
-  </style>
+  
+    .meta-line { color: var(--fg-muted); font-size: 15px; margin: 0 0 16px; }
+    .faq h3 { margin-top: 20px; }
+    .foot-links a { margin-right: 12px; }
+</style>
 </head>
 <body>
   <header class="site">
     <div class="wrap">
-      <a class="brand" href="#">mystic-crypt</a>
+      <a class="brand" href="#top">mystic-crypt</a>
       <nav aria-label="Sections">
-        <a href="#install">Install</a>
-        <a href="#quick-start">Quick start</a>
+        <a href="#getting-started">Getting started</a>
+        <a href="#quick-start">Examples</a>
         <a href="#features">Features</a>
-        <a href="#cli">CLI</a>
-        <a href="#docs">Docs</a>
-        <a href="https://github.com/astrapi69/mystic-crypt">GitHub</a>
+        <a href="#cli">Command line</a>
+        <a href="#faq">FAQ</a>
+        <a href="#security">Security</a>
+        <a href="#docs">Documentation</a>
       </nav>
     </div>
   </header>
 
-  <main>
-    <div class="wrap hero">
-      <h1>mystic-crypt</h1>
-      <p class="lead">A modern Java cryptography library: symmetric and public-key encryption, password
-        hashing, digital signatures, key agreement and post-quantum cryptography, with an API you can
-        use correctly without being a cryptographer.</p>
-      <div class="badges">
-        <a href="https://central.sonatype.com/artifact/io.github.astrapi69/mystic-crypt">Maven Central</a>
-        <a href="https://github.com/astrapi69/mystic-crypt/actions/workflows/gradle.yml">Build status</a>
-        <a href="https://codecov.io/gh/astrapi69/mystic-crypt">Coverage</a>
-        <a href="https://www.javadoc.io/doc/io.github.astrapi69/mystic-crypt">Javadoc</a>
-        <a href="https://openjdk.org/projects/jdk/25/">Java 25</a>
-        <a href="https://opensource.org/licenses/MIT">MIT license</a>
-      </div>
-      <div class="actions">
-        <a class="btn primary" href="#install">Get started</a>
-        <a class="btn" href="https://github.com/astrapi69/mystic-crypt">Source on GitHub</a>
-        <a class="btn" href="https://www.javadoc.io/doc/io.github.astrapi69/mystic-crypt">API reference</a>
-      </div>
-    </div>
-
-    <section>
+  <main id="top">
+    <section class="hero">
       <div class="wrap">
-        <p>mystic-crypt wraps the JDK's and Bouncy Castle's cryptographic primitives in small, focused
-          classes with safe defaults: authenticated encryption (AES-GCM, ChaCha20-Poly1305) with a fresh
-          nonce per call, memory-hard password hashing (Argon2id), modern elliptic-curve signatures and
-          key agreement (Ed25519, X25519), and the NIST post-quantum algorithms (ML-KEM, ML-DSA,
-          SLH-DSA). You pick the operation; the library picks parameters that are not a footgun.</p>
+        <h1>mystic-crypt: a Java cryptography library</h1>
+        <p class="lead">Encryption, password hashing, digital signatures, key agreement and post-quantum
+          algorithms for Java 25, built on the JDK and Bouncy Castle. It reads PEM and PKCS#8 keys and
+          OpenPGP key homes, and it ships a command line tool.</p>
+        <p class="meta-line">Current release 13.8 on Maven Central, checked 30 October 2026. License: MIT.</p>
+        <div class="badges">
+          <a href="https://central.sonatype.com/artifact/io.github.astrapi69/mystic-crypt">Maven Central</a>
+          <a href="https://github.com/astrapi69/mystic-crypt">Source on GitHub</a>
+          <a href="https://www.javadoc.io/doc/io.github.astrapi69/mystic-crypt">Javadoc</a>
+          <a href="https://github.com/astrapi69/mystic-crypt/blob/develop/CHANGELOG.md">Changelog</a>
+          <a href="https://github.com/astrapi69/mystic-crypt/blob/develop/LICENSE">MIT license</a>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="#getting-started">Get started</a>
+          <a class="btn" href="https://github.com/astrapi69/mystic-crypt">View the source</a>
+        </div>
       </div>
     </section>
 
-    <section id="install">
+    <section id="getting-started">
       <div class="wrap">
-        <h2>Installation</h2>
-        <p><strong>Requires JDK 25 or newer</strong>, at build and at runtime: the published jar targets
-          JDK 25 bytecode. Replace <code>${latestVersion}</code> with the version shown on
-          <a href="https://central.sonatype.com/artifact/io.github.astrapi69/mystic-crypt">Maven Central</a>.</p>
-        <div class="tabs" role="tablist">
-          <button role="tab" aria-selected="true" data-target="install-catalog">Gradle (catalog)</button>
-          <button role="tab" aria-selected="false" data-target="install-gradle">Gradle</button>
-          <button role="tab" aria-selected="false" data-target="install-maven">Maven</button>
-        </div>
-        <div id="install-catalog" role="tabpanel">
-<pre><code># gradle/libs.versions.toml
-[versions]
-mystic-crypt-version = "${latestVersion}"
+        <h2>Getting started</h2>
+        <p>Requires JDK 25 or newer, at build and at runtime. Add the library with the current release
+          13.8 from Maven Central. Version 13.9 is in development and is not published yet.</p>
 
-[libraries]
-mystic-crypt = { module = "io.github.astrapi69:mystic-crypt", version.ref = "mystic-crypt-version" }
+        <h3>Gradle</h3>
+        <pre><code>dependencies {
+    implementation "io.github.astrapi69:mystic-crypt:13.8"
+}</code></pre>
 
-// build.gradle
-dependencies {
-    implementation libs.mystic.crypt
-}</code></pre>
-        </div>
-        <div id="install-gradle" role="tabpanel" hidden>
-<pre><code>dependencies {
-    implementation "io.github.astrapi69:mystic-crypt:${latestVersion}"
-}</code></pre>
-        </div>
-        <div id="install-maven" role="tabpanel" hidden>
-<pre><code>&lt;dependency&gt;
+        <h3>Maven</h3>
+        <pre><code>&lt;dependency&gt;
     &lt;groupId&gt;io.github.astrapi69&lt;/groupId&gt;
     &lt;artifactId&gt;mystic-crypt&lt;/artifactId&gt;
-    &lt;version&gt;${latestVersion}&lt;/version&gt;
+    &lt;version&gt;13.8&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
-        </div>
+
+        <h3>Command line</h3>
+        <p>The published <code>-all</code> jar runs the command line tool. Pass secrets through standard input
+          rather than as arguments, because an argument is visible to other processes and lands in the shell history:</p>
+        <pre><code>java -jar mystic-crypt-13.8-all.jar hash --password-stdin &lt; password.txt</code></pre>
       </div>
     </section>
 
     <section id="quick-start">
       <div class="wrap">
         <h2>Quick start</h2>
-        <p class="muted">These snippets are taken from the README, where every one is compiled and executed by
-          <a href="https://github.com/astrapi69/mystic-crypt/blob/develop/src/test/java/io/github/astrapi69/mystic/crypt/ReadmeExamplesTest.java"><code>ReadmeExamplesTest</code></a>.</p>
+        <p>Every example below is compiled and run by
+          <a href="https://github.com/astrapi69/mystic-crypt/blob/develop/src/test/java/io/github/astrapi69/mystic/crypt/ReadmeExamplesTest.java">ReadmeExamplesTest</a>.</p>
 
         <h3>Encrypt and decrypt data</h3>
         <p>AES-256-GCM with a fresh random nonce per call, prepended to the ciphertext:</p>
@@ -206,6 +302,7 @@ String stored = passwordEncryptor.hashPasswordArgon2id("correct horse battery st
 boolean ok = passwordEncryptor.matchArgon2id("correct horse battery staple", stored);</code></pre>
 
         <h3>Sign and verify</h3>
+        <p>Ed25519 signatures:</p>
 <pre><code>KeyPair keyPair = Ed25519Signer.newKeyPair();
 byte[] document = "release 11.0.0".getBytes(StandardCharsets.UTF_8);
 
@@ -243,10 +340,11 @@ SecretKey received = MlKemKeyExchange.decapsulate(recipient.getPrivate(),
         <h2>Features</h2>
         <div class="grid">
           <div class="card">
-            <h3>Symmetric encryption</h3>
+            <h3>Symmetric encryption and files</h3>
             <p>AES-GCM and ChaCha20-Poly1305 with a fresh nonce per call, for byte arrays, strings, files,
               streams and serializable objects. Chainable encryptors, hex-encoded variants, key-committing
-              AEAD against the "invisible salamanders" attack.</p>
+              AEAD against the "invisible salamanders" attack. Files and text can be encrypted with a
+              passphrase (AES-GCM, PBKDF2-HMAC-SHA256) from the command line.</p>
           </div>
           <div class="card">
             <h3>Password hashing</h3>
@@ -254,41 +352,40 @@ SecretKey received = MlKemKeyExchange.decapsulate(recipient.getPrivate(),
               parameters are encoded with the hash; comparisons are constant-time.</p>
           </div>
           <div class="card">
-            <h3>Public-key cryptography</h3>
-            <p>RSA hybrid encryption, Ed25519 signatures, X25519 key agreement with HKDF, PEM/DER/PKCS#8
-              keys from OpenSSL or Java, X.509 certificates, key stores, read-only reading of an
-              OpenPGP key home (never through gpg), Ed25519 key blinding and SLIP-0010 seed derivation.</p>
+            <h3>Keys, certificates and key stores</h3>
+            <p>RSA hybrid encryption, Ed25519 and ML-DSA signatures, X25519 key agreement with HKDF, key pair
+              generation, PEM, DER and PKCS#8 key files from OpenSSL or Java, X.509 certificates, and PKCS12,
+              JKS and JCEKS key stores. Read-only reading of an OpenPGP key home, never through gpg. Ed25519 key
+              blinding and SLIP-0010 seed derivation.</p>
           </div>
           <div class="card">
             <h3>Post-quantum</h3>
-            <p>ML-KEM (FIPS 203), ML-DSA (FIPS 204), SLH-DSA (FIPS 205), and a hybrid X25519+ML-KEM
+            <p>ML-KEM (FIPS 203), ML-DSA (FIPS 204), SLH-DSA (FIPS 205), and a hybrid X25519 plus ML-KEM
               combiner for the transition period.</p>
           </div>
           <div class="card">
             <h3>Hashing</h3>
-            <p>SHA-2, SHA-3, BLAKE2b/BLAKE2s including keyed (MAC) mode, HMAC as one call, file and
+            <p>SHA-2, SHA-3, BLAKE2b and BLAKE2s including keyed (MAC) mode, HMAC as one call, file and
               object checksums.</p>
           </div>
           <div class="card">
             <h3>Secret sharing and PAKE</h3>
-            <p>Shamir's Secret Sharing, Feldman verifiable secret sharing, J-PAKE and SRP-6a, AES key
-              wrap, PKCS#11/HSM provider configuration.</p>
+            <p>Shamir's Secret Sharing, Feldman verifiable secret sharing, J-PAKE and SRP-6a, AES key wrap,
+              PKCS#11 and HSM provider configuration.</p>
           </div>
         </div>
-        <p style="margin-top:16px">The
-          <a href="https://github.com/astrapi69/mystic-crypt/blob/develop/docs/CRYPTO_CAPABILITIES.md">capability matrix</a>
-          lists every algorithm with the classes involved, and what is deliberately <em>not</em>
-          implemented and why.</p>
+        <p>The <a href="https://github.com/astrapi69/mystic-crypt/blob/develop/docs/CRYPTO_CAPABILITIES.md">capability matrix</a> lists every
+          algorithm with the classes involved, and what is deliberately not implemented, and why.</p>
       </div>
     </section>
 
     <section id="cli">
       <div class="wrap">
-        <h2>Command-line interface</h2>
-        <p>The published <code>-all</code> artifact is a runnable uber-jar:</p>
-<pre><code>java -jar mystic-crypt-${latestVersion}-all.jar --help
-java -jar mystic-crypt-${latestVersion}-all.jar hash --password-stdin &lt; password.txt
-java -jar mystic-crypt-${latestVersion}-all.jar checksum --file build.gradle --algorithm SHA-256</code></pre>
+        <h2>Command line</h2>
+        <p>The published <code>-all</code> artifact is a runnable jar:</p>
+        <pre><code>java -jar mystic-crypt-13.8-all.jar --help
+java -jar mystic-crypt-13.8-all.jar hash --password-stdin &lt; password.txt
+java -jar mystic-crypt-13.8-all.jar checksum --file build.gradle --algorithm SHA-256</code></pre>
         <div class="table-wrap">
           <table>
             <thead><tr><th>Command</th><th>Description</th></tr></thead>
@@ -308,12 +405,55 @@ java -jar mystic-crypt-${latestVersion}-all.jar checksum --file build.gradle --a
               <tr><td><code>share</code></td><td>Split a secret into shares and combine them back (Shamir secret sharing)</td></tr>
               <tr><td><code>keyx</code></td><td>Exchange a shared secret with another person: <code>new</code> on the recipient's side, <code>send</code> on the sender's, <code>receive</code> back on the recipient's</td></tr>
               <tr><td><code>convert</code></td><td>Say what a key or certificate file is, and convert it between PEM and DER or between PKCS#1 and PKCS#8</td></tr>
-              <tr><td><code>release-key</code></td><td>Read the state of an OpenPGP release key in a GnuPG home (<code>status</code>, with <code>--home</code>, <code>--key</code> and <code>--json</code>). Only reads</td></tr>
+              <tr><td><code>release-key</code></td><td>Read the state of an OpenPGP release key in a GnuPG home: <code>status</code>, with <code>--home</code>, <code>--key</code> and <code>--json</code>. Only reads</td></tr>
             </tbody>
           </table>
         </div>
-        <p style="margin-top:16px">Prefer a desktop application? <a href="https://github.com/astrapi69/mystic-crypt-ui">mystic-crypt-ui</a>
-          puts the same library behind a Swing front end.</p>
+      </div>
+    </section>
+
+    <section id="faq" class="faq">
+      <div class="wrap">
+        <h2>Frequently asked questions</h2>
+        <h3>Which Java version does mystic-crypt need?</h3>
+        <p>JDK 25 or newer, both to build and to run. The published jar targets JDK 25 bytecode and will not load on an older JVM.</p>
+        <h3>Which key and keystore formats does it read and write?</h3>
+        <p>PEM, DER and PKCS#8 private and public keys from OpenSSL or Java, X.509 certificates, and PKCS12, JKS and JCEKS key stores. A GnuPG key home is read-only: the OpenPGP key reader reads pubring.kbx and the secret-key files through Bouncy Castle, never through gpg.</p>
+        <h3>Is mystic-crypt post-quantum?</h3>
+        <p>Yes. It includes ML-KEM (FIPS 203), ML-DSA (FIPS 204) and SLH-DSA (FIPS 205), and a hybrid X25519 plus ML-KEM combiner. ML-KEM and ML-DSA come from the JDK, which has them since JDK 24, and SLH-DSA from Bouncy Castle. The project does not claim FIPS 140 validation for any module.</p>
+        <h3>How safe is decrypting Java objects since 13.8?</h3>
+        <p>Objects decrypted by PrivateKeyDecryptor, PrivateKeyGenericDecryptor and GenericObjectDecryptor pass an ObjectInputFilter. It admits only the classes the caller names, String by default, and bounds depth, references, array length and size. Callers that decrypt other types name them in the constructors that take a class collection. Java serialization is still the format; replacing it is a later step.</p>
+        <h3>Can I pass a password on the command line?</h3>
+        <p>The commands read secrets from standard input with their -stdin option, or ask for them in a terminal without echo. Passing a secret as an argument still works in 13.x, prints a warning, and is removed in 14.0.</p>
+        <h3>How do I verify a release?</h3>
+        <p>Import the signing key, then run gpg --verify on the .asc file next to the jar. The fingerprints to compare are in the Security section of this page.</p>
+        <h3>Does the library or this page send data anywhere?</h3>
+        <p>The library opens no network connections; it contains no socket or HTTP client code. This page loads no scripts, fonts, images or trackers from other hosts and sets no cookies. A link leaves the page only when you follow it.</p>
+      </div>
+    </section>
+
+    <section id="security">
+      <div class="wrap">
+        <h2>Security</h2>
+        <p>Report a vulnerability through GitHub's private vulnerability reporting, not as a public issue.
+          <a href="https://github.com/astrapi69/mystic-crypt/blob/develop/SECURITY.md">SECURITY.md</a> names the supported lines (currently 13.x)
+          and what happens after a report.</p>
+
+        <h3>Known advisories and fixes</h3>
+        <p>Up to 13.7, <code>PrivateKeyDecryptor</code>, <code>PrivateKeyGenericDecryptor</code> and
+          <code>GenericObjectDecryptor</code> built whatever classes the ciphertext named, without a filter
+          (GHSA-87j9-xjf5-f387). 13.8 fixes this. The <a href="https://github.com/astrapi69/mystic-crypt/blob/develop/CHANGELOG.md">changelog</a>
+          describes the fix and what callers must change.</p>
+
+        <h3>Verify a release signature</h3>
+        <p>Since 13.6 the releases are signed by a signing subkey. Import the key once, then verify the signature
+          next to the jar:</p>
+        <pre><code>gpg --keyserver hkps://keys.openpgp.org --recv-keys 5B2FA6B11E298BC09287F423D8C403518C49CA75
+gpg --verify mystic-crypt-13.8.jar.asc mystic-crypt-13.8.jar</code></pre>
+        <p>The primary key fingerprint must be <code>5B2F A6B1 1E29 8BC0 9287 F423 D8C4 0351 8C49 CA75</code>,
+          and for a release signed by the subkey its fingerprint must be
+          <code>6D67 F844 2A6F CC96 BD7C 1B5E 9FCF 7C97 10E2 BD8D</code>.
+          The <a href="https://github.com/astrapi69/mystic-crypt#verifying-the-release-signatures">README</a> explains the trust warning gpg prints.</p>
       </div>
     </section>
 
@@ -324,63 +464,53 @@ java -jar mystic-crypt-${latestVersion}-all.jar checksum --file build.gradle --a
           <table>
             <thead><tr><th>Document</th><th>What it covers</th></tr></thead>
             <tbody>
-              <tr><td><a href="https://github.com/astrapi69/mystic-crypt/blob/develop/docs/CRYPTO_CAPABILITIES.md">Capability matrix</a></td><td>Every algorithm, its class, and what is out of scope with reasons</td></tr>
-              <tr><td><a href="https://github.com/astrapi69/mystic-crypt/blob/develop/docs/TESTING.md">Testing strategy</a></td><td>How it is tested, the coverage and mutation numbers, and the defects the process caught</td></tr>
+              <tr><td><a href="https://github.com/astrapi69/mystic-crypt/blob/develop/docs/CRYPTO_CAPABILITIES.md">Capability matrix</a></td><td>Every algorithm, its class, and what is out of scope, with reasons</td></tr>
+              <tr><td><a href="https://github.com/astrapi69/mystic-crypt/blob/develop/docs/TESTING.md">Testing strategy</a></td><td>How the library is tested, the coverage and mutation numbers, and the defects the process caught</td></tr>
               <tr><td><a href="https://github.com/astrapi69/mystic-crypt/blob/develop/docs/COVERAGE_EXCEPTIONS.md">Coverage exceptions</a></td><td>Every uncovered line and surviving mutant, with its reason</td></tr>
               <tr><td><a href="https://github.com/astrapi69/mystic-crypt/blob/develop/docs/KEY_AGREEMENT_EVOLUTION.md">Key agreement, explained</a></td><td>From book ciphers to the Double Ratchet</td></tr>
               <tr><td><a href="https://github.com/astrapi69/mystic-crypt/blob/develop/CHANGELOG.md">Changelog</a></td><td>What changed in each release</td></tr>
+              <tr><td><a href="https://github.com/astrapi69/mystic-crypt/releases">GitHub releases</a></td><td>Release notes and the tags</td></tr>
               <tr><td><a href="https://www.javadoc.io/doc/io.github.astrapi69/mystic-crypt">Javadoc</a></td><td>API reference</td></tr>
               <tr><td><a href="https://github.com/astrapi69/mystic-crypt/wiki">Wiki</a></td><td>Task-oriented guides</td></tr>
             </tbody>
           </table>
         </div>
+
         <h3>The crypt family</h3>
-        <p>mystic-crypt is the top of a three-repository stack:</p>
-        <p class="family">
-          <a href="https://github.com/astrapi69/crypt-api">crypt-api</a><span class="arrow">-&gt;</span>
-          <a href="https://github.com/astrapi69/crypt-data">crypt-data</a><span class="arrow">-&gt;</span>
-          <strong>mystic-crypt</strong>
-        </p>
-        <p class="muted">crypt-api holds the algorithm constants and interfaces, crypt-data the factories,
-          readers/writers and models, mystic-crypt the ready-to-use encryptors.</p>
+        <p>mystic-crypt is the top of a three-repository stack: <a href="https://github.com/astrapi69/crypt-api">crypt-api</a>
+          holds the algorithm constants and interfaces, <a href="https://github.com/astrapi69/crypt-data">crypt-data</a>
+          the factories, readers, writers and models, and mystic-crypt the ready-to-use encryptors.</p>
       </div>
     </section>
 
     <section id="quality">
       <div class="wrap">
         <h2>Quality</h2>
-        <p>The release gate is 100% branch coverage plus PIT mutation testing, and every uncovered line
-          and surviving mutant has a stated reason. The measured numbers, with the commit they were
-          measured on, live in
-          <a href="https://github.com/astrapi69/mystic-crypt/blob/develop/docs/TESTING.md">docs/TESTING.md</a>.</p>
+        <p>The release gate is 100% branch coverage plus PIT mutation testing, and every uncovered line and
+          surviving mutant has a stated reason. The measured numbers, with the commit they were measured on,
+          are in <a href="https://github.com/astrapi69/mystic-crypt/blob/develop/docs/TESTING.md">docs/TESTING.md</a>.</p>
       </div>
     </section>
 
     <section id="contributing">
       <div class="wrap">
         <h2>Contributing</h2>
-        <p>Pull requests are welcome: fork
-          <a href="https://github.com/astrapi69/mystic-crypt/fork">astrapi69/mystic-crypt</a> and
-          <a href="https://github.com/astrapi69/mystic-crypt/pull/new/develop">open a PR</a> against
-          <code>develop</code>. Please add tests for your change; the
+        <p>Pull requests are welcome: fork <a href="https://github.com/astrapi69/mystic-crypt/fork">astrapi69/mystic-crypt</a> and open a PR against
+          <a href="https://github.com/astrapi69/mystic-crypt/pull/new/develop">develop</a>. Please add tests for your change; the
           <a href="https://github.com/astrapi69/mystic-crypt/blob/develop/docs/TESTING.md#conventions-for-contributors">conventions for contributors</a>
           describe what a good test looks like here.</p>
-<pre><code>./gradlew build            # tests + coverage + formatting check
+        <pre><code>./gradlew build            # tests + coverage + formatting check
 ./gradlew spotlessApply    # fix formatting
 ./gradlew pitest           # mutation testing (opt-in, minutes)</code></pre>
-        <p>Questions, bug reports and feature requests belong on the
-          <a href="https://github.com/astrapi69/mystic-crypt/issues">issues page</a>. Security issues:
-          see the <a href="https://github.com/astrapi69/mystic-crypt/blob/develop/SECURITY.md">security policy</a>.</p>
+        <p>Questions, bug reports and feature requests belong on the <a href="https://github.com/astrapi69/mystic-crypt/issues">issues page</a>.</p>
       </div>
     </section>
 
     <section id="support">
       <div class="wrap">
         <h2>Support this project</h2>
-        <p>If mystic-crypt is useful to you, a star on
-          <a href="https://github.com/astrapi69/mystic-crypt">GitHub</a> helps others find it. Sharing it
-          or reporting a bug helps just as much.</p>
-        <p>Financial support is possible through
+        <p>If mystic-crypt is useful to you, a star on GitHub helps others find it. Sharing it or reporting a bug
+          helps just as much. Financial support is possible through
           <a href="https://github.com/sponsors/astrapi69">GitHub Sponsors</a>,
           <a href="https://liberapay.com/astrapi69">Liberapay</a>,
           <a href="https://ko-fi.com/astrapi69">Ko-fi</a> and
@@ -391,25 +521,12 @@ java -jar mystic-crypt-${latestVersion}-all.jar checksum --file build.gradle --a
 
   <footer>
     <div class="wrap">
-      <p>mystic-crypt is released under the
-        <a href="https://github.com/astrapi69/mystic-crypt/blob/develop/LICENSE">MIT License</a>.</p>
+      <p>This page loads no scripts, fonts, images or trackers from other hosts, sets no cookies and runs no
+        analytics. A link leaves the page only when you follow it.</p>
+      <p class="foot-links">mystic-crypt is released under the <a href="https://github.com/astrapi69/mystic-crypt/blob/develop/LICENSE">MIT License</a>.
+        <a href="https://github.com/astrapi69/mystic-crypt/tree/gh-pages">Source of this page</a></p>
       <p>No animals were harmed in the making of this library.</p>
     </div>
   </footer>
-
-  <script>
-    document.querySelectorAll('.tabs').forEach(function (tabList) {
-      var buttons = tabList.querySelectorAll('button');
-      buttons.forEach(function (button) {
-        button.addEventListener('click', function () {
-          buttons.forEach(function (other) {
-            var selected = other === button;
-            other.setAttribute('aria-selected', String(selected));
-            document.getElementById(other.dataset.target).hidden = !selected;
-          });
-        });
-      });
-    });
-  </script>
 </body>
 </html>
