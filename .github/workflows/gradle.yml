@@ -21,6 +21,11 @@ jobs:
     steps:
       - name: Checkout sources
         uses: actions/checkout@v7
+      - name: Checkout the project page (gh-pages), checked by ReleaseConsistencyTest
+        uses: actions/checkout@v7
+        with:
+          ref: gh-pages
+          path: gh-pages
       - name: Setup Java
         uses: actions/setup-java@v5
         with:
@@ -29,6 +34,8 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
       - name: Execute Gradle build
+        env:
+          PAGES_INDEX: ${{ github.workspace }}/gh-pages/index.html
         run: ./gradlew build
       - name: Mutation testing (PIT, fails below mutationThreshold in build.gradle)
         run: |
