@@ -23,7 +23,15 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
 
+      - name: Checkout the project page (gh-pages), checked by ReleaseConsistencyTest
+        uses: actions/checkout@v7
+        with:
+          ref: gh-pages
+          path: gh-pages
+
       - name: Run tests
+        env:
+          PAGES_INDEX: ${{ github.workspace }}/gh-pages/index.html
         run: ./gradlew test
 
       - name: Extract test count

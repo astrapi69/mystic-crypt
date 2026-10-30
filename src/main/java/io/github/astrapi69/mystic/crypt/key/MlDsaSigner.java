@@ -38,10 +38,9 @@ import io.github.astrapi69.crypt.data.factory.SignatureFactory;
 
 /**
  * The class {@link MlDsaSigner} signs byte arrays with an ML-DSA private key. ML-DSA is the
- * NIST-standardized (FIPS 204) post-quantum signature algorithm. Requires Bouncy Castle registered
- * as a security provider ({@code Security.addProvider(new BouncyCastleProvider())}), since ML-DSA
- * is not natively supported by the JDK. The pendant class {@link MlDsaVerifier} verifies signatures
- * produced by this class.
+ * NIST-standardized (FIPS 204) post-quantum signature algorithm. The JDK provides ML-DSA since JDK
+ * 24, and this library runs on JDK 25 at the earliest, so no security provider has to be registered
+ * for it. The pendant class {@link MlDsaVerifier} verifies signatures produced by this class.
  */
 public class MlDsaSigner
 {

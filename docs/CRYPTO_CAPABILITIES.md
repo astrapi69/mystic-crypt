@@ -84,9 +84,9 @@ respectively in the same release cycle - see [README.md](../README.md#requiremen
 
 | Topic | Status | Where |
 |---|---|---|
-| ML-KEM / Kyber (FIPS 203) | ✅ | `MlKemKeyExchange` (`mystic-crypt`) wraps `KemFactory` (`crypt-data`, generic `javax.crypto.KEM` wrapper) — Bouncy Castle-backed (`ML-KEM-512/768/1024`), requires BC registered as a security provider. Verified end-to-end (encapsulate/decapsulate, shared secrets match) before wiring. |
+| ML-KEM / Kyber (FIPS 203) | ✅ | `MlKemKeyExchange` (`mystic-crypt`) wraps `KemFactory` (`crypt-data`, generic `javax.crypto.KEM` wrapper) — provided by the JDK (`ML-KEM-512/768/1024`) since JDK 24. This library needs JDK 25 at the earliest, and there ML-KEM works without Bouncy Castle registered (measured 30 October 2026 on JDK 25.0.4.1). Verified end-to-end (encapsulate/decapsulate, shared secrets match) before wiring. |
 | Hybrid classical+PQC KEM (X25519 + ML-KEM) | ✅ | `HybridKemKeyExchange` (`mystic-crypt`) — the NIST-recommended transitional combiner: concatenates the classical X25519 ECDH shared secret (32 bytes) with the ML-KEM shared secret, then HKDF-derives the final key, so security holds as long as *either* component algorithm remains unbroken. Sender generates a fresh ephemeral X25519 keypair per encapsulation. `HybridKemKeyExchangeTest` covers round-trip encapsulate/decapsulate, non-determinism across calls, and rejection of non-ML-KEM algorithms. |
-| ML-DSA / Dilithium (FIPS 204) | ✅ | `MlDsaSigner`/`MlDsaVerifier` (`mystic-crypt`) — Bouncy Castle-backed (`ML-DSA-44/65/87`), same `SignatureFactory` primitive as Ed25519. |
+| ML-DSA / Dilithium (FIPS 204) | ✅ | `MlDsaSigner`/`MlDsaVerifier` (`mystic-crypt`) — provided by the JDK (`ML-DSA-44/65/87`) since JDK 24; on JDK 25 it works without Bouncy Castle registered (measured 30 October 2026 on JDK 25.0.4.1). Same `SignatureFactory` primitive as Ed25519. |
 | SLH-DSA / SPHINCS+ (FIPS 205) | ✅ | `SlhDsaSigner`/`SlhDsaVerifier` (`mystic-crypt`) — Bouncy Castle-backed, covers all 12 pure parameter sets (SHA2/SHAKE × 128/192/256 × S/F). Conservative hash-based signatures; large (tens of KB) and, for "S" sets, slow to sign — offered as a fallback if ML-DSA's lattice-based security assumption is ever broken. |
 
 ---

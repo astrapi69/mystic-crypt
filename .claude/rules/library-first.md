@@ -31,7 +31,8 @@ Decided by the maintainer on 2026-10-06 (lethenon#49).
 `java.security`, `javax.crypto`, `java.util.HexFormat`, `java.nio.file`,
 `MessageDigest.isEqual` (constant-time comparison), records, switch
 expressions. The JDK has grown: Ed25519 since 15, ML-KEM/ML-DSA since 24 -
-check before assuming Bouncy Castle is needed.
+check before assuming Bouncy Castle is needed. This library requires JDK 25 at the
+earliest, so ML-KEM and ML-DSA are JDK-native here; SLH-DSA is not in the JDK (section 2).
 
 ## 2. Bouncy Castle
 
