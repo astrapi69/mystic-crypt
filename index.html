@@ -81,7 +81,7 @@
       "name": "Is mystic-crypt post-quantum?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. It includes ML-KEM (FIPS 203), ML-DSA (FIPS 204) and SLH-DSA (FIPS 205), and a hybrid X25519 plus ML-KEM combiner. ML-KEM and ML-DSA come from the JDK, which has them since JDK 24, and SLH-DSA from Bouncy Castle. The project does not claim FIPS 140 validation for any module."
+        "text": "Yes. It includes ML-KEM (FIPS 203), ML-DSA (FIPS 204) and SLH-DSA (FIPS 205), and a hybrid X25519 plus ML-KEM combiner. The classes are documented to need Bouncy Castle registered as a security provider. The project does not claim FIPS 140 validation for any module."
       }
     },
     {
@@ -420,7 +420,7 @@ java -jar mystic-crypt-13.8-all.jar checksum --file build.gradle --algorithm SHA
         <h3>Which key and keystore formats does it read and write?</h3>
         <p>PEM, DER and PKCS#8 private and public keys from OpenSSL or Java, X.509 certificates, and PKCS12, JKS and JCEKS key stores. A GnuPG key home is read-only: the OpenPGP key reader reads pubring.kbx and the secret-key files through Bouncy Castle, never through gpg.</p>
         <h3>Is mystic-crypt post-quantum?</h3>
-        <p>Yes. It includes ML-KEM (FIPS 203), ML-DSA (FIPS 204) and SLH-DSA (FIPS 205), and a hybrid X25519 plus ML-KEM combiner. ML-KEM and ML-DSA come from the JDK, which has them since JDK 24, and SLH-DSA from Bouncy Castle. The project does not claim FIPS 140 validation for any module.</p>
+        <p>Yes. It includes ML-KEM (FIPS 203), ML-DSA (FIPS 204) and SLH-DSA (FIPS 205), and a hybrid X25519 plus ML-KEM combiner. The classes are documented to need Bouncy Castle registered as a security provider. The project does not claim FIPS 140 validation for any module.</p>
         <h3>How safe is decrypting Java objects since 13.8?</h3>
         <p>Objects decrypted by PrivateKeyDecryptor, PrivateKeyGenericDecryptor and GenericObjectDecryptor pass an ObjectInputFilter. It admits only the classes the caller names, String by default, and bounds depth, references, array length and size. Callers that decrypt other types name them in the constructors that take a class collection. Java serialization is still the format; replacing it is a later step.</p>
         <h3>Can I pass a password on the command line?</h3>
