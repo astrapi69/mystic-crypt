@@ -71,6 +71,18 @@ Both paths end in the same place: once the fixed release is out, the defect gets
 a published advisory naming the affected versions and the fixed one. The
 advisory follows the release, never precedes it.
 
+Published so far:
+
+- [GHSA-87j9-xjf5-f387](https://github.com/astrapi69/mystic-crypt/security/advisories/GHSA-87j9-xjf5-f387):
+  up to 13.7, `PrivateKeyDecryptor` and the generic decryptors deserialized the
+  given bytes with Java serialization, unfiltered; fixed in 13.8.
+- [GHSA-rmpr-hqmh-r8gp](https://github.com/astrapi69/mystic-crypt/security/advisories/GHSA-rmpr-hqmh-r8gp):
+  before 13.7, generated passwords, salts and GCM nonces came from randomizer,
+  whose default generator was seeded with the current time in milliseconds
+  before randomizer 10.5
+  ([GHSA-395w-fmf5-xfj3](https://github.com/astrapi69/randomizer/security/advisories/GHSA-395w-fmf5-xfj3));
+  13.7 ships randomizer 10.6. Found on 2026-10-30, published the same day.
+
 ## Two things specific to this project
 
 ### The runnable jar bundles its dependencies
@@ -107,8 +119,11 @@ forms was used.
 
 This library never implements cryptographic primitives itself - ciphers, hashes,
 signatures, key derivation and random generation all come from the JDK or from
-Bouncy Castle, and the code here only orchestrates them. A flaw in a primitive
-itself belongs to whoever implements it:
+Bouncy Castle, and the code here only orchestrates them. One exception, until
+#241 is released: salts, GCM nonces and generated passwords are still drawn
+through randomizer rather than straight from `java.security.SecureRandom`
+(GHSA-rmpr-hqmh-r8gp above). Keys never were. A flaw in a primitive itself
+belongs to whoever implements it:
 
 - the JDK: <https://openjdk.org/groups/vulnerability/report>
 - Bouncy Castle: <https://github.com/bcgit/bc-java/security/policy>
