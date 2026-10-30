@@ -26,6 +26,7 @@ package io.github.astrapi69.mystic.crypt.aead;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -33,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 import javax.crypto.Cipher;
@@ -222,5 +224,30 @@ class KeyCommittingAeadEncryptorCipherFactoryTest
 			new GCMParameterSpec(GCM_TAG_LENGTH_BITS, otherNonce));
 		assertThrows(Exception.class, () -> wrongNonceCipher.doFinal(ciphertext),
 			"the ciphertext is bound to the nonce the construction-time cipher was initialised with");
+	}
+
+	/**
+	 * Test method that guards the construction-time cipher against a fixed nonce. Two encryptors
+	 * over the same key hand out two ciphers; with a repeated nonce they would be one (key, nonce)
+	 * pair, which in GCM gives the XOR of the plaintexts away. The test above checks only the
+	 * length, and it stayed green with the nonce left all zeros (#227, the counter-run that
+	 * replaced the random nonce of {@code newCipher(...)} by a zero array).
+	 *
+	 * @param testCase
+	 *            the construction scenario
+	 * @throws Exception
+	 *             is thrown if an error occurs
+	 */
+	@ParameterizedTest
+	@MethodSource("constructionCases")
+	void newCipher_drawsAFreshNonceForEveryEncryptorOverTheSameKey(final ConstructionCase testCase)
+		throws Exception
+	{
+		byte[] first = newEncryptor(testCase).getModel().getCipher().getIV();
+		byte[] second = newEncryptor(testCase).getModel().getCipher().getIV();
+
+		assertEquals(NONCE_LENGTH, first.length);
+		assertFalse(Arrays.equals(first, second),
+			"two ciphers over the same key must not share a nonce");
 	}
 }
