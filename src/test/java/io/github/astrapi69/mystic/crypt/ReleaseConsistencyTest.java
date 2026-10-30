@@ -27,6 +27,7 @@ package io.github.astrapi69.mystic.crypt;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.io.IOException;
@@ -250,8 +251,10 @@ class ReleaseConsistencyTest
 		String configured = System.getProperty("mysticcrypt.pagesIndex", "");
 		if (configured.isEmpty())
 		{
-			assertFalse(System.getenv("CI") != null,
-				"PAGES_INDEX is not set in CI: the project page would go unchecked");
+			if (System.getenv("CI") != null)
+			{
+				fail("PAGES_INDEX is not set in CI: the project page would go unchecked");
+			}
 			assumeTrue(false,
 				"PAGES_INDEX is not set: the page is checked in CI, where gh-pages is "
 					+ "checked out");

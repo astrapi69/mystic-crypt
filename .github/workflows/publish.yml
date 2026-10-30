@@ -52,7 +52,14 @@ jobs:
           distribution: 'temurin'
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
+      - name: Checkout the project page (gh-pages), checked by ReleaseConsistencyTest
+        uses: actions/checkout@v7
+        with:
+          ref: gh-pages
+          path: gh-pages
       - name: Build
+        env:
+          PAGES_INDEX: ${{ github.workspace }}/gh-pages/index.html
         run: ./gradlew build
       # nmcp uploads and validates the bundle directly - no separate manual staging-upload step
       # needed (unlike the plain maven-publish + OSSRH-staging-api repos in this family).

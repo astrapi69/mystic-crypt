@@ -12,5 +12,7 @@ pitest {
     // measures compatibility with the published releases, which the test task resolves for it
     // (gradle/testing.gradle); PIT's own JVMs do not get those class paths
     excludedTestClasses = ['*PublishedEnvelopesStillOpenTest']
+    // ReleaseConsistencyTest reads the project page; PIT's JVMs get the location by property
+    jvmArgs = ["-Dmysticcrypt.pagesIndex=" + (System.getenv('PAGES_INDEX') ?: '')]
     // mutationThreshold lives in build.gradle (fail-closed floor, see there)
 }

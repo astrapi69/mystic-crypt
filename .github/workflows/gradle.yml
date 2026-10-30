@@ -38,6 +38,8 @@ jobs:
           PAGES_INDEX: ${{ github.workspace }}/gh-pages/index.html
         run: ./gradlew build
       - name: Mutation testing (PIT, fails below mutationThreshold in build.gradle)
+        env:
+          PAGES_INDEX: ${{ github.workspace }}/gh-pages/index.html
         run: |
           ./gradlew pitest
           # PIT's forked test runs leave src/test/resources/crypt/test.txt
