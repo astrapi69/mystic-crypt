@@ -13,6 +13,20 @@ Last updated: 2026-10-30. Page: https://astrapi69.github.io/mystic-crypt/ (branc
   and documentation. Maven and Gradle coordinates show the current release 13.8, checked 30 October 2026.
 - The page loads nothing from other hosts. The footer says so.
 
+## Files that must stay
+
+- `google5bee4cd8b72b08de.html`: the Google Search Console ownership file, in the site root. Google
+  confirmed the site with it. Removing it withdraws that confirmation. The check
+  `ReleaseConsistencyTest` in the mystic-crypt repository fails when it is missing or changed.
+- `sitemap.xml`: its `lastmod` is written by `tools/build_page.py`. The script moves it to the
+  current date when the page content changes and keeps it otherwise. Run the script after editing
+  the page; do not edit `index.html` or `sitemap.xml` by hand.
+
+## Generating the page
+
+`python3 tools/build_page.py` writes `index.html` and `sitemap.xml` in this branch. The script holds
+the page text; the FAQ answers there are the same as the visible text and the structured data.
+
 ## Status after the merge
 
 - Merged on 30 October 2026: pull request 225 (`5e935431`). The page content is on `gh-pages`.
