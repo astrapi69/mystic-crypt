@@ -1,11 +1,9 @@
-# GitHub Sponsor button configuration, in the shape adaptive-learner uses.
-#
-# The cryptocurrency address that used to stand in the readme is gone: an address in a repository
-# is a payment channel nobody can revoke, it cannot be corrected once it is wrong or compromised,
-# and the platforms below carry the same money with a way back.
+# GitHub Sponsor button configuration, with the channels astrapi69/adaptive-learner uses (its DONATE.md
+# describes each). No cryptocurrency address: an address in a repository is a payment channel nobody can
+# revoke, and it cannot be corrected once it is wrong or compromised.
 
 github: astrapi69
 liberapay: astrapi69
 ko_fi: astrapi69
 custom:
-  - 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GVBTWLRAZ7HB8'
+  - 'https://www.paypal.com/donate/?cmd=_s-xclick&hosted_button_id=MJ7V43GU2H386'
