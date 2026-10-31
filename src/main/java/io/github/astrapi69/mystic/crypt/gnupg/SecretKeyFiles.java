@@ -49,7 +49,9 @@ import org.bouncycastle.gpg.SExpression;
  * does not compute the way gpg does: it hashes the RSA modulus without the leading zero byte gpg
  * hashes, and it refuses elliptic curve keys. But every file also carries the key's public part in
  * the clear - the modulus {@code n} of an RSA key, the point {@code q} of an elliptic curve key -
- * and that is matched against the public keys of the keyring instead.
+ * and that is matched against the public keys of the keyring instead. The RSA half is
+ * bcgit/bc-java#2534, fixed in a Bouncy Castle beta; this goes or narrows with the release that
+ * carries it (#256).
  */
 final class SecretKeyFiles
 {
@@ -200,7 +202,8 @@ final class SecretKeyFiles
 	/**
 	 * Whether the expression starts with the given label. Bouncy Castle's own check casts the first
 	 * value to bytes, which throws for an expression that starts with another expression, as gpg's
-	 * protected keys contain
+	 * protected keys contain (bcgit/bc-java#2535, fixed in a Bouncy Castle beta; this guard goes
+	 * with the release that carries it, #256)
 	 */
 	private static boolean isLabelled(final SExpression expression, final String label)
 	{
