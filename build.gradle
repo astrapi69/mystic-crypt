@@ -58,3 +58,5 @@ tasks.withType(JavaCompile).configureEach { javaCompiler ->
     // javac stops reporting warnings after 100 by default, which silently truncates the list
     options.compilerArgs << "-Xmaxwarns" << "10000"
 }
+
+apply from: "gradle/test-results-complete.gradle"
