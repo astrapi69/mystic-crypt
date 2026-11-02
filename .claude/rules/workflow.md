@@ -146,9 +146,13 @@ proposed, not after it is merged.
 - Never `--amend` + force-push on an open PR - add a new commit instead
   (squash-merge still yields one clean commit).
 - Never `git add -A` - add paths explicitly (PIT leaves files behind).
-- Do not add `Co-Authored-By` trailers attributing non-human collaborators
-  (AI tools, bots). Human co-authors only, unless an explicit note in the
-  commit body states who authorized the attribution.
+- Do not credit non-human collaborators (AI tools, bots), in a commit or in a
+  pull request description: no `Co-Authored-By` trailer, no author or
+  committer identity, no session link, no "Generated with/by" line naming
+  one. Human co-authors only, unless an explicit note in the text states who
+  authorized the attribution (`Co-Author-Exception: <reason>`). Enforced by
+  `scripts/check-commit-provenance.sh` in the hook and in CI, the same file as
+  in mystic-crypt-ui (#154, #263).
 - Before preparing any release from a local copy: `git fetch` and compare
   with origin first - a stale local line has already diverged once.
 

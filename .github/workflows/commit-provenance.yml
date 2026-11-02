@@ -1,15 +1,19 @@
 # Refuses a pull request whose commits credit a non-human collaborator: as a co-author trailer, or
-# as author or committer (#154). The script is the same file as in mystic-crypt-ui, whose
+# as author or committer (#154), or whose commits or description carry a session link or a
+# "Generated with" line naming one (#263). The script is the same file as in mystic-crypt-ui, whose
 # CommitProvenanceCheckTest drives it against real git repositories.
 #
 # The commit-msg hook catches this before the commit exists, but a hook has to be installed locally
 # and is absent in a fresh clone - which is exactly where a session starts without knowing the
-# rule. This is the half that cannot be skipped by not having run a setup step.
+# rule. This is the half that cannot be skipped by not having run a setup step. No hook sees a
+# pull request description, so for that this is the only half.
 name: Commit provenance
 
 on:
   pull_request:
     branches: [ master, develop ]
+    # edited: a description changed after the pull request was opened is checked again
+    types: [ opened, edited, synchronize, reopened ]
 
 jobs:
   no-non-human-co-authors:
@@ -29,3 +33,11 @@ jobs:
           git fetch --no-tags origin "${{ github.base_ref }}"
           scripts/check-commit-provenance.sh \
             --range "origin/${{ github.base_ref }}..${{ github.event.pull_request.head.sha }}"
+      - name: Check the description of this pull request
+        # the body reaches the shell through the environment only, never spliced into the script:
+        # it is text anybody who opens a pull request writes
+        env:
+          PULL_REQUEST_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          printf '%s' "$PULL_REQUEST_BODY" > "$RUNNER_TEMP/pull-request-body.md"
+          scripts/check-commit-provenance.sh --pr-body-file "$RUNNER_TEMP/pull-request-body.md"

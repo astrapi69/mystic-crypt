@@ -58,7 +58,8 @@ exit code; `make publish-central` and `make tag-release` refuse to run without
 - Never hand-roll crypto primitives; JDK -> Bouncy Castle -> crypt family ->
   new dependency, in that order (library-first.md).
 - Spotless owns formatting; no `git add -A` (PIT leftovers); no
-  `Co-Authored-By` trailers for non-human collaborators.
+  `Co-Authored-By` trailer, session link or "Generated with" line for a
+  non-human collaborator, in a commit or a pull request description.
 
 ## Session start
 
