@@ -402,6 +402,8 @@ gpg --verify mystic-crypt-{VERSION}.jar.asc mystic-crypt-{VERSION}.jar</code></p
         analytics. A link leaves the page only when you follow it.</p>
       <p class="foot-links">mystic-crypt is released under the <a href="{REPO}/blob/develop/LICENSE">MIT License</a>.
         <a href="{REPO}/tree/gh-pages">Source of this page</a></p>
+      <p>Written over many years by its maintainer, maintained since 2026 with AI agents as a tool:
+        <a href="https://github.com/astrapi69/astrapi69/blob/main/AI_USAGE.md">how this project is made</a>.</p>
       <p>No animals were harmed in the making of this library.</p>
     </div>
   </footer>
