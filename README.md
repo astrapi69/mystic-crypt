@@ -39,6 +39,7 @@ operation; the library picks parameters that are not a footgun.
 - [Releasing](#releasing)
 - [Contributing](#contributing)
 - [Similar projects](#similar-projects)
+- [How this project is made](#how-this-project-is-made)
 
 ## Requirements
 
@@ -346,6 +347,12 @@ Questions, bug reports and feature requests belong on the
 - [curve25519](https://github.com/signalapp/curve25519-java) - Signal's Curve25519 implementation
 - [Apache Shiro](https://github.com/apache/shiro) - security framework with authentication, authorization and cryptography
 - [vault](https://github.com/hashicorp/vault) - secrets management and encryption as a service
+
+## How this project is made
+
+Most of mystic-crypt was written by its maintainer over many years, before there were AI tools;
+since 2026 AI agents are used as a tool to modernize, maintain and secure it. What was added that
+way, and what the maintainer decides: [How my projects are made](https://github.com/astrapi69/astrapi69/blob/main/AI_USAGE.md).
 
 ## License
 
