@@ -17,6 +17,7 @@ plugins {
     alias(libs.plugins.pitest.gradle.plugin)
     alias(libs.plugins.shadow.gradle)
     alias(libs.plugins.spotless.plugin.gradle)
+    alias(libs.plugins.test.results.complete)
     alias(libs.plugins.version.catalog.update)
 }
 
@@ -58,5 +59,3 @@ tasks.withType(JavaCompile).configureEach { javaCompiler ->
     // javac stops reporting warnings after 100 by default, which silently truncates the list
     options.compilerArgs << "-Xmaxwarns" << "10000"
 }
-
-apply from: "gradle/test-results-complete.gradle"

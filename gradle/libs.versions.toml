@@ -13,6 +13,7 @@ gradle-plugin-nmcp-version = "1.6.2"
 gradle-plugin-pitest-version = "1.19.0"
 gradle-plugin-shadow-version = "9.6.1"
 gradle-plugin-spotless-version = "8.10.4"
+gradle-plugin-test-results-complete-version = "1.0"
 gradle-plugin-version-catalog-update-version = "1.1.2"
 gradle-plugin-versions-version = "0.66.0"
 guava-version = "33.7.2-jre"
@@ -82,4 +83,5 @@ nmcp-gradle-plugin = { id = "com.gradleup.nmcp", version.ref = "gradle-plugin-nm
 pitest-gradle-plugin = { id = "info.solidsoft.pitest", version.ref = "gradle-plugin-pitest-version" }
 shadow-gradle = { id = "com.gradleup.shadow", version.ref = "gradle-plugin-shadow-version" }
 spotless-plugin-gradle = { id = "com.diffplug.spotless", version.ref = "gradle-plugin-spotless-version" }
+test-results-complete = { id = "io.github.astrapi69.test-results-complete", version.ref = "gradle-plugin-test-results-complete-version" }
 version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "gradle-plugin-version-catalog-update-version" }
