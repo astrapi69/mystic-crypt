@@ -8,8 +8,8 @@
 # A new push removes the label, so what was read is what is merged; so does a reopening, which can
 # bring pushes made while the pull request was closed. A label set through a GitHub App or from
 # another account does not count (scripts/maintainer-read.py). An agent acting as the owner's
-# account looks to GitHub like the owner himself; keeping it from setting the label is a local
-# hook's job, not this workflow's.
+# account looks to GitHub like the owner himself, and nothing keeps one from setting the label: the
+# maintainer decided against a hook for that (2026-11-04, #737).
 #
 # pull_request_target, like release-freeze: the job checks out the base branch's script and
 # CODEOWNERS only, runs nothing a pull request brings, and puts no title or body into a shell line,
