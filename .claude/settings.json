@@ -3,5 +3,19 @@
     "commit": "",
     "pr": "",
     "sessionUrl": false
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|mcp__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -I \"$CLAUDE_PROJECT_DIR/scripts/no-maintainer-read-label.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
   }
 }

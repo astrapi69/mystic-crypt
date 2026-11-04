@@ -21,3 +21,11 @@
 /.github/CODEOWNERS @astrapi69
 /.github/workflows/maintainer-read.yml @astrapi69
 /scripts/maintainer-read.py @astrapi69
+
+# the hook that refuses a Claude Code session, local or in the cloud, that sets or removes the label,
+# and the project settings that run it (#269). It holds back only what runs through Claude Code: a
+# direct call to the GitHub API, a program the hook cannot see into, or the browser can still set
+# the label. That is the known limit of the smallest form (astrapi69/mystic-crypt-ui#732, option a),
+# not access control.
+/scripts/no-maintainer-read-label.py @astrapi69
+/.claude/settings.json @astrapi69
