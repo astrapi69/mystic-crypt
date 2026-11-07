@@ -138,9 +138,9 @@ public class PBEFileDecryptor extends AbstractFileDecryptor
 	 * @param decryptedFile
 	 *            is the target of the result from the decryption, if null the default file will be
 	 *            created. If null the name convention is given name of the encrypted file with the
-	 *            extension '.decrypted'.
+	 *            given decrypted file extension.
 	 * @param decryptedFileExtension
-	 *            the decrypted file extension
+	 *            the decrypted file extension, used when no decrypted file is given
 	 * @throws InvalidKeyException
 	 *             the invalid key exception
 	 * @throws NoSuchAlgorithmException
@@ -159,7 +159,7 @@ public class PBEFileDecryptor extends AbstractFileDecryptor
 		throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
 		NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException
 	{
-		this(model, decryptedFile, DEFAULT_DECRYPTED_FILE_EXTENSION, false);
+		this(model, decryptedFile, decryptedFileExtension, false);
 	}
 
 	/**
@@ -170,9 +170,9 @@ public class PBEFileDecryptor extends AbstractFileDecryptor
 	 * @param decryptedFile
 	 *            is the target of the result from the decryption, if null the default file will be
 	 *            created. If null the name convention is given name of the encrypted file with the
-	 *            extension '.decrypted'.
+	 *            given decrypted file extension.
 	 * @param decryptedFileExtension
-	 *            the decrypted file extension
+	 *            the decrypted file extension, used when no decrypted file is given
 	 * @param deleteEncryptedFileAfterDecryption
 	 *            if this flag is true the given encrypted file that will be given for decryption
 	 *            will be deleted and only the decrypted file will be the result, otherwise both

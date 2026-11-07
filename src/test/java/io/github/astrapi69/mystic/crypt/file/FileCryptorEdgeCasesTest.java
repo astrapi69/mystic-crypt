@@ -227,8 +227,8 @@ public class FileCryptorEdgeCasesTest
 
 	/**
 	 * Test method for {@link PBEFileDecryptor#PBEFileDecryptor(CryptModel, File, String)} without a
-	 * decrypted file: today the decrypted file is named with the default extension, not with the
-	 * given one (#281)
+	 * decrypted file: the decrypted file is named with the given extension, not with the default
+	 * (#281)
 	 *
 	 * @param temporaryDirectory
 	 *            the temporary directory of this test
@@ -236,7 +236,7 @@ public class FileCryptorEdgeCasesTest
 	 *             is thrown if an error occurs
 	 */
 	@Test
-	public void pbeFileDecryptor_withAnExtensionAndNoFile_namesTheDecryptedFileWithTheDefault(
+	public void pbeFileDecryptor_withAnExtensionAndNoFile_namesTheDecryptedFileWithTheExtension(
 		@TempDir File temporaryDirectory) throws Exception
 	{
 		File encrypted = new PBEFileEncryptor(newCryptModel(null),
@@ -246,7 +246,7 @@ public class FileCryptorEdgeCasesTest
 		File decrypted = new PBEFileDecryptor(newCryptModel(null), null, ".custom")
 			.decrypt(encrypted);
 
-		assertEquals(new File(temporaryDirectory, "secret.decrypted"), decrypted);
+		assertEquals(new File(temporaryDirectory, "secret.custom"), decrypted);
 		assertEquals(CONTENT, ReadFileExtensions.fromFile(decrypted));
 	}
 
