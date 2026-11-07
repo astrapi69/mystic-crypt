@@ -25,6 +25,7 @@
 package io.github.astrapi69.mystic.crypt.secret;
 
 import java.security.SecureRandom;
+import java.util.Objects;
 
 /**
  * The random values a cryptographic operation needs - salts, nonces, IVs, generated passwords -
@@ -80,5 +81,74 @@ public final class SecretRandom
 			drawn.append(ALPHANUMERIC.charAt(SOURCE.nextInt(ALPHANUMERIC.length())));
 		}
 		return drawn.toString();
+	}
+
+	/**
+	 * Draws random characters from the given alphabet, for a generated password whose characters
+	 * the caller chooses. Every distinct character of the alphabet is drawn with the same
+	 * probability: {@link SecureRandom#nextInt(int)} rejects the part of its range that a modulo
+	 * would favour, and a character that appears more than once in the alphabet counts once, so
+	 * that a repetition does not weight the draw.
+	 * <p>
+	 * The result is a {@code char[]}, not a {@link String}, so that the caller can overwrite the
+	 * secret once it is used.
+	 *
+	 * @param length
+	 *            how many characters, 0 or more
+	 * @param alphabet
+	 *            the characters to draw from; not empty, and without surrogates, because a drawn
+	 *            half of a surrogate pair is no character
+	 * @return the drawn characters
+	 * @throws NullPointerException
+	 *             if the alphabet is null
+	 * @throws IllegalArgumentException
+	 *             if the length is negative, or the alphabet is empty or holds a surrogate
+	 */
+	public static char[] characters(final int length, final CharSequence alphabet)
+	{
+		Objects.requireNonNull(alphabet, "alphabet must not be null");
+		if (length < 0)
+		{
+			throw new IllegalArgumentException("length must not be negative, but is " + length);
+		}
+		final String distinct = distinctCharacters(alphabet);
+		final char[] drawn = new char[length];
+		for (int i = 0; i < length; i++)
+		{
+			drawn[i] = distinct.charAt(SOURCE.nextInt(distinct.length()));
+		}
+		return drawn;
+	}
+
+	/**
+	 * The characters of the given alphabet, each once, in the order of their first appearance
+	 *
+	 * @param alphabet
+	 *            the alphabet
+	 * @return the distinct characters
+	 * @throws IllegalArgumentException
+	 *             if the alphabet is empty or holds a surrogate
+	 */
+	private static String distinctCharacters(final CharSequence alphabet)
+	{
+		if (alphabet.isEmpty())
+		{
+			throw new IllegalArgumentException("alphabet must not be empty");
+		}
+		final StringBuilder distinct = new StringBuilder();
+		for (int i = 0; i < alphabet.length(); i++)
+		{
+			final char character = alphabet.charAt(i);
+			if (Character.isSurrogate(character))
+			{
+				throw new IllegalArgumentException("alphabet must not hold a surrogate, but holds "
+					+ String.format("U+%04X", (int)character) + " at index " + i);
+			}
+			if (distinct.indexOf(String.valueOf(character)) < 0)
+			{
+				distinct.append(character);
+			}
+		}
+		return distinct.toString();
 	}
 }
