@@ -32,7 +32,10 @@ import java.security.KeyPair;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
+import java.util.Date;
 import java.util.concurrent.Callable;
 
 import org.bouncycastle.asn1.x500.X500Name;
@@ -47,6 +50,7 @@ import io.github.astrapi69.crypt.data.key.CertificateExtensions;
 import io.github.astrapi69.crypt.data.key.KeyStoreExtensions;
 import io.github.astrapi69.crypt.data.key.reader.CertificateReader;
 import io.github.astrapi69.crypt.data.key.writer.CertificateWriter;
+import io.github.astrapi69.mystic.crypt.secret.SecretRandom;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Mixin;
@@ -381,8 +385,13 @@ public class KeystoreCommand implements Runnable
 				? KeyPairFactory.newKeyPair(keyAlgorithm, keySize)
 				: KeyPairFactory.newKeyPair(keyAlgorithm);
 			X500Name name = new X500Name(distinguishedName);
-			X509Certificate certificate = CertFactory.newX509CertificateV3(keyPair, name, daysValid,
-				name, signatureAlgorithm);
+			// the serial number is drawn here: the overload of CertFactory that takes a number of
+			// days took the current millisecond, predictable and shared by two certificates made
+			// in one millisecond (#253, crypt-data#118)
+			Instant now = Instant.now();
+			X509Certificate certificate = CertFactory.newX509CertificateV3(keyPair, name,
+				SecretRandom.certificateSerialNumber(), Date.from(now),
+				Date.from(now.plus(daysValid, ChronoUnit.DAYS)), name, signatureAlgorithm);
 			keyStore.setKeyEntry(alias, keyPair.getPrivate(), store.password().toCharArray(),
 				new Certificate[] { certificate });
 			store(keyStore, store.file, store.password());

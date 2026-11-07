@@ -24,9 +24,7 @@
  */
 package io.github.astrapi69.mystic.crypt.ssl;
 
-import java.math.BigInteger;
 import java.security.KeyPair;
-import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -49,6 +47,7 @@ import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 
 import io.github.astrapi69.mystic.crypt.provider.SecurityProviderSupport;
+import io.github.astrapi69.mystic.crypt.secret.SecretRandom;
 
 /**
  * Builds a self-signed X.509 certificate that carries the extensions which make a certificate mean
@@ -173,7 +172,7 @@ public final class SelfSignedCertificateFactory
 
 		final Instant now = Instant.now();
 		final JcaX509v3CertificateBuilder builder = new JcaX509v3CertificateBuilder(
-			distinguishedName, newSerialNumber(), Date.from(now),
+			distinguishedName, SecretRandom.certificateSerialNumber(), Date.from(now),
 			Date.from(now.plus(days, ChronoUnit.DAYS)), distinguishedName, keyPair.getPublic());
 		addExtensions(builder, extensions);
 
@@ -336,10 +335,5 @@ public final class SelfSignedCertificateFactory
 				+ "digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment, "
 				+ "keyAgreement, keyCertSign, cRLSign, encipherOnly or decipherOnly.");
 		};
-	}
-
-	private static BigInteger newSerialNumber()
-	{
-		return new BigInteger(159, new SecureRandom());
 	}
 }

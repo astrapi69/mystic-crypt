@@ -98,10 +98,11 @@ class SelfSignedCertificateFactoryTest
 
 	/**
 	 * RFC 5280 section 4.1.2.2: the serial number is a positive integer of at most 20 octets, and
-	 * two certificates of one issuer do not share one (#253)
+	 * two certificates of one issuer do not share one. It comes from
+	 * SecretRandom.certificateSerialNumber, so it is always 159 bits long (#253)
 	 */
 	@Test
-	void theSerialNumberIsPositive_fitsInto20Octets_andDiffersBetweenTwoCertificates()
+	void theSerialNumberIsPositive_has159Bits_fitsInto20Octets_andDiffersBetweenTwoCertificates()
 		throws Exception
 	{
 		KeyPairGenerator generator = KeyPairGenerator.getInstance("EC");
@@ -119,8 +120,9 @@ class SelfSignedCertificateFactoryTest
 		for (BigInteger serialNumber : List.of(first, second))
 		{
 			assertEquals(1, serialNumber.signum(), "positive: " + serialNumber);
+			assertEquals(159, serialNumber.bitLength(), "159 bits: " + serialNumber);
 			// toByteArray is the content of the DER INTEGER, sign byte included
-			assertTrue(serialNumber.toByteArray().length <= 20, "20 octets: " + serialNumber);
+			assertEquals(20, serialNumber.toByteArray().length, "20 octets: " + serialNumber);
 		}
 		assertNotEquals(first, second);
 	}

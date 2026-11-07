@@ -25,6 +25,7 @@
 package io.github.astrapi69.mystic.crypt.cli;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -155,12 +156,13 @@ class KeystoreAddKeyPairCommandTest extends AbstractCliTest
 	}
 
 	/**
-	 * Today the self-signed certificate takes the millisecond it was made in as serial number,
-	 * through the overload of crypt-data's CertFactory that takes a number of days
-	 * (crypt-data#118): predictable, and shared by two certificates made in one millisecond (#253)
+	 * The self-signed certificate gets a drawn serial number, positive, 159 bits and 20 octets
+	 * long, where it used to take the millisecond it was made in through the overload of
+	 * crypt-data's CertFactory that takes a number of days (crypt-data#118): predictable, and
+	 * shared by two certificates made in one millisecond (#253)
 	 */
 	@Test
-	void theSerialNumberIsTheMillisecondTheCertificateWasMadeIn(@TempDir File tempDir)
+	void theSerialNumberIsDrawn_notTheMillisecondTheCertificateWasMadeIn(@TempDir File tempDir)
 		throws Exception
 	{
 		File storeFile = createStore(tempDir, "PKCS12");
@@ -172,11 +174,14 @@ class KeystoreAddKeyPairCommandTest extends AbstractCliTest
 
 		BigInteger serialNumber = ((X509Certificate)load(storeFile, "PKCS12")
 			.getCertificate("serial")).getSerialNumber();
-		assertTrue(
+		assertFalse(
 			BigInteger.valueOf(before).compareTo(serialNumber) <= 0
 				&& serialNumber.compareTo(BigInteger.valueOf(after)) <= 0,
 			"the serial number " + serialNumber + " is a millisecond from " + before + " to "
 				+ after);
+		assertEquals(1, serialNumber.signum(), "positive: " + serialNumber);
+		assertEquals(159, serialNumber.bitLength(), "159 bits: " + serialNumber);
+		assertEquals(20, serialNumber.toByteArray().length, "20 octets: " + serialNumber);
 	}
 
 	@Test
