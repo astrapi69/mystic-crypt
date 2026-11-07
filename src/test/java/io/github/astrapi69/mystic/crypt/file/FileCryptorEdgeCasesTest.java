@@ -226,6 +226,31 @@ public class FileCryptorEdgeCasesTest
 	}
 
 	/**
+	 * Test method for {@link PBEFileDecryptor#PBEFileDecryptor(CryptModel, File, String)} without a
+	 * decrypted file: the decrypted file is named with the given extension, not with the default
+	 * (#281)
+	 *
+	 * @param temporaryDirectory
+	 *            the temporary directory of this test
+	 * @throws Exception
+	 *             is thrown if an error occurs
+	 */
+	@Test
+	public void pbeFileDecryptor_withAnExtensionAndNoFile_namesTheDecryptedFileWithTheExtension(
+		@TempDir File temporaryDirectory) throws Exception
+	{
+		File encrypted = new PBEFileEncryptor(newCryptModel(null),
+			new File(temporaryDirectory, "secret.enc"))
+				.encrypt(newFileToEncrypt(temporaryDirectory));
+
+		File decrypted = new PBEFileDecryptor(newCryptModel(null), null, ".custom")
+			.decrypt(encrypted);
+
+		assertEquals(new File(temporaryDirectory, "secret.custom"), decrypted);
+		assertEquals(CONTENT, ReadFileExtensions.fromFile(decrypted));
+	}
+
+	/**
 	 * Test method for {@link PBEFileEncryptor#encrypt(File)} and
 	 * {@link PBEFileDecryptor#decrypt(File)}, a configured decorator must not break the round trip
 	 * of the file content
