@@ -24,9 +24,9 @@
  */
 package io.github.astrapi69.mystic.crypt.file;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
 import java.io.IOException;
@@ -149,9 +149,8 @@ public class DecryptedFileRewriteFailureTest
 	}
 
 	/**
-	 * Today a {@link PBEFileDecryptor} that deletes the encrypted file after the decryption does
-	 * not notice that the rewrite of the decrypted file failed, and deletes the encrypted original
-	 * as well.
+	 * A {@link PBEFileDecryptor} that deletes the encrypted file after the decryption fails with
+	 * the {@link IOException} of the failed rewrite, and keeps the encrypted original as it was.
 	 *
 	 * @param temporaryDirectory
 	 *            the temporary directory of this test
@@ -159,25 +158,27 @@ public class DecryptedFileRewriteFailureTest
 	 *             is thrown if an error occurs
 	 */
 	@Test
-	public void pbeFileDecryptor_aFailedRewrite_isNotReported_andTheEncryptedOriginalIsDeleted(
+	public void pbeFileDecryptor_aFailedRewrite_failsTheDecryption_andKeepsTheEncryptedOriginal(
 		@TempDir Path temporaryDirectory) throws Exception
 	{
 		File encrypted = new PBEFileEncryptor(newEncryptionModel(),
 			newEncryptedFile(temporaryDirectory)).encrypt(newFileToEncrypt(temporaryDirectory));
+		byte[] encryptedBytes = Files.readAllBytes(encrypted.toPath());
 		Path decryptedLink = newDecryptedLink(temporaryDirectory);
 		PBEFileDecryptor decryptor = new PBEFileDecryptor(
 			newDecryptionModelThatFailsTheRewrite(decryptedLink), decryptedLink.toFile(),
 			PBEFileDecryptor.DEFAULT_DECRYPTED_FILE_EXTENSION, true);
 
-		assertDoesNotThrow(() -> decryptor.decrypt(encrypted));
+		assertThrows(IOException.class, () -> decryptor.decrypt(encrypted));
 
 		assertEquals(DEV_FULL, Files.readSymbolicLink(decryptedLink),
 			"the rewrite went to /dev/full");
-		assertFalse(encrypted.exists(), "the encrypted original is deleted");
+		assertArrayEquals(encryptedBytes, Files.readAllBytes(encrypted.toPath()),
+			"the encrypted original is kept as it was");
 	}
 
 	/**
-	 * Today a {@link FileDecryptor} does not notice that the rewrite of the decrypted file failed.
+	 * A {@link FileDecryptor} fails with the {@link IOException} of the failed rewrite.
 	 *
 	 * @param temporaryDirectory
 	 *            the temporary directory of this test
@@ -185,7 +186,7 @@ public class DecryptedFileRewriteFailureTest
 	 *             is thrown if an error occurs
 	 */
 	@Test
-	public void fileDecryptor_aFailedRewrite_isNotReported(@TempDir Path temporaryDirectory)
+	public void fileDecryptor_aFailedRewrite_failsTheDecryption(@TempDir Path temporaryDirectory)
 		throws Exception
 	{
 		File encrypted = new FileEncryptor(newEncryptionModel(),
@@ -194,7 +195,7 @@ public class DecryptedFileRewriteFailureTest
 		FileDecryptor decryptor = new FileDecryptor(
 			newDecryptionModelThatFailsTheRewrite(decryptedLink), decryptedLink.toFile());
 
-		assertDoesNotThrow(() -> decryptor.decrypt(encrypted));
+		assertThrows(IOException.class, () -> decryptor.decrypt(encrypted));
 
 		assertEquals(DEV_FULL, Files.readSymbolicLink(decryptedLink),
 			"the rewrite went to /dev/full");

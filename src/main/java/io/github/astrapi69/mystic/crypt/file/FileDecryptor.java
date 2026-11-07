@@ -46,7 +46,6 @@ import org.apache.commons.io.FilenameUtils;
 
 import io.github.astrapi69.crypt.data.model.CryptModel;
 import io.github.astrapi69.crypt.data.model.CryptObjectDecorator;
-import io.github.astrapi69.file.write.StoreFileExtensions;
 import io.github.astrapi69.mystic.crypt.core.AbstractFileDecryptor;
 import io.github.astrapi69.mystic.crypt.decorator.CryptObjectDecoratorExtensions;
 import io.github.astrapi69.mystic.crypt.io.CryptoCipherOutputStream;
@@ -154,7 +153,7 @@ public class FileDecryptor extends AbstractFileDecryptor
 	 * @param encrypted
 	 *            the encrypted file
 	 * @throws IOException
-	 *             if an I/O error occurs
+	 *             if the decrypted file cannot be read or written again
 	 */
 	protected void onAfterDecrypt(final File encrypted) throws IOException
 	{
@@ -172,8 +171,10 @@ public class FileDecryptor extends AbstractFileDecryptor
 				decryptedFileString = CryptObjectDecoratorExtensions
 					.undecorateWithStringDecorator(decryptedFileString, decorators.get(i));
 			}
-			StoreFileExtensions.toFile(decryptedFile, decryptedFileString,
-				StandardCharsets.UTF_8.name());
+			// The JDK write throws when it fails. StoreFileExtensions.toFile from file-worker wrote
+			// through a PrintWriter, which swallows the IOException of a failed write, so a full
+			// disk left a cut off file unreported (#272).
+			Files.writeString(decryptedFile.toPath(), decryptedFileString, StandardCharsets.UTF_8);
 		}
 	}
 
