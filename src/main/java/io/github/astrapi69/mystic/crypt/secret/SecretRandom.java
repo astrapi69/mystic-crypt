@@ -24,12 +24,13 @@
  */
 package io.github.astrapi69.mystic.crypt.secret;
 
+import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.Objects;
 
 /**
- * The random values a cryptographic operation needs - salts, nonces, IVs, generated passwords -
- * drawn from {@link SecureRandom} directly.
+ * The random values a cryptographic operation needs - salts, nonces, IVs, generated passwords,
+ * certificate serial numbers - drawn from {@link SecureRandom} directly.
  * <p>
  * Not through randomizer: that library generates test data, and before its 10.5 its default
  * generator was seeded with the current time in milliseconds, which made every salt, nonce and
@@ -46,8 +47,28 @@ public final class SecretRandom
 	private static final String ALPHANUMERIC = "abcdefghijklmnopqrstuvwxyz"
 		+ "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
+	/**
+	 * The length of a certificate serial number: 159 bits fill the 20 octets RFC 5280 allows with
+	 * the top bit of the first octet clear, so the DER encoding needs no sign byte
+	 */
+	private static final int SERIAL_NUMBER_BITS = 159;
+
 	private SecretRandom()
 	{
+	}
+
+	/**
+	 * Draws a serial number for a new X.509 certificate as RFC 5280 section 4.1.2.2 asks for it: a
+	 * positive integer of at most 20 octets in its DER encoding. It has 158 bits from
+	 * {@link SecureRandom}, far above the 64 the CA/Browser Forum baseline requires, below a set
+	 * 159th bit: so it is never 0, always 159 bits long, and its DER encoding always takes the 20
+	 * octets, without a sign byte.
+	 *
+	 * @return the serial number
+	 */
+	public static BigInteger certificateSerialNumber()
+	{
+		return new BigInteger(SERIAL_NUMBER_BITS - 1, SOURCE).setBit(SERIAL_NUMBER_BITS - 1);
 	}
 
 	/**

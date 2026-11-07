@@ -30,12 +30,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.BitSet;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -45,8 +49,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 /**
- * Salts, nonces, IVs and generated passwords come from {@link java.security.SecureRandom} directly,
- * never through randomizer, which generates test data (#241, GHSA-rmpr-hqmh-r8gp)
+ * Salts, nonces, IVs, generated passwords and certificate serial numbers come from
+ * {@link java.security.SecureRandom} directly, never through randomizer, which generates test data
+ * (#241, GHSA-rmpr-hqmh-r8gp)
  */
 class SecretRandomTest
 {
@@ -69,6 +74,36 @@ class SecretRandomTest
 	 * a probability below 1 in 10 million over all 94 characters.
 	 */
 	private static final int TOLERANCE = EXPECTED_PER_CHARACTER / 5;
+
+	@Test
+	@DisplayName("a certificate serial number is positive, 159 bits and 20 octets long, its 158 lower bits are drawn, and 10000 draws differ")
+	void certificateSerialNumber_isPositive_has159Bits_fitsInto20Octets_andIsDrawn()
+	{
+		int draws = 10_000;
+		Set<BigInteger> drawn = new HashSet<>();
+		BitSet setSomewhere = new BitSet();
+		BitSet clearSomewhere = new BitSet();
+		for (int i = 0; i < draws; i++)
+		{
+			BigInteger serialNumber = SecretRandom.certificateSerialNumber();
+			assertEquals(1, serialNumber.signum(), "positive: " + serialNumber);
+			assertEquals(159, serialNumber.bitLength(), "159 bits: " + serialNumber);
+			// toByteArray is the content of the DER INTEGER, sign byte included; RFC 5280 allows 20
+			assertEquals(20, serialNumber.toByteArray().length, "20 octets: " + serialNumber);
+			for (int bit = 0; bit < 158; bit++)
+			{
+				(serialNumber.testBit(bit) ? setSomewhere : clearSomewhere).set(bit);
+			}
+			drawn.add(serialNumber);
+		}
+
+		assertEquals(draws, drawn.size(), "10000 draws, 10000 serial numbers");
+		// a drawn bit stays the same over 10000 draws with a probability of 2 in 2^10000, so every
+		// one of the 158 lower bits is 1 in some draw and 0 in another: far more than the 64
+		// random bits the CA/Browser Forum baseline requires
+		assertEquals(158, setSomewhere.cardinality(), "bits that were 1 in some draw");
+		assertEquals(158, clearSomewhere.cardinality(), "bits that were 0 in some draw");
+	}
 
 	@Test
 	@DisplayName("no class of the library refers to randomizer")

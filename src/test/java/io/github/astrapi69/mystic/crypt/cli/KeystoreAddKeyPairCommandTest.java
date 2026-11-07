@@ -25,12 +25,14 @@
 package io.github.astrapi69.mystic.crypt.cli;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.security.Key;
 import java.security.KeyStore;
@@ -151,6 +153,35 @@ class KeystoreAddKeyPairCommandTest extends AbstractCliTest
 			"the certificate must be valid for about ten days");
 		assertTrue(notAfter.isBefore(Instant.now().plus(11, ChronoUnit.DAYS)),
 			"the certificate must not be valid for longer than the requested ten days");
+	}
+
+	/**
+	 * The self-signed certificate gets a drawn serial number, positive, 159 bits and 20 octets
+	 * long, where it used to take the millisecond it was made in through the overload of
+	 * crypt-data's CertFactory that takes a number of days (crypt-data#118): predictable, and
+	 * shared by two certificates made in one millisecond (#253)
+	 */
+	@Test
+	void theSerialNumberIsDrawn_notTheMillisecondTheCertificateWasMadeIn(@TempDir File tempDir)
+		throws Exception
+	{
+		File storeFile = createStore(tempDir, "PKCS12");
+		long before = System.currentTimeMillis();
+		assertEquals(0,
+			run("keystore", "add-keypair", "--file", storeFile.getAbsolutePath(), "--password",
+				"secret", "--alias", "serial", "--dname", "CN=serial", "--algorithm", "EC"));
+		long after = System.currentTimeMillis();
+
+		BigInteger serialNumber = ((X509Certificate)load(storeFile, "PKCS12")
+			.getCertificate("serial")).getSerialNumber();
+		assertFalse(
+			BigInteger.valueOf(before).compareTo(serialNumber) <= 0
+				&& serialNumber.compareTo(BigInteger.valueOf(after)) <= 0,
+			"the serial number " + serialNumber + " is a millisecond from " + before + " to "
+				+ after);
+		assertEquals(1, serialNumber.signum(), "positive: " + serialNumber);
+		assertEquals(159, serialNumber.bitLength(), "159 bits: " + serialNumber);
+		assertEquals(20, serialNumber.toByteArray().length, "20 octets: " + serialNumber);
 	}
 
 	@Test

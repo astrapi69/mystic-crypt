@@ -25,12 +25,16 @@
 package io.github.astrapi69.mystic.crypt.ssl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
+import java.util.List;
 
+import org.bouncycastle.asn1.x500.X500Name;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -90,6 +94,37 @@ class SelfSignedCertificateFactoryTest
 	void aPlainRsaKeyIsNotHeldToThePssRequirement() throws Exception
 	{
 		SelfSignedCertificateFactory.requireSignatureFitsTheKey(keyPair("RSA"), "SHA256withRSA");
+	}
+
+	/**
+	 * RFC 5280 section 4.1.2.2: the serial number is a positive integer of at most 20 octets, and
+	 * two certificates of one issuer do not share one. It comes from
+	 * SecretRandom.certificateSerialNumber, so it is always 159 bits long (#253)
+	 */
+	@Test
+	void theSerialNumberIsPositive_has159Bits_fitsInto20Octets_andDiffersBetweenTwoCertificates()
+		throws Exception
+	{
+		KeyPairGenerator generator = KeyPairGenerator.getInstance("EC");
+		generator.initialize(256);
+		KeyPair keyPair = generator.generateKeyPair();
+		X500Name name = new X500Name("CN=serial");
+		SelfSignedCertificateFactory.Extensions noExtensions = new SelfSignedCertificateFactory.Extensions(
+			null, List.of(), List.of(), List.of());
+
+		BigInteger first = SelfSignedCertificateFactory
+			.create(keyPair, name, 1, "SHA256withECDSA", noExtensions).getSerialNumber();
+		BigInteger second = SelfSignedCertificateFactory
+			.create(keyPair, name, 1, "SHA256withECDSA", noExtensions).getSerialNumber();
+
+		for (BigInteger serialNumber : List.of(first, second))
+		{
+			assertEquals(1, serialNumber.signum(), "positive: " + serialNumber);
+			assertEquals(159, serialNumber.bitLength(), "159 bits: " + serialNumber);
+			// toByteArray is the content of the DER INTEGER, sign byte included
+			assertEquals(20, serialNumber.toByteArray().length, "20 octets: " + serialNumber);
+		}
+		assertNotEquals(first, second);
 	}
 
 	@ParameterizedTest
