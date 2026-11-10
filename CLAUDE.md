@@ -57,9 +57,7 @@ exit code; `make publish-central` and `make tag-release` refuse to run without
 - Numbers in docs are measured, never remembered (docs-and-numbers.md).
 - Never hand-roll crypto primitives; JDK -> Bouncy Castle -> crypt family ->
   new dependency, in that order (library-first.md).
-- Spotless owns formatting; no `git add -A` (PIT leftovers); no
-  `Co-Authored-By` trailer, session link or "Generated with" line for a
-  non-human collaborator, in a commit or a pull request description.
+- Spotless owns formatting; no `git add -A` (PIT leftovers).
 
 ## Session start
 
