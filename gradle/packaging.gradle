@@ -1,5 +1,3 @@
-import java.text.SimpleDateFormat
-
 // Runnable uber-jar for the command-line interface: mystic-crypt-<version>-all.jar bundles every
 // runtime dependency plus a Main-Class, so it runs with `java -jar mystic-crypt-<version>-all.jar
 // <subcommand>`. It is an additional artifact and does NOT change the primary library jar. Run on
@@ -15,6 +13,10 @@ shadowJar {
     mergeServiceFiles()
 }
 
+// The manifest names what was built and with which tools, and nothing that changes between two builds of
+// the same commit: no build time, no operating system, no JDK patch level (RL-094, RL-116; the wording
+// follows silly-bean#24). Which JDK builds a release is named in .sdkmanrc; the manifest keeps the feature
+// release as Build-Jdk-Spec, the attribute Maven writes for the same reason.
 jar {
     manifest {
         attributes(
@@ -25,8 +27,13 @@ jar {
                 "Implementation-Vendor": "$projectLeaderName",
                 "Created-By": "Gradle ${gradle.gradleVersion}",
                 "Built-By": "$projectLeaderName",
-                "Build-Timestamp": new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(new Date()),
-                "Build-Jdk": "${System.properties['java.version']} (${System.properties['java.vendor']} ${System.properties['java.vm.version']})",
-                "Build-OS": "${System.properties['os.name']} ${System.properties['os.arch']} ${System.properties['os.version']}")
+                "Build-Jdk-Spec": projectSourceCompatibility)
     }
+}
+
+// Every archive has fixed entry times and a fixed entry order, so that it depends on the files alone.
+// Gradle 9 does this by default; stated here so the build does not depend on that default (silly-bean#24).
+tasks.withType(AbstractArchiveTask).configureEach {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
 }
