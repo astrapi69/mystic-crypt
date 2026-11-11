@@ -66,6 +66,8 @@ public final class SecretCopies implements AutoCloseable
 	}
 
 	/**
+	 * Opens a new, empty holder
+	 *
 	 * @return a new, empty holder, to be closed when the method is done with its copies
 	 */
 	public static SecretCopies open()
