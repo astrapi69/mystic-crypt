@@ -479,6 +479,26 @@ public class ObfuscatorExtensionsTest
 	}
 
 	/**
+	 * Test method for {@link ObfuscatorExtensions#tryToClone(Object)}, the promise of #292: a clone
+	 * that comes back null is the empty {@link Optional} the Javadoc names, and
+	 * {@link ObfuscatorExtensions#inverse(BiMap)} reaches its in-place fallback for the plain
+	 * {@link HashBiMap} the obfuscation plugin builds (astrapi69/mystic-crypt-ui#884)
+	 */
+	@Test
+	public void tryToClone_ofABiMapWhoseCloneIsNull_isEmptyAndInverseInverts()
+	{
+		assertTrue(
+			ObfuscatorExtensions.tryToClone(HashBiMap.create(newIndependentRules())).isEmpty());
+
+		BiMap<Character, ObfuscationOperationRule<Character, Character>> rules = HashBiMap
+			.create(newIndependentRules());
+		BiMap<ObfuscationOperationRule<Character, Character>, Character> inverted = ObfuscatorExtensions
+			.inverse(rules);
+		assertEquals(rules.size(), inverted.size());
+		assertTrue(inverted.keySet().stream().allMatch(ObfuscationOperationRule::isInverted));
+	}
+
+	/**
 	 * Test method for {@link ObfuscatorExtensions#tryToClone(Object)}, a clonable object has to be
 	 * returned as an equal but distinct instance
 	 */
@@ -618,23 +638,19 @@ public class ObfuscatorExtensionsTest
 	/**
 	 * Test method for {@link ObfuscatorExtensions#inverse(BiMap)} and
 	 * {@link ObfuscatorExtensions#disentangleImproved(BiMap, String)} with a plain
-	 * {@link HashBiMap}
-	 * <p>
-	 * Note: this test documents a known defect that is out of scope here. Both methods clone the
-	 * whole {@link BiMap} argument over {@link ObfuscatorExtensions#tryToClone(Object)} which wraps
-	 * the result of the clone helper in {@link Optional#of(Object)}. The clone helper answers null
-	 * for a {@link HashBiMap}, so the methods fail with a {@link NullPointerException} for a plain
-	 * {@link HashBiMap}. ({@link ObfuscatorExtensions#inverseToMap(BiMap)} used to be listed here
-	 * too, but its own defect - cloning the immutable {@link Character} key - has been fixed, see
-	 * {@link #inverseToMap_withACloneableBiMap_mapsEveryRuleToItsCharacter()}.)
+	 * {@link HashBiMap}: since #292 both reach the in-place fallback and work for independent
+	 * rules, which is the map the obfuscation plugin builds (astrapi69/mystic-crypt-ui#884). What
+	 * still cannot work is a CHAIN of rules (a replacement character that is itself a rule key):
+	 * its inversion collides in the inverted {@link BiMap} on the BiMap invariant, with or without
+	 * a clone - the open design question of #295, pinned here so it is not rediscovered
 	 */
 	@Test
-	public void inverseAndDisentangleImproved_currentlyFailForPlainHashBiMaps()
+	public void inverseAndDisentangleImproved_workForPlainHashBiMapsOfIndependentRules()
 	{
-		assertThrows(NullPointerException.class,
+		assertEquals("abc", ObfuscatorExtensions.disentangleImproved(newIndependentRules(), "xyz"));
+
+		assertThrows(IllegalArgumentException.class,
 			() -> ObfuscatorExtensions.inverse(newSmallChainRules()));
-		assertThrows(NullPointerException.class,
-			() -> ObfuscatorExtensions.disentangleImproved(newSmallChainRules(), "AcAC"));
 	}
 
 	/**

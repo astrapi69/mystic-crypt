@@ -487,7 +487,8 @@ public final class ObfuscatorExtensions
 		Objects.requireNonNull(object);
 		try
 		{
-			return Optional.of(CloneObjectExtensions.clone(object));
+			// a clone that cannot be made comes back null; the promise is an empty Optional (#292)
+			return Optional.ofNullable(CloneObjectExtensions.clone(object));
 		}
 		catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e)
 		{
