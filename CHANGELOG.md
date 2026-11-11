@@ -66,19 +66,11 @@ DEPRECATED:
 CHANGED:
 
 - what consumers inherit from this release: silly-bean 4.0 (the archived library's final release, API-identical to
-  3.0) as an `api` dependency; crypt-data 13.3; no jaxb pre-release build on the runtime class path any more
-  (PR #287, crypt-data#133, #284); and Bouncy Castle 1.87
-- Bouncy Castle 1.86 -> 1.87. What changes for this library's users, from the release notes: a `KeyAgreement`
-  asked for its secret before `doPhase` now throws `IllegalStateException` as the JCE specifies - before, the DH
-  path answered the PRIVATE exponent itself; the ML-DSA and ML-KEM `PrivateKeyFactory` now checks the tag and
-  length of the RFC 9881/9935 private-key CHOICE, so a malformed key is refused instead of misread; the ASN.1
-  extension and attribute tables are hardened against hash-collision flooding while certificates and CRLs parse;
-  `X500Name.equals` is no longer quadratic; the PKCS12 keystore writes with a default PBE iteration count of
-  300,000 (down from 600,000, the MAC stays at 600,000) for Windows interoperability. Removed upstream, used
-  nowhere in this family (measured by code search): XMSS/XMSS^MT and LMS/HSS; Classic McEliece is deprecated
-  upstream as unsafe. The OpenPGP API gains RFC 9980 post-quantum support, and two-step passphrase decryption
-  detects a wrong passphrase again
-- build only: PIT 1.30.2 and Spotless 8.11.0; coverage and mutation floors unchanged
+  3.0) as an `api` dependency; crypt-data 13.3; and no jaxb pre-release build on the runtime class path any more
+  (PR #287, crypt-data#133, #284). Bouncy Castle stays at 1.86, PIT at 1.30.1 and Spotless at 8.10.4: their next
+  versions reached Maven Central and the Plugin Portal 0, 6 and 9 days before this cut, and a dependency version
+  enters a release only after fourteen days in the open; they follow with the next cycle, Bouncy Castle with its
+  jar signatures checked against the key that signed 1.86
 
 Version 13.9
 -------------
