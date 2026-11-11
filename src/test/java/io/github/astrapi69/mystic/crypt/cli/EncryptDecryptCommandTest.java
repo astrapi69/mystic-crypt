@@ -236,6 +236,62 @@ class EncryptDecryptCommandTest extends AbstractCliTest
 	}
 
 	@Test
+	void anEmptyDeprecatedArgumentBesideThePassphraseFileDoesNotCount(@TempDir File tempDir)
+		throws IOException
+	{
+		File passphraseFile = new File(tempDir, "passphrase");
+		Files.writeString(passphraseFile.toPath(), "pass\n");
+
+		int exitCode = run("encrypt", "--text", "x", "--passphrase-file", passphraseFile.getPath(),
+			"-p", "");
+
+		assertEquals(0, exitCode,
+			"an empty --passphrase is no second source, the file answers: " + err);
+	}
+
+	@Test
+	void aPassphraseFileBesideTheDeprecatedArgumentIsRefused(@TempDir File tempDir)
+		throws IOException
+	{
+		File passphraseFile = new File(tempDir, "passphrase");
+		Files.writeString(passphraseFile.toPath(), "pass\n");
+
+		int exitCode = run("encrypt", "--text", "x", "--passphrase-file", passphraseFile.getPath(),
+			"-p", "argument");
+
+		assertEquals(2, exitCode);
+		assertTrue(err.contains("--passphrase-file"),
+			"the message must name the colliding sources, but was: '" + err + "'");
+	}
+
+	@Test
+	void aPassphraseFileWhoseFirstLineIsBlankIsRefused(@TempDir File tempDir) throws IOException
+	{
+		File passphraseFile = new File(tempDir, "blank-first-line");
+		Files.writeString(passphraseFile.toPath(), "\nthe second line is not read\n");
+
+		int exitCode = run("encrypt", "--text", "x", "--passphrase-file", passphraseFile.getPath());
+
+		assertEquals(2, exitCode);
+		assertTrue(err.contains(passphraseFile.getName()),
+			"the message must name the file, but was: '" + err + "'");
+	}
+
+	@Test
+	void anUnreadablePassphraseFileIsRefusedWithItsPath(@TempDir File tempDir)
+	{
+		File directoryAsFile = new File(tempDir, "a-directory");
+		assertTrue(directoryAsFile.mkdir());
+
+		int exitCode = run("encrypt", "--text", "x", "--passphrase-file",
+			directoryAsFile.getPath());
+
+		assertEquals(2, exitCode);
+		assertTrue(err.contains(directoryAsFile.getName()),
+			"the message must name the unreadable file, but was: '" + err + "'");
+	}
+
+	@Test
 	void aPassphraseFileBesideAnotherPassphraseSourceIsRefused(@TempDir File tempDir)
 		throws IOException
 	{
