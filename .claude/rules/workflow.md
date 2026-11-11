@@ -50,6 +50,13 @@ Releases follow the family order crypt-api -> crypt-data -> mystic-crypt;
 a downstream release commit is pushed only when the upstream version is
 actually resolvable on Maven Central.
 
+The dependency currency check (`./gradlew dependencyUpdates`, RL-120) runs
+BEFORE the release pull request opens, so its patch and minor bumps land in
+the release branch with everything else (RL-065) instead of amending an open
+pull request; a runtime major gets a session of its own after the release.
+The 13.10 cut opened #301 first and had to amend, which is why this sentence
+exists.
+
 A release resolves no SNAPSHOT, test scope included: where a sibling's next
 version is not published at the cut, the release takes the last published one.
 `noSnapshotDependencies` checks every resolvable configuration and the build
