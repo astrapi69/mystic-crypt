@@ -40,23 +40,46 @@ class BcryptHasherTest
 {
 
 	/**
-	 * Pins the defect of #293: a password longer than 72 UTF-8 bytes is hashed without a word,
-	 * bcrypt reads only the first 72, and verify then accepts every password that shares those 72
-	 * bytes, whatever follows. Whoever chose a long passphrase believes all of it counts. The next
-	 * commit turns these assertions: both refuse such a password.
+	 * The promise of #293: a password longer than {@link BcryptHasher#MAX_PASSWORD_BYTES} UTF-8
+	 * BYTES (not characters) is refused by hash and by verify with the same exception type the API
+	 * uses for invalid input, with a message that names the lengths and never the password - bcrypt
+	 * would read only the first 72 bytes, and verify would accept every password sharing them
 	 */
 	@Test
-	public void hashAndVerify_acceptAPasswordOverSeventyTwoBytes_todaysDefect()
+	public void hashAndVerify_refuseAPasswordOverSeventyTwoUtf8Bytes()
 	{
-		// 36 x 'ü' is exactly 72 UTF-8 bytes; one more character crosses the limit
+		// 36 x the two-byte character is exactly 72 UTF-8 bytes; one more character crosses it
 		char[] seventyThreeBytes = ("ü".repeat(36) + "a").toCharArray();
-		char[] sameFirstSeventyTwoBytes = ("ü".repeat(36) + "b").toCharArray();
+		String hashOfShortPassword = BcryptHasher.hash("short".toCharArray());
 
-		String hash = BcryptHasher.hash(seventyThreeBytes.clone());
+		IllegalArgumentException refusedHash = assertThrows(IllegalArgumentException.class,
+			() -> BcryptHasher.hash(seventyThreeBytes.clone()));
+		IllegalArgumentException refusedVerify = assertThrows(IllegalArgumentException.class,
+			() -> BcryptHasher.verify(seventyThreeBytes.clone(), hashOfShortPassword));
 
-		assertTrue(BcryptHasher.verify(seventyThreeBytes.clone(), hash));
-		assertTrue(BcryptHasher.verify(sameFirstSeventyTwoBytes, hash),
-			"the defect: a different password with the same first 72 bytes verifies");
+		for (IllegalArgumentException refusal : java.util.List.of(refusedHash, refusedVerify))
+		{
+			assertTrue(
+				refusal.getMessage().contains("73") && refusal.getMessage()
+					.contains(String.valueOf(BcryptHasher.MAX_PASSWORD_BYTES)),
+				"the message names the lengths: " + refusal.getMessage());
+			assertFalse(refusal.getMessage().contains("ü"),
+				"the message never carries the password");
+		}
+	}
+
+	/**
+	 * The limit counts UTF-8 bytes, not characters: 36 two-byte characters are exactly 72 bytes and
+	 * hash and verify round-trip, while the 73rd byte above is refused
+	 */
+	@Test
+	public void hashAndVerify_acceptAPasswordOfExactlySeventyTwoUtf8Bytes()
+	{
+		char[] exactlySeventyTwoBytes = "ü".repeat(36).toCharArray();
+
+		String hash = BcryptHasher.hash(exactlySeventyTwoBytes.clone());
+
+		assertTrue(BcryptHasher.verify(exactlySeventyTwoBytes.clone(), hash));
 	}
 
 	@Test

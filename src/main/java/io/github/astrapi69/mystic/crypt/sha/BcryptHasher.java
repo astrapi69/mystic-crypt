@@ -63,8 +63,67 @@ public final class BcryptHasher
 	/** Maximum log rounds */
 	public static final int MAX_LOG_ROUNDS = 31;
 
+	/**
+	 * The most bytes of a password bcrypt reads: everything after the 72nd UTF-8 byte is silently
+	 * ignored by the algorithm (OWASP Password Storage Cheat Sheet, "bcrypt"), so a longer password
+	 * is refused instead of truncated without a word (#293). The window of the password-hash plugin
+	 * refuses the same way; Argon2id has no such limit.
+	 */
+	public static final int MAX_PASSWORD_BYTES = 72;
+
 	private BcryptHasher()
 	{
+	}
+
+	/**
+	 * Refuses a password of more than {@link #MAX_PASSWORD_BYTES} UTF-8 bytes: bcrypt would read
+	 * only the first 72 and verify would accept every password sharing them (#293). The message
+	 * names the lengths and never the password; the byte count is computed without copying the
+	 * password into a String or buffer.
+	 *
+	 * @param password
+	 *            the password to measure
+	 * @throws IllegalArgumentException
+	 *             when the password is longer than {@link #MAX_PASSWORD_BYTES} UTF-8 bytes
+	 */
+	private static void requireAtMostMaxPasswordBytes(final char[] password)
+	{
+		int utf8Bytes = utf8LengthOf(password);
+		if (utf8Bytes > MAX_PASSWORD_BYTES)
+		{
+			Arrays.fill(password, '\0');
+			throw new IllegalArgumentException("the password is " + utf8Bytes
+				+ " bytes in UTF-8, and bcrypt reads only the first " + MAX_PASSWORD_BYTES
+				+ ": use a shorter password, or Argon2id for long passphrases");
+		}
+	}
+
+	private static int utf8LengthOf(final char[] password)
+	{
+		int utf8Bytes = 0;
+		for (int index = 0; index < password.length; index++)
+		{
+			char character = password[index];
+			if (character < 0x80)
+			{
+				utf8Bytes += 1;
+			}
+			else if (character < 0x800)
+			{
+				utf8Bytes += 2;
+			}
+			else if (Character.isHighSurrogate(character) && index + 1 < password.length
+				&& Character.isLowSurrogate(password[index + 1]))
+			{
+				utf8Bytes += 4;
+				index++;
+			}
+			else
+			{
+				utf8Bytes += 3;
+			}
+		}
+		return utf8Bytes;
 	}
 
 	/**
@@ -104,6 +163,7 @@ public final class BcryptHasher
 			throw new IllegalArgumentException(
 				"Log rounds must be between " + MIN_LOG_ROUNDS + " and " + MAX_LOG_ROUNDS);
 		}
+		requireAtMostMaxPasswordBytes(password);
 
 		try
 		{
@@ -149,6 +209,7 @@ public final class BcryptHasher
 			throw new IllegalArgumentException(
 				"Log rounds must be between " + MIN_LOG_ROUNDS + " and " + MAX_LOG_ROUNDS);
 		}
+		requireAtMostMaxPasswordBytes(password);
 
 		try
 		{
@@ -177,6 +238,7 @@ public final class BcryptHasher
 		{
 			throw new IllegalArgumentException("Password cannot be null");
 		}
+		requireAtMostMaxPasswordBytes(password);
 		if (hash == null)
 		{
 			throw new IllegalArgumentException("Hash cannot be null");
