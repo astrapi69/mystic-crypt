@@ -43,6 +43,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import io.github.astrapi69.mystic.crypt.cli.MysticCryptCli;
 import picocli.CommandLine;
@@ -282,6 +284,45 @@ class ReleaseConsistencyTest
 		return names;
 	}
 
+	/** What a run does about the project page checks, decided by {@link #pageCheckMode}. */
+	enum PageCheck
+	{
+		/** {@code PAGES_INDEX} names the page: check it. */
+		RUN,
+		/** No page at hand and none required: skip with the reason. */
+		SKIP,
+		/** A run that must check the page has no {@code PAGES_INDEX}: fail, never skip. */
+		FAIL_UNSET
+	}
+
+	/**
+	 * Decides what a run does about the page checks, as a pure function of the configuration, so
+	 * the decision is testable without an environment.
+	 *
+	 * @param configured
+	 *            the value of {@code mysticcrypt.pagesIndex}, empty when {@code PAGES_INDEX} is not
+	 *            set
+	 * @param ci
+	 *            whether the run is a CI run ({@code CI} is set)
+	 * @param required
+	 *            whether this run is the dedicated page check and must not report green without the
+	 *            page ({@code PAGES_CHECK=required})
+	 * @return what the run does
+	 */
+	static PageCheck pageCheckMode(final String configured, final boolean ci,
+		final boolean required)
+	{
+		if (!configured.isEmpty())
+		{
+			return PageCheck.RUN;
+		}
+		if (required || ci)
+		{
+			return PageCheck.FAIL_UNSET;
+		}
+		return PageCheck.SKIP;
+	}
+
 	/**
 	 * The page on the gh-pages branch, as {@code PAGES_INDEX} names it. Without it outside CI the
 	 * test is skipped; in CI a missing value fails the build, so the page cannot go unchecked.
@@ -289,19 +330,28 @@ class ReleaseConsistencyTest
 	static Path pagesIndex()
 	{
 		String configured = System.getProperty("mysticcrypt.pagesIndex", "");
-		if (configured.isEmpty())
+		PageCheck mode = pageCheckMode(configured, System.getenv("CI") != null,
+			"required".equals(System.getenv("PAGES_CHECK")));
+		if (mode == PageCheck.FAIL_UNSET)
 		{
-			if (System.getenv("CI") != null)
-			{
-				fail("PAGES_INDEX is not set in CI: the project page would go unchecked");
-			}
-			assumeTrue(false,
-				"PAGES_INDEX is not set: the page is checked in CI, where gh-pages is "
-					+ "checked out");
+			fail("PAGES_INDEX is not set in CI: the project page would go unchecked");
 		}
+		assumeTrue(mode == PageCheck.RUN,
+			"PAGES_INDEX is not set: the page is checked in CI, where gh-pages is checked out");
 		Path page = Path.of(configured);
 		assertTrue(Files.isRegularFile(page), "PAGES_INDEX names no file: " + page);
 		return page;
+	}
+
+	@ParameterizedTest(name = "configured={0} ci={1} required={2}: {3}")
+	@CsvSource({ "gh-pages/index.html, true, false, RUN", "gh-pages/index.html, false, false, RUN",
+			"gh-pages/index.html, true, true, RUN", "'', false, false, SKIP",
+			"'', true, false, FAIL_UNSET", "'', true, true, FAIL_UNSET",
+			"'', false, true, FAIL_UNSET" })
+	void pageCheckMode_decides_fromTheConfiguration(final String configured, final boolean ci,
+		final boolean required, final PageCheck expected)
+	{
+		assertEquals(expected, pageCheckMode(configured, ci, required));
 	}
 
 	static void assertNoDifference(String what, Set<String> registered, Set<String> documented)
