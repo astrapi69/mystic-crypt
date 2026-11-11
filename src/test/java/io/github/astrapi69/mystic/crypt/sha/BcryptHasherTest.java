@@ -39,6 +39,26 @@ import org.junit.jupiter.api.Test;
 class BcryptHasherTest
 {
 
+	/**
+	 * Pins the defect of #293: a password longer than 72 UTF-8 bytes is hashed without a word,
+	 * bcrypt reads only the first 72, and verify then accepts every password that shares those 72
+	 * bytes, whatever follows. Whoever chose a long passphrase believes all of it counts. The next
+	 * commit turns these assertions: both refuse such a password.
+	 */
+	@Test
+	public void hashAndVerify_acceptAPasswordOverSeventyTwoBytes_todaysDefect()
+	{
+		// 36 x 'ü' is exactly 72 UTF-8 bytes; one more character crosses the limit
+		char[] seventyThreeBytes = ("ü".repeat(36) + "a").toCharArray();
+		char[] sameFirstSeventyTwoBytes = ("ü".repeat(36) + "b").toCharArray();
+
+		String hash = BcryptHasher.hash(seventyThreeBytes.clone());
+
+		assertTrue(BcryptHasher.verify(seventyThreeBytes.clone(), hash));
+		assertTrue(BcryptHasher.verify(sameFirstSeventyTwoBytes, hash),
+			"the defect: a different password with the same first 72 bytes verifies");
+	}
+
 	@Test
 	void testHashWithDefaultRounds()
 	{
