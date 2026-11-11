@@ -201,6 +201,109 @@ class EncryptDecryptCommandTest extends AbstractCliTest
 		assertEquals(2, exitCode);
 		assertTrue(err.contains("--text-stdin") && err.contains("--passphrase-stdin"),
 			"the message must name both options, but was: '" + err + "'");
+		assertTrue(err.contains("--passphrase-file"),
+			"the way out the message names must not be the deprecated --passphrase (#291), but was: '"
+				+ err + "'");
+	}
+
+	@Test
+	void pipedTextWithAPassphraseFileEncryptsAndDecryptsBack(@TempDir File tempDir)
+		throws IOException
+	{
+		File passphraseFile = new File(tempDir, "passphrase");
+		Files.writeString(passphraseFile.toPath(), "the file pass\nsecond line is not read\n");
+
+		assertEquals(0, runWithStdin("from a pipe\n", "encrypt", "--text-stdin",
+			"--passphrase-file", passphraseFile.getPath()), err);
+		String base64 = out.trim();
+
+		assertEquals(0,
+			run("decrypt", "--text", base64, "--passphrase-file", passphraseFile.getPath()), err);
+		assertEquals("from a pipe", out.trim());
+	}
+
+	@Test
+	void anEmptyPassphraseFileIsRefusedWithItsPath(@TempDir File tempDir) throws IOException
+	{
+		File passphraseFile = new File(tempDir, "empty");
+		Files.writeString(passphraseFile.toPath(), "");
+
+		int exitCode = run("encrypt", "--text", "x", "--passphrase-file", passphraseFile.getPath());
+
+		assertEquals(2, exitCode);
+		assertTrue(err.contains(passphraseFile.getName()),
+			"the message must name the empty file, but was: '" + err + "'");
+	}
+
+	@Test
+	void anEmptyDeprecatedArgumentBesideThePassphraseFileDoesNotCount(@TempDir File tempDir)
+		throws IOException
+	{
+		File passphraseFile = new File(tempDir, "passphrase");
+		Files.writeString(passphraseFile.toPath(), "pass\n");
+
+		int exitCode = run("encrypt", "--text", "x", "--passphrase-file", passphraseFile.getPath(),
+			"-p", "");
+
+		assertEquals(0, exitCode,
+			"an empty --passphrase is no second source, the file answers: " + err);
+	}
+
+	@Test
+	void aPassphraseFileBesideTheDeprecatedArgumentIsRefused(@TempDir File tempDir)
+		throws IOException
+	{
+		File passphraseFile = new File(tempDir, "passphrase");
+		Files.writeString(passphraseFile.toPath(), "pass\n");
+
+		int exitCode = run("encrypt", "--text", "x", "--passphrase-file", passphraseFile.getPath(),
+			"-p", "argument");
+
+		assertEquals(2, exitCode);
+		assertTrue(err.contains("--passphrase-file"),
+			"the message must name the colliding sources, but was: '" + err + "'");
+	}
+
+	@Test
+	void aPassphraseFileWhoseFirstLineIsBlankIsRefused(@TempDir File tempDir) throws IOException
+	{
+		File passphraseFile = new File(tempDir, "blank-first-line");
+		Files.writeString(passphraseFile.toPath(), "\nthe second line is not read\n");
+
+		int exitCode = run("encrypt", "--text", "x", "--passphrase-file", passphraseFile.getPath());
+
+		assertEquals(2, exitCode);
+		assertTrue(err.contains(passphraseFile.getName()),
+			"the message must name the file, but was: '" + err + "'");
+	}
+
+	@Test
+	void anUnreadablePassphraseFileIsRefusedWithItsPath(@TempDir File tempDir)
+	{
+		File directoryAsFile = new File(tempDir, "a-directory");
+		assertTrue(directoryAsFile.mkdir());
+
+		int exitCode = run("encrypt", "--text", "x", "--passphrase-file",
+			directoryAsFile.getPath());
+
+		assertEquals(2, exitCode);
+		assertTrue(err.contains(directoryAsFile.getName()),
+			"the message must name the unreadable file, but was: '" + err + "'");
+	}
+
+	@Test
+	void aPassphraseFileBesideAnotherPassphraseSourceIsRefused(@TempDir File tempDir)
+		throws IOException
+	{
+		File passphraseFile = new File(tempDir, "passphrase");
+		Files.writeString(passphraseFile.toPath(), "pass\n");
+
+		int exitCode = runWithStdin("pass\n", "encrypt", "--text", "x", "--passphrase-file",
+			passphraseFile.getPath(), "--passphrase-stdin");
+
+		assertEquals(2, exitCode);
+		assertTrue(err.contains("--passphrase-file") && err.contains("--passphrase-stdin"),
+			"the message must name the colliding sources, but was: '" + err + "'");
 	}
 
 	@Test

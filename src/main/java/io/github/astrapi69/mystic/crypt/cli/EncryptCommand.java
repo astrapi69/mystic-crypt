@@ -72,6 +72,9 @@ public class EncryptCommand implements Callable<Integer>
 	@Option(names = "--passphrase-stdin", description = "Read the passphrase from the first line of standard input.")
 	boolean passphraseStdin;
 
+	@Option(names = "--passphrase-file", description = "Read the passphrase from the first line of the given file; a file descriptor such as /dev/fd/3 works too.")
+	File passphraseFile;
+
 	@Override
 	public Integer call()
 	{
@@ -80,7 +83,7 @@ public class EncryptCommand implements Callable<Integer>
 			PassphraseCryptSupport.requireOnlyOneStandardInputReader(textStdin, passphraseStdin);
 			byte[] plain = PassphraseCryptSupport.readInput(in, text, textStdin);
 			char[] resolvedPassphrase = PassphraseCryptSupport.resolvePassphrase(passphrase,
-				passphraseStdin);
+				passphraseStdin, passphraseFile);
 			byte[] encrypted = PassphraseCryptSupport.seal(resolvedPassphrase, plain);
 			String printed = PassphraseCryptSupport.writeOutput(out, encrypted,
 				PassphraseCryptSupport::asBase64);

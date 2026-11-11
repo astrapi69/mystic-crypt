@@ -172,6 +172,9 @@ public class KeyExchangeCommand implements Runnable
 				"--message" }, description = "A message to encrypt with the derived secret.")
 		String message;
 
+		@Option(names = "--message-stdin", description = "Read the message to encrypt from standard input (#291).")
+		boolean messageStdin;
+
 		@Option(names = { "-o",
 				"--out" }, description = "The file to write the handshake to. Without it the handshake is printed.")
 		File out;
@@ -187,6 +190,15 @@ public class KeyExchangeCommand implements Runnable
 			CliSupport.refuseDashAsPath(encrypted, "--encrypted", CliSupport.LEAVE_IT_OUT);
 			try
 			{
+				if (messageStdin && message != null)
+				{
+					throw new IllegalArgumentException(
+						"the message has one source: --message-stdin cannot be combined with --message");
+				}
+				if (messageStdin)
+				{
+					message = new String(System.in.readAllBytes(), StandardCharsets.UTF_8);
+				}
 				String publicKey = readEnvelope(recipient);
 				KeyExchangeSupport.Handshake handshake = KeyExchangeSupport.encapsulate(publicKey);
 				System.out.println("algorithm: " + KeyExchangeSupport.algorithmOf(publicKey));

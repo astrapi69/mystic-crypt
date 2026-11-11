@@ -24,6 +24,7 @@
  */
 package io.github.astrapi69.mystic.crypt.cli;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -130,6 +131,62 @@ final class PassphraseCryptSupport
 	}
 
 	/**
+	 * The passphrase from its one source: the given file (first line), standard input, the
+	 * deprecated argument, or a terminal prompt. The file is what lets a script pipe the text AND
+	 * keep the passphrase off the process arguments (#291, GnuPG's --passphrase-file); a file
+	 * descriptor such as /dev/fd/3 works the same way.
+	 *
+	 * @param passphrase
+	 *            the value of the deprecated argument, or null
+	 * @param stdin
+	 *            whether the passphrase is to be read from standard input
+	 * @param passphraseFile
+	 *            the file whose first line is the passphrase, or null
+	 * @return the passphrase, to be zeroed by the caller
+	 * @throws IllegalArgumentException
+	 *             when two sources are given, the file is empty or unreadable, standard input is
+	 *             empty, or nothing was given and there is no terminal
+	 */
+	static char[] resolvePassphrase(final String passphrase, final boolean stdin,
+		final File passphraseFile)
+	{
+		if (passphraseFile == null)
+		{
+			return resolvePassphrase(passphrase, stdin);
+		}
+		if (stdin || (passphrase != null && !passphrase.isEmpty()))
+		{
+			throw new IllegalArgumentException("the passphrase has one source: --passphrase-file"
+				+ " cannot be combined with --passphrase-stdin or --passphrase");
+		}
+		return firstLineOf(passphraseFile);
+	}
+
+	private static char[] firstLineOf(final File passphraseFile)
+	{
+		try
+		{
+			String firstLine;
+			try (BufferedReader reader = Files.newBufferedReader(passphraseFile.toPath(),
+				StandardCharsets.UTF_8))
+			{
+				firstLine = reader.readLine();
+			}
+			if (firstLine == null || firstLine.isEmpty())
+			{
+				throw new IllegalArgumentException(
+					"the passphrase file is empty: " + passphraseFile.getPath());
+			}
+			return firstLine.toCharArray();
+		}
+		catch (IOException exception)
+		{
+			throw new IllegalArgumentException("the passphrase file cannot be read: "
+				+ passphraseFile.getPath() + " (" + exception.getMessage() + ")", exception);
+		}
+	}
+
+	/**
 	 * Rejects the one option combination that cannot work: two options that both want to consume
 	 * standard input. Without this the second read silently returns nothing and the user is left
 	 * guessing why the passphrase was empty.
@@ -148,7 +205,7 @@ final class PassphraseCryptSupport
 		{
 			throw new IllegalArgumentException(
 				"--text-stdin and --passphrase-stdin both read standard input, so they cannot be "
-					+ "combined: pass the passphrase with --passphrase, or the text with --text");
+					+ "combined: pass the passphrase with --passphrase-file, or the text with --text");
 		}
 	}
 
