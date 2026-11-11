@@ -90,7 +90,32 @@ public class MysticCryptCli implements Runnable
 	 */
 	public static int execute(String... args)
 	{
-		return new CommandLine(new MysticCryptCli()).execute(args);
+		return new CommandLine(new MysticCryptCli())
+			.setExecutionExceptionHandler(MysticCryptCli::answerFailure).execute(args);
+	}
+
+	/**
+	 * Every failure a subcommand does not handle itself becomes one error line and exit code 2, as
+	 * the commands that catch their own failures answer already - never a stack trace, and never
+	 * exit code 1, which is the code of a domain answer in this command line (verify-signature: 0
+	 * valid, 1 invalid, 2 error). One place, so a new command cannot forget it (#294)
+	 *
+	 * @param exception
+	 *            what the subcommand threw
+	 * @param commandLine
+	 *            the failing command
+	 * @param parseResult
+	 *            the parsed arguments, unused
+	 * @return the exit code 2
+	 */
+	private static int answerFailure(Exception exception, CommandLine commandLine,
+		CommandLine.ParseResult parseResult)
+	{
+		String reason = exception.getMessage() != null
+			? exception.getMessage()
+			: exception.getClass().getSimpleName();
+		commandLine.getErr().println(CliSupport.error(reason));
+		return 2;
 	}
 
 	/**

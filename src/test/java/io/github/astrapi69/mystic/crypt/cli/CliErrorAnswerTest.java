@@ -25,39 +25,41 @@
 package io.github.astrapi69.mystic.crypt.cli;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
- * Pins the defect of #294: hash and the keystore subcommands answer a missing secret with a Java
- * stack trace and exit code 1, where every other command that takes a secret prints one error: line
- * and exits 2 - and 1 is the code of a domain answer in this command line (verify-signature: 0
- * valid, 1 invalid, 2 error). The next commit turns these assertions.
+ * The promise of #294: every failure a subcommand does not handle itself becomes one error: line
+ * and exit code 2, never a stack trace and never exit code 1, which is the code of a domain answer
+ * in this command line (verify-signature: 0 valid, 1 invalid, 2 error).
  */
 class CliErrorAnswerTest extends AbstractCliTest
 {
 
 	@Test
-	@DisplayName("hash without a secret source answers a stack trace and exit 1, the defect")
-	void hash_withoutASecretSource_printsAStackTraceAndExitsOne()
+	@DisplayName("hash without a secret source answers one error line and exit 2")
+	void hash_withoutASecretSource_answersOneErrorLineAndExitsTwo()
 	{
 		int exitCode = run("hash", "-a", "argon2id");
 
-		assertEquals(1, exitCode);
-		assertTrue(err.contains("\tat "), "the defect: a stack trace reaches the user");
+		assertEquals(2, exitCode);
+		assertTrue(err.contains("error: "), "one error line names the reason: " + err);
+		assertFalse(err.contains("\tat "), "no stack trace reaches the user: " + err);
 	}
 
 	@Test
-	@DisplayName("keystore list without a password answers a stack trace and exit 1, the defect")
-	void keystoreList_withoutAPassword_printsAStackTraceAndExitsOne()
+	@DisplayName("keystore list without a password answers one error line and exit 2")
+	void keystoreList_withoutAPassword_answersOneErrorLineAndExitsTwo()
 	{
 		String keystore = "src/test/resources/keystore.jks";
 
 		int exitCode = run("keystore", "list", "--file", keystore);
 
-		assertEquals(1, exitCode);
-		assertTrue(err.contains("\tat "), "the defect: a stack trace reaches the user");
+		assertEquals(2, exitCode);
+		assertTrue(err.contains("error: "), "one error line names the reason: " + err);
+		assertFalse(err.contains("\tat "), "no stack trace reaches the user: " + err);
 	}
 }
