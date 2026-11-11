@@ -1,0 +1,42 @@
+# Checks the project page on gh-pages against the sources: the release version, the Maven
+# coordinates, the command table, the Search Console file and the sitemap (ReleaseConsistencyTest).
+#
+# The page follows the release: it is updated as post-release work, after the artifacts are
+# verified on Maven Central. So this check runs on every push to gh-pages, not in the pull request
+# run, where the page still names the previous release - failing that run forced the page update
+# BEFORE anything was published, which is backwards (seen at 13.10).
+#
+# PAGES_CHECK=required keeps this run fail-closed: without PAGES_INDEX it fails, never skips, so a
+# wiring mistake here cannot read as a green page.
+name: Project page
+
+on:
+  push:
+    branches: [ gh-pages ]
+  workflow_dispatch:
+
+jobs:
+  page-consistency:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources (develop)
+        uses: actions/checkout@v7
+        with:
+          ref: develop
+      - name: Checkout the project page (gh-pages)
+        uses: actions/checkout@v7
+        with:
+          ref: gh-pages
+          path: gh-pages
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+      - name: Check the page against the sources
+        env:
+          PAGES_INDEX: ${{ github.workspace }}/gh-pages/index.html
+          PAGES_CHECK: required
+        run: ./gradlew test --tests "io.github.astrapi69.mystic.crypt.ReleaseConsistencyTest"

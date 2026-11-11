@@ -58,9 +58,13 @@ import picocli.CommandLine;
  * {@code rootProject.name} from {@code settings.gradle}. The commands are the subcommands picocli
  * registers on {@link MysticCryptCli}.
  * <p>
- * The project page lives on the {@code gh-pages} branch. CI checks that branch out and passes its
- * {@code index.html} as {@code PAGES_INDEX}; where that is missing in CI the test fails, and
- * locally it is skipped with that reason.
+ * The project page lives on the {@code gh-pages} branch and follows the release: it is updated as
+ * post-release work, after the artifacts are verified on Maven Central. So the page checks do not
+ * run in the pull request run, where the page still names the previous release; they run in the
+ * page-check workflow on every push to {@code gh-pages}, which passes the page's {@code index.html}
+ * as {@code PAGES_INDEX} and sets {@code PAGES_CHECK=required}, so that run fails without the page
+ * instead of skipping. Everywhere else a missing {@code PAGES_INDEX} skips the page checks with
+ * that reason.
  */
 class ReleaseConsistencyTest
 {
@@ -297,26 +301,26 @@ class ReleaseConsistencyTest
 
 	/**
 	 * Decides what a run does about the page checks, as a pure function of the configuration, so
-	 * the decision is testable without an environment.
+	 * the decision is testable without an environment. A pull request run has no page to check: the
+	 * page follows the release and names the previous one while the pull request is open, so the
+	 * checks run in the page-check workflow, on every push to gh-pages, and that run is the one
+	 * that must never report green without the page.
 	 *
 	 * @param configured
 	 *            the value of {@code mysticcrypt.pagesIndex}, empty when {@code PAGES_INDEX} is not
 	 *            set
-	 * @param ci
-	 *            whether the run is a CI run ({@code CI} is set)
 	 * @param required
 	 *            whether this run is the dedicated page check and must not report green without the
 	 *            page ({@code PAGES_CHECK=required})
 	 * @return what the run does
 	 */
-	static PageCheck pageCheckMode(final String configured, final boolean ci,
-		final boolean required)
+	static PageCheck pageCheckMode(final String configured, final boolean required)
 	{
 		if (!configured.isEmpty())
 		{
 			return PageCheck.RUN;
 		}
-		if (required || ci)
+		if (required)
 		{
 			return PageCheck.FAIL_UNSET;
 		}
@@ -324,34 +328,34 @@ class ReleaseConsistencyTest
 	}
 
 	/**
-	 * The page on the gh-pages branch, as {@code PAGES_INDEX} names it. Without it outside CI the
-	 * test is skipped; in CI a missing value fails the build, so the page cannot go unchecked.
+	 * The page on the gh-pages branch, as {@code PAGES_INDEX} names it. Without it the test is
+	 * skipped, except in the dedicated page check ({@code PAGES_CHECK=required}), where a missing
+	 * value fails the run, so the page cannot go unchecked where checking it is the run's job.
 	 */
 	static Path pagesIndex()
 	{
 		String configured = System.getProperty("mysticcrypt.pagesIndex", "");
-		PageCheck mode = pageCheckMode(configured, System.getenv("CI") != null,
-			"required".equals(System.getenv("PAGES_CHECK")));
+		PageCheck mode = pageCheckMode(configured,
+			"required".equals(System.getProperty("mysticcrypt.pagesCheck")));
 		if (mode == PageCheck.FAIL_UNSET)
 		{
-			fail("PAGES_INDEX is not set in CI: the project page would go unchecked");
+			fail("PAGES_INDEX is not set: this run must check the project page and cannot");
 		}
 		assumeTrue(mode == PageCheck.RUN,
-			"PAGES_INDEX is not set: the page is checked in CI, where gh-pages is checked out");
+			"PAGES_INDEX is not set: the page is checked by the page-check workflow, "
+				+ "which runs on every push to gh-pages");
 		Path page = Path.of(configured);
 		assertTrue(Files.isRegularFile(page), "PAGES_INDEX names no file: " + page);
 		return page;
 	}
 
-	@ParameterizedTest(name = "configured={0} ci={1} required={2}: {3}")
-	@CsvSource({ "gh-pages/index.html, true, false, RUN", "gh-pages/index.html, false, false, RUN",
-			"gh-pages/index.html, true, true, RUN", "'', false, false, SKIP",
-			"'', true, false, FAIL_UNSET", "'', true, true, FAIL_UNSET",
-			"'', false, true, FAIL_UNSET" })
-	void pageCheckMode_decides_fromTheConfiguration(final String configured, final boolean ci,
-		final boolean required, final PageCheck expected)
+	@ParameterizedTest(name = "configured={0} required={1}: {2}")
+	@CsvSource({ "gh-pages/index.html, false, RUN", "gh-pages/index.html, true, RUN",
+			"'', false, SKIP", "'', true, FAIL_UNSET" })
+	void pageCheckMode_decides_fromTheConfiguration(final String configured, final boolean required,
+		final PageCheck expected)
 	{
-		assertEquals(expected, pageCheckMode(configured, ci, required));
+		assertEquals(expected, pageCheckMode(configured, required));
 	}
 
 	static void assertNoDifference(String what, Set<String> registered, Set<String> documented)

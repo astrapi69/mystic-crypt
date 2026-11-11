@@ -21,11 +21,6 @@ jobs:
     steps:
       - name: Checkout sources
         uses: actions/checkout@v7
-      - name: Checkout the project page (gh-pages), checked by ReleaseConsistencyTest
-        uses: actions/checkout@v7
-        with:
-          ref: gh-pages
-          path: gh-pages
       - name: Setup Java
         uses: actions/setup-java@v5
         with:
@@ -33,13 +28,11 @@ jobs:
           distribution: 'temurin'
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
+      # the project page is checked by page-check.yml on every push to gh-pages, not here: the
+      # page follows the release and names the previous one while a pull request is open
       - name: Execute Gradle build
-        env:
-          PAGES_INDEX: ${{ github.workspace }}/gh-pages/index.html
         run: ./gradlew build
       - name: Mutation testing (PIT, fails below mutationThreshold in build.gradle)
-        env:
-          PAGES_INDEX: ${{ github.workspace }}/gh-pages/index.html
         run: |
           ./gradlew pitest
           # PIT's forked test runs leave src/test/resources/crypt/test.txt
