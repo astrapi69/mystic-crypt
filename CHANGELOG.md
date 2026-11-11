@@ -1,6 +1,77 @@
 ## Change log
 ----------------------
 
+Version 13.10
+-------------
+
+The release whose bcrypt refuses what the algorithm cannot read, whose command line pipes text
+without the deprecated passphrase option and answers every unhandled failure alike, and whose
+artifacts build byte for byte reproducibly; crypt-data 13.3 and silly-bean 4.0 come along.
+
+ADDED:
+
+- `SecretRandom.characters(int length, CharSequence alphabet)` draws a `char[]` from an alphabet the caller chooses,
+  for a generated password: every distinct character with the same probability (`SecureRandom.nextInt`, no modulo
+  bias), a character repeated in the alphabet counts once, and the result is a `char[]` the caller can overwrite. A
+  null or empty alphabet, a negative length and an alphabet with a surrogate are refused with a message that names
+  the argument (#252)
+- `SecretRandom.certificateSerialNumber()` draws a serial number for a new X.509 certificate as RFC 5280 section
+  4.1.2.2 asks for it: 158 bits from `SecureRandom` below a set 159th bit, so it is positive, never 0, and its DER
+  encoding takes the 20 octets RFC 5280 allows, far above the 64 random bits of the CA/Browser Forum baseline.
+  `SelfSignedCertificateFactory` uses it instead of a private copy (#253)
+
+FIXED:
+
+- `hash -a bcrypt` and `verify` refuse a password of more than 72 UTF-8 bytes with a message that names the
+  lengths, instead of silently hashing only the first 72 - bcrypt reads no more, so `verify` accepted every
+  password that shared those 72 bytes (#293). CONSEQUENCE: a hash made earlier from a longer password can no
+  longer be verified with the full password; `BcryptHasher.MAX_PASSWORD_BYTES` carries the limit, and Argon2id
+  takes long passphrases
+- `encrypt` and `decrypt` take `--passphrase-file` (first line of the file; a descriptor such as `/dev/fd/3`
+  works), so piped text no longer needs the deprecated `--passphrase` that 14.0 removes; `keyx send` takes
+  `--message-stdin` the same way, and the both-stdin refusal names the supported way out (#291)
+- every failure a command does not handle itself answers one `error:` line and exit 2 instead of a Java stack
+  trace and exit 1, which is the code of a domain answer (`verify-signature`: 0 valid, 1 invalid, 2 error) -
+  measured on `hash` and the `keystore` subcommands (#294)
+- `ObfuscatorExtensions.tryToClone` answers the empty `Optional` its Javadoc promises instead of throwing when
+  the clone comes back null, so `inverse` and the deprecated `disentangleImproved` work for the plain
+  `HashBiMap` the obfuscation plugin builds (#292); a CHAIN of rules still cannot be inverted and now fails
+  honestly (#295, scheduled for 14.0)
+- the umlaut case of `ReleaseKeyJsonTest` assumes a machine whose file names can hold it, so a POSIX-locale
+  build is green and reports the case as skipped with the reason (#288, test only)
+
+- `FileDecryptor` and `PBEFileDecryptor` with decorators rewrite the decrypted file without the decorators, and a
+  failed rewrite, for example on a full disk, went unnoticed: file-worker's `StoreFileExtensions.toFile` writes through
+  a `PrintWriter`, which swallows the `IOException`. `PBEFileDecryptor` with `deleteEncryptedFileAfterDecryption` then
+  deleted the encrypted original as well, so both copies were lost. The rewrite now goes through `Files.writeString`,
+  so `decrypt` throws the `IOException` before anything is deleted, and the encrypted original stays as it was (#272)
+- `PBEFileDecryptor(model, decryptedFile, decryptedFileExtension)` ignored the extension: without a decrypted file the
+  result was named with `.decrypted`. It now takes the given extension, as the four-argument constructor and
+  `PBEFileEncryptor` do (#281)
+- `keystore add-keypair` gave the self-signed certificate of a new key pair the millisecond it was made in as serial
+  number, through the overload of crypt-data's `CertFactory` that takes a number of days (crypt-data#118): predictable,
+  and shared by two certificates made in one millisecond. It now draws the serial number with
+  `SecretRandom.certificateSerialNumber()` (#253)
+- Two builds of the same commit produce the same bytes: the jar manifest loses its build timestamp, operating system
+  and exact JDK patch version and keeps `Build-Jdk-Spec`, and every archive, the runnable all-jar included, writes
+  fixed entry times in a fixed order, so a published artifact verifies against a local build by hash (PR #286)
+
+DEPRECATED:
+
+- `ObfuscatorExtensions.disentangle(List<KeyValuePair<Character, ObfuscationOperationRule<Character, Character>>>, String)`
+  is deprecated since 13.10 and goes in 14.0: the silly-bean library that carries `KeyValuePair` is archived. The
+  replacement is the new `disentangle(Map<Character, ObfuscationOperationRule<Character, Character>>, String)`
+  overload, with `KeyValuePair.toMap(rules)` where a list of pairs is at hand (#278)
+
+CHANGED:
+
+- what consumers inherit from this release: silly-bean 4.0 (the archived library's final release, API-identical to
+  3.0) as an `api` dependency; crypt-data 13.3; and no jaxb pre-release build on the runtime class path any more
+  (PR #287, crypt-data#133, #284). Bouncy Castle stays at 1.86, PIT at 1.30.1 and Spotless at 8.10.4: their next
+  versions reached Maven Central and the Plugin Portal 0, 6 and 9 days before this cut, and a dependency version
+  enters a release only after fourteen days in the open; they follow with the next cycle, Bouncy Castle with its
+  jar signatures checked against the key that signed 1.86
+
 Version 13.9
 -------------
 

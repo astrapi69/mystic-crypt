@@ -50,7 +50,7 @@ JDK 21) instead of carrying Bouncy Castle fallbacks for what the JDK already pro
 
 ## Installation
 
-Latest release on Maven Central: 13.9
+Latest release on Maven Central: 13.10
 
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.astrapi69/mystic-crypt.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/io.github.astrapi69/mystic-crypt)
 
@@ -58,7 +58,7 @@ Latest release on Maven Central: 13.9
 
 ```toml
 [versions]
-mystic-crypt-version = "13.9"
+mystic-crypt-version = "13.10"
 
 [libraries]
 mystic-crypt = { module = "io.github.astrapi69:mystic-crypt", version.ref = "mystic-crypt-version" }
@@ -74,7 +74,7 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation "io.github.astrapi69:mystic-crypt:13.9"
+    implementation "io.github.astrapi69:mystic-crypt:13.10"
 }
 ```
 
@@ -84,7 +84,7 @@ dependencies {
 <dependency>
     <groupId>io.github.astrapi69</groupId>
     <artifactId>mystic-crypt</artifactId>
-    <version>13.9</version>
+    <version>13.10</version>
 </dependency>
 ```
 
@@ -207,7 +207,7 @@ involved, and, just as importantly, what is deliberately *not* implemented and w
 The published `-all` artifact is a runnable uber-jar:
 
 ```shell
-java -jar mystic-crypt-13.9-all.jar --help
+java -jar mystic-crypt-13.10-all.jar --help
 ```
 
 | Command | Description |
@@ -236,8 +236,8 @@ standard error and goes away in 14.0, because an argument is visible to every pr
 and lands in shell history.
 
 ```shell
-java -jar mystic-crypt-13.9-all.jar hash --password-stdin < password.txt
-java -jar mystic-crypt-13.9-all.jar checksum --file build.gradle --algorithm SHA-256
+java -jar mystic-crypt-13.10-all.jar hash --password-stdin < password.txt
+java -jar mystic-crypt-13.10-all.jar checksum --file build.gradle --algorithm SHA-256
 ```
 
 ## Documentation
