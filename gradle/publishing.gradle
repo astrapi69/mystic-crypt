@@ -16,6 +16,14 @@ javadoc {
     // inside the javadocJar task, which only put an entry named "failOnError" into the task's
     // extra-properties map and left the real Javadoc.failOnError flag at the false set below.
     failOnError = true
+    // The generated HTML takes its interface language from the JVM's default locale, so a
+    // developer machine set to German produced a -javadoc.jar that differs from CI's English one
+    // in every page, and the published artifact could not be verified byte for byte against a
+    // local build (seen at 13.10, where the other four artifacts matched). -locale alone is not
+    // enough: javadoc only honours it fully when it precedes every doclet option, and Gradle does
+    // not put it first, so some strings stayed German. Pin the tool JVM's own locale as well.
+    options.locale = "en"
+    options.jFlags("-Duser.language=en", "-Duser.country=US")
     if (JavaVersion.current().isJava9Compatible()) {
         options.addBooleanOption("html5", true)
     }
