@@ -26,12 +26,14 @@ package io.github.astrapi69.mystic.crypt.cli;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -63,6 +65,13 @@ class ReleaseKeyJsonTest
 	@SuppressWarnings("unchecked")
 	void of_carriesEveryTextUnchanged(final String what, final String text) throws Exception
 	{
+		// a path name has to be encodable in sun.jnu.encoding, which follows the locale (JEP 400
+		// changed file.encoding only): on a POSIX-locale machine Path.of refuses the umlaut name
+		// before the code under test runs, so the case is not reachable there and says so (#288)
+		Assumptions.assumeTrue(
+			Charset.forName(System.getProperty("sun.jnu.encoding")).newEncoder().canEncode(text),
+			"the file names of this machine cannot hold " + what);
+
 		KeyState key = new KeyState("5B2FA6B11E298BC09287F423D8C403518C49CA75", true, "rsa2048",
 			"SC", Instant.parse("2016-05-01T12:56:24Z"), null, SecretPart.OFFLINE);
 		KeyRingState certificate = new KeyRingState(key.fingerprint(), text, List.of(key),
