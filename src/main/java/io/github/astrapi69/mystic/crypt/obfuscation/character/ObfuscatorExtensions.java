@@ -121,7 +121,8 @@ public final class ObfuscatorExtensions
 	}
 
 	/**
-	 * Disentangle the given obfuscated text using the specified {@link List} rules
+	 * Disentangle the given obfuscated text using the specified {@link Map} rules. This is the
+	 * replacement for the deprecated {@link #disentangle(List, String)} overload (#278)
 	 *
 	 * @param rules
 	 *            the rules
@@ -129,6 +130,28 @@ public final class ObfuscatorExtensions
 	 *            the obfuscated text
 	 * @return the disentangled string
 	 */
+	public static String disentangle(
+		final Map<Character, ObfuscationOperationRule<Character, Character>> rules,
+		final String obfuscated)
+	{
+		Objects.requireNonNull(rules);
+		Objects.requireNonNull(obfuscated);
+		return disentangle(HashBiMap.create(rules), obfuscated);
+	}
+
+	/**
+	 * Disentangle the given obfuscated text using the specified {@link List} rules
+	 *
+	 * @param rules
+	 *            the rules
+	 * @param obfuscated
+	 *            the obfuscated text
+	 * @return the disentangled string
+	 * @deprecated the silly-bean library that carries {@link KeyValuePair} is archived; use
+	 *             {@link #disentangle(Map, String)}, with {@code KeyValuePair.toMap(rules)} where a
+	 *             list of pairs is at hand. Scheduled for removal in 14.0 (#278)
+	 */
+	@Deprecated(since = "13.10", forRemoval = true)
 	public static String disentangle(
 		final List<KeyValuePair<Character, ObfuscationOperationRule<Character, Character>>> rules,
 		final String obfuscated)
