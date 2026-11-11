@@ -269,6 +269,35 @@ public class ObfuscatorExtensionsTest
 	}
 
 	/**
+	 * Test method for {@link ObfuscatorExtensions#disentangle(Map, String)}, the replacement for
+	 * the deprecated {@link List} overload (#278): a plain map reaches the same result
+	 */
+	@Test
+	public void disentangle_withMapOfRules_recoversTheObfuscatedText()
+	{
+		Map<Character, ObfuscationOperationRule<Character, Character>> rules = newSmallChainRules();
+
+		assertEquals("abac", ObfuscatorExtensions.disentangle(rules, "AcAC"));
+		// characters that are neither an operated nor a replacement character stay unchanged
+		assertEquals("zzz", ObfuscatorExtensions.disentangle(rules, "zzz"));
+	}
+
+	/**
+	 * Test method for {@link ObfuscatorExtensions#disentangle(Map, String)}, a null map and a null
+	 * text are refused
+	 */
+	@Test
+	public void disentangle_withMapOfRules_refusesNullArguments()
+	{
+		Map<Character, ObfuscationOperationRule<Character, Character>> rules = newSmallChainRules();
+
+		assertThrows(NullPointerException.class, () -> ObfuscatorExtensions.disentangle(
+			(Map<Character, ObfuscationOperationRule<Character, Character>>)null, "AcAC"));
+		assertThrows(NullPointerException.class,
+			() -> ObfuscatorExtensions.disentangle(rules, null));
+	}
+
+	/**
 	 * Test method for {@link ObfuscatorExtensions#disentangle(List, String)}, the list based
 	 * variant resolves every operated and every replacement character back to its origin
 	 */
