@@ -39,6 +39,78 @@ import org.junit.jupiter.api.Test;
 class BcryptHasherTest
 {
 
+	/**
+	 * The promise of #293: a password longer than {@link BcryptHasher#MAX_PASSWORD_BYTES} UTF-8
+	 * BYTES (not characters) is refused by hash and by verify with the same exception type the API
+	 * uses for invalid input, with a message that names the lengths and never the password - bcrypt
+	 * would read only the first 72 bytes, and verify would accept every password sharing them
+	 */
+	@Test
+	public void hashAndVerify_refuseAPasswordOverSeventyTwoUtf8Bytes()
+	{
+		// 36 x the two-byte character is exactly 72 UTF-8 bytes; one more character crosses it
+		char[] seventyThreeBytes = ("ü".repeat(36) + "a").toCharArray();
+		String hashOfShortPassword = BcryptHasher.hash("short".toCharArray());
+
+		IllegalArgumentException refusedHash = assertThrows(IllegalArgumentException.class,
+			() -> BcryptHasher.hash(seventyThreeBytes.clone()));
+		IllegalArgumentException refusedVerify = assertThrows(IllegalArgumentException.class,
+			() -> BcryptHasher.verify(seventyThreeBytes.clone(), hashOfShortPassword));
+
+		for (IllegalArgumentException refusal : java.util.List.of(refusedHash, refusedVerify))
+		{
+			assertTrue(
+				refusal.getMessage().contains("73") && refusal.getMessage()
+					.contains(String.valueOf(BcryptHasher.MAX_PASSWORD_BYTES)),
+				"the message names the lengths: " + refusal.getMessage());
+			assertFalse(refusal.getMessage().contains("ü"),
+				"the message never carries the password");
+		}
+	}
+
+	/**
+	 * Every UTF-8 width counts correctly: a three-byte character, a surrogate pair (four bytes) and
+	 * an unpaired surrogate (encoded as three bytes) - measured at the 72-byte limit, so a miscount
+	 * would flip the answer
+	 */
+	@Test
+	public void theLimit_countsEveryUtf8Width()
+	{
+		// 24 x the three-byte euro sign is exactly 72 bytes
+		assertTrue(
+			BcryptHasher.verify("\u20ac".repeat(24).toCharArray(),
+				BcryptHasher.hash("\u20ac".repeat(24).toCharArray())),
+			"24 three-byte characters are exactly 72 bytes and pass");
+		// 18 surrogate pairs (four bytes each) are exactly 72 bytes; one more byte is refused
+		String eighteenEmojis = "\ud83d\ude00".repeat(18);
+		assertTrue(
+			BcryptHasher.verify(eighteenEmojis.toCharArray(),
+				BcryptHasher.hash(eighteenEmojis.toCharArray())),
+			"18 surrogate pairs are exactly 72 bytes and pass");
+		assertThrows(IllegalArgumentException.class,
+			() -> BcryptHasher.hash((eighteenEmojis + "a").toCharArray()));
+		// an unpaired high surrogate encodes as three bytes: 70 + 3 = 73 is refused before the
+		// password reaches the algorithm; a high surrogate followed by a non-surrogate the same
+		char[] loneSurrogateLast = ("a".repeat(70) + "\ud83d").toCharArray();
+		assertThrows(IllegalArgumentException.class, () -> BcryptHasher.hash(loneSurrogateLast));
+		char[] loneSurrogateInside = ("a".repeat(70) + "\ud83dx").toCharArray();
+		assertThrows(IllegalArgumentException.class, () -> BcryptHasher.hash(loneSurrogateInside));
+	}
+
+	/**
+	 * The limit counts UTF-8 bytes, not characters: 36 two-byte characters are exactly 72 bytes and
+	 * hash and verify round-trip, while the 73rd byte above is refused
+	 */
+	@Test
+	public void hashAndVerify_acceptAPasswordOfExactlySeventyTwoUtf8Bytes()
+	{
+		char[] exactlySeventyTwoBytes = "ü".repeat(36).toCharArray();
+
+		String hash = BcryptHasher.hash(exactlySeventyTwoBytes.clone());
+
+		assertTrue(BcryptHasher.verify(exactlySeventyTwoBytes.clone(), hash));
+	}
+
 	@Test
 	void testHashWithDefaultRounds()
 	{
