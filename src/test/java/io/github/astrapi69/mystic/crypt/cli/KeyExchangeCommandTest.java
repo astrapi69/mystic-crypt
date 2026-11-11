@@ -114,6 +114,44 @@ class KeyExchangeCommandTest extends AbstractCliTest
 	}
 
 	@Test
+	void aMessageFromStandardInputIsReadableOnTheOtherSide(@TempDir File tempDir)
+	{
+		File privateKey = new File(tempDir, "recipient.key");
+		File publicKey = new File(tempDir, "recipient.pub");
+		File handshake = new File(tempDir, "handshake.txt");
+		File encrypted = new File(tempDir, "message.enc");
+
+		assertEquals(0, run("keyx", "new", "-a", "ML-KEM-768", "-k", privateKey.getPath(), "-p",
+			publicKey.getPath()));
+		assertEquals(0,
+			runWithStdin("piped, not on the process arguments", "keyx", "send", "-r",
+				publicKey.getPath(), "-o", handshake.getPath(), "--message-stdin", "-e",
+				encrypted.getPath()),
+			"stderr was: '" + err + "'");
+
+		assertEquals(0, run("keyx", "receive", "-k", privateKey.getPath(), "-s",
+			handshake.getPath(), "-e", encrypted.getPath()), "stderr was: '" + err + "'");
+		assertTrue(out.contains("message: piped, not on the process arguments"),
+			"the piped message must come back readable, but the output was: '" + out + "'");
+	}
+
+	@Test
+	void aMessageBesideAMessageFromStandardInputIsRefused(@TempDir File tempDir)
+	{
+		File privateKey = new File(tempDir, "recipient.key");
+		File publicKey = new File(tempDir, "recipient.pub");
+
+		assertEquals(0, run("keyx", "new", "-a", "ML-KEM-768", "-k", privateKey.getPath(), "-p",
+			publicKey.getPath()));
+		int exitCode = runWithStdin("piped", "keyx", "send", "-r", publicKey.getPath(), "-m",
+			"argument", "--message-stdin");
+
+		assertEquals(2, exitCode);
+		assertTrue(err.contains("--message-stdin") && err.contains("--message"),
+			"the message must name the colliding sources, but was: '" + err + "'");
+	}
+
+	@Test
 	void theHandshakeAndThePublicKeyAreNotTheSecret(@TempDir File tempDir) throws IOException
 	{
 		File privateKey = new File(tempDir, "recipient.key");

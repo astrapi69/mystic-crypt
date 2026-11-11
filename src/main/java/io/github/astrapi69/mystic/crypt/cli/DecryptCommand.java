@@ -77,6 +77,9 @@ public class DecryptCommand implements Callable<Integer>
 	@Option(names = "--passphrase-stdin", description = "Read the passphrase from the first line of standard input.")
 	boolean passphraseStdin;
 
+	@Option(names = "--passphrase-file", description = "Read the passphrase from the first line of the given file; a file descriptor such as /dev/fd/3 works too.")
+	File passphraseFile;
+
 	@Override
 	public Integer call()
 	{
@@ -85,7 +88,7 @@ public class DecryptCommand implements Callable<Integer>
 			PassphraseCryptSupport.requireOnlyOneStandardInputReader(textStdin, passphraseStdin);
 			byte[] encrypted = readEncrypted();
 			char[] resolvedPassphrase = PassphraseCryptSupport.resolvePassphrase(passphrase,
-				passphraseStdin);
+				passphraseStdin, passphraseFile);
 			byte[] decrypted = PassphraseCryptSupport.open(resolvedPassphrase, encrypted);
 			String printed = PassphraseCryptSupport.writeOutput(out, decrypted,
 				PassphraseCryptSupport::asText);
