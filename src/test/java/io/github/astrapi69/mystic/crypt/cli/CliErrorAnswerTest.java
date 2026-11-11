@@ -62,4 +62,19 @@ class CliErrorAnswerTest extends AbstractCliTest
 		assertTrue(err.contains("error: "), "one error line names the reason: " + err);
 		assertFalse(err.contains("\tat "), "no stack trace reaches the user: " + err);
 	}
+
+	@Test
+	@DisplayName("a failure without a message is answered with its exception class, never a blank")
+	void aFailureWithoutAMessage_isAnsweredWithItsClass()
+	{
+		java.io.StringWriter errBuffer = new java.io.StringWriter();
+		picocli.CommandLine commandLine = new picocli.CommandLine(new EncryptCommand());
+		commandLine.setErr(new java.io.PrintWriter(errBuffer, true));
+
+		int exitCode = MysticCryptCli.answerFailure(new IllegalStateException(), commandLine, null);
+
+		assertEquals(2, exitCode);
+		assertTrue(errBuffer.toString().contains("IllegalStateException"),
+			"the class stands in for the missing message: " + errBuffer);
+	}
 }

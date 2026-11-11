@@ -108,7 +108,7 @@ public class MysticCryptCli implements Runnable
 	 *            the parsed arguments, unused
 	 * @return the exit code 2
 	 */
-	private static int answerFailure(Exception exception, CommandLine commandLine,
+	static int answerFailure(Exception exception, CommandLine commandLine,
 		CommandLine.ParseResult parseResult)
 	{
 		String reason = exception.getMessage() != null
