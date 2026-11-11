@@ -479,6 +479,21 @@ public class ObfuscatorExtensionsTest
 	}
 
 	/**
+	 * Test method for {@link ObfuscatorExtensions#tryToClone(Object)}, pins the defect of #292: a
+	 * clone that comes back null makes the method throw instead of answering the empty
+	 * {@link Optional} its Javadoc promises, and {@link ObfuscatorExtensions#inverse(BiMap)} throws
+	 * with it instead of reaching its own fallback
+	 */
+	@Test
+	public void tryToClone_throwsForABiMapWhoseCloneIsNull_todaysDefect()
+	{
+		BiMap<Character, ObfuscationOperationRule<Character, Character>> rules = newSmallChainRules();
+
+		assertThrows(NullPointerException.class, () -> ObfuscatorExtensions.tryToClone(rules));
+		assertThrows(NullPointerException.class, () -> ObfuscatorExtensions.inverse(rules));
+	}
+
+	/**
 	 * Test method for {@link ObfuscatorExtensions#tryToClone(Object)}, a clonable object has to be
 	 * returned as an equal but distinct instance
 	 */
