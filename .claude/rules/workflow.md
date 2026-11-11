@@ -120,6 +120,15 @@ target (`workflow_dispatch`, `target: snapshot`): 13.0 was preceded by exactly
 that, which is how the unsigned-snapshot gap in #137 was found before a tag
 depended on it.
 
+## The project page follows the release
+
+The gh-pages update is post-release work, done after the artifacts are verified
+on Maven Central, never before the tag. Its checks (`ReleaseConsistencyTest`'s
+page tests) run in `page-check.yml` on every push to gh-pages, fail-closed via
+`PAGES_CHECK=required` - not in the pull request run, where the page still
+names the previous release. The 13.10 release PR went red on exactly that and
+forced the page update before anything was published, which is backwards.
+
 ## The downstream is built before the upstream is published
 
 A published version cannot be replaced, so the check that it works belongs
