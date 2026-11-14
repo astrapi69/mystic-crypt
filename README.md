@@ -295,9 +295,8 @@ What a release consists of, in the order it is run:
    (`./gradlew test --rerun`, then `./gradlew build`).
 2. **The docs describe this release**: the command table in this README, the feature list, and
    [docs/CRYPTO_CAPABILITIES.md](docs/CRYPTO_CAPABILITIES.md) show what the release contains, with
-   nothing from an earlier cycle left out or added. The project page on `gh-pages` gets its own pull
-   request against that branch, merged before the tag. Checked against `MysticCryptCli`, not from
-   memory.
+   nothing from an earlier cycle left out or added. Checked against `MysticCryptCli`, not from
+   memory. The project page on `gh-pages` is not part of it: it follows the release (step 6).
 3. **The consumers, against the candidate**: `./gradlew publishToMavenLocal`, then lethenon and
    mystic-crypt-ui built with `-PuseMavenLocal` and the version pointed at the candidate. The
    local candidate is deleted from `~/.m2` afterwards, so it cannot stand in for the published one.
@@ -306,7 +305,9 @@ What a release consists of, in the order it is run:
    pushed tag is never moved or deleted; a failed run is fixed on the branch and re-run.
 5. **Verify on Central**, with the artifacts downloaded inside the command that checks them: the
    jar, pom, `-sources.jar`, `-javadoc.jar`, and `gpg --verify` on the `.asc`.
-6. **GitHub release** from the CHANGELOG entry.
+6. **GitHub release** from the CHANGELOG entry, and the project page on `gh-pages` in a pull
+   request of its own against that branch, once the artifacts are verified on Central;
+   `page-check.yml` checks it on the push to `gh-pages`.
 7. **`master` follows the release**: a fast-forward where `master` is an ancestor of the tag
    (`git push origin "RELEASE-X.Y^{}:master"`), otherwise a merge of the tag on `master`, never a
    force push. Afterwards `git diff RELEASE-X.Y master` is empty - `master` is always the latest
