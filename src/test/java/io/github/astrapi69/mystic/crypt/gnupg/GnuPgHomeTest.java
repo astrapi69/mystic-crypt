@@ -49,6 +49,9 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.api.extension.TestWatcher;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -93,6 +96,45 @@ class GnuPgHomeTest
 
 	private static List<KeyRingState> read;
 
+	private static String diagnosisAtRead = "the home was not read";
+
+	/** Where a failed test leaves what the home looked like, for the CI run to keep (#309) */
+	private static final Path DIAGNOSES = Path.of("build", "test-diagnostics");
+
+	/**
+	 * Writes the diagnosis of the read and the state of the home now into a file when a test fails:
+	 * a PIT coverage run prints neither the reader's log nor an assertion message (#309)
+	 */
+	@RegisterExtension
+	static final TestWatcher WRITE_THE_DIAGNOSIS = new TestWatcher()
+	{
+		@Override
+		public void testFailed(final ExtensionContext context, final Throwable cause)
+		{
+			String name = "GnuPgHomeTest-" + context.getRequiredTestMethod().getName() + ".txt";
+			try
+			{
+				Files.createDirectories(DIAGNOSES);
+				Files.writeString(DIAGNOSES.resolve(name), diagnosisOf(context, cause),
+					StandardCharsets.UTF_8);
+			}
+			catch (IOException notWritten)
+			{
+				cause.addSuppressed(notWritten);
+			}
+		}
+	};
+
+	private static String diagnosisOf(final ExtensionContext context, final Throwable cause)
+		throws IOException
+	{
+		return "failed: " + context.getDisplayName() + "\n" + cause + "\n\nat the read:\n"
+			+ diagnosisAtRead + "\nnow:\n"
+			+ (home == null ? "no home" : ReadingDiagnosis.keyFiles(home.directory()))
+			+ "\ngpg's standard error for this home:\n" + (home == null ? "no home" : home.gpgLog())
+			+ "\n";
+	}
+
 	@BeforeAll
 	static void writeTheHomeWithGpg() throws IOException
 	{
@@ -126,7 +168,10 @@ class GnuPgHomeTest
 		home.importX509(certificate);
 
 		gpgSays = home.listKeys();
-		read = GnuPgHome.read(home.directory());
+		ReadingDiagnosis.Recorded<List<KeyRingState>> reading = ReadingDiagnosis
+			.record(home.directory(), () -> GnuPgHome.read(home.directory()));
+		read = reading.result();
+		diagnosisAtRead = reading.diagnosis();
 	}
 
 	@AfterAll
