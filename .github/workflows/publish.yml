@@ -55,7 +55,7 @@ jobs:
           distribution: 'temurin'
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
-      # The project page is checked by page-check.yml on every push to gh-pages, not here: it follows
+      # The project page is checked by page-check.yml on every build of the page, not here: it follows
       # the release and names the previous one until then (#303).
       - name: Build
         run: ./gradlew build

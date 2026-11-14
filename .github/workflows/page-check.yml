@@ -2,17 +2,21 @@
 # coordinates, the command table, the Search Console file and the sitemap (ReleaseConsistencyTest).
 #
 # The page follows the release: it is updated as post-release work, after the artifacts are
-# verified on Maven Central. So this check runs on every push to gh-pages, not in the pull request
+# verified on Maven Central. So this check runs on every build of the page, not in the pull request
 # run, where the page still names the previous release - failing that run forced the page update
 # BEFORE anything was published, which is backwards (seen at 13.10).
+#
+# page_build, not push to gh-pages: a push runs the workflows of the pushed commit, and gh-pages
+# carries none, so "push: branches: [gh-pages]" never fired (the 13.11 page, 4ade850d, went out
+# unchecked). page_build fires on every build of the Pages source and reads this file from the
+# default branch, which is where it lives.
 #
 # PAGES_CHECK=required keeps this run fail-closed: without PAGES_INDEX it fails, never skips, so a
 # wiring mistake here cannot read as a green page.
 name: Project page
 
 on:
-  push:
-    branches: [ gh-pages ]
+  page_build:
   workflow_dispatch:
 
 jobs:

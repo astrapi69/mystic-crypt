@@ -303,7 +303,7 @@ class ReleaseConsistencyTest
 	 * Decides what a run does about the page checks, as a pure function of the configuration, so
 	 * the decision is testable without an environment. A pull request run has no page to check: the
 	 * page follows the release and names the previous one while the pull request is open, so the
-	 * checks run in the page-check workflow, on every push to gh-pages, and that run is the one
+	 * checks run in the page-check workflow, on every build of the page, and that run is the one
 	 * that must never report green without the page.
 	 *
 	 * @param configured
@@ -343,7 +343,7 @@ class ReleaseConsistencyTest
 		}
 		assumeTrue(mode == PageCheck.RUN,
 			"PAGES_INDEX is not set: the page is checked by the page-check workflow, "
-				+ "which runs on every push to gh-pages");
+				+ "which runs on every build of the page");
 		Path page = Path.of(configured);
 		assertTrue(Files.isRegularFile(page), "PAGES_INDEX names no file: " + page);
 		return page;
