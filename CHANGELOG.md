@@ -8,9 +8,11 @@ ADDED:
 
 - `PassphraseFileFormat` names the three formats a file sealed with a passphrase comes in across this family -
   `MCFILE` (`encrypt` since #160), `MCFILE1` (the file encryption window of mystic-crypt-ui) and `MCRYPT` (the released
-  `PassphraseCryptor` layout) - and reads all of them: `of(byte[])` says which one a header shows, `open(byte[], char[])`
-  opens any of them and leaves the caller's passphrase array as it was. It writes nothing; which format both sides
-  write is a decision of its own (#306, astrapi69/mystic-crypt-ui#877)
+  `PassphraseCryptor` layout) - and `open(byte[], char[])` opens any of them, telling them apart by the header, and
+  leaves the caller's passphrase array as it was. Content in none of them, or cut short, is an
+  `IllegalArgumentException`; a wrong passphrase or altered data is a `SecurityException`, as `PassphraseEnvelope`
+  and `PassphraseCryptor` already throw it. It writes nothing; which format both sides write is a decision of its
+  own (#306, astrapi69/mystic-crypt-ui#877)
 
 FIXED:
 

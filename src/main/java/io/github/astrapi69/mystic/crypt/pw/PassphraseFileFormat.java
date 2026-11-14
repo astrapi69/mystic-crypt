@@ -28,7 +28,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 /**
@@ -52,7 +51,13 @@ import java.util.Optional;
  * <p>
  * <b>The caller owns the passphrase array</b>, as with {@link PassphraseEnvelope}: {@link #open}
  * reads it and never modifies it, also for {@code MCRYPT}, whose own reader overwrites the array it
- * is given and is therefore handed a copy.
+ * is given and is therefore handed a copy, which it zero-fills itself.
+ * <p>
+ * Which format a header shows is not offered as a method of its own: no caller needs it, and for a
+ * header that fits both {@code MCFILE1} and {@code MCFILE} it could not always answer.
+ * {@link #open} makes that choice itself and reports only the outcome.
+ *
+ * @since 13.11
  */
 public enum PassphraseFileFormat
 {
@@ -89,19 +94,6 @@ public enum PassphraseFileFormat
 	}
 
 	/**
-	 * The format the given content is in, read from its header. The first 27 bytes tell it for
-	 * every file this family writes; fewer are enough to know that it is one of these formats
-	 *
-	 * @param content
-	 *            the content, or at least its first bytes; may be null
-	 * @return the format, empty when the content starts with none of the markers
-	 */
-	public static Optional<PassphraseFileFormat> of(final byte[] content)
-	{
-		return readingsOf(content).stream().findFirst();
-	}
-
-	/**
 	 * Opens content in any of the formats, without rewriting it
 	 *
 	 * @param content
@@ -113,9 +105,13 @@ public enum PassphraseFileFormat
 	 *             if the content is in none of the formats, or is cut short behind its marker
 	 * @throws SecurityException
 	 *             if it is in one of them and does not open: the passphrase is wrong or the data
-	 *             was altered
+	 *             was altered. A {@link SecurityException}, not a {@link GeneralSecurityException},
+	 *             because {@link PassphraseEnvelope#decrypt(byte[], byte[], char[])} and
+	 *             {@link PassphraseCryptor#decrypt(char[], byte[])} already throw it for exactly
+	 *             this, and the command line's exit code 1 rests on it
 	 * @throws GeneralSecurityException
 	 *             if the key cannot be derived
+	 * @since 13.11
 	 */
 	public static byte[] open(final byte[] content, final char[] passphrase)
 		throws GeneralSecurityException

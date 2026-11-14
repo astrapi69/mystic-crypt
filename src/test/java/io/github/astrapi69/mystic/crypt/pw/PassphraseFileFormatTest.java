@@ -33,7 +33,6 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
@@ -61,8 +60,8 @@ class PassphraseFileFormatTest
 	{
 		byte[] windowFile = WindowFixtures.fileBytes();
 
-		assertEquals(Optional.of(PassphraseFileFormat.MCFILE1),
-			PassphraseFileFormat.of(windowFile));
+		assertEquals(List.of(PassphraseFileFormat.MCFILE1),
+			PassphraseFileFormat.readingsOf(windowFile));
 		assertArrayEquals(WindowFixtures.filePlaintext(),
 			PassphraseFileFormat.open(windowFile, WindowFixtures.PASSPHRASE.toCharArray()));
 	}
@@ -82,8 +81,8 @@ class PassphraseFileFormatTest
 	{
 		byte[] windowText = WindowFixtures.textBytes();
 
-		assertEquals(Optional.of(PassphraseFileFormat.MCFILE1),
-			PassphraseFileFormat.of(windowText));
+		assertEquals(List.of(PassphraseFileFormat.MCFILE1),
+			PassphraseFileFormat.readingsOf(windowText));
 		assertEquals(WindowFixtures.TEXT_PLAINTEXT,
 			new String(
 				PassphraseFileFormat.open(windowText, WindowFixtures.PASSPHRASE.toCharArray()),
@@ -121,7 +120,8 @@ class PassphraseFileFormatTest
 	@MethodSource("sealedInEveryFormat")
 	void contentInEveryFormat_isToldByItsHeaderAndOpens(final Sealed sealed) throws Exception
 	{
-		assertEquals(Optional.of(sealed.format()), PassphraseFileFormat.of(sealed.content()));
+		assertEquals(sealed.format(), PassphraseFileFormat.readingsOf(sealed.content()).get(0),
+			"tried first as the format it was sealed in");
 		assertArrayEquals(PLAINTEXT, PassphraseFileFormat.open(sealed.content(), PASSPHRASE));
 	}
 
@@ -156,7 +156,7 @@ class PassphraseFileFormatTest
 	@MethodSource("notSealed")
 	void contentInNoFormat_hasNoFormatAndIsRefusedNamingTheMarkers(final byte[] content)
 	{
-		assertEquals(Optional.empty(), PassphraseFileFormat.of(content));
+		assertEquals(List.of(), PassphraseFileFormat.readingsOf(content));
 
 		IllegalArgumentException refusal = assertThrows(IllegalArgumentException.class,
 			() -> PassphraseFileFormat.open(content, PASSPHRASE));
@@ -167,13 +167,57 @@ class PassphraseFileFormatTest
 			refusal.getMessage());
 	}
 
-	@Test
-	void aMarkerWithNothingBehindIt_isRefusedAsTruncated()
+	/**
+	 * Content of one format cut short behind its marker
+	 *
+	 * @param format
+	 *            the format whose marker it starts with
+	 * @param content
+	 *            the bytes
+	 * @param refusalNames
+	 *            what the refusal says
+	 */
+	record CutShort(PassphraseFileFormat format, byte[] content, String refusalNames) {
+		@Override
+		public String toString()
+		{
+			return format.name() + ", " + content.length + " bytes";
+		}
+	}
+
+	static Stream<CutShort> cutShortInEveryFormat()
+	{
+		return Stream.of(new CutShort(PassphraseFileFormat.MCFILE, MCFILE_MAGIC, "truncated"),
+			new CutShort(PassphraseFileFormat.MCFILE1, MCFILE1_MAGIC, "truncated"),
+			// PassphraseCryptor's own refusal: its header check also covers the length
+			new CutShort(PassphraseFileFormat.MCRYPT,
+				ByteBuffer.allocate(PassphraseCryptor.MAGIC.length + 1).put(PassphraseCryptor.MAGIC)
+					.put(PassphraseCryptor.FORMAT_VERSION).array(),
+				"'MCRYPT' and format version 1"));
+	}
+
+	@ParameterizedTest(name = "{0}")
+	@MethodSource("cutShortInEveryFormat")
+	void contentCutShortBehindItsMarker_isRefusedAsNotOpenableAtAll(final CutShort cutShort)
 	{
 		IllegalArgumentException refusal = assertThrows(IllegalArgumentException.class,
-			() -> PassphraseFileFormat.open(MCFILE1_MAGIC, PASSPHRASE));
+			() -> PassphraseFileFormat.open(cutShort.content(), PASSPHRASE));
 
-		assertTrue(refusal.getMessage().contains("truncated"), refusal.getMessage());
+		assertTrue(refusal.getMessage().contains(cutShort.refusalNames()), refusal.getMessage());
+	}
+
+	@ParameterizedTest(name = "{0}")
+	@MethodSource("sealedInEveryFormat")
+	void alteredContent_isRefusedAsOursButNotOpening(final Sealed sealed)
+	{
+		byte[] altered = sealed.content().clone();
+		altered[altered.length - 1] ^= 0x01;
+
+		SecurityException refusal = assertThrows(SecurityException.class,
+			() -> PassphraseFileFormat.open(altered, PASSPHRASE));
+
+		assertTrue(refusal.getMessage().contains("the passphrase is wrong or the data was altered"),
+			refusal.getMessage());
 	}
 
 	@Test
@@ -182,7 +226,7 @@ class PassphraseFileFormatTest
 		byte[] sealed = PassphraseCryptor.encrypt(PASSPHRASE.clone(), PLAINTEXT);
 
 		assertArrayEquals(PassphraseCryptor.MAGIC, Arrays.copyOf(sealed, 6));
-		assertEquals(Optional.of(PassphraseFileFormat.MCRYPT), PassphraseFileFormat.of(sealed));
+		assertEquals(List.of(PassphraseFileFormat.MCRYPT), PassphraseFileFormat.readingsOf(sealed));
 	}
 
 	/**
@@ -199,7 +243,6 @@ class PassphraseFileFormatTest
 		assertArrayEquals(MCFILE1_MAGIC, Arrays.copyOf(sealed, 7), "the header reads MCFILE1");
 
 		assertEquals(List.of(PassphraseFileFormat.MCFILE), PassphraseFileFormat.readingsOf(sealed));
-		assertEquals(Optional.of(PassphraseFileFormat.MCFILE), PassphraseFileFormat.of(sealed));
 		assertArrayEquals(PLAINTEXT, PassphraseFileFormat.open(sealed, PASSPHRASE));
 		assertThrows(SecurityException.class,
 			() -> PassphraseFileFormat.open(sealed, "wrong".toCharArray()));
@@ -217,7 +260,6 @@ class PassphraseFileFormatTest
 
 		assertEquals(List.of(PassphraseFileFormat.MCFILE1, PassphraseFileFormat.MCFILE),
 			PassphraseFileFormat.readingsOf(sealed));
-		assertEquals(Optional.of(PassphraseFileFormat.MCFILE1), PassphraseFileFormat.of(sealed));
 		assertArrayEquals(PLAINTEXT, PassphraseFileFormat.open(sealed, PASSPHRASE));
 		assertThrows(SecurityException.class,
 			() -> PassphraseFileFormat.open(sealed, "wrong".toCharArray()));
@@ -241,7 +283,6 @@ class PassphraseFileFormatTest
 
 		assertEquals(List.of(PassphraseFileFormat.MCFILE1, PassphraseFileFormat.MCFILE),
 			PassphraseFileFormat.readingsOf(header));
-		assertEquals(Optional.of(PassphraseFileFormat.MCFILE1), PassphraseFileFormat.of(header));
 	}
 
 	@Test
@@ -249,8 +290,6 @@ class PassphraseFileFormatTest
 	{
 		assertEquals(List.of(PassphraseFileFormat.MCFILE1, PassphraseFileFormat.MCFILE),
 			PassphraseFileFormat.readingsOf(MCFILE1_MAGIC));
-		assertEquals(Optional.of(PassphraseFileFormat.MCFILE1),
-			PassphraseFileFormat.of(MCFILE1_MAGIC));
 	}
 
 	@Test
