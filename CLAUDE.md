@@ -37,8 +37,8 @@ what those targets run.
 ```
 ./gradlew clean build      # tests + Jacoco + Spotless check - the everyday gate
 ./gradlew spotlessApply    # format + license headers (run before committing)
-./gradlew pitest           # PIT mutation testing (minutes; restores needed:
-                           #   git checkout -- src/test/resources/crypt/test.txt)
+./gradlew pitest           # PIT mutation testing: runs in CI (gradle.yml), an agent
+                           #   never runs it locally (family rule RL-005)
 ./gradlew nmcpPublishAllPublicationsToCentralPortal   # Central upload (USER_MANAGED;
                            # needs CENTRAL_PORTAL_TOKEN_USERNAME/PASSWORD env)
 ./gradlew tagRelease       # RELEASE-X tag (tag push triggers publish.yml!)
@@ -51,7 +51,9 @@ exit code; `make publish-central` and `make tag-release` refuse to run without
 ## Conventions (details in .claude/rules/)
 
 - Gitflow on `develop`; every pushed change gets a PR (workflow.md).
-- Bug fixes: GitHub issue first, failing test first (tdd.md).
+- Bug fixes: fixed in the session that finds them, in a PR of their own, failing test first
+  (tdd.md); an issue first only when the fix needs the maintainer's decision, depends on
+  something external or is too big for the session (family rules NW-015, NW-016).
 - Quality bar: 100% branch coverage, ~99% PIT score, exceptions documented
   per case (quality-gates.md).
 - Numbers in docs are measured, never remembered (docs-and-numbers.md).
