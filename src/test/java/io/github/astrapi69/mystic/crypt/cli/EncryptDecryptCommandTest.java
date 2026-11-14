@@ -41,6 +41,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import io.github.astrapi69.mystic.crypt.pw.PassphraseCryptor;
 import io.github.astrapi69.mystic.crypt.pw.PassphraseEnvelope;
+import io.github.astrapi69.mystic.crypt.pw.WindowFixtures;
 
 /**
  * Unit tests for the {@code encrypt} and {@code decrypt} subcommands, driven through the real
@@ -382,5 +383,47 @@ class EncryptDecryptCommandTest extends AbstractCliTest
 		assertTrue(out.contains("--passphrase-stdin"));
 		assertEquals(0, run("decrypt", "--help"));
 		assertTrue(out.contains("--passphrase-stdin"));
+	}
+
+	@Test
+	void aFileTheFileEncryptionWindowWrote_opens(@TempDir File tempDir) throws Exception
+	{
+		// the window's own file (WindowFixtures); read as an MCFILE, as develop did, its
+		// iteration count was 1 124 075 815 (#306, astrapi69/mystic-crypt-ui#877)
+		File windowFile = new File(tempDir, "written-in-the-window.txt.mcenc");
+		File back = new File(tempDir, "back.txt");
+		Files.write(windowFile.toPath(), WindowFixtures.fileBytes());
+
+		int exitCode = runWithStdin(WindowFixtures.PASSPHRASE + "\n", "decrypt", "-i",
+			windowFile.getPath(), "-o", back.getPath(), "--passphrase-stdin");
+
+		assertEquals(0, exitCode, "stderr was: '" + err + "'");
+		assertArrayEquals(WindowFixtures.filePlaintext(), Files.readAllBytes(back.toPath()));
+	}
+
+	@Test
+	void aTextTheFileEncryptionWindowWrote_opens()
+	{
+		// read as an MCFILE, as develop did, its iteration count was negative
+		int exitCode = runWithStdin(WindowFixtures.PASSPHRASE + "\n", "decrypt", "--text",
+			WindowFixtures.TEXT, "--passphrase-stdin");
+
+		assertEquals(0, exitCode, "stderr was: '" + err + "'");
+		assertEquals(WindowFixtures.TEXT_PLAINTEXT, out.strip());
+	}
+
+	@Test
+	void aWrongPassphraseOnAFileTheWindowWrote_isTheNegativeAnswer(@TempDir File tempDir)
+		throws Exception
+	{
+		File windowFile = new File(tempDir, "written-in-the-window.txt.mcenc");
+		Files.write(windowFile.toPath(), WindowFixtures.fileBytes());
+
+		int exitCode = runWithStdin("wrong\n", "decrypt", "-i", windowFile.getPath(),
+			"--passphrase-stdin");
+
+		assertEquals(1, exitCode, "stderr was: '" + err + "'");
+		assertTrue(err.contains("the passphrase is wrong or the data was altered"),
+			"stderr was: '" + err + "'");
 	}
 }

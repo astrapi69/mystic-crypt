@@ -1,6 +1,27 @@
 ## Change log
 ----------------------
 
+Version 13.11-SNAPSHOT
+-------------
+
+ADDED:
+
+- `PassphraseFileFormat` names the three formats a file sealed with a passphrase comes in across this family -
+  `MCFILE` (`encrypt` since #160), `MCFILE1` (the file encryption window of mystic-crypt-ui) and `MCRYPT` (the released
+  `PassphraseCryptor` layout) - and `open(byte[], char[])` opens any of them, telling them apart by the header, and
+  leaves the caller's passphrase array as it was. Content in none of them, or cut short, is an
+  `IllegalArgumentException`; a wrong passphrase or altered data is a `SecurityException`, as `PassphraseEnvelope`
+  and `PassphraseCryptor` already throw it. It writes nothing; which format both sides write is a decision of its
+  own (#306, astrapi69/mystic-crypt-ui#877)
+
+FIXED:
+
+- `decrypt` opens what the file encryption window of mystic-crypt-ui wrote, file and text. Before, `MCFILE1` begins
+  with `MCFILE`, so every window file was read as one of `encrypt`'s, its iteration count one byte off: the window's
+  own file kept `decrypt` deriving a key for 269.6 seconds and then answered "the passphrase is wrong", exit 1; a
+  window text ended in "invalid iterationCount value", exit 2. Where a header fits both markers, a reading whose
+  recorded iteration count is beyond ten times today's is no longer tried (#306)
+
 Version 13.10
 -------------
 

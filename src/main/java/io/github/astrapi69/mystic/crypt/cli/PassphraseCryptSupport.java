@@ -33,6 +33,7 @@ import java.util.Base64;
 
 import io.github.astrapi69.mystic.crypt.pw.PassphraseCryptor;
 import io.github.astrapi69.mystic.crypt.pw.PassphraseEnvelope;
+import io.github.astrapi69.mystic.crypt.pw.PassphraseFileFormat;
 import io.github.astrapi69.mystic.crypt.secret.SecretBuffers;
 
 /**
@@ -84,28 +85,25 @@ final class PassphraseCryptSupport
 
 	/**
 	 * Opens what {@code encrypt} wrote - in the general envelope since #160, or in the released
-	 * {@code MCRYPT} layout before it - and overwrites the passphrase afterwards. Opening reads,
-	 * nothing more: an old file is not rewritten by being opened
+	 * {@code MCRYPT} layout before it - and what the file encryption window of mystic-crypt-ui
+	 * wrote, {@code MCFILE1} (#306), and overwrites the passphrase afterwards. Opening reads,
+	 * nothing more: a file is not rewritten by being opened
 	 *
 	 * @param passphrase
 	 *            the passphrase, zero-filled when this returns
 	 * @param encrypted
-	 *            the sealed bytes, in either layout
+	 *            the sealed bytes, in any of the formats of {@link PassphraseFileFormat}
 	 * @return the plaintext
 	 * @throws SecurityException
 	 *             if the passphrase is wrong or the data was altered
 	 * @throws Exception
-	 *             if the bytes are in neither layout, or cannot be opened for another reason
+	 *             if the bytes are in none of the formats, or cannot be opened for another reason
 	 */
 	static byte[] open(final char[] passphrase, final byte[] encrypted) throws Exception
 	{
 		try
 		{
-			if (PassphraseCryptor.isEncrypted(encrypted))
-			{
-				return PassphraseCryptor.decrypt(passphrase, encrypted);
-			}
-			return PassphraseEnvelope.decrypt(MAGIC, encrypted, passphrase);
+			return PassphraseFileFormat.open(encrypted, passphrase);
 		}
 		finally
 		{
