@@ -41,6 +41,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import io.github.astrapi69.mystic.crypt.pw.PassphraseCryptor;
 import io.github.astrapi69.mystic.crypt.pw.PassphraseEnvelope;
+import io.github.astrapi69.mystic.crypt.pw.WindowFixtures;
 
 /**
  * Unit tests for the {@code encrypt} and {@code decrypt} subcommands, driven through the real
@@ -384,57 +385,45 @@ class EncryptDecryptCommandTest extends AbstractCliTest
 		assertTrue(out.contains("--passphrase-stdin"));
 	}
 
-	/**
-	 * What mystic-crypt-ui's file encryption window writes: {@code FileCryptSupport.encryptFile}
-	 * seals the file's bytes with exactly this call, under its marker {@code MCFILE1}
-	 * (astrapi69/mystic-crypt-ui#877).
-	 * <p>
-	 * Sealed until the last byte of the salt is 0x80 or above, so the pins below are deterministic:
-	 * {@code MCFILE1} starts with {@code MCFILE}, so decrypt takes every window file for one of its
-	 * own and reads the iteration count one byte off, as {@code salt[15] * 2^24 + 2343}. With that
-	 * byte at 0x80 or above the count is negative and the key derivation refuses it at once. Below
-	 * 0x80 it is a count of up to 2.1 billion: measured once on develop, a window file kept decrypt
-	 * deriving for 53.7 seconds and then answered "the passphrase is wrong", exit 1.
-	 */
-	private static byte[] sealedByTheWindow(final byte[] plain, final String passphrase)
-		throws Exception
+	@Test
+	void aFileTheFileEncryptionWindowWrote_opens(@TempDir File tempDir) throws Exception
 	{
-		byte[] windowMagic = "MCFILE1".getBytes(StandardCharsets.US_ASCII);
-		byte[] sealed;
-		do
-		{
-			sealed = PassphraseEnvelope.encrypt(windowMagic, plain, passphrase);
-		}
-		while (sealed[windowMagic.length + PassphraseEnvelope.SALT_LENGTH - 1] >= 0);
-		return sealed;
+		// the window's own file (WindowFixtures); read as an MCFILE, as develop did, its
+		// iteration count was 1 124 075 815 (#306, astrapi69/mystic-crypt-ui#877)
+		File windowFile = new File(tempDir, "written-in-the-window.txt.mcenc");
+		File back = new File(tempDir, "back.txt");
+		Files.write(windowFile.toPath(), WindowFixtures.fileBytes());
+
+		int exitCode = runWithStdin(WindowFixtures.PASSPHRASE + "\n", "decrypt", "-i",
+			windowFile.getPath(), "-o", back.getPath(), "--passphrase-stdin");
+
+		assertEquals(0, exitCode, "stderr was: '" + err + "'");
+		assertArrayEquals(WindowFixtures.filePlaintext(), Files.readAllBytes(back.toPath()));
 	}
 
 	@Test
-	void aFileTheFileEncryptionWindowWrote_isReadAsAnMcfileOneByteOff(@TempDir File tempDir)
-		throws Exception
+	void aTextTheFileEncryptionWindowWrote_opens()
 	{
-		// pinned as it is on develop (mystic-crypt-ui#877)
-		File windowFile = new File(tempDir, "report.pdf.mcenc");
-		Files.write(windowFile.toPath(),
-			sealedByTheWindow("written in the window".getBytes(StandardCharsets.UTF_8), "pass"));
+		// read as an MCFILE, as develop did, its iteration count was negative
+		int exitCode = runWithStdin(WindowFixtures.PASSPHRASE + "\n", "decrypt", "--text",
+			WindowFixtures.TEXT, "--passphrase-stdin");
 
-		int exitCode = runWithStdin("pass\n", "decrypt", "-i", windowFile.getPath(),
-			"--passphrase-stdin");
-
-		assertEquals(2, exitCode, "stderr was: '" + err + "'");
-		assertTrue(err.contains("invalid iterationCount value"), "stderr was: '" + err + "'");
+		assertEquals(0, exitCode, "stderr was: '" + err + "'");
+		assertEquals(WindowFixtures.TEXT_PLAINTEXT, out.strip());
 	}
 
 	@Test
-	void aTextTheFileEncryptionWindowWrote_isReadAsAnMcfileOneByteOff() throws Exception
+	void aWrongPassphraseOnAFileTheWindowWrote_isTheNegativeAnswer(@TempDir File tempDir)
+		throws Exception
 	{
-		String windowText = Base64.getEncoder().encodeToString(
-			sealedByTheWindow("typed in the window".getBytes(StandardCharsets.UTF_8), "pass"));
+		File windowFile = new File(tempDir, "written-in-the-window.txt.mcenc");
+		Files.write(windowFile.toPath(), WindowFixtures.fileBytes());
 
-		int exitCode = runWithStdin("pass\n", "decrypt", "--text", windowText,
+		int exitCode = runWithStdin("wrong\n", "decrypt", "-i", windowFile.getPath(),
 			"--passphrase-stdin");
 
-		assertEquals(2, exitCode, "stderr was: '" + err + "'");
-		assertTrue(err.contains("invalid iterationCount value"), "stderr was: '" + err + "'");
+		assertEquals(1, exitCode, "stderr was: '" + err + "'");
+		assertTrue(err.contains("the passphrase is wrong or the data was altered"),
+			"stderr was: '" + err + "'");
 	}
 }
