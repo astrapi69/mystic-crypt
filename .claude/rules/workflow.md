@@ -131,7 +131,7 @@ and #326 had already merged, built and signed and then stopped there.
 
 The gh-pages update is post-release work, done after the artifacts are verified
 on Maven Central, never before the tag. Its checks (`ReleaseConsistencyTest`'s
-page tests) run in `page-check.yml` on every push to gh-pages, fail-closed via
+page tests) run in `page-check.yml` on every build of the page, fail-closed via
 `PAGES_CHECK=required` - not in the pull request run, where the page still
 names the previous release. The 13.10 release PR went red on exactly that and
 forced the page update before anything was published, which is backwards.
