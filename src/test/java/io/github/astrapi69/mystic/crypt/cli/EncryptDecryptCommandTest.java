@@ -428,14 +428,25 @@ class EncryptDecryptCommandTest extends AbstractCliTest
 	}
 
 	@Test
-	void anEmptyLineAsThePassphrase_sealsUnderTheEmptyPassphrase()
+	void anEmptyLineAsThePassphrase_isRefusedAsInvalidInput()
 	{
 		int exitCode = runWithStdin("\n", "encrypt", "--text", "sealed under nothing",
 			"--passphrase-stdin");
-		String base64 = out.trim();
 
-		assertEquals(0, exitCode, "stderr was: '" + err + "'");
-		assertEquals(0, runWithStdin("\n", "decrypt", "--text", base64, "--passphrase-stdin"), err);
+		assertEquals(2, exitCode, "stderr was: '" + err + "'");
+		assertTrue(out.isBlank(), "nothing may be written, but stdout was: '" + out + "'");
+		assertTrue(err.contains("the passphrase is empty"), "stderr was: '" + err + "'");
+	}
+
+	@Test
+	void whatAnEarlierReleaseSealedUnderTheEmptyPassphrase_stillOpensWithIt()
+	{
+		// PassphraseEnvelope.encrypt("MCFILE", "sealed under nothing", empty) of the released 13.10
+		String sealedBy1310 = "TUNGSUxFO1SLUQJWc9Cd4IG5GmPUjQAJJ8AKSJX3p5H/QOmY+Ain5Jt19sObUSu2ALEyJ5FQ"
+			+ "2a2gBpVlHXqBTOEdl/VHouahfrFtGcXuzufR06/iB653AEWCCFVM5OiyFEAlbubBqWxSwQ==";
+
+		assertEquals(0, runWithStdin("\n", "decrypt", "--text", sealedBy1310, "--passphrase-stdin"),
+			err);
 		assertEquals("sealed under nothing", out.trim());
 	}
 }

@@ -97,13 +97,18 @@ public final class PassphraseCryptor
 	 * Encrypts the given bytes with a key derived from the given passphrase.
 	 *
 	 * @param passphrase
-	 *            the passphrase, zeroed before this method returns
+	 *            the passphrase, not empty, zeroed before this method returns
 	 * @param plain
 	 *            the bytes to encrypt
 	 * @return the header followed by the AES-GCM payload
+	 * @throws IllegalArgumentException
+	 *             if the passphrase is empty: what is encrypted under it opens for anybody (#314)
+	 * @throws NullPointerException
+	 *             if the passphrase is null
 	 */
 	public static byte[] encrypt(final char[] passphrase, final byte[] plain)
 	{
+		PassphraseEnvelope.requirePassphraseToSeal(passphrase);
 		try
 		{
 			final byte[] salt = SecretRandom.bytes(SALT_LENGTH);
@@ -135,9 +140,12 @@ public final class PassphraseCryptor
 	 *             if the input does not carry this format's header
 	 * @throws SecurityException
 	 *             if the passphrase is wrong or the payload was altered
+	 * @throws NullPointerException
+	 *             if the passphrase is null; the empty passphrase opens what was encrypted under it
 	 */
 	public static byte[] decrypt(final char[] passphrase, final byte[] encrypted)
 	{
+		PassphraseEnvelope.requirePassphraseToOpen(passphrase);
 		try
 		{
 			// iterationsOf checks the header, and it does so outside the catch below on purpose:

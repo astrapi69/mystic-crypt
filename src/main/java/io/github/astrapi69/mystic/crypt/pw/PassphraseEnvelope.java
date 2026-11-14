@@ -29,6 +29,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.util.Arrays;
+import java.util.Objects;
 
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -104,6 +105,10 @@ public final class PassphraseEnvelope
 	public static final int KEY_LENGTH_BITS = 256;
 
 	private static final String KEY_DERIVATION_ALGORITHM = "PBKDF2WithHmacSHA256";
+
+	/** What a null passphrase is refused with; the empty passphrase is an empty array or string */
+	private static final String NO_PASSPHRASE = "the passphrase is null; "
+		+ "the empty passphrase is an empty array or string";
 
 	private PassphraseEnvelope()
 	{
@@ -214,8 +219,12 @@ public final class PassphraseEnvelope
 	 * @param plaintext
 	 *            what to seal
 	 * @param passphrase
-	 *            the passphrase
+	 *            the passphrase, not empty
 	 * @return the sealed result, header included
+	 * @throws IllegalArgumentException
+	 *             if the passphrase is empty: what is sealed under it opens for anybody (#314)
+	 * @throws NullPointerException
+	 *             if the passphrase is null
 	 * @throws GeneralSecurityException
 	 *             if sealing fails
 	 */
@@ -236,14 +245,19 @@ public final class PassphraseEnvelope
 	 * @param plaintext
 	 *            what to seal
 	 * @param passphrase
-	 *            the passphrase
+	 *            the passphrase, not empty
 	 * @return the sealed result, header included
+	 * @throws IllegalArgumentException
+	 *             if the passphrase is empty: what is sealed under it opens for anybody (#314)
+	 * @throws NullPointerException
+	 *             if the passphrase is null, which the key derivation would take as the empty one
 	 * @throws GeneralSecurityException
 	 *             if sealing fails
 	 */
 	public static byte[] encrypt(final byte[] magic, final byte[] plaintext,
 		final char[] passphrase) throws GeneralSecurityException
 	{
+		requirePassphraseToSeal(passphrase);
 		byte[] salt = new byte[SALT_LENGTH];
 		// deliberately not SecureRandom.getInstanceStrong(): on Linux that can resolve to the
 		// blocking source, and sealing must never hang waiting for entropy. The default instance
@@ -267,6 +281,8 @@ public final class PassphraseEnvelope
 	 *             the data was altered
 	 * @throws IllegalArgumentException
 	 *             if the content is not of this format at all, or is truncated
+	 * @throws NullPointerException
+	 *             if the passphrase is null; the empty passphrase opens what was sealed under it
 	 * @throws GeneralSecurityException
 	 *             if the key cannot be derived
 	 */
@@ -293,12 +309,15 @@ public final class PassphraseEnvelope
 	 *             the data was altered
 	 * @throws IllegalArgumentException
 	 *             if the content is not of this format at all, or is truncated
+	 * @throws NullPointerException
+	 *             if the passphrase is null; the empty passphrase opens what was sealed under it
 	 * @throws GeneralSecurityException
 	 *             if the key cannot be derived
 	 */
 	public static byte[] decrypt(final byte[] magic, final byte[] content, final char[] passphrase)
 		throws GeneralSecurityException
 	{
+		requirePassphraseToOpen(passphrase);
 		refuseTheReservedMarker(magic);
 		if (!hasMagic(content, magic))
 		{
@@ -444,6 +463,44 @@ public final class PassphraseEnvelope
 	 * @param magic
 	 *            the marker the caller wants to use
 	 */
+	/**
+	 * Refuses a passphrase that protects nothing before anything is sealed with it: null, which
+	 * {@link PBEKeySpec} would take as the empty passphrase, and the empty one, under which what is
+	 * sealed opens for anybody (#314). Opening stays possible with the empty passphrase, see
+	 * {@link #requirePassphraseToOpen(char[])}
+	 *
+	 * @param passphrase
+	 *            the passphrase to seal with
+	 * @throws NullPointerException
+	 *             if it is null
+	 * @throws IllegalArgumentException
+	 *             if it is empty
+	 */
+	static void requirePassphraseToSeal(final char[] passphrase)
+	{
+		Objects.requireNonNull(passphrase, NO_PASSPHRASE);
+		if (passphrase.length == 0)
+		{
+			throw new IllegalArgumentException("the passphrase is empty, and what is sealed "
+				+ "under it opens for anybody: encrypting needs a passphrase");
+		}
+	}
+
+	/**
+	 * Refuses null as a passphrase to open with, which {@link PBEKeySpec} would take as the empty
+	 * passphrase. The empty passphrase itself is accepted, so that what an earlier release sealed
+	 * under it still opens (#314)
+	 *
+	 * @param passphrase
+	 *            the passphrase to open with
+	 * @throws NullPointerException
+	 *             if it is null
+	 */
+	static void requirePassphraseToOpen(final char[] passphrase)
+	{
+		Objects.requireNonNull(passphrase, NO_PASSPHRASE);
+	}
+
 	private static void refuseTheReservedMarker(final byte[] magic)
 	{
 		if (Arrays.equals(magic, PassphraseCryptor.MAGIC))
@@ -475,6 +532,7 @@ public final class PassphraseEnvelope
 	private static byte[] withCharactersOf(final String passphrase,
 		final PassphraseOperation operation) throws GeneralSecurityException
 	{
+		Objects.requireNonNull(passphrase, NO_PASSPHRASE);
 		try (SecretCopies copies = SecretCopies.open())
 		{
 			return operation.apply(copies.hold(passphrase.toCharArray()));
