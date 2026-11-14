@@ -223,6 +223,28 @@ class EncryptDecryptCommandTest extends AbstractCliTest
 		assertEquals("from a pipe", out.trim());
 	}
 
+	/**
+	 * The round trip above passes with any passphrase both sides agree on, the empty one included:
+	 * a null from the file reader is taken as an empty passphrase by the key derivation. Opening
+	 * with the same passphrase from another source proves the file's first line is what sealed it
+	 */
+	@Test
+	void aTextSealedWithAPassphraseFileOpensWithThatPassphraseFromStandardInput(
+		@TempDir File tempDir) throws IOException
+	{
+		File passphraseFile = new File(tempDir, "passphrase");
+		Files.writeString(passphraseFile.toPath(), "the file pass\nsecond line is not read\n");
+
+		assertEquals(0, run("encrypt", "--text", "sealed through a file", "--passphrase-file",
+			passphraseFile.getPath()), err);
+		String base64 = out.trim();
+
+		assertEquals(0,
+			runWithStdin("the file pass\n", "decrypt", "--text", base64, "--passphrase-stdin"),
+			err);
+		assertEquals("sealed through a file", out.trim());
+	}
+
 	@Test
 	void anEmptyPassphraseFileIsRefusedWithItsPath(@TempDir File tempDir) throws IOException
 	{

@@ -26,9 +26,13 @@ package io.github.astrapi69.mystic.crypt.cli;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import io.github.astrapi69.mystic.crypt.pw.PassphraseCryptor;
 
@@ -42,6 +46,17 @@ class PassphraseCryptSupportTest
 {
 
 	private static final char[] ZEROED = new char[8];
+
+	@Test
+	void resolvePassphrase_fromAFile_isItsFirstLine(@TempDir final Path directory)
+		throws IOException
+	{
+		Path file = directory.resolve("passphrase");
+		Files.writeString(file, "the file pass\nsecond line is not read\n");
+
+		assertArrayEquals("the file pass".toCharArray(),
+			PassphraseCryptSupport.resolvePassphrase(null, false, file.toFile()));
+	}
 
 	@Test
 	void sealing_overwritesThePassphrase() throws Exception
