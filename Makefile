@@ -1,6 +1,9 @@
 # pinned on purpose with := (not ?=): the shell's JAVA_HOME (e.g. sdkman's "current") may point at
 # an older JDK, and this project's toolchain is JDK 25 (gradle.properties projectSourceCompatibility)
-JAVA_HOME := /home/astrapi69/.sdkman/candidates/java/25-tem
+# Where the pinned JDK is not installed - a cloud container, another machine - the environment's
+# JAVA_HOME is taken instead of a path that does not exist there, as in mystic-crypt-ui#333
+PINNED_JAVA_HOME := $(HOME)/.sdkman/candidates/java/25-tem
+JAVA_HOME := $(if $(wildcard $(PINNED_JAVA_HOME)),$(PINNED_JAVA_HOME),$(JAVA_HOME))
 
 # every target goes through this, so the JDK pin lives in one place
 GRADLE := JAVA_HOME=$(JAVA_HOME) ./gradlew
