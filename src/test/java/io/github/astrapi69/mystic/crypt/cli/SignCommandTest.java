@@ -127,6 +127,30 @@ class SignCommandTest extends AbstractCliTest
 			"the written signature must verify against the data and the public key");
 	}
 
+	/**
+	 * The same key as {@link #signsAFileWithEverySignatureFamily}, written as DER, the PKCS#8 bytes
+	 * {@code openssl pkey -outform DER} writes (#319)
+	 */
+	@ParameterizedTest
+	@ValueSource(strings = { "Ed25519", "ML-DSA-44", "ML-DSA-65", "ML-DSA-87", "SLH-DSA-SHA2-128F",
+			"SLH-DSA-SHAKE-128F" })
+	void aDerPrivateKeyOfEverySignatureFamilyIsNotRead(String algorithm, @TempDir File tempDir)
+		throws Exception
+	{
+		KeyPair keyPair = newKeyPair(algorithm);
+		File privateDer = new File(tempDir, "private.der");
+		Files.write(privateDer.toPath(), keyPair.getPrivate().getEncoded());
+		File dataFile = new File(tempDir, "data.txt");
+		Files.writeString(dataFile.toPath(), "sign me, " + algorithm);
+		File signatureFile = new File(tempDir, "data.sig");
+
+		assertEquals(2, run("sign", "--algorithm", algorithm, "--key", privateDer.getAbsolutePath(),
+			"--in", dataFile.getAbsolutePath(), "--signature", signatureFile.getAbsolutePath()));
+		assertTrue(err.contains("could not read a " + algorithm + " private key"),
+			"stderr was: '" + err + "'");
+		assertTrue(err.contains("PemObject"), "stderr was: '" + err + "'");
+	}
+
 	@Test
 	void underscoresAndCaseAreAcceptedInTheAlgorithmName(@TempDir File tempDir) throws Exception
 	{
