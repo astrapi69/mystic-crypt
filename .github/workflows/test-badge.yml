@@ -23,15 +23,9 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
 
-      - name: Checkout the project page (gh-pages), checked by ReleaseConsistencyTest
-        uses: actions/checkout@v7
-        with:
-          ref: gh-pages
-          path: gh-pages
-
+      # The project page is checked by page-check.yml on every push to gh-pages, not here: it follows
+      # the release and names the previous one until then (#303).
       - name: Run tests
-        env:
-          PAGES_INDEX: ${{ github.workspace }}/gh-pages/index.html
         run: ./gradlew test
 
       - name: Extract test count
