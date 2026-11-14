@@ -383,4 +383,58 @@ class EncryptDecryptCommandTest extends AbstractCliTest
 		assertEquals(0, run("decrypt", "--help"));
 		assertTrue(out.contains("--passphrase-stdin"));
 	}
+
+	/**
+	 * What mystic-crypt-ui's file encryption window writes: {@code FileCryptSupport.encryptFile}
+	 * seals the file's bytes with exactly this call, under its marker {@code MCFILE1}
+	 * (astrapi69/mystic-crypt-ui#877).
+	 * <p>
+	 * Sealed until the last byte of the salt is 0x80 or above, so the pins below are deterministic:
+	 * {@code MCFILE1} starts with {@code MCFILE}, so decrypt takes every window file for one of its
+	 * own and reads the iteration count one byte off, as {@code salt[15] * 2^24 + 2343}. With that
+	 * byte at 0x80 or above the count is negative and the key derivation refuses it at once. Below
+	 * 0x80 it is a count of up to 2.1 billion: measured once on develop, a window file kept decrypt
+	 * deriving for 53.7 seconds and then answered "the passphrase is wrong", exit 1.
+	 */
+	private static byte[] sealedByTheWindow(final byte[] plain, final String passphrase)
+		throws Exception
+	{
+		byte[] windowMagic = "MCFILE1".getBytes(StandardCharsets.US_ASCII);
+		byte[] sealed;
+		do
+		{
+			sealed = PassphraseEnvelope.encrypt(windowMagic, plain, passphrase);
+		}
+		while (sealed[windowMagic.length + PassphraseEnvelope.SALT_LENGTH - 1] >= 0);
+		return sealed;
+	}
+
+	@Test
+	void aFileTheFileEncryptionWindowWrote_isReadAsAnMcfileOneByteOff(@TempDir File tempDir)
+		throws Exception
+	{
+		// pinned as it is on develop (mystic-crypt-ui#877)
+		File windowFile = new File(tempDir, "report.pdf.mcenc");
+		Files.write(windowFile.toPath(),
+			sealedByTheWindow("written in the window".getBytes(StandardCharsets.UTF_8), "pass"));
+
+		int exitCode = runWithStdin("pass\n", "decrypt", "-i", windowFile.getPath(),
+			"--passphrase-stdin");
+
+		assertEquals(2, exitCode, "stderr was: '" + err + "'");
+		assertTrue(err.contains("invalid iterationCount value"), "stderr was: '" + err + "'");
+	}
+
+	@Test
+	void aTextTheFileEncryptionWindowWrote_isReadAsAnMcfileOneByteOff() throws Exception
+	{
+		String windowText = Base64.getEncoder().encodeToString(
+			sealedByTheWindow("typed in the window".getBytes(StandardCharsets.UTF_8), "pass"));
+
+		int exitCode = runWithStdin("pass\n", "decrypt", "--text", windowText,
+			"--passphrase-stdin");
+
+		assertEquals(2, exitCode, "stderr was: '" + err + "'");
+		assertTrue(err.contains("invalid iterationCount value"), "stderr was: '" + err + "'");
+	}
 }
