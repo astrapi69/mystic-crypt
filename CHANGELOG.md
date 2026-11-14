@@ -14,6 +14,15 @@ ADDED:
   and `PassphraseCryptor` already throw it. It writes nothing; which format both sides write is a decision of its
   own (#306, astrapi69/mystic-crypt-ui#877)
 
+CHANGED:
+
+- encrypting refuses a passphrase that protects nothing: `PassphraseEnvelope.encrypt` and `PassphraseCryptor.encrypt`
+  throw an `IllegalArgumentException` for an empty passphrase and a `NullPointerException` for null, which the key
+  derivation used to take as the empty one, and `encrypt` on the command line answers an empty line on standard
+  input, or Enter alone at the prompt, with exit code 2 instead of sealing a file that opens for anybody. A caller
+  that passed an empty or null passphrase now gets the exception; opening with the empty passphrase still works,
+  so what an earlier release sealed under it opens, and only null is refused there (#314)
+
 FIXED:
 
 - `decrypt` opens what the file encryption window of mystic-crypt-ui wrote, file and text. Before, `MCFILE1` begins

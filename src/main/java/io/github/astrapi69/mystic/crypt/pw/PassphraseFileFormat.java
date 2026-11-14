@@ -111,11 +111,14 @@ public enum PassphraseFileFormat
 	 *             this, and the command line's exit code 1 rests on it
 	 * @throws GeneralSecurityException
 	 *             if the key cannot be derived
+	 * @throws NullPointerException
+	 *             if the passphrase is null; the empty passphrase opens what was sealed under it
 	 * @since 13.11
 	 */
 	public static byte[] open(final byte[] content, final char[] passphrase)
 		throws GeneralSecurityException
 	{
+		PassphraseEnvelope.requirePassphraseToOpen(passphrase);
 		List<PassphraseFileFormat> readings = readingsOf(content);
 		if (readings.isEmpty())
 		{
