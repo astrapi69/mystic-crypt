@@ -134,7 +134,7 @@ class SignCommandTest extends AbstractCliTest
 	@ParameterizedTest
 	@ValueSource(strings = { "Ed25519", "ML-DSA-44", "ML-DSA-65", "ML-DSA-87", "SLH-DSA-SHA2-128F",
 			"SLH-DSA-SHAKE-128F" })
-	void aDerPrivateKeyOfEverySignatureFamilyIsNotRead(String algorithm, @TempDir File tempDir)
+	void signsWithADerPrivateKeyOfEverySignatureFamily(String algorithm, @TempDir File tempDir)
 		throws Exception
 	{
 		KeyPair keyPair = newKeyPair(algorithm);
@@ -144,11 +144,16 @@ class SignCommandTest extends AbstractCliTest
 		Files.writeString(dataFile.toPath(), "sign me, " + algorithm);
 		File signatureFile = new File(tempDir, "data.sig");
 
-		assertEquals(2, run("sign", "--algorithm", algorithm, "--key", privateDer.getAbsolutePath(),
-			"--in", dataFile.getAbsolutePath(), "--signature", signatureFile.getAbsolutePath()));
-		assertTrue(err.contains("could not read a " + algorithm + " private key"),
+		assertEquals(0,
+			run("sign", "--algorithm", algorithm, "--key", privateDer.getAbsolutePath(), "--in",
+				dataFile.getAbsolutePath(), "--signature", signatureFile.getAbsolutePath()),
 			"stderr was: '" + err + "'");
-		assertTrue(err.contains("PemObject"), "stderr was: '" + err + "'");
+		assertTrue(out.contains("wrote signature to " + signatureFile.getAbsolutePath()),
+			"stdout must confirm the signature file, but was: '" + out + "'");
+		assertTrue(
+			verifyDirectly(algorithm, keyPair, Files.readAllBytes(dataFile.toPath()),
+				Files.readAllBytes(signatureFile.toPath())),
+			"the signature made from the DER key must verify against the data and the public key");
 	}
 
 	@Test
