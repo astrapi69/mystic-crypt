@@ -35,6 +35,7 @@ import java.nio.file.Files;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 
+import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -72,6 +73,50 @@ class ConvertCommandTest extends AbstractCliTest
 		File der = new File(tempDir, "private.der");
 		Files.write(der.toPath(), keyPair.getPrivate().getEncoded());
 		return der;
+	}
+
+	/**
+	 * The key in PKCS#1, the traditional RSA form, as DER: what {@code openssl pkey -outform DER}
+	 * writes for an RSA key (#320), a {@code RSAPrivateKey} sequence without the PKCS#8 wrapper
+	 */
+	private static File writeDerPkcs1Private(File tempDir, KeyPair keyPair) throws Exception
+	{
+		File der = new File(tempDir, "private-pkcs1.der");
+		Files.write(der.toPath(), PrivateKeyInfo.getInstance(keyPair.getPrivate().getEncoded())
+			.parsePrivateKey().toASN1Primitive().getEncoded());
+		return der;
+	}
+
+	@Test
+	void aPkcs1DerPrivateKeyIsDescribedAsPkcs1(@TempDir File tempDir) throws Exception
+	{
+		File der = writeDerPkcs1Private(tempDir, keyPair("RSA"));
+		byte[] before = Files.readAllBytes(der.toPath());
+
+		assertEquals(0, run("convert", "--in", der.getPath(), "--describe"),
+			"stderr was: '" + err + "'");
+
+		assertTrue(out.contains("private key in PKCS#1"), "stdout was: '" + out + "'");
+		assertTrue(out.contains("DER"), "stdout was: '" + out + "'");
+		assertTrue(out.contains("1.2.840.113549.1.1.1"), "stdout was: '" + out + "'");
+		assertArrayEquals(before, Files.readAllBytes(der.toPath()),
+			"--describe must change nothing");
+	}
+
+	@Test
+	void aPkcs1DerPrivateKeyConvertsToTheSameKeyInPkcs8(@TempDir File tempDir) throws Exception
+	{
+		KeyPair keyPair = keyPair("RSA");
+		File der = writeDerPkcs1Private(tempDir, keyPair);
+		File asPkcs8 = new File(tempDir, "pkcs8.pem");
+
+		assertEquals(0,
+			run("convert", "--in", der.getPath(), "--to", "pkcs8", "--out", asPkcs8.getPath()),
+			"stderr was: '" + err + "'");
+
+		assertArrayEquals(keyPair.getPrivate().getEncoded(),
+			KeyFileReader.readPrivateKey(asPkcs8, "RSA").getEncoded(),
+			"the PKCS#8 written must be the key the PKCS#1 file held");
 	}
 
 	@Test

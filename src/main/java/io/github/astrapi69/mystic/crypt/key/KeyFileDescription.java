@@ -30,7 +30,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
+import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
+import org.bouncycastle.asn1.pkcs.RSAPrivateKey;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.openssl.PEMKeyPair;
@@ -141,6 +143,17 @@ public record KeyFileDescription(Encoding encoding, Content content, String algo
 				algorithmOf(PrivateKeyInfo.getInstance(der)));
 		}
 		catch (final RuntimeException notPkcs8)
+		{
+			// fall through to the next shape
+		}
+		try
+		{
+			// the traditional RSA form, which openssl pkey -outform DER writes for RSA (#320)
+			RSAPrivateKey.getInstance(der);
+			return new KeyFileDescription(Encoding.DER, Content.PRIVATE_KEY_PKCS1,
+				PKCSObjectIdentifiers.rsaEncryption.getId());
+		}
+		catch (final RuntimeException notPkcs1)
 		{
 			// fall through to the next shape
 		}
