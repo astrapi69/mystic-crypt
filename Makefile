@@ -2,7 +2,9 @@
 # an older JDK, and this project's toolchain is JDK 25 (gradle.properties projectSourceCompatibility)
 # Where the pinned JDK is not installed - a cloud container, another machine - the environment's
 # JAVA_HOME is taken instead of a path that does not exist there, as in mystic-crypt-ui#333
-PINNED_JAVA_HOME := $(HOME)/.sdkman/candidates/java/25-tem
+# Which JDK that is, .sdkmanrc says - the one `sdk env` sets the shell to - and nothing here
+# repeats its version
+PINNED_JAVA_HOME := $(HOME)/.sdkman/candidates/java/$(shell sed -n 's/^java=//p' .sdkmanrc)
 JAVA_HOME := $(if $(wildcard $(PINNED_JAVA_HOME)),$(PINNED_JAVA_HOME),$(JAVA_HOME))
 
 # every target goes through this, so the JDK pin lives in one place

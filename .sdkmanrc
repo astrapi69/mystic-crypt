@@ -1,0 +1,3 @@
+# The JDK this repository builds with (RL-116): `sdk env` sets the shell to it, and the Makefile
+# pins it. A later patch release is taken on deliberately, in a pull request of its own with the gate.
+java=25-tem
