@@ -25,7 +25,7 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
         with:
-          java-version: '25'
+          java-version-file: '.sdkmanrc'
           distribution: 'temurin'
       - name: Submit the dependency graph
         # 6.4.1 fixes GHSA-chpw-2mqm-95cc, which concerns the two-workflow download-and-submit setup
