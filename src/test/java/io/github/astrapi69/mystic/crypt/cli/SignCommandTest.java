@@ -127,6 +127,35 @@ class SignCommandTest extends AbstractCliTest
 			"the written signature must verify against the data and the public key");
 	}
 
+	/**
+	 * The same key as {@link #signsAFileWithEverySignatureFamily}, written as DER, the PKCS#8 bytes
+	 * {@code openssl pkey -outform DER} writes (#319)
+	 */
+	@ParameterizedTest
+	@ValueSource(strings = { "Ed25519", "ML-DSA-44", "ML-DSA-65", "ML-DSA-87", "SLH-DSA-SHA2-128F",
+			"SLH-DSA-SHAKE-128F" })
+	void signsWithADerPrivateKeyOfEverySignatureFamily(String algorithm, @TempDir File tempDir)
+		throws Exception
+	{
+		KeyPair keyPair = newKeyPair(algorithm);
+		File privateDer = new File(tempDir, "private.der");
+		Files.write(privateDer.toPath(), keyPair.getPrivate().getEncoded());
+		File dataFile = new File(tempDir, "data.txt");
+		Files.writeString(dataFile.toPath(), "sign me, " + algorithm);
+		File signatureFile = new File(tempDir, "data.sig");
+
+		assertEquals(0,
+			run("sign", "--algorithm", algorithm, "--key", privateDer.getAbsolutePath(), "--in",
+				dataFile.getAbsolutePath(), "--signature", signatureFile.getAbsolutePath()),
+			"stderr was: '" + err + "'");
+		assertTrue(out.contains("wrote signature to " + signatureFile.getAbsolutePath()),
+			"stdout must confirm the signature file, but was: '" + out + "'");
+		assertTrue(
+			verifyDirectly(algorithm, keyPair, Files.readAllBytes(dataFile.toPath()),
+				Files.readAllBytes(signatureFile.toPath())),
+			"the signature made from the DER key must verify against the data and the public key");
+	}
+
 	@Test
 	void underscoresAndCaseAreAcceptedInTheAlgorithmName(@TempDir File tempDir) throws Exception
 	{

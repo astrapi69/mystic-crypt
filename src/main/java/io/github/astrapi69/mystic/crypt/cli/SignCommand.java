@@ -94,9 +94,10 @@ public class SignCommand implements Callable<Integer>
 	/**
 	 * Reads the signing key, accepting PEM and DER alike.
 	 * <p>
-	 * The classical families go through {@link KeyFileReader}, which decodes with the same Bouncy
-	 * Castle provider that signs; the post-quantum and Ed25519 families keep the crypt-data reader
-	 * they already used, whose provider lookup is not in question for them.
+	 * The classical families, and a DER file of any family, go through {@link KeyFileReader}, which
+	 * decodes with the same Bouncy Castle provider that signs and reads DER from its PKCS#8
+	 * structure; a PEM file of the post-quantum and Ed25519 families keeps the crypt-data reader it
+	 * already used, which reads PEM only (#319).
 	 *
 	 * @param keyFactoryAlgorithm
 	 *            the key algorithm the signature algorithm implies
@@ -106,7 +107,7 @@ public class SignCommand implements Callable<Integer>
 	{
 		try
 		{
-			if (Signatures.isClassical(algorithm))
+			if (Signatures.isClassical(algorithm) || !KeyFileReader.isPem(key))
 			{
 				return KeyFileReader.readPrivateKey(key, keyFactoryAlgorithm);
 			}
