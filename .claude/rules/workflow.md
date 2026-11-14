@@ -121,7 +121,11 @@ repair a run that can simply be repeated. And before a release depends on a
 publishing workflow that changed, run it once manually against the snapshot
 target (`workflow_dispatch`, `target: snapshot`): 13.0 was preceded by exactly
 that, which is how the unsigned-snapshot gap in #137 was found before a tag
-depended on it.
+depended on it. The run belongs before the release pull request merges, while
+develop still carries the `-SNAPSHOT` version. After the merge develop names the
+release, a release version uploads only from its `RELEASE-*` tag (#236), and the
+run is refused at the upload: run 19 of `publish.yml`, after #327 changed the file
+and #326 had already merged, built and signed and then stopped there.
 
 ## The project page follows the release
 
