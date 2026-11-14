@@ -35,6 +35,7 @@ import java.nio.file.Files;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 
+import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -72,6 +73,41 @@ class ConvertCommandTest extends AbstractCliTest
 		File der = new File(tempDir, "private.der");
 		Files.write(der.toPath(), keyPair.getPrivate().getEncoded());
 		return der;
+	}
+
+	/**
+	 * The key in PKCS#1, the traditional RSA form, as DER: what {@code openssl pkey -outform DER}
+	 * writes for an RSA key (#320), a {@code RSAPrivateKey} sequence without the PKCS#8 wrapper
+	 */
+	private static File writeDerPkcs1Private(File tempDir, KeyPair keyPair) throws Exception
+	{
+		File der = new File(tempDir, "private-pkcs1.der");
+		Files.write(der.toPath(), PrivateKeyInfo.getInstance(keyPair.getPrivate().getEncoded())
+			.parsePrivateKey().toASN1Primitive().getEncoded());
+		return der;
+	}
+
+	@Test
+	void aPkcs1DerPrivateKeyIsNotRecognized(@TempDir File tempDir) throws Exception
+	{
+		File der = writeDerPkcs1Private(tempDir, keyPair("RSA"));
+
+		assertEquals(2, run("convert", "--in", der.getPath(), "--describe"));
+		assertTrue(
+			err.contains(
+				"is not a DER private key, public key or X.509 certificate this tool converts"),
+			"stderr was: '" + err + "'");
+	}
+
+	@Test
+	void aPkcs1DerPrivateKeyIsNotConverted(@TempDir File tempDir) throws Exception
+	{
+		File der = writeDerPkcs1Private(tempDir, keyPair("RSA"));
+		File asPkcs8 = new File(tempDir, "pkcs8.pem");
+
+		assertEquals(2,
+			run("convert", "--in", der.getPath(), "--to", "pkcs8", "--out", asPkcs8.getPath()));
+		assertFalse(asPkcs8.exists(), "nothing may be written");
 	}
 
 	@Test
