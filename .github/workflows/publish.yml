@@ -5,7 +5,10 @@
 # The manual snapshot run exists so this path can be EXECUTED rather than only wired: it
 # exercises the checkout, the JDK setup, the Gradle setup, the secrets and the signature -
 # everything the tag run does except the final release upload. Run it after any change to
-# this file, on develop, before a release tag depends on it.
+# this file, on develop, before a release tag depends on it - and before the release pull
+# request merges: from then on develop carries the release version, which uploads only from
+# its RELEASE-* tag (gradle/publishing.gradle, #236), so a snapshot run there is refused at
+# the upload (run 19, 13.11).
 # Required repository secrets:
 #   CENTRAL_PORTAL_TOKEN_USERNAME / CENTRAL_PORTAL_TOKEN_PASSWORD - Central Portal user token
 #   GPG_PRIVATE_KEY / GPG_PASSPHRASE    - ascii-armored signing key and its passphrase
