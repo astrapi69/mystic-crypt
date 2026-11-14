@@ -43,6 +43,8 @@ import org.junit.jupiter.api.io.TempDir;
  * next to the home in the test's {@code @TempDir}, which JUnit deletes when the test ends, so a run
  * that failed says nothing about why. The failure used here exits with code 2: a subkey for a key
  * the home does not have.
+ * <p>
+ * Now the message carries what gpg wrote to standard error for that one call.
  */
 class ThrowawayGnuPgHomeTest
 {
@@ -51,8 +53,8 @@ class ThrowawayGnuPgHomeTest
 	private static final String NO_SUCH_KEY = "0000000000000000000000000000000000000000";
 
 	@Test
-	@DisplayName("a failed gpg call names only the log the test deletes, not what gpg answered")
-	void aFailedCallNamesOnlyTheLog(@TempDir final Path directory) throws IOException
+	@DisplayName("a failed gpg call carries what gpg answered into its message")
+	void aFailedCallCarriesTheAnswer(@TempDir final Path directory) throws IOException
 	{
 		try (ThrowawayGnuPgHome home = ThrowawayGnuPgHome.create(directory.resolve("home")))
 		{
@@ -60,10 +62,29 @@ class ThrowawayGnuPgHomeTest
 				() -> home.addSubkey(NO_SUCH_KEY, "ed25519", "sign", "1y"));
 
 			assertTrue(failure.getMessage().startsWith("exit code 2 from "), failure.getMessage());
-			assertTrue(failure.getMessage().contains("its standard error is in "),
-				failure.getMessage());
-			assertFalse(failure.getMessage().contains(NO_SUCH_KEY + "\" not found"),
-				failure.getMessage());
+			assertTrue(failure.getMessage().contains(NO_SUCH_KEY + "\" not found"),
+				"gpg's own answer is in the message, so the report holds it after the temporary "
+					+ "directory is gone: " + failure.getMessage());
+		}
+	}
+
+	@Test
+	@DisplayName("the answer is the failed call's own, not what earlier calls wrote to the same log")
+	void theAnswerIsTheFailedCallsOwn(@TempDir final Path directory) throws IOException
+	{
+		try (ThrowawayGnuPgHome home = ThrowawayGnuPgHome.create(directory.resolve("home")))
+		{
+			assertThrows(IOException.class,
+				() -> home.addSubkey(NO_SUCH_KEY, "ed25519", "sign", "1y"));
+			String other = NO_SUCH_KEY.replace('0', '1');
+
+			IOException second = assertThrows(IOException.class,
+				() -> home.addSubkey(other, "ed25519", "sign", "1y"));
+
+			assertTrue(second.getMessage().contains(other + "\" not found"), second.getMessage());
+			assertFalse(second.getMessage().contains(NO_SUCH_KEY),
+				"the first call's answer belongs to the first failure only: "
+					+ second.getMessage());
 		}
 	}
 }

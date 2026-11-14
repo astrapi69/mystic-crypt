@@ -270,6 +270,7 @@ public final class ThrowawayGnuPgHome implements AutoCloseable
 
 	private byte[] execute(final byte[] input, final List<String> arguments) throws IOException
 	{
+		long logBefore = Files.exists(log) ? Files.size(log) : 0;
 		ProcessBuilder builder = new ProcessBuilder(arguments)
 			.redirectError(ProcessBuilder.Redirect.appendTo(log.toFile()));
 		builder.environment().put("LC_ALL", "C");
@@ -283,20 +284,20 @@ public final class ThrowawayGnuPgHome implements AutoCloseable
 			}
 		}
 		byte[] output = process.getInputStream().readAllBytes();
-		awaitSuccess(process, arguments);
+		awaitSuccess(process, arguments, logBefore);
 		return output;
 	}
 
-	private void awaitSuccess(final Process process, final List<String> arguments)
-		throws IOException
+	private void awaitSuccess(final Process process, final List<String> arguments,
+		final long logBefore) throws IOException
 	{
 		try
 		{
 			if (!process.waitFor(TIMEOUT_SECONDS, TimeUnit.SECONDS))
 			{
 				process.destroyForcibly();
-				throw new IOException(
-					"did not finish within " + TIMEOUT_SECONDS + " seconds: " + arguments);
+				throw new IOException("did not finish within " + TIMEOUT_SECONDS + " seconds: "
+					+ arguments + ", gpg answered: " + whatThisCallWrote(logBefore));
 			}
 		}
 		catch (InterruptedException exception)
@@ -307,8 +308,23 @@ public final class ThrowawayGnuPgHome implements AutoCloseable
 		if (process.exitValue() != 0)
 		{
 			throw new IOException("exit code " + process.exitValue() + " from " + arguments
-				+ ", its standard error is in " + log);
+				+ ", gpg answered: " + whatThisCallWrote(logBefore));
 		}
+	}
+
+	/**
+	 * What this call wrote to standard error, read back from the log, so that a failure carries
+	 * gpg's reason into the test report itself: the log lies next to the home in the test's
+	 * {@code @TempDir}, which JUnit deletes when the test ends, and a message that only pointed to
+	 * it said nothing once the test was over (#309, as astrapi69/mystic-crypt-ui#940)
+	 */
+	private String whatThisCallWrote(final long logBefore) throws IOException
+	{
+		byte[] wholeLog = Files.exists(log) ? Files.readAllBytes(log) : new byte[0];
+		int from = (int)Math.min(logBefore, wholeLog.length);
+		String answer = new String(wholeLog, from, wholeLog.length - from, StandardCharsets.UTF_8)
+			.strip();
+		return answer.isEmpty() ? "nothing on standard error" : answer;
 	}
 
 	/** Stops the agent gpg started for this home, so no process outlives the test */
