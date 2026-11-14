@@ -88,26 +88,35 @@ class ConvertCommandTest extends AbstractCliTest
 	}
 
 	@Test
-	void aPkcs1DerPrivateKeyIsNotRecognized(@TempDir File tempDir) throws Exception
+	void aPkcs1DerPrivateKeyIsDescribedAsPkcs1(@TempDir File tempDir) throws Exception
 	{
 		File der = writeDerPkcs1Private(tempDir, keyPair("RSA"));
+		byte[] before = Files.readAllBytes(der.toPath());
 
-		assertEquals(2, run("convert", "--in", der.getPath(), "--describe"));
-		assertTrue(
-			err.contains(
-				"is not a DER private key, public key or X.509 certificate this tool converts"),
+		assertEquals(0, run("convert", "--in", der.getPath(), "--describe"),
 			"stderr was: '" + err + "'");
+
+		assertTrue(out.contains("private key in PKCS#1"), "stdout was: '" + out + "'");
+		assertTrue(out.contains("DER"), "stdout was: '" + out + "'");
+		assertTrue(out.contains("1.2.840.113549.1.1.1"), "stdout was: '" + out + "'");
+		assertArrayEquals(before, Files.readAllBytes(der.toPath()),
+			"--describe must change nothing");
 	}
 
 	@Test
-	void aPkcs1DerPrivateKeyIsNotConverted(@TempDir File tempDir) throws Exception
+	void aPkcs1DerPrivateKeyConvertsToTheSameKeyInPkcs8(@TempDir File tempDir) throws Exception
 	{
-		File der = writeDerPkcs1Private(tempDir, keyPair("RSA"));
+		KeyPair keyPair = keyPair("RSA");
+		File der = writeDerPkcs1Private(tempDir, keyPair);
 		File asPkcs8 = new File(tempDir, "pkcs8.pem");
 
-		assertEquals(2,
-			run("convert", "--in", der.getPath(), "--to", "pkcs8", "--out", asPkcs8.getPath()));
-		assertFalse(asPkcs8.exists(), "nothing may be written");
+		assertEquals(0,
+			run("convert", "--in", der.getPath(), "--to", "pkcs8", "--out", asPkcs8.getPath()),
+			"stderr was: '" + err + "'");
+
+		assertArrayEquals(keyPair.getPrivate().getEncoded(),
+			KeyFileReader.readPrivateKey(asPkcs8, "RSA").getEncoded(),
+			"the PKCS#8 written must be the key the PKCS#1 file held");
 	}
 
 	@Test

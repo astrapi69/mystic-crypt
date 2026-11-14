@@ -31,7 +31,11 @@ import java.nio.file.Files;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
+import org.bouncycastle.asn1.DERNull;
+import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
+import org.bouncycastle.asn1.pkcs.RSAPrivateKey;
+import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openssl.PEMKeyPair;
@@ -85,8 +89,7 @@ public final class KeyFileReader
 			// DER carries its own algorithm in the PKCS#8 structure, so it is read from there
 			// rather than from the name the caller passed; the name is only used to say what was
 			// expected if this fails
-			return converter()
-				.getPrivateKey(PrivateKeyInfo.getInstance(Files.readAllBytes(file.toPath())));
+			return converter().getPrivateKey(privateKeyInfoOf(Files.readAllBytes(file.toPath())));
 		}
 		catch (final Exception notADerPrivateKey)
 		{
@@ -146,6 +149,31 @@ public final class KeyFileReader
 		final int lookAhead = Math.min(head.length, 64);
 		return new String(head, 0, lookAhead, java.nio.charset.StandardCharsets.US_ASCII)
 			.contains("-----BEGIN");
+	}
+
+	/**
+	 * The PKCS#8 structure of a private key in DER. An RSA key in PKCS#1, the traditional form
+	 * {@code openssl pkey -outform DER} writes for RSA, carries no algorithm identifier of its own
+	 * and is wrapped as {@code rsaEncryption} (#320)
+	 *
+	 * @param der
+	 *            the DER bytes
+	 * @return the PKCS#8 structure
+	 * @throws IllegalArgumentException
+	 *             if the bytes are neither PKCS#8 nor an RSA key in PKCS#1
+	 */
+	static PrivateKeyInfo privateKeyInfoOf(final byte[] der) throws IOException
+	{
+		try
+		{
+			return PrivateKeyInfo.getInstance(der);
+		}
+		catch (final RuntimeException notPkcs8)
+		{
+			return new PrivateKeyInfo(
+				new AlgorithmIdentifier(PKCSObjectIdentifiers.rsaEncryption, DERNull.INSTANCE),
+				RSAPrivateKey.getInstance(der));
+		}
 	}
 
 	private static PrivateKey privateKeyFromPem(final File file) throws IOException
