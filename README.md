@@ -220,10 +220,10 @@ java -jar mystic-crypt-13.11-all.jar --help
 | `der2pem` | Convert a DER-encoded private key to PEM |
 | `cert` | Create a self-signed X.509 certificate |
 | `keystore` | Manage a PKCS12, JKS or JCEKS key store: list, create, add-keypair, import-cert, export-cert, delete |
-| `sign` | Sign a file or stdin with an Ed25519, ML-DSA or SLH-DSA private key (PEM) |
+| `sign` | Sign a file or stdin with an Ed25519, ML-DSA, SLH-DSA, RSA, ECDSA or DSA private key (PEM or DER) |
 | `verify-signature` | Verify such a signature; exit code 0 = valid, 1 = invalid, 2 = error |
 | `obfuscate` / `disentangle` | Obfuscate text with a substitution map, and recover it |
-| `encrypt` / `decrypt` | Encrypt a file or a text with a passphrase (AES-GCM, PBKDF2-HMAC-SHA256), and decrypt it again |
+| `encrypt` / `decrypt` | Encrypt a file or a text with a passphrase (AES-GCM, PBKDF2-HMAC-SHA256), and decrypt it again; `decrypt` also opens what the file encryption window of mystic-crypt-ui and the released `MCRYPT` layout wrote |
 | `share` | Split a secret into shares and combine them back (Shamir secret sharing) |
 | `keyx` | Exchange a shared secret with another person: `new` on the recipient's side, `send` on the sender's, `receive` back on the recipient's |
 | `convert` | Say what a key or certificate file is, and convert it between PEM and DER or between PKCS#1 and PKCS#8 |

@@ -39,6 +39,7 @@ respectively in the same release cycle - see [README.md](../README.md#requiremen
 | AES-GCM | ✅ | `MysticSymmetricAlgorithm.AES_GCM_NO_PADDING`; wired into `BaseByteArrayEncryptor`/`Decryptor`, `HexableEncryptor`/`Decryptor`, `PublicKeyEncryptor`/`PrivateKeyDecryptor` (all `mystic-crypt`). Random 12-byte IV per call, 128-bit tag, IV prepended to ciphertext. |
 | AES-CBC | ⚠️ | Defined in `Mode`/algorithm enums (`crypt-api`); legacy PBE paths in `mystic-crypt` still support it for backward compatibility, but AES-GCM is the default everywhere. |
 | AES-ECB | ⚠️ | Still definable via raw JCA transformation strings; no longer a default anywhere (removed in the 10.0.0 security hardening pass). Never use — no authentication, patterns leak. |
+| Sealing with a passphrase (files and texts) | ✅ | `PassphraseEnvelope` (`mystic-crypt`): PBKDF2-HMAC-SHA256 with 600,000 iterations and a 16-byte salt, then key-committing AES-GCM, with the header as associated data; the command line's `encrypt` writes it as `MCFILE`. `PassphraseCryptor` reads the released `MCRYPT` layout. `PassphraseFileFormat.open` (13.11) opens all three formats of the family, `MCFILE`, `MCFILE1` and `MCRYPT`, by their header. Sealing refuses an empty or null passphrase (13.11). |
 | ChaCha20-Poly1305 | ✅ | `MysticSymmetricAlgorithm.CHACHA20_POLY1305`; wired into the same six classes as AES-GCM above. JDK-native (SunJCE), no Bouncy Castle. Requires a 256-bit key (unlike AES's 128/192/256). |
 
 ### Asymmetric encryption
