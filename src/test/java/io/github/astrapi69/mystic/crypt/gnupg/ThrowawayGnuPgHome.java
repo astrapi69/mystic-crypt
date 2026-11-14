@@ -313,6 +313,18 @@ public final class ThrowawayGnuPgHome implements AutoCloseable
 	}
 
 	/**
+	 * Everything gpg wrote to standard error for this home so far, for the report of a failed test
+	 * (#309)
+	 *
+	 * @return the log, or a line saying gpg wrote nothing
+	 */
+	String gpgLog() throws IOException
+	{
+		String wholeLog = Files.exists(log) ? Files.readString(log, StandardCharsets.UTF_8) : "";
+		return wholeLog.isBlank() ? "nothing on standard error" : wholeLog.strip();
+	}
+
+	/**
 	 * What this call wrote to standard error, read back from the log, so that a failure carries
 	 * gpg's reason into the test report itself: the log lies next to the home in the test's
 	 * {@code @TempDir}, which JUnit deletes when the test ends, and a message that only pointed to
