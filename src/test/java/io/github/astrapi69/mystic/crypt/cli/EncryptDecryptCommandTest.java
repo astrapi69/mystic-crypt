@@ -426,4 +426,16 @@ class EncryptDecryptCommandTest extends AbstractCliTest
 		assertTrue(err.contains("the passphrase is wrong or the data was altered"),
 			"stderr was: '" + err + "'");
 	}
+
+	@Test
+	void anEmptyLineAsThePassphrase_sealsUnderTheEmptyPassphrase()
+	{
+		int exitCode = runWithStdin("\n", "encrypt", "--text", "sealed under nothing",
+			"--passphrase-stdin");
+		String base64 = out.trim();
+
+		assertEquals(0, exitCode, "stderr was: '" + err + "'");
+		assertEquals(0, runWithStdin("\n", "decrypt", "--text", base64, "--passphrase-stdin"), err);
+		assertEquals("sealed under nothing", out.trim());
+	}
 }
