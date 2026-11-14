@@ -10,14 +10,17 @@ the top of the family, not because they stop here.
 
 ## GITHUB-ISSUE-PFLICHT
 
-Every bug fix needs a GitHub issue BEFORE the fix begins.
+A bug found here is fixed in the session that finds it, in a PR of its own (family rule
+NW-015). It gets a GitHub issue first only when the fix needs the maintainer's decision,
+depends on something external or is too big for the session (NW-016); such an issue is
+filed like this:
 
 1. Search first (`gh issue list --search "<keywords>" --state all`); reopen a
    closed issue if the bug recurred, do not file a duplicate.
-2. No fix without an issue - also retroactively: a NEW bug discovered while
-   working on another one gets its own issue before it is fixed.
-3. Commit subject and PR cite the issue: `(#NN)` or `Closes #NN`. `Refs` does
-   not auto-close; `Closes`/`Fixes` does.
+2. A NEW bug discovered while working on another one is fixed in a PR of its
+   own, not inside the first one; it gets an issue of its own only under NW-016.
+3. When there is an issue, commit subject and PR cite it: `(#NN)` or `Closes #NN`.
+   `Refs` does not auto-close; `Closes`/`Fixes` does.
 4. Verify the premise before filing: if the reported defect does not actually
    exist, surface that finding instead - a false issue is worse than none.
 

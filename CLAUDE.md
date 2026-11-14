@@ -51,7 +51,9 @@ exit code; `make publish-central` and `make tag-release` refuse to run without
 ## Conventions (details in .claude/rules/)
 
 - Gitflow on `develop`; every pushed change gets a PR (workflow.md).
-- Bug fixes: GitHub issue first, failing test first (tdd.md).
+- Bug fixes: fixed in the session that finds them, in a PR of their own, failing test first
+  (tdd.md); an issue first only when the fix needs the maintainer's decision, depends on
+  something external or is too big for the session (family rules NW-015, NW-016).
 - Quality bar: 100% branch coverage, ~99% PIT score, exceptions documented
   per case (quality-gates.md).
 - Numbers in docs are measured, never remembered (docs-and-numbers.md).
