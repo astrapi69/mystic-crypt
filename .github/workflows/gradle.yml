@@ -39,6 +39,16 @@ jobs:
           # deleted (see gradle/mutation-testing.gradle); put it back for the
           # steps after this one.
           git checkout -- src/test/resources/crypt/test.txt
+      # a failed GnuPG test writes what the home looked like to build/test-diagnostics, which
+      # the runner would discard with the job: PIT's log names a failed test, not why (#309)
+      - name: Keep the diagnoses of failed tests
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-diagnostics
+          path: build/test-diagnostics
+          if-no-files-found: ignore
+          retention-days: 30
       - uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
