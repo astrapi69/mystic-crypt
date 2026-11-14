@@ -42,10 +42,18 @@ CHANGED:
   gh-pages, after the release, instead of in the pull request run, where it still named the previous release
   (PR #303); `make` runs with the environment's JDK where the pinned one is not installed (PR #311), and
   `.sdkmanrc` names that JDK (PR #316), which moves from the 25 GA build to Temurin 25.0.5, the JDK CI already built
-  13.10 with (PR #318); tests only: a failed GnuPG test leaves what the home held as a CI artifact (PR #310)
+  13.10 with (PR #318), and which every CI workflow now reads from `.sdkmanrc` as well (PR #322); tests only: a
+  failed GnuPG test leaves what the home held as a CI artifact (PR #310)
 
 FIXED:
 
+- `sign` reads a DER private key of every family, as its description promises: an Ed25519, ML-DSA or SLH-DSA
+  key in DER was read as PEM and ended in a NullPointerException and exit code 2, measured on the six parameter
+  sets the command test covers (Ed25519, ML-DSA-44, -65 and -87, SLH-DSA-SHA2-128F and SLH-DSA-SHAKE-128F); RSA,
+  ECDSA and DSA keys in DER were read already, and a PEM key is read as before (#319)
+- `convert` recognizes and converts an RSA private key in PKCS#1 DER, the form `openssl pkey -outform DER` writes
+  for RSA, which it refused as "not a DER private key" while `der2pem` read it; `sign` reads such a key as
+  well (#320)
 - `decrypt` opens what the file encryption window of mystic-crypt-ui wrote, file and text. Before, `MCFILE1` begins
   with `MCFILE`, so every window file was read as one of `encrypt`'s, its iteration count one byte off: the window's
   own file kept `decrypt` deriving a key for 269.6 seconds and then answered "the passphrase is wrong", exit 1; a
