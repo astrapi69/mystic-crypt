@@ -19,8 +19,8 @@ filed like this:
    closed issue if the bug recurred, do not file a duplicate.
 2. A NEW bug discovered while working on another one is fixed in a PR of its
    own, not inside the first one; it gets an issue of its own only under NW-016.
-3. Commit subject and PR cite the issue: `(#NN)` or `Closes #NN`. `Refs` does
-   not auto-close; `Closes`/`Fixes` does.
+3. When there is an issue, commit subject and PR cite it: `(#NN)` or `Closes #NN`.
+   `Refs` does not auto-close; `Closes`/`Fixes` does.
 4. Verify the premise before filing: if the reported defect does not actually
    exist, surface that finding instead - a false issue is worse than none.
 

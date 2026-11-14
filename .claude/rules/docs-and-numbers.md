@@ -20,8 +20,10 @@ session:
   after a full `./gradlew clean build`.
 - Line/branch coverage: `build/reports/jacoco/test/jacocoTestReport.xml`
   counters.
-- Mutation score and survivors: the PIT step of the CI run on the commit in
-  question (`gradle.yml`); PIT is never run locally (family rule RL-005).
+- Mutation score and survivors: `build/reports/pitest/mutations.xml` after
+  `./gradlew pitest` (note: a PIT run deletes
+  `src/test/resources/crypt/test.txt` - restore it and check `git status`
+  before staging anything).
 
 Grep output, memory of a previous count, or a number the user quoted are
 starting points, never authoritative. If the command cannot be run, mark the

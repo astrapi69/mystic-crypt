@@ -14,9 +14,8 @@ Numbers are re-measured and the docs updated before every release
 
 - `./gradlew clean build` (tests + Jacoco + Spotless) after every change -
   the everyday gate.
-- PIT after a feature phase and before a release - not on every commit. It
-  runs in CI, never locally (family rule RL-005), and its score is read from
-  that run. Kill what is killable; document the rest with its reason.
+- `./gradlew pitest` after a feature phase and before a release - not on
+  every commit. Kill what is killable; document the rest with its reason.
 - A weakened assertion that a mutant survives (e.g. `contains("1 entries")`
   also matching "-1 entries") is fixed by sharpening the assertion, never by
   excluding the mutant.

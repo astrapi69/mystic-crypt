@@ -1,9 +1,7 @@
 # Coding Standards
 
 Developer: Asterios Raptis (solo, AI-assisted). Goal: pragmatic, maintainable
-library code. No over-engineering. When unclear: answer it from evidence, else
-park it under the most cautious assumption and go on; ask only when it blocks
-or risks damage (family rule AG-008).
+library code. No over-engineering. When unclear: ask rather than guess.
 
 ## Java
 

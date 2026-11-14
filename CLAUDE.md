@@ -37,8 +37,8 @@ what those targets run.
 ```
 ./gradlew clean build      # tests + Jacoco + Spotless check - the everyday gate
 ./gradlew spotlessApply    # format + license headers (run before committing)
-./gradlew pitest           # PIT mutation testing: runs in CI (gradle.yml), an agent
-                           #   never runs it locally (family rule RL-005)
+./gradlew pitest           # PIT mutation testing (minutes; restores needed:
+                           #   git checkout -- src/test/resources/crypt/test.txt)
 ./gradlew nmcpPublishAllPublicationsToCentralPortal   # Central upload (USER_MANAGED;
                            # needs CENTRAL_PORTAL_TOKEN_USERNAME/PASSWORD env)
 ./gradlew tagRelease       # RELEASE-X tag (tag push triggers publish.yml!)
