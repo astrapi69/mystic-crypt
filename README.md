@@ -50,7 +50,7 @@ JDK 21) instead of carrying Bouncy Castle fallbacks for what the JDK already pro
 
 ## Installation
 
-Latest release on Maven Central: 13.10
+Latest release on Maven Central: 13.11
 
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.astrapi69/mystic-crypt.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/io.github.astrapi69/mystic-crypt)
 
@@ -58,7 +58,7 @@ Latest release on Maven Central: 13.10
 
 ```toml
 [versions]
-mystic-crypt-version = "13.10"
+mystic-crypt-version = "13.11"
 
 [libraries]
 mystic-crypt = { module = "io.github.astrapi69:mystic-crypt", version.ref = "mystic-crypt-version" }
@@ -74,7 +74,7 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation "io.github.astrapi69:mystic-crypt:13.10"
+    implementation "io.github.astrapi69:mystic-crypt:13.11"
 }
 ```
 
@@ -84,7 +84,7 @@ dependencies {
 <dependency>
     <groupId>io.github.astrapi69</groupId>
     <artifactId>mystic-crypt</artifactId>
-    <version>13.10</version>
+    <version>13.11</version>
 </dependency>
 ```
 
@@ -207,7 +207,7 @@ involved, and, just as importantly, what is deliberately *not* implemented and w
 The published `-all` artifact is a runnable uber-jar:
 
 ```shell
-java -jar mystic-crypt-13.10-all.jar --help
+java -jar mystic-crypt-13.11-all.jar --help
 ```
 
 | Command | Description |
@@ -220,10 +220,10 @@ java -jar mystic-crypt-13.10-all.jar --help
 | `der2pem` | Convert a DER-encoded private key to PEM |
 | `cert` | Create a self-signed X.509 certificate |
 | `keystore` | Manage a PKCS12, JKS or JCEKS key store: list, create, add-keypair, import-cert, export-cert, delete |
-| `sign` | Sign a file or stdin with an Ed25519, ML-DSA or SLH-DSA private key (PEM) |
+| `sign` | Sign a file or stdin with an Ed25519, ML-DSA, SLH-DSA, RSA, ECDSA or DSA private key (PEM or DER) |
 | `verify-signature` | Verify such a signature; exit code 0 = valid, 1 = invalid, 2 = error |
 | `obfuscate` / `disentangle` | Obfuscate text with a substitution map, and recover it |
-| `encrypt` / `decrypt` | Encrypt a file or a text with a passphrase (AES-GCM, PBKDF2-HMAC-SHA256), and decrypt it again |
+| `encrypt` / `decrypt` | Encrypt a file or a text with a passphrase (AES-GCM, PBKDF2-HMAC-SHA256), and decrypt it again; `decrypt` also opens what the file encryption window of mystic-crypt-ui and the released `MCRYPT` layout wrote |
 | `share` | Split a secret into shares and combine them back (Shamir secret sharing) |
 | `keyx` | Exchange a shared secret with another person: `new` on the recipient's side, `send` on the sender's, `receive` back on the recipient's |
 | `convert` | Say what a key or certificate file is, and convert it between PEM and DER or between PKCS#1 and PKCS#8 |
@@ -236,8 +236,8 @@ standard error and goes away in 14.0, because an argument is visible to every pr
 and lands in shell history.
 
 ```shell
-java -jar mystic-crypt-13.10-all.jar hash --password-stdin < password.txt
-java -jar mystic-crypt-13.10-all.jar checksum --file build.gradle --algorithm SHA-256
+java -jar mystic-crypt-13.11-all.jar hash --password-stdin < password.txt
+java -jar mystic-crypt-13.11-all.jar checksum --file build.gradle --algorithm SHA-256
 ```
 
 ## Documentation
@@ -295,9 +295,8 @@ What a release consists of, in the order it is run:
    (`./gradlew test --rerun`, then `./gradlew build`).
 2. **The docs describe this release**: the command table in this README, the feature list, and
    [docs/CRYPTO_CAPABILITIES.md](docs/CRYPTO_CAPABILITIES.md) show what the release contains, with
-   nothing from an earlier cycle left out or added. The project page on `gh-pages` gets its own pull
-   request against that branch, merged before the tag. Checked against `MysticCryptCli`, not from
-   memory.
+   nothing from an earlier cycle left out or added. Checked against `MysticCryptCli`, not from
+   memory. The project page on `gh-pages` is not part of it: it follows the release (step 6).
 3. **The consumers, against the candidate**: `./gradlew publishToMavenLocal`, then lethenon and
    mystic-crypt-ui built with `-PuseMavenLocal` and the version pointed at the candidate. The
    local candidate is deleted from `~/.m2` afterwards, so it cannot stand in for the published one.
@@ -306,7 +305,9 @@ What a release consists of, in the order it is run:
    pushed tag is never moved or deleted; a failed run is fixed on the branch and re-run.
 5. **Verify on Central**, with the artifacts downloaded inside the command that checks them: the
    jar, pom, `-sources.jar`, `-javadoc.jar`, and `gpg --verify` on the `.asc`.
-6. **GitHub release** from the CHANGELOG entry.
+6. **GitHub release** from the CHANGELOG entry, and the project page on `gh-pages` in a pull
+   request of its own against that branch, once the artifacts are verified on Central;
+   `page-check.yml` checks it on the push to `gh-pages`.
 7. **`master` follows the release**: a fast-forward where `master` is an ancestor of the tag
    (`git push origin "RELEASE-X.Y^{}:master"`), otherwise a merge of the tag on `master`, never a
    force push. Afterwards `git diff RELEASE-X.Y master` is empty - `master` is always the latest

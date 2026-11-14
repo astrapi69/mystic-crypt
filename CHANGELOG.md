@@ -1,8 +1,13 @@
 ## Change log
 ----------------------
 
-Version 13.11-SNAPSHOT
+Version 13.11
 -------------
+
+The release with one reader for the three formats a file sealed with a passphrase comes in, so that `decrypt` opens
+what the file encryption window of mystic-crypt-ui writes, whose `encrypt` refuses a passphrase that protects
+nothing, and whose javadoc jar builds the same bytes on every machine; crypt-data 13.3.1 and silly-collection 30.0
+come along.
 
 ADDED:
 
@@ -22,9 +27,34 @@ CHANGED:
   input, or Enter alone at the prompt, with exit code 2 instead of sealing a file that opens for anybody. A caller
   that passed an empty or null passphrase now gets the exception; opening with the empty passphrase still works,
   so what an earlier release sealed under it opens, and only null is refused there (#314)
+- what consumers inherit from this release: crypt-data 13.3.1, whose `AnyKeyFileReader` reads the PEM public keys of
+  ML-DSA-44, ML-DSA-87 and every SLH-DSA parameter set and whose `PrivateKeyReader` no longer writes a stack trace for
+  every algorithm it tries (crypt-data#141, crypt-data#144, PR #313); and silly-collection 30.0 instead of 29.1, a
+  major of the family: its `MapFactory` takes `Map.Entry` where it took silly-bean's `KeyValuePair`, and it no longer
+  brings silly-bean, which this library declares itself (4.0, an `api` dependency); this library calls none of the
+  changed methods (PR #317). Build and test only: the versions plugin 0.67.0, silly-io 5.0 and silly-strings 10 for
+  the tests (PR #308). The next versions of Bouncy Castle, PIT, Spotless, Guava, commons-lang3, jackson-databind and
+  japicmp reached Maven Central or the Plugin Portal, and Gradle 9.9.1 its distribution server, less than fourteen
+  days before this cut and follow with the next cycle; file-worker 21.0 is a runtime major and gets a session of its
+  own
+- build only: the javadoc jar builds the same bytes whatever the machine's language, so the published one can be
+  verified byte for byte against a local build like the other four artifacts (PR #304); a javadoc warning fails the
+  build, and `check` runs the javadoc (PR #305); the project page is checked by `page-check.yml` on every push to
+  gh-pages, after the release, instead of in the pull request run, where it still named the previous release
+  (PR #303); `make` runs with the environment's JDK where the pinned one is not installed (PR #311), and
+  `.sdkmanrc` names that JDK (PR #316), which moves from the 25 GA build to Temurin 25.0.5, the JDK CI already built
+  13.10 with (PR #318), and which every CI workflow now reads from `.sdkmanrc` as well (PR #322); tests only: a
+  failed GnuPG test leaves what the home held as a CI artifact (PR #310)
 
 FIXED:
 
+- `sign` reads a DER private key of every family, as its description promises: an Ed25519, ML-DSA or SLH-DSA
+  key in DER was read as PEM and ended in a NullPointerException and exit code 2, measured on the six parameter
+  sets the command test covers (Ed25519, ML-DSA-44, -65 and -87, SLH-DSA-SHA2-128F and SLH-DSA-SHAKE-128F); RSA,
+  ECDSA and DSA keys in DER were read already, and a PEM key is read as before (#319)
+- `convert` recognizes and converts an RSA private key in PKCS#1 DER, the form `openssl pkey -outform DER` writes
+  for RSA, which it refused as "not a DER private key" while `der2pem` read it; `sign` reads such a key as
+  well (#320)
 - `decrypt` opens what the file encryption window of mystic-crypt-ui wrote, file and text. Before, `MCFILE1` begins
   with `MCFILE`, so every window file was read as one of `encrypt`'s, its iteration count one byte off: the window's
   own file kept `decrypt` deriving a key for 269.6 seconds and then answered "the passphrase is wrong", exit 1; a
