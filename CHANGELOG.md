@@ -34,8 +34,9 @@ CHANGED:
   brings silly-bean, which this library declares itself (4.0, an `api` dependency); this library calls none of the
   changed methods (PR #317). Build and test only: the versions plugin 0.67.0, silly-io 5.0 and silly-strings 10 for
   the tests (PR #308). The next versions of Bouncy Castle, PIT, Spotless, Guava, commons-lang3, jackson-databind and
-  japicmp reached Maven Central or the Plugin Portal less than fourteen days before this cut and follow with the next
-  cycle; file-worker 21.0 is a runtime major and gets a session of its own
+  japicmp reached Maven Central or the Plugin Portal, and Gradle 9.9.1 its distribution server, less than fourteen
+  days before this cut and follow with the next cycle; file-worker 21.0 is a runtime major and gets a session of its
+  own
 - build only: the javadoc jar builds the same bytes whatever the machine's language, so the published one can be
   verified byte for byte against a local build like the other four artifacts (PR #304); a javadoc warning fails the
   build, and `check` runs the javadoc (PR #305); the project page is checked by `page-check.yml` on every push to
