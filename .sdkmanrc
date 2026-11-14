@@ -1,3 +1,4 @@
-# The JDK this repository builds with (RL-116): `sdk env` sets the shell to it, and the Makefile
-# pins it. A later patch release is taken on deliberately, in a pull request of its own with the gate.
+# The JDK this repository builds with (RL-116): `sdk env` sets the shell to it, the Makefile pins it, and
+# every workflow reads it (java-version-file). A later patch release is taken on deliberately, in a pull request
+# of its own with the gate.
 java=25.0.5.0+8-tem
