@@ -253,6 +253,29 @@ class PassphraseFileFormatTest
 			PassphraseFileFormat.of(MCFILE1_MAGIC));
 	}
 
+	@Test
+	void aReadingAtExactlyTheBelievableCount_isStillTried()
+	{
+		// the MCFILE1 reading records MOST_BELIEVABLE_ITERATIONS exactly; the MCFILE reading,
+		// whose last salt byte is 1, records more than 16 million
+		byte[] header = ByteBuffer.allocate(40).put(MCFILE1_MAGIC).put(saltWith(15, (byte)1))
+			.putInt((int)PassphraseFileFormat.MOST_BELIEVABLE_ITERATIONS).array();
+
+		assertEquals(List.of(PassphraseFileFormat.MCFILE1),
+			PassphraseFileFormat.readingsOf(header));
+	}
+
+	@Test
+	void aHeaderExactlyAsLongAsItsLayout_isReadNotTakenAsTooShort()
+	{
+		// 27 bytes, all an MCFILE1 header has: its recorded count, 100 000 000, cannot be believed;
+		// read as an MCFILE, with the last salt byte 0, the count is 100 000 000 >> 8 = 390 625
+		byte[] header = ByteBuffer.allocate(PassphraseEnvelope.headerLength(MCFILE1_MAGIC))
+			.put(MCFILE1_MAGIC).put(saltWith(15, (byte)0)).putInt(100_000_000).array();
+
+		assertEquals(List.of(PassphraseFileFormat.MCFILE), PassphraseFileFormat.readingsOf(header));
+	}
+
 	private static byte[] saltWith(final int position, final byte value)
 	{
 		byte[] salt = new byte[PassphraseEnvelope.SALT_LENGTH];

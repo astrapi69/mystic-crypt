@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import io.github.astrapi69.mystic.crypt.secret.SecretBuffers;
 
 /**
  * The formats a file sealed with a passphrase comes in across this library family, told apart by
@@ -201,15 +200,8 @@ public enum PassphraseFileFormat
 		{
 			return PassphraseEnvelope.decrypt(magic, content, passphrase);
 		}
-		// PassphraseCryptor overwrites the array it is given; this reader leaves the caller's alone
-		char[] copy = passphrase.clone();
-		try
-		{
-			return PassphraseCryptor.decrypt(copy, content);
-		}
-		finally
-		{
-			SecretBuffers.wipe(copy);
-		}
+		// PassphraseCryptor overwrites the array it is given, on success and on failure; it gets a
+		// copy, which it leaves zero-filled, and the caller's array stays as it was
+		return PassphraseCryptor.decrypt(passphrase.clone(), content);
 	}
 }
