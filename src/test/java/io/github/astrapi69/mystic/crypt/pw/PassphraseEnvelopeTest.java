@@ -216,7 +216,7 @@ class PassphraseEnvelopeTest
 	 * separately, because a single case passing says nothing about the other two (#160)
 	 */
 	@ParameterizedTest(name = "a changed {0} does not open")
-	@CsvSource({ "magic, 0", "salt, 6", "iteration count, 22" })
+	@CsvSource({ "magic, 0", "salt, 6", "iteration count, 25" })
 	@DisplayName("a tampered header does not open, field by field")
 	void aTamperedHeader_doesNotOpen(final String field, final int position) throws Exception
 	{
@@ -231,6 +231,24 @@ class PassphraseEnvelopeTest
 			() -> PassphraseEnvelope.decrypt(VAULT_MAGIC, sealed, PASSPHRASE.clone()),
 			"a changed " + field + " at byte " + position + " has to be refused as "
 				+ expected.getSimpleName());
+	}
+
+	/**
+	 * The high byte of the iteration count: flipping a bit there takes 600 000 to about 17 million,
+	 * above {@link PassphraseEnvelope#MAXIMUM_ITERATIONS}. That is refused as not this format,
+	 * before any derivation, where the same flip in the low byte (above) reaches the key commitment
+	 * and is refused as would-not-open
+	 */
+	@Test
+	@DisplayName("a count flipped above the bound is refused as not this format, before any derivation")
+	void anIterationCountFlippedAboveTheBound_isRefusedAsNotThisFormat() throws Exception
+	{
+		byte[] sealed = PassphraseEnvelope.encrypt(VAULT_MAGIC,
+			"secret".getBytes(StandardCharsets.UTF_8), PASSPHRASE.clone());
+		sealed[22] = (byte)(sealed[22] ^ 0x01);
+
+		assertThrows(IllegalArgumentException.class,
+			() -> PassphraseEnvelope.decrypt(VAULT_MAGIC, sealed, PASSPHRASE.clone()));
 	}
 
 	/**

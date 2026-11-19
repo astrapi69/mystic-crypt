@@ -137,7 +137,9 @@ public final class PassphraseCryptor
 	 *            the header followed by the AES-GCM payload
 	 * @return the decrypted bytes
 	 * @throws IllegalArgumentException
-	 *             if the input does not carry this format's header
+	 *             if the input does not carry this format's header, or records an iteration count
+	 *             outside 1 to {@link PassphraseEnvelope#MAXIMUM_ITERATIONS}, which is refused
+	 *             before any key is derived
 	 * @throws SecurityException
 	 *             if the passphrase is wrong or the payload was altered
 	 * @throws NullPointerException
@@ -152,6 +154,7 @@ public final class PassphraseCryptor
 			// "this is not our format at all" is a different answer from "this is our format and
 			// it would not open", and the caller distinguishes the two by exception type
 			final int iterations = iterationsOf(encrypted);
+			PassphraseEnvelope.requireIterationsWithinBound(iterations);
 			final byte[] salt = Arrays.copyOfRange(encrypted, MAGIC.length + 1 + Integer.BYTES,
 				HEADER_LENGTH);
 			final byte[] payload = Arrays.copyOfRange(encrypted, HEADER_LENGTH, encrypted.length);
@@ -192,7 +195,9 @@ public final class PassphraseCryptor
 	}
 
 	/**
-	 * Reads the PBKDF2 iteration count the given output was produced with.
+	 * Reads the PBKDF2 iteration count the given output was produced with. The count is returned as
+	 * recorded: {@link #decrypt(char[], byte[])} checks it against
+	 * {@link PassphraseEnvelope#MAXIMUM_ITERATIONS} before it derives with it.
 	 *
 	 * @param encrypted
 	 *            the encrypted bytes

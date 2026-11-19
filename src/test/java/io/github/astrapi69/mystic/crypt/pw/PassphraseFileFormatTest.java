@@ -293,15 +293,26 @@ class PassphraseFileFormatTest
 	}
 
 	@Test
-	void aReadingAtExactlyTheBelievableCount_isStillTried()
+	void aReadingAtExactlyTheBound_isStillTried()
 	{
-		// the MCFILE1 reading records MOST_BELIEVABLE_ITERATIONS exactly; the MCFILE reading,
+		// the MCFILE1 reading records MAXIMUM_ITERATIONS exactly; the MCFILE reading,
 		// whose last salt byte is 1, records more than 16 million
 		byte[] header = ByteBuffer.allocate(40).put(MCFILE1_MAGIC).put(saltWith(15, (byte)1))
-			.putInt((int)PassphraseFileFormat.MOST_BELIEVABLE_ITERATIONS).array();
+			.putInt(PassphraseEnvelope.MAXIMUM_ITERATIONS).array();
 
 		assertEquals(List.of(PassphraseFileFormat.MCFILE1),
 			PassphraseFileFormat.readingsOf(header));
+	}
+
+	@Test
+	void aReadingOneAboveTheBound_isNotTriedWhereTheOtherReadingIsWithin()
+	{
+		// the MCFILE1 reading records one above the bound; the MCFILE reading, whose last salt
+		// byte is 0, reads the count shifted by a byte: 7 812
+		byte[] header = ByteBuffer.allocate(40).put(MCFILE1_MAGIC).put(saltWith(15, (byte)0))
+			.putInt(PassphraseEnvelope.MAXIMUM_ITERATIONS + 1).array();
+
+		assertEquals(List.of(PassphraseFileFormat.MCFILE), PassphraseFileFormat.readingsOf(header));
 	}
 
 	@Test

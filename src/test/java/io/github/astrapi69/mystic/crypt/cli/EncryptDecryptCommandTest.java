@@ -28,12 +28,15 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.time.Duration;
 import java.util.Base64;
 
 import org.junit.jupiter.api.Test;
@@ -177,6 +180,25 @@ class EncryptDecryptCommandTest extends AbstractCliTest
 		Files.write(encrypted.toPath(), tampered);
 
 		assertEquals(1, run("decrypt", "-i", encrypted.getPath(), "-p", "pass"));
+	}
+
+	@Test
+	void aTextWhoseHeaderRecordsMoreIterationsThanTheFormatAllows_isAToolErrorAtOnce()
+	{
+		byte[] salt = new byte[PassphraseEnvelope.SALT_LENGTH];
+		java.util.Arrays.fill(salt, (byte)9);
+		byte[] content = ByteBuffer
+			.allocate(PassphraseCryptSupport.MAGIC.length + salt.length + Integer.BYTES + 32)
+			.put(PassphraseCryptSupport.MAGIC).put(salt).putInt(Integer.MAX_VALUE).array();
+		String base64 = Base64.getEncoder().encodeToString(content);
+
+		int exitCode = assertTimeoutPreemptively(Duration.ofSeconds(10),
+			() -> run("decrypt", "--text", base64, "-p", "pass"));
+
+		assertEquals(2, exitCode,
+			"an input of the wrong kind is an error, stderr was: '" + err + "'");
+		assertTrue(err.contains(String.valueOf(PassphraseEnvelope.MAXIMUM_ITERATIONS)),
+			"the message must name the bound, but was: '" + err + "'");
 	}
 
 	@Test
