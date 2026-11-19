@@ -45,9 +45,13 @@ import java.util.List;
  * salt, so one {@code MCFILE} in 256 starts with {@code MCFILE1} as well. Read the wrong way, a
  * file's iteration count is taken one byte off - a count of millions or billions, which the key
  * derivation spends minutes on before it fails. Both layouts record their count, so where the
- * header fits both, a reading whose count is above {@link #MOST_BELIEVABLE_ITERATIONS} is not
- * tried. For a file written with today's {@link PassphraseEnvelope#ITERATIONS}, that leaves the
+ * header fits both, a reading whose count is above {@link PassphraseEnvelope#MAXIMUM_ITERATIONS} is
+ * not tried. For a file written with today's {@link PassphraseEnvelope#ITERATIONS}, that leaves the
  * right reading, or the right reading first.
+ * <p>
+ * <b>The same bound holds for every reading.</b> {@link #open} refuses a recorded count outside 1
+ * to {@link PassphraseEnvelope#MAXIMUM_ITERATIONS} with an {@link IllegalArgumentException} before
+ * any key is derived, whichever format the content is in.
  * <p>
  * <b>The caller owns the passphrase array</b>, as with {@link PassphraseEnvelope}: {@link #open}
  * reads it and never modifies it, also for {@code MCRYPT}, whose own reader overwrites the array it
@@ -74,14 +78,6 @@ public enum PassphraseFileFormat
 	 */
 	MCRYPT("MCRYPT");
 
-	/**
-	 * The highest iteration count a reading is believed when the header fits two formats: ten times
-	 * what is written today. A reading one byte off gives {@code MCFILE1} about 153 million for an
-	 * {@code MCFILE} of 600 000, and {@code MCFILE} at least 16 777 216 for an {@code MCFILE1}
-	 * whose last salt byte is not 0
-	 */
-	static final long MOST_BELIEVABLE_ITERATIONS = 10L * PassphraseEnvelope.ITERATIONS;
-
 	/** The markers, the longest first, so that {@code MCFILE1} is looked for before its prefix */
 	private static final List<PassphraseFileFormat> BY_MARKER_LENGTH = List.of(MCFILE1, MCFILE,
 		MCRYPT);
@@ -102,7 +98,10 @@ public enum PassphraseFileFormat
 	 *            the passphrase, read and not modified; the caller overwrites it afterwards
 	 * @return the plaintext
 	 * @throws IllegalArgumentException
-	 *             if the content is in none of the formats, or is cut short behind its marker
+	 *             if the content is in none of the formats, is cut short behind its marker, or
+	 *             records an iteration count outside 1 to
+	 *             {@link PassphraseEnvelope#MAXIMUM_ITERATIONS}, which is refused before any key is
+	 *             derived
 	 * @throws SecurityException
 	 *             if it is in one of them and does not open: the passphrase is wrong or the data
 	 *             was altered. A {@link SecurityException}, not a {@link GeneralSecurityException},
@@ -147,7 +146,8 @@ public enum PassphraseFileFormat
 	/**
 	 * The formats the content can be read as, in the order they are tried: those whose marker it
 	 * starts with, the longest marker first, and where that is more than one, only those whose
-	 * recorded iteration count can be believed - unless none can, then all of them
+	 * recorded iteration count is within {@link PassphraseEnvelope#MAXIMUM_ITERATIONS} - unless
+	 * none can, then all of them
 	 *
 	 * @param content
 	 *            the content, or at least its first bytes; may be null
@@ -170,7 +170,7 @@ public enum PassphraseFileFormat
 		List<PassphraseFileFormat> believable = new ArrayList<>();
 		for (PassphraseFileFormat format : named)
 		{
-			if (format.recordedIterations(content) <= MOST_BELIEVABLE_ITERATIONS)
+			if (format.recordedIterations(content) <= PassphraseEnvelope.MAXIMUM_ITERATIONS)
 			{
 				believable.add(format);
 			}

@@ -101,6 +101,18 @@ public final class PassphraseEnvelope
 	 */
 	public static final int ITERATIONS = 600_000;
 
+	/**
+	 * The most iterations a header may record, and so the most any reader derives with and the most
+	 * {@code seal} writes: 2 000 000, a little over three times {@link #ITERATIONS}. Every reader
+	 * of a passphrase-sealed input checks the recorded count against it before the first
+	 * derivation: {@link PassphraseEnvelope#decrypt(byte[], byte[], char[])},
+	 * {@link PassphraseCryptor#decrypt(char[], byte[])} and {@link PassphraseFileFormat#open}. A
+	 * count of 0, a negative count or one above it is refused with an
+	 * {@link IllegalArgumentException}: that input is not in this format. A writer above the bound
+	 * needs a new format version, otherwise the installed readers refuse its files.
+	 */
+	public static final int MAXIMUM_ITERATIONS = 2_000_000;
+
 	/** The length of the derived key in bits */
 	public static final int KEY_LENGTH_BITS = 256;
 
@@ -143,7 +155,8 @@ public final class PassphraseEnvelope
 
 	/**
 	 * The key derivation cost recorded in the given content, which is what a reader has to derive
-	 * with rather than the current {@link #ITERATIONS}
+	 * with rather than the current {@link #ITERATIONS}. The count is returned as recorded: a reader
+	 * checks it against {@link #MAXIMUM_ITERATIONS} before it derives with it
 	 *
 	 * @param magic
 	 *            the marker of the format
@@ -154,6 +167,24 @@ public final class PassphraseEnvelope
 	public static int iterationsOf(final byte[] magic, final byte[] content)
 	{
 		return ByteBuffer.wrap(content, magic.length + SALT_LENGTH, Integer.BYTES).getInt();
+	}
+
+	/**
+	 * Refuses an iteration count outside 1 to {@link #MAXIMUM_ITERATIONS}, before anything is
+	 * derived with it
+	 *
+	 * @param iterations
+	 *            the count a header records or a writer is asked for
+	 * @throws IllegalArgumentException
+	 *             if the count is below 1 or above the bound: the input is not in this format
+	 */
+	static void requireIterationsWithinBound(final int iterations)
+	{
+		if (iterations < 1 || iterations > MAXIMUM_ITERATIONS)
+		{
+			throw new IllegalArgumentException("an iteration count of " + iterations
+				+ " is not allowed in this format, which takes 1 to " + MAXIMUM_ITERATIONS);
+		}
 	}
 
 	/**
@@ -280,7 +311,9 @@ public final class PassphraseEnvelope
 	 *             if the content is of this format but does not open: the passphrase is wrong or
 	 *             the data was altered
 	 * @throws IllegalArgumentException
-	 *             if the content is not of this format at all, or is truncated
+	 *             if the content is not of this format at all, is truncated, or records an
+	 *             iteration count outside 1 to {@link #MAXIMUM_ITERATIONS}, which is refused before
+	 *             any key is derived
 	 * @throws NullPointerException
 	 *             if the passphrase is null; the empty passphrase opens what was sealed under it
 	 * @throws GeneralSecurityException
@@ -308,7 +341,9 @@ public final class PassphraseEnvelope
 	 *             if the content is of this format but does not open: the passphrase is wrong or
 	 *             the data was altered
 	 * @throws IllegalArgumentException
-	 *             if the content is not of this format at all, or is truncated
+	 *             if the content is not of this format at all, is truncated, or records an
+	 *             iteration count outside 1 to {@link #MAXIMUM_ITERATIONS}, which is refused before
+	 *             any key is derived
 	 * @throws NullPointerException
 	 *             if the passphrase is null; the empty passphrase opens what was sealed under it
 	 * @throws GeneralSecurityException
@@ -333,6 +368,7 @@ public final class PassphraseEnvelope
 		byte[] header = Arrays.copyOf(content, headerLength);
 		byte[] salt = Arrays.copyOfRange(header, magic.length, magic.length + SALT_LENGTH);
 		int iterations = iterationsOf(magic, content);
+		requireIterationsWithinBound(iterations);
 		byte[] payload = Arrays.copyOfRange(content, headerLength, content.length);
 		SecretKey key = deriveKey(passphrase, salt, iterations);
 		try
@@ -371,8 +407,10 @@ public final class PassphraseEnvelope
 	 * @param salt
 	 *            the salt to derive with
 	 * @param iterations
-	 *            the cost to derive with and to record
+	 *            the cost to derive with and to record, 1 to {@link #MAXIMUM_ITERATIONS}
 	 * @return the sealed result, header included
+	 * @throws IllegalArgumentException
+	 *             if the cost is outside 1 to {@link #MAXIMUM_ITERATIONS}, before any derivation
 	 * @throws GeneralSecurityException
 	 *             if sealing fails
 	 */
@@ -380,6 +418,7 @@ public final class PassphraseEnvelope
 		final byte[] salt, final int iterations) throws GeneralSecurityException
 	{
 		refuseTheReservedMarker(magic);
+		requireIterationsWithinBound(iterations);
 		byte[] header = ByteBuffer.allocate(headerLength(magic)).put(magic).put(salt)
 			.putInt(iterations).array();
 		byte[] payload = sealPayload(deriveKey(passphrase, salt, iterations), plaintext, header);
