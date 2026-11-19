@@ -1,6 +1,21 @@
 ## Change log
 ----------------------
 
+Version 13.11.1
+---------------
+
+A patch release of 13.11 with one change: the readers of the passphrase-sealed formats check the iteration count a
+header records against one bound before they derive a key. Nothing else changes from 13.11.
+
+FIXED:
+
+- the readers of the passphrase-sealed formats check the iteration count a header records against one bound,
+  `PassphraseEnvelope.MAXIMUM_ITERATIONS` (2 000 000), before they derive a key: `PassphraseEnvelope.decrypt`,
+  `PassphraseCryptor.decrypt` and `PassphraseFileFormat.open`. A count of 0, a negative count or one above it is
+  refused as not this format (`IllegalArgumentException`, exit 2 on the command line), and `seal` refuses to write
+  one. Every file a released writer produced records 600 000 and keeps opening. A writer above the bound needs a new
+  format version
+
 Version 13.11
 -------------
 
