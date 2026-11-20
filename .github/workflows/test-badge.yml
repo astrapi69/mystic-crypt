@@ -12,16 +12,19 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Set up JDK
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78 # v6.2.0
         with:
           distribution: 'temurin'
           java-version-file: '.sdkmanrc'
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v6
+        # v5.0.2, not v6: from v6 the action bundles a proprietary caching component (the maintainer's decision F2, 2026-11-20).
+        # v5.0.2 lies in the range of GHSA-chpw-2mqm-95cc (fixed in 6.4.1), which affects only the two-workflow
+        # download-and-submit setup; this workflow generates and submits in one job. Do not switch to download-and-submit.
+        uses: gradle/actions/setup-gradle@0723195856401067f7a2779048b490ace7a47d7c # v5.0.2
 
       # The project page is checked by page-check.yml on every build of the page, not here: it follows
       # the release and names the previous one until then (#303).
@@ -54,7 +57,7 @@ jobs:
 
       - name: Update badge
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
-        uses: schneegans/dynamic-badges-action@v1.7.0
+        uses: schneegans/dynamic-badges-action@28b0fa8bdeb46170ac397105ece0c1fe58f68910 # v1.9.0
         with:
           auth: ${{ secrets.GIST_TOKEN }}
           gistID: 69b2e93dd826ce43cc3f02433a465ae3
