@@ -32,6 +32,18 @@ jobs:
       # page follows the release and names the previous one while a pull request is open
       - name: Execute Gradle build
         run: ./gradlew build
+      - name: Upload the test reports
+        # always, not only on failure: a green run whose results are thrown away with the job
+        # cannot be checked afterwards, and how many tests ran then has no answer but a local run
+        # (the maintainer, 2026-11-20, after astrapi69/mystic-crypt-ui#1070)
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: test-reports
+          path: |
+            build/test-results
+            build/reports/tests
+          retention-days: 14
       - name: Mutation testing (PIT, fails below mutationThreshold in build.gradle)
         run: |
           ./gradlew pitest
@@ -43,7 +55,7 @@ jobs:
       # the runner would discard with the job: PIT's log names a failed test, not why (#309)
       - name: Keep the diagnoses of failed tests
         if: failure()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: test-diagnostics
           path: build/test-diagnostics
